@@ -1,0 +1,18 @@
+targets:
+    $default:
+        builders:
+            immutable:
+                enabled: true
+                generate_for:
+                    include:
+                        - test/src/*
+                        - example/lib/*
+#                    include:
+builders:
+    immutable:
+        import: 'package:immutable/immutable.dart'
+        builder_factories: ['immutable']
+        build_extensions: { '.dart': ['.immutable.g.part'] }
+        auto_apply: dependents
+        build_to: cache
+        applies_builders: ['source_gen|combining_builder']
