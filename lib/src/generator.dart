@@ -1,14 +1,13 @@
+import 'dart:io';
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:immutable/concrete_template.dart';
+import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
-import 'abstract_template.dart';
-import 'parameter_template.dart';
 
-/// Builds generators for `build_runner` to run
-Builder immutable(BuilderOptions options) {
-  return SharedPartBuilder([ImmutableGenerator()], 'immutable');
-}
+import 'templates/abstract_template.dart';
+import 'templates/concrete_template.dart';
+import 'templates/parameter_template.dart';
 
 class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
   @override
@@ -17,8 +16,9 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) sync* {
-    final defaultConstructor = element.constructors
-        .firstWhere((e) => e.name.isEmpty, orElse: () => null);
+    File.fromUri(Uri.parse('./log.txt')).writeAsStringSync('hello world');
+    final defaultConstructor = element.constructors.firstWhere((e) => e.name.isEmpty, orElse: () => null);
+
     yield Concrete(
       '_${element.name}',
       element.name,
@@ -32,14 +32,11 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
     ).toString();
 
     yield Abstract(
-      '_${element.name}Base',
-      defaultConstructor?.parameters?.map((p) {
+      name: '_${element.name}Base',
+      interface: element.name,
+      properties: defaultConstructor?.parameters?.map((p) {
         return Getter(name: p.name, type: p.type?.name);
       })?.toList(),
     ).toString();
   }
-}
-
-class Immutable {
-  const Immutable();
 }

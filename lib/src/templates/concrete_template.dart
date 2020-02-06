@@ -1,4 +1,4 @@
-import 'package:immutable/parameter_template.dart';
+import 'parameter_template.dart';
 
 class Concrete {
   Concrete(
@@ -32,8 +32,6 @@ $toStringMethod
 $operatorEqualMethod
 
 $hashCodeMethod
-
-$toJSONMethod
 
 $copyWithMethod
 }
@@ -91,20 +89,6 @@ $parameters
   return $interface(
 $constructorParameters
   );
-}
-''';
-  }
-
-  String get toJSONMethod {
-    final properties = this.properties.map((p) {
-      return "'${p.name}': ${p.name},";
-    }).join();
-
-    return '''
-Map<String, dynamic> toJSON() {
-  return <String, dynamic>{
-$properties
-  };
 }
 ''';
   }
