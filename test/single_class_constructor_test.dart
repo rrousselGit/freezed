@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import 'package:build_test/build_test.dart';
 import 'package:matcher/matcher.dart';
 
-import 'integration/example.dart';
+import 'integration/single_class_constructor.dart';
 
 Future<void> compile(String src) async {
   final main = await resolveSources({

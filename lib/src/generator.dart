@@ -9,6 +9,8 @@ import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
 import 'templates/parameter_template.dart';
 
+final redirectedConstructorName = RegExp('[^ =\t\n]+;');
+
 class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
   @override
   Iterable<String> generateForAnnotatedElement(
@@ -16,11 +18,21 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) sync* {
-    File.fromUri(Uri.parse('./log.txt')).writeAsStringSync('hello world');
     final defaultConstructor = element.constructors.firstWhere((e) => e.name.isEmpty, orElse: () => null);
 
+    String generatedClassName;
+    if (defaultConstructor.isFactory && defaultConstructor.redirectedConstructor == null) {
+      final location = defaultConstructor.nameOffset;
+      final source = defaultConstructor.source.contents.data;
+
+      final match = redirectedConstructorName.stringMatch(source.substring(location));
+
+      generatedClassName = match.substring(0, match.length - 1);
+    }
+    assert(generatedClassName != null);
+
     yield Concrete(
-      '_${element.name}',
+      generatedClassName,
       element.name,
       ParametersTemplate.fromParameterElements(
         defaultConstructor?.parameters ?? [],
@@ -32,7 +44,7 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
     ).toString();
 
     yield Abstract(
-      name: '_${element.name}Base',
+      name: '_\$${element.name}',
       interface: element.name,
       properties: defaultConstructor?.parameters?.map((p) {
         return Getter(name: p.name, type: p.type?.name);
