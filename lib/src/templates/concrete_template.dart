@@ -20,7 +20,7 @@ class Concrete {
 class _\$$name implements $name {
   const _\$$name($constructorParameters);
 
-${properties.join()}
+${properties.map((p) => '@override $p').join()}
 
 $toStringMethod
 
