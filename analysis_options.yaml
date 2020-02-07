@@ -6,7 +6,7 @@ analyzer:
     implicit-dynamic: false
 linter:
   rules:
-    - public_member_api_docs
+    # - public_member_api_docs
     - annotate_overrides
     - avoid_empty_else
     - avoid_function_literals_in_foreach_calls

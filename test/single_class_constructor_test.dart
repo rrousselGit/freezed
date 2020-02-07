@@ -7,6 +7,10 @@ import 'common.dart';
 import 'integration/single_class_constructor.dart';
 
 Future<void> main() async {
+  test('toString includes the constructor name', () {
+    expect('${SingleNamedCtor.named(42)}', 'SingleNamedCtor.named(a: 42)');
+  });
+
   test('can be created as const', () {
     expect(identical(const MyClass(a: '42'), const MyClass(a: '42')), isTrue);
   });
@@ -198,5 +202,21 @@ void main() {
       errorResult.errors.map((e) => e.toString()),
       anyElement(contains("The parameter 'a' is required")),
     );
+  });
+
+  test('empty class still equals', () {
+    expect(Empty(), Empty());
+    expect(Empty(), isNot(Empty2()));
+    expect(Empty2(), Empty2());
+  });
+
+  test('empty hashCode', () {
+    expect(Empty().hashCode, Empty().hashCode);
+
+    expect(Empty().hashCode, isNot(Empty2().hashCode));
+  });
+  test('empty toString', () {
+    expect('${Empty()}', 'Empty()');
+    expect('${Empty2()}', 'Empty2()');
   });
 }

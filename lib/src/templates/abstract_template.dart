@@ -23,6 +23,7 @@ $copyWithPrototype
   }
 
   String get copyWithPrototype {
+    if (properties.isEmpty) return '';
     final parameters = properties.map((p) {
       return '${p.type} ${p.name}';
     }).join(',');

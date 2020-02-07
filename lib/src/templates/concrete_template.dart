@@ -1,16 +1,20 @@
+import 'package:meta/meta.dart';
+
 import 'abstract_template.dart';
 import 'parameter_template.dart';
 
 class Concrete {
-  Concrete(
-    this.name,
-    this.interface,
-    this.constructorParameters,
-    this.properties,
-  );
+  Concrete({
+    @required this.name,
+    @required this.interface,
+    @required this.constructorName,
+    @required this.constructorParameters,
+    @required this.properties,
+  });
 
   final String name;
   final String interface;
+  final String constructorName;
   final ParametersTemplate constructorParameters;
   final List<Property> properties;
 
@@ -34,6 +38,8 @@ $copyWithMethod
 abstract class $name implements $interface {
   const factory $name(${constructorParameters.asExpandedDefinition}) = _\$$name;
 
+${properties.map((p) => '@override ${p.getter}').join()}
+
 $copyWithPrototype
 }
 ''';
@@ -43,15 +49,19 @@ $copyWithPrototype
     final properties = this.properties.map((p) {
       return '${p.name}: \$${p.name}';
     });
+    final className = constructorName == null || constructorName.isEmpty ? interface : '$interface.$constructorName';
+
     return '''
 @override
 String toString() {
-  return '$interface(${properties.join(', ')})';
+  return '$className(${properties.join(', ')})';
 }
 ''';
   }
 
   String get copyWithPrototype {
+    if (properties.isEmpty) return '';
+
     final parameters = properties.map((p) {
       return '${p.type} ${p.name}';
     }).join(',');
@@ -65,6 +75,8 @@ $parameters
   }
 
   String get copyWithMethod {
+    if (properties.isEmpty) return '';
+
     final parameters = properties.map((p) {
       return 'Object ${p.name} = immutable,';
     }).join();
@@ -94,9 +106,7 @@ $parameters
 
     return '''
 @override
-_\$$name copyWith({
-$parameters
-}) {
+_\$$name copyWith({$parameters}) {
   return _\$$name(
 $constructorParameters
   );
@@ -107,20 +117,22 @@ $constructorParameters
   String get operatorEqualMethod {
     final properties = this.properties.map((p) {
       return 'other.${p.name} == ${p.name}';
-    }).join('&&');
+    });
 
     return '''
 @override
 bool operator ==(dynamic other) {
-  return other is $name && $properties;
+  return other is ${[name, ...properties].join('&&')};
 }
 ''';
   }
 
   String get hashCodeMethod {
+    var hashCodeImpl = 'runtimeType.hashCode ${properties.map((p) => '^ ${p.name}.hashCode').join()}';
+
     return '''
 @override
-int get hashCode => ${properties.map((p) => '${p.name}.hashCode').join('^')};
+int get hashCode => $hashCodeImpl;
 ''';
   }
 }

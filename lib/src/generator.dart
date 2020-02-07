@@ -16,37 +16,60 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) sync* {
-    final defaultConstructor = element.constructors.firstWhere((e) => e.name.isEmpty, orElse: () => null);
+    yield* element.interfaces.map((e) => '// $e');
 
-    String generatedClassName;
-    if (defaultConstructor.isFactory && defaultConstructor.redirectedConstructor == null) {
-      final location = defaultConstructor.nameOffset;
-      final source = defaultConstructor.source.contents.data;
+    final constructors = element.constructors.where((element) {
+      return element.isFactory && _getRedirectedConstructorName(element) != null;
+    }).toList();
 
-      final match = redirectedConstructorName.stringMatch(source.substring(location));
+    if (constructors.isEmpty) return;
 
-      generatedClassName = match.substring(0, match.length - 1);
-    }
-    assert(generatedClassName != null);
-
-    yield Concrete(
-      generatedClassName,
-      element.name,
-      ParametersTemplate.fromParameterElements(
-        defaultConstructor?.parameters ?? [],
-        isAssignedToThis: true,
-      ),
-      defaultConstructor?.parameters?.map((p) {
-        return Property(name: p.name, type: p.type?.name);
-      })?.toList(),
-    ).toString();
+    final commonProperties = constructors.first.parameters.where((parameter) {
+      return constructors.every((constructor) {
+        return constructor.parameters.any((p) {
+          return p.name == parameter.name && p.type == parameter.type;
+        });
+      });
+    }).map((p) {
+      return Getter(name: p.name, type: p.type?.name);
+    }).toList();
 
     yield Abstract(
       name: '_\$${element.name}',
       interface: element.name,
-      properties: defaultConstructor?.parameters?.map((p) {
-        return Getter(name: p.name, type: p.type?.name);
-      })?.toList(),
+      properties: commonProperties,
     ).toString();
+
+    for (final constructor in constructors) {
+      final redirectedConstructorName = _getRedirectedConstructorName(constructor);
+      if (redirectedConstructorName == null) {
+        continue;
+      }
+
+      yield Concrete(
+        name: redirectedConstructorName,
+        interface: element.name,
+        constructorName: constructor.name,
+        constructorParameters: ParametersTemplate.fromParameterElements(
+          constructor?.parameters ?? [],
+          isAssignedToThis: true,
+        ),
+        properties: constructor?.parameters?.map((p) {
+          return Property(name: p.name, type: p.type?.name);
+        })?.toList(),
+      ).toString();
+    }
   }
+}
+
+String _getRedirectedConstructorName(ConstructorElement constructor) {
+  if (constructor.redirectedConstructor != null) {
+    return null;
+  }
+  final location = constructor.nameOffset;
+  final source = constructor.source.contents.data;
+
+  final match = redirectedConstructorName.stringMatch(source.substring(location));
+
+  return match.substring(0, match.length - 1);
 }
