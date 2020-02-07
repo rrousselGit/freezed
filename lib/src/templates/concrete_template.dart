@@ -10,6 +10,7 @@ class Concrete {
     @required this.constructorName,
     @required this.constructorParameters,
     @required this.properties,
+    @required this.superProperties,
   });
 
   final String name;
@@ -17,6 +18,7 @@ class Concrete {
   final String constructorName;
   final ParametersTemplate constructorParameters;
   final List<Property> properties;
+  final List<Property> superProperties;
 
   @override
   String toString() {
@@ -38,11 +40,20 @@ $copyWithMethod
 abstract class $name implements $interface {
   const factory $name(${constructorParameters.asExpandedDefinition}) = _\$$name;
 
-${properties.map((p) => '@override ${p.getter}').join()}
+$abstractProperties
 
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get abstractProperties {
+    return properties.map((p) {
+      if (superProperties.any((element) => element.name == p.name))
+        return '@override ${p.getter}';
+      else
+        return '${p.getter}';
+    }).join();
   }
 
   String get toStringMethod {
@@ -66,12 +77,16 @@ String toString() {
       return '${p.type} ${p.name}';
     }).join(',');
 
-    return '''
-@override
+    final result = '''
 $name copyWith({
 $parameters
 });
 ''';
+
+    if (superProperties.isNotEmpty)
+      return '@override $result';
+    else
+      return result;
   }
 
   String get copyWithMethod {

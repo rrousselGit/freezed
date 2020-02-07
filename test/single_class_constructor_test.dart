@@ -7,6 +7,19 @@ import 'common.dart';
 import 'integration/single_class_constructor.dart';
 
 Future<void> main() async {
+  test('has no issue', () async {
+    final main = await resolveSources(
+      {
+        'immutable|test/integration/single_class_constructor.dart': useAssetReader,
+      },
+      (r) => r.libraries.firstWhere((element) => element.source.toString().contains('single_class_constructor')),
+    );
+
+    final errorResult = await main.session.getErrors('/immutable/test/integration/single_class_constructor.g.dart');
+
+    expect(errorResult.errors, isEmpty);
+  });
+
   test('toString includes the constructor name', () {
     expect('${SingleNamedCtor.named(42)}', 'SingleNamedCtor.named(a: 42)');
   });

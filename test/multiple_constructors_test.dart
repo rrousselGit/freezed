@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
+import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
 import 'common.dart';
@@ -31,6 +32,18 @@ void main() {
   param.copyWith;
 }
 '''), throwsCompileError);
+    });
+    test('no warning', () async {
+      final main = await resolveSources(
+        {
+          'immutable|test/integration/multiple_constructors.dart': useAssetReader,
+        },
+        (r) => r.libraries.firstWhere((element) => element.source.toString().contains('multiple_constructors')),
+      );
+
+      final errorResult = await main.session.getErrors('/immutable/test/integration/multiple_constructors.g.dart');
+
+      expect(errorResult.errors, isEmpty);
     });
     test('redirected constructors do have public properties', () {
       final ctor0 = NoCommonParam0('a', b: 42);

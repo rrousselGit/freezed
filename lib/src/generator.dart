@@ -18,9 +18,10 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
   ) sync* {
     yield* element.interfaces.map((e) => '// $e');
 
-    final constructors = element.constructors.where((element) {
-      return element.isFactory && _getRedirectedConstructorName(element) != null;
-    }).toList();
+    final constructors = [
+      for (final element in element.constructors)
+        if (element.isFactory && _getRedirectedConstructorName(element) != null) element
+    ];
 
     if (constructors.isEmpty) return;
 
@@ -30,14 +31,14 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
           return p.name == parameter.name && p.type == parameter.type;
         });
       });
-    }).map((p) {
-      return Getter(name: p.name, type: p.type?.name);
     }).toList();
 
     yield Abstract(
       name: '_\$${element.name}',
       interface: element.name,
-      properties: commonProperties,
+      properties: [
+        for (final property in commonProperties) Getter(name: property.name, type: property.type?.name),
+      ],
     ).toString();
 
     for (final constructor in constructors) {
@@ -54,6 +55,9 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
           constructor?.parameters ?? [],
           isAssignedToThis: true,
         ),
+        superProperties: [
+          for (final property in commonProperties) Property(name: property.name, type: property.type?.name)
+        ],
         properties: constructor?.parameters?.map((p) {
           return Property(name: p.name, type: p.type?.name);
         })?.toList(),
