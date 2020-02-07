@@ -1,3 +1,4 @@
+import 'abstract_template.dart';
 import 'parameter_template.dart';
 
 class Concrete {
@@ -16,14 +17,8 @@ class Concrete {
   @override
   String toString() {
     return '''
-class _\$Object$interface {
-  const _\$Object$interface();
-}
-
-const _\$default$interface = _\$Object$interface();
-
-class $name implements $interface {
-  const $name($constructorParameters);
+class _\$$name implements $name {
+  const _\$$name($constructorParameters);
 
 ${properties.join()}
 
@@ -34,6 +29,12 @@ $operatorEqualMethod
 $hashCodeMethod
 
 $copyWithMethod
+}
+
+abstract class $name implements $interface {
+  const factory $name(${constructorParameters.asExpandedDefinition}) = _\$$name;
+
+$copyWithPrototype
 }
 ''';
   }
@@ -50,16 +51,28 @@ String toString() {
 ''';
   }
 
-  String get copyWithMethod {
-    final defaultVar = '_\$default$interface';
+  String get copyWithPrototype {
     final parameters = properties.map((p) {
-      return 'Object ${p.name} = $defaultVar,';
+      return '${p.type} ${p.name}';
+    }).join(',');
+
+    return '''
+@override
+$name copyWith({
+$parameters
+});
+''';
+  }
+
+  String get copyWithMethod {
+    final parameters = properties.map((p) {
+      return 'Object ${p.name} = immutable,';
     }).join();
 
     final constructorParameters = StringBuffer();
 
     String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == $defaultVar ? this.${p.name} : ${p.name}';
+      var ternary = '${p.name} == immutable ? this.${p.name} : ${p.name}';
       if (p.type != 'Object') {
         ternary = '$ternary as ${p.type}';
       }
@@ -68,10 +81,8 @@ String toString() {
 
     constructorParameters
       ..writeAll(
-        [
-          ...this.constructorParameters.positionalParameters,
-          ...this.constructorParameters.optionalPositionalParameters
-        ].map<String>(parameterToValue),
+        [...this.constructorParameters.positionalParameters, ...this.constructorParameters.optionalPositionalParameters]
+            .map<String>(parameterToValue),
       )
       ..writeAll(
         this.constructorParameters.namedParameters.map<String>(
@@ -83,10 +94,10 @@ String toString() {
 
     return '''
 @override
-$interface copyWith({
+_\$$name copyWith({
 $parameters
 }) {
-  return $interface(
+  return _\$$name(
 $constructorParameters
   );
 }
@@ -124,4 +135,6 @@ class Property {
   String toString() {
     return 'final ${type ?? 'dynamic'} $name;';
   }
+
+  Getter get getter => Getter(name: name, type: type);
 }

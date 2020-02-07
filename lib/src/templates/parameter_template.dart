@@ -16,22 +16,20 @@ class ParametersTemplate {
         return LocalParameter(
           type: e.type?.displayName,
           name: e.name,
+          isRequired: e.hasRequired,
         );
       }
       return Parameter(
         name: e.name,
+        isRequired: e.hasRequired,
         type: e.type?.displayName,
       );
     }
 
     return ParametersTemplate(
       parameters.where((p) => p.isRequiredPositional).map(asParameter).toList(),
-      optionalPositionalParameters: parameters
-          .where((p) => p.isOptionalPositional)
-          .map(asParameter)
-          .toList(),
-      namedParameters:
-          parameters.where((p) => p.isNamed).map(asParameter).toList(),
+      optionalPositionalParameters: parameters.where((p) => p.isOptionalPositional).map(asParameter).toList(),
+      namedParameters: parameters.where((p) => p.isNamed).map(asParameter).toList(),
     );
   }
 
@@ -43,9 +41,7 @@ class ParametersTemplate {
   String toString() {
     final buffer = StringBuffer()..writeAll(positionalParameters, ', ');
 
-    if (buffer.isNotEmpty &&
-        (optionalPositionalParameters.isNotEmpty ||
-            namedParameters.isNotEmpty)) {
+    if (buffer.isNotEmpty && (optionalPositionalParameters.isNotEmpty || namedParameters.isNotEmpty)) {
       buffer.write(', ');
     }
     if (optionalPositionalParameters.isNotEmpty) {
@@ -63,28 +59,62 @@ class ParametersTemplate {
 
     return buffer.toString();
   }
+
+  ParametersTemplate get asExpandedDefinition {
+    return ParametersTemplate(
+      positionalParameters
+          .map((e) => Parameter(
+                name: e.name,
+                type: e.type,
+                isRequired: e.isRequired,
+              ))
+          .toList(),
+      namedParameters: namedParameters
+          .map((e) => Parameter(
+                name: e.name,
+                type: e.type,
+                isRequired: e.isRequired,
+              ))
+          .toList(),
+      optionalPositionalParameters: optionalPositionalParameters
+          .map((e) => Parameter(
+                name: e.name,
+                type: e.type,
+                isRequired: e.isRequired,
+              ))
+          .toList(),
+    );
+  }
 }
 
 class Parameter {
   Parameter({
     this.type,
     this.name,
+    this.isRequired = false,
   });
 
   final String type;
   final String name;
+  final bool isRequired;
 
   @override
   String toString() {
-    return '${type ?? 'dynamic'} $name';
+    var res = '${type ?? 'dynamic'} $name';
+    return isRequired ? '@required $res' : res;
   }
 }
 
 class LocalParameter extends Parameter {
-  LocalParameter({String name, String type}) : super(name: name, type: type);
+  LocalParameter({
+    String name,
+    String type,
+    bool isRequired = false,
+  }) : super(name: name, type: type, isRequired: isRequired);
 
   @override
   String toString() {
-    return 'this.$name';
+    var res = 'this.$name';
+    return isRequired ? '@required $res' : res;
   }
 }

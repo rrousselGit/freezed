@@ -1,48 +1,12 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
-import 'package:analyzer/diagnostic/diagnostic.dart';
-import 'package:test/test.dart';
 import 'package:build_test/build_test.dart';
+import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
 
+import 'common.dart';
 import 'integration/single_class_constructor.dart';
 
-Future<void> compile(String src) async {
-  final main = await resolveSources({
-    'immutable|test/integration/main.dart': src,
-  }, (r) => r.findLibraryByName('main'));
-
-  final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
-  final hasCompileError = errorResult.errors.any((element) => element.severity == Severity.error);
-
-  if (hasCompileError) {
-    throw Error();
-  }
-}
-
 Future<void> main() async {
-  group('compile utility', () {
-    test('compiles', () async {
-      await expectLater(compile(r'''
-library main;
-import 'example.dart';
-
-void main() {
-  final test = MyClass(a: 'a', b: 42);
-}
-'''), completes);
-    });
-    test('does not compile', () async {
-      await expectLater(compile(r'''
-library main;
-import 'example.dart';
-
-void main() {
-  final test = 
-}
-'''), doesNotComplete);
-    });
-  });
-
   test('can be created as const', () {
     expect(identical(const MyClass(a: '42'), const MyClass(a: '42')), isTrue);
   });
@@ -126,21 +90,113 @@ void main() {
     });
     test('cannot assign futures to copyWith parameters', () async {
       await expectLater(compile(r'''
-library main;
-import 'example.dart';
+import 'single_class_constructor.dart';
+
+void main() {
+  MyClass().copyWith(a: '42', b: 42);
+}
+'''), completes);
+      await expectLater(compile(r'''
+import 'single_class_constructor.dart';
 
 void main() {
   MyClass().copyWith(a: Future.value('42'));
 }
-'''), doesNotComplete);
+'''), throwsCompileError);
       await expectLater(compile(r'''
-library main;
-import 'example.dart';
+import 'single_class_constructor.dart';
 
 void main() {
   MyClass().copyWith(b: Future.value(42));
 }
-'''), doesNotComplete);
+'''), throwsCompileError);
     });
+
+    test('redirected class overrides copyWith return type', () {
+      WhateverIWant value = WhateverIWant().copyWith(a: '42', b: 42);
+
+      expect(value.a, '42');
+      expect(value.b, 42);
+    });
+
+    test("redirected class's copyWith cannot receive Future", () async {
+      await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  WhateverIWant().copyWith(a: '42', b: 42);
+}
+'''), completes);
+      await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  WhateverIWant().copyWith(a: Future.value('a'));
+}
+'''), throwsCompileError);
+      await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  WhateverIWant().copyWith(b: Future.value(42));
+}
+'''), throwsCompileError);
+    });
+  });
+  test('can access redirect class', () {
+    expect(MyClass(), isA<WhateverIWant>());
+
+    expect(
+      WhateverIWant(a: 'a', b: 42),
+      MyClass(a: 'a', b: 42),
+    );
+  });
+  test('mixed param', () {
+    var value = MixedParam('a', b: 42);
+
+    expect(value.a, 'a');
+    expect(value.b, 42);
+
+    value = WhateverMixedParam('b', b: 21);
+
+    expect(value.a, 'b');
+    expect(value.b, 21);
+  });
+  test('positional mixed param', () {
+    var value = PositionalMixedParam('a');
+    expect(value.a, 'a');
+    expect(value.b, null);
+
+    value = PositionalMixedParam('a', 42);
+    expect(value.a, 'a');
+    expect(value.b, 42);
+
+    value = WhateverPositionalMixedParam('a');
+    expect(value.a, 'a');
+    expect(value.b, null);
+
+    value = WhateverPositionalMixedParam('a', 42);
+    expect(value.a, 'a');
+    expect(value.b, 42);
+  });
+  test('required parameters are transmited to redirected constructor', () async {
+    final main = await resolveSources({
+      'immutable|test/integration/main.dart': '''
+library main;
+
+import 'single_class_constructor.dart';
+
+void main() {
+  WhateverRequired();
+}
+    ''',
+    }, (r) => r.findLibraryByName('main'));
+
+    final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
+
+    expect(
+      errorResult.errors.map((e) => e.toString()),
+      anyElement(contains("The parameter 'a' is required")),
+    );
   });
 }
