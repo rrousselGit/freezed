@@ -73,7 +73,7 @@ dev_dependencies:
 ```
 
 As opposed to other code-generators, [Freezed] does **not** have custom annotations.\
-Instead it uses `@immutable` from [meta], which comes built-in Flutter (but can be installed)
+Instead it uses `@immutable` from [meta], which comes built-in Flutter (but can be installed
 separatly if needed).
 
 ## Run the generator
