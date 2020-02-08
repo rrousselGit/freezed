@@ -14,7 +14,7 @@ class ParametersTemplate {
     Parameter asParameter(ParameterElement e) {
       if (isAssignedToThis) {
         return LocalParameter(
-          type: e.type?.displayName,
+          type: e.type?.getDisplayString(),
           name: e.name,
           isRequired: e.hasRequired,
         );
@@ -22,7 +22,7 @@ class ParametersTemplate {
       return Parameter(
         name: e.name,
         isRequired: e.hasRequired,
-        type: e.type?.displayName,
+        type: e.type?.getDisplayString(),
       );
     }
 

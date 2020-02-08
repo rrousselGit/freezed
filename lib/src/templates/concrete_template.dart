@@ -125,10 +125,12 @@ ${whenPrototype(allConstructors)} {
 
   String get abstractProperties {
     return properties.map((p) {
-      if (superProperties.any((element) => element.name == p.name))
+      if (superProperties.any((element) => element.name == p.name)) {
         return '@override ${p.getter}';
-      else
+      }
+      else {
         return '${p.getter}';
+      }
     }).join();
   }
 
@@ -159,10 +161,12 @@ $parameters
 });
 ''';
 
-    if (superProperties.isNotEmpty)
+    if (superProperties.isNotEmpty) {
       return '@override $result';
-    else
+    }
+    else {
       return result;
+    }
   }
 
   String get copyWithMethod {

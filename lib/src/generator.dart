@@ -37,7 +37,7 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
       interface: element.name,
       allConstructors: constructors,
       properties: [
-        for (final property in commonProperties) Getter(name: property.name, type: property.type?.name),
+        for (final property in commonProperties) Getter(name: property.name, type: property.type?.getDisplayString()),
       ],
     ).toString();
 
@@ -57,10 +57,11 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
           isAssignedToThis: true,
         ),
         superProperties: [
-          for (final property in commonProperties) Property(name: property.name, type: property.type?.name)
+          for (final property in commonProperties)
+            Property(name: property.name, type: property.type?.getDisplayString())
         ],
         properties: constructor?.parameters?.map((p) {
-          return Property(name: p.name, type: p.type?.name);
+          return Property(name: p.name, type: p.type?.getDisplayString());
         })?.toList(),
       ).toString();
     }
