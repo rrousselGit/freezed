@@ -15,13 +15,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.39.2+1"
-  archive:
-    dependency: transitive
-    description:
-      name: archive
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.11"
   args:
     dependency: transitive
     description:
@@ -36,13 +29,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
-  bazel_worker:
-    dependency: transitive
-    description:
-      name: bazel_worker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.23"
   boolean_selector:
     dependency: transitive
     description:
@@ -71,13 +57,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
-  build_modules:
-    dependency: transitive
-    description:
-      name: build_modules
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.7.0"
   build_resolvers:
     dependency: transitive
     description:
@@ -106,20 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.11"
-  build_verify:
-    dependency: "direct dev"
-    description:
-      name: build_verify
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.1"
-  build_web_compilers:
-    dependency: "direct dev"
-    description:
-      name: build_web_compilers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.7.1"
   built_collection:
     dependency: transitive
     description:
@@ -156,7 +121,7 @@ packages:
     source: hosted
     version: "3.2.1"
   collection:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: collection
       url: "https://pub.dartlang.org"
@@ -191,7 +156,7 @@ packages:
     source: hosted
     version: "0.16.1"
   dart_style:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: dart_style
       url: "https://pub.dartlang.org"
@@ -268,7 +233,7 @@ packages:
     source: hosted
     version: "3.0.1"
   logging:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: logging
       url: "https://pub.dartlang.org"
@@ -338,7 +303,7 @@ packages:
     source: hosted
     version: "1.0.10"
   path:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path
       url: "https://pub.dartlang.org"
@@ -358,15 +323,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.0"
-  protobuf:
-    dependency: transitive
-    description:
-      name: protobuf
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   pub_semver:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: pub_semver
       url: "https://pub.dartlang.org"
@@ -386,13 +344,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2+1"
-  scratch_space:
-    dependency: transitive
-    description:
-      name: scratch_space
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4+1"
   shelf:
     dependency: transitive
     description:
@@ -548,7 +499,7 @@ packages:
     source: hosted
     version: "1.1.0"
   yaml:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: yaml
       url: "https://pub.dartlang.org"
