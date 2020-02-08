@@ -174,7 +174,5 @@ void main() {
 '''), throwsCompileError);
     });
     // TODO: shared property name but different type
-    // TODO: when
-    // TODO: map
   });
 }
