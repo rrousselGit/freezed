@@ -251,7 +251,7 @@ $constructorParameters
 
   String get operatorEqualMethod {
     final properties = this.properties.map((p) {
-      return 'other.${p.name} == ${p.name}';
+      return '(identical(other.${p.name}, ${p.name}) || other.${p.name} == ${p.name})';
     });
 
     return '''

@@ -36,3 +36,8 @@ abstract class Empty2 with _$Empty2 {
 abstract class SingleNamedCtor with _$SingleNamedCtor {
   const factory SingleNamedCtor.named(int a) = WhateverSingleNamedCtor;
 }
+
+@immutable
+abstract class Generic<T> with _$Generic<T> {
+  const factory Generic(T value) = A<T>;
+}
