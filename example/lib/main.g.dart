@@ -75,6 +75,23 @@ abstract class _$Union {
     Result complex(int a, String b),
     @required Result orElse(),
   });
+
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(Union0 value), {
+    @required Result loading(Union1 value),
+    @required Result error(Union2 value),
+    @required Result complex(Union3 value),
+  });
+
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(Union0 value), {
+    Result loading(Union1 value),
+    Result error(Union2 value),
+    Result complex(Union3 value),
+    @required Result orElse(),
+  });
 }
 
 class _$Union0 implements Union0 {
@@ -135,6 +152,37 @@ class _$Union0 implements Union0 {
     }
     return orElse();
   }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(Union0 value), {
+    @required Result loading(Union1 value),
+    @required Result error(Union2 value),
+    @required Result complex(Union3 value),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(error != null);
+    assert(complex != null);
+    return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(Union0 value), {
+    Result loading(Union1 value),
+    Result error(Union2 value),
+    Result complex(Union3 value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if ($default != null) {
+      return $default(this);
+    }
+    return orElse();
+  }
 }
 
 abstract class Union0 implements Union {
@@ -188,6 +236,37 @@ class _$Union1 implements Union1 {
     assert(orElse != null);
     if (loading != null) {
       return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(Union0 value), {
+    @required Result loading(Union1 value),
+    @required Result error(Union2 value),
+    @required Result complex(Union3 value),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(error != null);
+    assert(complex != null);
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(Union0 value), {
+    Result loading(Union1 value),
+    Result error(Union2 value),
+    Result complex(Union3 value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (loading != null) {
+      return loading(this);
     }
     return orElse();
   }
@@ -252,6 +331,37 @@ class _$Union2 implements Union2 {
     assert(orElse != null);
     if (error != null) {
       return error(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(Union0 value), {
+    @required Result loading(Union1 value),
+    @required Result error(Union2 value),
+    @required Result complex(Union3 value),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(error != null);
+    assert(complex != null);
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(Union0 value), {
+    Result loading(Union1 value),
+    Result error(Union2 value),
+    Result complex(Union3 value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (error != null) {
+      return error(this);
     }
     return orElse();
   }
@@ -327,6 +437,37 @@ class _$Union3 implements Union3 {
     }
     return orElse();
   }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(Union0 value), {
+    @required Result loading(Union1 value),
+    @required Result error(Union2 value),
+    @required Result complex(Union3 value),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(error != null);
+    assert(complex != null);
+    return complex(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(Union0 value), {
+    Result loading(Union1 value),
+    Result error(Union2 value),
+    Result complex(Union3 value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (complex != null) {
+      return complex(this);
+    }
+    return orElse();
+  }
 }
 
 abstract class Union3 implements Union {
@@ -353,6 +494,19 @@ abstract class _$SharedProperty {
   Result maybeWhen<Result extends Object>({
     Result person(String name, int age),
     Result city(String name, int population),
+    @required Result orElse(),
+  });
+
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result person(SharedProperty0 value),
+    @required Result city(SharedProperty1 value),
+  });
+
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result person(SharedProperty0 value),
+    Result city(SharedProperty1 value),
     @required Result orElse(),
   });
 }
@@ -410,6 +564,31 @@ class _$SharedProperty0 implements SharedProperty0 {
     assert(orElse != null);
     if (person != null) {
       return person(name, age);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result person(SharedProperty0 value),
+    @required Result city(SharedProperty1 value),
+  }) {
+    assert(person != null);
+    assert(city != null);
+    return person(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result person(SharedProperty0 value),
+    Result city(SharedProperty1 value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (person != null) {
+      return person(this);
     }
     return orElse();
   }
@@ -482,6 +661,31 @@ class _$SharedProperty1 implements SharedProperty1 {
     assert(orElse != null);
     if (city != null) {
       return city(name, population);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result person(SharedProperty0 value),
+    @required Result city(SharedProperty1 value),
+  }) {
+    assert(person != null);
+    assert(city != null);
+    return city(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result person(SharedProperty0 value),
+    Result city(SharedProperty1 value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (city != null) {
+      return city(this);
     }
     return orElse();
   }

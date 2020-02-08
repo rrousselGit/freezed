@@ -43,6 +43,10 @@ $copyWithMethod
 $when
 
 $maybeWhen
+
+$map
+
+$maybeMap
 }
 
 abstract class $name implements $interface {
@@ -53,6 +57,38 @@ $abstractProperties
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get maybeMap {
+    if (allConstructors.length < 2) return '';
+
+    final callbackName = constructorNameToCallbackName(constructorName);
+
+    return '''
+@override
+${maybeMapPrototype(allConstructors)} {
+  assert(orElse != null);
+  if ($callbackName != null) {
+    return $callbackName(this);
+  }
+  return orElse();
+}''';
+  }
+
+  String get map {
+    if (allConstructors.length < 2) return '';
+    final callbackName = constructorNameToCallbackName(constructorName);
+
+    final asserts = [
+      for (final ctor in allConstructors) 'assert(${constructorNameToCallbackName(ctor.name)} != null);'
+    ];
+
+    return '''
+@override
+${mapPrototype(allConstructors)} {
+  ${asserts.join()}
+  return $callbackName(this);
+}''';
   }
 
   String get maybeWhen {

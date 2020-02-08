@@ -25,6 +25,24 @@ void main() {
 }
 '''), throwsCompileError);
   });
+  test('does not have map', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  MyClass().map;
+}
+'''), throwsCompileError);
+  });
+  test('does not have maybeMap', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  MyClass().maybeMap;
+}
+'''), throwsCompileError);
+  });
   test('has no issue', () async {
     final main = await resolveSources(
       {

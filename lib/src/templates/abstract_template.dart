@@ -26,6 +26,10 @@ $copyWithPrototype
 $when
 
 $maybeWhen
+
+$map
+
+$maybeMap
 }
 ''';
   }
@@ -51,6 +55,16 @@ $parameters
   String get maybeWhen {
     if (allConstructors.length < 2) return '';
     return '${maybeWhenPrototype(allConstructors)};';
+  }
+
+  String get map {
+    if (allConstructors.length < 2) return '';
+    return '${mapPrototype(allConstructors)};';
+  }
+
+  String get maybeMap {
+    if (allConstructors.length < 2) return '';
+    return '${maybeMapPrototype(allConstructors)};';
   }
 }
 

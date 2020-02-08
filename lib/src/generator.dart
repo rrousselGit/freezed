@@ -6,8 +6,7 @@ import 'package:source_gen/source_gen.dart';
 import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
 import 'templates/parameter_template.dart';
-
-final redirectedConstructorName = RegExp('[^ =\t\n]+;');
+import 'templates/prototypes.dart';
 
 class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
   @override
@@ -20,7 +19,7 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
 
     final constructors = [
       for (final element in element.constructors)
-        if (element.isFactory && _getRedirectedConstructorName(element) != null) element
+        if (element.isFactory && getRedirectedConstructorName(element) != null) element
     ];
 
     if (constructors.isEmpty) return;
@@ -43,7 +42,7 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
     ).toString();
 
     for (final constructor in constructors) {
-      final redirectedConstructorName = _getRedirectedConstructorName(constructor);
+      final redirectedConstructorName = getRedirectedConstructorName(constructor);
       if (redirectedConstructorName == null) {
         continue;
       }
@@ -66,16 +65,4 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
       ).toString();
     }
   }
-}
-
-String _getRedirectedConstructorName(ConstructorElement constructor) {
-  if (constructor.redirectedConstructor != null) {
-    return null;
-  }
-  final location = constructor.nameOffset;
-  final source = constructor.source.contents.data;
-
-  final match = redirectedConstructorName.stringMatch(source.substring(location));
-
-  return match.substring(0, match.length - 1);
 }

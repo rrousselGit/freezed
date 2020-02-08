@@ -1,4 +1,5 @@
-import 'package:meta/meta.dart';
+
+import 'package:flutter/foundation.dart';
 
 part 'main.g.dart';
 

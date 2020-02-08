@@ -3,6 +3,20 @@ import 'package:meta/meta.dart';
 
 import 'parameter_template.dart';
 
+final redirectedConstructorName = RegExp('[^ =\t\n]+;');
+
+String getRedirectedConstructorName(ConstructorElement constructor) {
+  if (constructor.redirectedConstructor != null) {
+    return null;
+  }
+  final location = constructor.nameOffset;
+  final source = constructor.source.contents.data;
+
+  final match = redirectedConstructorName.stringMatch(source.substring(location));
+
+  return match.substring(0, match.length - 1);
+}
+
 String whenPrototype(List<ConstructorElement> allConstructors) {
   return _whenPrototype(allConstructors, areCallbacksRequired: true, name: 'when');
 }
@@ -11,26 +25,66 @@ String maybeWhenPrototype(List<ConstructorElement> allConstructors) {
   return _whenPrototype(allConstructors, areCallbacksRequired: false, name: 'maybeWhen');
 }
 
+String mapPrototype(List<ConstructorElement> allConstructors) {
+  return _mapPrototype(allConstructors, areCallbacksRequired: true, name: 'map');
+}
+
+String maybeMapPrototype(List<ConstructorElement> allConstructors) {
+  return _mapPrototype(allConstructors, areCallbacksRequired: false, name: 'maybeMap');
+}
+
+String _mapPrototype(
+  List<ConstructorElement> allConstructors, {
+  @required bool areCallbacksRequired,
+  @required String name,
+}) {
+  return _unionPrototype(
+    allConstructors,
+    areCallbacksRequired: areCallbacksRequired,
+    name: name,
+    ctor2parameters: (constructor) {
+      return ParametersTemplate([
+        Parameter(name: 'value', type: getRedirectedConstructorName(constructor)),
+      ]);
+    },
+  );
+}
+
 String _whenPrototype(
   List<ConstructorElement> allConstructors, {
   @required bool areCallbacksRequired,
   @required String name,
 }) {
+  return _unionPrototype(
+    allConstructors,
+    areCallbacksRequired: areCallbacksRequired,
+    name: name,
+    ctor2parameters: (constructor) {
+      final constructorParameters = ParametersTemplate.fromParameterElements(constructor.parameters);
+      return ParametersTemplate([
+        ...constructorParameters.positionalParameters,
+        ...constructorParameters.optionalPositionalParameters,
+        ...constructorParameters.namedParameters,
+      ]);
+    },
+  );
+}
+
+String _unionPrototype(
+  List<ConstructorElement> allConstructors, {
+  @required bool areCallbacksRequired,
+  @required String name,
+  @required ParametersTemplate ctor2parameters(ConstructorElement ctor),
+}) {
   final buffer = StringBuffer('@optionalTypeArgs Result $name<Result extends Object>(');
 
   final parameters = <CallbackParameter>[];
   for (final constructor in allConstructors) {
-    final constructorParameters = ParametersTemplate.fromParameterElements(constructor.parameters);
-
     var template = CallbackParameter(
       name: constructorNameToCallbackName(constructor.name),
       type: 'Result',
       isRequired: !isDefaultConstructor(constructor) && areCallbacksRequired,
-      parameters: ParametersTemplate([
-        ...constructorParameters.positionalParameters,
-        ...constructorParameters.optionalPositionalParameters,
-        ...constructorParameters.namedParameters,
-      ]),
+      parameters: ctor2parameters(constructor),
     );
 
     if (isDefaultConstructor(constructor)) {
