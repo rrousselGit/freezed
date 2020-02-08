@@ -254,7 +254,7 @@ abstract class Union with _$Union {
 }
 ```
 
-This snippet defines a class with tree state.\
+This snippet defines a class with three states.\
 Note how we gave meaningful names to the right hand of the factory constructors we defined.
 They will come in handy later.
 
