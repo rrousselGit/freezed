@@ -1,6 +1,6 @@
 [![pub package](https://img.shields.io/pub/v/freezed.svg)](https://pub.dartlang.org/packages/freezed)
 
-Welcome to [Freezed], yet another code generator for immutable classes / sealed classes / union types / copy.
+Welcome to [Freezed], yet another code generator for unions/pattern-patching/copy.
 
 # Motivation
 
@@ -56,6 +56,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [when](#when)
     - [maybeWhen](#maybeWhen)
     - [map/maybeMap](#map/maybemap)
+- [Roadmap](#roadmap)
 
 # How to use
 
@@ -479,6 +480,12 @@ print(
   )
 ); // Model.second(b: 42, c: true)
 ```
+
+# Roadmap
+
+- serialization/deserialization support (likely by using `json_serializable` internally)
+- support for properties shared between multiple constructors but with a different type.
+- default variable support on the custom generated constructors.
 
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
