@@ -156,7 +156,7 @@ void main() {
     test('named parameters are marked as required', () async {
       final main = await resolveSources(
         {
-          'immutable|test/integration/main.dart': r'''
+          'freezed|test/integration/main.dart': r'''
 library main;
 import 'multiple_constructors.dart';
 
@@ -172,7 +172,7 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
+      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -255,7 +255,7 @@ void main() {
     test('named parameters are not required', () async {
       final main = await resolveSources(
         {
-          'immutable|test/integration/main.dart': r'''
+          'freezed|test/integration/main.dart': r'''
 library main;
 import 'multiple_constructors.dart';
 
@@ -269,14 +269,14 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
+      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isEmpty);
     });
     test('orElse is required', () async {
       final main = await resolveSources(
         {
-          'immutable|test/integration/main.dart': r'''
+          'freezed|test/integration/main.dart': r'''
 library main;
 import 'multiple_constructors.dart';
 
@@ -290,7 +290,7 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
+      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isNotEmpty);
     });

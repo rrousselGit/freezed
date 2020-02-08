@@ -1,18 +1,19 @@
 targets:
   $default:
     builders:
-      immutable:
+      freezed:
         enabled: true
         generate_for:
           exclude:
-            - test/*
+            - test
+            - example
           include:
             - test/integration/*
 
 builders:
-  immutable:
-    import: "package:immutable/builder.dart"
-    builder_factories: ["immutable"]
+  freezed:
+    import: "package:freezed/builder.dart"
+    builder_factories: ["freezed"]
     build_extensions: { ".dart": [".g.part"] }
     auto_apply: dependents
     build_to: cache

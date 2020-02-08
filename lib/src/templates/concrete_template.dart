@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:immutable/src/templates/prototypes.dart';
 import 'package:meta/meta.dart';
 
 import 'abstract_template.dart';
 import 'parameter_template.dart';
+import 'prototypes.dart';
 
 class Concrete {
   Concrete({

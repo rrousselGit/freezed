@@ -1,4 +1,4 @@
-import 'package:immutable/src/templates/prototypes.dart';
+import 'package:freezed/src/templates/prototypes.dart';
 import 'package:test/test.dart';
 
 void main() {

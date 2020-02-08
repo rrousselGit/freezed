@@ -4,16 +4,13 @@ description: A new Flutter project.
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
-
 dependencies:
-  json_annotation:
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  immutable:
+  freezed:
     path: ../
-  json_serializable:
   build_runner:
   flutter_test:
     sdk: flutter

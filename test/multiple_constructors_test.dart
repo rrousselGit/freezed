@@ -36,12 +36,12 @@ void main() {
     test('no warning', () async {
       final main = await resolveSources(
         {
-          'immutable|test/integration/multiple_constructors.dart': useAssetReader,
+          'freezed|test/integration/multiple_constructors.dart': useAssetReader,
         },
         (r) => r.libraries.firstWhere((element) => element.source.toString().contains('multiple_constructors')),
       );
 
-      final errorResult = await main.session.getErrors('/immutable/test/integration/multiple_constructors.g.dart');
+      final errorResult = await main.session.getErrors('/freezed/test/integration/multiple_constructors.g.dart');
 
       expect(errorResult.errors, isEmpty);
     });

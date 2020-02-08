@@ -8,7 +8,7 @@ import 'templates/concrete_template.dart';
 import 'templates/parameter_template.dart';
 import 'templates/prototypes.dart';
 
-class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
+class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
   @override
   Iterable<String> generateForAnnotatedElement(
     covariant ClassElement element,

@@ -46,12 +46,12 @@ void main() {
   test('has no issue', () async {
     final main = await resolveSources(
       {
-        'immutable|test/integration/single_class_constructor.dart': useAssetReader,
+        'freezed|test/integration/single_class_constructor.dart': useAssetReader,
       },
       (r) => r.libraries.firstWhere((element) => element.source.toString().contains('single_class_constructor')),
     );
 
-    final errorResult = await main.session.getErrors('/immutable/test/integration/single_class_constructor.g.dart');
+    final errorResult = await main.session.getErrors('/freezed/test/integration/single_class_constructor.g.dart');
 
     expect(errorResult.errors, isEmpty);
   });
@@ -234,7 +234,7 @@ void main() {
   });
   test('required parameters are transmited to redirected constructor', () async {
     final main = await resolveSources({
-      'immutable|test/integration/main.dart': '''
+      'freezed|test/integration/main.dart': '''
 library main;
 
 import 'single_class_constructor.dart';
@@ -245,7 +245,7 @@ void main() {
     ''',
     }, (r) => r.findLibraryByName('main'));
 
-    final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
+    final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
 
     expect(
       errorResult.errors.map((e) => e.toString()),

@@ -8,14 +8,14 @@ final throwsCompileError = throwsA(isA<CompileError>());
 
 Future<void> compile(String src) async {
   final main = await resolveSources({
-    'immutable|test/integration/main.dart': '''
+    'freezed|test/integration/main.dart': '''
 library main;
 
 $src
     ''',
   }, (r) => r.findLibraryByName('main'));
 
-  final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
+  final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
   final criticalErrors = errorResult.errors.where((element) => element.severity == Severity.error).toList();
 
   if (criticalErrors.isNotEmpty) {

@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:immutable/src/templates/prototypes.dart';
 import 'package:meta/meta.dart';
+
+import 'prototypes.dart';
 
 class Abstract {
   Abstract({
