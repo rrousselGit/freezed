@@ -139,7 +139,7 @@ To do so, you will have to define a _factory constructor_ that takes these prope
 ```dart
 @immutable
 abstract class Person with _$Person {
-  factory Person({ Sting name, int age }) = _Person;
+  factory Person({ String name, int age }) = _Person;
 }
 ```
 
@@ -159,7 +159,7 @@ All valid parameter syntax are supported. As such you could write:
 ```dart
 @immutable
 abstract class Person with _$Person {
-  factory Person(Sting name, int age) = _Person;
+  factory Person(String name, int age) = _Person;
 }
 
 Person('Remi', 24)
@@ -168,7 +168,7 @@ Person('Remi', 24)
 ```dart
 @immutable
 abstract class Person with _$Person {
-  const factory Person(Sting name, {int age = 42}) = _Person;
+  const factory Person(String name, {int age = 42}) = _Person;
 }
 
 Person('Remi', age: 24)
@@ -198,7 +198,7 @@ as you would expect:
 ```dart
 @immutable
 abstract class Person with _$Person {
-  factory Person({ Sting name, int age }) = _Person;
+  factory Person({ String name, int age }) = _Person;
 }
 
 
@@ -223,7 +223,7 @@ For example, if we take our previous `Person` class:
 ```dart
 @immutable
 abstract class Person with _$Person {
-  factory Person(Sting name, int age) = _Person;
+  factory Person(String name, int age) = _Person;
 }
 ```
 
