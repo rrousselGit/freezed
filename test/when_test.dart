@@ -156,5 +156,25 @@ void main() {
       expect(errorResult.errors, isNotEmpty);
     });
   });
-  // TODO: no default ctor
+  test('works with no default ctr', () {
+    var value = NoDefault.first('a');
+
+    expect(
+      value.when(
+        first: (String a) => '$a first',
+        second: (String a) => throw Error(),
+      ),
+      'a first',
+    );
+
+    value = NoDefault.second('a');
+
+    expect(
+      value.when(
+        first: (String a) => throw Error(),
+        second: (String a) => '$a second',
+      ),
+      'a second',
+    );
+  });
 }
