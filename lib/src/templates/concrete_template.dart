@@ -1,3 +1,5 @@
+import 'package:analyzer/dart/element/element.dart';
+import 'package:immutable/src/templates/prototypes.dart';
 import 'package:meta/meta.dart';
 
 import 'abstract_template.dart';
@@ -7,6 +9,7 @@ class Concrete {
   Concrete({
     @required this.name,
     @required this.interface,
+    @required this.allConstructors,
     @required this.constructorName,
     @required this.constructorParameters,
     @required this.properties,
@@ -19,6 +22,7 @@ class Concrete {
   final ParametersTemplate constructorParameters;
   final List<Property> properties;
   final List<Property> superProperties;
+  final List<ConstructorElement> allConstructors;
 
   @override
   String toString() {
@@ -35,6 +39,8 @@ $operatorEqualMethod
 $hashCodeMethod
 
 $copyWithMethod
+
+$when
 }
 
 abstract class $name implements $interface {
@@ -45,6 +51,23 @@ $abstractProperties
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get when {
+    if (allConstructors.length < 2) return '';
+    final callbackName = constructorNameToCallbackName(constructorName);
+
+    final asserts = [
+      for (final ctor in allConstructors)
+        'assert(${constructorNameToCallbackName(ctor.name)} != null);'
+    ];
+
+    return '''
+@override
+${whenPrototype(allConstructors, areCallbacksRequired: true)} {
+  ${asserts.join()}
+  return $callbackName(${properties.map((e) => e.name).join(',')});
+}''';
   }
 
   String get abstractProperties {

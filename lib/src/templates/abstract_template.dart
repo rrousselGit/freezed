@@ -1,3 +1,5 @@
+import 'package:analyzer/dart/element/element.dart';
+import 'package:immutable/src/templates/prototypes.dart';
 import 'package:meta/meta.dart';
 
 class Abstract {
@@ -5,11 +7,13 @@ class Abstract {
     @required this.name,
     @required this.interface,
     @required this.properties,
+    @required this.allConstructors,
   });
 
   final String name;
   final String interface;
   final List<Getter> properties;
+  final List<ConstructorElement> allConstructors;
 
   @override
   String toString() {
@@ -18,6 +22,8 @@ abstract class $name {
 ${properties.join()}
 
 $copyWithPrototype
+
+$when
 }
 ''';
   }
@@ -33,6 +39,11 @@ $interface copyWith({
 $parameters
 });
 ''';
+  }
+
+  String get when {
+    if (allConstructors.length < 2) return '';
+    return '${whenPrototype(allConstructors, areCallbacksRequired: true)};';
   }
 }
 

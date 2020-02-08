@@ -13,3 +13,10 @@ abstract class SharedParam with _$SharedParam {
   const factory SharedParam(String a, int b) = SharedParam0;
   const factory SharedParam.named(String a, int c) = SharedParam1;
 }
+
+@immutable
+abstract class Complex with _$Complex {
+  const factory Complex(String a) = Complex0;
+  const factory Complex.first(String a, {bool b, double d}) = Complex1;
+  const factory Complex.second(String a, [int c, double d]) = Complex2;
+}

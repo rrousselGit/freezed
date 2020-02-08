@@ -7,6 +7,15 @@ import 'common.dart';
 import 'integration/single_class_constructor.dart';
 
 Future<void> main() async {
+  test('does not have when', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  MyClass().when;
+}
+'''), throwsCompileError);
+  });
   test('has no issue', () async {
     final main = await resolveSources(
       {
@@ -232,4 +241,5 @@ void main() {
     expect('${Empty()}', 'Empty()');
     expect('${Empty2()}', 'Empty2()');
   });
+  // TODO: transpose default values to redirected ctor
 }

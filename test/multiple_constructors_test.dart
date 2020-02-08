@@ -173,7 +173,6 @@ void main() {
 }
 '''), throwsCompileError);
     });
-    // TODO: copyWith on common properties
     // TODO: shared property name but different type
     // TODO: when
     // TODO: map

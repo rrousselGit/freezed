@@ -36,6 +36,7 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
     yield Abstract(
       name: '_\$${element.name}',
       interface: element.name,
+      allConstructors: constructors,
       properties: [
         for (final property in commonProperties) Getter(name: property.name, type: property.type?.name),
       ],
@@ -49,6 +50,7 @@ class ImmutableGenerator extends GeneratorForAnnotation<Immutable> {
 
       yield Concrete(
         name: redirectedConstructorName,
+        allConstructors: constructors,
         interface: element.name,
         constructorName: constructor.name,
         constructorParameters: ParametersTemplate.fromParameterElements(

@@ -118,3 +118,20 @@ class LocalParameter extends Parameter {
     return isRequired ? '@required $res' : res;
   }
 }
+
+class CallbackParameter extends Parameter {
+  CallbackParameter({
+    String name,
+    String type,
+    bool isRequired = false,
+    this.parameters,
+  }) : super(name: name, type: type, isRequired: isRequired);
+
+  final ParametersTemplate parameters;
+
+  @override
+  String toString() {
+    var res = '$type $name($parameters)'; 
+    return isRequired ? '@required $res' : res;
+  }
+}
