@@ -41,6 +41,8 @@ $hashCodeMethod
 $copyWithMethod
 
 $when
+
+$maybeWhen
 }
 
 abstract class $name implements $interface {
@@ -53,18 +55,33 @@ $copyWithPrototype
 ''';
   }
 
+  String get maybeWhen {
+    if (allConstructors.length < 2) return '';
+
+    final callbackName = constructorNameToCallbackName(constructorName);
+
+    return '''
+@override
+${maybeWhenPrototype(allConstructors)} {
+  assert(orElse != null);
+  if ($callbackName != null) {
+    return $callbackName(${properties.map((e) => e.name).join(',')});
+  }
+  return orElse();
+}''';
+  }
+
   String get when {
     if (allConstructors.length < 2) return '';
     final callbackName = constructorNameToCallbackName(constructorName);
 
     final asserts = [
-      for (final ctor in allConstructors)
-        'assert(${constructorNameToCallbackName(ctor.name)} != null);'
+      for (final ctor in allConstructors) 'assert(${constructorNameToCallbackName(ctor.name)} != null);'
     ];
 
     return '''
 @override
-${whenPrototype(allConstructors, areCallbacksRequired: true)} {
+${whenPrototype(allConstructors)} {
   ${asserts.join()}
   return $callbackName(${properties.map((e) => e.name).join(',')});
 }''';

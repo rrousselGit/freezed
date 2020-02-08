@@ -6,6 +6,27 @@ import 'integration/multiple_constructors.dart';
 
 void main() {
   group('when', () {
+    test('works with no default ctr', () {
+      var value = NoDefault.first('a');
+
+      expect(
+        value.when(
+          first: (String a) => '$a first',
+          second: (String a) => throw Error(),
+        ),
+        'a first',
+      );
+
+      value = NoDefault.second('a');
+
+      expect(
+        value.when(
+          first: (String a) => throw Error(),
+          second: (String a) => '$a second',
+        ),
+        'a second',
+      );
+    });
     group('default ctor', () {
       test("assert callbacks can't be null", () {
         final value = Complex('a');
@@ -156,25 +177,106 @@ void main() {
       expect(errorResult.errors, isNotEmpty);
     });
   });
-  test('works with no default ctr', () {
-    var value = NoDefault.first('a');
 
-    expect(
-      value.when(
-        first: (String a) => '$a first',
-        second: (String a) => throw Error(),
-      ),
-      'a first',
-    );
+  group('maybeWhen', () {
+    test('returns callback result if has callback', () {
+      var value = Complex('a');
 
-    value = NoDefault.second('a');
+      expect(
+        value.maybeWhen((a) => '$a default', orElse: () => throw Error()),
+        'a default',
+      );
 
-    expect(
-      value.when(
-        first: (String a) => throw Error(),
-        second: (String a) => '$a second',
-      ),
-      'a second',
-    );
+      value = Complex.first('a', b: false, d: .42);
+
+      expect(
+        value.maybeWhen(null, first: (a, b, d) => '$a $b $d', orElse: () => throw Error()),
+        'a false 0.42',
+      );
+
+      value = Complex.second('a', 21, 0.42);
+
+      expect(
+        value.maybeWhen(null, second: (a, c, d) => '$a $c $d', orElse: () => throw Error()),
+        'a 21 0.42',
+      );
+    });
+    test('assert orElse is passed', () {
+      var value = Complex('a');
+
+      expect(
+        () => value.maybeWhen((a) => '$a default', orElse: null),
+        throwsA(isA<AssertionError>()),
+      );
+
+      value = Complex.first('a', b: false, d: .42);
+
+      expect(
+        () => value.maybeWhen(null, first: (a, b, d) => '$a $b $d', orElse: null),
+        throwsA(isA<AssertionError>()),
+      );
+
+      value = Complex.second('a', 21, 0.42);
+
+      expect(
+        () => value.maybeWhen(null, second: (a, c, d) => '$a $c $d', orElse: null),
+        throwsA(isA<AssertionError>()),
+      );
+    });
+    test('orElse is called', () {
+      var value = Complex('a');
+
+      expect(value.maybeWhen(null, orElse: () => 42), 42);
+
+      value = Complex.first('a', b: false, d: .42);
+
+      expect(value.maybeWhen(null, orElse: () => 42), 42);
+
+      value = Complex.second('a', 21, 0.42);
+
+      expect(value.maybeWhen(null, orElse: () => 42), 42);
+    });
+    test('named parameters are not required', () async {
+      final main = await resolveSources(
+        {
+          'immutable|test/integration/main.dart': r'''
+library main;
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = Complex('a');
+
+  value.maybeWhen(null, orElse: () => 42);
+}
+''',
+        },
+        (r) => r.findLibraryByName('main'),
+      );
+
+      final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
+
+      expect(errorResult.errors, isEmpty);
+    });
+    test('orElse is required', () async {
+      final main = await resolveSources(
+        {
+          'immutable|test/integration/main.dart': r'''
+library main;
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = Complex('a');
+
+  value.maybeWhen(null);
+}
+''',
+        },
+        (r) => r.findLibraryByName('main'),
+      );
+
+      final errorResult = await main.session.getErrors('/immutable/test/integration/main.dart');
+
+      expect(errorResult.errors, isNotEmpty);
+    });
   });
 }

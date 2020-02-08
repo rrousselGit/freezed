@@ -24,6 +24,8 @@ ${properties.join()}
 $copyWithPrototype
 
 $when
+
+$maybeWhen
 }
 ''';
   }
@@ -43,7 +45,12 @@ $parameters
 
   String get when {
     if (allConstructors.length < 2) return '';
-    return '${whenPrototype(allConstructors, areCallbacksRequired: true)};';
+    return '${whenPrototype(allConstructors)};';
+  }
+
+  String get maybeWhen {
+    if (allConstructors.length < 2) return '';
+    return '${maybeWhenPrototype(allConstructors)};';
   }
 }
 

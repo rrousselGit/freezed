@@ -16,6 +16,15 @@ void main() {
 }
 '''), throwsCompileError);
   });
+  test('does not have maybeWhen', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  MyClass().maybeWhen;
+}
+'''), throwsCompileError);
+  });
   test('has no issue', () async {
     final main = await resolveSources(
       {

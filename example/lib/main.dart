@@ -1,358 +1,68 @@
-// /// Creating a library is required for part generation to work
-// library example.main;
+import 'package:meta/meta.dart';
 
-// import 'dart:async';
+part 'main.g.dart';
 
-// import 'package:flutter/foundation.dart';
-// import 'package:immutable/immutable.dart' show Immutable;
+@immutable
+abstract class MyClass with _$MyClass {
+  factory MyClass({String a, int b}) = _MyClass;
+}
 
-// part 'main.g.dart';
-// part 'main.immutable.dart';
+@immutable
+abstract class Union with _$Union {
+  const factory Union(int value) = Union0;
+  const factory Union.loading() = Union1;
+  const factory Union.error([String message]) = Union2;
+  const factory Union.complex(int a, String b) = Union3;
+}
 
-// @immutable
-// class Example = _$Example with _Example;
+@immutable
+abstract class SharedProperty with _$SharedProperty {
+  factory SharedProperty.person(String name, int age) = SharedProperty0;
+  factory SharedProperty.city(String name, int population) = SharedProperty1;
+}
 
-// abstract class _Example {
-//   String get a;
-//   String get b;
-// }
+void main() {
+  final myClassexample = MyClass(a: '42', b: 42);
 
-// @immutable
-// abstract class MyClass with _MyClassBase {
-//   const factory MyClass({
-//     String a,
-//     int b,
-//   }) = _MyClass;
-// }
+  // clone
+  print(myClassexample.copyWith(a: null)); // MyClass(a: null, b: 42)
+  print(myClassexample.copyWith()); // MyClass(a: '42', b: 42)
 
-// void main() {
-//   final example = MyClass(a: '42', b: 42);
 
-//   example.copyWith(
-//     a: null,
-//   );
+  // == override
+  print(MyClass(a: '42', b: 42) == MyClass(a: '42', b: 42)); // true
+  print(MyClass(a: '42', b: 42) == MyClass()); // false
 
-//   example.copyWith();
+  // union type/sealed class
+  const unionExample = Union(42);
+  print(
+    // `when` requires all callbacks to be not null
+    unionExample.when(
+      (value) => '$value',
+      loading: () => 'loading',
+      error: (message) => 'Error: $message',
+      complex: (a, b) => 'complex $a $b',
+    ),
+  ); // 42
 
-//   Union a = const Union(42);
+  print(
+    // maybeWhen allows some callbacks to be missing, but requires an `orElse` callback
+    unionExample.maybeWhen(
+      null,
+      loading: () => 'loading',
+      // voluntarily didn't pass error/complex callbacks
+      orElse: () => 42,
+    ),
+  ); // 42
 
-//   final str = a.when(
-//     (value) => '$value',
-//     loading: () => 'loading',
-//     error: (message) => 'Error: $message',
-//     named: (foo) => 'foo $foo',
-//   );
-// }
+  // shared properties between union possibilities
+  var example = SharedProperty.person('Remi', 24);
+  // OK, `name` is shared between both .person and .city constructor
+  print(example.name); // Remi
+  example = SharedProperty.city('London', 200000);
+  print(example.name); // London
 
-// @immutable
-// abstract class Union with _$Union {
-//   const factory Union(int value) = Union0;
-//   const factory Union.loading() = Union1;
-//   const factory Union.error([String message]) = Union2;
-//   const factory Union.named({String foo}) = Union3;
-// }
-
-// mixin _$Union {
-//   R when<R>(
-//     R $default(int value), {
-//     @required R loading(),
-//     @required R error(String message),
-//     @required R named(String foo),
-//   });
-
-//   R maybeWhen<R>(
-//     R $default(int value), {
-//     R loading(),
-//     R error(String message),
-//     R named(String foo),
-//   });
-
-//   R map<R>(
-//     R $default(Union0 value), {
-//     @required R loading(Union1 value),
-//     @required R error(Union2 value),
-//     @required R named(Union3 value),
-//   });
-
-//   R maybeMap<R>(
-//     R $default(Union0 value), {
-//     R loading(Union1 value),
-//     R error(Union2 value),
-//     R named(Union3 value),
-//   });
-// }
-
-// class _ConstFuture<T> implements Future<T> {
-//   const _ConstFuture();
-
-//   @override
-//   dynamic noSuchMethod(Invocation i) {
-//     super.noSuchMethod(i);
-//   }
-// }
-
-// class Union0 implements Union {
-//   const Union0._(int value) : _value = value;
-//   const factory Union0(int value) = Union0._;
-
-//   final int _value;
-
-//   @override
-//   R when<R>(
-//     R Function(int value) $default, {
-//     R Function() loading,
-//     R Function(String message) error,
-//     R Function(String foo) named,
-//   }) {
-//     assert(loading != null);
-//     assert(error != null);
-//     assert(named != null);
-//     assert($default != null);
-//     return $default(_value);
-//   }
-
-//   @override
-//   R maybeWhen<R>(
-//     R Function(int value) $default, {
-//     R Function() loading,
-//     R Function(String message) error,
-//     R Function(String foo) named,
-//     @required R Function() orElse,
-//   }) {
-//     assert(orElse != null);
-//     if ($default != null) return $default(_value);
-//     return orElse();
-//   }
-
-//   @override
-//   R map<R>(
-//     R Function(Union0 value) $default, {
-//     R Function(Union1 value) loading,
-//     R Function(Union2 value) error,
-//     R Function(Union3 value) named,
-//   }) {
-//     assert(loading != null);
-//     assert(error != null);
-//     assert(named != null);
-//     assert($default != null);
-//     return $default(this);
-//   }
-
-//   @override
-//   R maybeMap<R>(
-//     R Function(Union0 value) $default, {
-//     R Function(Union1 value) loading,
-//     R Function(Union2 value) error,
-//     R Function(Union3 value) named,
-//     @required R Function() orElse,
-//   }) {
-//     assert(orElse != null);
-//     if ($default != null) return $default(this);
-//     return orElse();
-//   }
-
-//   Union0 copyWith({
-//     FutureOr<int> value = const _ConstFuture(),
-//   }) {
-//     return Union0(
-//       value is _ConstFuture ? _value : value as int,
-//     );
-//   }
-// }
-
-// class Union1 implements Union {
-//   const Union1._();
-//   const factory Union1() = Union1._;
-
-//   @override
-//   R when<R>(
-//     R Function(int value) $default, {
-//     R Function() loading,
-//     R Function(String message) error,
-//     R Function(String foo) named,
-//   }) {
-//     assert(loading != null);
-//     assert(error != null);
-//     assert(named != null);
-//     assert($default != null);
-//     return loading();
-//   }
-
-//   @override
-//   R maybeWhen<R>(
-//     R Function(int value) $default, {
-//     R Function() loading,
-//     R Function(String message) error,
-//     R Function(String foo) named,
-//     @required R Function() orElse,
-//   }) {
-//     assert(orElse != null);
-//     if (loading != null) return loading();
-//     return orElse();
-//   }
-
-//   @override
-//   R map<R>(
-//     R Function(Union0 value) $default, {
-//     R Function(Union1 value) loading,
-//     R Function(Union2 value) error,
-//     R Function(Union3 value) named,
-//   }) {
-//     assert(loading != null);
-//     assert(error != null);
-//     assert(named != null);
-//     assert($default != null);
-//     return loading(this);
-//   }
-
-//   @override
-//   R maybeMap<R>(
-//     R Function(Union0 value) $default, {
-//     R Function(Union1 value) loading,
-//     R Function(Union2 value) error,
-//     R Function(Union3 value) named,
-//     @required R Function() orElse,
-//   }) {
-//     assert(orElse != null);
-//     if (loading != null) return loading(this);
-//     return orElse();
-//   }
-// }
-
-// class Union2 implements Union {
-//   const Union2._([String message]) : _message = message;
-//   const factory Union2([String message]) = Union2._;
-
-//   final String _message;
-
-//   @override
-//   R when<R>(
-//     R Function(int value) $default, {
-//     R Function() loading,
-//     R Function(String message) error,
-//     R Function(String foo) named,
-//   }) {
-//     assert(loading != null);
-//     assert(error != null);
-//     assert(named != null);
-//     assert($default != null);
-//     return error(_message);
-//   }
-
-//   @override
-//   R maybeWhen<R>(
-//     R Function(int value) $default, {
-//     R Function() loading,
-//     R Function(String message) error,
-//     R Function(String foo) named,
-//     @required R Function() orElse,
-//   }) {
-//     assert(orElse != null);
-//     if (error != null) return error(_message);
-//     return orElse();
-//   }
-
-//   @override
-//   R map<R>(
-//     R Function(Union0 value) $default, {
-//     R Function(Union1 value) loading,
-//     R Function(Union2 value) error,
-//     R Function(Union3 value) named,
-//   }) {
-//     assert(loading != null);
-//     assert(error != null);
-//     assert(named != null);
-//     assert($default != null);
-//     return error(this);
-//   }
-
-//   @override
-//   R maybeMap<R>(
-//     R Function(Union0 value) $default, {
-//     R Function(Union1 value) loading,
-//     R Function(Union2 value) error,
-//     R Function(Union3 value) named,
-//     @required R Function() orElse,
-//   }) {
-//     assert(orElse != null);
-//     if (error != null) return error(this);
-//     return orElse();
-//   }
-
-//   Union2 copyWith({
-//     FutureOr<String> message = const _ConstFuture(),
-//   }) {
-//     return Union2(
-//       message is _ConstFuture ? _message : message as String,
-//     );
-//   }
-// }
-
-// class Union3 implements Union {
-//   const Union3._({String foo}) : _foo = foo;
-//   const factory Union3({String foo}) = Union3._;
-
-//   final String _foo;
-
-//   @override
-//   R when<R>(
-//     R Function(int value) $default, {
-//     R Function() loading,
-//     R Function(String message) error,
-//     R Function(String foo) named,
-//   }) {
-//     assert(loading != null);
-//     assert(error != null);
-//     assert(named != null);
-//     assert($default != null);
-//     return named(_foo);
-//   }
-
-//   @override
-//   R maybeWhen<R>(
-//     R Function(int value) $default, {
-//     R Function() loading,
-//     R Function(String message) error,
-//     R Function(String foo) named,
-//     @required R Function() orElse,
-//   }) {
-//     assert(orElse != null);
-//     if (named != null) return named(_foo);
-//     return orElse();
-//   }
-
-//   @override
-//   R map<R>(
-//     R Function(Union0 value) $default, {
-//     R Function(Union1 value) loading,
-//     R Function(Union2 value) error,
-//     R Function(Union3 value) named,
-//   }) {
-//     assert(loading != null);
-//     assert(error != null);
-//     assert(named != null);
-//     assert($default != null);
-//     return named(this);
-//   }
-
-//   @override
-//   R maybeMap<R>(
-//     R Function(Union0 value) $default, {
-//     R Function(Union1 value) loading,
-//     R Function(Union2 value) error,
-//     R Function(Union3 value) named,
-//     @required R Function() orElse,
-//   }) {
-//     assert(orElse != null);
-//     if (named != null) return named(this);
-//     return orElse();
-//   }
-
-//   Union3 copyWith({
-//     FutureOr<String> foo = const _ConstFuture(),
-//   }) {
-//     return Union3(
-//       foo: foo is _ConstFuture ? _foo : foo as String,
-//     );
-//   }
-// }
+  // COMPILE ERROR
+  // print(example.age);
+  // print(example.population);
+}

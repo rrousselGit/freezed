@@ -3,8 +3,20 @@ import 'package:meta/meta.dart';
 
 import 'parameter_template.dart';
 
-String whenPrototype(List<ConstructorElement> allConstructors, {@required bool areCallbacksRequired}) {
-  final buffer = StringBuffer('Result when<Result>(');
+String whenPrototype(List<ConstructorElement> allConstructors) {
+  return _whenPrototype(allConstructors, areCallbacksRequired: true, name: 'when');
+}
+
+String maybeWhenPrototype(List<ConstructorElement> allConstructors) {
+  return _whenPrototype(allConstructors, areCallbacksRequired: false, name: 'maybeWhen');
+}
+
+String _whenPrototype(
+  List<ConstructorElement> allConstructors, {
+  @required bool areCallbacksRequired,
+  @required String name,
+}) {
+  final buffer = StringBuffer('@optionalTypeArgs Result $name<Result extends Object>(');
 
   final parameters = <CallbackParameter>[];
   for (final constructor in allConstructors) {
@@ -31,7 +43,12 @@ String whenPrototype(List<ConstructorElement> allConstructors, {@required bool a
   buffer
     ..write('{')
     ..writeAll(parameters, ',')
-    ..write(',})');
+    ..write(',');
+
+  if (!areCallbacksRequired) {
+    buffer.write('@required Result orElse(),');
+  }
+  buffer.write('})');
   return buffer.toString();
 }
 
