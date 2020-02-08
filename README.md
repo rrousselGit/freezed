@@ -122,7 +122,7 @@ From there, to run the code-generator, you have two possibilities:
 
 ## The syntax
 
-[Freezed] works differently then most generators. To define a class using [Freezed],
+[Freezed] works differently than most generators. To define a class using [Freezed],
 you will not declare properties but factory constructors instead.
 
 For example, if you want to define a `Person` class, which has 2 properties:
@@ -130,7 +130,7 @@ For example, if you want to define a `Person` class, which has 2 properties:
 - name, a `String`
 - age, an `int`
 
-To do so, you may write:
+To do so, you will have to define a _factory constructor_ that takes these properties as parameter:
 
 ```dart
 @immutable
@@ -172,15 +172,15 @@ Person('Remi', age: 24)
 
 ...
 
-You are also not limited to one constructor.\
+You are also not limited to one constructor and non-generic class.\
 From example, you should write:
 
 ```dart
 @immutable
-abstract class Union with _$Union {
-  const factory Union(int value) = Data;
-  const factory Union.loading() = Loading;
-  const factory Union.error([String message]) = ErrorDetails;
+abstract class Union<T> with _$Union<T> {
+  const factory Union(T value) = Data<T>;
+  const factory Union.loading() = Loading<T>;
+  const factory Union.error([String message]) = ErrorDetails<T>;
 }
 ```
 

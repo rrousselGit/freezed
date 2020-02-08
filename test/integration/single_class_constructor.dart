@@ -1,4 +1,3 @@
-// ignore_for_file: mixin_of_non_class, redirect_to_non_class, undefined_class
 import 'package:meta/meta.dart';
 
 part 'single_class_constructor.g.dart';

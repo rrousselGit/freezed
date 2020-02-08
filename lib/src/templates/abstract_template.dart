@@ -1,12 +1,14 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:meta/meta.dart';
 
+import 'parameter_template.dart';
 import 'prototypes.dart';
 
 class Abstract {
   Abstract({
     @required this.name,
     @required this.interface,
+    @required this.typeParameters,
     @required this.properties,
     @required this.allConstructors,
   });
@@ -14,12 +16,13 @@ class Abstract {
   final String name;
   final String interface;
   final List<Getter> properties;
+  final List<TypeParameterElement> typeParameters;
   final List<ConstructorElement> allConstructors;
 
   @override
   String toString() {
     return '''
-abstract class $name {
+abstract class $name${GenericsDefinitionTemplate(typeParameters)} {
 ${properties.join()}
 
 $copyWithPrototype
@@ -42,7 +45,7 @@ $maybeMap
     }).join(',');
 
     return '''
-$interface copyWith({
+$interface${GenericsParameterTemplate(typeParameters)} copyWith({
 $parameters
 });
 ''';

@@ -4,20 +4,36 @@ import 'package:test/test.dart';
 void main() {
   test('concrete name parser', () {
     expect(
-      redirectedConstructorName.stringMatch('MyClass() = \nhello;'),
-      'hello;',
+      redirectedConstructorNameRegexp.firstMatch('MyClass() = \nhello;').group(1),
+      'hello',
     );
     expect(
-      redirectedConstructorName.stringMatch('MyClass() = hello;'),
-      'hello;',
+      redirectedConstructorNameRegexp.firstMatch('MyClass() = hello;').group(1),
+      'hello',
     );
     expect(
-      redirectedConstructorName.stringMatch('MyClass() =hello;'),
-      'hello;',
+      redirectedConstructorNameRegexp.firstMatch('MyClass() =hello;').group(1),
+      'hello',
     );
     expect(
-      redirectedConstructorName.stringMatch('MyClass() =\thello;'),
-      'hello;',
+      redirectedConstructorNameRegexp.firstMatch('MyClass() =\thello;').group(1),
+      'hello',
+    );
+  });
+  test('generic ctor', () {
+    expect(
+      redirectedConstructorNameRegexp.firstMatch('MyClass() =\thello<A, B>;').group(1),
+      'hello',
+    );
+    expect(
+      redirectedConstructorNameRegexp.firstMatch('MyClass() =\thello<A>;').group(1),
+      'hello',
+    );
+    expect(
+      redirectedConstructorNameRegexp
+          .firstMatch('PositionalMixedParam(String a, [int b]) = WhateverPositionalMixedParam;')
+          .group(1),
+      'WhateverPositionalMixedParam',
     );
   });
 }

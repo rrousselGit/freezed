@@ -9,6 +9,7 @@ class Concrete {
   Concrete({
     @required this.name,
     @required this.interface,
+    @required this.typeParameters,
     @required this.allConstructors,
     @required this.constructorName,
     @required this.constructorParameters,
@@ -19,6 +20,7 @@ class Concrete {
   final String name;
   final String interface;
   final String constructorName;
+  final List<TypeParameterElement> typeParameters;
   final ParametersTemplate constructorParameters;
   final List<Property> properties;
   final List<Property> superProperties;
@@ -27,7 +29,7 @@ class Concrete {
   @override
   String toString() {
     return '''
-class _\$$name implements $name {
+class _\$$name${GenericsDefinitionTemplate(typeParameters)} implements $name${GenericsParameterTemplate(typeParameters)} {
   const _\$$name($constructorParameters);
 
 ${properties.map((p) => '@override $p').join()}
@@ -49,8 +51,8 @@ $map
 $maybeMap
 }
 
-abstract class $name implements $interface {
-  const factory $name(${constructorParameters.asExpandedDefinition}) = _\$$name;
+abstract class $name${GenericsDefinitionTemplate(typeParameters)} implements $interface${GenericsParameterTemplate(typeParameters)} {
+  const factory $name(${constructorParameters.asExpandedDefinition}) = _\$$name${GenericsParameterTemplate(typeParameters)};
 
 $abstractProperties
 
@@ -127,8 +129,7 @@ ${whenPrototype(allConstructors)} {
     return properties.map((p) {
       if (superProperties.any((element) => element.name == p.name)) {
         return '@override ${p.getter}';
-      }
-      else {
+      } else {
         return '${p.getter}';
       }
     }).join();
@@ -138,7 +139,16 @@ ${whenPrototype(allConstructors)} {
     final properties = this.properties.map((p) {
       return '${p.name}: \$${p.name}';
     });
-    final className = constructorName == null || constructorName.isEmpty ? interface : '$interface.$constructorName';
+    var generics = typeParameters.map((e) {
+      return '\$${e.name}';
+    }).join(', ');
+    if (generics.isNotEmpty) {
+      generics = '<$generics>';
+    }
+
+    final className = constructorName == null || constructorName.isEmpty
+        ? '$interface$generics'
+        : '$interface$generics.$constructorName';
 
     return '''
 @override
@@ -156,15 +166,14 @@ String toString() {
     }).join(',');
 
     final result = '''
-$name copyWith({
+$name${GenericsParameterTemplate(typeParameters)} copyWith({
 $parameters
 });
 ''';
 
     if (superProperties.isNotEmpty) {
       return '@override $result';
-    }
-    else {
+    } else {
       return result;
     }
   }
@@ -201,8 +210,8 @@ $parameters
 
     return '''
 @override
-_\$$name copyWith({$parameters}) {
-  return _\$$name(
+_\$$name${GenericsParameterTemplate(typeParameters)} copyWith({$parameters}) {
+  return _\$$name${GenericsParameterTemplate(typeParameters)}(
 $constructorParameters
   );
 }
@@ -217,7 +226,7 @@ $constructorParameters
     return '''
 @override
 bool operator ==(dynamic other) {
-  return other is ${[name, ...properties].join('&&')};
+  return other is ${['$name${GenericsParameterTemplate(typeParameters)}', ...properties].join('&&')};
 }
 ''';
   }

@@ -35,6 +35,7 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
     yield Abstract(
       name: '_\$${element.name}',
       interface: element.name,
+      typeParameters: element.typeParameters,
       allConstructors: constructors,
       properties: [
         for (final property in commonProperties) Getter(name: property.name, type: property.type?.getDisplayString()),
@@ -47,9 +48,17 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
         continue;
       }
 
+      if (redirectedConstructorName == 'itionalMixedParam') {
+        print(
+          redirectedConstructorNameRegexp
+              .stringMatch(constructor.source.contents.data.substring(constructor.nameOffset)),
+        );
+      }
+
       yield Concrete(
         name: redirectedConstructorName,
         allConstructors: constructors,
+        typeParameters: element.typeParameters,
         interface: element.name,
         constructorName: constructor.name,
         constructorParameters: ParametersTemplate.fromParameterElements(

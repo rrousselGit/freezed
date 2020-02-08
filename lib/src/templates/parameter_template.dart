@@ -1,5 +1,31 @@
 import 'package:analyzer/dart/element/element.dart';
 
+class GenericsDefinitionTemplate {
+  final List<TypeParameterElement> typeParameters;
+
+  GenericsDefinitionTemplate(this.typeParameters);
+
+  @override
+  String toString() {
+    if (typeParameters.isEmpty) return '';
+
+    return '<${typeParameters.join(',')}>';
+  }
+}
+
+class GenericsParameterTemplate {
+  final List<TypeParameterElement> typeParameters;
+
+  GenericsParameterTemplate(this.typeParameters);
+
+  @override
+  String toString() {
+    if (typeParameters.isEmpty) return '';
+
+    return '<${typeParameters.map((e) => e.name).join(', ')}>';
+  }
+}
+
 class ParametersTemplate {
   ParametersTemplate(
     this.positionalParameters, {
@@ -131,7 +157,7 @@ class CallbackParameter extends Parameter {
 
   @override
   String toString() {
-    var res = '$type $name($parameters)'; 
+    var res = '$type $name($parameters)';
     return isRequired ? '@required $res' : res;
   }
 }

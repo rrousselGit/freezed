@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 import 'parameter_template.dart';
 
-final redirectedConstructorName = RegExp('[^ =\t\n]+;');
+final redirectedConstructorNameRegexp = RegExp(r'([^\s \t\n=<]+)(?:<.+>)?;');
 
 String getRedirectedConstructorName(ConstructorElement constructor) {
   if (constructor.redirectedConstructor != null) {
@@ -12,9 +12,7 @@ String getRedirectedConstructorName(ConstructorElement constructor) {
   final location = constructor.nameOffset;
   final source = constructor.source.contents.data;
 
-  final match = redirectedConstructorName.stringMatch(source.substring(location));
-
-  return match.substring(0, match.length - 1);
+  return redirectedConstructorNameRegexp.firstMatch(source.substring(location))?.group(1);
 }
 
 String whenPrototype(List<ConstructorElement> allConstructors) {
