@@ -148,7 +148,7 @@ print(person.age); // 24
 ```
 
 **NOTE**:\
-You do not have to use mamed parameters for your constructor.
+You do not have to use named parameters for your constructor.
 
 All valid parameter syntax are supported. As such you could write:
 
