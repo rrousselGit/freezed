@@ -84,7 +84,7 @@ and use the `part` keyword on the top of your files.
 As such, a file that wants to use [Freezed] may either start with:
 
 ```dart
-import 'package:flutter/fundation.dart';
+import 'package:flutter/foundation.dart';
 
 part 'my_file.g.dart';
 ```
