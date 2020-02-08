@@ -78,24 +78,24 @@ abstract class _$Union {
 
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(Union0 value), {
-    @required Result loading(Union1 value),
-    @required Result error(Union2 value),
-    @required Result complex(Union3 value),
+    Result $default(Data value), {
+    @required Result loading(Loading value),
+    @required Result error(ErrorDetails value),
+    @required Result complex(Complex value),
   });
 
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(Union0 value), {
-    Result loading(Union1 value),
-    Result error(Union2 value),
-    Result complex(Union3 value),
+    Result $default(Data value), {
+    Result loading(Loading value),
+    Result error(ErrorDetails value),
+    Result complex(Complex value),
     @required Result orElse(),
   });
 }
 
-class _$Union0 implements Union0 {
-  const _$Union0(this.value);
+class _$Data implements Data {
+  const _$Data(this.value);
 
   @override
   final int value;
@@ -107,17 +107,17 @@ class _$Union0 implements Union0 {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Union0 && other.value == value;
+    return other is Data && other.value == value;
   }
 
   @override
   int get hashCode => runtimeType.hashCode ^ value.hashCode;
 
   @override
-  _$Union0 copyWith({
+  _$Data copyWith({
     Object value = immutable,
   }) {
-    return _$Union0(
+    return _$Data(
       value == immutable ? this.value : value as int,
     );
   }
@@ -156,10 +156,10 @@ class _$Union0 implements Union0 {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(Union0 value), {
-    @required Result loading(Union1 value),
-    @required Result error(Union2 value),
-    @required Result complex(Union3 value),
+    Result $default(Data value), {
+    @required Result loading(Loading value),
+    @required Result error(ErrorDetails value),
+    @required Result complex(Complex value),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -171,10 +171,10 @@ class _$Union0 implements Union0 {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(Union0 value), {
-    Result loading(Union1 value),
-    Result error(Union2 value),
-    Result complex(Union3 value),
+    Result $default(Data value), {
+    Result loading(Loading value),
+    Result error(ErrorDetails value),
+    Result complex(Complex value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -185,16 +185,16 @@ class _$Union0 implements Union0 {
   }
 }
 
-abstract class Union0 implements Union {
-  const factory Union0(int value) = _$Union0;
+abstract class Data implements Union {
+  const factory Data(int value) = _$Data;
 
   int get value;
 
-  Union0 copyWith({int value});
+  Data copyWith({int value});
 }
 
-class _$Union1 implements Union1 {
-  const _$Union1();
+class _$Loading implements Loading {
+  const _$Loading();
 
   @override
   String toString() {
@@ -203,7 +203,7 @@ class _$Union1 implements Union1 {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Union1;
+    return other is Loading;
   }
 
   @override
@@ -243,10 +243,10 @@ class _$Union1 implements Union1 {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(Union0 value), {
-    @required Result loading(Union1 value),
-    @required Result error(Union2 value),
-    @required Result complex(Union3 value),
+    Result $default(Data value), {
+    @required Result loading(Loading value),
+    @required Result error(ErrorDetails value),
+    @required Result complex(Complex value),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -258,10 +258,10 @@ class _$Union1 implements Union1 {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(Union0 value), {
-    Result loading(Union1 value),
-    Result error(Union2 value),
-    Result complex(Union3 value),
+    Result $default(Data value), {
+    Result loading(Loading value),
+    Result error(ErrorDetails value),
+    Result complex(Complex value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -272,12 +272,12 @@ class _$Union1 implements Union1 {
   }
 }
 
-abstract class Union1 implements Union {
-  const factory Union1() = _$Union1;
+abstract class Loading implements Union {
+  const factory Loading() = _$Loading;
 }
 
-class _$Union2 implements Union2 {
-  const _$Union2([this.message]);
+class _$ErrorDetails implements ErrorDetails {
+  const _$ErrorDetails([this.message]);
 
   @override
   final String message;
@@ -289,17 +289,17 @@ class _$Union2 implements Union2 {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Union2 && other.message == message;
+    return other is ErrorDetails && other.message == message;
   }
 
   @override
   int get hashCode => runtimeType.hashCode ^ message.hashCode;
 
   @override
-  _$Union2 copyWith({
+  _$ErrorDetails copyWith({
     Object message = immutable,
   }) {
-    return _$Union2(
+    return _$ErrorDetails(
       message == immutable ? this.message : message as String,
     );
   }
@@ -338,10 +338,10 @@ class _$Union2 implements Union2 {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(Union0 value), {
-    @required Result loading(Union1 value),
-    @required Result error(Union2 value),
-    @required Result complex(Union3 value),
+    Result $default(Data value), {
+    @required Result loading(Loading value),
+    @required Result error(ErrorDetails value),
+    @required Result complex(Complex value),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -353,10 +353,10 @@ class _$Union2 implements Union2 {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(Union0 value), {
-    Result loading(Union1 value),
-    Result error(Union2 value),
-    Result complex(Union3 value),
+    Result $default(Data value), {
+    Result loading(Loading value),
+    Result error(ErrorDetails value),
+    Result complex(Complex value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -367,16 +367,16 @@ class _$Union2 implements Union2 {
   }
 }
 
-abstract class Union2 implements Union {
-  const factory Union2([String message]) = _$Union2;
+abstract class ErrorDetails implements Union {
+  const factory ErrorDetails([String message]) = _$ErrorDetails;
 
   String get message;
 
-  Union2 copyWith({String message});
+  ErrorDetails copyWith({String message});
 }
 
-class _$Union3 implements Union3 {
-  const _$Union3(this.a, this.b);
+class _$Complex implements Complex {
+  const _$Complex(this.a, this.b);
 
   @override
   final int a;
@@ -390,18 +390,18 @@ class _$Union3 implements Union3 {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Union3 && other.a == a && other.b == b;
+    return other is Complex && other.a == a && other.b == b;
   }
 
   @override
   int get hashCode => runtimeType.hashCode ^ a.hashCode ^ b.hashCode;
 
   @override
-  _$Union3 copyWith({
+  _$Complex copyWith({
     Object a = immutable,
     Object b = immutable,
   }) {
-    return _$Union3(
+    return _$Complex(
       a == immutable ? this.a : a as int,
       b == immutable ? this.b : b as String,
     );
@@ -441,10 +441,10 @@ class _$Union3 implements Union3 {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(Union0 value), {
-    @required Result loading(Union1 value),
-    @required Result error(Union2 value),
-    @required Result complex(Union3 value),
+    Result $default(Data value), {
+    @required Result loading(Loading value),
+    @required Result error(ErrorDetails value),
+    @required Result complex(Complex value),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -456,10 +456,10 @@ class _$Union3 implements Union3 {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(Union0 value), {
-    Result loading(Union1 value),
-    Result error(Union2 value),
-    Result complex(Union3 value),
+    Result $default(Data value), {
+    Result loading(Loading value),
+    Result error(ErrorDetails value),
+    Result complex(Complex value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -470,13 +470,13 @@ class _$Union3 implements Union3 {
   }
 }
 
-abstract class Union3 implements Union {
-  const factory Union3(int a, String b) = _$Union3;
+abstract class Complex implements Union {
+  const factory Complex(int a, String b) = _$Complex;
 
   int get a;
   String get b;
 
-  Union3 copyWith({int a, String b});
+  Complex copyWith({int a, String b});
 }
 
 abstract class _$SharedProperty {
@@ -512,7 +512,7 @@ abstract class _$SharedProperty {
 }
 
 class _$SharedProperty0 implements SharedProperty0 {
-  const _$SharedProperty0(this.name, this.age);
+  const _$SharedProperty0({this.name, this.age});
 
   @override
   final String name;
@@ -538,8 +538,8 @@ class _$SharedProperty0 implements SharedProperty0 {
     Object age = immutable,
   }) {
     return _$SharedProperty0(
-      name == immutable ? this.name : name as String,
-      age == immutable ? this.age : age as int,
+      name: name == immutable ? this.name : name as String,
+      age: age == immutable ? this.age : age as int,
     );
   }
 
@@ -595,7 +595,7 @@ class _$SharedProperty0 implements SharedProperty0 {
 }
 
 abstract class SharedProperty0 implements SharedProperty {
-  const factory SharedProperty0(String name, int age) = _$SharedProperty0;
+  const factory SharedProperty0({String name, int age}) = _$SharedProperty0;
 
   @override
   String get name;
@@ -606,7 +606,7 @@ abstract class SharedProperty0 implements SharedProperty {
 }
 
 class _$SharedProperty1 implements SharedProperty1 {
-  const _$SharedProperty1(this.name, this.population);
+  const _$SharedProperty1({this.name, this.population});
 
   @override
   final String name;
@@ -635,8 +635,8 @@ class _$SharedProperty1 implements SharedProperty1 {
     Object population = immutable,
   }) {
     return _$SharedProperty1(
-      name == immutable ? this.name : name as String,
-      population == immutable ? this.population : population as int,
+      name: name == immutable ? this.name : name as String,
+      population: population == immutable ? this.population : population as int,
     );
   }
 
@@ -692,7 +692,7 @@ class _$SharedProperty1 implements SharedProperty1 {
 }
 
 abstract class SharedProperty1 implements SharedProperty {
-  const factory SharedProperty1(String name, int population) =
+  const factory SharedProperty1({String name, int population}) =
       _$SharedProperty1;
 
   @override
