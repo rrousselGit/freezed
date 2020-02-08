@@ -14,6 +14,7 @@ class Concrete {
     @required this.constructorName,
     @required this.constructorParameters,
     @required this.properties,
+    @required this.hasDiagnosticable,
     @required this.superProperties,
   });
 
@@ -25,16 +26,19 @@ class Concrete {
   final List<Property> properties;
   final List<Property> superProperties;
   final List<ConstructorElement> allConstructors;
+  final bool hasDiagnosticable;
 
   @override
   String toString() {
     return '''
-class _\$$name${GenericsDefinitionTemplate(typeParameters)} implements $name${GenericsParameterTemplate(typeParameters)} {
+class _\$$name${GenericsDefinitionTemplate(typeParameters)} $diagnosticable implements $name${GenericsParameterTemplate(typeParameters)} {
   const _\$$name($constructorParameters);
 
 ${properties.map((p) => '@override $p').join()}
 
 $toStringMethod
+
+$debugFillProperties
 
 $operatorEqualMethod
 
@@ -59,6 +63,28 @@ $abstractProperties
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get debugFillProperties {
+    if (!hasDiagnosticable) return '';
+
+    final diagnostics = properties.map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))").join();
+
+    return '''
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  super.debugFillProperties(properties);
+  properties
+    ..add(DiagnosticsProperty('type', '$className'))
+    $diagnostics;
+}
+''';
+  }
+
+  String get diagnosticable {
+    if (!hasDiagnosticable) return '';
+
+    return 'with DiagnosticableTreeMixin';
   }
 
   String get maybeMap {
@@ -135,10 +161,7 @@ ${whenPrototype(allConstructors)} {
     }).join();
   }
 
-  String get toStringMethod {
-    final properties = this.properties.map((p) {
-      return '${p.name}: \$${p.name}';
-    });
+  String get className {
     var generics = typeParameters.map((e) {
       return '\$${e.name}';
     }).join(', ');
@@ -146,13 +169,21 @@ ${whenPrototype(allConstructors)} {
       generics = '<$generics>';
     }
 
-    final className = constructorName == null || constructorName.isEmpty
+    return constructorName == null || constructorName.isEmpty
         ? '$interface$generics'
         : '$interface$generics.$constructorName';
+  }
+
+  String get toStringMethod {
+    final parameters = hasDiagnosticable ? '{ DiagnosticLevel minLevel = DiagnosticLevel.debug }' : '';
+
+    final properties = this.properties.map((p) {
+      return '${p.name}: \$${p.name}';
+    });
 
     return '''
 @override
-String toString() {
+String toString($parameters) {
   return '$className(${properties.join(', ')})';
 }
 ''';

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:meta/meta.dart';
@@ -8,15 +10,35 @@ import 'templates/concrete_template.dart';
 import 'templates/parameter_template.dart';
 import 'templates/prototypes.dart';
 
+bool _libraryHasDiagnosticable(LibraryElement library) {
+  if (library.librarySource.fullName.startsWith('/flutter/')) {
+    for (final element in library.topLevelElements) {
+      if (element.displayName.contains('Diagnosticable') && element.kind == ElementKind.CLASS) {
+        return true;
+      }
+    }
+  }
+
+  return library.exportedLibraries.any((library) {
+    return library.librarySource.fullName.startsWith('/flutter/') && _libraryHasDiagnosticable(library);
+  });
+}
+
 class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
+  bool hasDiagnosticable = false;
+
+  @override
+  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
+    hasDiagnosticable = library.element.importedLibraries.any(_libraryHasDiagnosticable);
+    return super.generate(library, buildStep);
+  }
+
   @override
   Iterable<String> generateForAnnotatedElement(
     covariant ClassElement element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) sync* {
-    yield* element.interfaces.map((e) => '// $e');
-
     final constructors = [
       for (final element in element.constructors)
         if (element.isFactory && getRedirectedConstructorName(element) != null) element
@@ -59,6 +81,7 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
         name: redirectedConstructorName,
         allConstructors: constructors,
         typeParameters: element.typeParameters,
+        hasDiagnosticable: hasDiagnosticable,
         interface: element.name,
         constructorName: constructor.name,
         constructorParameters: ParametersTemplate.fromParameterElements(

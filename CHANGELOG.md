@@ -1,3 +1,7 @@
+# 0.0.2
+
+Implicitly generate `debugFillProperties` if the necessary classes are imported.
+
 # 0.0.1
 
 Add generic support

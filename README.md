@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/rrousselGit/freezed.svg?branch=master)](https://travis-ci.org/rrousselGit/freezed)
 [![pub package](https://img.shields.io/pub/v/freezed.svg)](https://pub.dartlang.org/packages/freezed)
 
 Welcome to [Freezed], yet another code generator for immutable classes / sealed classes / union types / copy.
@@ -97,11 +96,16 @@ import 'package:meta/meta.dart';
 part 'my_file.g.dart';
 ```
 
+**PREFER**: importing `package:flutter/foundation.dart` over `package:meta/meta.dart`.\
+The reason being, importing `foundation.dart` also imports the necessary
+classes to make an object nicely readable in Flutter's devtool.\
+If you import `foundation.dart`, [Freezed] will automatically them.
+
 A full example would be:
 
 ```dart
 // main.dart
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 
 part 'main.g.dart';
 

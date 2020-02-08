@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 part 'main.g.dart';
 
@@ -78,7 +79,7 @@ void main() {
       null,
       error: (ErrorDetails value) => value.message,
       // voluntarily didn't pass error/complex callbacks
-      orElse: () => null,
+      orElse: () => 'fallthrough',
     ),
   ); // fallthrough
 
