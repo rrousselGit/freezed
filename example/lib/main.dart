@@ -84,6 +84,13 @@ void main() {
 
   // ------------------
 
+  // nice toString
+  print(const Union(42)); // Union(value: 42)
+  print(const Union.loading()); // Union.loading()
+  print(const Union.error('Failed to fetch')); // Union.error(message: Failed to fetch)
+
+  // ------------------
+
   // shared properties between union possibilities
   var example = SharedProperty.person(name: 'Remi', age: 24);
   // OK, `name` is shared between both .person and .city constructor
