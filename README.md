@@ -376,12 +376,12 @@ Notice how each callback matches with a constructor's name and prototype.
 All callbacks are required and must not be `null`.\
 If that is not what you want, consider using [maybeWhen].
 
-## MaybeWhen
+### MaybeWhen
 
 The [maybeWhen] method is equivalent to [when], but doesn't require all callbacks
 to be specified.
 
-On the other hand, it adds an extra `orElse` require parameter, for a fallback behavior.
+On the other hand, it adds an extra `orElse` required parameter, for a fallback behavior.
 
 As such, using:
 
@@ -424,7 +424,7 @@ if (union is Loading) {
 
 But it is safer as you are forced to handle the fallback case, and it is easier to write.
 
-## Map/MaybeMap
+### Map/MaybeMap
 
 The [map] and [maybeMap] methods are equivalent to [when]/[maybeWhen], but **without** destructuring.
 
