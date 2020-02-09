@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-part 'main.g.dart';
+part 'main.freezed.dart';
 
 @immutable
 abstract class MyClass with _$MyClass {

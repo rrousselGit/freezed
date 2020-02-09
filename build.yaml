@@ -14,7 +14,7 @@ builders:
   freezed:
     import: "package:freezed/builder.dart"
     builder_factories: ["freezed"]
-    build_extensions: { ".dart": [".g.part"] }
+    build_extensions: { ".dart": [".freezed.dart"] }
     auto_apply: dependents
-    build_to: cache
-    applies_builders: ['source_gen|combining_builder']
+    build_to: source
+    runs_before: ["json_serializable|json_serializable"]

@@ -15,6 +15,7 @@ class Concrete {
     @required this.constructorParameters,
     @required this.properties,
     @required this.hasDiagnosticable,
+    @required this.hasJson,
     @required this.superProperties,
   });
 
@@ -27,10 +28,12 @@ class Concrete {
   final List<Property> superProperties;
   final List<ConstructorElement> allConstructors;
   final bool hasDiagnosticable;
+  final bool hasJson;
 
   @override
   String toString() {
     return '''
+${hasJson ? '@JsonSerializable()' : ''}
 class _\$$name${GenericsDefinitionTemplate(typeParameters)} $diagnosticable implements $name${GenericsParameterTemplate(typeParameters)} {
   const _\$$name($constructorParameters);
 
@@ -53,6 +56,8 @@ $maybeWhen
 $map
 
 $maybeMap
+
+$toJson
 }
 
 abstract class $name${GenericsDefinitionTemplate(typeParameters)} implements $interface${GenericsParameterTemplate(typeParameters)} {
@@ -63,6 +68,12 @@ $abstractProperties
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get toJson {
+    if (!hasJson) return '';
+
+    return '@override Map<String, dynamic> toJson() => _\$_\$${name}ToJson(this);';
   }
 
   String get debugFillProperties {

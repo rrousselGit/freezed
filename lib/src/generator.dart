@@ -10,26 +10,45 @@ import 'templates/concrete_template.dart';
 import 'templates/parameter_template.dart';
 import 'templates/prototypes.dart';
 
-bool _libraryHasDiagnosticable(LibraryElement library) {
-  if (library.librarySource.fullName.startsWith('/flutter/')) {
+bool _libraryHasElement(LibraryElement library, String pathStartsWith, bool matcher(Element element)) {
+  if (library.librarySource.fullName.startsWith(pathStartsWith)) {
     for (final element in library.topLevelElements) {
-      if (element.displayName.contains('Diagnosticable') && element.kind == ElementKind.CLASS) {
+      if (matcher(element)) {
         return true;
       }
     }
   }
 
   return library.exportedLibraries.any((library) {
-    return library.librarySource.fullName.startsWith('/flutter/') && _libraryHasDiagnosticable(library);
+    return library.librarySource.fullName.startsWith(pathStartsWith) &&
+        _libraryHasElement(library, pathStartsWith, matcher);
   });
+}
+
+bool _libraryHasDiagnosticable(LibraryElement library) {
+  return _libraryHasElement(
+    library,
+    '/flutter/',
+    (element) => element.displayName.contains('Diagnosticable') && element.kind == ElementKind.CLASS,
+  );
+}
+
+bool _libraryHasJson(LibraryElement library) {
+  return _libraryHasElement(
+    library,
+    '/json_annotation/',
+    (element) => element.displayName.contains('JsonSerializable') && element.kind == ElementKind.CLASS,
+  );
 }
 
 class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
   bool hasDiagnosticable = false;
+  bool hasJson = false;
 
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
     hasDiagnosticable = library.element.importedLibraries.any(_libraryHasDiagnosticable);
+    hasJson = library.element.importedLibraries.any(_libraryHasJson);
     return super.generate(library, buildStep);
   }
 
@@ -39,6 +58,7 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) sync* {
+    yield '// $hasJson';
     final constructors = [
       for (final element in element.constructors)
         if (element.isFactory && getRedirectedConstructorName(element) != null) element
@@ -58,6 +78,7 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
       name: '_\$${element.name}',
       interface: element.name,
       typeParameters: element.typeParameters,
+      hasJson: hasJson,
       allConstructors: constructors,
       properties: [
         for (final property in commonProperties) Getter(name: property.name, type: property.type?.getDisplayString()),
@@ -82,6 +103,7 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
         allConstructors: constructors,
         typeParameters: element.typeParameters,
         hasDiagnosticable: hasDiagnosticable,
+        hasJson: hasJson,
         interface: element.name,
         constructorName: constructor.name,
         constructorParameters: ParametersTemplate.fromParameterElements(

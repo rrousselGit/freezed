@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-part 'generic.g.dart';
+part 'generic.freezed.dart';
 
 class Model<T> {
   Model(this.value);

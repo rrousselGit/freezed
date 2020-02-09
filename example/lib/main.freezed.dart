@@ -6,6 +6,8 @@ part of 'main.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// false
+
 abstract class _$MyClass {
   String get a;
   int get b;
@@ -37,7 +39,9 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
 
   @override
   bool operator ==(dynamic other) {
-    return other is _MyClass && other.a == a && other.b == b;
+    return other is _MyClass &&
+        (identical(other.a, a) || other.a == a) &&
+        (identical(other.b, b) || other.b == b);
   }
 
   @override
@@ -124,7 +128,8 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Data && other.value == value;
+    return other is Data &&
+        (identical(other.value, value) || other.value == value);
   }
 
   @override
@@ -320,7 +325,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   bool operator ==(dynamic other) {
-    return other is ErrorDetails && other.message == message;
+    return other is ErrorDetails &&
+        (identical(other.message, message) || other.message == message);
   }
 
   @override
@@ -430,7 +436,9 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Complex && other.a == a && other.b == b;
+    return other is Complex &&
+        (identical(other.a, a) || other.a == a) &&
+        (identical(other.b, b) || other.b == b);
   }
 
   @override
@@ -577,7 +585,9 @@ class _$SharedProperty0
 
   @override
   bool operator ==(dynamic other) {
-    return other is SharedProperty0 && other.name == name && other.age == age;
+    return other is SharedProperty0 &&
+        (identical(other.name, name) || other.name == name) &&
+        (identical(other.age, age) || other.age == age);
   }
 
   @override
@@ -683,8 +693,9 @@ class _$SharedProperty1
   @override
   bool operator ==(dynamic other) {
     return other is SharedProperty1 &&
-        other.name == name &&
-        other.population == population;
+        (identical(other.name, name) || other.name == name) &&
+        (identical(other.population, population) ||
+            other.population == population);
   }
 
   @override

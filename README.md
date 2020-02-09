@@ -86,7 +86,7 @@ As such, a file that wants to use [Freezed] may either start with:
 ```dart
 import 'package:flutter/foundation.dart';
 
-part 'my_file.g.dart';
+part 'my_file.freezed.dart';
 ```
 
 or:
@@ -94,7 +94,7 @@ or:
 ```dart
 import 'package:meta/meta.dart';
 
-part 'my_file.g.dart';
+part 'my_file.freezed.dart';
 ```
 
 **PREFER**: importing `package:flutter/foundation.dart` over `package:meta/meta.dart`.\
@@ -108,7 +108,7 @@ A full example would be:
 // main.dart
 import 'package:flutter/foundation.dart';
 
-part 'main.g.dart';
+part 'main.freezed.dart';
 
 @immutable
 abstract class Union with _$Union {

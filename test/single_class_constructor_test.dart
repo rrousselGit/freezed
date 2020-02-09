@@ -73,7 +73,7 @@ void main() {
       (r) => r.libraries.firstWhere((element) => element.source.toString().contains('single_class_constructor')),
     );
 
-    final errorResult = await main.session.getErrors('/freezed/test/integration/single_class_constructor.g.dart');
+    final errorResult = await main.session.getErrors('/freezed/test/integration/single_class_constructor.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
   });

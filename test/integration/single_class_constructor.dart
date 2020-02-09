@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-part 'single_class_constructor.g.dart';
+part 'single_class_constructor.freezed.dart';
 
 @immutable
 abstract class MyClass with _$MyClass {

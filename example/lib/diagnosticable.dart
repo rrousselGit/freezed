@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-part 'diagnosticable.g.dart';
+part 'diagnosticable.freezed.dart';
 
 @immutable
 abstract class Example<T> with _$Example<T> {

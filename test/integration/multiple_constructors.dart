@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-part 'multiple_constructors.g.dart';
+part 'multiple_constructors.freezed.dart';
 
 @immutable
 abstract class NoCommonParam with _$NoCommonParam {
