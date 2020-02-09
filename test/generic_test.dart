@@ -16,7 +16,7 @@ Future<void> main() async {
       (r) => r.libraries.firstWhere((element) => element.source.toString().contains('generic')),
     );
 
-    final errorResult = await main.session.getErrors('/freezed/test/integration/generic.g.dart');
+    final errorResult = await main.session.getErrors('/freezed/test/integration/generic.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
   });

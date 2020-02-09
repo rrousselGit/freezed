@@ -15,6 +15,7 @@ class Concrete {
     @required this.constructorParameters,
     @required this.properties,
     @required this.hasDiagnosticable,
+    @required this.hasJson,
     @required this.superProperties,
   });
 
@@ -27,12 +28,16 @@ class Concrete {
   final List<Property> superProperties;
   final List<ConstructorElement> allConstructors;
   final bool hasDiagnosticable;
+  final bool hasJson;
 
   @override
   String toString() {
     return '''
+${hasJson ? '@JsonSerializable()' : ''}
 class _\$$name${GenericsDefinitionTemplate(typeParameters)} $diagnosticable implements $name${GenericsParameterTemplate(typeParameters)} {
   const _\$$name($constructorParameters);
+
+  $concreteFromJsonConstructor
 
 ${properties.map((p) => '@override $p').join()}
 
@@ -53,16 +58,41 @@ $maybeWhen
 $map
 
 $maybeMap
+
+$toJson
 }
 
 abstract class $name${GenericsDefinitionTemplate(typeParameters)} implements $interface${GenericsParameterTemplate(typeParameters)} {
   const factory $name(${constructorParameters.asExpandedDefinition}) = _\$$name${GenericsParameterTemplate(typeParameters)};
+
+  $interfaceFromJsonConstructor
 
 $abstractProperties
 
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get interfaceFromJsonConstructor {
+    if (!hasJson) return '';
+    return 'factory $name.fromJson(Map<String, dynamic> json) = _\$$name.fromJson;';
+  }
+
+  String get concreteFromJsonConstructor {
+    if (!hasJson) return '';
+    return 'factory _\$$name.fromJson(Map<String, dynamic> json) => _\$_\$${name}FromJson(json);';
+  }
+
+  String get toJson {
+    if (!hasJson) return '';
+
+    return '''
+@override
+Map<String, dynamic> toJson() {
+  return _\$_\$${name}ToJson(this)
+    ..['runtimeType'] = '${constructorName.isEmpty ? 'default' : constructorName}';
+}''';
   }
 
   String get debugFillProperties {
@@ -251,7 +281,7 @@ $constructorParameters
 
   String get operatorEqualMethod {
     final properties = this.properties.map((p) {
-      return 'other.${p.name} == ${p.name}';
+      return '(identical(other.${p.name}, ${p.name}) || other.${p.name} == ${p.name})';
     });
 
     return '''

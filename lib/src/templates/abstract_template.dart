@@ -10,6 +10,7 @@ class Abstract {
     @required this.interface,
     @required this.typeParameters,
     @required this.properties,
+    @required this.hasJson,
     @required this.allConstructors,
   });
 
@@ -18,7 +19,8 @@ class Abstract {
   final List<Getter> properties;
   final List<TypeParameterElement> typeParameters;
   final List<ConstructorElement> allConstructors;
-
+  final bool hasJson;
+  
   @override
   String toString() {
     return '''
@@ -34,8 +36,16 @@ $maybeWhen
 $map
 
 $maybeMap
+
+$toJson
 }
 ''';
+  }
+
+  String get toJson {
+    if (!hasJson) return '';
+
+    return 'Map<String, dynamic> toJson();';
   }
 
   String get copyWithPrototype {

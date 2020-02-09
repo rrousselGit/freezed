@@ -1,3 +1,7 @@
+# 0.1.0
+
+Add support for `json_serializable`
+
 # 0.0.2
 
 Implicitly generate `debugFillProperties` if the necessary classes are imported.

@@ -6,9 +6,6 @@ import 'parameter_template.dart';
 final redirectedConstructorNameRegexp = RegExp(r'([^\s \t\n=<]+)(?:<.+>)?;');
 
 String getRedirectedConstructorName(ConstructorElement constructor) {
-  if (constructor.redirectedConstructor != null) {
-    return null;
-  }
   final location = constructor.nameOffset;
   final source = constructor.source.contents.data;
 

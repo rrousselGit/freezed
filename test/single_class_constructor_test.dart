@@ -6,7 +6,29 @@ import 'package:matcher/matcher.dart';
 import 'common.dart';
 import 'integration/single_class_constructor.dart';
 
+class MyObject {
+  final void Function() didEqual;
+
+  MyObject(this.didEqual);
+
+  @override
+  bool operator ==(Object other) {
+    didEqual?.call();
+    return other.runtimeType == runtimeType;
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
 Future<void> main() async {
+  test('== uses identical first', () {
+    var didEqual = false;
+    final obj = MyObject(() => didEqual = true);
+
+    expect(Generic(obj), Generic(obj));
+    expect(didEqual, isFalse);
+  });
   test('does not have when', () async {
     await expectLater(compile(r'''
 import 'single_class_constructor.dart';
@@ -51,7 +73,7 @@ void main() {
       (r) => r.libraries.firstWhere((element) => element.source.toString().contains('single_class_constructor')),
     );
 
-    final errorResult = await main.session.getErrors('/freezed/test/integration/single_class_constructor.g.dart');
+    final errorResult = await main.session.getErrors('/freezed/test/integration/single_class_constructor.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
   });

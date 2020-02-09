@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'diagnosticable.dart';
+part of 'non_diagnosticable.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -34,7 +34,7 @@ abstract class _$Example<T> {
   });
 }
 
-class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
+class _$_Example<T> implements _Example<T> {
   const _$_Example(this.a, this.b);
 
   @override
@@ -43,22 +43,15 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
   final String b;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString() {
     return 'Example<$T>(a: $a, b: $b)';
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Example<$T>'))
-      ..add(DiagnosticsProperty('a', a))
-      ..add(DiagnosticsProperty('b', b));
-  }
-
-  @override
   bool operator ==(dynamic other) {
-    return other is _Example<T> && other.a == a && other.b == b;
+    return other is _Example<T> &&
+        (identical(other.a, a) || other.a == a) &&
+        (identical(other.b, b) || other.b == b);
   }
 
   @override
@@ -135,28 +128,20 @@ abstract class _Example<T> implements Example<T> {
   _Example<T> copyWith({int a, String b});
 }
 
-class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
+class _$_Example2<T> implements _Example2<T> {
   const _$_Example2(this.c);
 
   @override
   final T c;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString() {
     return 'Example<$T>.named(c: $c)';
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Example<$T>.named'))
-      ..add(DiagnosticsProperty('c', c));
-  }
-
-  @override
   bool operator ==(dynamic other) {
-    return other is _Example2<T> && other.c == c;
+    return other is _Example2<T> && (identical(other.c, c) || other.c == c);
   }
 
   @override

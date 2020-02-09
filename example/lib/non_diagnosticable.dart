@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-part 'non_diagnosticable.g.dart';
+part 'non_diagnosticable.freezed.dart';
 
 @immutable
 abstract class Example<T> with _$Example<T> {

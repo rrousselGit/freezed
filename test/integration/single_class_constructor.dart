@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-part 'single_class_constructor.g.dart';
+part 'single_class_constructor.freezed.dart';
 
 @immutable
 abstract class MyClass with _$MyClass {
@@ -35,4 +35,9 @@ abstract class Empty2 with _$Empty2 {
 @immutable
 abstract class SingleNamedCtor with _$SingleNamedCtor {
   const factory SingleNamedCtor.named(int a) = WhateverSingleNamedCtor;
+}
+
+@immutable
+abstract class Generic<T> with _$Generic<T> {
+  const factory Generic(T value) = A<T>;
 }

@@ -56,6 +56,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [when](#when)
     - [maybeWhen](#maybeWhen)
     - [map/maybeMap](#map/maybemap)
+  - [fromJson/toJson](#fromJson/toJson)
 - [Roadmap](#roadmap)
 
 # How to use
@@ -86,7 +87,7 @@ As such, a file that wants to use [Freezed] may either start with:
 ```dart
 import 'package:flutter/foundation.dart';
 
-part 'my_file.g.dart';
+part 'my_file.freezed.dart';
 ```
 
 or:
@@ -94,7 +95,7 @@ or:
 ```dart
 import 'package:meta/meta.dart';
 
-part 'my_file.g.dart';
+part 'my_file.freezed.dart';
 ```
 
 **PREFER**: importing `package:flutter/foundation.dart` over `package:meta/meta.dart`.\
@@ -108,7 +109,7 @@ A full example would be:
 // main.dart
 import 'package:flutter/foundation.dart';
 
-part 'main.g.dart';
+part 'main.freezed.dart';
 
 @immutable
 abstract class Union with _$Union {
@@ -481,9 +482,60 @@ print(
 ); // Model.second(b: 42, c: true)
 ```
 
+## FromJson/ToJson
+
+While [Freezed] will not generate your typical `fromJson`/`toJson` by itself, it knowns
+what [json_serializable] is.
+
+Making a class compatible with [json_serializable] is very straightforward.
+
+Consider this snippet:
+
+```dart
+import 'package:flutter/foundation.dart';
+
+part 'model.freezed.dart';
+
+@immutable
+abstract class Model with _$Model {
+  factory Model.first(String a) = First;
+  factory Model.second(int b, bool c) = Second;
+}
+```
+
+The changes necessary to make it compatible with [json_serializable] consists of three lines:
+
+- a new import: `import 'package:json_annotation/json_annotation.dart'`
+- a new `part`: `part 'model.g.dart';`
+- a new constructor on the desired targeted: `factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);`
+
+The end result is:
+
+```dart
+import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'model.freezed.dart';
+part 'model.g.dart';
+
+@immutable
+abstract class Model with _$Model {
+  factory Model.first(String a) = First;
+  factory Model.second(int b, bool c) = Second;
+
+  factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);
+}
+```
+
+That's it!\
+With these changes, [Freezed] will automatically ask [json_serializable] to generate all the necessary
+`fromJson`/`toJson`.
+
+Then, for classes with multiple constructors, [Freezed] will take care of deciding which
+constructor should be used.
+
 # Roadmap
 
-- serialization/deserialization support (likely by using `json_serializable` internally)
 - support for properties shared between multiple constructors but with a different type.
 - default variable support on the custom generated constructors.
 
@@ -495,3 +547,4 @@ print(
 [maybewhen]: #maybeWhen
 [map]: #map/maybeMap
 [maybemap]: #map/maybeMap
+[json_serializable]: https://pub.dev/packages/json_serializable

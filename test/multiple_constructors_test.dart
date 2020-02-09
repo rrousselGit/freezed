@@ -41,7 +41,7 @@ void main() {
         (r) => r.libraries.firstWhere((element) => element.source.toString().contains('multiple_constructors')),
       );
 
-      final errorResult = await main.session.getErrors('/freezed/test/integration/multiple_constructors.g.dart');
+      final errorResult = await main.session.getErrors('/freezed/test/integration/multiple_constructors.freezed.dart');
 
       expect(errorResult.errors, isEmpty);
     });

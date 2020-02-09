@@ -1,2 +1,3 @@
 /.dart_tool
 /test/**/*.g.dart
+/test/**/*.freezed.dart
