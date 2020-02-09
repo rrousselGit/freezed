@@ -56,7 +56,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [when](#when)
     - [maybeWhen](#maybeWhen)
     - [map/maybeMap](#mapmaybemap)
-  - [fromJson/toJson](#fromJsontoJson)
+  - [fromJson/toJson](#fromjsontojson)
 - [Roadmap](#roadmap)
 
 # How to use
