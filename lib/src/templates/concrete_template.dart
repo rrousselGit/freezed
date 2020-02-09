@@ -37,6 +37,8 @@ ${hasJson ? '@JsonSerializable()' : ''}
 class _\$$name${GenericsDefinitionTemplate(typeParameters)} $diagnosticable implements $name${GenericsParameterTemplate(typeParameters)} {
   const _\$$name($constructorParameters);
 
+  $concreteFromJsonConstructor
+
 ${properties.map((p) => '@override $p').join()}
 
 $toStringMethod
@@ -63,6 +65,8 @@ $toJson
 abstract class $name${GenericsDefinitionTemplate(typeParameters)} implements $interface${GenericsParameterTemplate(typeParameters)} {
   const factory $name(${constructorParameters.asExpandedDefinition}) = _\$$name${GenericsParameterTemplate(typeParameters)};
 
+  $interfaceFromJsonConstructor
+
 $abstractProperties
 
 $copyWithPrototype
@@ -70,10 +74,25 @@ $copyWithPrototype
 ''';
   }
 
+  String get interfaceFromJsonConstructor {
+    if (!hasJson) return '';
+    return 'factory $name.fromJson(Map<String, dynamic> json) = _\$$name.fromJson;';
+  }
+
+  String get concreteFromJsonConstructor {
+    if (!hasJson) return '';
+    return 'factory _\$$name.fromJson(Map<String, dynamic> json) => _\$_\$${name}FromJson(json);';
+  }
+
   String get toJson {
     if (!hasJson) return '';
 
-    return '@override Map<String, dynamic> toJson() => _\$_\$${name}ToJson(this);';
+    return '''
+@override
+Map<String, dynamic> toJson() {
+  return _\$_\$${name}ToJson(this)
+    ..['runtimeType'] = '${constructorName.isEmpty ? 'default' : constructorName}';
+}''';
   }
 
   String get debugFillProperties {

@@ -6,8 +6,6 @@ part of 'main.dart';
 // FreezedGenerator
 // **************************************************************************
 
-// false
-
 abstract class _$MyClass {
   String get a;
   int get b;

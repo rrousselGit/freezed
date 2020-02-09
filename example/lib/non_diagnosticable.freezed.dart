@@ -6,8 +6,6 @@ part of 'non_diagnosticable.dart';
 // FreezedGenerator
 // **************************************************************************
 
-// false
-
 abstract class _$Example<T> {
   @optionalTypeArgs
   Result when<Result extends Object>(

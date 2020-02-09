@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:freezed/src/templates/from_json_template.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -58,13 +59,25 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) sync* {
-    yield '// $hasJson';
+    var hasJson = false;
+
     final constructors = [
       for (final element in element.constructors)
-        if (element.isFactory && getRedirectedConstructorName(element) != null) element
+        if (element.isFactory && element.name != 'fromJson' && getRedirectedConstructorName(element) != null) element
     ];
 
     if (constructors.isEmpty) return;
+
+    if (element.constructors.any((element) => element.name == 'fromJson')) {
+      hasJson = this.hasJson;
+      if (hasJson) {
+        yield FromJson(
+          name: element.name,
+          constructors: constructors,
+          typeParameters: element.typeParameters,
+        ).toString();
+      }
+    }
 
     final commonProperties = constructors.first.parameters.where((parameter) {
       return constructors.every((constructor) {
@@ -89,13 +102,6 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
       final redirectedConstructorName = getRedirectedConstructorName(constructor);
       if (redirectedConstructorName == null) {
         continue;
-      }
-
-      if (redirectedConstructorName == 'itionalMixedParam') {
-        print(
-          redirectedConstructorNameRegexp
-              .stringMatch(constructor.source.contents.data.substring(constructor.nameOffset)),
-        );
       }
 
       yield Concrete(
