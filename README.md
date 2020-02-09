@@ -503,21 +503,27 @@ abstract class Model with _$Model {
 }
 ```
 
-The changes necessary to make it compatible with [json_serializable] are:
+The changes necessary to make it compatible with [json_serializable] consists of three lines:
 
-```suggestion
+- a new import: `import 'package:json_annotation/json_annotation.dart'`
+- a new `part`: `part 'model.g.dart';`
+- a new constructor on the desired targeted: `factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);`
+
+The end result is:
+
+```dart
 import 'package:flutter/foundation.dart';
-+ import 'package:json_annotation/json_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'model.freezed.dart';
-+ part 'model.g.dart';
+part 'model.g.dart';
 
 @immutable
 abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 
-+  factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);
+  factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);
 }
 ```
 
