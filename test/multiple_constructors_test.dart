@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
+import 'dart:async';
+
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -44,6 +46,67 @@ void main() {
       final errorResult = await main.session.getErrors('/freezed/test/integration/multiple_constructors.freezed.dart');
 
       expect(errorResult.errors, isEmpty);
+    });
+    test('maybeMap  can use FutureOr', () async {
+      var res = NoDefault.first('a').maybeMap<FutureOr<int>>(
+        first: (a) => 21,
+        orElse: () => Future.value(42),
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').maybeMap<FutureOr<int>>(
+        second: (b) => Future.value(42),
+        orElse: () => 21,
+      );
+
+      await expectLater(res, completion(42));
+    });
+    test('map  can use FutureOr', () async {
+      var res = NoDefault.first('a').map<FutureOr<int>>(
+        first: (a) => 21,
+        second: (b) => Future.value(42),
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').map<FutureOr<int>>(
+        first: (a) => 21,
+        second: (b) => Future.value(42),
+      );
+
+      await expectLater(res, completion(42));
+    });
+
+    test('maybeWhen  can use FutureOr', () async {
+      var res = NoDefault.first('a').maybeWhen<FutureOr<int>>(
+        first: (a) => 21,
+        orElse: () => Future.value(42),
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').maybeWhen<FutureOr<int>>(
+        second: (b) => Future.value(42),
+        orElse: () => 21,
+      );
+
+      await expectLater(res, completion(42));
+    });
+    test('when  can use FutureOr', () async {
+      var res = NoDefault.first('a').when<FutureOr<int>>(
+        first: (a) => 21,
+        second: (b) => Future.value(42),
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').when<FutureOr<int>>(
+        first: (a) => 21,
+        second: (b) => Future.value(42),
+      );
+
+      await expectLater(res, completion(42));
     });
     test('redirected constructors do have public properties', () {
       final ctor0 = NoCommonParam0('a', b: 42);
