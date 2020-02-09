@@ -507,7 +507,7 @@ The changes necessary to make it compatible with [json_serializable] consists of
 
 - a new import: `import 'package:json_annotation/json_annotation.dart'`
 - a new `part`: `part 'model.g.dart';`
-- a new constructor on the desired targeted: `factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);`
+- a new constructor on the targeted class: `factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);`
 
 The end result is:
 
