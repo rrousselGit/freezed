@@ -49,14 +49,14 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
   - [Run the generator](#run-the-generator)
 - [The features](#the-features)
   - [The syntax](#the-syntax)
-  - [==/toString](#==/toString)
+  - [==/toString](#==toString)
   - [copyWith](#copyWith)
-  - [Unions/Sealed classes](#unions/sealed-classes)
+  - [Unions/Sealed classes](#unionssealed-classes)
     - [shared properties](#shared-properties)
     - [when](#when)
     - [maybeWhen](#maybeWhen)
-    - [map/maybeMap](#map/maybemap)
-  - [fromJson/toJson](#fromJson/toJson)
+    - [map/maybeMap](#mapmaybemap)
+  - [fromJson/toJson](#fromJsontoJson)
 - [Roadmap](#roadmap)
 
 # How to use
