@@ -1,3 +1,7 @@
+# 0.1.1
+
+Upgrade min range of `analyzer` dependency
+
 # 0.1.0
 
 Add support for `json_serializable`
