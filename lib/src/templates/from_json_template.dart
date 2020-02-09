@@ -16,24 +16,34 @@ class FromJson {
 
   @override
   String toString() {
-    final cases = constructors.map((constructor) {
-      final caseName = isDefaultConstructor(constructor) ? 'default' : constructor.name;
-      final concreteName = getRedirectedConstructorName(constructor);
+    String content;
 
-      return '''
-case '$caseName':
-  return $concreteName${GenericsParameterTemplate(typeParameters)}.fromJson(json);
-''';
-    }).join();
+    if (constructors.length == 1) {
+      final ctor = constructors.first;
+      content = 'return ${getRedirectedConstructorName(ctor)}${GenericsParameterTemplate(typeParameters)}.fromJson(json);';
+    } else {
+      final cases = constructors.map((constructor) {
+        final caseName = isDefaultConstructor(constructor) ? 'default' : constructor.name;
+        final concreteName = getRedirectedConstructorName(constructor);
+
+        return '''
+        case '$caseName':
+          return $concreteName${GenericsParameterTemplate(typeParameters)}.fromJson(json);
+        ''';
+      }).join();
+
+      content = '''
+        switch (json['runtimeType'] as String) {
+          $cases
+          default:
+            throw FallThroughError();
+        }
+      ''';
+    }
 
     return '''
 $name${GenericsParameterTemplate(typeParameters)} _\$${name}FromJson${GenericsDefinitionTemplate(typeParameters)}(Map<String, dynamic> json) {
-  assert(json['runtimeType'] is String);
-  switch (json['runtimeType'] as String) {
-    $cases
-    default:
-      throw FallThroughError();
-  }
+$content
 }
 ''';
   }

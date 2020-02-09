@@ -22,6 +22,22 @@ Future<void> main() async {
     var errorResult = await main.session.getErrors('/freezed/test/integration/json.freezed.dart');
     expect(errorResult.errors, isEmpty);
   });
+  test("single constructor fromJson doesn't require runtimeType", () {
+    expect(
+      Single.fromJson(<String, dynamic>{
+        'a': 42,
+      }),
+      Single(42),
+    );
+  });
+  test("single constructor toJson doesn't add runtimeType", () {
+    expect(
+      deepEquals(Single(42).toJson(), {
+        'a': 42,
+      }),
+      isTrue,
+    );
+  });
 
   test('toJson', () {
     expect(
@@ -50,7 +66,7 @@ Future<void> main() async {
   test('throws if runtimeType matches nothing', () {
     expect(
       () => Json.fromJson(<String, dynamic>{}),
-      throwsA(isA<AssertionError>()),
+      throwsA(isA<FallThroughError>()),
     );
     expect(
       () => Json.fromJson(<String, dynamic>{'runtimeType': 'unknown'}),

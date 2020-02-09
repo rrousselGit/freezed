@@ -5,6 +5,13 @@ part 'json.freezed.dart';
 part 'json.g.dart';
 
 @immutable
+abstract class Single with _$Single {
+  const factory Single(int a) = _Single;
+
+  factory Single.fromJson(Map<String, dynamic> json) => _$SingleFromJson(json);
+}
+
+@immutable
 abstract class Json with _$Json {
   const factory Json() = Default;
   const factory Json.first(String a) = First;

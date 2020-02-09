@@ -87,11 +87,14 @@ $copyWithPrototype
   String get toJson {
     if (!hasJson) return '';
 
+    final addRuntimeType = allConstructors.length > 1
+        ? "..['runtimeType'] = '${constructorName.isEmpty ? 'default' : constructorName}'"
+        : '';
+
     return '''
 @override
 Map<String, dynamic> toJson() {
-  return _\$_\$${name}ToJson(this)
-    ..['runtimeType'] = '${constructorName.isEmpty ? 'default' : constructorName}';
+  return _\$_\$${name}ToJson(this)$addRuntimeType;
 }''';
   }
 
