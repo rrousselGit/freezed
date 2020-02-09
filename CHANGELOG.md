@@ -1,7 +1,10 @@
 # 0.1.2
 
-`fromJson`/`toJson` no longer require/add a `runtimeType` key for classes with a
-single constructor.
+- `fromJson`/`toJson` no longer require/add a `runtimeType` key for classes with a
+  single constructor. (https://github.com/rrousselGit/freezed/issues/7)
+
+- don't generate anything for classes that add `@immutable` but define real properties
+  (https://github.com/rrousselGit/freezed/issues/5)
 
 # 0.1.1
 

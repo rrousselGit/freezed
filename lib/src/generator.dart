@@ -59,6 +59,8 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) sync* {
+    if (!_implementsGeneratedInterface(element)) return;
+
     var hasJson = false;
 
     final constructors = [
@@ -126,4 +128,8 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
       ).toString();
     }
   }
+}
+
+bool _implementsGeneratedInterface(ClassElement classElement) {
+  return classElement.fields.isEmpty;
 }

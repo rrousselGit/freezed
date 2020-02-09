@@ -5,3 +5,13 @@ import 'package:source_gen_test/annotations.dart';
 @ShouldGenerate('\n')
 @immutable
 class Unrelated {}
+
+@ShouldGenerate('\n')
+@immutable
+class NonFreezedClass {
+  final int regularField;
+
+  const NonFreezedClass(this.regularField);
+
+  factory NonFreezedClass.someFactory(int x) => NonFreezedClass(x);
+}
