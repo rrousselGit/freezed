@@ -3,9 +3,12 @@ import 'package:meta/meta.dart';
 
 import 'parameter_template.dart';
 
-final redirectedConstructorNameRegexp = RegExp(r'([^\s \t\n=<]+)(?:<.+>)?;');
+final redirectedConstructorNameRegexp = RegExp(r'([^\s \t\n=<});]+)(?:<.+>)?;');
 
 String getRedirectedConstructorName(ConstructorElement constructor) {
+  if (constructor.name == 'fixed') {
+    print(constructor.redirectedConstructor);
+  }
   final location = constructor.nameOffset;
   final source = constructor.source.contents.data;
 

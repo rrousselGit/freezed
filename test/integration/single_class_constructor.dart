@@ -41,3 +41,12 @@ abstract class SingleNamedCtor with _$SingleNamedCtor {
 abstract class Generic<T> with _$Generic<T> {
   const factory Generic(T value) = A<T>;
 }
+
+@immutable
+abstract class Example with _$Example {
+  const factory Example(String a, {int b}) = Example0;
+
+  factory Example.fixed() {
+    return const Example('a', b: 42);
+  }
+}

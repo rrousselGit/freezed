@@ -1,3 +1,8 @@
+# 0.1.3
+
+- Don't generate anything for factory constructors with a body.
+  (https://github.com/rrousselGit/freezed/issues/9)
+
 # 0.1.2
 
 - `fromJson`/`toJson` no longer require/add a `runtimeType` key for classes with a

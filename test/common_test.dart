@@ -36,4 +36,17 @@ void main() {
       'WhateverPositionalMixedParam',
     );
   });
+  test('factory ctor', () {
+    expect(
+      redirectedConstructorNameRegexp.firstMatch("factory Example.fixed() => Example('a', b: 42);"),
+      isNull,
+    );
+    expect(
+      redirectedConstructorNameRegexp.firstMatch("""
+factory Example.fixed() {
+  return Example('a', b: 42);
+}"""),
+      isNull,
+    );
+  });
 }

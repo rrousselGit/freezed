@@ -102,9 +102,6 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
 
     for (final constructor in constructors) {
       final redirectedConstructorName = getRedirectedConstructorName(constructor);
-      if (redirectedConstructorName == null) {
-        continue;
-      }
 
       yield Concrete(
         name: redirectedConstructorName,
