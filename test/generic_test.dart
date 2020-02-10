@@ -27,6 +27,24 @@ Future<void> main() async {
 
     expect(model.value, 42);
   });
+  test('map is generic too', () {
+    var result = MultipleConstructors<int, double>(false).map<MultipleConstructors<int, double>>(
+      (Default<int, double> value) => value,
+      first: (First<int, double> value) => value,
+      second: (Second<int, double> value) => value,
+    );
+
+    expect(result, MultipleConstructors<int, double>(false));
+
+    MultipleConstructors<int, double>(false).maybeMap<MultipleConstructors<int, double>>(
+      (Default<int, double> value) => value,
+      first: (First<int, double> value) => value,
+      second: (Second<int, double> value) => value,
+      orElse: () => throw Error(),
+    );
+
+    expect(result, MultipleConstructors<int, double>(false));
+  });
   test('is generic2', () {
     MultiGeneric<int, Model<int>> value = MultiGeneric(Model(42));
     Model<int> model = value.model;

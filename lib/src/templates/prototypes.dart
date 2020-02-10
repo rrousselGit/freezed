@@ -23,16 +23,17 @@ String maybeWhenPrototype(List<ConstructorElement> allConstructors) {
   return _whenPrototype(allConstructors, areCallbacksRequired: false, name: 'maybeWhen');
 }
 
-String mapPrototype(List<ConstructorElement> allConstructors) {
-  return _mapPrototype(allConstructors, areCallbacksRequired: true, name: 'map');
+String mapPrototype(List<ConstructorElement> allConstructors, List<TypeParameterElement> typeParameters) {
+  return _mapPrototype(allConstructors, typeParameters, areCallbacksRequired: true, name: 'map');
 }
 
-String maybeMapPrototype(List<ConstructorElement> allConstructors) {
-  return _mapPrototype(allConstructors, areCallbacksRequired: false, name: 'maybeMap');
+String maybeMapPrototype(List<ConstructorElement> allConstructors, List<TypeParameterElement> typeParameters) {
+  return _mapPrototype(allConstructors, typeParameters, areCallbacksRequired: false, name: 'maybeMap');
 }
 
 String _mapPrototype(
-  List<ConstructorElement> allConstructors, {
+  List<ConstructorElement> allConstructors,
+  List<TypeParameterElement> typeParameters, {
   @required bool areCallbacksRequired,
   @required String name,
 }) {
@@ -42,7 +43,10 @@ String _mapPrototype(
     name: name,
     ctor2parameters: (constructor) {
       return ParametersTemplate([
-        Parameter(name: 'value', type: getRedirectedConstructorName(constructor)),
+        Parameter(
+          name: 'value',
+          type: '${getRedirectedConstructorName(constructor)}${GenericsParameterTemplate(typeParameters)}',
+        ),
       ]);
     },
   );

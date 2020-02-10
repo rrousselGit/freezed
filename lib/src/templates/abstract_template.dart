@@ -20,7 +20,7 @@ class Abstract {
   final List<TypeParameterElement> typeParameters;
   final List<ConstructorElement> allConstructors;
   final bool hasJson;
-  
+
   @override
   String toString() {
     return '''
@@ -73,12 +73,12 @@ $parameters
 
   String get map {
     if (allConstructors.length < 2) return '';
-    return '${mapPrototype(allConstructors)};';
+    return '${mapPrototype(allConstructors, typeParameters)};';
   }
 
   String get maybeMap {
     if (allConstructors.length < 2) return '';
-    return '${maybeMapPrototype(allConstructors)};';
+    return '${maybeMapPrototype(allConstructors, typeParameters)};';
   }
 }
 

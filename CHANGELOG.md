@@ -1,3 +1,7 @@
+# 0.1.4
+
+- Fixed a bug where `map`/`maybeMap` on generic classes didn't pass the generic parameters.
+
 # 0.1.3+1
 
 - Fix README's index

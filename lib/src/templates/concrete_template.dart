@@ -127,7 +127,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
     return '''
 @override
-${maybeMapPrototype(allConstructors)} {
+${maybeMapPrototype(allConstructors, typeParameters)} {
   assert(orElse != null);
   if ($callbackName != null) {
     return $callbackName(this);
@@ -146,7 +146,7 @@ ${maybeMapPrototype(allConstructors)} {
 
     return '''
 @override
-${mapPrototype(allConstructors)} {
+${mapPrototype(allConstructors, typeParameters)} {
   ${asserts.join()}
   return $callbackName(this);
 }''';
