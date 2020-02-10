@@ -170,7 +170,7 @@ Person('Remi', 24)
 ```dart
 @immutable
 abstract class Person with _$Person {
-  const factory Person(String name, {int age = 42}) = _Person;
+  const factory Person(String name, {int age}) = _Person;
 }
 
 Person('Remi', age: 24)
