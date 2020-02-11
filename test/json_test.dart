@@ -3,12 +3,9 @@
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
-import 'package:collection/collection.dart';
 
 import 'common.dart';
 import 'integration/json.dart';
-
-final bool Function(Object o, Object o2) deepEquals = DeepCollectionEquality().equals;
 
 Future<void> main() async {
   test('has no issue', () async {
@@ -32,36 +29,41 @@ Future<void> main() async {
   });
   test("single constructor toJson doesn't add runtimeType", () {
     expect(
-      deepEquals(Single(42).toJson(), {
+      Single(42).toJson(),
+      {
         'a': 42,
-      }),
-      isTrue,
+      },
     );
   });
 
-  test('toJson', () {
-    expect(
-      deepEquals(Json().toJson(), {
-        'runtimeType': 'default',
-      }),
-      isTrue,
-    );
+  group('toJson', () {
+    test('support JsonKeys', () {
+      expect(Decorator('42').toJson(), {'what': '42'});
+    });
+    test('works', () {
+      expect(
+        Json().toJson(),
+        {
+          'runtimeType': 'default',
+        },
+      );
 
-    expect(
-      deepEquals(Json.first('42').toJson(), {
-        'a': '42',
-        'runtimeType': 'first',
-      }),
-      isTrue,
-    );
+      expect(
+        Json.first('42').toJson(),
+        {
+          'a': '42',
+          'runtimeType': 'first',
+        },
+      );
 
-    expect(
-      deepEquals(Json.second(42).toJson(), {
-        'b': 42,
-        'runtimeType': 'second',
-      }),
-      isTrue,
-    );
+      expect(
+        Json.second(42).toJson(),
+        {
+          'b': 42,
+          'runtimeType': 'second',
+        },
+      );
+    });
   });
   test('throws if runtimeType matches nothing', () {
     expect(

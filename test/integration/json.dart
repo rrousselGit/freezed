@@ -26,3 +26,10 @@ abstract class NoJson with _$NoJson {
   const factory NoJson.first(String a) = NoFirst;
   const factory NoJson.second(int b) = NoSecond;
 }
+
+@immutable
+abstract class Decorator with _$Decorator {
+  factory Decorator(@JsonKey(name: 'what') String a) = _Decorator;
+
+  factory Decorator.fromJson(Map<String, dynamic> json) => _$DecoratorFromJson(json);
+}

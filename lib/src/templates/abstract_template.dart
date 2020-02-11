@@ -52,7 +52,7 @@ $toJson
   String get copyWithPrototype {
     if (abstractProperties.isEmpty) return '';
     final parameters = abstractProperties.map((p) {
-      return '${p.type} ${p.name}';
+      return '${p.decorators.join()} ${p.type} ${p.name}';
     }).join(',');
 
     return '''
@@ -80,23 +80,5 @@ $parameters
   String get maybeMap {
     if (allConstructors.length < 2) return '';
     return '${maybeMapPrototype(allConstructors, genericsParameter)};';
-  }
-}
-
-class Getter {
-  final String type;
-  final String name;
-
-  Getter({this.type, this.name});
-
-  @override
-  String toString() {
-    return '${type ?? 'dynamic'} get $name;';
-  }
-}
-
-extension PropertiesAsGetters on List<Property> {
-  List<Getter> asGetters() {
-    return map((p) => p.getter).toList();
   }
 }

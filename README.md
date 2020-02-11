@@ -534,6 +534,20 @@ With these changes, [Freezed] will automatically ask [json_serializable] to gene
 Then, for classes with multiple constructors, [Freezed] will take care of deciding which
 constructor should be used.
 
+**What about `@JsonKey`?**
+
+All decorators passed to a constructor parameters are "copy-pasted" to the generated property too.\
+As such, you can write:
+
+```dart
+@immutable
+abstract class Example with _$Example {
+  factory Example(@Jsonkey(name: 'my_property') String myProperty) = _Example;
+
+  factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
+}
+```
+
 # Roadmap
 
 - support for properties shared between multiple constructors but with a different type.

@@ -22,6 +22,7 @@ class MyObject {
 }
 
 Future<void> main() async {
+  // TODO: non-const factory should not generate const concrete implementations
   test('== uses identical first', () {
     var didEqual = false;
     final obj = MyObject(() => didEqual = true);
