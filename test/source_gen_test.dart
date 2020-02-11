@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:freezed/src/generator.dart';
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 

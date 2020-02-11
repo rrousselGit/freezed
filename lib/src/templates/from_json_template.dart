@@ -1,34 +1,34 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
-import 'package:freezed/src/templates/prototypes.dart';
 import 'package:meta/meta.dart';
 
 class FromJson {
   FromJson({
     @required this.name,
     @required this.constructors,
-    @required this.typeParameters,
+    @required this.genericParameters,
+    @required this.genericDefinitions,
   });
 
   final String name;
-  final List<ConstructorElement> constructors;
-  final List<TypeParameterElement> typeParameters;
+  final List<ConstructorDetails> constructors;
+  final GenericsParameterTemplate genericParameters;
+  final GenericsDefinitionTemplate genericDefinitions;
 
   @override
   String toString() {
     String content;
 
     if (constructors.length == 1) {
-      final ctor = constructors.first;
-      content = 'return ${getRedirectedConstructorName(ctor)}${GenericsParameterTemplate(typeParameters)}.fromJson(json);';
+      content = 'return ${constructors.first.redirectedName}$genericParameters.fromJson(json);';
     } else {
       final cases = constructors.map((constructor) {
-        final caseName = isDefaultConstructor(constructor) ? 'default' : constructor.name;
-        final concreteName = getRedirectedConstructorName(constructor);
+        final caseName = constructor.isDefault ? 'default' : constructor.name;
+        final concreteName = constructor.redirectedName;
 
         return '''
         case '$caseName':
-          return $concreteName${GenericsParameterTemplate(typeParameters)}.fromJson(json);
+          return $concreteName$genericParameters.fromJson(json);
         ''';
       }).join();
 
@@ -42,7 +42,7 @@ class FromJson {
     }
 
     return '''
-$name${GenericsParameterTemplate(typeParameters)} _\$${name}FromJson${GenericsDefinitionTemplate(typeParameters)}(Map<String, dynamic> json) {
+$name$genericParameters _\$${name}FromJson$genericDefinitions(Map<String, dynamic> json) {
 $content
 }
 ''';

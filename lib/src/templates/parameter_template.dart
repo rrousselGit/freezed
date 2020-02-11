@@ -63,6 +63,26 @@ class ParametersTemplate {
   final List<Parameter> optionalPositionalParameters;
   final List<Parameter> namedParameters;
 
+  ParametersTemplate asThis() {
+    List<Parameter> asThis(List<Parameter> parameters) {
+      return parameters
+          .map(
+            (e) => LocalParameter(
+              isRequired: e.isRequired,
+              name: e.name,
+              type: e.type,
+            ),
+          )
+          .toList();
+    }
+
+    return ParametersTemplate(
+      asThis(positionalParameters),
+      optionalPositionalParameters: asThis(optionalPositionalParameters),
+      namedParameters: asThis(namedParameters),
+    );
+  }
+
   @override
   String toString() {
     final buffer = StringBuffer()..writeAll(positionalParameters, ', ');

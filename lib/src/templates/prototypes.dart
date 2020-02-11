@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:meta/meta.dart';
 
 import 'parameter_template.dart';
@@ -15,25 +16,25 @@ String getRedirectedConstructorName(ConstructorElement constructor) {
   return redirectedConstructorNameRegexp.firstMatch(source.substring(location))?.group(1);
 }
 
-String whenPrototype(List<ConstructorElement> allConstructors) {
+String whenPrototype(List<ConstructorDetails> allConstructors) {
   return _whenPrototype(allConstructors, areCallbacksRequired: true, name: 'when');
 }
 
-String maybeWhenPrototype(List<ConstructorElement> allConstructors) {
+String maybeWhenPrototype(List<ConstructorDetails> allConstructors) {
   return _whenPrototype(allConstructors, areCallbacksRequired: false, name: 'maybeWhen');
 }
 
-String mapPrototype(List<ConstructorElement> allConstructors, List<TypeParameterElement> typeParameters) {
-  return _mapPrototype(allConstructors, typeParameters, areCallbacksRequired: true, name: 'map');
+String mapPrototype(List<ConstructorDetails> allConstructors, GenericsParameterTemplate genericParameters) {
+  return _mapPrototype(allConstructors, genericParameters, areCallbacksRequired: true, name: 'map');
 }
 
-String maybeMapPrototype(List<ConstructorElement> allConstructors, List<TypeParameterElement> typeParameters) {
-  return _mapPrototype(allConstructors, typeParameters, areCallbacksRequired: false, name: 'maybeMap');
+String maybeMapPrototype(List<ConstructorDetails> allConstructors, GenericsParameterTemplate genericParameters) {
+  return _mapPrototype(allConstructors, genericParameters, areCallbacksRequired: false, name: 'maybeMap');
 }
 
 String _mapPrototype(
-  List<ConstructorElement> allConstructors,
-  List<TypeParameterElement> typeParameters, {
+  List<ConstructorDetails> allConstructors,
+  GenericsParameterTemplate genericParameters, {
   @required bool areCallbacksRequired,
   @required String name,
 }) {
@@ -45,7 +46,7 @@ String _mapPrototype(
       return ParametersTemplate([
         Parameter(
           name: 'value',
-          type: '${getRedirectedConstructorName(constructor)}${GenericsParameterTemplate(typeParameters)}',
+          type: '${constructor.redirectedName}$genericParameters',
         ),
       ]);
     },
@@ -53,7 +54,7 @@ String _mapPrototype(
 }
 
 String _whenPrototype(
-  List<ConstructorElement> allConstructors, {
+  List<ConstructorDetails> allConstructors, {
   @required bool areCallbacksRequired,
   @required String name,
 }) {
@@ -62,21 +63,20 @@ String _whenPrototype(
     areCallbacksRequired: areCallbacksRequired,
     name: name,
     ctor2parameters: (constructor) {
-      final constructorParameters = ParametersTemplate.fromParameterElements(constructor.parameters);
       return ParametersTemplate([
-        ...constructorParameters.positionalParameters,
-        ...constructorParameters.optionalPositionalParameters,
-        ...constructorParameters.namedParameters,
+        ...constructor.parameters.positionalParameters,
+        ...constructor.parameters.optionalPositionalParameters,
+        ...constructor.parameters.namedParameters,
       ]);
     },
   );
 }
 
 String _unionPrototype(
-  List<ConstructorElement> allConstructors, {
+  List<ConstructorDetails> allConstructors, {
   @required bool areCallbacksRequired,
   @required String name,
-  @required ParametersTemplate ctor2parameters(ConstructorElement ctor),
+  @required ParametersTemplate ctor2parameters(ConstructorDetails ctor),
 }) {
   final buffer = StringBuffer('@optionalTypeArgs Result $name<Result extends Object>(');
 
@@ -85,11 +85,11 @@ String _unionPrototype(
     var template = CallbackParameter(
       name: constructorNameToCallbackName(constructor.name),
       type: 'Result',
-      isRequired: !isDefaultConstructor(constructor) && areCallbacksRequired,
+      isRequired: !constructor.isDefault && areCallbacksRequired,
       parameters: ctor2parameters(constructor),
     );
 
-    if (isDefaultConstructor(constructor)) {
+    if (constructor.isDefault) {
       buffer..write(template)..write(',');
     } else {
       parameters.add(template);
