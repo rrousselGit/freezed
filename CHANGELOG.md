@@ -1,3 +1,8 @@
+# 0.2.1
+
+Fixes a bug where classes with a single constructor + fromJson did not generate
+properites/copyWith.
+
 # 0.2.0
 
 Transfer all parameters decorators to the generated properties.
