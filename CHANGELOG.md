@@ -1,3 +1,7 @@
+# 0.2.0
+
+Transfer all parameters decorators to the generated properties.
+
 # 0.1.4
 
 - Fixed a bug where `map`/`maybeMap` on generic classes didn't pass the generic parameters.

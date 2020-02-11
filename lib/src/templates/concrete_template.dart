@@ -2,7 +2,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:meta/meta.dart';
 
-import 'abstract_template.dart';
 import 'parameter_template.dart';
 import 'prototypes.dart';
 
@@ -205,7 +204,7 @@ String toString($parameters) {
     if (constructor.impliedProperties.isEmpty) return '';
 
     final parameters = constructor.impliedProperties.map((p) {
-      return '${p.type} ${p.name}';
+      return '${p.decorators.join()} ${p.type} ${p.name}';
     }).join(',');
 
     final result = '''
@@ -290,20 +289,45 @@ int get hashCode => $hashCodeImpl;
 class Property {
   final String type;
   final String name;
+  final List<String> decorators;
 
-  Property({this.type, this.name});
+  Property({
+    @required this.type,
+    @required this.name,
+    @required this.decorators,
+  });
 
   factory Property.fromParameter(ParameterElement element) {
     return Property(
       name: element.name,
       type: element.type?.getDisplayString(),
+      decorators: parseDecorators(element.metadata),
     );
   }
 
   @override
   String toString() {
-    return 'final ${type ?? 'dynamic'} $name;';
+    return '${decorators.join()} final ${type ?? 'dynamic'} $name;';
   }
 
-  Getter get getter => Getter(name: name, type: type);
+  Getter get getter => Getter(name: name, type: type, decorators: decorators);
+}
+
+class Getter {
+  final String type;
+  final String name;
+  final List<String> decorators;
+
+  Getter({@required this.type, @required this.name, @required this.decorators});
+
+  @override
+  String toString() {
+    return '${decorators.join()} ${type ?? 'dynamic'} get $name;';
+  }
+}
+
+extension PropertiesAsGetters on List<Property> {
+  List<Getter> asGetters() {
+    return map((p) => p.getter).toList();
+  }
 }

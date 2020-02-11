@@ -97,7 +97,7 @@ $runtimeType(
 }
 
 @immutable
-class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, Data, Immutable> {
+class FreezedGenerator extends ParserGenerator<ClassElement, _GlobalData, Data, Immutable> {
   @override
   Data parseElement(_GlobalData globalData, ClassElement element) {
     // TODO: verify _$name is mixed-in
@@ -133,7 +133,7 @@ class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, Data,
   List<ConstructorDetails> _parseConstructorsNeedsGeneration(ClassElement element) {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
-      if (!constructor.isFactory || constructor.redirectedConstructor != null || constructor.name == 'fromJson') {
+      if (!constructor.isFactory || constructor.name == 'fromJson') {
         continue;
       }
       final redirectedName = getRedirectedConstructorName(constructor);
@@ -155,8 +155,7 @@ class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, Data,
           name: constructor.name,
           fullName: fullName,
           impliedProperties: [
-            for (final parameter in constructor.parameters)
-              Property(name: parameter.name, type: parameter.type?.getDisplayString())
+            for (final parameter in constructor.parameters) Property.fromParameter(parameter),
           ],
           isDefault: isDefaultConstructor(constructor),
           parameters: ParametersTemplate.fromParameterElements(constructor.parameters),

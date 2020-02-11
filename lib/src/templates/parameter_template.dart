@@ -1,4 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:freezed/src/templates/prototypes.dart';
+import 'package:meta/meta.dart';
 
 class GenericsDefinitionTemplate {
   final List<TypeParameterElement> typeParameters;
@@ -43,12 +45,14 @@ class ParametersTemplate {
           type: e.type?.getDisplayString(),
           name: e.name,
           isRequired: e.hasRequired,
+          decorators: parseDecorators(e.metadata),
         );
       }
       return Parameter(
         name: e.name,
         isRequired: e.hasRequired,
         type: e.type?.getDisplayString(),
+        decorators: parseDecorators(e.metadata),
       );
     }
 
@@ -71,6 +75,7 @@ class ParametersTemplate {
               isRequired: e.isRequired,
               name: e.name,
               type: e.type,
+              decorators: e.decorators,
             ),
           )
           .toList();
@@ -113,6 +118,7 @@ class ParametersTemplate {
                 name: e.name,
                 type: e.type,
                 isRequired: e.isRequired,
+                decorators: e.decorators,
               ))
           .toList(),
       namedParameters: namedParameters
@@ -120,6 +126,7 @@ class ParametersTemplate {
                 name: e.name,
                 type: e.type,
                 isRequired: e.isRequired,
+                decorators: e.decorators,
               ))
           .toList(),
       optionalPositionalParameters: optionalPositionalParameters
@@ -127,6 +134,7 @@ class ParametersTemplate {
                 name: e.name,
                 type: e.type,
                 isRequired: e.isRequired,
+                decorators: e.decorators,
               ))
           .toList(),
     );
@@ -135,49 +143,63 @@ class ParametersTemplate {
 
 class Parameter {
   Parameter({
-    this.type,
-    this.name,
-    this.isRequired = false,
+    @required this.type,
+    @required this.name,
+    @required this.isRequired,
+    @required this.decorators,
   });
 
   final String type;
   final String name;
   final bool isRequired;
+  final List<String> decorators;
 
   @override
   String toString() {
-    var res = '${type ?? 'dynamic'} $name';
+    var res = '${decorators.join()}  ${type ?? 'dynamic'} $name';
     return isRequired ? '@required $res' : res;
   }
 }
 
 class LocalParameter extends Parameter {
   LocalParameter({
-    String name,
-    String type,
-    bool isRequired = false,
-  }) : super(name: name, type: type, isRequired: isRequired);
+    @required String name,
+    @required String type,
+    @required bool isRequired,
+    @required List<String> decorators,
+  }) : super(
+          name: name,
+          type: type,
+          isRequired: isRequired,
+          decorators: decorators,
+        );
 
   @override
   String toString() {
-    var res = 'this.$name';
+    var res = '${decorators.join()} this.$name';
     return isRequired ? '@required $res' : res;
   }
 }
 
 class CallbackParameter extends Parameter {
   CallbackParameter({
-    String name,
-    String type,
-    bool isRequired = false,
-    this.parameters,
-  }) : super(name: name, type: type, isRequired: isRequired);
+    @required String name,
+    @required String type,
+    @required bool isRequired,
+    @required List<String> decorators,
+    @required this.parameters,
+  }) : super(
+          name: name,
+          type: type,
+          isRequired: isRequired,
+          decorators: decorators,
+        );
 
   final ParametersTemplate parameters;
 
   @override
   String toString() {
-    var res = '$type $name($parameters)';
+    var res = '${decorators.join()} $type $name($parameters)';
     return isRequired ? '@required $res' : res;
   }
 }

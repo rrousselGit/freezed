@@ -6,6 +6,12 @@ import 'parameter_template.dart';
 
 final redirectedConstructorNameRegexp = RegExp(r'([^\s \t\n=<});]+)(?:<.+>)?;');
 
+List<String> parseDecorators(List<ElementAnnotation> metadata) {
+  return [
+    for (final meta in metadata) if (!meta.isRequired) meta.toSource(),
+  ];
+}
+
 String getRedirectedConstructorName(ConstructorElement constructor) {
   if (constructor.name == 'fixed') {
     print(constructor.redirectedConstructor);
@@ -47,6 +53,8 @@ String _mapPrototype(
         Parameter(
           name: 'value',
           type: '${constructor.redirectedName}$genericParameters',
+          isRequired: false,
+          decorators: const [],
         ),
       ]);
     },
@@ -87,6 +95,7 @@ String _unionPrototype(
       type: 'Result',
       isRequired: !constructor.isDefault && areCallbacksRequired,
       parameters: ctor2parameters(constructor),
+      decorators: const [],
     );
 
     if (constructor.isDefault) {
