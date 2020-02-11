@@ -73,11 +73,11 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
     if (element.constructors.any((element) => element.name == 'fromJson')) {
       hasJson = this.hasJson;
       if (hasJson) {
-        yield FromJson(
-          name: element.name,
-          constructors: constructors,
-          typeParameters: element.typeParameters,
-        ).toString();
+        // yield FromJson(
+        //   name: element.name,
+        //   constructors: constructors,
+        //   typeParameters: element.typeParameters,
+        // ).toString();
       }
     }
 
@@ -89,40 +89,40 @@ class FreezedGenerator extends GeneratorForAnnotation<Immutable> {
       });
     }).toList();
 
-    yield Abstract(
-      name: '_\$${element.name}',
-      interface: element.name,
-      typeParameters: element.typeParameters,
-      hasJson: hasJson,
-      allConstructors: constructors,
-      properties: [
-        for (final property in commonProperties) Getter(name: property.name, type: property.type?.getDisplayString()),
-      ],
-    ).toString();
+    // yield Abstract(
+    //   name: '_\$${element.name}',
+    //   interface: element.name,
+    //   typeParameters: element.typeParameters,
+    //   hasJson: hasJson,
+    //   allConstructors: constructors,
+    //   properties: [
+    //     for (final property in commonProperties) Getter(name: property.name, type: property.type?.getDisplayString()),
+    //   ],
+    // ).toString();
 
     for (final constructor in constructors) {
       final redirectedConstructorName = getRedirectedConstructorName(constructor);
 
-      yield Concrete(
-        name: redirectedConstructorName,
-        allConstructors: constructors,
-        typeParameters: element.typeParameters,
-        hasDiagnosticable: hasDiagnosticable,
-        hasJson: hasJson,
-        interface: element.name,
-        constructorName: constructor.name,
-        constructorParameters: ParametersTemplate.fromParameterElements(
-          constructor?.parameters ?? [],
-          isAssignedToThis: true,
-        ),
-        superProperties: [
-          for (final property in commonProperties)
-            Property(name: property.name, type: property.type?.getDisplayString())
-        ],
-        properties: constructor?.parameters?.map((p) {
-          return Property(name: p.name, type: p.type?.getDisplayString());
-        })?.toList(),
-      ).toString();
+      // yield Concrete(
+      //   name: redirectedConstructorName,
+      //   allConstructors: constructors,
+      //   typeParameters: element.typeParameters,
+      //   hasDiagnosticable: hasDiagnosticable,
+      //   hasJson: hasJson,
+      //   interface: element.name,
+      //   constructorName: constructor.name,
+      //   constructorParameters: ParametersTemplate.fromParameterElements(
+      //     constructor?.parameters ?? [],
+      //     isAssignedToThis: true,
+      //   ),
+      //   superProperties: [
+      //     for (final property in commonProperties)
+      //       Property(name: property.name, type: property.type?.getDisplayString())
+      //   ],
+      //   properties: constructor?.parameters?.map((p) {
+      //     return Property(name: p.name, type: p.type?.getDisplayString());
+      //   })?.toList(),
+      // ).toString();
     }
   }
 }

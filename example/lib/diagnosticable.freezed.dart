@@ -22,14 +22,14 @@ abstract class _$Example<T> {
 
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(_Example value), {
-    @required Result named(_Example2 value),
+    Result $default(_Example<T> value), {
+    @required Result named(_Example2<T> value),
   });
 
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(_Example value), {
-    Result named(_Example2 value),
+    Result $default(_Example<T> value), {
+    Result named(_Example2<T> value),
     @required Result orElse(),
   });
 }
@@ -105,8 +105,8 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(_Example value), {
-    @required Result named(_Example2 value),
+    Result $default(_Example<T> value), {
+    @required Result named(_Example2<T> value),
   }) {
     assert($default != null);
     assert(named != null);
@@ -116,8 +116,8 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(_Example value), {
-    Result named(_Example2 value),
+    Result $default(_Example<T> value), {
+    Result named(_Example2<T> value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -201,8 +201,8 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(_Example value), {
-    @required Result named(_Example2 value),
+    Result $default(_Example<T> value), {
+    @required Result named(_Example2<T> value),
   }) {
     assert($default != null);
     assert(named != null);
@@ -212,8 +212,8 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(_Example value), {
-    Result named(_Example2 value),
+    Result $default(_Example<T> value), {
+    Result named(_Example2<T> value),
     @required Result orElse(),
   }) {
     assert(orElse != null);

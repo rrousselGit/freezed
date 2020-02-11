@@ -5,19 +5,29 @@ import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'parse_generator.dart';
+import 'templates/abstract_template.dart';
+import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
 
 @immutable
-class _ConstructorDetails {
-  _ConstructorDetails({
+class ConstructorDetails {
+  ConstructorDetails({
     @required this.name,
+    @required this.isDefault,
     @required this.redirectedName,
-    @required this.parametersTemplate,
+    @required this.parameters,
+    @required this.impliedProperties,
+    @required this.fullName,
   });
 
   final String name;
   final String redirectedName;
-  final ParametersTemplate parametersTemplate;
+  final ParametersTemplate parameters;
+  final List<Property> impliedProperties;
+  final bool isDefault;
+  final String fullName;
+
+  String get callbackName => constructorNameToCallbackName(name);
 
   @override
   String toString() {
@@ -25,28 +35,33 @@ class _ConstructorDetails {
 
     $runtimeType(
       name: $name,
+      isDefault: $isDefault,
       redirectedName: $redirectedName,
-      parametersTemplate: $parametersTemplate,
+      parameters: $parameters,
+      impliedProperties: $impliedProperties,
+      fullName: $fullName,
     )
 ''';
   }
 }
 
 @immutable
-class _Data {
-  _Data({
+class Data {
+  Data({
     @required this.name,
     @required this.needsJsonSerializable,
     @required this.constructors,
     @required this.genericsDefinitionTemplate,
     @required this.genericsParameterTemplate,
+    @required this.commonProperties,
   }) : assert(constructors.isEmpty);
 
   final String name;
   final bool needsJsonSerializable;
-  final List<_ConstructorDetails> constructors;
+  final List<ConstructorDetails> constructors;
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
+  final List<Property> commonProperties;
 
   @override
   String toString() {
@@ -57,6 +72,7 @@ $runtimeType(
   constructors: $constructors,
   genericsDefinitionTemplate: $genericsDefinitionTemplate,
   genericsParameterTemplate: $genericsParameterTemplate,
+  commonProperties: $commonProperties,
 )''';
   }
 }
@@ -82,9 +98,9 @@ $runtimeType(
 }
 
 @immutable
-class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, _Data> {
+class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, Data> {
   @override
-  _Data parseElement(_GlobalData globalData, ClassElement element) {
+  Data parseElement(_GlobalData globalData, ClassElement element) {
     // TODO: verify _$name is mixed-in
 
     final constructrorsNeedsGeneration = _parseConstructorsNeedsGeneration(element);
@@ -92,12 +108,22 @@ class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, _Data
 
     // TODO: parse late finals with an initializer and copy-paste them to the concrete class + toString/debugFillProperties
 
-    return _Data(
+    return Data(
       name: element.name,
       // TODO: test can write manual fromJson ctor
+      commonProperties: element.constructors.first.parameters
+          .where((parameter) {
+            return element.constructors.every((constructor) {
+              return constructor.parameters.any((p) {
+                return p.name == parameter.name && p.type == parameter.type;
+              });
+            });
+          })
+          .map((property) => Property.fromParameter(property))
+          .toList(),
       needsJsonSerializable: globalData.hasJson &&
           element.constructors.any((element) {
-            return !constructrorsNeedsGeneration.contains(element) && element.isFactory && element.name == 'fromJson';
+            return element.isFactory && element.name == 'fromJson';
           }),
       constructors: constructrorsNeedsGeneration,
       genericsDefinitionTemplate: GenericsDefinitionTemplate(element.typeParameters),
@@ -105,17 +131,36 @@ class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, _Data
     );
   }
 
-  List<_ConstructorDetails> _parseConstructorsNeedsGeneration(ClassElement element) {
-    final result = <_ConstructorDetails>[];
+  List<ConstructorDetails> _parseConstructorsNeedsGeneration(ClassElement element) {
+    final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
-      if (!constructor.isFactory || constructor.redirectedConstructor != null) continue;
+      if (!constructor.isFactory || constructor.redirectedConstructor != null || constructor.name == 'fromJson') {
+        continue;
+      }
       final redirectedName = getRedirectedConstructorName(constructor);
       if (redirectedName == null) continue;
 
+      var generics = element.typeParameters.map((e) {
+        return '\$${e.name}';
+      }).join(', ');
+      if (generics.isNotEmpty) {
+        generics = '<$generics>';
+      }
+
+      final fullName = constructor.name == null || constructor.name.isEmpty
+          ? '${element.name}$generics'
+          : '${element.name}$generics.${constructor.name}';
+
       result.add(
-        _ConstructorDetails(
+        ConstructorDetails(
           name: constructor.name,
-          parametersTemplate: ParametersTemplate.fromParameterElements(constructor.parameters),
+          fullName: fullName,
+          impliedProperties: [
+            for (final parameter in constructor.parameters)
+              Property(name: parameter.name, type: parameter.type?.getDisplayString())
+          ],
+          isDefault: isDefaultConstructor(constructor),
+          parameters: ParametersTemplate.fromParameterElements(constructor.parameters),
           redirectedName: redirectedName,
         ),
       );
@@ -124,22 +169,37 @@ class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, _Data
   }
 
   @override
-  Iterable<Object> generateForData(_GlobalData globalData, _Data data) sync* {
-    yield '/*';
-
-    yield globalData;
-
-    yield data;
-
+  Iterable<Object> generateForData(_GlobalData globalData, Data data) sync* {
     if (globalData.hasJson && data.needsJsonSerializable) {
-      // yield FromJson(
-      //   name: data.name,
-      //   constructors: constructors,
-      //   typeParameters: element.typeParameters,
-      // );
+      yield FromJson(
+        name: data.name,
+        constructors: data.constructors,
+        genericParameters: data.genericsParameterTemplate,
+        genericDefinitions: data.genericsDefinitionTemplate,
+      );
     }
 
-    yield '*/';
+    yield Abstract(
+      name: data.name,
+      genericsDefinition: data.genericsDefinitionTemplate,
+      genericsParameter: data.genericsParameterTemplate,
+      shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
+      abstractProperties: data.commonProperties.asGetters(),
+      allConstructors: data.constructors,
+    );
+
+    for (final constructor in data.constructors) {
+      yield Concrete(
+        name: data.name,
+        hasDiagnosticable: globalData.hasDiagnostics,
+        shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
+        constructor: constructor,
+        allConstructors: data.constructors,
+        commonProperties: data.commonProperties,
+        genericsDefinition: data.genericsDefinitionTemplate,
+        genericsParameter: data.genericsParameterTemplate,
+      );
+    }
   }
 
   @override
@@ -152,16 +212,8 @@ class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, _Data
   @override
   _GlobalData parseGlobalData(LibraryReader library) {
     return _GlobalData(
-      hasDiagnostics: _libraryHasElement(
-        library.element,
-        '/flutter/',
-        (element) => element.displayName.contains('Diagnosticable') && element.kind == ElementKind.CLASS,
-      ),
-      hasJson: _libraryHasElement(
-        library.element,
-        '/json_annotation/',
-        (element) => element.displayName.contains('JsonSerializable') && element.kind == ElementKind.CLASS,
-      ),
+      hasJson: library.element.importedLibraries.any(_libraryHasJson),
+      hasDiagnostics: library.element.importedLibraries.any(_libraryHasDiagnosticable),
     );
   }
 
@@ -178,5 +230,21 @@ class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, _Data
       return library.librarySource.fullName.startsWith(pathStartsWith) &&
           _libraryHasElement(library, pathStartsWith, matcher);
     });
+  }
+
+  bool _libraryHasDiagnosticable(LibraryElement library) {
+    return _libraryHasElement(
+      library,
+      '/flutter/',
+      (element) => element.displayName.contains('Diagnosticable') && element.kind == ElementKind.CLASS,
+    );
+  }
+
+  bool _libraryHasJson(LibraryElement library) {
+    return _libraryHasElement(
+      library,
+      '/json_annotation/',
+      (element) => element.displayName.contains('JsonSerializable') && element.kind == ElementKind.CLASS,
+    );
   }
 }

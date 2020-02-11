@@ -1,4 +1,5 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:freezed/src/freezed_generator.dart';
+import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:meta/meta.dart';
 
 import 'parameter_template.dart';
@@ -7,25 +8,25 @@ import 'prototypes.dart';
 class Abstract {
   Abstract({
     @required this.name,
-    @required this.interface,
-    @required this.typeParameters,
-    @required this.properties,
-    @required this.hasJson,
+    @required this.genericsParameter,
+    @required this.genericsDefinition,
+    @required this.abstractProperties,
+    @required this.shouldGenerateJson,
     @required this.allConstructors,
   });
 
   final String name;
-  final String interface;
-  final List<Getter> properties;
-  final List<TypeParameterElement> typeParameters;
-  final List<ConstructorElement> allConstructors;
-  final bool hasJson;
+  final List<Getter> abstractProperties;
+  final GenericsParameterTemplate genericsParameter;
+  final GenericsDefinitionTemplate genericsDefinition;
+  final List<ConstructorDetails> allConstructors;
+  final bool shouldGenerateJson;
 
   @override
   String toString() {
     return '''
-abstract class $name${GenericsDefinitionTemplate(typeParameters)} {
-${properties.join()}
+abstract class _\$$name$genericsDefinition {
+${abstractProperties.join()}
 
 $copyWithPrototype
 
@@ -43,19 +44,19 @@ $toJson
   }
 
   String get toJson {
-    if (!hasJson) return '';
+    if (!shouldGenerateJson) return '';
 
     return 'Map<String, dynamic> toJson();';
   }
 
   String get copyWithPrototype {
-    if (properties.isEmpty) return '';
-    final parameters = properties.map((p) {
+    if (abstractProperties.isEmpty) return '';
+    final parameters = abstractProperties.map((p) {
       return '${p.type} ${p.name}';
     }).join(',');
 
     return '''
-$interface${GenericsParameterTemplate(typeParameters)} copyWith({
+$name$genericsParameter copyWith({
 $parameters
 });
 ''';
@@ -73,12 +74,12 @@ $parameters
 
   String get map {
     if (allConstructors.length < 2) return '';
-    return '${mapPrototype(allConstructors, typeParameters)};';
+    return '${mapPrototype(allConstructors, genericsParameter)};';
   }
 
   String get maybeMap {
     if (allConstructors.length < 2) return '';
-    return '${maybeMapPrototype(allConstructors, typeParameters)};';
+    return '${maybeMapPrototype(allConstructors, genericsParameter)};';
   }
 }
 
@@ -91,5 +92,11 @@ class Getter {
   @override
   String toString() {
     return '${type ?? 'dynamic'} get $name;';
+  }
+}
+
+extension PropertiesAsGetters on List<Property> {
+  List<Getter> asGetters() {
+    return map((p) => p.getter).toList();
   }
 }
