@@ -98,7 +98,7 @@ $runtimeType(
 }
 
 @immutable
-class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, Data> {
+class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, Data, Immutable> {
   @override
   Data parseElement(_GlobalData globalData, ClassElement element) {
     // TODO: verify _$name is mixed-in
@@ -203,17 +203,10 @@ class FreezedGenerator extends ParsserGenerator<ClassElement, _GlobalData, Data>
   }
 
   @override
-  Iterable<ClassElement> libraryToElements(LibraryReader library) {
-    return library.classes.where((e) {
-      return e.hasSealed || e.metadata.any((element) => element.isImmutable);
-    });
-  }
-
-  @override
-  _GlobalData parseGlobalData(LibraryReader library) {
+  _GlobalData parseGlobalData(LibraryElement library) {
     return _GlobalData(
-      hasJson: library.element.importedLibraries.any(_libraryHasJson),
-      hasDiagnostics: library.element.importedLibraries.any(_libraryHasDiagnosticable),
+      hasJson: library.importedLibraries.any(_libraryHasJson),
+      hasDiagnostics: library.importedLibraries.any(_libraryHasDiagnosticable),
     );
   }
 
