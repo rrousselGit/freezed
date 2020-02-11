@@ -2,7 +2,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:meta/meta.dart';
-import 'package:source_gen/source_gen.dart';
 
 import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
