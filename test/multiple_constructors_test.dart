@@ -236,6 +236,17 @@ void main() {
 }
 '''), throwsCompileError);
     });
+
     // TODO: shared property name but different type
+  });
+
+  test('Can have a named constructor and a property using the same name', () {
+    var error = Error();
+    final value = NameConflict.error(error);
+
+    expect(
+      value.when(something: (_) => 42, error: (err) => err),
+      error,
+    );
   });
 }

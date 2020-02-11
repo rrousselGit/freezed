@@ -151,12 +151,19 @@ ${mapPrototype(allConstructors, genericsParameter)} {
   String get maybeWhen {
     if (allConstructors.length < 2) return '';
 
+    var callbackParameters = constructor.impliedProperties.map((e) {
+      if (allConstructors.any((c) => c.callbackName == e.name)) {
+        return 'this.${e.name}';
+      }
+      return e.name;
+    }).join(',');
+
     return '''
 @override
 ${maybeWhenPrototype(allConstructors)} {
   assert(orElse != null);
   if (${constructor.callbackName} != null) {
-    return ${constructor.callbackName}(${constructor.impliedProperties.map((e) => e.name).join(',')});
+    return ${constructor.callbackName}($callbackParameters);
   }
   return orElse();
 }''';
@@ -167,11 +174,18 @@ ${maybeWhenPrototype(allConstructors)} {
 
     final asserts = [for (final ctor in allConstructors) 'assert(${ctor.callbackName} != null);'];
 
+    var callbackParameters = constructor.impliedProperties.map((e) {
+      if (allConstructors.any((c) => c.callbackName == e.name)) {
+        return 'this.${e.name}';
+      }
+      return e.name;
+    }).join(',');
+
     return '''
 @override
 ${whenPrototype(allConstructors)} {
   ${asserts.join()}
-  return ${constructor.callbackName}(${constructor.impliedProperties.map((e) => e.name).join(',')});
+  return ${constructor.callbackName}($callbackParameters);
 }''';
   }
 

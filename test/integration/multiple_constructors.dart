@@ -26,3 +26,9 @@ abstract class NoDefault with _$NoDefault {
   const factory NoDefault.first(String a) = NoDefault1;
   const factory NoDefault.second(String a) = NoDefault2;
 }
+
+@immutable
+abstract class NameConflict with _$NameConflict {
+  factory NameConflict.something(Error error) = Something;
+  factory NameConflict.error(Error error) = SomeError;
+}
