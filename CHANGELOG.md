@@ -1,3 +1,8 @@
+# 0.2.2
+
+Fixes a bug where the code would not compile if a property had the same name as a
+named constructor.
+
 # 0.2.1
 
 Fixes a bug where classes with a single constructor + fromJson did not generate
