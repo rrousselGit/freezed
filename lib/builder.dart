@@ -5,8 +5,5 @@ import 'src/freezed_generator.dart';
 
 /// Builds generators for `build_runner` to run
 Builder freezed(BuilderOptions options) {
-  return PartBuilder([
-    FreezedGenerator(),
-    // a.FreezedGenerator(),
-  ], '.freezed.dart');
+  return PartBuilder([FreezedGenerator()], '.freezed.dart');
 }
