@@ -110,15 +110,15 @@ class FreezedGenerator extends ParserGenerator<ClassElement, _GlobalData, Data, 
     return Data(
       name: element.name,
       // TODO: test can write manual fromJson ctor
-      commonProperties: element.constructors.first.parameters
+      commonProperties: constructrorsNeedsGeneration.first.parameters.allParameters
           .where((parameter) {
-            return element.constructors.every((constructor) {
-              return constructor.parameters.any((p) {
+            return constructrorsNeedsGeneration.every((constructor) {
+              return constructor.parameters.allParameters.any((p) {
                 return p.name == parameter.name && p.type == parameter.type;
               });
             });
           })
-          .map((property) => Property.fromParameter(property))
+          .map((p) => Property(decorators: p.decorators, name: p.name, type: p.type))
           .toList(),
       needsJsonSerializable: globalData.hasJson &&
           element.constructors.any((element) {

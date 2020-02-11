@@ -8,6 +8,12 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
+  test('single ctor + json can access properties/copyWith', () {
+    final value = Single(42);
+
+    expect(value.a, 42);
+    expect(value.copyWith(a: 24), Single(24));
+  });
   test('has no issue', () async {
     final main = await resolveSources(
       {

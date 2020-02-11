@@ -67,6 +67,12 @@ class ParametersTemplate {
   final List<Parameter> optionalPositionalParameters;
   final List<Parameter> namedParameters;
 
+  List<Parameter> get allParameters => [
+        ...positionalParameters,
+        ...optionalPositionalParameters,
+        ...namedParameters,
+      ];
+
   ParametersTemplate asThis() {
     List<Parameter> asThis(List<Parameter> parameters) {
       return parameters
