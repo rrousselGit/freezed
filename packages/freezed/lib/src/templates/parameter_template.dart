@@ -166,6 +166,7 @@ class Parameter {
     @required this.isRequired,
     @required this.decorators,
     @required this.nullable,
+    this.defaultValue,
   });
 
   final String type;
@@ -173,10 +174,14 @@ class Parameter {
   final bool isRequired;
   final bool nullable;
   final List<String> decorators;
+  final String defaultValue;
 
   @override
   String toString() {
     var res = '${decorators.join()}  ${type ?? 'dynamic'} $name';
+    if (defaultValue != null) {
+      res = '$res = $defaultValue';
+    }
     return isRequired ? '@required $res' : res;
   }
 }

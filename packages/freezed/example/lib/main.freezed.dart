@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package
+// ignore_for_file: deprecated_member_use_from_same_package, unnecessary_cast, prefer_const_constructors
 
 part of 'main.dart';
 
@@ -10,8 +10,9 @@ part of 'main.dart';
 mixin _$MyClass {
   String get a;
   int get b;
-
   MyClass copyWith({String a, int b});
+
+  _MyClass copyAsDefault({String a, int b});
 }
 
 class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
@@ -21,7 +22,6 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   final String a;
   @override
   final int b;
-
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'MyClass(a: $a, b: $b)';
@@ -59,6 +59,11 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
       b: b == freezed ? this.b : b as int,
     );
   }
+
+  @override
+  _MyClass copyAsDefault({Object a = immutable, Object b = immutable}) {
+    return _MyClass();
+  }
 }
 
 abstract class _MyClass implements MyClass {
@@ -68,9 +73,11 @@ abstract class _MyClass implements MyClass {
   String get a;
   @override
   int get b;
-
   @override
   _MyClass copyWith({String a, int b});
+
+  @override
+  _MyClass copyAsDefault({String a, int b});
 }
 
 mixin _$Union {
@@ -81,7 +88,6 @@ mixin _$Union {
     @required Result error(String message),
     @required Result complex(int a, String b),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(int value), {
@@ -90,7 +96,6 @@ mixin _$Union {
     Result complex(int a, String b),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>(
     Result $default(Data value), {
@@ -98,7 +103,6 @@ mixin _$Union {
     @required Result error(ErrorDetails value),
     @required Result complex(Complex value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
     Result $default(Data value), {
@@ -107,6 +111,11 @@ mixin _$Union {
     Result complex(Complex value),
     @required Result orElse(),
   });
+
+  Data copyAsDefault({@required int value});
+  Loading copyAsLoading();
+  ErrorDetails copyAsError({@required String message});
+  Complex copyAsComplex({@required int a, @required String b});
 }
 
 class _$Data with DiagnosticableTreeMixin implements Data {
@@ -114,7 +123,6 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   final int value;
-
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Union(value: $value)';
@@ -210,14 +218,47 @@ class _$Data with DiagnosticableTreeMixin implements Data {
     }
     return orElse();
   }
+
+  @override
+  Data copyAsDefault({@required int value}) {
+    return Data(
+      value as int,
+    );
+  }
+
+  @override
+  Loading copyAsLoading() {
+    return Loading();
+  }
+
+  @override
+  ErrorDetails copyAsError({Object message = immutable}) {
+    return ErrorDetails();
+  }
+
+  @override
+  Complex copyAsComplex({@required int a, @required String b}) {
+    return Complex(
+      a as int,
+      b as String,
+    );
+  }
 }
 
 abstract class Data implements Union {
   const factory Data(int value) = _$Data;
 
   int get value;
-
   Data copyWith({int value});
+
+  @override
+  Data copyAsDefault({int value});
+  @override
+  Loading copyAsLoading();
+  @override
+  ErrorDetails copyAsError({@required String message});
+  @override
+  Complex copyAsComplex({@required int a, @required String b});
 }
 
 class _$Loading with DiagnosticableTreeMixin implements Loading {
@@ -303,10 +344,44 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     }
     return orElse();
   }
+
+  @override
+  Data copyAsDefault({@required int value}) {
+    return Data(
+      value as int,
+    );
+  }
+
+  @override
+  Loading copyAsLoading() {
+    return Loading();
+  }
+
+  @override
+  ErrorDetails copyAsError({Object message = immutable}) {
+    return ErrorDetails();
+  }
+
+  @override
+  Complex copyAsComplex({@required int a, @required String b}) {
+    return Complex(
+      a as int,
+      b as String,
+    );
+  }
 }
 
 abstract class Loading implements Union {
   const factory Loading() = _$Loading;
+
+  @override
+  Data copyAsDefault({@required int value});
+  @override
+  Loading copyAsLoading();
+  @override
+  ErrorDetails copyAsError({@required String message});
+  @override
+  Complex copyAsComplex({@required int a, @required String b});
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
@@ -314,7 +389,6 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   final String message;
-
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Union.error(message: $message)';
@@ -409,14 +483,47 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     }
     return orElse();
   }
+
+  @override
+  Data copyAsDefault({@required int value}) {
+    return Data(
+      value as int,
+    );
+  }
+
+  @override
+  Loading copyAsLoading() {
+    return Loading();
+  }
+
+  @override
+  ErrorDetails copyAsError({Object message = immutable}) {
+    return ErrorDetails();
+  }
+
+  @override
+  Complex copyAsComplex({@required int a, @required String b}) {
+    return Complex(
+      a as int,
+      b as String,
+    );
+  }
 }
 
 abstract class ErrorDetails implements Union {
   const factory ErrorDetails([String message]) = _$ErrorDetails;
 
   String get message;
-
   ErrorDetails copyWith({String message});
+
+  @override
+  Data copyAsDefault({@required int value});
+  @override
+  Loading copyAsLoading();
+  @override
+  ErrorDetails copyAsError({String message});
+  @override
+  Complex copyAsComplex({@required int a, @required String b});
 }
 
 class _$Complex with DiagnosticableTreeMixin implements Complex {
@@ -428,7 +535,6 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
   final int a;
   @override
   final String b;
-
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Union.complex(a: $a, b: $b)';
@@ -530,6 +636,31 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
     }
     return orElse();
   }
+
+  @override
+  Data copyAsDefault({@required int value}) {
+    return Data(
+      value as int,
+    );
+  }
+
+  @override
+  Loading copyAsLoading() {
+    return Loading();
+  }
+
+  @override
+  ErrorDetails copyAsError({Object message = immutable}) {
+    return ErrorDetails();
+  }
+
+  @override
+  Complex copyAsComplex({@required int a, @required String b}) {
+    return Complex(
+      a as int,
+      b as String,
+    );
+  }
 }
 
 abstract class Complex implements Union {
@@ -537,13 +668,20 @@ abstract class Complex implements Union {
 
   int get a;
   String get b;
-
   Complex copyWith({int a, String b});
+
+  @override
+  Data copyAsDefault({@required int value});
+  @override
+  Loading copyAsLoading();
+  @override
+  ErrorDetails copyAsError({@required String message});
+  @override
+  Complex copyAsComplex({int a, String b});
 }
 
 mixin _$SharedProperty {
   String get name;
-
   SharedProperty copyWith({String name});
 
   @optionalTypeArgs
@@ -551,26 +689,26 @@ mixin _$SharedProperty {
     @required Result person(String name, int age),
     @required Result city(String name, int population),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result person(String name, int age),
     Result city(String name, int population),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result person(SharedProperty0 value),
     @required Result city(SharedProperty1 value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result person(SharedProperty0 value),
     Result city(SharedProperty1 value),
     @required Result orElse(),
   });
+
+  SharedProperty0 copyAsPerson({String name, @required int age});
+  SharedProperty1 copyAsCity({String name, @required int population});
 }
 
 class _$SharedProperty0
@@ -582,7 +720,6 @@ class _$SharedProperty0
   final String name;
   @override
   final int age;
-
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SharedProperty.person(name: $name, age: $age)';
@@ -670,6 +807,18 @@ class _$SharedProperty0
     }
     return orElse();
   }
+
+  @override
+  SharedProperty0 copyAsPerson(
+      {Object name = immutable, Object age = immutable}) {
+    return SharedProperty0();
+  }
+
+  @override
+  SharedProperty1 copyAsCity(
+      {Object name = immutable, Object population = immutable}) {
+    return SharedProperty1();
+  }
 }
 
 abstract class SharedProperty0 implements SharedProperty {
@@ -678,9 +827,13 @@ abstract class SharedProperty0 implements SharedProperty {
   @override
   String get name;
   int get age;
-
   @override
   SharedProperty0 copyWith({String name, int age});
+
+  @override
+  SharedProperty0 copyAsPerson({String name, int age});
+  @override
+  SharedProperty1 copyAsCity({String name, @required int population});
 }
 
 class _$SharedProperty1
@@ -692,7 +845,6 @@ class _$SharedProperty1
   final String name;
   @override
   final int population;
-
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SharedProperty.city(name: $name, population: $population)';
@@ -782,6 +934,18 @@ class _$SharedProperty1
     }
     return orElse();
   }
+
+  @override
+  SharedProperty0 copyAsPerson(
+      {Object name = immutable, Object age = immutable}) {
+    return SharedProperty0();
+  }
+
+  @override
+  SharedProperty1 copyAsCity(
+      {Object name = immutable, Object population = immutable}) {
+    return SharedProperty1();
+  }
 }
 
 abstract class SharedProperty1 implements SharedProperty {
@@ -790,7 +954,11 @@ abstract class SharedProperty1 implements SharedProperty {
   @override
   String get name;
   int get population;
-
   @override
   SharedProperty1 copyWith({String name, int population});
+
+  @override
+  SharedProperty0 copyAsPerson({String name, @required int age});
+  @override
+  SharedProperty1 copyAsCity({String name, int population});
 }

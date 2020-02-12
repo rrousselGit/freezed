@@ -3,10 +3,15 @@ import 'package:analyzer/error/error.dart';
 import 'package:build_test/build_test.dart';
 import 'package:matcher/matcher.dart';
 import 'package:test/test.dart';
+// ignore: deprecated_member_use
+export 'package:analyzer/analyzer.dart' show HintCode;
 
 final throwsCompileError = throwsA(isA<CompileError>());
 
-Future<void> compile(String src) async {
+/// Compiled with no error nor warnings
+final succeed = completion(const <ErrorCode>[]);
+
+Future<List<ErrorCode>> compile(String src) async {
   final main = await resolveSources({
     'freezed|test/integration/main.dart': '''
 library main;
@@ -24,6 +29,8 @@ $src
   if (criticalErrors.isNotEmpty) {
     throw CompileError(criticalErrors);
   }
+
+  return errorResult.errors.map((e) => e.errorCode).toList();
 }
 
 class CompileError extends Error {

@@ -39,29 +39,19 @@ ${shouldGenerateJson ? '@JsonSerializable()' : ''}
 class $concreteName$genericsDefinition $diagnosticable implements ${constructor.redirectedName}$genericsParameter {
   $isConst $concreteName(${constructor.parameters.asThis()})$asserts;
 
-  $concreteFromJsonConstructor
-
+$concreteFromJsonConstructor
 ${constructor.impliedProperties.map((p) => '@override $p').join()}
-
 $toStringMethod
-
 $debugFillProperties
-
 $operatorEqualMethod
-
 $hashCodeMethod
-
 $copyWithMethod
-
 $when
-
 $maybeWhen
-
 $map
-
 $maybeMap
-
 $toJson
+$copyAs
 }
 
 abstract class ${constructor.redirectedName}$genericsDefinition implements $name$genericsParameter {
@@ -70,21 +60,88 @@ abstract class ${constructor.redirectedName}$genericsDefinition implements $name
   $redirectedFromJsonConstructor
 
 $abstractProperties
-
 $copyWithPrototype
+$copyAsPrototype
 }
 ''';
   }
 
   String get asserts {
-    final nonNullableProperties =
-        constructor.impliedProperties.where((p) => !p.nullable).toList();
+    final nonNullableProperties = constructor.impliedProperties.where((p) => !p.nullable).toList();
     if (nonNullableProperties.isEmpty) return '';
     return ': ${nonNullableProperties.map((e) => 'assert(${e.name} != null)').join(',')}';
   }
 
   String get isConst {
     return constructor.isConst ? 'const' : '';
+  }
+
+  String get copyAs {
+    final res = StringBuffer();
+    for (final targetConstructor in allConstructors) {
+      var copyAsParameters = targetConstructor.impliedProperties.map((property) {
+        final isRequired = targetConstructor.isPropertyWithNamedRequired(property.name);
+        return Parameter(
+          decorators: const [],
+          isRequired: isRequired,
+          name: property.name,
+          defaultValue: isRequired ? null : 'immutable',
+          type: isRequired ? property.type : 'Object',
+        );
+      });
+
+      final constructorParameters = StringBuffer();
+      for (final e in copyAsParameters) {
+        var param = StringBuffer();
+        if (targetConstructor.parameters.namedParameters.any((element) => e.name == element.name)) {
+          param.write('${e.name}: ');
+        }
+
+        final targetProperty = targetConstructor.parameterWithName(e.name);
+        final hasMatchingLocalProperty = constructor.hasMatchingPropertyWith(name: e.name, type: e.type);
+        if (e.isRequired) {
+          param.write('${e.name} as ${targetProperty.type}');
+        } else if (hasMatchingLocalProperty) {
+          param.write('${e.name} == immutable ? this.${e.name} : ${e.name} as ${targetProperty.type}');
+        } else {
+          param.clear();
+        }
+
+        if (param.isNotEmpty) constructorParameters..write(param)..write(',');
+      }
+
+      res.write('''
+@override
+${targetConstructor.redirectedName}$genericsParameter ${targetConstructor.copyAsName}(${copyAsParameters.isNotEmpty ? '{${copyAsParameters.join(',')}}' : ''}) {
+  return ${targetConstructor.redirectedName}$genericsParameter($constructorParameters);
+}
+''');
+    }
+    return res.toString();
+  }
+
+  String get copyAsPrototype {
+    final res = StringBuffer();
+    for (final constructor in allConstructors) {
+      var parameter = constructor.impliedProperties.map((property) {
+        return Parameter(
+          decorators: property.decorators,
+          isRequired:
+              this.constructor.impliedProperties.every((commonProperty) => commonProperty.name != property.name),
+          name: property.name,
+          type: property.type,
+        );
+      }).join(',');
+      if (parameter.isNotEmpty) {
+        parameter = '{$parameter}';
+      }
+
+      res.write('''
+@override
+${constructor.redirectedName}$genericsParameter ${constructor.copyAsName}($parameter);
+''');
+    }
+    return res.toString();
   }
 
   String get redirectedFromJsonConstructor {
@@ -114,9 +171,8 @@ Map<String, dynamic> toJson() {
   String get debugFillProperties {
     if (!hasDiagnosticable) return '';
 
-    final diagnostics = constructor.impliedProperties
-        .map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))")
-        .join();
+    final diagnostics =
+        constructor.impliedProperties.map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))").join();
 
     return '''
 @override
@@ -152,10 +208,7 @@ ${maybeMapPrototype(allConstructors, genericsParameter)} {
   String get map {
     if (allConstructors.length < 2) return '';
 
-    final asserts = [
-      for (final ctor in allConstructors)
-        'assert(${ctor.callbackName} != null);'
-    ];
+    final asserts = [for (final ctor in allConstructors) 'assert(${ctor.callbackName} != null);'];
 
     return '''
 @override
@@ -189,10 +242,7 @@ ${maybeWhenPrototype(allConstructors)} {
   String get when {
     if (allConstructors.length < 2) return '';
 
-    final asserts = [
-      for (final ctor in allConstructors)
-        'assert(${ctor.callbackName} != null);'
-    ];
+    final asserts = [for (final ctor in allConstructors) 'assert(${ctor.callbackName} != null);'];
 
     var callbackParameters = constructor.impliedProperties.map((e) {
       if (allConstructors.any((c) => c.callbackName == e.name)) {
@@ -220,9 +270,7 @@ ${whenPrototype(allConstructors)} {
   }
 
   String get toStringMethod {
-    final parameters = hasDiagnosticable
-        ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
-        : '';
+    final parameters = hasDiagnosticable ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }' : '';
 
     final properties = constructor.impliedProperties.map((p) {
       return '${p.name}: \$${p.name}';
@@ -288,10 +336,8 @@ $parameters
         ),
       );
 
-    final asserts = constructor.impliedProperties
-        .where((p) => !p.nullable)
-        .map((e) => 'assert(${e.name} != null);')
-        .join();
+    final asserts =
+        constructor.impliedProperties.where((p) => !p.nullable).map((e) => 'assert(${e.name} != null);').join();
 
     return '''
 @override
@@ -333,14 +379,12 @@ int get hashCode => $hashCodeImpl;
 
 extension on Element {
   bool get hasNullable {
-    return TypeChecker.fromRuntime(annotations.nullable.runtimeType)
-        .hasAnnotationOf(this, throwOnUnresolved: false);
+    return TypeChecker.fromRuntime(annotations.nullable.runtimeType).hasAnnotationOf(this, throwOnUnresolved: false);
   }
 }
 
 extension IsNullable on ParameterElement {
-  bool get isNullable =>
-      isOptionalPositional || hasNullable || (isNamed && !hasRequired);
+  bool get isNullable => isOptionalPositional || hasNullable || (isNamed && !hasRequired);
 }
 
 class Property {
@@ -370,8 +414,7 @@ class Property {
     return '${decorators.join()} final ${type ?? 'dynamic'} $name;';
   }
 
-  Getter get getter => Getter(
-      name: name, type: type, decorators: decorators, nullable: nullable);
+  Getter get getter => Getter(name: name, type: type, decorators: decorators, nullable: nullable);
 }
 
 class Getter {

@@ -79,7 +79,7 @@ import 'generic.dart';
 void main() {
   Generic<Model<int>>(Model(42));
 }
-'''), completes);
+'''), succeed);
     await expectLater(compile(r'''
 import 'generic.dart';
 

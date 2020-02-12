@@ -118,7 +118,7 @@ import 'json.dart';
 void main() {
   Json.fromJson(<String, dynamic>{});
 }
-'''), completes);
+'''), succeed);
     await expectLater(compile(r'''
 import 'json.dart';
 

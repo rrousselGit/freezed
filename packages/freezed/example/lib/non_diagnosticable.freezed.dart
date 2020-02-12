@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package
+// ignore_for_file: deprecated_member_use_from_same_package, unnecessary_cast, prefer_const_constructors
 
 part of 'non_diagnosticable.dart';
 
@@ -13,26 +13,26 @@ mixin _$Example<T> {
     Result $default(int a, String b), {
     @required Result named(T c),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(int a, String b), {
     Result named(T c),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>(
     Result $default(_Example<T> value), {
     @required Result named(_Example2<T> value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
     Result $default(_Example<T> value), {
     Result named(_Example2<T> value),
     @required Result orElse(),
   });
+
+  _Example<T> copyAsDefault({@required int a, @required String b});
+  _Example2<T> copyAsNamed({@required T c});
 }
 
 class _$_Example<T> implements _Example<T> {
@@ -44,7 +44,6 @@ class _$_Example<T> implements _Example<T> {
   final int a;
   @override
   final String b;
-
   @override
   String toString() {
     return 'Example<$T>(a: $a, b: $b)';
@@ -125,6 +124,21 @@ class _$_Example<T> implements _Example<T> {
     }
     return orElse();
   }
+
+  @override
+  _Example<T> copyAsDefault({@required int a, @required String b}) {
+    return _Example<T>(
+      a as int,
+      b as String,
+    );
+  }
+
+  @override
+  _Example2<T> copyAsNamed({@required T c}) {
+    return _Example2<T>(
+      c as T,
+    );
+  }
 }
 
 abstract class _Example<T> implements Example<T> {
@@ -132,8 +146,12 @@ abstract class _Example<T> implements Example<T> {
 
   int get a;
   String get b;
-
   _Example<T> copyWith({int a, String b});
+
+  @override
+  _Example<T> copyAsDefault({int a, String b});
+  @override
+  _Example2<T> copyAsNamed({@required T c});
 }
 
 class _$_Example2<T> implements _Example2<T> {
@@ -141,7 +159,6 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   final T c;
-
   @override
   String toString() {
     return 'Example<$T>.named(c: $c)';
@@ -217,12 +234,31 @@ class _$_Example2<T> implements _Example2<T> {
     }
     return orElse();
   }
+
+  @override
+  _Example<T> copyAsDefault({@required int a, @required String b}) {
+    return _Example<T>(
+      a as int,
+      b as String,
+    );
+  }
+
+  @override
+  _Example2<T> copyAsNamed({@required T c}) {
+    return _Example2<T>(
+      c as T,
+    );
+  }
 }
 
 abstract class _Example2<T> implements Example<T> {
   factory _Example2(T c) = _$_Example2<T>;
 
   T get c;
-
   _Example2<T> copyWith({T c});
+
+  @override
+  _Example<T> copyAsDefault({@required int a, @required String b});
+  @override
+  _Example2<T> copyAsNamed({T c});
 }

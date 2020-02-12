@@ -189,7 +189,7 @@ void main() {
   final param = SharedParam('a', 42);
   param.a;
 }
-'''), completes);
+'''), succeed);
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -221,7 +221,7 @@ void main() {
   final param = SharedParam('a', 42);
   param.copyWith(a: '2');
 }
-'''), completes);
+'''), succeed);
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -251,5 +251,64 @@ void main() {
       value.when(something: (_) => 42, error: (err) => err),
       error,
     );
+  });
+
+  group('copyAs', () {
+    test('exposes one method per constructor', () {
+      var value = NoDefault.first('a');
+
+      NoDefault1 first = value.copyAsFirst();
+      expect(first, NoDefault.first('a'));
+
+      NoDefault2 second = value.copyAsSecond();
+      expect(second, NoDefault.second('a'));
+    });
+    test('can modify the value', () {
+      var value = NoDefault.first('a');
+
+      NoDefault1 first = value.copyAsFirst(a: 'b');
+      expect(first, NoDefault.first('b'));
+
+      NoDefault2 second = value.copyAsSecond(a: 'c');
+      expect(second, NoDefault.second('c'));
+    });
+    test('Converting from a case that may not have a given property makes the parameter of the same name required',
+        () async {
+      await expectLater(
+        compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = NoCommonParam('a');
+  value.copyAsNamed();
+}
+'''),
+        completion([HintCode.MISSING_REQUIRED_PARAM]),
+      );
+    });
+    test('nothing is required if all properties are compatible', () async {
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = Complex('a');
+  value.copyAsDefault();
+}
+'''), succeed);
+    });
+    test('do not require properties that are not in the current interface if the target property is optional',
+        () async {
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = Complex('a');
+  value.copyAsFirst();
+}
+'''), succeed);
+    });
+    // TODO: copyAs same name but different type
+    // TODO: private namer ctor geenrates private copyAs
+    // TODO: test default ctor ame
   });
 }

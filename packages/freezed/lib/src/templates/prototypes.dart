@@ -77,10 +77,19 @@ String _whenPrototype(
     areCallbacksRequired: areCallbacksRequired,
     name: name,
     ctor2parameters: (constructor) {
+      Iterable<Parameter> unrequire(List<Parameter> p) {
+        return p.map((p) => Parameter(
+              decorators: p.decorators,
+              name: p.name,
+              isRequired: false,
+              type: p.type,
+            ));
+      }
+
       return ParametersTemplate([
-        ...constructor.parameters.positionalParameters,
-        ...constructor.parameters.optionalPositionalParameters,
-        ...constructor.parameters.namedParameters,
+        ...unrequire(constructor.parameters.positionalParameters),
+        ...unrequire(constructor.parameters.optionalPositionalParameters),
+        ...unrequire(constructor.parameters.namedParameters),
       ]);
     },
   );
