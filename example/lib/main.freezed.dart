@@ -7,7 +7,7 @@ part of 'main.dart';
 // FreezedGenerator
 // **************************************************************************
 
-abstract class _$MyClass {
+mixin _$MyClass {
   String get a;
   int get b;
 
@@ -70,7 +70,7 @@ abstract class _MyClass implements MyClass {
   _MyClass copyWith({String a, int b});
 }
 
-abstract class _$Union {
+mixin _$Union {
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(int value), {
@@ -526,7 +526,7 @@ abstract class Complex implements Union {
   Complex copyWith({int a, String b});
 }
 
-abstract class _$SharedProperty {
+mixin _$SharedProperty {
   String get name;
 
   SharedProperty copyWith({String name});

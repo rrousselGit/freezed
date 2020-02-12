@@ -25,7 +25,7 @@ class Abstract {
   @override
   String toString() {
     return '''
-abstract class _\$$name$genericsDefinition {
+mixin _\$$name$genericsDefinition {
 ${abstractProperties.join()}
 
 $copyWithPrototype

@@ -7,7 +7,7 @@ part of 'non_diagnosticable.dart';
 // FreezedGenerator
 // **************************************************************************
 
-abstract class _$Example<T> {
+mixin _$Example<T> {
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(int a, String b), {
