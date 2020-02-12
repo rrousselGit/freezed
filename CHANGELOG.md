@@ -1,3 +1,7 @@
+# 0.2.4
+
+Make the generated interface a mixin to fix `prefer_mixin` lints (https://github.com/rrousselGit/freezed/issues/28)
+
 # 0.2.3
 
 Fixes a bug where constructors with generic parameters caused the parsing of the
