@@ -31,6 +31,12 @@ void main() {
     );
     expect(
       redirectedConstructorNameRegexp
+          .firstMatch('ComplexParameters(List<T> value) = _ComplexParameters<T>;')
+          .group(1),
+      '_ComplexParameters',
+    );
+    expect(
+      redirectedConstructorNameRegexp
           .firstMatch('PositionalMixedParam(String a, [int b]) = WhateverPositionalMixedParam;')
           .group(1),
       'WhateverPositionalMixedParam',

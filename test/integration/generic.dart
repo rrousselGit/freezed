@@ -30,3 +30,8 @@ abstract class Union<T> with _$Union<T> {
   const factory Union.loading() = Loading<T>;
   const factory Union.error([String message]) = ErrorDetails<T>;
 }
+
+@immutable
+abstract class ComplexParameters<T> with _$ComplexParameters<T> {
+  const factory ComplexParameters(List<T> value) = _ComplexParameters<T>;
+}
