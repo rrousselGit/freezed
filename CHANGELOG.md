@@ -1,3 +1,7 @@
+# 0.2.5
+
+Fixed a bug where generic json deserialization didn't apply generic parameters (https://github.com/rrousselGit/freezed/issues/32)
+
 # 0.2.4
 
 Make the generated interface a mixin to fix `prefer_mixin` lints (https://github.com/rrousselGit/freezed/issues/28)

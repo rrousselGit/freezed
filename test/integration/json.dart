@@ -33,3 +33,24 @@ abstract class Decorator with _$Decorator {
 
   factory Decorator.fromJson(Map<String, dynamic> json) => _$DecoratorFromJson(json);
 }
+
+@immutable
+abstract class Generic<T> with _$Generic<T> {
+  factory Generic(@DataConverter() T a) = _Generic<T>;
+
+  factory Generic.fromJson(Map<String, dynamic> json) => _$GenericFromJson<T>(json);
+}
+
+class DataConverter<T> implements JsonConverter<T, Object> {
+  const DataConverter();
+
+  @override
+  T fromJson(Object json) {
+    return json as T;
+  }
+
+  @override
+  Object toJson(T object) {
+    return object;
+  }
+}

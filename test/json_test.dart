@@ -8,6 +8,12 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
+  test('generic json', () {
+    expect(
+      Generic<int>.fromJson(<String, dynamic>{'a': 42}),
+      Generic(42),
+    );
+  });
   test('single ctor + json can access properties/copyWith', () {
     final value = Single(42);
 

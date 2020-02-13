@@ -76,7 +76,7 @@ $copyWithPrototype
 
   String get redirectedFromJsonConstructor {
     if (!shouldGenerateJson) return '';
-    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName.fromJson;';
+    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName$genericsParameter.fromJson;';
   }
 
   String get concreteFromJsonConstructor {
