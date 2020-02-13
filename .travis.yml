@@ -26,7 +26,7 @@ script:
   - flutter pub pub run build_runner build --delete-conflicting-outputs
   - flutter pub run test
   - flutter analyze --no-current-package lib test/
-  - rm -rf **/*.freezed.dart **/*.g.dart
+  - rm -rf test/integration/*.freezed.dart test/integration/*.g.dart
   - flutter format --set-exit-if-changed --line-length 120 lib test
 
 matrix:
