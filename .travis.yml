@@ -10,6 +10,7 @@ before_script:
   - cd -
   - flutter doctor
 script:
+  - cd packages/freezed
   - cd example
   - set -e
   - flutter pub get
