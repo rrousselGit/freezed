@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'main.freezed.dart';
 
-@immutable
+@freezed
 abstract class MyClass with _$MyClass {
   factory MyClass({String a, int b}) = _MyClass;
 }
 
-@immutable
+@freezed
 abstract class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
@@ -16,7 +17,7 @@ abstract class Union with _$Union {
   const factory Union.complex(int a, String b) = Complex;
 }
 
-@immutable
+@freezed
 abstract class SharedProperty with _$SharedProperty {
   factory SharedProperty.person({String name, int age}) = SharedProperty0;
   factory SharedProperty.city({String name, int population}) = SharedProperty1;

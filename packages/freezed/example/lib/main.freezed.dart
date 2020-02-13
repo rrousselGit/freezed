@@ -23,7 +23,7 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   final int b;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'MyClass(a: $a, b: $b)';
   }
 
@@ -38,7 +38,9 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
 
   @override
   bool operator ==(dynamic other) {
-    return other is _MyClass && (identical(other.a, a) || other.a == a) && (identical(other.b, b) || other.b == b);
+    return other is _MyClass &&
+        (identical(other.a, a) || other.a == a) &&
+        (identical(other.b, b) || other.b == b);
   }
 
   @override
@@ -111,19 +113,22 @@ class _$Data with DiagnosticableTreeMixin implements Data {
   final int value;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Union(value: $value)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'Union'))..add(DiagnosticsProperty('value', value));
+    properties
+      ..add(DiagnosticsProperty('type', 'Union'))
+      ..add(DiagnosticsProperty('value', value));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return other is Data && (identical(other.value, value) || other.value == value);
+    return other is Data &&
+        (identical(other.value, value) || other.value == value);
   }
 
   @override
@@ -213,7 +218,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Union.loading()';
   }
 
@@ -305,19 +310,22 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   final String message;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Union.error(message: $message)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'Union.error'))..add(DiagnosticsProperty('message', message));
+    properties
+      ..add(DiagnosticsProperty('type', 'Union.error'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return other is ErrorDetails && (identical(other.message, message) || other.message == message);
+    return other is ErrorDetails &&
+        (identical(other.message, message) || other.message == message);
   }
 
   @override
@@ -412,7 +420,7 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
   final String b;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Union.complex(a: $a, b: $b)';
   }
 
@@ -427,7 +435,9 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Complex && (identical(other.a, a) || other.a == a) && (identical(other.b, b) || other.b == b);
+    return other is Complex &&
+        (identical(other.a, a) || other.a == a) &&
+        (identical(other.b, b) || other.b == b);
   }
 
   @override
@@ -548,7 +558,9 @@ mixin _$SharedProperty {
   });
 }
 
-class _$SharedProperty0 with DiagnosticableTreeMixin implements SharedProperty0 {
+class _$SharedProperty0
+    with DiagnosticableTreeMixin
+    implements SharedProperty0 {
   const _$SharedProperty0({this.name, this.age});
 
   @override
@@ -557,7 +569,7 @@ class _$SharedProperty0 with DiagnosticableTreeMixin implements SharedProperty0 
   final int age;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SharedProperty.person(name: $name, age: $age)';
   }
 
@@ -653,7 +665,9 @@ abstract class SharedProperty0 implements SharedProperty {
   SharedProperty0 copyWith({String name, int age});
 }
 
-class _$SharedProperty1 with DiagnosticableTreeMixin implements SharedProperty1 {
+class _$SharedProperty1
+    with DiagnosticableTreeMixin
+    implements SharedProperty1 {
   const _$SharedProperty1({this.name, this.population});
 
   @override
@@ -662,7 +676,7 @@ class _$SharedProperty1 with DiagnosticableTreeMixin implements SharedProperty1 
   final int population;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SharedProperty.city(name: $name, population: $population)';
   }
 
@@ -679,11 +693,13 @@ class _$SharedProperty1 with DiagnosticableTreeMixin implements SharedProperty1 
   bool operator ==(dynamic other) {
     return other is SharedProperty1 &&
         (identical(other.name, name) || other.name == name) &&
-        (identical(other.population, population) || other.population == population);
+        (identical(other.population, population) ||
+            other.population == population);
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ name.hashCode ^ population.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ name.hashCode ^ population.hashCode;
 
   @override
   _$SharedProperty1 copyWith({
@@ -748,7 +764,8 @@ class _$SharedProperty1 with DiagnosticableTreeMixin implements SharedProperty1 
 }
 
 abstract class SharedProperty1 implements SharedProperty {
-  const factory SharedProperty1({String name, int population}) = _$SharedProperty1;
+  const factory SharedProperty1({String name, int population}) =
+      _$SharedProperty1;
 
   @override
   String get name;

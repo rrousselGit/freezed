@@ -7,6 +7,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  freezed_annotation: '>= 0.3.0'
 
 dev_dependencies:
   freezed:
