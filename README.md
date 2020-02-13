@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/rrousselGit/freezed.svg?branch=master)](https://travis-ci.org/rrousselGit/freezed)
 [![pub package](https://img.shields.io/pub/v/freezed.svg)](https://pub.dartlang.org/packages/freezed)
 
 Welcome to [Freezed], yet another code generator for unions/pattern-matching/copy.
