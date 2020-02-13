@@ -2,7 +2,7 @@ language: bash
 os:
   - osx
 env:
-  - FLUTTER_CHANNEL="stable"
+  - FLUTTER_CHANNEL="master"
 before_script:
   - cd ..
   - git clone https://github.com/flutter/flutter.git -b $FLUTTER_CHANNEL
