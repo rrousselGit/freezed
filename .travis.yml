@@ -3,7 +3,6 @@ os:
   - osx
 env:
   - FLUTTER_CHANNEL="stable"
-  - FLUTTER_CHANNEL="master"
 sudo: false
 before_script:
   - cd ..
@@ -15,18 +14,22 @@ script:
   - set -e
   - cd example
   - flutter pub get
-  - 
+  - flutter pub pub run build_runner build --delete-conflicting-outputs
+  - flutter test
+  - flutter analyze --no-current-package lib test/
+  - rm -rf **/*.freezed.dart **/*.g.dart
+  - flutter format --set-exit-if-changed --line-length 120 lib test
   - cd -
-  - ./scripts/flutter_test.sh ./example
+  - rm -rf example
+  - pub get
+  - pub run build_runner build --delete-conflicting-outputs
+  - pub run test
+  - dartanalyzer lib test/
+  - rm -rf **/*.freezed.dart **/*.g.dart
+  - dartfmt --set-exit-if-changed --line-length 120 lib test
 
-  # export coverage
-  - if [ $FLUTTER_CHANNEL = "stable" ]; then
-    bash <(curl -s https://codecov.io/bash);
-    fi
 matrix:
   fast_finish: true
-  # allow_failures:
-  # - env: FLUTTER_CHANNEL="master"
 cache:
   directories:
     - $HOME/.pub-cache
