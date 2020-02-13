@@ -25,10 +25,12 @@ Future<void> main() async {
       {
         'freezed|test/integration/json.dart': useAssetReader,
       },
-      (r) => r.libraries.firstWhere((element) => element.source.toString().contains('json')),
+      (r) => r.libraries
+          .firstWhere((element) => element.source.toString().contains('json')),
     );
 
-    var errorResult = await main.session.getErrors('/freezed/test/integration/json.freezed.dart');
+    var errorResult = await main.session
+        .getErrors('/freezed/test/integration/json.freezed.dart');
     expect(errorResult.errors, isEmpty);
   });
   test("single constructor fromJson doesn't require runtimeType", () {

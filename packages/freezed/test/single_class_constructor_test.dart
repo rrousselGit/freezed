@@ -68,12 +68,15 @@ void main() {
   test('has no issue', () async {
     final main = await resolveSources(
       {
-        'freezed|test/integration/single_class_constructor.dart': useAssetReader,
+        'freezed|test/integration/single_class_constructor.dart':
+            useAssetReader,
       },
-      (r) => r.libraries.firstWhere((element) => element.source.toString().contains('single_class_constructor')),
+      (r) => r.libraries.firstWhere((element) =>
+          element.source.toString().contains('single_class_constructor')),
     );
 
-    final errorResult = await main.session.getErrors('/freezed/test/integration/single_class_constructor.freezed.dart');
+    final errorResult = await main.session.getErrors(
+        '/freezed/test/integration/single_class_constructor.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
   });
@@ -85,7 +88,8 @@ void main() {
   test('can be created as const', () {
     expect(identical(const MyClass(a: '42'), const MyClass(a: '42')), isTrue);
   });
-  test('cannot be created as const if user defined ctor is not const', () async {
+  test('cannot be created as const if user defined ctor is not const',
+      () async {
     await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -270,7 +274,8 @@ void main() {
     expect(value.a, 'a');
     expect(value.b, 42);
   });
-  test('required parameters are transmited to redirected constructor', () async {
+  test('required parameters are transmited to redirected constructor',
+      () async {
     final main = await resolveSources({
       'freezed|test/integration/main.dart': '''
 library main;
@@ -283,7 +288,8 @@ void main() {
     ''',
     }, (r) => r.findLibraryByName('main'));
 
-    final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
+    final errorResult =
+        await main.session.getErrors('/freezed/test/integration/main.dart');
 
     expect(
       errorResult.errors.map((e) => e.toString()),

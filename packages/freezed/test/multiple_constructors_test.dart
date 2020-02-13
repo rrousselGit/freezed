@@ -40,10 +40,12 @@ void main() {
         {
           'freezed|test/integration/multiple_constructors.dart': useAssetReader,
         },
-        (r) => r.libraries.firstWhere((element) => element.source.toString().contains('multiple_constructors')),
+        (r) => r.libraries.firstWhere((element) =>
+            element.source.toString().contains('multiple_constructors')),
       );
 
-      final errorResult = await main.session.getErrors('/freezed/test/integration/multiple_constructors.freezed.dart');
+      final errorResult = await main.session.getErrors(
+          '/freezed/test/integration/multiple_constructors.freezed.dart');
 
       expect(errorResult.errors, isEmpty);
     });
@@ -134,7 +136,8 @@ void main() {
       expect(ctor1.c, .21);
       expect(ctor1.d, const Object());
     });
-    test("redirected's copyWith doesn't have parameters of other constructors", () async {
+    test("redirected's copyWith doesn't have parameters of other constructors",
+        () async {
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 

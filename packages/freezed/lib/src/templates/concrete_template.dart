@@ -105,8 +105,9 @@ Map<String, dynamic> toJson() {
   String get debugFillProperties {
     if (!hasDiagnosticable) return '';
 
-    final diagnostics =
-        constructor.impliedProperties.map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))").join();
+    final diagnostics = constructor.impliedProperties
+        .map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))")
+        .join();
 
     return '''
 @override
@@ -142,7 +143,10 @@ ${maybeMapPrototype(allConstructors, genericsParameter)} {
   String get map {
     if (allConstructors.length < 2) return '';
 
-    final asserts = [for (final ctor in allConstructors) 'assert(${ctor.callbackName} != null);'];
+    final asserts = [
+      for (final ctor in allConstructors)
+        'assert(${ctor.callbackName} != null);'
+    ];
 
     return '''
 @override
@@ -176,7 +180,10 @@ ${maybeWhenPrototype(allConstructors)} {
   String get when {
     if (allConstructors.length < 2) return '';
 
-    final asserts = [for (final ctor in allConstructors) 'assert(${ctor.callbackName} != null);'];
+    final asserts = [
+      for (final ctor in allConstructors)
+        'assert(${ctor.callbackName} != null);'
+    ];
 
     var callbackParameters = constructor.impliedProperties.map((e) {
       if (allConstructors.any((c) => c.callbackName == e.name)) {
@@ -204,7 +211,9 @@ ${whenPrototype(allConstructors)} {
   }
 
   String get toStringMethod {
-    final parameters = hasDiagnosticable ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }' : '';
+    final parameters = hasDiagnosticable
+        ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
+        : '';
 
     final properties = constructor.impliedProperties.map((p) {
       return '${p.name}: \$${p.name}';
@@ -288,7 +297,10 @@ $constructorParameters
     return '''
 @override
 bool operator ==(dynamic other) {
-  return other is ${['${constructor.redirectedName}$genericsParameter', ...properties].join('&&')};
+  return other is ${[
+      '${constructor.redirectedName}$genericsParameter',
+      ...properties
+    ].join('&&')};
 }
 ''';
   }

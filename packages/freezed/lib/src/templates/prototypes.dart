@@ -4,7 +4,8 @@ import 'package:meta/meta.dart';
 
 import 'parameter_template.dart';
 
-final redirectedConstructorNameRegexp = RegExp(r'^.+?=[\s\n\t]*([^<>]+?)(?:<.+?>)*?;');
+final redirectedConstructorNameRegexp =
+    RegExp(r'^.+?=[\s\n\t]*([^<>]+?)(?:<.+?>)*?;');
 
 List<String> parseDecorators(List<ElementAnnotation> metadata) {
   return [
@@ -16,23 +17,31 @@ String getRedirectedConstructorName(ConstructorElement constructor) {
   final location = constructor.nameOffset;
   final source = constructor.source.contents.data;
 
-  return redirectedConstructorNameRegexp.firstMatch(source.substring(location))?.group(1);
+  return redirectedConstructorNameRegexp
+      .firstMatch(source.substring(location))
+      ?.group(1);
 }
 
 String whenPrototype(List<ConstructorDetails> allConstructors) {
-  return _whenPrototype(allConstructors, areCallbacksRequired: true, name: 'when');
+  return _whenPrototype(allConstructors,
+      areCallbacksRequired: true, name: 'when');
 }
 
 String maybeWhenPrototype(List<ConstructorDetails> allConstructors) {
-  return _whenPrototype(allConstructors, areCallbacksRequired: false, name: 'maybeWhen');
+  return _whenPrototype(allConstructors,
+      areCallbacksRequired: false, name: 'maybeWhen');
 }
 
-String mapPrototype(List<ConstructorDetails> allConstructors, GenericsParameterTemplate genericParameters) {
-  return _mapPrototype(allConstructors, genericParameters, areCallbacksRequired: true, name: 'map');
+String mapPrototype(List<ConstructorDetails> allConstructors,
+    GenericsParameterTemplate genericParameters) {
+  return _mapPrototype(allConstructors, genericParameters,
+      areCallbacksRequired: true, name: 'map');
 }
 
-String maybeMapPrototype(List<ConstructorDetails> allConstructors, GenericsParameterTemplate genericParameters) {
-  return _mapPrototype(allConstructors, genericParameters, areCallbacksRequired: false, name: 'maybeMap');
+String maybeMapPrototype(List<ConstructorDetails> allConstructors,
+    GenericsParameterTemplate genericParameters) {
+  return _mapPrototype(allConstructors, genericParameters,
+      areCallbacksRequired: false, name: 'maybeMap');
 }
 
 String _mapPrototype(
@@ -83,7 +92,8 @@ String _unionPrototype(
   @required String name,
   @required ParametersTemplate ctor2parameters(ConstructorDetails ctor),
 }) {
-  final buffer = StringBuffer('@optionalTypeArgs Result $name<Result extends Object>(');
+  final buffer =
+      StringBuffer('@optionalTypeArgs Result $name<Result extends Object>(');
 
   final parameters = <CallbackParameter>[];
   for (final constructor in allConstructors) {
@@ -119,5 +129,7 @@ bool isDefaultConstructor(ConstructorElement constructor) {
 }
 
 String constructorNameToCallbackName(String constructorName) {
-  return constructorName == null || constructorName.isEmpty ? '\$default' : constructorName;
+  return constructorName == null || constructorName.isEmpty
+      ? '\$default'
+      : constructorName;
 }

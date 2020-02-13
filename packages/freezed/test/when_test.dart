@@ -172,7 +172,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult =
+          await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -190,14 +191,16 @@ void main() {
       value = Complex.first('a', b: false, d: .42);
 
       expect(
-        value.maybeWhen(null, first: (a, b, d) => '$a $b $d', orElse: () => throw Error()),
+        value.maybeWhen(null,
+            first: (a, b, d) => '$a $b $d', orElse: () => throw Error()),
         'a false 0.42',
       );
 
       value = Complex.second('a', 21, 0.42);
 
       expect(
-        value.maybeWhen(null, second: (a, c, d) => '$a $c $d', orElse: () => throw Error()),
+        value.maybeWhen(null,
+            second: (a, c, d) => '$a $c $d', orElse: () => throw Error()),
         'a 21 0.42',
       );
     });
@@ -212,14 +215,16 @@ void main() {
       value = Complex.first('a', b: false, d: .42);
 
       expect(
-        () => value.maybeWhen(null, first: (a, b, d) => '$a $b $d', orElse: null),
+        () =>
+            value.maybeWhen(null, first: (a, b, d) => '$a $b $d', orElse: null),
         throwsA(isA<AssertionError>()),
       );
 
       value = Complex.second('a', 21, 0.42);
 
       expect(
-        () => value.maybeWhen(null, second: (a, c, d) => '$a $c $d', orElse: null),
+        () => value.maybeWhen(null,
+            second: (a, c, d) => '$a $c $d', orElse: null),
         throwsA(isA<AssertionError>()),
       );
     });
@@ -253,7 +258,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult =
+          await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isEmpty);
     });
@@ -274,7 +280,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult =
+          await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isNotEmpty);
     });

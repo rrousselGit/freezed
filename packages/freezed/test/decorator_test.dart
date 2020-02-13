@@ -7,12 +7,15 @@ void main() {
       {
         'freezed|test/integration/decorator.dart': useAssetReader,
       },
-      (r) => r.libraries.firstWhere((element) => element.source.toString().contains('decorator')),
+      (r) => r.libraries.firstWhere(
+          (element) => element.source.toString().contains('decorator')),
     );
 
-    var errorResult = await main.session.getErrors('/freezed/test/integration/decorator.freezed.dart');
+    var errorResult = await main.session
+        .getErrors('/freezed/test/integration/decorator.freezed.dart');
     expect(errorResult.errors, isEmpty);
-    errorResult = await main.session.getErrors('/freezed/test/integration/decorator.dart');
+    errorResult = await main.session
+        .getErrors('/freezed/test/integration/decorator.dart');
   });
 
   test('warns if try to use deprecated property', () async {
@@ -39,10 +42,12 @@ void main() {
 }
 ''',
       },
-      (r) => r.libraries.firstWhere((element) => element.source.toString().contains('decorator')),
+      (r) => r.libraries.firstWhere(
+          (element) => element.source.toString().contains('decorator')),
     );
 
-    var errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
+    var errorResult =
+        await main.session.getErrors('/freezed/test/integration/main.dart');
     expect(
       errorResult.errors.map((e) => e.errorCode.name),
       [

@@ -32,14 +32,16 @@ abstract class NoJson with _$NoJson {
 abstract class Decorator with _$Decorator {
   factory Decorator(@JsonKey(name: 'what') String a) = _Decorator;
 
-  factory Decorator.fromJson(Map<String, dynamic> json) => _$DecoratorFromJson(json);
+  factory Decorator.fromJson(Map<String, dynamic> json) =>
+      _$DecoratorFromJson(json);
 }
 
 @freezed
 abstract class Generic<T> with _$Generic<T> {
   factory Generic(@DataConverter() T a) = _Generic<T>;
 
-  factory Generic.fromJson(Map<String, dynamic> json) => _$GenericFromJson<T>(json);
+  factory Generic.fromJson(Map<String, dynamic> json) =>
+      _$GenericFromJson<T>(json);
 }
 
 class DataConverter<T> implements JsonConverter<T, Object> {

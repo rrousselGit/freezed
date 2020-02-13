@@ -15,7 +15,8 @@ abstract class MixedParam with _$MixedParam {
 
 @freezed
 abstract class PositionalMixedParam with _$PositionalMixedParam {
-  const factory PositionalMixedParam(String a, [int b]) = WhateverPositionalMixedParam;
+  const factory PositionalMixedParam(String a, [int b]) =
+      WhateverPositionalMixedParam;
 }
 
 @freezed

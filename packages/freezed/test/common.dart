@@ -15,8 +15,11 @@ $src
     ''',
   }, (r) => r.findLibraryByName('main'));
 
-  final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
-  final criticalErrors = errorResult.errors.where((element) => element.severity == Severity.error).toList();
+  final errorResult =
+      await main.session.getErrors('/freezed/test/integration/main.dart');
+  final criticalErrors = errorResult.errors
+      .where((element) => element.severity == Severity.error)
+      .toList();
 
   if (criticalErrors.isNotEmpty) {
     throw CompileError(criticalErrors);

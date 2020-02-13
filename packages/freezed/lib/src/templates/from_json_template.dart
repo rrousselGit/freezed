@@ -20,7 +20,8 @@ class FromJson {
     String content;
 
     if (constructors.length == 1) {
-      content = 'return ${constructors.first.redirectedName}$genericParameters.fromJson(json);';
+      content =
+          'return ${constructors.first.redirectedName}$genericParameters.fromJson(json);';
     } else {
       final cases = constructors.map((constructor) {
         final caseName = constructor.isDefault ? 'default' : constructor.name;

@@ -89,7 +89,8 @@ void main() {
   // nice toString
   print(const Union(42)); // Union(value: 42)
   print(const Union.loading()); // Union.loading()
-  print(const Union.error('Failed to fetch')); // Union.error(message: Failed to fetch)
+  print(const Union.error(
+      'Failed to fetch')); // Union.error(message: Failed to fetch)
 
   // ------------------
 

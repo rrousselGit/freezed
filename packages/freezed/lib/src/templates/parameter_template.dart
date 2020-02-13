@@ -58,8 +58,12 @@ class ParametersTemplate {
 
     return ParametersTemplate(
       parameters.where((p) => p.isRequiredPositional).map(asParameter).toList(),
-      optionalPositionalParameters: parameters.where((p) => p.isOptionalPositional).map(asParameter).toList(),
-      namedParameters: parameters.where((p) => p.isNamed).map(asParameter).toList(),
+      optionalPositionalParameters: parameters
+          .where((p) => p.isOptionalPositional)
+          .map(asParameter)
+          .toList(),
+      namedParameters:
+          parameters.where((p) => p.isNamed).map(asParameter).toList(),
     );
   }
 
@@ -98,7 +102,9 @@ class ParametersTemplate {
   String toString() {
     final buffer = StringBuffer()..writeAll(positionalParameters, ', ');
 
-    if (buffer.isNotEmpty && (optionalPositionalParameters.isNotEmpty || namedParameters.isNotEmpty)) {
+    if (buffer.isNotEmpty &&
+        (optionalPositionalParameters.isNotEmpty ||
+            namedParameters.isNotEmpty)) {
       buffer.write(', ');
     }
     if (optionalPositionalParameters.isNotEmpty) {

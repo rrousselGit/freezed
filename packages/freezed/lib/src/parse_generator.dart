@@ -12,11 +12,13 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
     final globalData = parseGlobalData(library.element);
 
-    for (var element in library.annotatedWith(typeChecker).map((e) => e.element)) {
+    for (var element
+        in library.annotatedWith(typeChecker).map((e) => e.element)) {
       final data = parseElement(globalData, element);
       if (data == null) continue;
 
-      for (final value in generateForData(globalData, data).map((e) => e.toString())) {
+      for (final value
+          in generateForData(globalData, data).map((e) => e.toString())) {
         assert(value == null || (value.length == value.trim().length));
         values.writeln(value);
       }
@@ -32,11 +34,13 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
   Iterable<Object> generateForData(GlobalData globalData, Data data);
 
   @override
-  Iterable<String> generateForAnnotatedElement(Element element, ConstantReader annotation, BuildStep buildStep) sync* {
+  Iterable<String> generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) sync* {
     // implemented for source_gen_test – otherwise unused
     final globalData = parseGlobalData(element.library);
     final data = parseElement(globalData, element);
     if (data == null) return;
-    yield* generateForData(globalData, data).map((element) => element.toString());
+    yield* generateForData(globalData, data)
+        .map((element) => element.toString());
   }
 }

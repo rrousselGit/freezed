@@ -6,7 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 @freezed
 class Unrelated {}
 
-@ShouldThrow('Marked NonFreezedClass with @freezed, but freezed has nothing to generate')
+@ShouldThrow(
+    'Marked NonFreezedClass with @freezed, but freezed has nothing to generate')
 @freezed
 abstract class NonFreezedClass {
   const NonFreezedClass();

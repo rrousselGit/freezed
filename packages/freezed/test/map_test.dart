@@ -172,7 +172,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult =
+          await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -183,7 +184,8 @@ void main() {
       var value = Complex('a');
 
       expect(
-        value.maybeMap((value) => '${value.a} default', orElse: () => throw Error()),
+        value.maybeMap((value) => '${value.a} default',
+            orElse: () => throw Error()),
         'a default',
       );
 
@@ -269,7 +271,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult =
+          await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isEmpty);
     });
@@ -290,7 +293,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult =
+          await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isNotEmpty);
     });

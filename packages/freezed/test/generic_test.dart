@@ -13,10 +13,12 @@ Future<void> main() async {
       {
         'freezed|test/integration/generic.dart': useAssetReader,
       },
-      (r) => r.libraries.firstWhere((element) => element.source.toString().contains('generic')),
+      (r) => r.libraries.firstWhere(
+          (element) => element.source.toString().contains('generic')),
     );
 
-    final errorResult = await main.session.getErrors('/freezed/test/integration/generic.freezed.dart');
+    final errorResult = await main.session
+        .getErrors('/freezed/test/integration/generic.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
   });
@@ -28,7 +30,8 @@ Future<void> main() async {
     expect(model.value, 42);
   });
   test('map is generic too', () {
-    var result = MultipleConstructors<int, double>(false).map<MultipleConstructors<int, double>>(
+    var result = MultipleConstructors<int, double>(false)
+        .map<MultipleConstructors<int, double>>(
       (Default<int, double> value) => value,
       first: (First<int, double> value) => value,
       second: (Second<int, double> value) => value,
@@ -36,7 +39,8 @@ Future<void> main() async {
 
     expect(result, MultipleConstructors<int, double>(false));
 
-    MultipleConstructors<int, double>(false).maybeMap<MultipleConstructors<int, double>>(
+    MultipleConstructors<int, double>(false)
+        .maybeMap<MultipleConstructors<int, double>>(
       (Default<int, double> value) => value,
       first: (First<int, double> value) => value,
       second: (Second<int, double> value) => value,
@@ -52,9 +56,12 @@ Future<void> main() async {
     expect(model.value, 42);
   });
   test('toString', () {
-    expect('${MultipleConstructors<int, String>.first(42)}', 'MultipleConstructors<int, String>.first(a: 42)');
-    expect('${MultipleConstructors<int, String>.second('42')}', 'MultipleConstructors<int, String>.second(b: 42)');
-    expect('${MultipleConstructors<int, String>(false)}', 'MultipleConstructors<int, String>(flag: false)');
+    expect('${MultipleConstructors<int, String>.first(42)}',
+        'MultipleConstructors<int, String>.first(a: 42)');
+    expect('${MultipleConstructors<int, String>.second('42')}',
+        'MultipleConstructors<int, String>.second(b: 42)');
+    expect('${MultipleConstructors<int, String>(false)}',
+        'MultipleConstructors<int, String>(flag: false)');
   });
   test('copy returns generic ', () {
     Generic<Model<int>> generic = Generic(Model(42));

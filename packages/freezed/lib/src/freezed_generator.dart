@@ -129,7 +129,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     // TODO: verify _$name is mixed-in
 
-    final constructrorsNeedsGeneration = _parseConstructorsNeedsGeneration(element);
+    final constructrorsNeedsGeneration =
+        _parseConstructorsNeedsGeneration(element);
     if (constructrorsNeedsGeneration.isEmpty) {
       throw InvalidGenerationSourceError(
         'Marked ${element.name} with @freezed, but freezed has nothing to generate',
@@ -142,7 +143,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     return Data(
       name: element.name,
       // TODO: test can write manual fromJson ctor
-      commonProperties: constructrorsNeedsGeneration.first.parameters.allParameters
+      commonProperties: constructrorsNeedsGeneration
+          .first.parameters.allParameters
           .where((parameter) {
             return constructrorsNeedsGeneration.every((constructor) {
               return constructor.parameters.allParameters.any((p) {
@@ -150,19 +152,23 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
               });
             });
           })
-          .map((p) => Property(decorators: p.decorators, name: p.name, type: p.type))
+          .map((p) =>
+              Property(decorators: p.decorators, name: p.name, type: p.type))
           .toList(),
       needsJsonSerializable: globalData.hasJson &&
           element.constructors.any((element) {
             return element.isFactory && element.name == 'fromJson';
           }),
       constructors: constructrorsNeedsGeneration,
-      genericsDefinitionTemplate: GenericsDefinitionTemplate(element.typeParameters),
-      genericsParameterTemplate: GenericsParameterTemplate(element.typeParameters),
+      genericsDefinitionTemplate:
+          GenericsDefinitionTemplate(element.typeParameters),
+      genericsParameterTemplate:
+          GenericsParameterTemplate(element.typeParameters),
     );
   }
 
-  List<ConstructorDetails> _parseConstructorsNeedsGeneration(ClassElement element) {
+  List<ConstructorDetails> _parseConstructorsNeedsGeneration(
+      ClassElement element) {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
       if (!constructor.isFactory || constructor.name == 'fromJson') {
@@ -188,10 +194,12 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           isConst: constructor.isConst,
           fullName: fullName,
           impliedProperties: [
-            for (final parameter in constructor.parameters) Property.fromParameter(parameter),
+            for (final parameter in constructor.parameters)
+              Property.fromParameter(parameter),
           ],
           isDefault: isDefaultConstructor(constructor),
-          parameters: ParametersTemplate.fromParameterElements(constructor.parameters),
+          parameters:
+              ParametersTemplate.fromParameterElements(constructor.parameters),
           redirectedName: redirectedName,
         ),
       );
@@ -241,7 +249,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     );
   }
 
-  bool _libraryHasElement(LibraryElement library, String pathStartsWith, bool matcher(Element element)) {
+  bool _libraryHasElement(LibraryElement library, String pathStartsWith,
+      bool matcher(Element element)) {
     if (library.librarySource.fullName.startsWith(pathStartsWith)) {
       for (final element in library.topLevelElements) {
         if (matcher(element)) {
@@ -260,7 +269,9 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     return _libraryHasElement(
       library,
       '/flutter/',
-      (element) => element.displayName.contains('Diagnosticable') && element.kind == ElementKind.CLASS,
+      (element) =>
+          element.displayName.contains('Diagnosticable') &&
+          element.kind == ElementKind.CLASS,
     );
   }
 
@@ -268,7 +279,9 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     return _libraryHasElement(
       library,
       '/json_annotation/',
-      (element) => element.displayName.contains('JsonSerializable') && element.kind == ElementKind.CLASS,
+      (element) =>
+          element.displayName.contains('JsonSerializable') &&
+          element.kind == ElementKind.CLASS,
     );
   }
 }

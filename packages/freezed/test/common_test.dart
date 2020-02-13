@@ -4,7 +4,9 @@ import 'package:test/test.dart';
 void main() {
   test('concrete name parser', () {
     expect(
-      redirectedConstructorNameRegexp.firstMatch('MyClass() = \nhello;').group(1),
+      redirectedConstructorNameRegexp
+          .firstMatch('MyClass() = \nhello;')
+          .group(1),
       'hello',
     );
     expect(
@@ -16,33 +18,44 @@ void main() {
       'hello',
     );
     expect(
-      redirectedConstructorNameRegexp.firstMatch('MyClass() =\thello;').group(1),
+      redirectedConstructorNameRegexp
+          .firstMatch('MyClass() =\thello;')
+          .group(1),
       'hello',
     );
   });
   test('generic ctor', () {
     expect(
-      redirectedConstructorNameRegexp.firstMatch('MyClass() =\thello<A, B>;').group(1),
+      redirectedConstructorNameRegexp
+          .firstMatch('MyClass() =\thello<A, B>;')
+          .group(1),
       'hello',
     );
     expect(
-      redirectedConstructorNameRegexp.firstMatch('MyClass() =\thello<A>;').group(1),
+      redirectedConstructorNameRegexp
+          .firstMatch('MyClass() =\thello<A>;')
+          .group(1),
       'hello',
     );
     expect(
-      redirectedConstructorNameRegexp.firstMatch('ComplexParameters(List<T> value) = _ComplexParameters<T>;').group(1),
+      redirectedConstructorNameRegexp
+          .firstMatch(
+              'ComplexParameters(List<T> value) = _ComplexParameters<T>;')
+          .group(1),
       '_ComplexParameters',
     );
     expect(
       redirectedConstructorNameRegexp
-          .firstMatch('PositionalMixedParam(String a, [int b]) = WhateverPositionalMixedParam;')
+          .firstMatch(
+              'PositionalMixedParam(String a, [int b]) = WhateverPositionalMixedParam;')
           .group(1),
       'WhateverPositionalMixedParam',
     );
   });
   test('factory ctor', () {
     expect(
-      redirectedConstructorNameRegexp.firstMatch("factory Example.fixed() => Example('a', b: 42);"),
+      redirectedConstructorNameRegexp
+          .firstMatch("factory Example.fixed() => Example('a', b: 42);"),
       isNull,
     );
     expect(

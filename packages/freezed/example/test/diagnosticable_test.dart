@@ -25,15 +25,21 @@ void main() {
     expect(properties.properties.length, 3);
     expect(
       properties.properties.first,
-      isA<DiagnosticsProperty>().having((d) => d.name, 'name', 'type').having((d) => d.value, 'value', 'Example<int>'),
+      isA<DiagnosticsProperty>()
+          .having((d) => d.name, 'name', 'type')
+          .having((d) => d.value, 'value', 'Example<int>'),
     );
     expect(
       properties.properties[1],
-      isA<DiagnosticsProperty>().having((d) => d.name, 'name', 'a').having((d) => d.value, 'value', 42),
+      isA<DiagnosticsProperty>()
+          .having((d) => d.name, 'name', 'a')
+          .having((d) => d.value, 'value', 42),
     );
     expect(
       properties.properties.last,
-      isA<DiagnosticsProperty>().having((d) => d.name, 'name', 'b').having((d) => d.value, 'value', '21'),
+      isA<DiagnosticsProperty>()
+          .having((d) => d.name, 'name', 'b')
+          .having((d) => d.value, 'value', '21'),
     );
   });
   test('noop if Diagnosticable not available', () {

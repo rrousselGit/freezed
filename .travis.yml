@@ -18,7 +18,7 @@ script:
   - flutter test
   - flutter analyze --no-current-package lib test/
   - rm -rf **/*.freezed.dart **/*.g.dart
-  - flutter format --set-exit-if-changed --line-length 120 lib test
+  - flutter format --set-exit-if-changed lib test
   - set +e
   - cd -
   - rm -rf example
@@ -28,7 +28,7 @@ script:
   - flutter pub run test
   - flutter analyze --no-current-package lib test/
   - rm -rf test/integration/*.freezed.dart test/integration/*.g.dart
-  - flutter format --set-exit-if-changed --line-length 120 lib test
+  - flutter format --set-exit-if-changed lib test
 
 matrix:
   fast_finish: true
