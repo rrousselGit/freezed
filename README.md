@@ -1,0 +1,1 @@
+packages/freezed/README.md
