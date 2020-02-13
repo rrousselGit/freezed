@@ -11,15 +11,17 @@ before_script:
   - cd -
   - flutter doctor
 script:
-  - set -e
   - cd example
+  - set -e
   - flutter pub get
   - flutter pub pub run build_runner build --delete-conflicting-outputs
   - flutter test
   - flutter analyze --no-current-package lib test/
   - rm -rf **/*.freezed.dart **/*.g.dart
   - flutter format --set-exit-if-changed --line-length 120 lib test
+  - set +e
   - cd -
+  - set -e
   - rm -rf example
   - pub get
   - pub run build_runner build --delete-conflicting-outputs
