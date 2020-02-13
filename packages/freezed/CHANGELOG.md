@@ -1,6 +1,6 @@
 # 0.3.0
 
-Now use a custom `@freezed` annotation instead of `@freezed`.
+Now use a custom `@freezed` annotation instead of `@immutable`.
 
 # 0.2.5
 
