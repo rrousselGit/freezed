@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/templates/prototypes.dart';
+import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:meta/meta.dart';
 
 class GenericsDefinitionTemplate {
@@ -46,24 +47,21 @@ class ParametersTemplate {
           name: e.name,
           isRequired: e.hasRequired,
           decorators: parseDecorators(e.metadata),
+          nullable: e.isNullable,
         );
       }
       return Parameter(
-        name: e.name,
-        isRequired: e.hasRequired,
-        type: e.type?.getDisplayString(),
-        decorators: parseDecorators(e.metadata),
-      );
+          name: e.name,
+          isRequired: e.hasRequired,
+          type: e.type?.getDisplayString(),
+          decorators: parseDecorators(e.metadata),
+          nullable: e.isNullable);
     }
 
     return ParametersTemplate(
       parameters.where((p) => p.isRequiredPositional).map(asParameter).toList(),
-      optionalPositionalParameters: parameters
-          .where((p) => p.isOptionalPositional)
-          .map(asParameter)
-          .toList(),
-      namedParameters:
-          parameters.where((p) => p.isNamed).map(asParameter).toList(),
+      optionalPositionalParameters: parameters.where((p) => p.isOptionalPositional).map(asParameter).toList(),
+      namedParameters: parameters.where((p) => p.isNamed).map(asParameter).toList(),
     );
   }
 
@@ -86,6 +84,7 @@ class ParametersTemplate {
               name: e.name,
               type: e.type,
               decorators: e.decorators,
+              nullable: e.nullable,
             ),
           )
           .toList();
@@ -102,9 +101,7 @@ class ParametersTemplate {
   String toString() {
     final buffer = StringBuffer()..writeAll(positionalParameters, ', ');
 
-    if (buffer.isNotEmpty &&
-        (optionalPositionalParameters.isNotEmpty ||
-            namedParameters.isNotEmpty)) {
+    if (buffer.isNotEmpty && (optionalPositionalParameters.isNotEmpty || namedParameters.isNotEmpty)) {
       buffer.write(', ');
     }
     if (optionalPositionalParameters.isNotEmpty) {
@@ -131,6 +128,7 @@ class ParametersTemplate {
                 type: e.type,
                 isRequired: e.isRequired,
                 decorators: e.decorators,
+                nullable: e.nullable,
               ))
           .toList(),
       namedParameters: namedParameters
@@ -139,6 +137,7 @@ class ParametersTemplate {
                 type: e.type,
                 isRequired: e.isRequired,
                 decorators: e.decorators,
+                nullable: e.nullable,
               ))
           .toList(),
       optionalPositionalParameters: optionalPositionalParameters
@@ -147,6 +146,7 @@ class ParametersTemplate {
                 type: e.type,
                 isRequired: e.isRequired,
                 decorators: e.decorators,
+                nullable: e.nullable,
               ))
           .toList(),
     );
@@ -159,11 +159,13 @@ class Parameter {
     @required this.name,
     @required this.isRequired,
     @required this.decorators,
+    @required this.nullable,
   });
 
   final String type;
   final String name;
   final bool isRequired;
+  final bool nullable;
   final List<String> decorators;
 
   @override
@@ -178,12 +180,14 @@ class LocalParameter extends Parameter {
     @required String name,
     @required String type,
     @required bool isRequired,
+    @required bool nullable,
     @required List<String> decorators,
   }) : super(
           name: name,
           type: type,
           isRequired: isRequired,
           decorators: decorators,
+          nullable: nullable,
         );
 
   @override
@@ -198,6 +202,7 @@ class CallbackParameter extends Parameter {
     @required String name,
     @required String type,
     @required bool isRequired,
+    @required bool nullable,
     @required List<String> decorators,
     @required this.parameters,
   }) : super(
@@ -205,6 +210,7 @@ class CallbackParameter extends Parameter {
           type: type,
           isRequired: isRequired,
           decorators: decorators,
+          nullable: nullable,
         );
 
   final ParametersTemplate parameters;

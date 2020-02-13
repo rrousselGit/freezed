@@ -77,8 +77,7 @@ $copyWithPrototype
   }
 
   String get asserts {
-    final nonNullableProperties =
-        constructor.impliedProperties.where((p) => !p.nullable).toList();
+    final nonNullableProperties = constructor.impliedProperties.where((p) => !p.nullable).toList();
     if (nonNullableProperties.isEmpty) return '';
     return ': ${nonNullableProperties.map((e) => 'assert(${e.name} != null)').join(',')}';
   }
@@ -114,9 +113,8 @@ Map<String, dynamic> toJson() {
   String get debugFillProperties {
     if (!hasDiagnosticable) return '';
 
-    final diagnostics = constructor.impliedProperties
-        .map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))")
-        .join();
+    final diagnostics =
+        constructor.impliedProperties.map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))").join();
 
     return '''
 @override
@@ -152,10 +150,7 @@ ${maybeMapPrototype(allConstructors, genericsParameter)} {
   String get map {
     if (allConstructors.length < 2) return '';
 
-    final asserts = [
-      for (final ctor in allConstructors)
-        'assert(${ctor.callbackName} != null);'
-    ];
+    final asserts = [for (final ctor in allConstructors) 'assert(${ctor.callbackName} != null);'];
 
     return '''
 @override
@@ -189,10 +184,7 @@ ${maybeWhenPrototype(allConstructors)} {
   String get when {
     if (allConstructors.length < 2) return '';
 
-    final asserts = [
-      for (final ctor in allConstructors)
-        'assert(${ctor.callbackName} != null);'
-    ];
+    final asserts = [for (final ctor in allConstructors) 'assert(${ctor.callbackName} != null);'];
 
     var callbackParameters = constructor.impliedProperties.map((e) {
       if (allConstructors.any((c) => c.callbackName == e.name)) {
@@ -220,9 +212,7 @@ ${whenPrototype(allConstructors)} {
   }
 
   String get toStringMethod {
-    final parameters = hasDiagnosticable
-        ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
-        : '';
+    final parameters = hasDiagnosticable ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }' : '';
 
     final properties = constructor.impliedProperties.map((p) {
       return '${p.name}: \$${p.name}';
@@ -288,10 +278,8 @@ $parameters
         ),
       );
 
-    final asserts = constructor.impliedProperties
-        .where((p) => !p.nullable)
-        .map((e) => 'assert(${e.name} != null);')
-        .join();
+    final asserts =
+        constructor.impliedProperties.where((p) => !p.nullable).map((e) => 'assert(${e.name} != null);').join();
 
     return '''
 @override
@@ -312,10 +300,7 @@ $constructorParameters
     return '''
 @override
 bool operator ==(dynamic other) {
-  return other is ${[
-      '${constructor.redirectedName}$genericsParameter',
-      ...properties
-    ].join('&&')};
+  return other is ${['${constructor.redirectedName}$genericsParameter', ...properties].join('&&')};
 }
 ''';
   }
@@ -333,9 +318,12 @@ int get hashCode => $hashCodeImpl;
 
 extension on Element {
   bool get hasNullable {
-    return TypeChecker.fromRuntime(annotations.nullable.runtimeType)
-        .hasAnnotationOf(this, throwOnUnresolved: false);
+    return TypeChecker.fromRuntime(annotations.nullable.runtimeType).hasAnnotationOf(this, throwOnUnresolved: false);
   }
+}
+
+extension IsNullable on ParameterElement {
+  bool get isNullable => isOptionalPositional || hasNullable || (isNamed && !hasRequired);
 }
 
 class Property {
@@ -356,9 +344,7 @@ class Property {
       name: element.name,
       type: element.type?.getDisplayString(),
       decorators: parseDecorators(element.metadata),
-      nullable: element.isOptionalPositional ||
-          element.hasNullable ||
-          (element.isNamed && !element.hasRequired),
+      nullable: element.isNullable,
     );
   }
 
@@ -367,8 +353,7 @@ class Property {
     return '${decorators.join()} final ${type ?? 'dynamic'} $name;';
   }
 
-  Getter get getter => Getter(
-      name: name, type: type, decorators: decorators, nullable: nullable);
+  Getter get getter => Getter(name: name, type: type, decorators: decorators, nullable: nullable);
 }
 
 class Getter {

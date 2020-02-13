@@ -61,6 +61,7 @@ String _mapPrototype(
           type: '${constructor.redirectedName}$genericParameters',
           isRequired: false,
           decorators: const [],
+          nullable: false,
         ),
       ]);
     },
@@ -103,6 +104,7 @@ String _unionPrototype(
       isRequired: !constructor.isDefault && areCallbacksRequired,
       parameters: ctor2parameters(constructor),
       decorators: const [],
+      nullable: false,
     );
 
     if (constructor.isDefault) {
