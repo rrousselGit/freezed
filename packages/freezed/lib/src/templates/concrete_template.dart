@@ -1,6 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:meta/meta.dart';
+import 'package:source_gen/source_gen.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' as annotations;
 
 import 'parameter_template.dart';
 import 'prototypes.dart';
@@ -35,7 +37,7 @@ class Concrete {
     return '''
 ${shouldGenerateJson ? '@JsonSerializable()' : ''}
 class $concreteName$genericsDefinition $diagnosticable implements ${constructor.redirectedName}$genericsParameter {
-  $isConst $concreteName(${constructor.parameters.asThis()});
+  $isConst $concreteName(${constructor.parameters.asThis()})$asserts;
 
   $concreteFromJsonConstructor
 
@@ -72,6 +74,13 @@ $abstractProperties
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get asserts {
+    final nonNullableProperties =
+        constructor.impliedProperties.where((p) => !p.nullable).toList();
+    if (nonNullableProperties.isEmpty) return '';
+    return ': ${nonNullableProperties.map((e) => 'assert(${e.name} != null)').join(',')}';
   }
 
   String get isConst {
@@ -251,13 +260,13 @@ $parameters
     if (constructor.impliedProperties.isEmpty) return '';
 
     final parameters = constructor.impliedProperties.map((p) {
-      return 'Object ${p.name} = immutable,';
+      return 'Object ${p.name} = freezed,';
     }).join();
 
     final constructorParameters = StringBuffer();
 
     String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == immutable ? this.${p.name} : ${p.name}';
+      var ternary = '${p.name} == freezed ? this.${p.name} : ${p.name}';
       if (p.type != 'Object') {
         ternary = '$ternary as ${p.type}';
       }
@@ -279,9 +288,15 @@ $parameters
         ),
       );
 
+    final asserts = constructor.impliedProperties
+        .where((p) => !p.nullable)
+        .map((e) => 'assert(${e.name} != null);')
+        .join();
+
     return '''
 @override
 $concreteName$genericsParameter copyWith({$parameters}) {
+  $asserts
   return $concreteName$genericsParameter(
 $constructorParameters
   );
@@ -316,15 +331,29 @@ int get hashCode => $hashCodeImpl;
   }
 }
 
+extension on Element {
+  bool get hasNullable {
+    return TypeChecker.fromRuntime(annotations.nullable.runtimeType)
+        .hasAnnotationOf(this, throwOnUnresolved: false);
+  }
+}
+
+extension IsNullable on ParameterElement {
+  bool get isNullable =>
+      isOptionalPositional || hasNullable || (isNamed && !hasRequired);
+}
+
 class Property {
   final String type;
   final String name;
   final List<String> decorators;
+  final bool nullable;
 
   Property({
     @required this.type,
     @required this.name,
     @required this.decorators,
+    @required this.nullable,
   });
 
   factory Property.fromParameter(ParameterElement element) {
@@ -332,6 +361,7 @@ class Property {
       name: element.name,
       type: element.type?.getDisplayString(),
       decorators: parseDecorators(element.metadata),
+      nullable: element.isNullable,
     );
   }
 
@@ -340,15 +370,22 @@ class Property {
     return '${decorators.join()} final ${type ?? 'dynamic'} $name;';
   }
 
-  Getter get getter => Getter(name: name, type: type, decorators: decorators);
+  Getter get getter => Getter(
+      name: name, type: type, decorators: decorators, nullable: nullable);
 }
 
 class Getter {
   final String type;
   final String name;
   final List<String> decorators;
+  final bool nullable;
 
-  Getter({@required this.type, @required this.name, @required this.decorators});
+  Getter({
+    @required this.type,
+    @required this.name,
+    @required this.decorators,
+    @required this.nullable,
+  });
 
   @override
   String toString() {

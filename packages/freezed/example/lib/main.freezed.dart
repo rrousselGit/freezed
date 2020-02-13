@@ -15,7 +15,7 @@ mixin _$MyClass {
 }
 
 class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
-  const _$_MyClass({this.a, this.b});
+  _$_MyClass({this.a, this.b});
 
   @override
   final String a;
@@ -48,18 +48,18 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
 
   @override
   _$_MyClass copyWith({
-    Object a = immutable,
-    Object b = immutable,
+    Object a = freezed,
+    Object b = freezed,
   }) {
     return _$_MyClass(
-      a: a == immutable ? this.a : a as String,
-      b: b == immutable ? this.b : b as int,
+      a: a == freezed ? this.a : a as String,
+      b: b == freezed ? this.b : b as int,
     );
   }
 }
 
 abstract class _MyClass implements MyClass {
-  const factory _MyClass({String a, int b}) = _$_MyClass;
+  factory _MyClass({String a, int b}) = _$_MyClass;
 
   @override
   String get a;
@@ -107,7 +107,7 @@ mixin _$Union {
 }
 
 class _$Data with DiagnosticableTreeMixin implements Data {
-  const _$Data(this.value);
+  const _$Data(this.value) : assert(value != null);
 
   @override
   final int value;
@@ -136,10 +136,11 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   _$Data copyWith({
-    Object value = immutable,
+    Object value = freezed,
   }) {
+    assert(value != null);
     return _$Data(
-      value == immutable ? this.value : value as int,
+      value == freezed ? this.value : value as int,
     );
   }
 
@@ -333,10 +334,10 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   _$ErrorDetails copyWith({
-    Object message = immutable,
+    Object message = freezed,
   }) {
     return _$ErrorDetails(
-      message == immutable ? this.message : message as String,
+      message == freezed ? this.message : message as String,
     );
   }
 
@@ -412,7 +413,9 @@ abstract class ErrorDetails implements Union {
 }
 
 class _$Complex with DiagnosticableTreeMixin implements Complex {
-  const _$Complex(this.a, this.b);
+  const _$Complex(this.a, this.b)
+      : assert(a != null),
+        assert(b != null);
 
   @override
   final int a;
@@ -445,12 +448,14 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   _$Complex copyWith({
-    Object a = immutable,
-    Object b = immutable,
+    Object a = freezed,
+    Object b = freezed,
   }) {
+    assert(a != null);
+    assert(b != null);
     return _$Complex(
-      a == immutable ? this.a : a as int,
-      b == immutable ? this.b : b as String,
+      a == freezed ? this.a : a as int,
+      b == freezed ? this.b : b as String,
     );
   }
 
@@ -561,7 +566,7 @@ mixin _$SharedProperty {
 class _$SharedProperty0
     with DiagnosticableTreeMixin
     implements SharedProperty0 {
-  const _$SharedProperty0({this.name, this.age});
+  _$SharedProperty0({this.name, this.age});
 
   @override
   final String name;
@@ -594,12 +599,12 @@ class _$SharedProperty0
 
   @override
   _$SharedProperty0 copyWith({
-    Object name = immutable,
-    Object age = immutable,
+    Object name = freezed,
+    Object age = freezed,
   }) {
     return _$SharedProperty0(
-      name: name == immutable ? this.name : name as String,
-      age: age == immutable ? this.age : age as int,
+      name: name == freezed ? this.name : name as String,
+      age: age == freezed ? this.age : age as int,
     );
   }
 
@@ -655,7 +660,7 @@ class _$SharedProperty0
 }
 
 abstract class SharedProperty0 implements SharedProperty {
-  const factory SharedProperty0({String name, int age}) = _$SharedProperty0;
+  factory SharedProperty0({String name, int age}) = _$SharedProperty0;
 
   @override
   String get name;
@@ -668,7 +673,7 @@ abstract class SharedProperty0 implements SharedProperty {
 class _$SharedProperty1
     with DiagnosticableTreeMixin
     implements SharedProperty1 {
-  const _$SharedProperty1({this.name, this.population});
+  _$SharedProperty1({this.name, this.population});
 
   @override
   final String name;
@@ -703,12 +708,12 @@ class _$SharedProperty1
 
   @override
   _$SharedProperty1 copyWith({
-    Object name = immutable,
-    Object population = immutable,
+    Object name = freezed,
+    Object population = freezed,
   }) {
     return _$SharedProperty1(
-      name: name == immutable ? this.name : name as String,
-      population: population == immutable ? this.population : population as int,
+      name: name == freezed ? this.name : name as String,
+      population: population == freezed ? this.population : population as int,
     );
   }
 
@@ -764,8 +769,7 @@ class _$SharedProperty1
 }
 
 abstract class SharedProperty1 implements SharedProperty {
-  const factory SharedProperty1({String name, int population}) =
-      _$SharedProperty1;
+  factory SharedProperty1({String name, int population}) = _$SharedProperty1;
 
   @override
   String get name;

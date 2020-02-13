@@ -1,3 +1,9 @@
+# 0.4.0
+
+Automatically generate `assert(property != null)` on both constructors and `copyWith`
+methods.\
+This also adds a `@nullable` decorator to disable this assertion.
+
 # 0.3.0
 
 Now use a custom `@freezed` annotation instead of `@immutable`.
