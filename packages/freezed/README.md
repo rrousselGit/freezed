@@ -7,7 +7,7 @@ Welcome to [Freezed], yet another code generator for unions/pattern-matching/cop
 
 While there are many code-generators available to help you deal with immutable objects, they usually come with a trade-off.\
 Either they have a simple syntax but lack in feature, or they have very advanced
-features but with a complex syntax.
+features but with complex syntax.
 
 A typical example would be a "clone" method.\
 Current generators have two approaches:
@@ -36,10 +36,10 @@ Current generators have two approaches:
   })
   ```
 
-  The benefits of this approach is that it _does_ support nullable values.\
+  The benefits of this approach are that it _does_ support nullable values.\
   On the other hand, the syntax is not very readable and fun to use.
 
-**Say hello to [Freezed]~**, with a support for advanced use-cases _without_ compromising on the syntax.
+**Say hello to [Freezed]~**, with support for advanced use-cases _without_ compromising on the syntax.
 
 See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib/main.dart) or [the index](#index) for a preview on what's available
 
@@ -84,7 +84,7 @@ This install three packages:
 
 ## Run the generator
 
-Like most code-generators, [Freezed] will need you to both import the annotation ([meta]),
+Like most code-generators, [Freezed] will need you to both imports the annotation ([meta]),
 and use the `part` keyword on the top of your files.
 
 As such, a file that wants to use [Freezed] will start with:
@@ -117,7 +117,7 @@ abstract class Union with _$Union {
 }
 ```
 
-From there, to run the code-generator, you have two possibilities:
+From there, to run the code generator, you have two possibilities:
 
 - `flutter pub pub run build_runner build`, if your package depends on Flutter
 - `pub run build_runner build` otherwise
@@ -154,7 +154,7 @@ print(person.age); // 24
 **NOTE**:\
 You do not have to use named parameters for your constructor.
 
-All valid parameter syntax are supported. As such you could write:
+All valid parameter syntax is supported. As such you could write:
 
 ```dart
 @freezed
@@ -192,7 +192,7 @@ See [unions/Sealed classes](#unions/sealed-classes) for more information.
 
 ## ==/toString
 
-When using [Freezed], the `toString`, `hashCode` and `==` methods are overriden
+When using [Freezed], the `toString`, `hashCode` and `==` methods are overridden
 as you would expect:
 
 ```dart
@@ -242,8 +242,8 @@ Notice how `copyWith` correctly was able to understand `null` parameters.
 
 ## Unions/Sealed classes
 
-Coming from other languages, you may be used with features like "tagged union types" / sealed clases / pattern matching.\
-These are powerful tool in combination with a type system, but Dart currently does not support them.
+Coming from other languages, you may be used with features like "tagged union types" / sealed classes/pattern matching.\
+These are powerful tools in combination with a type system, but Dart currently does not support them.
 
 But fear not, [Freezed] supports them all, by using a syntax similar to Kotlin.
 
@@ -264,7 +264,7 @@ They will come in handy later.
 
 ### Shared properties
 
-When defining multiple constructors, you will loose the ability to do read properties that are not common to all constructors:
+When defining multiple constructors, you will lose the ability to do read properties that are not common to all constructors:
 
 For example, if you write:
 
@@ -385,7 +385,7 @@ If that is not what you want, consider using [maybeWhen].
 The [maybeWhen] method is equivalent to [when], but doesn't require all callbacks
 to be specified.
 
-On the other hand, it adds an extra `orElse` required parameter, for a fallback behavior.
+On the other hand, it adds an extra `orElse` required parameter, for fallback behavior.
 
 As such, using:
 
@@ -501,9 +501,8 @@ abstract class Model with _$Model {
 }
 ```
 
-The changes necessary to make it compatible with [json_serializable] consists of three lines:
+The changes necessary to make it compatible with [json_serializable] consists of two lines:
 
-- a new import: `import 'package:json_annotation/json_annotation.dart'`
 - a new `part`: `part 'model.g.dart';`
 - a new constructor on the targeted class: `factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);`
 
@@ -511,7 +510,6 @@ The end result is:
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'model.freezed.dart';
 part 'model.g.dart';
@@ -534,7 +532,7 @@ constructor should be used.
 
 **What about `@JsonKey`?**
 
-All decorators passed to a constructor parameters are "copy-pasted" to the generated property too.\
+All decorators passed to a constructor parameter are "copy-pasted" to the generated property too.\
 As such, you can write:
 
 ```dart

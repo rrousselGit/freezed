@@ -13,9 +13,6 @@ List<String> parseDecorators(List<ElementAnnotation> metadata) {
 }
 
 String getRedirectedConstructorName(ConstructorElement constructor) {
-  if (constructor.name == 'fixed') {
-    print(constructor.redirectedConstructor);
-  }
   final location = constructor.nameOffset;
   final source = constructor.source.contents.data;
 
