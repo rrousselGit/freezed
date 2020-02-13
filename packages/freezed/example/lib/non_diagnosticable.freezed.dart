@@ -36,7 +36,9 @@ mixin _$Example<T> {
 }
 
 class _$_Example<T> implements _Example<T> {
-  const _$_Example(this.a, this.b);
+  _$_Example(this.a, this.b)
+      : assert(a != null),
+        assert(b != null);
 
   @override
   final int a;
@@ -60,12 +62,14 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   _$_Example<T> copyWith({
-    Object a = immutable,
-    Object b = immutable,
+    Object a = freezed,
+    Object b = freezed,
   }) {
+    assert(a != null);
+    assert(b != null);
     return _$_Example<T>(
-      a == immutable ? this.a : a as int,
-      b == immutable ? this.b : b as String,
+      a == freezed ? this.a : a as int,
+      b == freezed ? this.b : b as String,
     );
   }
 
@@ -121,7 +125,7 @@ class _$_Example<T> implements _Example<T> {
 }
 
 abstract class _Example<T> implements Example<T> {
-  const factory _Example(int a, String b) = _$_Example<T>;
+  factory _Example(int a, String b) = _$_Example<T>;
 
   int get a;
   String get b;
@@ -130,7 +134,7 @@ abstract class _Example<T> implements Example<T> {
 }
 
 class _$_Example2<T> implements _Example2<T> {
-  const _$_Example2(this.c);
+  _$_Example2(this.c) : assert(c != null);
 
   @override
   final T c;
@@ -150,10 +154,11 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   _$_Example2<T> copyWith({
-    Object c = immutable,
+    Object c = freezed,
   }) {
+    assert(c != null);
     return _$_Example2<T>(
-      c == immutable ? this.c : c as T,
+      c == freezed ? this.c : c as T,
     );
   }
 
@@ -209,7 +214,7 @@ class _$_Example2<T> implements _Example2<T> {
 }
 
 abstract class _Example2<T> implements Example<T> {
-  const factory _Example2(T c) = _$_Example2<T>;
+  factory _Example2(T c) = _$_Example2<T>;
 
   T get c;
 

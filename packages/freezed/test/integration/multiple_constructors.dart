@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'multiple_constructors.freezed.dart';
