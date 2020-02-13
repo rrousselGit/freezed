@@ -306,16 +306,13 @@ $constructorParameters
 
   String get operatorEqualMethod {
     final properties = constructor.impliedProperties.map((p) {
-      return '(identical(other.${p.name}, ${p.name}) || other.${p.name} == ${p.name})';
+      return '(identical(other.${p.name}, ${p.name}) || const DeepCollectionEquality().equals(other.${p.name}, ${p.name}))';
     });
 
     return '''
 @override
 bool operator ==(dynamic other) {
-  return other is ${[
-      '${constructor.redirectedName}$genericsParameter',
-      ...properties
-    ].join('&&')};
+  return identical(this, other) || (other is ${['${constructor.redirectedName}$genericsParameter', ...properties].join('&&')});
 }
 ''';
   }

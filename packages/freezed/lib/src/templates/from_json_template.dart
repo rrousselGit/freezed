@@ -1,7 +1,7 @@
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:meta/meta.dart';
-
+import 'package:collection/collection.dart';
 class FromJson {
   FromJson({
     @required this.name,

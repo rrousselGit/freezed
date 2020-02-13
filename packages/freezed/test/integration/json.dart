@@ -36,7 +36,7 @@ abstract class Decorator with _$Decorator {
 
 @freezed
 abstract class Generic<T> with _$Generic<T> {
-  factory Generic(@DataConverter() T a) = _Generic<T>;
+  factory Generic(@DataConverter() T b) = _Generic<T>;
 
   factory Generic.fromJson(Map<String, dynamic> json) =>
       _$GenericFromJson<T>(json);
