@@ -59,9 +59,7 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
 
   @override
   bool operator ==(dynamic other) {
-    return other is _Example<T> &&
-        (identical(other.a, a) || other.a == a) &&
-        (identical(other.b, b) || other.b == b);
+    return other is _Example<T> && (identical(other.a, a) || other.a == a) && (identical(other.b, b) || other.b == b);
   }
 
   @override
@@ -152,9 +150,7 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Example<$T>.named'))
-      ..add(DiagnosticsProperty('c', c));
+    properties..add(DiagnosticsProperty('type', 'Example<$T>.named'))..add(DiagnosticsProperty('c', c));
   }
 
   @override

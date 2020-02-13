@@ -30,9 +30,7 @@ void main() {
       'hello',
     );
     expect(
-      redirectedConstructorNameRegexp
-          .firstMatch('ComplexParameters(List<T> value) = _ComplexParameters<T>;')
-          .group(1),
+      redirectedConstructorNameRegexp.firstMatch('ComplexParameters(List<T> value) = _ComplexParameters<T>;').group(1),
       '_ComplexParameters',
     );
     expect(
