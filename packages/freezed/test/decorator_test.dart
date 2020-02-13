@@ -2,7 +2,6 @@ import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
 void main() {
-  // TODO: decorators on constructors applies to parameters of copyWith/concrete/map/when
   test('has no issue', () async {
     final main = await resolveSources(
       {

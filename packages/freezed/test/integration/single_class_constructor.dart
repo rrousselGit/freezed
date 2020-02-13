@@ -51,3 +51,8 @@ abstract class Example with _$Example {
     return const Example('a', b: 42);
   }
 }
+
+@freezed
+abstract class NoConst with _$NoConst {
+  factory NoConst() = NoConstImpl;
+}

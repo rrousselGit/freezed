@@ -48,7 +48,13 @@ void main() {
     expect(
       redirectedConstructorNameRegexp.firstMatch("""
 factory Example.fixed() {
-  return Example('a', b: 42);
+    return const Example('a', b: 42);
+  }
+}
+
+@freezed
+abstract class NoConst with _\$NoConst {
+  const factory NoConst() = NoConstImpl;
 }"""),
       isNull,
     );

@@ -22,7 +22,6 @@ class MyObject {
 }
 
 Future<void> main() async {
-  // TODO: non-const factory should not generate const concrete implementations
   test('== uses identical first', () {
     var didEqual = false;
     final obj = MyObject(() => didEqual = true);
@@ -85,6 +84,22 @@ void main() {
 
   test('can be created as const', () {
     expect(identical(const MyClass(a: '42'), const MyClass(a: '42')), isTrue);
+  });
+  test('cannot be created as const if user defined ctor is not const', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  NoConstImpl();
+}
+'''), completes);
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  const NoConstImpl();
+}
+'''), throwsCompileError);
   });
   test('generates a property for all constructor parameters', () {
     var value = const MyClass(
@@ -291,5 +306,4 @@ void main() {
     expect('${Empty()}', 'Empty()');
     expect('${Empty2()}', 'Empty2()');
   });
-  // TODO: transpose default values to redirected ctor
 }

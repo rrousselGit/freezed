@@ -14,6 +14,7 @@ import 'templates/from_json_template.dart';
 class ConstructorDetails {
   ConstructorDetails({
     @required this.name,
+    @required this.isConst,
     @required this.isDefault,
     @required this.redirectedName,
     @required this.parameters,
@@ -22,6 +23,7 @@ class ConstructorDetails {
   });
 
   final String name;
+  final bool isConst;
   final String redirectedName;
   final ParametersTemplate parameters;
   final List<Property> impliedProperties;
@@ -36,6 +38,7 @@ class ConstructorDetails {
 
     $runtimeType(
       name: $name,
+      isConst: $isConst,
       isDefault: $isDefault,
       redirectedName: $redirectedName,
       parameters: $parameters,
@@ -182,6 +185,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       result.add(
         ConstructorDetails(
           name: constructor.name,
+          isConst: constructor.isConst,
           fullName: fullName,
           impliedProperties: [
             for (final parameter in constructor.parameters) Property.fromParameter(parameter),

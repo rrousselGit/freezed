@@ -35,7 +35,7 @@ class Concrete {
     return '''
 ${shouldGenerateJson ? '@JsonSerializable()' : ''}
 class $concreteName$genericsDefinition $diagnosticable implements ${constructor.redirectedName}$genericsParameter {
-  const $concreteName(${constructor.parameters.asThis()});
+  $isConst $concreteName(${constructor.parameters.asThis()});
 
   $concreteFromJsonConstructor
 
@@ -63,7 +63,7 @@ $toJson
 }
 
 abstract class ${constructor.redirectedName}$genericsDefinition implements $name$genericsParameter {
-  const factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
+  $isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
 
   $redirectedFromJsonConstructor
 
@@ -72,6 +72,10 @@ $abstractProperties
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get isConst {
+    return constructor.isConst ? 'const' : '';
   }
 
   String get redirectedFromJsonConstructor {
