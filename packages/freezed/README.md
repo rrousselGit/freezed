@@ -69,50 +69,47 @@ First, install [build_runner] and [Freezed] by adding them to your `pubspec.yaml
 
 ```yaml
 # pubspec.yaml
+dependencies:
+  freezed_annotation:
+
 dev_dependencies:
   build_runner:
   freezed:
 ```
 
-As opposed to other code-generators, [Freezed] does **not** have custom annotations.\
-Instead it uses `@immutable` from [meta], which comes built-in Flutter (but can be installed
-separatly if needed).
+This install three packages:
+- build_runner, the tool to run code-generators
+- [freezed], the code generator
+- freezed_annotation, a package containing annotations for [freezed].
 
 ## Run the generator
 
 Like most code-generators, [Freezed] will need you to both import the annotation ([meta]),
 and use the `part` keyword on the top of your files.
 
-As such, a file that wants to use [Freezed] may either start with:
+As such, a file that wants to use [Freezed] will start with:
 
 ```dart
-import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'my_file.freezed.dart';
 ```
 
-or:
-
-```dart
-import 'package:meta/meta.dart';
-
-part 'my_file.freezed.dart';
-```
-
-**PREFER**: importing `package:flutter/foundation.dart` over `package:meta/meta.dart`.\
-The reason being, importing `foundation.dart` also imports the necessary
-classes to make an object nicely readable in Flutter's devtool.\
-If you import `foundation.dart`, [Freezed] will automatically them.
+**CONSIDER**: also importing `package:flutter/foundation.dart`.\
+The reason being, importing `foundation.dart` also imports classes to make an
+object nicely readable in Flutter's devtool.\
+If you import `foundation.dart`, [Freezed] will automatically do it for you.
 
 A full example would be:
 
 ```dart
 // main.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
 part 'main.freezed.dart';
 
-@immutable
+@freezed
 abstract class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
@@ -140,7 +137,7 @@ For example, if you want to define a `Person` class, which has 2 properties:
 To do so, you will have to define a _factory constructor_ that takes these properties as parameter:
 
 ```dart
-@immutable
+@freezed
 abstract class Person with _$Person {
   factory Person({ String name, int age }) = _Person;
 }
@@ -160,7 +157,7 @@ You do not have to use named parameters for your constructor.
 All valid parameter syntax are supported. As such you could write:
 
 ```dart
-@immutable
+@freezed
 abstract class Person with _$Person {
   factory Person(String name, int age) = _Person;
 }
@@ -169,7 +166,7 @@ Person('Remi', 24)
 ```
 
 ```dart
-@immutable
+@freezed
 abstract class Person with _$Person {
   const factory Person(String name, {int age}) = _Person;
 }
@@ -183,7 +180,7 @@ You are also not limited to one constructor and non-generic class.\
 From example, you should write:
 
 ```dart
-@immutable
+@freezed
 abstract class Union<T> with _$Union<T> {
   const factory Union(T value) = Data<T>;
   const factory Union.loading() = Loading<T>;
@@ -199,7 +196,7 @@ When using [Freezed], the `toString`, `hashCode` and `==` methods are overriden
 as you would expect:
 
 ```dart
-@immutable
+@freezed
 abstract class Person with _$Person {
   factory Person({ String name, int age }) = _Person;
 }
@@ -224,7 +221,7 @@ to `null`.\
 For example, if we take our previous `Person` class:
 
 ```dart
-@immutable
+@freezed
 abstract class Person with _$Person {
   factory Person(String name, int age) = _Person;
 }
@@ -253,7 +250,7 @@ But fear not, [Freezed] supports them all, by using a syntax similar to Kotlin.
 Defining a union/sealed class with [Freezed] is simple: write multiple constructors:
 
 ```dart
-@immutable
+@freezed
 abstract class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
@@ -272,7 +269,7 @@ When defining multiple constructors, you will loose the ability to do read prope
 For example, if you write:
 
 ```dart
-@immutable
+@freezed
 abstract class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
   const factory Example.city(String name, int population) = City;
@@ -332,7 +329,7 @@ Its prototype depends on the constructors defined.
 For example, with:
 
 ```dart
-@immutable
+@freezed
 abstract class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
@@ -357,7 +354,7 @@ print(
 Whereas if we defined:
 
 ```dart
-@immutable
+@freezed
 abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
@@ -393,7 +390,7 @@ On the other hand, it adds an extra `orElse` required parameter, for a fallback 
 As such, using:
 
 ```dart
-@immutable
+@freezed
 abstract class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
@@ -438,7 +435,7 @@ The [map] and [maybeMap] methods are equivalent to [when]/[maybeWhen], but **wit
 Consider this class:
 
 ```dart
-@immutable
+@freezed
 abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
@@ -493,11 +490,11 @@ Making a class compatible with [json_serializable] is very straightforward.
 Consider this snippet:
 
 ```dart
-import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'model.freezed.dart';
 
-@immutable
+@freezed
 abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
@@ -513,13 +510,13 @@ The changes necessary to make it compatible with [json_serializable] consists of
 The end result is:
 
 ```dart
-import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'model.freezed.dart';
 part 'model.g.dart';
 
-@immutable
+@freezed
 abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
@@ -541,7 +538,7 @@ All decorators passed to a constructor parameters are "copy-pasted" to the gener
 As such, you can write:
 
 ```dart
-@immutable
+@freezed
 abstract class Example with _$Example {
   factory Example(@Jsonkey(name: 'my_property') String myProperty) = _Example;
 

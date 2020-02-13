@@ -1,33 +1,34 @@
 import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'multiple_constructors.freezed.dart';
 
-@immutable
+@freezed
 abstract class NoCommonParam with _$NoCommonParam {
   const factory NoCommonParam(String a, {int b}) = NoCommonParam0;
   const factory NoCommonParam.named(double c, [Object d]) = NoCommonParam1;
 }
 
-@immutable
+@freezed
 abstract class SharedParam with _$SharedParam {
   const factory SharedParam(String a, int b) = SharedParam0;
   const factory SharedParam.named(String a, int c) = SharedParam1;
 }
 
-@immutable
+@freezed
 abstract class Complex with _$Complex {
   const factory Complex(String a) = Complex0;
   const factory Complex.first(String a, {bool b, double d}) = Complex1;
   const factory Complex.second(String a, [int c, double d]) = Complex2;
 }
 
-@immutable
+@freezed
 abstract class NoDefault with _$NoDefault {
   const factory NoDefault.first(String a) = NoDefault1;
   const factory NoDefault.second(String a) = NoDefault2;
 }
 
-@immutable
+@freezed
 abstract class NameConflict with _$NameConflict {
   factory NameConflict.something(Error error) = Something;
   factory NameConflict.error(Error error) = SomeError;

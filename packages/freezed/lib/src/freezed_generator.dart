@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 
 import 'parse_generator.dart';
@@ -97,7 +98,7 @@ $runtimeType(
 }
 
 @immutable
-class FreezedGenerator extends ParserGenerator<ClassElement, _GlobalData, Data, Immutable> {
+class FreezedGenerator extends ParserGenerator<ClassElement, _GlobalData, Data, Freezed> {
   @override
   Data parseElement(_GlobalData globalData, ClassElement element) {
     // TODO: verify _$name is mixed-in

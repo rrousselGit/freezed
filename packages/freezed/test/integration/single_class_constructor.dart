@@ -1,48 +1,49 @@
 import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
 
-@immutable
+@freezed
 abstract class MyClass with _$MyClass {
   const factory MyClass({String a, int b}) = WhateverIWant;
 }
 
-@immutable
+@freezed
 abstract class MixedParam with _$MixedParam {
   const factory MixedParam(String a, {int b}) = WhateverMixedParam;
 }
 
-@immutable
+@freezed
 abstract class PositionalMixedParam with _$PositionalMixedParam {
   const factory PositionalMixedParam(String a, [int b]) = WhateverPositionalMixedParam;
 }
 
-@immutable
+@freezed
 abstract class Required with _$Required {
   const factory Required({@required String a}) = WhateverRequired;
 }
 
-@immutable
+@freezed
 abstract class Empty with _$Empty {
   const factory Empty() = WhateverEmpty;
 }
 
-@immutable
+@freezed
 abstract class Empty2 with _$Empty2 {
   const factory Empty2() = WhateverEmpty2;
 }
 
-@immutable
+@freezed
 abstract class SingleNamedCtor with _$SingleNamedCtor {
   const factory SingleNamedCtor.named(int a) = WhateverSingleNamedCtor;
 }
 
-@immutable
+@freezed
 abstract class Generic<T> with _$Generic<T> {
   const factory Generic(T value) = A<T>;
 }
 
-@immutable
+@freezed
 abstract class Example with _$Example {
   const factory Example(String a, {int b}) = Example0;
 

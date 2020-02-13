@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'generic.freezed.dart';
 
@@ -7,31 +8,31 @@ class Model<T> {
   final T value;
 }
 
-@immutable
+@freezed
 abstract class Generic<T extends Model<dynamic>> with _$Generic<T> {
   factory Generic(T model) = _Generic<T>;
 }
 
-@immutable
+@freezed
 abstract class MultiGeneric<A, T extends Model<A>> with _$MultiGeneric<A, T> {
   factory MultiGeneric(T model) = _MultiGeneric<A, T>;
 }
 
-@immutable
+@freezed
 abstract class MultipleConstructors<A, B> with _$MultipleConstructors<A, B> {
   factory MultipleConstructors(bool flag) = Default<A, B>;
   factory MultipleConstructors.first(A a) = First<A, B>;
   factory MultipleConstructors.second(B b) = Second<A, B>;
 }
 
-@immutable
+@freezed
 abstract class Union<T> with _$Union<T> {
   const factory Union(T value) = Data<T>;
   const factory Union.loading() = Loading<T>;
   const factory Union.error([String message]) = ErrorDetails<T>;
 }
 
-@immutable
+@freezed
 abstract class ComplexParameters<T> with _$ComplexParameters<T> {
   const factory ComplexParameters(List<T> value) = _ComplexParameters<T>;
 }

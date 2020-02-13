@@ -1,3 +1,7 @@
+# 0.3.0
+
+Now use a custom `@freezed` annotation instead of `@freezed`.
+
 # 0.2.5
 
 Fixed a bug where generic json deserialization didn't apply generic parameters (https://github.com/rrousselGit/freezed/issues/32)
@@ -43,7 +47,7 @@ Transfer all parameters decorators to the generated properties.
 - `fromJson`/`toJson` no longer require/add a `runtimeType` key for classes with a
   single constructor. (https://github.com/rrousselGit/freezed/issues/7)
 
-- don't generate anything for classes that add `@immutable` but define real properties
+- don't generate anything for classes that add `@freezed` but define real properties
   (https://github.com/rrousselGit/freezed/issues/5)
 
 # 0.1.1

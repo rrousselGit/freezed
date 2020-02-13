@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:freezed/src/freezed_generator.dart';
-import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 
 Future<void> main() async {
   final reader = await initializeLibraryReaderForDirectory('test/integration', 'source_gen_src.dart');
 
   initializeBuildLogTracking();
-  testAnnotatedElements<Immutable>(reader, FreezedGenerator());
+  testAnnotatedElements<Freezed>(reader, FreezedGenerator());
 }

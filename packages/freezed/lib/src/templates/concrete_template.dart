@@ -200,7 +200,7 @@ ${whenPrototype(allConstructors)} {
   }
 
   String get toStringMethod {
-    final parameters = hasDiagnosticable ? '{ DiagnosticLevel minLevel = DiagnosticLevel.debug }' : '';
+    final parameters = hasDiagnosticable ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }' : '';
 
     final properties = constructor.impliedProperties.map((p) {
       return '${p.name}: \$${p.name}';

@@ -1,8 +1,9 @@
 import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'decorator.freezed.dart';
 
-@immutable
+@freezed
 abstract class Decorator with _$Decorator {
   factory Decorator({@deprecated @_WeirdDecorator('a', b: 0.42) String a}) = Decorator0;
 }
