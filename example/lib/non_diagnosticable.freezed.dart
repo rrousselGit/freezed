@@ -50,9 +50,7 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   bool operator ==(dynamic other) {
-    return other is _Example<T> &&
-        (identical(other.a, a) || other.a == a) &&
-        (identical(other.b, b) || other.b == b);
+    return other is _Example<T> && (identical(other.a, a) || other.a == a) && (identical(other.b, b) || other.b == b);
   }
 
   @override
