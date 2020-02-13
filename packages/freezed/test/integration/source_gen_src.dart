@@ -2,16 +2,24 @@
 import 'package:source_gen_test/annotations.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-@ShouldGenerate('\n')
+@ShouldThrow('Marked Unrelated with @freezed, but the class is not abstract')
 @freezed
 class Unrelated {}
 
-@ShouldGenerate('\n')
+@ShouldThrow('Marked NonFreezedClass with @freezed, but freezed has nothing to generate')
 @freezed
-class NonFreezedClass {
-  final int regularField;
+abstract class NonFreezedClass {
+  const NonFreezedClass();
+}
 
-  const NonFreezedClass(this.regularField);
+@ShouldThrow('@freezed can only be applied on classes. Failing element: foo')
+@freezed
+int foo;
 
-  factory NonFreezedClass.someFactory(int x) => NonFreezedClass(x);
+@ShouldThrow('@freezed cannot be used on classes with unimplemented getters')
+@freezed
+abstract class Properties {
+  int get regularProperty;
+
+  factory Properties() = _Properties;
 }

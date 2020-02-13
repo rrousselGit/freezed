@@ -3,6 +3,7 @@ import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
+import 'package:source_gen/source_gen.dart';
 
 import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
@@ -54,7 +55,7 @@ class Data {
     @required this.genericsDefinitionTemplate,
     @required this.genericsParameterTemplate,
     @required this.commonProperties,
-  }) : assert(constructors.isEmpty);
+  }) : assert(constructors.isNotEmpty);
 
   final String name;
   final bool needsJsonSerializable;
@@ -98,13 +99,40 @@ $runtimeType(
 }
 
 @immutable
-class FreezedGenerator extends ParserGenerator<ClassElement, _GlobalData, Data, Freezed> {
+class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   @override
-  Data parseElement(_GlobalData globalData, ClassElement element) {
+  Data parseElement(_GlobalData globalData, Element rawElement) {
+    if (rawElement is! ClassElement) {
+      throw InvalidGenerationSourceError(
+        '@freezed can only be applied on classes. Failing element: ${rawElement.name}',
+        element: rawElement,
+      );
+    }
+    final element = rawElement as ClassElement;
+
+    if (!element.isAbstract) {
+      throw InvalidGenerationSourceError(
+        'Marked ${element.name} with @freezed, but the class is not abstract',
+        element: rawElement,
+      );
+    }
+
+    if (element.fields.isNotEmpty) {
+      throw InvalidGenerationSourceError(
+        '@freezed cannot be used on classes with unimplemented getters',
+        element: rawElement,
+      );
+    }
+
     // TODO: verify _$name is mixed-in
 
     final constructrorsNeedsGeneration = _parseConstructorsNeedsGeneration(element);
-    if (constructrorsNeedsGeneration.isEmpty) return null;
+    if (constructrorsNeedsGeneration.isEmpty) {
+      throw InvalidGenerationSourceError(
+        'Marked ${element.name} with @freezed, but freezed has nothing to generate',
+        element: rawElement,
+      );
+    }
 
     // TODO: parse late finals with an initializer and copy-paste them to the concrete class + toString/debugFillProperties
 

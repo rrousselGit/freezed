@@ -4,7 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
-abstract class ParserGenerator<T extends Element, GlobalData, Data, Annotation>
+abstract class ParserGenerator<GlobalData, Data, Annotation>
     extends GeneratorForAnnotation<Annotation> {
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
@@ -12,7 +12,7 @@ abstract class ParserGenerator<T extends Element, GlobalData, Data, Annotation>
 
     final globalData = parseGlobalData(library.element);
 
-    for (var element in library.annotatedWith(typeChecker).map((e) => e.element).whereType<T>()) {
+    for (var element in library.annotatedWith(typeChecker).map((e) => e.element)) {
       final data = parseElement(globalData, element);
       if (data == null) continue;
 
@@ -27,7 +27,7 @@ abstract class ParserGenerator<T extends Element, GlobalData, Data, Annotation>
 
   GlobalData parseGlobalData(LibraryElement library);
 
-  Data parseElement(GlobalData globalData, T element);
+  Data parseElement(GlobalData globalData, Element element);
 
   Iterable<Object> generateForData(GlobalData globalData, Data data);
 
@@ -35,7 +35,7 @@ abstract class ParserGenerator<T extends Element, GlobalData, Data, Annotation>
   Iterable<String> generateForAnnotatedElement(Element element, ConstantReader annotation, BuildStep buildStep) sync* {
     // implemented for source_gen_test – otherwise unused
     final globalData = parseGlobalData(element.library);
-    final data = parseElement(globalData, element as T);
+    final data = parseElement(globalData, element);
     if (data == null) return;
     yield* generateForData(globalData, data).map((element) => element.toString());
   }
