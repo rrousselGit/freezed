@@ -25,5 +25,3 @@ dev_dependencies:
   test: ^1.6.0
   matcher: ^0.12.6
   source_gen_test: ^0.1.0
-
-
