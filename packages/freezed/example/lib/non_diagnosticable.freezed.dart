@@ -52,9 +52,12 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   bool operator ==(dynamic other) {
-    return other is _Example<T> &&
-        (identical(other.a, a) || other.a == a) &&
-        (identical(other.b, b) || other.b == b);
+    return identical(this, other) ||
+        (other is _Example<T> &&
+            (identical(other.a, a) ||
+                const DeepCollectionEquality().equals(other.a, a)) &&
+            (identical(other.b, b) ||
+                const DeepCollectionEquality().equals(other.b, b)));
   }
 
   @override
@@ -146,7 +149,10 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   bool operator ==(dynamic other) {
-    return other is _Example2<T> && (identical(other.c, c) || other.c == c);
+    return identical(this, other) ||
+        (other is _Example2<T> &&
+            (identical(other.c, c) ||
+                const DeepCollectionEquality().equals(other.c, c)));
   }
 
   @override

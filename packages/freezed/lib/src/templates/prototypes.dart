@@ -1,7 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:meta/meta.dart';
-
 import 'parameter_template.dart';
 
 final redirectedConstructorNameRegexp =

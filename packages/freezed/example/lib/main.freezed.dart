@@ -38,9 +38,12 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
 
   @override
   bool operator ==(dynamic other) {
-    return other is _MyClass &&
-        (identical(other.a, a) || other.a == a) &&
-        (identical(other.b, b) || other.b == b);
+    return identical(this, other) ||
+        (other is _MyClass &&
+            (identical(other.a, a) ||
+                const DeepCollectionEquality().equals(other.a, a)) &&
+            (identical(other.b, b) ||
+                const DeepCollectionEquality().equals(other.b, b)));
   }
 
   @override
@@ -127,8 +130,10 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Data &&
-        (identical(other.value, value) || other.value == value);
+    return identical(this, other) ||
+        (other is Data &&
+            (identical(other.value, value) ||
+                const DeepCollectionEquality().equals(other.value, value)));
   }
 
   @override
@@ -231,7 +236,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Loading;
+    return identical(this, other) || (other is Loading);
   }
 
   @override
@@ -325,8 +330,10 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   bool operator ==(dynamic other) {
-    return other is ErrorDetails &&
-        (identical(other.message, message) || other.message == message);
+    return identical(this, other) ||
+        (other is ErrorDetails &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
   }
 
   @override
@@ -438,9 +445,12 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   bool operator ==(dynamic other) {
-    return other is Complex &&
-        (identical(other.a, a) || other.a == a) &&
-        (identical(other.b, b) || other.b == b);
+    return identical(this, other) ||
+        (other is Complex &&
+            (identical(other.a, a) ||
+                const DeepCollectionEquality().equals(other.a, a)) &&
+            (identical(other.b, b) ||
+                const DeepCollectionEquality().equals(other.b, b)));
   }
 
   @override
@@ -589,9 +599,12 @@ class _$SharedProperty0
 
   @override
   bool operator ==(dynamic other) {
-    return other is SharedProperty0 &&
-        (identical(other.name, name) || other.name == name) &&
-        (identical(other.age, age) || other.age == age);
+    return identical(this, other) ||
+        (other is SharedProperty0 &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.age, age) ||
+                const DeepCollectionEquality().equals(other.age, age)));
   }
 
   @override
@@ -696,10 +709,13 @@ class _$SharedProperty1
 
   @override
   bool operator ==(dynamic other) {
-    return other is SharedProperty1 &&
-        (identical(other.name, name) || other.name == name) &&
-        (identical(other.population, population) ||
-            other.population == population);
+    return identical(this, other) ||
+        (other is SharedProperty1 &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.population, population) ||
+                const DeepCollectionEquality()
+                    .equals(other.population, population)));
   }
 
   @override
