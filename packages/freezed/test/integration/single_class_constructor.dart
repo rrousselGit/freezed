@@ -66,3 +66,15 @@ abstract class SecondState with _$SecondState {
     String uuid,
   }) = _SecondState;
 }
+
+// Regression test for https://github.com/rrousselGit/freezed/issues/44
+@freezed
+abstract class Static with _$Static {
+  const factory Static() = _Static;
+
+  static int staticVariable;
+
+  static int get staticGetter => 0;
+
+  static int staticMethod() => 0;
+}
