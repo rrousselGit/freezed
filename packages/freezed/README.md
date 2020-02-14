@@ -50,7 +50,9 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
   - [Run the generator](#run-the-generator)
 - [The features](#the-features)
   - [The syntax](#the-syntax)
-  - [==/toString](#==toString)
+    - [basics](#basics)
+    - [non-nullable](#non-nullable)
+  - [==/toString](#toString)
   - [copyWith](#copyWith)
   - [Unions/Sealed classes](#unionssealed-classes)
     - [shared properties](#shared-properties)
@@ -58,7 +60,6 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [maybeWhen](#maybeWhen)
     - [map/maybeMap](#mapmaybemap)
   - [fromJson/toJson](#fromjsontojson)
-- [Roadmap](#roadmap)
 
 # How to use
 
@@ -78,6 +79,7 @@ dev_dependencies:
 ```
 
 This install three packages:
+
 - build_runner, the tool to run code-generators
 - [freezed], the code generator
 - freezed_annotation, a package containing annotations for [freezed].
@@ -125,6 +127,8 @@ From there, to run the code generator, you have two possibilities:
 # The features
 
 ## The syntax
+
+### Basics
 
 [Freezed] works differently than most generators. To define a class using [Freezed],
 you will not declare properties but factory constructors instead.
@@ -189,6 +193,93 @@ abstract class Union<T> with _$Union<T> {
 ```
 
 See [unions/Sealed classes](#unions/sealed-classes) for more information.
+
+### Non-nullable
+
+[Freezed] is non-nullable ready and will promote null-safe code.\
+This is done by automatically adding `assert(my_property != null)` whenever
+non-nullable types would not compile.
+
+What this means is, using [Freezed] you have to explicitly tell when a property
+is nullable.
+
+**How [Freezed] infers decides whether a value is nullable or not**:
+
+- non-optional parameters are considered non-nullable by default.
+- optional positional parameters are always nullable.
+- named parameters decorated by `@required` are considered non-nullable too
+
+More concretely, if we a `Person` class as such:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  const factory Person(
+    String name, {
+    @required int age,
+    Gender gender,
+  }) = _Person;
+}
+```
+
+Then both `name` and `age` will be considered as **non-nullable**.\
+On the other hand, `gender` will be nullable.
+**nullable**.
+
+Which means you could write:
+
+```dart
+Person('Remi', age: 24);
+Person('Remi', age: 24, gender: Gender.male);
+Person('Remi', age: 24, gender: null);
+```
+
+On the other hand, writing the following will result in an exception:
+
+```dart
+Person(null) // name cannot be null
+Person('Remi') // age cannot be null
+```
+
+Then, when the time comes for to migrate to actual non-nullable types, you could
+update your code to:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  const factory Person(
+    String name, {
+    required int age,
+    Gender? gender,
+  }) = _Person;
+}
+```
+
+**Forcing a variable to be nullable**:
+
+Sometimes, you may want to go against these rules and, for example, have a named
+required parameter that is nullable.
+
+To do so, you can decorate the desired property with `@nullable`.\
+For example, if we wanted to make `age` from our previous example nullable, then
+we would write:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  const factory Person(
+    String name, {
+    @nullable @required int age,
+    Gender gender,
+  }) = _Person;
+}
+```
+
+This then allows us to write:
+
+```dart
+Person('Remi') // no longer throws an exception
+```
 
 ## ==/toString
 
@@ -543,11 +634,6 @@ abstract class Example with _$Example {
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
 }
 ```
-
-# Roadmap
-
-- support for properties shared between multiple constructors but with a different type.
-- default variable support on the custom generated constructors.
 
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed

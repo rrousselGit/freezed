@@ -1,3 +1,8 @@
+# 0.5.1
+
+- Document `@nullable`
+- fix a bug where static members where not allows (thanks @knaeckeKami)
+
 # 0.5.0
 
 The generated == now works with collections too.
