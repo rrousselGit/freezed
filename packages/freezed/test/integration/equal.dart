@@ -1,63 +1,63 @@
-import 'package:meta/meta.dart';
-import 'package:collection/collection.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 part 'equal.freezed.dart';
 
-@immutable
+@freezed
 abstract class Simple with _$Simple {
   factory Simple(int value) = _Simple;
 }
 
-@immutable
+@freezed
 abstract class ListEqual with _$ListEqual {
   factory ListEqual(List<int> value) = _ListEqual;
 }
 
-@immutable
+@freezed
 abstract class MapEqual with _$MapEqual {
   factory MapEqual(Map<int, int> value) = _MapEqual;
 }
 
-@immutable
+@freezed
 abstract class SetEqual with _$SetEqual {
   factory SetEqual(Set<int> value) = _SetEqual;
 }
 
-@immutable
+@freezed
 abstract class IterableEqual with _$IterableEqual {
   factory IterableEqual(Iterable<int> value) = _IterableEqual;
 }
 
-@immutable
+@freezed
 abstract class ListObjectEqual with _$ListObjectEqual {
   factory ListObjectEqual(List<Object> value) = _ListObjectEqual;
 }
 
-@immutable
+@freezed
 abstract class ListDynamicEqual with _$ListDynamicEqual {
   factory ListDynamicEqual(List<dynamic> value) = _ListDynamicEqual;
 }
 
-@immutable
+@freezed
 abstract class ObjectEqual with _$ObjectEqual {
   factory ObjectEqual(Object value) = _ObjectEqual;
 }
 
-@immutable
+@freezed
 abstract class DynamicEqual with _$DynamicEqual {
   factory DynamicEqual(dynamic value) = _DynamicEqual;
 }
 
-@immutable
+@freezed
 abstract class Generic<T> with _$Generic<T> {
   factory Generic(T value) = _Generic<T>;
 }
 
-@immutable
+@freezed
 abstract class GenericObject<T extends Object> with _$GenericObject<T> {
   factory GenericObject(T value) = _GenericObject<T>;
 }
 
-@immutable
+@freezed
 abstract class GenericIterable<T extends Iterable<dynamic>> with _$GenericIterable<T> {
   factory GenericIterable(T value) = _GenericIterable<T>;
 }
