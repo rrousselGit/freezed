@@ -120,7 +120,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
 
-    if (element.fields.isNotEmpty) {
+    if (element.fields.where((field) => !field.isStatic).isNotEmpty) {
       throw InvalidGenerationSourceError(
         '@freezed cannot be used on classes with unimplemented getters',
         element: rawElement,
