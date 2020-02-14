@@ -41,13 +41,18 @@ $copyAs
 
   String get copyAs {
     final res = StringBuffer();
-    for (final constructor in allConstructors) {
-      var parameter = constructor.impliedProperties.map((property) {
+    for (final targetConstructor in allConstructors) {
+      var parameter =
+          targetConstructor.parameters.allParameters.map((parameter) {
         return Parameter(
-          decorators: property.decorators,
-          isRequired: commonProperties.every((commonProperty) => commonProperty.name != property.name),
-          name: property.name,
-          type: property.type,
+          decorators: parameter.decorators,
+          isAnnotatedWithRequired: targetConstructor
+                  .isPropertyWithNamedRequired(parameter.name) &&
+              commonProperties.every(
+                  (commonProperty) => commonProperty.name != parameter.name),
+          name: parameter.name,
+          type: parameter.type,
+          nullable: parameter.nullable,
         );
       }).join(',');
       if (parameter.isNotEmpty) {
@@ -55,7 +60,7 @@ $copyAs
       }
 
       res.write('''
-${constructor.redirectedName}$genericsParameter ${constructor.copyAsName}($parameter);
+${targetConstructor.redirectedName}$genericsParameter ${targetConstructor.copyAsName}($parameter);
 ''');
     }
     return res.toString();

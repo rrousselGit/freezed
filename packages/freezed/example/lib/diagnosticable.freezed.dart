@@ -135,10 +135,10 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
   }
 
   @override
-  _Example<T> copyAsDefault({@required int a, @required String b}) {
+  _Example<T> copyAsDefault({Object a = freezed, Object b = freezed}) {
     return _Example<T>(
-      a as int,
-      b as String,
+      a == freezed ? this.a : a as int,
+      b == freezed ? this.b : b as String,
     );
   }
 
@@ -261,9 +261,9 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
   }
 
   @override
-  _Example2<T> copyAsNamed({@required T c}) {
+  _Example2<T> copyAsNamed({Object c = freezed}) {
     return _Example2<T>(
-      c as T,
+      c == freezed ? this.c : c as T,
     );
   }
 }

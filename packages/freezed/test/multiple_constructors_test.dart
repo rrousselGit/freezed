@@ -272,7 +272,8 @@ void main() {
       NoDefault2 second = value.copyAsSecond(a: 'c');
       expect(second, NoDefault.second('c'));
     });
-    test('Converting from a case that may not have a given property makes the parameter of the same name required',
+    test(
+        'Converting from a case that may not have a given property makes the parameter of the same name required',
         () async {
       await expectLater(
         compile(r'''
@@ -296,7 +297,8 @@ void main() {
 }
 '''), succeed);
     });
-    test('do not require properties that are not in the current interface if the target property is optional',
+    test(
+        'do not require properties that are not in the current interface if the target property is optional',
         () async {
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
@@ -307,6 +309,7 @@ void main() {
 }
 '''), succeed);
     });
+    // TODO: copyAs asserts != null
     // TODO: copyAs same name but different type
     // TODO: private namer ctor geenrates private copyAs
     // TODO: test default ctor ame

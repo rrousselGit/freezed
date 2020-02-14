@@ -45,14 +45,14 @@ class ParametersTemplate {
         return LocalParameter(
           type: e.type?.getDisplayString(),
           name: e.name,
-          isRequired: e.hasRequired,
+          isAnnotatedWithRequired: e.hasRequired,
           decorators: parseDecorators(e.metadata),
           nullable: e.isNullable,
         );
       }
       return Parameter(
           name: e.name,
-          isRequired: e.hasRequired,
+          isAnnotatedWithRequired: e.hasRequired,
           type: e.type?.getDisplayString(),
           decorators: parseDecorators(e.metadata),
           nullable: e.isNullable);
@@ -73,18 +73,18 @@ class ParametersTemplate {
   final List<Parameter> optionalPositionalParameters;
   final List<Parameter> namedParameters;
 
-  List<Parameter> get allParameters => [
-        ...positionalParameters,
-        ...optionalPositionalParameters,
-        ...namedParameters,
-      ];
+  Iterable<Parameter> get allParameters sync* {
+    yield* positionalParameters;
+    yield* optionalPositionalParameters;
+    yield* namedParameters;
+  }
 
   ParametersTemplate asThis() {
     List<Parameter> asThis(List<Parameter> parameters) {
       return parameters
           .map(
             (e) => LocalParameter(
-              isRequired: e.isRequired,
+              isAnnotatedWithRequired: e.isAnnotatedWithRequired,
               name: e.name,
               type: e.type,
               decorators: e.decorators,
@@ -132,7 +132,7 @@ class ParametersTemplate {
           .map((e) => Parameter(
                 name: e.name,
                 type: e.type,
-                isRequired: e.isRequired,
+                isAnnotatedWithRequired: e.isAnnotatedWithRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
               ))
@@ -141,7 +141,7 @@ class ParametersTemplate {
           .map((e) => Parameter(
                 name: e.name,
                 type: e.type,
-                isRequired: e.isRequired,
+                isAnnotatedWithRequired: e.isAnnotatedWithRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
               ))
@@ -150,7 +150,7 @@ class ParametersTemplate {
           .map((e) => Parameter(
                 name: e.name,
                 type: e.type,
-                isRequired: e.isRequired,
+                isAnnotatedWithRequired: e.isAnnotatedWithRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
               ))
@@ -163,7 +163,7 @@ class Parameter {
   Parameter({
     @required this.type,
     @required this.name,
-    @required this.isRequired,
+    @required this.isAnnotatedWithRequired,
     @required this.decorators,
     @required this.nullable,
     this.defaultValue,
@@ -171,7 +171,7 @@ class Parameter {
 
   final String type;
   final String name;
-  final bool isRequired;
+  final bool isAnnotatedWithRequired;
   final bool nullable;
   final List<String> decorators;
   final String defaultValue;
@@ -182,7 +182,7 @@ class Parameter {
     if (defaultValue != null) {
       res = '$res = $defaultValue';
     }
-    return isRequired ? '@required $res' : res;
+    return isAnnotatedWithRequired ? '@required $res' : res;
   }
 }
 
@@ -190,13 +190,13 @@ class LocalParameter extends Parameter {
   LocalParameter({
     @required String name,
     @required String type,
-    @required bool isRequired,
+    @required bool isAnnotatedWithRequired,
     @required bool nullable,
     @required List<String> decorators,
   }) : super(
           name: name,
           type: type,
-          isRequired: isRequired,
+          isAnnotatedWithRequired: isAnnotatedWithRequired,
           decorators: decorators,
           nullable: nullable,
         );
@@ -204,7 +204,7 @@ class LocalParameter extends Parameter {
   @override
   String toString() {
     var res = '${decorators.join()} this.$name';
-    return isRequired ? '@required $res' : res;
+    return isAnnotatedWithRequired ? '@required $res' : res;
   }
 }
 
@@ -212,14 +212,14 @@ class CallbackParameter extends Parameter {
   CallbackParameter({
     @required String name,
     @required String type,
-    @required bool isRequired,
+    @required bool isAnnotatedWithRequired,
     @required bool nullable,
     @required List<String> decorators,
     @required this.parameters,
   }) : super(
           name: name,
           type: type,
-          isRequired: isRequired,
+          isAnnotatedWithRequired: isAnnotatedWithRequired,
           decorators: decorators,
           nullable: nullable,
         );
@@ -229,6 +229,6 @@ class CallbackParameter extends Parameter {
   @override
   String toString() {
     var res = '${decorators.join()} $type $name($parameters)';
-    return isRequired ? '@required $res' : res;
+    return isAnnotatedWithRequired ? '@required $res' : res;
   }
 }

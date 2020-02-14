@@ -33,9 +33,8 @@ abstract class NameConflict with _$NameConflict {
   factory NameConflict.error(Error error) = SomeError;
 }
 
-@immutable
+@freezed
 abstract class RequiredNamed with _$RequiredNamed {
   factory RequiredNamed() = RequiredDefault;
   factory RequiredNamed.first({@required Error error}) = RequiredFirst;
 }
-

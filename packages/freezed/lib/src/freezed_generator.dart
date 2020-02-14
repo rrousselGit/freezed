@@ -53,11 +53,13 @@ class ConstructorDetails {
 
   bool isPropertyWithNamedRequired(String name) {
     return parameters.positionalParameters.any((e) => e.name == name) ||
-        parameters.optionalPositionalParameters.any((e) => e.isRequired && e.name == name);
+        parameters.optionalPositionalParameters
+            .any((e) => e.isAnnotatedWithRequired && e.name == name);
   }
 
   Parameter parameterWithName(String name) {
-    return parameters.allParameters.firstWhere((element) => element.name == name, orElse: () => null);
+    return parameters.allParameters
+        .firstWhere((element) => element.name == name, orElse: () => null);
   }
 
   bool hasMatchingPropertyWith({@required String name, @required String type}) {

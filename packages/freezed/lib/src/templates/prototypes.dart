@@ -58,7 +58,7 @@ String _mapPrototype(
         Parameter(
           name: 'value',
           type: '${constructor.redirectedName}$genericParameters',
-          isRequired: false,
+          isAnnotatedWithRequired: false,
           decorators: const [],
           nullable: false,
         ),
@@ -81,8 +81,9 @@ String _whenPrototype(
         return p.map((p) => Parameter(
               decorators: p.decorators,
               name: p.name,
-              isRequired: false,
+              isAnnotatedWithRequired: false,
               type: p.type,
+              nullable: p.nullable,
             ));
       }
 
@@ -109,7 +110,7 @@ String _unionPrototype(
     var template = CallbackParameter(
       name: constructorNameToCallbackName(constructor.name),
       type: 'Result',
-      isRequired: !constructor.isDefault && areCallbacksRequired,
+      isAnnotatedWithRequired: !constructor.isDefault && areCallbacksRequired,
       parameters: ctor2parameters(constructor),
       decorators: const [],
       nullable: false,
