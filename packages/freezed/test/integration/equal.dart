@@ -58,6 +58,7 @@ abstract class GenericObject<T extends Object> with _$GenericObject<T> {
 }
 
 @freezed
-abstract class GenericIterable<T extends Iterable<dynamic>> with _$GenericIterable<T> {
+abstract class GenericIterable<T extends Iterable<dynamic>>
+    with _$GenericIterable<T> {
   factory GenericIterable(T value) = _GenericIterable<T>;
 }

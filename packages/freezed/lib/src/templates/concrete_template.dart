@@ -312,7 +312,10 @@ $constructorParameters
     return '''
 @override
 bool operator ==(dynamic other) {
-  return identical(this, other) || (other is ${['${constructor.redirectedName}$genericsParameter', ...properties].join('&&')});
+  return identical(this, other) || (other is ${[
+      '${constructor.redirectedName}$genericsParameter',
+      ...properties
+    ].join('&&')});
 }
 ''';
   }
