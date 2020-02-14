@@ -1,3 +1,10 @@
+# 0.5.0
+
+The generated == now works with collections too.
+
+If a class created has a List/Map/Set/Iterable, then the == will deeply compare these
+instead of comparing their reference.
+
 # 0.4.0
 
 Automatically generate `assert(property != null)` on both constructors and `copyWith`
