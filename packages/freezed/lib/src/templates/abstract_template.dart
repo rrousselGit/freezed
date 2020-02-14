@@ -1,7 +1,6 @@
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:meta/meta.dart';
-import 'package:collection/collection.dart';
 import 'parameter_template.dart';
 import 'prototypes.dart';
 
