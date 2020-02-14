@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'parameter_template.dart';
 
 final redirectedConstructorNameRegexp =
-    RegExp(r'^.+?=[\s\n\t]*([^<>]+?)(?:<.+?>)*?;');
+    RegExp(r'^[^;]+?=[\s\n\t]*([^<>]+?)(?:<.+?>)*?;', dotAll: true);
 
 List<String> parseDecorators(List<ElementAnnotation> metadata) {
   return [

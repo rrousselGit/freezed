@@ -23,6 +23,13 @@ void main() {
           .group(1),
       'hello',
     );
+    expect(
+      redirectedConstructorNameRegexp.firstMatch('''SecondState({
+    String dateTime,
+    String uuid,
+  }) = A;''').group(1),
+      'A',
+    );
   });
   test('generic ctor', () {
     expect(

@@ -57,3 +57,12 @@ abstract class Example with _$Example {
 abstract class NoConst with _$NoConst {
   factory NoConst() = NoConstImpl;
 }
+
+// Regression test for https://github.com/rrousselGit/freezed/issues/40
+@freezed
+abstract class SecondState with _$SecondState {
+  const factory SecondState({
+    String dateTime,
+    String uuid,
+  }) = _SecondState;
+}
