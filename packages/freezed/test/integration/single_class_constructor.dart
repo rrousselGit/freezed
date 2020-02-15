@@ -78,3 +78,24 @@ abstract class Static with _$Static {
 
   static int staticMethod() => 0;
 }
+
+@freezed
+abstract class Late with _$Late {
+  factory Late(int value) = _Late;
+
+  @late
+  LateContainer get container => LateContainer(value);
+}
+
+class LateContainer {
+  LateContainer(this.value);
+  final int value;
+}
+
+@freezed
+abstract class Late2 with _$Late2 {
+  factory Late2(int cb()) = _Late2;
+
+  @late
+  int get first => cb();
+}
