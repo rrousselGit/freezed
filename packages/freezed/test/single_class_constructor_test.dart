@@ -28,6 +28,11 @@ Future<void> main() async {
     expect(identical(value.container, value.container), isTrue);
     expect(value.container, isNotNull);
     expect(value.container.value, 42);
+
+    expect(
+      value.toString(),
+      'Late(value: 42, container: Container(value: 42))',
+    );
   });
   test('late can return null and still be called only once', () {
     int callCount = 0;

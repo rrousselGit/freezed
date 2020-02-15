@@ -44,10 +44,21 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
   final int a;
   @override
   final String b;
+  bool _didtheAnswer = false;
+  int _theAnswer;
+
+  @override
+  int get theAnswer {
+    if (_didtheAnswer == false) {
+      _didtheAnswer = true;
+      _theAnswer = 42;
+    }
+    return _theAnswer;
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Example<$T>(a: $a, b: $b)';
+    return 'Example<$T>(a: $a, b: $b, theAnswer: $theAnswer)';
   }
 
   @override
@@ -56,7 +67,8 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
     properties
       ..add(DiagnosticsProperty('type', 'Example<$T>'))
       ..add(DiagnosticsProperty('a', a))
-      ..add(DiagnosticsProperty('b', b));
+      ..add(DiagnosticsProperty('b', b))
+      ..add(DiagnosticsProperty('theAnswer', theAnswer));
   }
 
   @override
@@ -150,10 +162,21 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
 
   @override
   final T c;
+  bool _didtheAnswer = false;
+  int _theAnswer;
+
+  @override
+  int get theAnswer {
+    if (_didtheAnswer == false) {
+      _didtheAnswer = true;
+      _theAnswer = 42;
+    }
+    return _theAnswer;
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Example<$T>.named(c: $c)';
+    return 'Example<$T>.named(c: $c, theAnswer: $theAnswer)';
   }
 
   @override
@@ -161,7 +184,8 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Example<$T>.named'))
-      ..add(DiagnosticsProperty('c', c));
+      ..add(DiagnosticsProperty('c', c))
+      ..add(DiagnosticsProperty('theAnswer', theAnswer));
   }
 
   @override

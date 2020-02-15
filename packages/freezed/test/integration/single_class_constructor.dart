@@ -90,6 +90,11 @@ abstract class Late with _$Late {
 class LateContainer {
   LateContainer(this.value);
   final int value;
+
+  @override
+  String toString() {
+    return 'Container(value: $value)';
+  }
 }
 
 @freezed

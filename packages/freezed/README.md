@@ -52,6 +52,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
   - [The syntax](#the-syntax)
     - [basics](#basics)
     - [non-nullable](#non-nullable)
+    - [late](#late)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
   - [Unions/Sealed classes](#unionssealed-classes)
@@ -280,6 +281,56 @@ This then allows us to write:
 ```dart
 Person('Remi') // no longer throws an exception
 ```
+
+### Late
+
+[Freezed] also contains early access to the upcoming `late` keyword.
+
+If you are unfamiliar with that keyword, what `late` does is it allows variables
+to be lazily initialized.
+
+You may be familiar with such syntax:
+
+```dart
+Model _model;
+Model get model => _model ?? _model = Model();
+```
+
+With Dart's `late` keyword, we could instead write:
+
+```dart
+late final model = Model();
+```
+
+And with [Freezed], we could write:
+
+```dart
+@late
+Model get model => Model();
+```
+
+---
+
+Since [Freezed] relies on immutable classes only, then this may be very helpful
+for computed properties.
+
+For example, you may write:
+
+```dart
+abstract class Todos with _$Todos {
+  factory Todos(List<Todo> todos) = _Todos;
+
+  @late
+  List<Todo> get completed => todos.where((t) => t.completed).toList();
+}
+```
+
+As opposed to a normal getter, this will _cache_ the result of `completed`, which
+is more efficient.
+
+**NOTE**:
+
+Getters decorated with `@late` will also be visible on the generated `toString`.
 
 ## ==/toString
 

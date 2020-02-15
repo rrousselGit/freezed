@@ -107,9 +107,12 @@ Map<String, dynamic> toJson() {
   String get debugFillProperties {
     if (!hasDiagnosticable) return '';
 
-    final diagnostics = constructor.impliedProperties
-        .map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))")
-        .join();
+    final diagnostics = [
+      ...constructor.impliedProperties
+          .map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))"),
+      ...lateGetters
+          .map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))"),
+    ].join();
 
     return '''
 @override
@@ -217,9 +220,14 @@ ${whenPrototype(allConstructors)} {
         ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
         : '';
 
-    final properties = constructor.impliedProperties.map((p) {
-      return '${p.name}: \$${p.name}';
-    });
+    final properties = [
+      ...constructor.impliedProperties.map((p) {
+        return '${p.name}: \$${p.name}';
+      }),
+      ...lateGetters.map((p) {
+        return '${p.name}: \$${p.name}';
+      })
+    ];
 
     return '''
 @override

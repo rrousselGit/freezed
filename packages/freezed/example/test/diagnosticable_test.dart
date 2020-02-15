@@ -9,11 +9,11 @@ void main() {
     var value = diagnosticable.Example<int>(42, '21');
 
     expect(value, isA<DiagnosticableTree>());
-    expect(value.toString(), 'Example<int>(a: 42, b: 21)');
+    expect(value.toString(), 'Example<int>(a: 42, b: 21, theAnswer: 42)');
 
     value = diagnosticable.Example.named(42);
     expect(value, isA<DiagnosticableTree>());
-    expect(value.toString(), 'Example<int>.named(c: 42)');
+    expect(value.toString(), 'Example<int>.named(c: 42, theAnswer: 42)');
   });
   test('debugFillProperties', () {
     final properties = DiagnosticPropertiesBuilder();
@@ -22,7 +22,7 @@ void main() {
     // ignore: invalid_use_of_protected_member
     (value as Diagnosticable).debugFillProperties(properties);
 
-    expect(properties.properties.length, 3);
+    expect(properties.properties.length, 4);
     expect(
       properties.properties.first,
       isA<DiagnosticsProperty>()
@@ -36,10 +36,16 @@ void main() {
           .having((d) => d.value, 'value', 42),
     );
     expect(
-      properties.properties.last,
+      properties.properties[2],
       isA<DiagnosticsProperty>()
           .having((d) => d.name, 'name', 'b')
           .having((d) => d.value, 'value', '21'),
+    );
+    expect(
+      properties.properties[3],
+      isA<DiagnosticsProperty>()
+          .having((d) => d.name, 'name', 'theAnswer')
+          .having((d) => d.value, 'value', 42),
     );
   });
   test('noop if Diagnosticable not available', () {

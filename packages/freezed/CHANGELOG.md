@@ -1,3 +1,7 @@
+# 0.6.0
+
+Add support for cached getters using `@late`.
+
 # 0.5.1
 
 - Document `@nullable`
