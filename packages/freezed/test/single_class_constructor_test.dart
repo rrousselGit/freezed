@@ -22,6 +22,13 @@ class MyObject {
 }
 
 Future<void> main() async {
+  test('complex late', () {
+    final complex = ComplexLate([0, 1, 2, 3, 4]);
+
+    expect(complex.odd, [1, 3]);
+
+    expect(identical(complex.odd, complex.odd), isTrue);
+  });
   test('late', () {
     final value = Late(42);
 

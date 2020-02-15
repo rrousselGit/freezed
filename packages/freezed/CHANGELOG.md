@@ -1,3 +1,7 @@
+# 0.6.1
+
+Fixed a bug where `@late` could incorrectly parse the getter
+
 # 0.6.0
 
 Add support for cached getters using `@late`.

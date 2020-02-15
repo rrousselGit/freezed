@@ -104,3 +104,16 @@ abstract class Late2 with _$Late2 {
   @late
   int get first => cb();
 }
+
+@freezed
+abstract class ComplexLate with _$ComplexLate {
+  factory ComplexLate(List<int> values) = _ComplexLate;
+
+  @late
+  List<int> get odd => values.where((value) {
+        if (value.isOdd)
+          return true;
+        else
+          return false;
+      }).toList();
+}

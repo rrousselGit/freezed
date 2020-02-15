@@ -1,7 +1,26 @@
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('getter parser', () {
+    expect(parseLateGetterSource(' => 42;'), '42');
+    expect(
+      parseLateGetterSource('''=> values.where((value) {
+        if (value > 0)
+          return true;
+        else
+          return false;
+      });
+}'''),
+      '''values.where((value) {
+        if (value > 0)
+          return true;
+        else
+          return false;
+      })''',
+    );
+  });
   test('concrete name parser', () {
     expect(
       redirectedConstructorNameRegexp

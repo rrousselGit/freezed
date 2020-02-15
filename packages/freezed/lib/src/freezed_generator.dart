@@ -134,13 +134,11 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
             element: rawElement,
           );
         }
-        final source = parseLateGetterSource
-            .firstMatch(
-              field.getter.source.contents.data.substring(
-                field.getter.nameOffset + field.getter.nameLength,
-              ),
-            )
-            ?.group(1);
+        final source = parseLateGetterSource(
+          field.getter.source.contents.data.substring(
+            field.getter.nameOffset + field.getter.nameLength,
+          ),
+        );
 
         if (source == null) {
           throw InvalidGenerationSourceError(
@@ -370,4 +368,27 @@ ${type ?? 'dynamic'} get $name {
   }
 }
 
-final parseLateGetterSource = RegExp(r'[\s\n\t]*=>[\s\n\t]*(.+?);');
+String parseLateGetterSource(String source) {
+  var parenthesis = 0;
+
+  for (var i = 0; i < source.length; i++) {
+    final char = source[i];
+    switch (char) {
+      case '(':
+        parenthesis++;
+        break;
+      case ')':
+        parenthesis--;
+        break;
+      case ';':
+        if (parenthesis == 0) {
+          final reg = RegExp(r'^[\s\t\n]*=>[\s\t\n]*(.+)', dotAll: true);
+          return reg.firstMatch(source.substring(0, i))?.group(1);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+  return null;
+}
