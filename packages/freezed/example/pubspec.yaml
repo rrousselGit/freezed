@@ -7,7 +7,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  freezed_annotation: '>= 0.4.0'
+  freezed_annotation: '>= 0.6.0'
 
 dev_dependencies:
   freezed:
@@ -15,7 +15,3 @@ dev_dependencies:
   build_runner:
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  freezed_annotation:
-    path: ../freezed_annotation

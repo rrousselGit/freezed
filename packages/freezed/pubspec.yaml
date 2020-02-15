@@ -16,7 +16,7 @@ dependencies:
   build_config: ">=0.4.2 <1.0.0"
   meta: ^1.1.0
   source_gen: ^0.9.0
-  freezed_annotation: '>= 0.4.0 <2.0.0'
+  freezed_annotation: '>= 0.6.0 <2.0.0'
 
 dev_dependencies:
   json_serializable:
@@ -26,7 +26,3 @@ dev_dependencies:
   test: ^1.6.0
   matcher: ^0.12.6
   source_gen_test: ^0.1.0
-
-dependency_overrides:
-  freezed_annotation:
-    path: ../freezed_annotation
