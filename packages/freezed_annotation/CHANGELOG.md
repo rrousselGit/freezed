@@ -1,3 +1,7 @@
+# 0.6.0
+
+Added `@late` annotation.
+
 # 0.4.0
 
 Added a `@nullable` annotation.

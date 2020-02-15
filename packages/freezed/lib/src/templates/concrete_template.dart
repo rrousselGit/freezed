@@ -16,6 +16,7 @@ class Concrete {
     @required this.hasDiagnosticable,
     @required this.shouldGenerateJson,
     @required this.commonProperties,
+    @required this.lateGetters,
     @required this.name,
   });
 
@@ -26,6 +27,7 @@ class Concrete {
   final List<Property> commonProperties;
   final bool hasDiagnosticable;
   final bool shouldGenerateJson;
+  final List<LateGetter> lateGetters;
   final String name;
 
   String get concreteName {
@@ -42,25 +44,16 @@ class $concreteName$genericsDefinition $diagnosticable implements ${constructor.
   $concreteFromJsonConstructor
 
 ${constructor.impliedProperties.map((p) => '@override $p').join()}
-
+${lateGetters.join()}
 $toStringMethod
-
 $debugFillProperties
-
 $operatorEqualMethod
-
 $hashCodeMethod
-
 $copyWithMethod
-
 $when
-
 $maybeWhen
-
 $map
-
 $maybeMap
-
 $toJson
 }
 

@@ -21,3 +21,27 @@ class _Nullable {
 /// This disables the generation of `assert(property != null)` on both the
 /// constructor and clone methods for the decorated property.
 const nullable = _Nullable._();
+
+class _Late {
+  const _Late._();
+}
+
+/// Mark a getter as safe to cache.
+///
+/// Getters marked with `late` will be called **at most** once per instane of the
+/// object.\
+/// Only getters using the `=>` syntax are supported. Getters with `{}` are not.
+///
+/// This makes the getter behave similarly to the upcoming `late` keyword:
+///
+/// ```dart
+/// @late
+/// String get fullName => '$firstName $lastName';
+/// ```
+///
+/// is the equivalent to the upcoming:
+///
+/// ```dart
+/// late final fullName = '$firstName $lastName';
+/// ```
+const late = _Late._();

@@ -53,6 +53,7 @@ class ConstructorDetails {
 class Data {
   Data({
     @required this.name,
+    @required this.lateGetters,
     @required this.needsJsonSerializable,
     @required this.constructors,
     @required this.genericsDefinitionTemplate,
@@ -61,6 +62,7 @@ class Data {
   }) : assert(constructors.isNotEmpty);
 
   final String name;
+  final List<LateGetter> lateGetters;
   final bool needsJsonSerializable;
   final List<ConstructorDetails> constructors;
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
@@ -72,6 +74,7 @@ class Data {
     return '''
 $runtimeType(
   name: $name,
+  lateGetters: $lateGetters,
   needsJsonSerializable: $needsJsonSerializable,
   constructors: $constructors,
   genericsDefinitionTemplate: $genericsDefinitionTemplate,
@@ -120,7 +123,42 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
 
-    if (element.fields.where((field) => !field.isStatic).isNotEmpty) {
+    final lateGetters = <LateGetter>[];
+
+    for (final field in element.fields) {
+      if (field.isStatic) continue;
+      if (field.getter != null && !field.getter.isSynthetic && field.hasLate) {
+        if (element.constructors.any((element) => element.isConst)) {
+          throw InvalidGenerationSourceError(
+            '@late cannot be used in combination with const constructors',
+            element: rawElement,
+          );
+        }
+        final source = parseLateGetterSource
+            .firstMatch(
+              field.getter.source.contents.data.substring(
+                field.getter.nameOffset + field.getter.nameLength,
+              ),
+            )
+            ?.group(1);
+
+        if (source == null) {
+          throw InvalidGenerationSourceError(
+            '@late can only be used on getters with using =>',
+            element: rawElement,
+          );
+        }
+        lateGetters.add(
+          LateGetter(
+            type: field.type.getDisplayString(),
+            name: field.name,
+            decorators: field.metadata.map((e) => e.toSource()).toList(),
+            source: source,
+          ),
+        );
+        continue;
+      }
+
       throw InvalidGenerationSourceError(
         '@freezed cannot be used on classes with unimplemented getters',
         element: rawElement,
@@ -142,6 +180,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     return Data(
       name: element.name,
+      lateGetters: lateGetters,
       // TODO: test can write manual fromJson ctor
       commonProperties:
           constructrorsNeedsGeneration.first.parameters.allParameters
@@ -234,6 +273,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     for (final constructor in data.constructors) {
       yield Concrete(
         name: data.name,
+        lateGetters: data.lateGetters,
         hasDiagnosticable: globalData.hasDiagnostics,
         shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
         constructor: constructor,
@@ -289,3 +329,45 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     );
   }
 }
+
+extension on FieldElement {
+  bool get hasLate {
+    return TypeChecker.fromRuntime(late.runtimeType).hasAnnotationOf(
+      getter,
+      throwOnUnresolved: false,
+    );
+  }
+}
+
+class LateGetter {
+  final String type;
+  final String name;
+  final List<String> decorators;
+  final String source;
+
+  LateGetter({
+    @required this.type,
+    @required this.name,
+    @required this.decorators,
+    @required this.source,
+  });
+
+  @override
+  String toString() {
+    return '''
+bool _did$name = false;
+${type ?? 'dynamic'} _$name;
+
+@override
+${decorators.join()}
+${type ?? 'dynamic'} get $name {
+  if (_did$name == false) {
+    _did$name = true;
+    _$name = $source;
+  }
+  return _$name;
+}''';
+  }
+}
+
+final parseLateGetterSource = RegExp(r'[\s\n\t]*=>[\s\n\t]*(.+?);');

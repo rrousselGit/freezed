@@ -22,6 +22,26 @@ class MyObject {
 }
 
 Future<void> main() async {
+  test('late', () {
+    final value = Late(42);
+
+    expect(identical(value.container, value.container), isTrue);
+    expect(value.container, isNotNull);
+    expect(value.container.value, 42);
+  });
+  test('late can return null and still be called only once', () {
+    int callCount = 0;
+    final value = Late2(() {
+      callCount++;
+      return null;
+    });
+
+    expect(callCount, 0);
+    expect(value.first, isNull);
+    expect(callCount, 1);
+    expect(value.first, isNull);
+    expect(callCount, 1);
+  });
   test('== uses identical first', () {
     var didEqual = false;
     final obj = MyObject(() => didEqual = true);
