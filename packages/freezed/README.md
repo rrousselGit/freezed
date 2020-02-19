@@ -210,7 +210,7 @@ is nullable.
 - optional positional parameters are always nullable.
 - named parameters decorated by `@required` are considered non-nullable too
 
-More concretely, if we a `Person` class as such:
+More concretely, if we define a `Person` class as such:
 
 ```dart
 @freezed
