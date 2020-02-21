@@ -12,7 +12,7 @@ abstract class Single with _$Single {
 
 @freezed
 abstract class Json with _$Json {
-  const factory Json() = Default;
+  const factory Json() = JsonDefault;
   const factory Json.first(String a) = First;
   const factory Json.second(int b) = Second;
 
@@ -54,4 +54,20 @@ class DataConverter<T> implements JsonConverter<T, Object> {
   Object toJson(T object) {
     return object;
   }
+}
+
+@freezed
+abstract class DefaultValue with _$DefaultValue {
+  factory DefaultValue([@Default(42) int value]) = _DefaultValue;
+
+  factory DefaultValue.fromJson(Map<String, dynamic> json) =>
+      _$DefaultValueFromJson(json);
+}
+
+@freezed
+abstract class DefaultValueJsonKey with _$DefaultValueJsonKey {
+  factory DefaultValueJsonKey([@Default(42) @JsonKey() int value]) = _DefaultValueJsonKey;
+
+  factory DefaultValueJsonKey.fromJson(Map<String, dynamic> json) =>
+      _$DefaultValueJsonKeyFromJson(json);
 }

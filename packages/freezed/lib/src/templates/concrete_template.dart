@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/freezed_generator.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' as annotations;
@@ -43,7 +44,7 @@ class $concreteName$genericsDefinition $diagnosticable implements ${constructor.
 
   $concreteFromJsonConstructor
 
-${constructor.impliedProperties.map((p) => '@override $p').join()}
+$properties
 ${lateGetters.join()}
 $toStringMethod
 $debugFillProperties
@@ -67,6 +68,16 @@ $abstractProperties
 $copyWithPrototype
 }
 ''';
+  }
+
+  String get properties {
+    return constructor.impliedProperties.map((p) {
+      var res = '@override $p';
+      if (p.defaultValueSource != null && !p.hasJsonKey) {
+        res = '@JsonKey(defaultValue: ${p.defaultValueSource}) $res';
+      }
+      return res;
+    }).join();
   }
 
   String get asserts {
@@ -344,20 +355,34 @@ class Property {
   final String name;
   final List<String> decorators;
   final bool nullable;
+  final String defaultValueSource;
+  final bool hasJsonKey;
 
   Property({
     @required this.type,
     @required this.name,
     @required this.decorators,
     @required this.nullable,
+    @required this.defaultValueSource,
+    @required this.hasJsonKey,
   });
 
   factory Property.fromParameter(ParameterElement element) {
+    final defaultValue = element.defaultValue;
+    if (defaultValue != null &&
+        (element.hasRequired || element.isRequiredPositional)) {
+      throw InvalidGenerationSourceError(
+        '@Default cannot be used on non-optional parameters',
+        element: element,
+      );
+    }
     return Property(
       name: element.name,
       type: element.type?.getDisplayString(),
       decorators: parseDecorators(element.metadata),
       nullable: element.isNullable,
+      defaultValueSource: defaultValue,
+      hasJsonKey: element.hasJsonKey,
     );
   }
 
@@ -392,5 +417,24 @@ class Getter {
 extension PropertiesAsGetters on List<Property> {
   List<Getter> asGetters() {
     return map((p) => p.getter).toList();
+  }
+}
+
+extension DefaultValue on ParameterElement {
+  String get defaultValue {
+    const matcher = TypeChecker.fromRuntime(Default);
+
+    for (final meta in metadata) {
+      final obj = meta.computeConstantValue();
+      if (matcher.isExactlyType(obj.type)) {
+        final source = meta.toSource();
+        return source.substring('@Default('.length, source.length - 1);
+      }
+    }
+    return null;
+  }
+
+  bool get hasJsonKey {
+    return const TypeChecker.fromRuntime(JsonKey).hasAnnotationOf(this);
   }
 }

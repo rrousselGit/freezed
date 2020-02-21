@@ -117,3 +117,8 @@ abstract class ComplexLate with _$ComplexLate {
           return false;
       }).toList();
 }
+
+@freezed
+abstract class DefaultValue with _$DefaultValue {
+  factory DefaultValue([@Default(42) int value]) = _DefaultValue;
+}

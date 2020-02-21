@@ -52,6 +52,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
   - [The syntax](#the-syntax)
     - [basics](#basics)
     - [non-nullable](#non-nullable)
+    - [default values](#default-values)
     - [late](#late)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
@@ -281,6 +282,32 @@ This then allows us to write:
 ```dart
 Person('Remi') // no longer throws an exception
 ```
+
+### Default values
+
+Unfortunately, Dart does not allow constructors with the syntax used by [Freezed]
+to specify default values.
+
+Which means you cannot write:
+
+```dart
+abstract class Example with _$Example {
+  const factory Example([int value = 42]) = _Example;
+}
+```
+
+But [Freezed] offers an alternative for this: `@Default`\
+As such, you could rewrite the previous snippet this way:
+
+```dart
+abstract class Example with _$Example {
+  const factory Example([@Default(42) int value]) = _Example;
+}
+```
+
+**NOTE**:\
+If you are using serialization/deserialization, this will automatically add
+a `@JsonKey(defaultValue: <something>)` for you.
 
 ### Late
 

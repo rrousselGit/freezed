@@ -1,3 +1,7 @@
+# 0.7.0
+
+Add support for default values
+
 # 0.6.3
 
 - Make `freezed` ignore `use_function_type_syntax_for_parameters` warnings (see https://github.com/rrousselGit/freezed/issues/57)

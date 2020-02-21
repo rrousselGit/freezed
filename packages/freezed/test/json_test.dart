@@ -8,6 +8,24 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
+  test('@Default implies a @JsonKey', () {
+    final value = DefaultValue();
+    expect(
+      value.toJson(),
+      {'value': 42},
+    );
+
+    expect(
+      DefaultValue.fromJson(<String, dynamic>{}),
+      DefaultValue(42),
+    );
+  });
+  test('@Default does not imply a @JsonKey if one is already specified', () {
+    expect(
+      DefaultValueJsonKey.fromJson(<String, dynamic>{}),
+      DefaultValueJsonKey(null),
+    );
+  });
   test('generic json', () {
     expect(
       Generic<int>.fromJson(<String, dynamic>{'a': 42}),

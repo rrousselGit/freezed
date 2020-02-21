@@ -45,17 +45,20 @@ class ParametersTemplate {
         return LocalParameter(
           type: e.type?.getDisplayString(),
           name: e.name,
+          defaultValueSource: e.defaultValue,
           isRequired: e.hasRequired,
           decorators: parseDecorators(e.metadata),
           nullable: e.isNullable,
         );
       }
       return Parameter(
-          name: e.name,
-          isRequired: e.hasRequired,
-          type: e.type?.getDisplayString(),
-          decorators: parseDecorators(e.metadata),
-          nullable: e.isNullable);
+        name: e.name,
+        defaultValueSource: e.defaultValue,
+        isRequired: e.hasRequired,
+        type: e.type?.getDisplayString(),
+        decorators: parseDecorators(e.metadata),
+        nullable: e.isNullable,
+      );
     }
 
     return ParametersTemplate(
@@ -89,6 +92,7 @@ class ParametersTemplate {
               type: e.type,
               decorators: e.decorators,
               nullable: e.nullable,
+              defaultValueSource: e.defaultValueSource,
             ),
           )
           .toList();
@@ -135,6 +139,7 @@ class ParametersTemplate {
                 isRequired: e.isRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
+                defaultValueSource: e.defaultValueSource,
               ))
           .toList(),
       namedParameters: namedParameters
@@ -144,6 +149,7 @@ class ParametersTemplate {
                 isRequired: e.isRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
+                defaultValueSource: e.defaultValueSource,
               ))
           .toList(),
       optionalPositionalParameters: optionalPositionalParameters
@@ -153,6 +159,7 @@ class ParametersTemplate {
                 isRequired: e.isRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
+                defaultValueSource: e.defaultValueSource,
               ))
           .toList(),
     );
@@ -163,6 +170,7 @@ class Parameter {
   Parameter({
     @required this.type,
     @required this.name,
+    @required this.defaultValueSource,
     @required this.isRequired,
     @required this.decorators,
     @required this.nullable,
@@ -170,6 +178,7 @@ class Parameter {
 
   final String type;
   final String name;
+  final String defaultValueSource;
   final bool isRequired;
   final bool nullable;
   final List<String> decorators;
@@ -185,6 +194,7 @@ class LocalParameter extends Parameter {
   LocalParameter({
     @required String name,
     @required String type,
+    @required String defaultValueSource,
     @required bool isRequired,
     @required bool nullable,
     @required List<String> decorators,
@@ -194,11 +204,15 @@ class LocalParameter extends Parameter {
           isRequired: isRequired,
           decorators: decorators,
           nullable: nullable,
+          defaultValueSource: defaultValueSource,
         );
 
   @override
   String toString() {
     var res = '${decorators.join()} this.$name';
+    if (defaultValueSource != null) {
+      res = '$res = $defaultValueSource';
+    }
     return isRequired ? '@required $res' : res;
   }
 }
@@ -206,6 +220,7 @@ class LocalParameter extends Parameter {
 class CallbackParameter extends Parameter {
   CallbackParameter({
     @required String name,
+    @required String defaultValueSource,
     @required String type,
     @required bool isRequired,
     @required bool nullable,
@@ -217,6 +232,7 @@ class CallbackParameter extends Parameter {
           isRequired: isRequired,
           decorators: decorators,
           nullable: nullable,
+          defaultValueSource: defaultValueSource,
         );
 
   final ParametersTemplate parameters;

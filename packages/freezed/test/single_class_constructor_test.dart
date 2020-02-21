@@ -22,6 +22,12 @@ class MyObject {
 }
 
 Future<void> main() async {
+  test('@Default applied', () {
+    expect(
+      DefaultValue(),
+      DefaultValue(42),
+    );
+  });
   test('complex late', () {
     final complex = ComplexLate([0, 1, 2, 3, 4]);
 

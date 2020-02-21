@@ -45,3 +45,22 @@ class _Late {
 /// late final fullName = '$firstName $lastName';
 /// ```
 const late = _Late._();
+
+/// Allows passing default values to a constructor:
+///
+/// ```dart
+/// abstract class Example with _$Example {
+///  factory Example(@Default(42) int value) = _Example;
+/// }
+/// ```
+///
+/// is equivalent to:
+///
+/// ```dart
+/// abstract class Example with _$Example {
+///  factory Example(@JsonKey(defaultValue: 42) int value = 42) = _Example;
+/// }
+/// ```
+class Default {
+  const Default(Object defaultValue);
+}

@@ -1,3 +1,7 @@
+# 0.7.0
+
+Add `@Default` annotation
+
 # 0.6.0
 
 Added `@late` annotation.

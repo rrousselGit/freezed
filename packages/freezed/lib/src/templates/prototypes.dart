@@ -61,6 +61,7 @@ String _mapPrototype(
           isRequired: false,
           decorators: const [],
           nullable: false,
+          defaultValueSource: '',
         ),
       ]);
     },
@@ -104,6 +105,7 @@ String _unionPrototype(
       parameters: ctor2parameters(constructor),
       decorators: const [],
       nullable: false,
+      defaultValueSource: '',
     );
 
     if (constructor.isDefault) {

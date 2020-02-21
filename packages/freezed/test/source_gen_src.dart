@@ -61,3 +61,19 @@ abstract class LateAbstract {
   @late
   String get name;
 }
+
+@ShouldThrow('@Default cannot be used on non-optional parameters')
+@freezed
+abstract class DefaultOnRequiredPositional {
+  factory DefaultOnRequiredPositional(
+    @Default(42) int a,
+  ) = _DefaultOnRequiredPositional;
+}
+
+@ShouldThrow('@Default cannot be used on non-optional parameters')
+@freezed
+abstract class DefaultOnRequiredNamed {
+  factory DefaultOnRequiredNamed({
+    @Default(42) @required int a,
+  }) = _DefaultOnRequiredNamed;
+}
