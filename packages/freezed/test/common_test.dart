@@ -98,8 +98,9 @@ abstract class NoConst with _\$NoConst {
       isNull,
     );
 
-    expect(redirectedConstructorNameRegexp.firstMatch(
-      '''Document.parse(VisionText visionText) {
+    expect(
+      redirectedConstructorNameRegexp
+          .firstMatch('''Document.parse(VisionText visionText) {
     final personMatch = RegExp(
       r'^Dear\s+.+?\s+(\w+)\s+(\w+)',
       caseSensitive: false,
