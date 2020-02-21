@@ -90,7 +90,7 @@ String _unionPrototype(
   List<ConstructorDetails> allConstructors, {
   @required bool areCallbacksRequired,
   @required String name,
-  @required ParametersTemplate ctor2parameters(ConstructorDetails ctor),
+  @required ParametersTemplate Function(ConstructorDetails) ctor2parameters,
 }) {
   final buffer =
       StringBuffer('@optionalTypeArgs Result $name<Result extends Object>(');

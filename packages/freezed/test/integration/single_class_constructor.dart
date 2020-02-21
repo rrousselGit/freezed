@@ -99,7 +99,7 @@ class LateContainer {
 
 @freezed
 abstract class Late2 with _$Late2 {
-  factory Late2(int cb()) = _Late2;
+  factory Late2(int Function() cb) = _Late2;
 
   @late
   int get first => cb();

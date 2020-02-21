@@ -291,8 +291,11 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     );
   }
 
-  bool _libraryHasElement(LibraryElement library, String pathStartsWith,
-      bool matcher(Element element)) {
+  bool _libraryHasElement(
+    LibraryElement library,
+    String pathStartsWith,
+    bool Function(Element) matcher,
+  ) {
     if (library.librarySource.fullName.startsWith(pathStartsWith)) {
       for (final element in library.topLevelElements) {
         if (matcher(element)) {

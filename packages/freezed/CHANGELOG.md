@@ -1,3 +1,7 @@
+# 0.6.3
+
+- Make `freezed` ignore `use_function_type_syntax_for_parameters` warnings (see https://github.com/rrousselGit/freezed/issues/57)
+
 # 0.6.2
 
 - Fixes an issue with inconsistent `hashCode` when using collections
