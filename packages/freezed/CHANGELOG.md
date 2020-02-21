@@ -1,3 +1,7 @@
+# 0.6.2
+
+- Fixes an issue with inconsistent `hashCode` when using collections
+
 # 0.6.1
 
 Fixed a bug where `@late` could incorrectly parse the getter

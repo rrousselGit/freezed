@@ -322,12 +322,13 @@ bool operator ==(dynamic other) {
   }
 
   String get hashCodeMethod {
-    var hashCodeImpl =
-        'runtimeType.hashCode ${constructor.impliedProperties.map((p) => '^ ${p.name}.hashCode').join()}';
+    var hashCodeImpl = constructor.impliedProperties.map((p) {
+      return '^ const DeepCollectionEquality().hash(${p.name})';
+    }).join();
 
     return '''
 @override
-int get hashCode => $hashCodeImpl;
+int get hashCode => runtimeType.hashCode $hashCodeImpl;
 ''';
   }
 }

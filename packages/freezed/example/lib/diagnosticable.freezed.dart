@@ -82,7 +82,10 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ a.hashCode ^ b.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(a) ^
+      const DeepCollectionEquality().hash(b);
 
   @override
   _$_Example<T> copyWith({
@@ -197,7 +200,8 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ c.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(c);
 
   @override
   _$_Example2<T> copyWith({

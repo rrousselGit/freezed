@@ -47,7 +47,10 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ a.hashCode ^ b.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(a) ^
+      const DeepCollectionEquality().hash(b);
 
   @override
   _$_MyClass copyWith({
@@ -137,7 +140,8 @@ class _$Data with DiagnosticableTreeMixin implements Data {
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ value.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
 
   @override
   _$Data copyWith({
@@ -337,7 +341,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ message.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
 
   @override
   _$ErrorDetails copyWith({
@@ -454,7 +459,10 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ a.hashCode ^ b.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(a) ^
+      const DeepCollectionEquality().hash(b);
 
   @override
   _$Complex copyWith({
@@ -608,7 +616,10 @@ class _$SharedProperty0
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ name.hashCode ^ age.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(age);
 
   @override
   _$SharedProperty0 copyWith({
@@ -720,7 +731,9 @@ class _$SharedProperty1
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ name.hashCode ^ population.hashCode;
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(population);
 
   @override
   _$SharedProperty1 copyWith({
