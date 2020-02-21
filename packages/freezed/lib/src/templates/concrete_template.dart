@@ -289,15 +289,9 @@ $parameters
         ),
       );
 
-    final asserts = constructor.impliedProperties
-        .where((p) => !p.nullable)
-        .map((e) => 'assert(${e.name} != null);')
-        .join();
-
     return '''
 @override
 $concreteName$genericsParameter copyWith({$parameters}) {
-  $asserts
   return $concreteName$genericsParameter(
 $constructorParameters
   );
