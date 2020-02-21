@@ -66,7 +66,8 @@ abstract class DefaultValue with _$DefaultValue {
 
 @freezed
 abstract class DefaultValueJsonKey with _$DefaultValueJsonKey {
-  factory DefaultValueJsonKey([@Default(42) @JsonKey() int value]) = _DefaultValueJsonKey;
+  factory DefaultValueJsonKey([@Default(42) @JsonKey() int value]) =
+      _DefaultValueJsonKey;
 
   factory DefaultValueJsonKey.fromJson(Map<String, dynamic> json) =>
       _$DefaultValueJsonKeyFromJson(json);
