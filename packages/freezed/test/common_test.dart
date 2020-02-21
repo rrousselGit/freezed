@@ -97,5 +97,26 @@ abstract class NoConst with _\$NoConst {
 }"""),
       isNull,
     );
+
+    expect(redirectedConstructorNameRegexp.firstMatch(
+      '''Document.parse(VisionText visionText) {
+    final personMatch = RegExp(
+      r'^Dear\s+.+?\s+(\w+)\s+(\w+)',
+      caseSensitive: false,
+      multiLine: true,
+    ).firstMatch(visionText.text);
+
+    DocumentPerson person;
+    if (personMatch != null) {
+      person = DocumentPerson(
+        firstName: personMatch.group(1),
+        lastName: personMatch.group(2),
+      );
+    }
+
+    return Document(person: person);
+  }'''),
+      isNull,
+    );
   });
 }

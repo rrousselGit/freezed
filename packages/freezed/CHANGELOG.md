@@ -1,6 +1,7 @@
 # 0.6.2
 
 - Fixes an issue with inconsistent `hashCode` when using collections
+- Fixes a parsing bug with complex concrete factory constructors.
 
 # 0.6.1
 
