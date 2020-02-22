@@ -123,7 +123,7 @@ abstract class Union with _$Union {
 
 From there, to run the code generator, you have two possibilities:
 
-- `flutter pub pub run build_runner build`, if your package depends on Flutter
+- `flutter pub run build_runner build`, if your package depends on Flutter
 - `pub run build_runner build` otherwise
 
 # The features
@@ -404,7 +404,7 @@ var person = Person('Remi', 24);
 // `age` not passed, its value is preserved
 print(person.copyWith(name: 'Dash')); // Person(name: Dash, age: 24)
 // `age` is set to `null`
-print(person.copyWith(age: null)); // Person(name: Person, age: null)
+print(person.copyWith(age: null)); // Person(name: Remi, age: null)
 ```
 
 Notice how `copyWith` correctly was able to understand `null` parameters.
