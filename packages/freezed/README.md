@@ -123,7 +123,7 @@ abstract class Union with _$Union {
 
 From there, to run the code generator, you have two possibilities:
 
-- `flutter pub run build_runner build`, if your package depends on Flutter
+- `flutter pub pub run build_runner build`, if your package depends on Flutter
 - `pub run build_runner build` otherwise
 
 # The features
