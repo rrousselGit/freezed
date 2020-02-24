@@ -1,3 +1,7 @@
+# 0.7.2
+
+Fix null/bool default value support
+
 # 0.7.1
 
 Fixes a bug where `@Default` only worked with strings/numbers/functions/types.
