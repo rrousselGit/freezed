@@ -440,6 +440,8 @@ extension DefaultValue on ParameterElement {
               TypeChecker.fromRuntime(num),
               TypeChecker.fromRuntime(String),
               TypeChecker.fromRuntime(Function),
+              TypeChecker.fromRuntime(bool),
+              TypeChecker.fromRuntime(Null),
               TypeChecker.fromRuntime(Type)
             ]).isAssignableFromType(type)) {
               needsConstModifier = false;
