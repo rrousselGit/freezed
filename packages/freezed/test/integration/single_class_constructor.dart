@@ -89,6 +89,7 @@ abstract class Late with _$Late {
 
 class LateContainer {
   LateContainer(this.value);
+
   final int value;
 
   @override
@@ -141,4 +142,14 @@ abstract class TypeDefault with _$TypeDefault {
 @freezed
 abstract class ListDefault with _$ListDefault {
   factory ListDefault([@Default(<int>[42]) List<int> value]) = _ListDefault;
+}
+
+@freezed
+abstract class BoolDefault with _$BoolDefault {
+  factory BoolDefault([@Default(false) bool value]) = _BoolDefault;
+}
+
+@freezed
+abstract class NullDefault with _$NullDefault {
+  factory NullDefault([@Default(null) bool value]) = _NullDefault;
 }
