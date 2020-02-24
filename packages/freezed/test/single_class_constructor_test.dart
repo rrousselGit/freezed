@@ -22,11 +22,37 @@ class MyObject {
 }
 
 Future<void> main() async {
-  test('@Default applied', () {
-    expect(
-      DefaultValue(),
-      DefaultValue(42),
-    );
+  group('@Default applied', () {
+    test('int', () {
+      expect(
+        IntDefault(),
+        IntDefault(42),
+      );
+    });
+    test('double', () {
+      expect(
+        DoubleDefault(),
+        DoubleDefault(42),
+      );
+    });
+    test('String', () {
+      expect(
+        StringDefault(),
+        StringDefault('42'),
+      );
+    });
+    test('List', () {
+      expect(
+        ListDefault(),
+        ListDefault([42]),
+      );
+    });
+    test('Type', () {
+      expect(
+        TypeDefault(),
+        TypeDefault(TypeDefault),
+      );
+    });
   });
   test('complex late', () {
     final complex = ComplexLate([0, 1, 2, 3, 4]);

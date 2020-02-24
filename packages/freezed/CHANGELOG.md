@@ -1,3 +1,7 @@
+# 0.7.1
+
+Fixes a bug where `@Default` only worked with strings/numbers/functions/types.
+
 # 0.7.0
 
 Add support for default values

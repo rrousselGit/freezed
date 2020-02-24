@@ -1,3 +1,7 @@
+# 0.7.1
+
+Minor change to `@Default` to fix an issue with complex default values.
+
 # 0.7.0
 
 Add `@Default` annotation

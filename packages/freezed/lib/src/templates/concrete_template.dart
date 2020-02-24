@@ -428,7 +428,34 @@ extension DefaultValue on ParameterElement {
       final obj = meta.computeConstantValue();
       if (matcher.isExactlyType(obj.type)) {
         final source = meta.toSource();
-        return source.substring('@Default('.length, source.length - 1);
+        final res = source.substring('@Default('.length, source.length - 1);
+
+        var needsConstModifier = true;
+        final defaultValue =
+            meta.computeConstantValue()?.getField('defaultValue');
+        final type = defaultValue?.type;
+        if (type != null) {
+          try {
+            if (const TypeChecker.any([
+              TypeChecker.fromRuntime(num),
+              TypeChecker.fromRuntime(String),
+              TypeChecker.fromRuntime(Function),
+              TypeChecker.fromRuntime(Type)
+            ]).isAssignableFromType(type)) {
+              needsConstModifier = false;
+            }
+          } catch (err, stack) {
+            print(err);
+            print(stack);
+            return null;
+          }
+        }
+
+        if (needsConstModifier) {
+          return 'const $res';
+        } else {
+          return res;
+        }
       }
     }
     return null;

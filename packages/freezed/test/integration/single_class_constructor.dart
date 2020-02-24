@@ -119,6 +119,26 @@ abstract class ComplexLate with _$ComplexLate {
 }
 
 @freezed
-abstract class DefaultValue with _$DefaultValue {
-  factory DefaultValue([@Default(42) int value]) = _DefaultValue;
+abstract class IntDefault with _$IntDefault {
+  factory IntDefault([@Default(42) int value]) = _IntDefault;
+}
+
+@freezed
+abstract class StringDefault with _$StringDefault {
+  factory StringDefault([@Default('42') String value]) = _StringDefault;
+}
+
+@freezed
+abstract class DoubleDefault with _$DoubleDefault {
+  factory DoubleDefault([@Default(42.0) double value]) = _DoubleDefault;
+}
+
+@freezed
+abstract class TypeDefault with _$TypeDefault {
+  factory TypeDefault([@Default(TypeDefault) Type value]) = _TypeDefault;
+}
+
+@freezed
+abstract class ListDefault with _$ListDefault {
+  factory ListDefault([@Default(<int>[42]) List<int> value]) = _ListDefault;
 }

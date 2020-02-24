@@ -62,5 +62,7 @@ const late = _Late._();
 /// }
 /// ```
 class Default {
-  const Default(Object defaultValue);
+  const Default(this.defaultValue);
+
+  final Object defaultValue;
 }
