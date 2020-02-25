@@ -153,3 +153,8 @@ abstract class BoolDefault with _$BoolDefault {
 abstract class NullDefault with _$NullDefault {
   factory NullDefault([@Default(null) bool value]) = _NullDefault;
 }
+
+@freezed
+abstract class ExplicitConstDefault with _$ExplicitConstDefault {
+  factory ExplicitConstDefault([@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
+}
