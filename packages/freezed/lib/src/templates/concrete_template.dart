@@ -430,7 +430,7 @@ extension DefaultValue on ParameterElement {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
-        var needsConstModifier = true;
+        var needsConstModifier = !res.trimLeft().startsWith('const');
         final defaultValue =
             meta.computeConstantValue()?.getField('defaultValue');
         final type = defaultValue?.type;
