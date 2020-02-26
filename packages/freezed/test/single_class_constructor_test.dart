@@ -22,10 +22,17 @@ class MyObject {
 }
 
 Future<void> main() async {
+  test('tear off uses const ctor if possible', () {
+    expect(identical($Empty(), const Empty()), isTrue);
+  });
   group('@Default applied', () {
     test('int', () {
       expect(
         IntDefault(),
+        IntDefault(42),
+      );
+      expect(
+        $IntDefault(),
         IntDefault(42),
       );
     });
@@ -34,10 +41,18 @@ Future<void> main() async {
         DoubleDefault(),
         DoubleDefault(42),
       );
+      expect(
+        $DoubleDefault(),
+        DoubleDefault(42),
+      );
     });
     test('String', () {
       expect(
         StringDefault(),
+        StringDefault('42'),
+      );
+      expect(
+        $StringDefault(),
         StringDefault('42'),
       );
     });
@@ -46,10 +61,18 @@ Future<void> main() async {
         ListDefault(),
         ListDefault([42]),
       );
+      expect(
+        $ListDefault(),
+        ListDefault([42]),
+      );
     });
     test('Type', () {
       expect(
         TypeDefault(),
+        TypeDefault(TypeDefault),
+      );
+      expect(
+        $TypeDefault(),
         TypeDefault(TypeDefault),
       );
     });

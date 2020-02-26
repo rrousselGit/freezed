@@ -288,7 +288,7 @@ $parameters
     constructorParameters
       ..writeAll(
         [
-          ...constructor.parameters.positionalParameters,
+          ...constructor.parameters.requiredPositionalParameters,
           ...constructor.parameters.optionalPositionalParameters,
         ].map<String>(parameterToValue),
       )

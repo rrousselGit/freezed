@@ -1,6 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/freezed_generator.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
+import 'package:source_gen/source_gen.dart';
 import 'parameter_template.dart';
 
 final redirectedConstructorNameRegexp =
@@ -8,8 +10,16 @@ final redirectedConstructorNameRegexp =
 
 List<String> parseDecorators(List<ElementAnnotation> metadata) {
   return [
-    for (final meta in metadata) if (!meta.isRequired) meta.toSource(),
+    for (final meta in metadata)
+      if (!meta.isRequired && !meta.isDefault) meta.toSource(),
   ];
+}
+
+extension on ElementAnnotation {
+  /// if the element is decorated with `@Default(value)`
+  bool get isDefault {
+    return const TypeChecker.fromRuntime(Default).isExactlyType(computeConstantValue().type);
+  }
 }
 
 String getRedirectedConstructorName(ConstructorElement constructor) {
@@ -79,7 +89,7 @@ String _whenPrototype(
     name: name,
     ctor2parameters: (constructor) {
       return ParametersTemplate([
-        ...constructor.parameters.positionalParameters,
+        ...constructor.parameters.requiredPositionalParameters,
         ...constructor.parameters.optionalPositionalParameters,
         ...constructor.parameters.namedParameters,
       ]);

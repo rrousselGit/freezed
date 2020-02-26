@@ -8,6 +8,20 @@ import 'common.dart';
 import 'integration/generic.dart';
 
 Future<void> main() async {
+  test('tear off', () {
+    expect(
+      $Union<int>(42),
+      Union<int>(42),
+    );
+    expect(
+      $Union.loading<int>(),
+      const Union<int>.loading(),
+    );
+    expect(
+      $Union.error<int>('msg'),
+      const Union<int>.error('msg'),
+    );
+  });
   test('has no issue', () async {
     final main = await resolveSources(
       {

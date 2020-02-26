@@ -54,6 +54,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [non-nullable](#non-nullable)
     - [default values](#default-values)
     - [late](#late)
+    - [construtor tear-off](#constructor-tear-off)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
   - [Unions/Sealed classes](#unionssealed-classes)
@@ -358,6 +359,26 @@ is more efficient.
 **NOTE**:
 
 Getters decorated with `@late` will also be visible on the generated `toString`.
+
+### Construtor tear-off
+
+A common use-case is to do a one-to-one mapping between the parameters of a callback
+and a constructor.\
+For example, you may write:
+
+```dart
+future.catchError((error) => MyClass.error(error))
+```
+
+But that's kind of redundant. As such, [Freezed] offers a simpler syntax:
+
+```dart
+future.catchError($MyClass.error)
+```
+
+This new code is strictly equivalent to the previous snippet, just shorter.
+
+Note that this is both compatible with [default values](#default-values) and generics.
 
 ## ==/toString
 
