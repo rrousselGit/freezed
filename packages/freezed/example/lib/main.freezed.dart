@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package
+// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null
 
 part of 'main.dart';
 
@@ -13,6 +13,19 @@ mixin _$MyClass {
 
   MyClass copyWith({String a, int b});
 }
+
+class _$MyClassTearOff {
+  const _$MyClassTearOff();
+
+  _MyClass call({String a, int b}) {
+    return _MyClass(
+      a: a,
+      b: b,
+    );
+  }
+}
+
+const $MyClass = _$MyClassTearOff();
 
 class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   _$_MyClass({this.a, this.b});
@@ -112,6 +125,35 @@ mixin _$Union {
   });
 }
 
+class _$UnionTearOff {
+  const _$UnionTearOff();
+
+  Data call(int value) {
+    return Data(
+      value,
+    );
+  }
+
+  Loading loading() {
+    return const Loading();
+  }
+
+  ErrorDetails error([String message]) {
+    return ErrorDetails(
+      message,
+    );
+  }
+
+  Complex complex(int a, String b) {
+    return Complex(
+      a,
+      b,
+    );
+  }
+}
+
+const $Union = _$UnionTearOff();
+
 class _$Data with DiagnosticableTreeMixin implements Data {
   const _$Data(this.value) : assert(value != null);
 
@@ -147,7 +189,6 @@ class _$Data with DiagnosticableTreeMixin implements Data {
   _$Data copyWith({
     Object value = freezed,
   }) {
-    assert(value != null);
     return _$Data(
       value == freezed ? this.value : value as int,
     );
@@ -469,8 +510,6 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
     Object a = freezed,
     Object b = freezed,
   }) {
-    assert(a != null);
-    assert(b != null);
     return _$Complex(
       a == freezed ? this.a : a as int,
       b == freezed ? this.b : b as String,
@@ -580,6 +619,26 @@ mixin _$SharedProperty {
     @required Result orElse(),
   });
 }
+
+class _$SharedPropertyTearOff {
+  const _$SharedPropertyTearOff();
+
+  SharedProperty0 person({String name, int age}) {
+    return SharedProperty0(
+      name: name,
+      age: age,
+    );
+  }
+
+  SharedProperty1 city({String name, int population}) {
+    return SharedProperty1(
+      name: name,
+      population: population,
+    );
+  }
+}
+
+const $SharedProperty = _$SharedPropertyTearOff();
 
 class _$SharedProperty0
     with DiagnosticableTreeMixin
