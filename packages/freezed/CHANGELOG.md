@@ -1,3 +1,7 @@
+# 0.7.3
+
+Fixes `@Default` generating invalid code if the default value explicitly used `const`.
+
 # 0.7.2
 
 Fix null/bool default value support
