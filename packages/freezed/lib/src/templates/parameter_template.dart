@@ -31,7 +31,7 @@ class GenericsParameterTemplate {
 
 class ParametersTemplate {
   ParametersTemplate(
-    this.positionalParameters, {
+    this.requiredPositionalParameters, {
     this.optionalPositionalParameters = const [],
     this.namedParameters = const [],
   });
@@ -72,15 +72,20 @@ class ParametersTemplate {
     );
   }
 
-  final List<Parameter> positionalParameters;
+  final List<Parameter> requiredPositionalParameters;
   final List<Parameter> optionalPositionalParameters;
   final List<Parameter> namedParameters;
 
-  List<Parameter> get allParameters => [
-        ...positionalParameters,
-        ...optionalPositionalParameters,
-        ...namedParameters,
-      ];
+  Iterable<Parameter> get allPositionalParameters sync* {
+    yield* requiredPositionalParameters;
+    yield* optionalPositionalParameters;
+  }
+
+  Iterable<Parameter> get allParameters sync* {
+    yield* requiredPositionalParameters;
+    yield* optionalPositionalParameters;
+    yield* namedParameters;
+  }
 
   ParametersTemplate asThis() {
     List<Parameter> asThis(List<Parameter> parameters) {
@@ -99,15 +104,39 @@ class ParametersTemplate {
     }
 
     return ParametersTemplate(
-      asThis(positionalParameters),
+      asThis(requiredPositionalParameters),
       optionalPositionalParameters: asThis(optionalPositionalParameters),
       namedParameters: asThis(namedParameters),
     );
   }
 
+  ParametersTemplate asExpanded({bool showDefaultValue = false}) {
+    List<Parameter> asExpanded(List<Parameter> parameters) {
+      return parameters
+          .map(
+            (e) => Parameter(
+              isRequired: e.isRequired,
+              name: e.name,
+              type: e.type,
+              decorators: e.decorators,
+              nullable: e.nullable,
+              defaultValueSource: e.defaultValueSource,
+              showDefaultValue: showDefaultValue,
+            ),
+          )
+          .toList();
+    }
+
+    return ParametersTemplate(
+      asExpanded(requiredPositionalParameters),
+      optionalPositionalParameters: asExpanded(optionalPositionalParameters),
+      namedParameters: asExpanded(namedParameters),
+    );
+  }
+
   @override
   String toString() {
-    final buffer = StringBuffer()..writeAll(positionalParameters, ', ');
+    final buffer = StringBuffer()..writeAll(requiredPositionalParameters, ', ');
 
     if (buffer.isNotEmpty &&
         (optionalPositionalParameters.isNotEmpty ||
@@ -132,7 +161,7 @@ class ParametersTemplate {
 
   ParametersTemplate get asExpandedDefinition {
     return ParametersTemplate(
-      positionalParameters
+      requiredPositionalParameters
           .map((e) => Parameter(
                 name: e.name,
                 type: e.type,
@@ -174,6 +203,7 @@ class Parameter {
     @required this.isRequired,
     @required this.decorators,
     @required this.nullable,
+    this.showDefaultValue = false,
   });
 
   final String type;
@@ -182,10 +212,14 @@ class Parameter {
   final bool isRequired;
   final bool nullable;
   final List<String> decorators;
+  final bool showDefaultValue;
 
   @override
   String toString() {
     var res = '${decorators.join()}  ${type ?? 'dynamic'} $name';
+    if (showDefaultValue && defaultValueSource != null) {
+      res = '$res = $defaultValueSource';
+    }
     return isRequired ? '@required $res' : res;
   }
 }
@@ -201,6 +235,7 @@ class LocalParameter extends Parameter {
   }) : super(
           name: name,
           type: type,
+          showDefaultValue: true,
           isRequired: isRequired,
           decorators: decorators,
           nullable: nullable,
@@ -210,7 +245,7 @@ class LocalParameter extends Parameter {
   @override
   String toString() {
     var res = '${decorators.join()} this.$name';
-    if (defaultValueSource != null) {
+    if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
     return isRequired ? '@required $res' : res;
@@ -229,6 +264,7 @@ class CallbackParameter extends Parameter {
   }) : super(
           name: name,
           type: type,
+          showDefaultValue: false,
           isRequired: isRequired,
           decorators: decorators,
           nullable: nullable,

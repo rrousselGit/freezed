@@ -1,3 +1,7 @@
+# 0.8.0
+
+Now also generate construtor tear-off.
+
 # 0.7.3
 
 Fixes `@Default` generating invalid code if the default value explicitly used `const`.

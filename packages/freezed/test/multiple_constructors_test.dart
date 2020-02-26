@@ -7,7 +7,28 @@ import 'package:test/test.dart';
 import 'common.dart';
 import 'integration/multiple_constructors.dart';
 
+typedef NoCommonParamDefaultTearOff = NoCommonParam0 Function(
+  String a, {
+  int b,
+});
+typedef NoCommonParamNamedTearOff = NoCommonParam1 Function(
+  double c, [
+  Object d,
+]);
+
 void main() {
+  test('tear off', () {
+    expect(
+      $NoCommonParam('a', b: 42),
+      NoCommonParam('a', b: 42),
+    );
+    expect($NoCommonParam.call.runtimeType, NoCommonParamDefaultTearOff);
+    expect(
+      $NoCommonParam.named(42, 42),
+      NoCommonParam.named(42, 42),
+    );
+    expect($NoCommonParam.named.runtimeType, NoCommonParamNamedTearOff);
+  });
   group('NoSharedParam', () {
     test("doesn't have public properties/methods", () async {
       await expectLater(compile(r'''
