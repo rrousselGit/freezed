@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package
+// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null
 
 part of 'non_diagnosticable.dart';
 
@@ -34,6 +34,25 @@ mixin _$Example<T> {
     @required Result orElse(),
   });
 }
+
+class _$ExampleTearOff {
+  const _$ExampleTearOff();
+
+  _Example<T> call<T>(int a, String b) {
+    return _Example<T>(
+      a,
+      b,
+    );
+  }
+
+  _Example2<T> named<T>(T c) {
+    return _Example2<T>(
+      c,
+    );
+  }
+}
+
+const $Example = _$ExampleTearOff();
 
 class _$_Example<T> implements _Example<T> {
   _$_Example(this.a, this.b)
@@ -71,8 +90,6 @@ class _$_Example<T> implements _Example<T> {
     Object a = freezed,
     Object b = freezed,
   }) {
-    assert(a != null);
-    assert(b != null);
     return _$_Example<T>(
       a == freezed ? this.a : a as int,
       b == freezed ? this.b : b as String,
@@ -166,7 +183,6 @@ class _$_Example2<T> implements _Example2<T> {
   _$_Example2<T> copyWith({
     Object c = freezed,
   }) {
-    assert(c != null);
     return _$_Example2<T>(
       c == freezed ? this.c : c as T,
     );
