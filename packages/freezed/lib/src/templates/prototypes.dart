@@ -18,7 +18,8 @@ List<String> parseDecorators(List<ElementAnnotation> metadata) {
 extension on ElementAnnotation {
   /// if the element is decorated with `@Default(value)`
   bool get isDefault {
-    return const TypeChecker.fromRuntime(Default).isExactlyType(computeConstantValue().type);
+    return const TypeChecker.fromRuntime(Default)
+        .isExactlyType(computeConstantValue().type);
   }
 }
 

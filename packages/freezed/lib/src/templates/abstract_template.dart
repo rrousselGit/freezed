@@ -50,7 +50,6 @@ const \$$name = _\$${name}TearOff();
 ''';
   }
 
-
   Iterable<String> get tearOffs sync* {
     for (final targetConstructor in allConstructors) {
       final ctorName =
@@ -70,7 +69,9 @@ const \$$name = _\$${name}TearOff();
       }
 
       var prefix = '';
-      if (targetConstructor.isConst && genericsParameter.typeParameters.isEmpty && targetConstructor.parameters.allParameters.isEmpty) {
+      if (targetConstructor.isConst &&
+          genericsParameter.typeParameters.isEmpty &&
+          targetConstructor.parameters.allParameters.isEmpty) {
         prefix = 'const ';
       }
 
