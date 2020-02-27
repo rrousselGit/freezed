@@ -1,6 +1,10 @@
+# 0.8.2
+
+Generated file now ignores `invalid_override_different_default_values_named`
+
 # 0.8.0
 
-Now also generate construtor tear-off.
+Now also generate constructor tear-off.
 
 # 0.7.3
 
