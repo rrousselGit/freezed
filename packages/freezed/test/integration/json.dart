@@ -72,3 +72,12 @@ abstract class DefaultValueJsonKey with _$DefaultValueJsonKey {
   factory DefaultValueJsonKey.fromJson(Map<String, dynamic> json) =>
       _$DefaultValueJsonKeyFromJson(json);
 }
+
+@freezed
+abstract class ClassDecorator with _$ClassDecorator {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  const factory ClassDecorator(String complexName) = ClassDecoratorDefault;
+
+  factory ClassDecorator.fromJson(Map<String, dynamic> json) =>
+      _$ClassDecoratorFromJson(json);
+}

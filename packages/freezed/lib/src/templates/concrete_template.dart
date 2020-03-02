@@ -38,7 +38,8 @@ class Concrete {
   @override
   String toString() {
     return '''
-${shouldGenerateJson ? '@JsonSerializable()' : ''}
+${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
+${constructor.decorators.join('\n')}
 class $concreteName$genericsDefinition $diagnosticable implements ${constructor.redirectedName}$genericsParameter {
   $isConst $concreteName(${constructor.parameters.asThis()})$asserts;
 

@@ -1,3 +1,7 @@
+# 0.9.0
+
+Support class-level decorators (see https://github.com/rrousselGit/freezed/issues/50)
+
 # 0.8.2
 
 Generated file now ignores `invalid_override_different_default_values_named`
