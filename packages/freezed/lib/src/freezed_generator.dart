@@ -20,6 +20,8 @@ class ConstructorDetails {
     @required this.parameters,
     @required this.impliedProperties,
     @required this.fullName,
+    @required this.decorators,
+    @required this.hasJsonSerializable,
   });
 
   final String name;
@@ -28,7 +30,9 @@ class ConstructorDetails {
   final ParametersTemplate parameters;
   final List<Property> impliedProperties;
   final bool isDefault;
+  final bool hasJsonSerializable;
   final String fullName;
+  final List<String> decorators;
 
   String get callbackName => constructorNameToCallbackName(name);
 
@@ -44,6 +48,8 @@ class ConstructorDetails {
       parameters: $parameters,
       impliedProperties: $impliedProperties,
       fullName: $fullName,
+      decorators: $decorators,
+      hasJsonSerializable: $hasJsonSerializable,
     )
 ''';
   }
@@ -241,7 +247,9 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
             for (final parameter in constructor.parameters)
               Property.fromParameter(parameter),
           ],
+          decorators: constructor.metadata.map((e) => e.toSource()).toList(),
           isDefault: isDefaultConstructor(constructor),
+          hasJsonSerializable: constructor.hasJsonSerializable,
           parameters:
               ParametersTemplate.fromParameterElements(constructor.parameters),
           redirectedName: redirectedName,
@@ -338,6 +346,15 @@ extension on FieldElement {
   bool get hasLate {
     return TypeChecker.fromRuntime(late.runtimeType).hasAnnotationOf(
       getter,
+      throwOnUnresolved: false,
+    );
+  }
+}
+
+extension on Element {
+  bool get hasJsonSerializable {
+    return const TypeChecker.fromRuntime(JsonSerializable).hasAnnotationOf(
+      this,
       throwOnUnresolved: false,
     );
   }

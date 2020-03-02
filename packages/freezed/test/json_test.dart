@@ -8,6 +8,14 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
+  test('class decorators are applied on the generated class', () {
+    expect(
+      ClassDecorator('Complex name').toJson(),
+      {
+        'complex_name': 'Complex name',
+      },
+    );
+  });
   test('@Default implies a @JsonKey', () {
     final value = DefaultValue();
     expect(

@@ -55,6 +55,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [default values](#default-values)
     - [late](#late)
     - [constructor tear-off](#constructor-tear-off)
+    - [decorators](#decorators)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
   - [Unions/Sealed classes](#unionssealed-classes)
@@ -379,6 +380,75 @@ future.catchError($MyClass.error)
 This new code is strictly equivalent to the previous snippet, just shorter.
 
 Note that this is both compatible with [default values](#default-values) and generics.
+
+### Decorators
+
+[Freezed] supports property and class level decorators by decorating their
+respective parameter and constructor definition.
+
+Consider:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  const factory Person({
+    String name,
+    int age,
+    Gender gender,
+  }) = _Person;
+}
+```
+
+If you want to mark the property `gender` as `@deprecated`, then you can do:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  const factory Person({
+    String name,
+    int age,
+    @deprecated Gender gender,
+  }) = _Person;
+}
+```
+
+This will deprecate both:
+
+- The constructor
+  ```dart
+  Person(gender: Gender.something); // gender is deprecated
+  ```
+- The generated class's constructor:
+  ```dart
+  _Person(gender: Gender.something); // gender is deprecated
+  ```
+- the property:
+  ```dart
+  Person person;
+  print(person.gender); // gender is deprecated
+  ```
+- the `copyWith` parameter:
+  ```dart
+  Person person;
+  person.copyWith(gender: Gender.something); // gender is deprecated
+  ```
+
+Similarly, if you want to decorate the generated class you can decorate the
+defining factory constructor.
+
+As such, to deprecate `_Person`, you could do:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  @deprecated
+  const factory Person({
+    String name,
+    int age,
+    Gender gender,
+  }) = _Person;
+}
+```
 
 ## ==/toString
 
@@ -733,6 +803,8 @@ abstract class Example with _$Example {
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
 }
 ```
+
+See also the [decorators](#decorators) section
 
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
