@@ -154,7 +154,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         }
         lateGetters.add(
           LateGetter(
-            type: field.type.getDisplayString(),
+            type: parseTypeSource(field),
             name: field.name,
             decorators: field.metadata.map((e) => e.toSource()).toList(),
             source: source,

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'dart:async';
 
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -17,6 +18,21 @@ typedef NoCommonParamNamedTearOff = NoCommonParam1 Function(
 ]);
 
 void main() {
+  test('recursive class does not generate dynamic', () async {
+    final sources = await resolveSources(
+      {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
+      (r) {
+        return r.libraries.firstWhere((element) =>
+            element.source.toString().contains('multiple_constructors'));
+      },
+    );
+
+    final recursiveClass = sources.topLevelElements
+        .whereType<ClassElement>()
+        .firstWhere((element) => element.name == '_RecursiveNext');
+
+    expect(recursiveClass.getField('value').type.isDynamic, isFalse);
+  });
   test('tear off', () {
     expect(
       $NoCommonParam('a', b: 42),

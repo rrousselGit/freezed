@@ -1,3 +1,7 @@
+# 0.9.2
+
+Fixes parsing of recursive classes
+
 # 0.9.1
 
 Support enum and static const default values

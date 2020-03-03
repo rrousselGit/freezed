@@ -43,7 +43,7 @@ class ParametersTemplate {
     Parameter asParameter(ParameterElement e) {
       if (isAssignedToThis) {
         return LocalParameter(
-          type: e.type?.getDisplayString(),
+          type: parseTypeSource(e),
           name: e.name,
           defaultValueSource: e.defaultValue,
           isRequired: e.hasRequired,
@@ -55,7 +55,7 @@ class ParametersTemplate {
         name: e.name,
         defaultValueSource: e.defaultValue,
         isRequired: e.hasRequired,
-        type: e.type?.getDisplayString(),
+        type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
         nullable: e.isNullable,
       );

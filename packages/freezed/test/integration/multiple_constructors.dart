@@ -32,3 +32,9 @@ abstract class NameConflict with _$NameConflict {
   factory NameConflict.something(Error error) = Something;
   factory NameConflict.error(Error error) = SomeError;
 }
+
+@freezed
+abstract class Recursive with _$Recursive {
+  factory Recursive() = RecursiveImpl;
+  factory Recursive.next(RecursiveImpl value) = _RecursiveNext;
+}

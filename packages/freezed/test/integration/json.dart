@@ -81,3 +81,11 @@ abstract class ClassDecorator with _$ClassDecorator {
   factory ClassDecorator.fromJson(Map<String, dynamic> json) =>
       _$ClassDecoratorFromJson(json);
 }
+
+@freezed
+abstract class DurationValue with _$DurationValue {
+  const factory DurationValue(Duration complexName) = DurationValueDefault;
+
+  factory DurationValue.fromJson(Map<String, dynamic> json) =>
+      _$DurationValueFromJson(json);
+}

@@ -360,13 +360,13 @@ class Property {
   final bool hasJsonKey;
 
   Property({
-    @required this.type,
+    @required String type,
     @required this.name,
     @required this.decorators,
     @required this.nullable,
     @required this.defaultValueSource,
     @required this.hasJsonKey,
-  });
+  }) : type = type ?? 'dynamic';
 
   factory Property.fromParameter(ParameterElement element) {
     final defaultValue = element.defaultValue;
@@ -377,9 +377,10 @@ class Property {
         element: element,
       );
     }
+
     return Property(
       name: element.name,
-      type: element.type?.getDisplayString(),
+      type: parseTypeSource(element),
       decorators: parseDecorators(element.metadata),
       nullable: element.isNullable,
       defaultValueSource: defaultValue,
@@ -389,7 +390,7 @@ class Property {
 
   @override
   String toString() {
-    return '${decorators.join()} final ${type ?? 'dynamic'} $name;';
+    return '${decorators.join()} final $type $name;';
   }
 
   Getter get getter => Getter(
@@ -403,15 +404,15 @@ class Getter {
   final bool nullable;
 
   Getter({
-    @required this.type,
+    @required String type,
     @required this.name,
     @required this.decorators,
     @required this.nullable,
-  });
+  }) : type = type ?? 'dynamic';
 
   @override
   String toString() {
-    return '${decorators.join()} ${type ?? 'dynamic'} get $name;';
+    return '${decorators.join()} $type get $name;';
   }
 }
 
@@ -447,4 +448,20 @@ extension DefaultValue on ParameterElement {
   bool get hasJsonKey {
     return const TypeChecker.fromRuntime(JsonKey).hasAnnotationOf(this);
   }
+}
+
+String parseTypeSource(VariableElement element) {
+  var type = element.type?.getDisplayString();
+
+  if (type == null || type == 'dynamic') {
+    if (element.type?.element != null &&
+        element.type.isDynamic &&
+        element.type.element.isSynthetic) {
+      final source =
+          element.source.contents.data.substring(0, element.nameOffset);
+      final match = RegExp(r'(\w+)\s+$').firstMatch(source);
+      type = match?.group(1);
+    }
+  }
+  return type;
 }
