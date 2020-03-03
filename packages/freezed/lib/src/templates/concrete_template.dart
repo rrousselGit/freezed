@@ -431,28 +431,8 @@ extension DefaultValue on ParameterElement {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
-        var needsConstModifier = !res.trimLeft().startsWith('const');
-        final defaultValue =
-            meta.computeConstantValue()?.getField('defaultValue');
-        final type = defaultValue?.type;
-        if (type != null) {
-          try {
-            if (const TypeChecker.any([
-              TypeChecker.fromRuntime(num),
-              TypeChecker.fromRuntime(String),
-              TypeChecker.fromRuntime(Function),
-              TypeChecker.fromRuntime(bool),
-              TypeChecker.fromRuntime(Null),
-              TypeChecker.fromRuntime(Type)
-            ]).isAssignableFromType(type)) {
-              needsConstModifier = false;
-            }
-          } catch (err, stack) {
-            print(err);
-            print(stack);
-            return null;
-          }
-        }
+        var needsConstModifier = !res.trimLeft().startsWith('const') &&
+            (res.contains('(') || res.contains('[') || res.contains('{'));
 
         if (needsConstModifier) {
           return 'const $res';

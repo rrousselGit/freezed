@@ -145,6 +145,17 @@ abstract class ListDefault with _$ListDefault {
 }
 
 @freezed
+abstract class SetDefault with _$SetDefault {
+  factory SetDefault([@Default(<int>{42}) Set<int> value]) = _SetDefault;
+}
+
+@freezed
+abstract class MapDefault with _$MapDefault {
+  factory MapDefault([@Default(<int, int>{42: 42}) Map<int, int> value]) =
+      _MapDefault;
+}
+
+@freezed
 abstract class BoolDefault with _$BoolDefault {
   factory BoolDefault([@Default(false) bool value]) = _BoolDefault;
 }
@@ -159,4 +170,17 @@ abstract class ExplicitConstDefault with _$ExplicitConstDefault {
   factory ExplicitConstDefault(
       //ignore: unnecessary_const
       [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
+}
+
+@freezed
+abstract class StaticConstDefault with _$StaticConstDefault {
+  factory StaticConstDefault([@Default(Duration.zero) Duration value]) =
+      _StaticConstDefault;
+}
+
+enum _Enum { a }
+
+@freezed
+abstract class EnumDefault with _$EnumDefault {
+  factory EnumDefault([@Default(_Enum.a) _Enum value]) = _EnumDefault;
 }

@@ -1,3 +1,7 @@
+# 0.9.1
+
+Support enum and static const default values
+
 # 0.9.0
 
 Support class-level decorators (see https://github.com/rrousselGit/freezed/issues/50)
