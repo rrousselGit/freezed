@@ -790,7 +790,7 @@ With these changes, [Freezed] will automatically ask [json_serializable] to gene
 Then, for classes with multiple constructors, [Freezed] will take care of deciding which
 constructor should be used.
 
-**What about `@JsonKey`? annotation**
+**What about `@JsonKey` annotation?**
 
 All decorators passed to a constructor parameter are "copy-pasted" to the generated property too.\
 As such, you can write:
