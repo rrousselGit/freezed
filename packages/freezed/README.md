@@ -806,9 +806,7 @@ abstract class Example with _$Example {
 
 **What about `@JsonSerializable` annotation?**
 
-By default `json_serializable` won't generate calls to `toJson()` on nested classes, so you need to pass `explicit_to_json` flag through `@JsonSerializable` annotation. 
-
-You can pass `@JsonSerializable` by placing it over constructor e.g.:
+You can pass `@JsonSerializable` annotation by placing it over constructor e.g.:
 
 ```dart
 @freezed
