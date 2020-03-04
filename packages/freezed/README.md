@@ -790,7 +790,7 @@ With these changes, [Freezed] will automatically ask [json_serializable] to gene
 Then, for classes with multiple constructors, [Freezed] will take care of deciding which
 constructor should be used.
 
-**What about `@JsonKey`?**
+**What about `@JsonKey`? annotation**
 
 All decorators passed to a constructor parameter are "copy-pasted" to the generated property too.\
 As such, you can write:
@@ -803,6 +803,25 @@ abstract class Example with _$Example {
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
 }
 ```
+
+**What about `@JsonSerializable` annotation?**
+
+By default `json_serializable` won't generate calls to `toJson()` on nested classes, so you need to pass `explicit_to_json` flag through `@JsonSerializable` annotation. 
+
+You can pass `@JsonSerializable` by placing it over constructor e.g.:
+
+```dart
+@freezed
+abstract class Example with _$Example {
+  @JsonSerializable(explicit_to_json: true)
+  factory Example(@Jsonkey(name: 'my_property') SomeOtherClass myProperty) = _Example;
+
+  factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
+}
+```
+
+If you want to define some custom json_serializable flags for all the classes (e.g. `explicit_to_json` or `any_map`) you can do it via `build.yaml` file as described [here](https://pub.dev/packages/json_serializable#build-configuration).
+
 
 See also the [decorators](#decorators) section
 
