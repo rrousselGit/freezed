@@ -196,7 +196,7 @@ abstract class Union<T> with _$Union<T> {
 }
 ```
 
-See [unions/Sealed classes](#unions/sealed-classes) for more information.
+See [unions/Sealed classes](#unionssealed-classes) for more information.
 
 ### Non-nullable
 
