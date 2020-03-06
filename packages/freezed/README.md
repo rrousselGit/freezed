@@ -62,7 +62,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [shared properties](#shared-properties)
     - [when](#when)
     - [maybeWhen](#maybeWhen)
-    - [map/maybeMap](#mapmaybemap)
+    - [map/maybeMap](#mapMaybeMap)
   - [fromJson/toJson](#fromjsontojson)
 
 # How to use
@@ -569,8 +569,8 @@ To be able to read the other properties, you can use pattern matching thanks to 
 
 - [when](#when)
 - [maybeWhen](#maybeWhen)
-- [map](#map/maybeMap)
-- [maybeMap](#map/maybeMap)
+- [map](#mapMaybeMap)
+- [maybeMap](#mapMaybeMap)
 
 Alternatively, you can use the `is` operator:
 
@@ -829,6 +829,6 @@ See also the [decorators](#decorators) section
 [copywith]: #copyWith
 [when]: #when
 [maybewhen]: #maybeWhen
-[map]: #map/maybeMap
-[maybemap]: #map/maybeMap
+[map]: #mapMaybeMap
+[maybemap]: #mapMaybeMap
 [json_serializable]: https://pub.dev/packages/json_serializable
