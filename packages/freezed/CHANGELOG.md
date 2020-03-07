@@ -1,3 +1,7 @@
+# 0.10.0
+
+- Consider optional parameters with a default value as non-nullable
+
 # 0.9.2
 
 Fixes parsing of recursive classes

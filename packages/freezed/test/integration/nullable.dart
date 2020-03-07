@@ -19,8 +19,18 @@ abstract class Positional with _$Positional {
 }
 
 @freezed
+abstract class DefaultPositional with _$DefaultPositional {
+  factory DefaultPositional([@Default(0) int a]) = _DefaultPositional;
+}
+
+@freezed
 abstract class Named with _$Named {
   factory Named({int a}) = _Named;
+}
+
+@freezed
+abstract class DefaultNamed with _$DefaultNamed {
+  factory DefaultNamed({@Default(0) int a}) = _DefaultNamed;
 }
 
 @freezed

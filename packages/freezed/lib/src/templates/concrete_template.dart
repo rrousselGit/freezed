@@ -347,8 +347,13 @@ extension on Element {
 }
 
 extension IsNullable on ParameterElement {
-  bool get isNullable =>
-      isOptionalPositional || hasNullable || (isNamed && !hasRequired);
+  bool get isNullable {
+    return hasNullable || (_isOptional && defaultValue == null);
+  }
+
+  bool get _isOptional {
+    return isOptionalPositional || (isNamed && !hasRequired);
+  }
 }
 
 class Property {
@@ -423,6 +428,8 @@ extension PropertiesAsGetters on List<Property> {
 }
 
 extension DefaultValue on ParameterElement {
+  /// Returns the sources of the default value associated with a `@Default`,
+  /// or `null` if no `@Default` are specified.
   String get defaultValue {
     const matcher = TypeChecker.fromRuntime(Default);
 

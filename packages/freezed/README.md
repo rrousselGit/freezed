@@ -207,11 +207,16 @@ non-nullable types would not compile.
 What this means is, using [Freezed] you have to explicitly tell when a property
 is nullable.
 
-**How [Freezed] infers decides whether a value is nullable or not**:
+**What [Freezed] considers to be non-nullable**:
 
-- non-optional parameters are considered non-nullable by default.
-- optional positional parameters are always nullable.
-- named parameters decorated by `@required` are considered non-nullable too
+- non-optional parameters.
+- optional positional parameters using `@Default`.
+- named parameters decorated by `@required`
+
+**What [Freezd] considers to be nullable**:
+
+- optional parameters
+- parameters decorated with `@nullable`
 
 More concretely, if we define a `Person` class as such:
 
