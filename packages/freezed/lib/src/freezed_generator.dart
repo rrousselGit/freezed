@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
+import 'package:freezed/src/templates/tear_off.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -276,6 +277,13 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       genericsParameter: data.genericsParameterTemplate,
       shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
       abstractProperties: data.commonProperties.asGetters(),
+      allConstructors: data.constructors,
+    );
+
+    yield TearOff(
+      name: data.name,
+      genericsParameter: data.genericsParameterTemplate,
+      genericsDefinition: data.genericsDefinitionTemplate,
       allConstructors: data.constructors,
     );
 
