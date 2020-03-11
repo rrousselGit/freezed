@@ -27,13 +27,15 @@ class Abstract {
 mixin _\$$name$genericsDefinition {
 ${abstractProperties.join()}
 
-$copyWithPrototype
 $when
 $maybeWhen
 $map
 $maybeMap
 $toJson
+$copyWithGetter
 }
+
+$abstractCopyWith
 ''';
   }
 
@@ -43,6 +45,21 @@ $toJson
     return 'Map<String, dynamic> toJson();';
   }
 
+  String get copyWithGetter {
+    if (abstractProperties.isEmpty) return '';
+    return '$copyWithInterface$genericsParameter get copyWith;';
+  }
+
+  String get abstractCopyWith {
+    if (abstractProperties.isEmpty) return '';
+    return '''
+abstract class $copyWithInterface$genericsDefinition {
+$copyWithPrototype
+}''';
+  }
+
+  String get copyWithInterface => '\$${name}CopyWith';
+
   String get copyWithPrototype {
     if (abstractProperties.isEmpty) return '';
     final parameters = abstractProperties.map((p) {
@@ -50,7 +67,7 @@ $toJson
     }).join(',');
 
     return '''
-$name$genericsParameter copyWith({
+$name$genericsParameter call({
 $parameters
 });
 ''';

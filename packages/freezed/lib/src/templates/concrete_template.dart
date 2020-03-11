@@ -38,6 +38,8 @@ class Concrete {
   @override
   String toString() {
     return '''
+$copyWithImpl
+
 ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
 ${constructor.decorators.join('\n')}
 class $concreteName$genericsDefinition $diagnosticable implements ${constructor.redirectedName}$genericsParameter {
@@ -46,18 +48,22 @@ class $concreteName$genericsDefinition $diagnosticable implements ${constructor.
   $concreteFromJsonConstructor
 
 $properties
+
 ${lateGetters.join()}
+
 $toStringMethod
 $debugFillProperties
 $operatorEqualMethod
 $hashCodeMethod
-$copyWithMethod
+$concreteCopyWithGetter
 $when
 $maybeWhen
 $map
 $maybeMap
 $toJson
 }
+
+$abstractCopyWith
 
 abstract class ${constructor.redirectedName}$genericsDefinition implements $name$genericsParameter {
   $isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
@@ -66,10 +72,55 @@ abstract class ${constructor.redirectedName}$genericsDefinition implements $name
 
 $abstractProperties
 
-$copyWithPrototype
+$abstractCopyWithGetter
 }
 ''';
   }
+
+  String get concreteCopyWithGetter {
+    if (properties.isEmpty) return '';
+    return '''
+@override
+$copyWithConcrete$genericsParameter get copyWith => $copyWithConcrete$genericsParameter(this);
+''';
+  }
+
+  String get copyWithImpl {
+    if (properties.isEmpty) return '';
+    return '''
+class $copyWithConcrete$genericsDefinition implements $copyWithInterface$genericsParameter {
+  $copyWithConcrete(this._value);
+
+final $concreteName$genericsParameter _value;
+
+$copyWithMethod
+}''';
+  }
+
+  String get abstractCopyWithGetter {
+    if (properties.isEmpty) return '';
+
+    final res = '$copyWithInterface$genericsParameter get copyWith;';
+
+    return commonProperties.isEmpty ? res : '@override $res';
+  }
+
+  String get abstractCopyWith {
+    if (properties.isEmpty) return '';
+
+    String implement() {
+      if (commonProperties.isEmpty) return '';
+      return 'implements \$${name}CopyWith$genericsParameter';
+    }
+
+    return '''
+abstract class $copyWithInterface$genericsDefinition ${implement()} {
+$copyWithPrototype
+}''';
+  }
+
+  String get copyWithInterface => '\$${constructor.redirectedName}CopyWith';
+  String get copyWithConcrete => '\$${concreteName}CopyWith';
 
   String get properties {
     return constructor.impliedProperties.map((p) {
@@ -257,7 +308,7 @@ String toString($parameters) {
     }).join(',');
 
     final result = '''
-${constructor.redirectedName}$genericsParameter copyWith({
+${constructor.redirectedName}$genericsParameter call({
 $parameters
 });
 ''';
@@ -279,7 +330,7 @@ $parameters
     final constructorParameters = StringBuffer();
 
     String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == freezed ? this.${p.name} : ${p.name}';
+      var ternary = '${p.name} == freezed ? _value.${p.name} : ${p.name}';
       if (p.type != 'Object') {
         ternary = '$ternary as ${p.type}';
       }
@@ -303,7 +354,7 @@ $parameters
 
     return '''
 @override
-$concreteName$genericsParameter copyWith({$parameters}) {
+$concreteName$genericsParameter call({$parameters}) {
   return $concreteName$genericsParameter(
 $constructorParameters
   );
