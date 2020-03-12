@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/tear_off.dart';
@@ -278,6 +279,12 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
       abstractProperties: data.commonProperties.asGetters(),
       allConstructors: data.constructors,
+      copyWith: CopyWith(
+        clonedClassName: data.name,
+        genericsDefinition: data.genericsDefinitionTemplate,
+        genericsParameter: data.genericsParameterTemplate,
+        clonneableProperty: data.commonProperties,
+      ),
     );
 
     yield TearOff(
@@ -298,6 +305,13 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         commonProperties: data.commonProperties,
         genericsDefinition: data.genericsDefinitionTemplate,
         genericsParameter: data.genericsParameterTemplate,
+        copyWith: CopyWith(
+          clonedClassName: constructor.redirectedName,
+          genericsDefinition: data.genericsDefinitionTemplate,
+          genericsParameter: data.genericsParameterTemplate,
+          clonneableProperty: constructor.impliedProperties,
+          superClass: data.commonProperties.isEmpty ? null : CopyWith.interfaceNameFrom(data.name),
+        ),
       );
     }
   }
