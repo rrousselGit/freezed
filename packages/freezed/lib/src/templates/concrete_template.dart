@@ -58,7 +58,7 @@ $_toStringMethod
 $_debugFillProperties
 $_operatorEqualMethod
 $_hashCodeMethod
-${copyWith.concreteMethod}
+${copyWith.concreteCopyWithGetter}
 $_when
 $_maybeWhen
 $_map
@@ -74,7 +74,7 @@ abstract class ${constructor.redirectedName}$genericsDefinition implements $name
   $_redirectedFromJsonConstructor
 
 $_abstractProperties
-${copyWith.abstractMethod}
+${copyWith.abstractCopyWithGetter}
 }
 ''';
   }

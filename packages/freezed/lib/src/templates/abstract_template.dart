@@ -35,7 +35,7 @@ $_maybeWhen
 $_map
 $_maybeMap
 $_toJson
-${copyWith.abstractMethod}
+${copyWith.abstractCopyWithGetter}
 }
 
 ${copyWith.interface}

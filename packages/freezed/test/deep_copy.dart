@@ -27,11 +27,66 @@ void main() {
       VeryDeep(Deep(Simple(21, '21'), 21), 42),
     );
 
-
-    // veryDeep = veryDeep.$first.first(simple);
-    // veryDeep = veryDeep.$first.first.first(42);
-    // veryDeep = veryDeep.$second(42);
+    expect(
+      veryDeep.copyWith.first.first(first: 21, second: '21'),
+      VeryDeep(Deep(Simple(21, '21'), 42), 42),
+    );
   });
+
+  test('Deep', () {
+    final deep = Deep(Simple(42, '42'), 42);
+
+    expect(
+      deep.copyWith(first: Simple(21, '21')),
+      Deep(Simple(21, '21'), 21),
+    );
+
+    expect(
+      deep.copyWith.first(first: 21, second: '21'),
+      Deep(Simple(21, '21'), 21),
+    );
+  });
+
+test('Company', () {
+  final company = Company(
+    name: 'Google',
+    director: Director(
+      name: 'Larry Page',
+      assistant: Assistant(name: 'John Smith', age: 42),
+    ),
+  );
+
+  expect(
+    company.copyWith(name: 'Kin and Carta'),
+    Company(name: 'Kin and Carta', director: company.director),
+  );
+
+  expect(
+    company.copyWith.director(name: 'Sundar Pichai'),
+    Company(
+      name: 'Google',
+      director: Director(
+        name: 'Sundar Pichai',
+        assistant: company.director.assistant,
+      ),
+    ),
+  );
+
+  expect(
+    company.copyWith.director.assistant(name: 'John Doe'),
+    Company(
+      name: 'Google',
+      director: Director(
+        name: 'Sundar Pichai',
+        assistant: Assistant(
+          name: 'John Doe',
+          age: 42,
+        ),
+      ),
+    ),
+  );
+});
+
   // test('simple', () {
   //   final simple = Simple(42, '42');
 
