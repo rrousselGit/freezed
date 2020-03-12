@@ -77,7 +77,7 @@ $parameters
   String get abstractCopyWithGetter {
     if (allProperties.isEmpty) return '';
     return _maybeOverride(
-      '$_className${genericsParameter.append(clonedClassName)} get copyWith;',
+      '$_className${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;',
     );
   }
 
@@ -85,7 +85,7 @@ $parameters
     if (allProperties.isEmpty) return '';
     return '''
 @override
-$_className${genericsParameter.append(clonedClassName)} get copyWith => _\$$_className${genericsParameter.append(clonedClassName)}(this, _\$identity);
+$_className${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => _\$$_className${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
 ''';
   }
 

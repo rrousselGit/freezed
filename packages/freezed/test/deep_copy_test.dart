@@ -11,10 +11,11 @@ import 'integration/deep_copy.dart';
 void main() {
   // TODO: no common property
   // TODO: nullable
-  // TODO: type safe
   // TODO: from subclass offers unommon properties
-  // TODO: subclass is type safe
+  // TODO: property type safe
+  // TODO: subclass is type safe too
   // TODO: generic
+  // TODO: copyWith is identical to itself if don't have descendants
   test('VeryDeep', () {
     final veryDeep = VeryDeep(Deep(Simple(42, '42'), 42), 42);
 
