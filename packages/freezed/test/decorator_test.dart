@@ -2,6 +2,7 @@ import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
 void main() {
+  // Tear off deprecated
   test('has no issue', () async {
     final main = await resolveSources(
       {

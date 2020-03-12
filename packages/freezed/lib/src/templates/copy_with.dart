@@ -32,9 +32,9 @@ class CopyWith {
     if (allProperties.isEmpty) return '';
 
     var implements =
-        superClass == null ? '' : 'implements $superClass$genericsParameter';
+        superClass == null ? '' : 'implements $superClass${genericsParameter.append('\$Res')}';
     return '''
-abstract class $_className$genericsDefinition $implements {
+abstract class $_className${genericsDefinition.append('\$Res')} $implements {
 ${_copyWithPrototype('call')}
 
 ${_abstractDeepCopyMethods().join()}
@@ -44,7 +44,6 @@ ${_abstractDeepCopyMethods().join()}
   Iterable<String> _abstractDeepCopyMethods() sync* {
     for (final cloneableProperty in cloneableProperties) {
       yield _copyWithProtypeFor(
-        returnType: clonedClassName,
         methodName: cloneableProperty.name,
         properties: cloneableProperty.associatedData.commonProperties,
       );
@@ -55,14 +54,12 @@ ${_abstractDeepCopyMethods().join()}
     if (allProperties.isEmpty) return '';
 
     return _maybeOverride(_copyWithProtypeFor(
-      returnType: '$clonedClassName$genericsParameter',
       methodName: methodName,
       properties: allProperties,
     ));
   }
 
   String _copyWithProtypeFor({
-    @required String returnType,
     @required String methodName,
     @required List<Property> properties,
   }) {
@@ -71,7 +68,7 @@ ${_abstractDeepCopyMethods().join()}
     }).join(',');
 
     return _maybeOverride('''
-$returnType $methodName({
+\$Res $methodName({
 $parameters
 });
 ''');
@@ -80,7 +77,7 @@ $parameters
   String get abstractCopyWithGetter {
     if (allProperties.isEmpty) return '';
     return _maybeOverride(
-      '$_className$genericsParameter get copyWith;',
+      '$_className${genericsParameter.append(clonedClassName)} get copyWith;',
     );
   }
 
@@ -88,7 +85,7 @@ $parameters
     if (allProperties.isEmpty) return '';
     return '''
 @override
-$_className$genericsParameter get copyWith => _\$$_className$genericsParameter(this);
+$_className${genericsParameter.append(clonedClassName)} get copyWith => _\$$_className${genericsParameter.append(clonedClassName)}(this, _\$identity);
 ''';
   }
 
@@ -97,7 +94,6 @@ $_className$genericsParameter get copyWith => _\$$_className$genericsParameter(t
 
     final prototype = _concreteCopyWithPrototype(
       properties: allProperties,
-      returnType: '$clonedClassName$genericsParameter',
       methodName: 'call',
     );
 
@@ -138,22 +134,21 @@ $_className$genericsParameter get copyWith => _\$$_className$genericsParameter(t
       );
 
     return '''{
-  return $returnType(
+  return _then($returnType(
 $constructorParameters
-  );
+  ));
 }''';
   }
 
   String _concreteCopyWithPrototype({
     @required List<Property> properties,
-    @required String returnType,
     @required String methodName,
   }) {
     final parameters = properties.map((p) {
       return 'Object ${p.name} = freezed,';
     }).join();
 
-    return '$returnType $methodName({$parameters})';
+    return '\$Res $methodName({$parameters})';
   }
 
   /// The implementation of the callable class that contains both the copyWith
@@ -161,10 +156,11 @@ $constructorParameters
   String concreteImpl(ParametersTemplate parametersTemplate) {
     if (allProperties.isEmpty) return '';
     return '''
-class _\$$_className$genericsDefinition implements $_className$genericsParameter {
-  _\$$_className(this._value);
+class _\$$_className${genericsDefinition.append('\$Res')} implements $_className${genericsParameter.append('\$Res')} {
+  _\$$_className(this._value, this._then);
 
 final $clonedClassName$genericsParameter _value;
+final \$Res Function($clonedClassName$genericsParameter) _then;
 
 ${_copyWithMethod(parametersTemplate)}
 
@@ -228,13 +224,12 @@ ${_deepCopyMethods(parametersTemplate).join()}
         );
 
       final prototype = _concreteCopyWithPrototype(
-        returnType: clonedClassName,
         methodName: cloneableProperty.name,
         properties: cloneableProperty.associatedData.commonProperties,
       );
       yield '''
 @override $prototype {
-  return $clonedClassName($constructorParameters);
+  return _then($clonedClassName($constructorParameters),);
 }''';
     }
   }

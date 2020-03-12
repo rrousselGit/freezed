@@ -14,6 +14,7 @@ void main() {
   // TODO: type safe
   // TODO: from subclass offers unommon properties
   // TODO: subclass is type safe
+  // TODO: generic
   test('VeryDeep', () {
     final veryDeep = VeryDeep(Deep(Simple(42, '42'), 42), 42);
 

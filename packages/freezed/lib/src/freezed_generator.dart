@@ -279,9 +279,9 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           }),
       constructors: constructorsNeedsGeneration,
       genericsDefinitionTemplate:
-          GenericsDefinitionTemplate(element.typeParameters),
+          GenericsDefinitionTemplate.fromGenericElement(element.typeParameters),
       genericsParameterTemplate:
-          GenericsParameterTemplate(element.typeParameters),
+          GenericsParameterTemplate.fromGenericElement(element.typeParameters),
     );
   }
 
@@ -339,6 +339,11 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
     return result;
+  }
+
+  @override
+  Iterable<Object> generateForAll(_GlobalData globalData) sync* {
+    yield r'T _$identity<T>(T value) => value;';
   }
 
   @override
