@@ -41,7 +41,7 @@ class Concrete {
   @override
   String toString() {
     return '''
-$_copyWithImpl
+${copyWith.concreteImpl(constructor.parameters)}
 
 ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
 ${constructor.decorators.join('\n')}
@@ -58,7 +58,7 @@ $_toStringMethod
 $_debugFillProperties
 $_operatorEqualMethod
 $_hashCodeMethod
-$_concreteCopyWithGetter
+${copyWith.concreteMethod}
 $_when
 $_maybeWhen
 $_map
@@ -78,29 +78,6 @@ ${copyWith.abstractMethod}
 }
 ''';
   }
-
-  String get _concreteCopyWithGetter {
-    if (_properties.isEmpty) return '';
-    return '''
-@override
-$_copyWithConcrete$genericsParameter get copyWith => $_copyWithConcrete$genericsParameter(this);
-''';
-  }
-
-  String get _copyWithImpl {
-    if (_properties.isEmpty) return '';
-    return '''
-class $_copyWithConcrete$genericsDefinition implements $_copyWithInterface$genericsParameter {
-  $_copyWithConcrete(this._value);
-
-final $concreteName$genericsParameter _value;
-
-$_copyWithMethod
-}''';
-  }
-
-  String get _copyWithInterface => '\$${constructor.redirectedName}CopyWith';
-  String get _copyWithConcrete => '\$${concreteName}CopyWith';
 
   String get _properties {
     return constructor.impliedProperties.map((p) {
@@ -276,48 +253,6 @@ ${whenPrototype(allConstructors)} {
 @override
 String toString($parameters) {
   return '${constructor.fullName}(${properties.join(', ')})';
-}
-''';
-  }
-
-  String get _copyWithMethod {
-    if (constructor.impliedProperties.isEmpty) return '';
-
-    final parameters = constructor.impliedProperties.map((p) {
-      return 'Object ${p.name} = freezed,';
-    }).join();
-
-    final constructorParameters = StringBuffer();
-
-    String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == freezed ? _value.${p.name} : ${p.name}';
-      if (p.type != 'Object') {
-        ternary = '$ternary as ${p.type}';
-      }
-      return '$ternary,';
-    }
-
-    constructorParameters
-      ..writeAll(
-        [
-          ...constructor.parameters.requiredPositionalParameters,
-          ...constructor.parameters.optionalPositionalParameters,
-        ].map<String>(parameterToValue),
-      )
-      ..writeAll(
-        constructor.parameters.namedParameters.map<String>(
-          (p) {
-            return '${p.name}: ${parameterToValue(p)}';
-          },
-        ),
-      );
-
-    return '''
-@override
-$concreteName$genericsParameter call({$parameters}) {
-  return $concreteName$genericsParameter(
-$constructorParameters
-  );
 }
 ''';
   }
