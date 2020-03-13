@@ -41,6 +41,8 @@ class Concrete {
   @override
   String toString() {
     return '''
+${copyWith.interface}
+
 ${copyWith.concreteImpl(constructor.parameters)}
 
 ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
@@ -66,7 +68,6 @@ $_maybeMap
 $_toJson
 }
 
-${copyWith.interface}
 
 abstract class ${constructor.redirectedName}$genericsDefinition implements $name$genericsParameter {
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;

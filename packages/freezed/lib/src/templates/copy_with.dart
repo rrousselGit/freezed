@@ -31,8 +31,9 @@ class CopyWith {
   String get interface {
     if (allProperties.isEmpty) return '';
 
-    var implements =
-        superClass == null ? '' : 'implements $superClass${genericsParameter.append('\$Res')}';
+    var implements = superClass == null
+        ? ''
+        : 'implements $superClass${genericsParameter.append('\$Res')}';
     return '''
 abstract class $_className${genericsDefinition.append('\$Res')} $implements {
 ${_copyWithPrototype('call')}
@@ -43,9 +44,8 @@ ${_abstractDeepCopyMethods().join()}
 
   Iterable<String> _abstractDeepCopyMethods() sync* {
     for (final cloneableProperty in cloneableProperties) {
-      yield _copyWithProtypeFor(
-        methodName: cloneableProperty.name,
-        properties: cloneableProperty.associatedData.commonProperties,
+      yield _maybeOverride(
+        '${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name};',
       );
     }
   }
@@ -85,7 +85,7 @@ $parameters
     if (allProperties.isEmpty) return '';
     return '''
 @override
-$_className${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => _\$$_className${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
+$_className${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => ${_className}Impl${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
 ''';
   }
 
@@ -133,6 +133,7 @@ $_className${genericsParameter.append('$clonedClassName$genericsParameter')} get
         ),
       );
 
+    // TODO: factorize with the duplicate
     return '''{
   return _then($returnType(
 $constructorParameters
@@ -156,8 +157,8 @@ $constructorParameters
   String concreteImpl(ParametersTemplate parametersTemplate) {
     if (allProperties.isEmpty) return '';
     return '''
-class _\$$_className${genericsDefinition.append('\$Res')} implements $_className${genericsParameter.append('\$Res')} {
-  _\$$_className(this._value, this._then);
+class ${_className}Impl${genericsDefinition.append('\$Res')} implements $_className${genericsParameter.append('\$Res')} {
+  ${_className}Impl(this._value, this._then);
 
 final $clonedClassName$genericsParameter _value;
 final \$Res Function($clonedClassName$genericsParameter) _then;
@@ -172,71 +173,29 @@ ${_deepCopyMethods(parametersTemplate).join()}
     ParametersTemplate parametersTemplate,
   ) sync* {
     for (final cloneableProperty in cloneableProperties) {
-      String parameterToValue(Parameter p) {
-        if (p.name == cloneableProperty.name) {
-          String parameterToValue(Parameter p) {
-            var ternary =
-                '${p.name} == freezed ? _value.${cloneableProperty.name}.${p.name} : ${p.name}';
-            if (p.type != 'Object') {
-              ternary = '$ternary as ${p.type}';
-            }
-            return '$ternary,';
-          }
-
-          final constructorParameters = StringBuffer()
-            ..writeAll(
-              [
-                ...cloneableProperty.associatedData.constructors.first
-                    .parameters.requiredPositionalParameters,
-                ...cloneableProperty.associatedData.constructors.first
-                    .parameters.optionalPositionalParameters,
-              ].map<String>(parameterToValue),
-            )
-            ..writeAll(
-              cloneableProperty
-                  .associatedData.constructors.first.parameters.namedParameters
-                  .map<String>(
-                (p) {
-                  return '${p.name}: ${parameterToValue(p)}';
-                },
-              ),
-            );
-
-          return '${cloneableProperty.type}($constructorParameters),';
-        } else {
-          return '_value.${p.name},';
-        }
-      }
-
-      final constructorParameters = StringBuffer()
-        ..writeAll(
-          [
-            ...parametersTemplate.requiredPositionalParameters,
-            ...parametersTemplate.optionalPositionalParameters,
-          ].map<String>(parameterToValue),
-        )
-        ..writeAll(
-          parametersTemplate.namedParameters.map<String>(
-            (p) {
-              return '${p.name}: ${parameterToValue(p)}';
-            },
-          ),
-        );
-
-      final prototype = _concreteCopyWithPrototype(
-        methodName: cloneableProperty.name,
-        properties: cloneableProperty.associatedData.commonProperties,
-      );
       yield '''
-@override $prototype {
-  return _then($clonedClassName($constructorParameters),);
+@override
+${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {
+  return ${_clonerFor(cloneableProperty)}(_value.${cloneableProperty.name}, (value) {
+    return _then(_value.copyWith(${cloneableProperty.name}:  value));
+  });
 }''';
     }
+  }
+
+  String _clonerFor(CloneableProperty cloneableProperty) {
+    final name = interfaceNameFrom(cloneableProperty.associatedData.constructors.first.redirectedName);
+    return '${name}Impl${cloneableProperty.associatedData.genericsParameterTemplate.append('\$Res')}';
+  }
+
+  String _clonerInterfaceFor(CloneableProperty cloneableProperty) {
+    final name = interfaceNameFrom(cloneableProperty.associatedData.name);
+    return '$name${cloneableProperty.associatedData.genericsParameterTemplate.append('\$Res')}';
   }
 
   String _maybeOverride(String res) {
     return superClass != null ? '@override $res' : res;
   }
 
-  String get _className => interfaceNameFrom(clonedClassName);
+  String get _className => interfaceNameFrom('$clonedClassName');
 }
