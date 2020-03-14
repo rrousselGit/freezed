@@ -82,6 +82,7 @@ class $_implClassName${genericsDefinition.append('\$Res')} implements $_abstract
   $_implClassName(this._value, this._then);
 
   final $clonedClassName$genericsParameter _value;
+  // ignore: unused_field
   final \$Res Function($clonedClassName$genericsParameter) _then;
 
 $copyWith
