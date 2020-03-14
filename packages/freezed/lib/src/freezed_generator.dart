@@ -357,6 +357,20 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
 
+    yield TearOff(
+      name: data.name,
+      genericsParameter: data.genericsParameterTemplate,
+      genericsDefinition: data.genericsDefinitionTemplate,
+      allConstructors: data.constructors,
+    );
+
+    final commonCopyWith = CopyWith(
+      clonedClassName: data.name,
+      cloneableProperties: data.commonCloneableProperties,
+      genericsDefinition: data.genericsDefinitionTemplate,
+      genericsParameter: data.genericsParameterTemplate,
+      allProperties: data.commonProperties,
+    );
     yield Abstract(
       name: data.name,
       genericsDefinition: data.genericsDefinitionTemplate,
@@ -364,20 +378,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
       abstractProperties: data.commonProperties.asGetters(),
       allConstructors: data.constructors,
-      copyWith: CopyWith(
-        clonedClassName: data.name,
-        cloneableProperties: data.commonCloneableProperties,
-        genericsDefinition: data.genericsDefinitionTemplate,
-        genericsParameter: data.genericsParameterTemplate,
-        allProperties: data.commonProperties,
-      ),
-    );
-
-    yield TearOff(
-      name: data.name,
-      genericsParameter: data.genericsParameterTemplate,
-      genericsDefinition: data.genericsDefinitionTemplate,
-      allConstructors: data.constructors,
+      copyWith: commonCopyWith,
     );
 
     for (final constructor in data.constructors) {
@@ -397,9 +398,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           genericsDefinition: data.genericsDefinitionTemplate,
           genericsParameter: data.genericsParameterTemplate,
           allProperties: constructor.impliedProperties,
-          superClass: data.commonProperties.isEmpty
-              ? null
-              : CopyWith.interfaceNameFrom(data.name),
+          parent: commonCopyWith,
         ),
       );
     }

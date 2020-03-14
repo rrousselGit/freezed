@@ -11,7 +11,7 @@ class CopyWith {
     @required this.genericsParameter,
     @required this.allProperties,
     @required this.cloneableProperties,
-    this.superClass,
+    this.parent,
   });
 
   static String interfaceNameFrom(String name) {
@@ -26,20 +26,68 @@ class CopyWith {
   final GenericsParameterTemplate genericsParameter;
   final List<Property> allProperties;
   final List<CloneableProperty> cloneableProperties;
-  final String superClass;
+  final CopyWith parent;
 
   String get interface {
-    if (allProperties.isEmpty) return '';
-
-    var implements = superClass == null
-        ? ''
-        : 'implements $superClass${genericsParameter.append('\$Res')}';
+    var implements = _hasSuperClass
+        ? 'implements ${parent._abstractClassName}${genericsParameter.append('\$Res')}'
+        : '';
     return '''
-abstract class $_className${genericsDefinition.append('\$Res')} $implements {
+abstract class $_abstractClassName${genericsDefinition.append('\$Res')} $implements {
+  factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) then) = $_implClassName${genericsParameter.append('\$Res')};
 ${_copyWithPrototype('call')}
 
 ${_abstractDeepCopyMethods().join()}
 }''';
+  }
+
+  bool get _hasSuperClass {
+    return parent != null && parent.allProperties.isNotEmpty;
+  }
+
+  String commonContreteImpl(
+    List<Getter> commonProperties,
+  ) {
+    var copyWith = '';
+
+    if (allProperties.isNotEmpty) {
+      final prototype = _concreteCopyWithPrototype(
+        properties: allProperties,
+        methodName: 'call',
+      );
+
+      final body = _copyWithMethodBody(
+        parametersTemplate: ParametersTemplate(
+          [],
+          namedParameters: commonProperties.map((e) {
+            return Parameter(
+              decorators: e.decorators,
+              name: e.name,
+              showDefaultValue: false,
+              isRequired: false,
+              defaultValueSource: '',
+              nullable: e.nullable,
+              type: e.type,
+            );
+          }).toList(),
+        ),
+        returnType: '_value.copyWith',
+      );
+
+      copyWith = '@override $prototype $body';
+    }
+
+    return '''
+class $_implClassName${genericsDefinition.append('\$Res')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
+  $_implClassName(this._value, this._then);
+
+  final $clonedClassName$genericsParameter _value;
+  final \$Res Function($clonedClassName$genericsParameter) _then;
+
+$copyWith
+${_deepCopyMethods().join()}
+}
+''';
   }
 
   Iterable<String> _abstractDeepCopyMethods() sync* {
@@ -53,10 +101,10 @@ ${_abstractDeepCopyMethods().join()}
   String _copyWithPrototype(String methodName) {
     if (allProperties.isEmpty) return '';
 
-    return _maybeOverride(_copyWithProtypeFor(
+    return _copyWithProtypeFor(
       methodName: methodName,
       properties: allProperties,
-    ));
+    );
   }
 
   String _copyWithProtypeFor({
@@ -77,7 +125,7 @@ $parameters
   String get abstractCopyWithGetter {
     if (allProperties.isEmpty) return '';
     return _maybeOverride(
-      '$_className${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;',
+      '$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;',
     );
   }
 
@@ -85,7 +133,7 @@ $parameters
     if (allProperties.isEmpty) return '';
     return '''
 @override
-$_className${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => ${_className}Impl${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
 ''';
   }
 
@@ -152,26 +200,24 @@ $constructorParameters
     return '\$Res $methodName({$parameters})';
   }
 
+  String get _implClassName => '_${_abstractClassName}Impl';
+
   /// The implementation of the callable class that contains both the copyWith
   /// and the cloneable properties.
   String concreteImpl(ParametersTemplate parametersTemplate) {
-    if (allProperties.isEmpty) return '';
     return '''
-class ${_className}Impl${genericsDefinition.append('\$Res')} implements $_className${genericsParameter.append('\$Res')} {
-  ${_className}Impl(this._value, this._then);
+class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent._implClassName}${genericsParameter.append('\$Res')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
+  $_implClassName($clonedClassName$genericsParameter _value, \$Res Function($clonedClassName$genericsParameter) _then)
+      : super(_value, (v) => _then(v as $clonedClassName$genericsParameter));
 
-final $clonedClassName$genericsParameter _value;
-final \$Res Function($clonedClassName$genericsParameter) _then;
+@override
+$clonedClassName$genericsParameter get _value => super._value as $clonedClassName$genericsParameter;
 
 ${_copyWithMethod(parametersTemplate)}
-
-${_deepCopyMethods(parametersTemplate).join()}
 }''';
   }
 
-  Iterable<String> _deepCopyMethods(
-    ParametersTemplate parametersTemplate,
-  ) sync* {
+  Iterable<String> _deepCopyMethods() sync* {
     for (final cloneableProperty in cloneableProperties) {
       yield '''
 @override
@@ -184,7 +230,8 @@ ${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {
   }
 
   String _clonerFor(CloneableProperty cloneableProperty) {
-    final name = interfaceNameFrom(cloneableProperty.associatedData.constructors.first.redirectedName);
+    final name = interfaceNameFrom(
+        cloneableProperty.associatedData.constructors.first.redirectedName);
     return '${name}Impl${cloneableProperty.associatedData.genericsParameterTemplate.append('\$Res')}';
   }
 
@@ -194,8 +241,8 @@ ${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {
   }
 
   String _maybeOverride(String res) {
-    return superClass != null ? '@override $res' : res;
+    return _hasSuperClass ? '@override $res' : res;
   }
 
-  String get _className => interfaceNameFrom('$clonedClassName');
+  String get _abstractClassName => interfaceNameFrom(clonedClassName);
 }

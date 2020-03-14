@@ -42,7 +42,8 @@ void main() {
     );
 
     expect(
-      company.copyWith.director(assistant: Assistant(name: 'John Doe', age: 21)),
+      company.copyWith
+          .director(assistant: Assistant(name: 'John Doe', age: 21)),
       Company(
         name: 'Google',
         director: Director(

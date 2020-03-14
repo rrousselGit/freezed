@@ -39,6 +39,8 @@ ${copyWith.abstractCopyWithGetter}
 }
 
 ${copyWith.interface}
+
+${copyWith.commonContreteImpl(abstractProperties)}
 ''';
   }
 
