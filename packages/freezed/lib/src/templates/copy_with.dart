@@ -93,9 +93,15 @@ ${_deepCopyMethods().join()}
 
   Iterable<String> _abstractDeepCopyMethods() sync* {
     for (final cloneableProperty in cloneableProperties) {
-      yield _maybeOverride(
-        '${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name};',
-      );
+
+      var leading = '';
+      if (_hasSuperClass &&
+          parent.cloneableProperties
+              .any((c) => c.name == cloneableProperty.name)) {
+        leading = '@override ';
+      }
+
+      yield '$leading${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name};';
     }
   }
 
@@ -215,11 +221,20 @@ class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent._imp
 $clonedClassName$genericsParameter get _value => super._value as $clonedClassName$genericsParameter;
 
 ${_copyWithMethod(parametersTemplate)}
+
+${_deepCopyMethods().join()}
 }''';
   }
 
   Iterable<String> _deepCopyMethods() sync* {
-    for (final cloneableProperty in cloneableProperties) {
+    final toGenerateProperties = parent == null
+        ? cloneableProperties
+        : cloneableProperties.where((property) {
+            return !parent.cloneableProperties
+                .any((p) => p.name == property.name);
+          });
+
+    for (final cloneableProperty in toGenerateProperties) {
       yield '''
 @override
 ${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {

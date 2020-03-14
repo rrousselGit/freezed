@@ -4,7 +4,7 @@ part 'deep_copy.freezed.dart';
 
 @freezed
 abstract class Company with _$Company {
-  factory Company({String name, Director director}) = _Company;
+  factory Company({String name, Director director}) = CompanySubclass;
 }
 
 @freezed
@@ -15,4 +15,17 @@ abstract class Director with _$Director {
 @freezed
 abstract class Assistant with _$Assistant {
   factory Assistant({String name, int age}) = _Assistant;
+}
+
+@freezed
+abstract class NoCommonProperty with _$NoCommonProperty {
+  factory NoCommonProperty() = NoCommonPropertyEmpty;
+  factory NoCommonProperty.assistant(Assistant assistant) =
+      NoCommonPropertyAssistant;
+}
+
+@freezed
+abstract class Union with _$Union {
+  factory Union.first(Assistant shared, Assistant first) = UnionFirst;
+  factory Union.second(Assistant shared, Assistant second) = UnionSecond;
 }
