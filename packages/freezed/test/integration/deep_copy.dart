@@ -34,3 +34,13 @@ abstract class Union with _$Union {
 abstract class _Private with _$_Private {
   factory _Private(Assistant assistant) = __Private;
 }
+
+@freezed
+abstract class DeepGeneric<T> with _$DeepGeneric<T> {
+  factory DeepGeneric(Generic<T> value, T  second) = _DeepGeneric<T>;
+}
+
+@freezed
+abstract class Generic<T> with _$Generic<T> {
+  factory Generic(T value, T value2) = _Generic<T>;
+}

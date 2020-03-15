@@ -7,7 +7,6 @@ import 'integration/deep_copy.dart';
 
 void main() {
   // TODO: nullable
-  // TODO: generic
   // TODO: copyWith is identical to itself if don't have descendants
   // TODO: VeryDeep.first is generic
 
@@ -24,6 +23,66 @@ void main() {
         .getErrors('/freezed/test/integration/deep_copy.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
+  });
+
+  group('DeepGeneric', () {
+    test('copyWith parameters are generic', () async {
+      Generic<int> generic = Generic(42, 042);
+      DeepGeneric<int> deep = DeepGeneric(generic, 42);
+
+      expect(
+        deep.copyWith(value: Generic(42, 042)),
+        DeepGeneric(Generic(42, 042), 42),
+      );
+
+      expect(
+        deep.copyWith(second: 21),
+        DeepGeneric(Generic(42, 042), 21),
+      );
+
+      expect(
+        deep.copyWith.value(value: 21),
+        DeepGeneric(Generic(21, 042), 42),
+      );
+
+      expect(
+        deep.copyWith.value(value2: 021),
+        DeepGeneric(Generic(42, 021), 42),
+      );
+
+      await expectLater(compile(r'''
+import 'deep_copy.dart';
+
+void main() {
+  DeepGeneric<int> value;
+  DeepGeneric<int> clone = value.copyWith(value: Generic(42, 42));
+}
+'''), completes);
+      await expectLater(compile(r'''
+import 'deep_copy.dart';
+
+void main() {
+  DeepGeneric<int> value;
+  DeepGeneric<int> clone = value.copyWith(value: Generic('42', '42'));
+}
+'''), throwsCompileError);
+      await expectLater(compile(r'''
+import 'deep_copy.dart';
+
+void main() {
+  DeepGeneric<int> value;
+  DeepGeneric<int> clone = value.copyWith.value(value: 42);
+}
+'''), completes);
+      await expectLater(compile(r'''
+import 'deep_copy.dart';
+
+void main() {
+  DeepGeneric<int> value;
+  DeepGeneric<int> clone = value.copyWith.value(value: '42');
+}
+'''), throwsCompileError);
+    });
   });
 
   group('Union', () {
