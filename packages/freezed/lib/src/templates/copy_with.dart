@@ -237,6 +237,9 @@ ${_deepCopyMethods().join()}
       yield '''
 @override
 ${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {
+  if (_value.${cloneableProperty.name} == null) {
+    return null;
+  }
   return ${_clonerFor(cloneableProperty)}(_value.${cloneableProperty.name}, (value) {
     return _then(_value.copyWith(${cloneableProperty.name}:  value));
   });

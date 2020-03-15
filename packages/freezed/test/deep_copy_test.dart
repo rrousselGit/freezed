@@ -6,9 +6,7 @@ import 'common.dart';
 import 'integration/deep_copy.dart';
 
 void main() {
-  // TODO: nullable
   // TODO: copyWith is identical to itself if don't have descendants
-  // TODO: VeryDeep.first is generic
 
   test('has no issue', () async {
     final main = await resolveSources(
@@ -23,6 +21,34 @@ void main() {
         .getErrors('/freezed/test/integration/deep_copy.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
+  });
+
+  test('handles null', () {
+    Company company = Company(director: null, name: 'Google');
+
+    expect(
+      () => company.copyWith.director.assistant(name: 'John'),
+      throwsNoSuchMethodError,
+    );
+
+    expect(
+      company.copyWith.director?.assistant(name: 'John'),
+      null,
+    );
+
+    company = Company(
+      director: Director(assistant: null, name: 'John'),
+      name: 'Google',
+    );
+
+    expect(
+      company.copyWith.director.assistant?.call(name: 'John'),
+      isNull,
+    );
+    expect(
+      () => company.copyWith.director.assistant(name: 'John'),
+      throwsNoSuchMethodError,
+    );
   });
 
   group('DeepGeneric', () {
