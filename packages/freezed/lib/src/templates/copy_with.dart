@@ -187,7 +187,6 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
         ),
       );
 
-    // TODO: factorize with the duplicate
     return '''{
   return _then($returnType(
 $constructorParameters
