@@ -1,6 +1,7 @@
 # 0.10.0
 
 - Consider optional parameters with a default value as non-nullable
+- Add deep-copy support
 
 # 0.9.2
 

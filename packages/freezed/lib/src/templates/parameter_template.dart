@@ -4,9 +4,16 @@ import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:meta/meta.dart';
 
 class GenericsDefinitionTemplate {
-  final List<TypeParameterElement> typeParameters;
-
   GenericsDefinitionTemplate(this.typeParameters);
+
+  factory GenericsDefinitionTemplate.fromGenericElement(
+      List<TypeParameterElement> generics) {
+    return GenericsDefinitionTemplate(
+      generics.map((e) => e.toString()).toList(),
+    );
+  }
+
+  final List<String> typeParameters;
 
   @override
   String toString() {
@@ -14,18 +21,32 @@ class GenericsDefinitionTemplate {
 
     return '<${typeParameters.join(',')}>';
   }
+
+  GenericsDefinitionTemplate append(String generic) {
+    return GenericsDefinitionTemplate([...typeParameters, generic]);
+  }
 }
 
 class GenericsParameterTemplate {
-  final List<TypeParameterElement> typeParameters;
-
   GenericsParameterTemplate(this.typeParameters);
+
+  factory GenericsParameterTemplate.fromGenericElement(
+      List<TypeParameterElement> generics) {
+    return GenericsParameterTemplate(
+      generics.map((e) => e.name).toList(),
+    );
+  }
+  final List<String> typeParameters;
 
   @override
   String toString() {
     if (typeParameters.isEmpty) return '';
 
-    return '<${typeParameters.map((e) => e.name).join(', ')}>';
+    return '<${typeParameters.join(', ')}>';
+  }
+
+  GenericsParameterTemplate append(String generic) {
+    return GenericsParameterTemplate([...typeParameters, generic]);
   }
 }
 
