@@ -37,7 +37,7 @@ abstract class _Private with _$_Private {
 
 @freezed
 abstract class DeepGeneric<T> with _$DeepGeneric<T> {
-  factory DeepGeneric(Generic<T> value, T  second) = _DeepGeneric<T>;
+  factory DeepGeneric(Generic<T> value, T second) = _DeepGeneric<T>;
 }
 
 @freezed
