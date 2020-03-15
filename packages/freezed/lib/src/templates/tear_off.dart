@@ -17,6 +17,13 @@ class TearOff {
 
   @override
   String toString() {
+    String outputName;
+    if (name.startsWith('_')) {
+      outputName = '_\$${name.substring(1)}';
+    } else {
+      outputName = '\$$name';
+    }
+
     return '''
 class _\$${name}TearOff {
   const _\$${name}TearOff();
@@ -24,7 +31,8 @@ class _\$${name}TearOff {
 ${tearOffs.join()}
 }
 
-const \$$name = _\$${name}TearOff();
+// ignore: unused_element
+const $outputName = _\$${name}TearOff();
 ''';
   }
 

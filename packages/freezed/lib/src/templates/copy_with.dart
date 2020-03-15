@@ -93,7 +93,6 @@ ${_deepCopyMethods().join()}
 
   Iterable<String> _abstractDeepCopyMethods() sync* {
     for (final cloneableProperty in cloneableProperties) {
-
       var leading = '';
       if (_hasSuperClass &&
           parent.cloneableProperties

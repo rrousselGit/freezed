@@ -10,9 +10,6 @@ void main() {
   // TODO: generic
   // TODO: copyWith is identical to itself if don't have descendants
   // TODO: VeryDeep.first is generic
-  // TODO: _VeryDeep and _Deep
-  // TODO: private class have private copyWith impl
-  // TODO: Empty class doesn't have copyWith
 
   test('has no issue', () async {
     final main = await resolveSources(
