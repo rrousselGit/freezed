@@ -1,17 +1,10 @@
-// ignore_for_file: redirect_to_non_class
+// ignore_for_file: redirect_to_non_class, unused_element, avoid_unused_constructor_parameters
 import 'package:source_gen_test/annotations.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 @ShouldThrow('Marked Unrelated with @freezed, but the class is not abstract')
 @freezed
 class Unrelated {}
-
-@ShouldThrow(
-    'Marked NonFreezedClass with @freezed, but freezed has nothing to generate')
-@freezed
-abstract class NonFreezedClass {
-  const NonFreezedClass();
-}
 
 @ShouldThrow('@freezed can only be applied on classes. Failing element: foo')
 @freezed
@@ -70,10 +63,50 @@ abstract class DefaultOnRequiredPositional {
   ) = _DefaultOnRequiredPositional;
 }
 
-@ShouldThrow('@Default cannot be used on non-optional parameters')
+@ShouldThrow(
+  'Classes decorated with @freezed can only have a single non-factory'
+  ', without parameters, and named MyClass._()',
+)
 @freezed
-abstract class DefaultOnRequiredNamed {
-  factory DefaultOnRequiredNamed({
-    @Default(42) @required int a,
-  }) = _DefaultOnRequiredNamed;
+abstract class MultipleConcreteConstructors {
+  MultipleConcreteConstructors._();
+  MultipleConcreteConstructors();
+}
+
+@ShouldThrow(
+  'Classes decorated with @freezed can only have a single non-factory'
+  ', without parameters, and named MyClass._()',
+)
+@freezed
+abstract class SingleConcreteConstructorInvalidName {
+  SingleConcreteConstructorInvalidName();
+}
+
+@ShouldThrow(
+  'Classes decorated with @freezed can only have a single non-factory'
+  ', without parameters, and named MyClass._()',
+)
+@freezed
+abstract class ConcreteConstructorWithParameters {
+  ConcreteConstructorWithParameters(int a);
+}
+
+@ShouldThrow(
+  'Marked NothingToDo with @freezed, but freezed has nothing to generate',
+)
+@freezed
+abstract class NothingToDo {
+  NothingToDo._();
+}
+
+@ShouldThrow(
+  'Classes decorated with @freezed cannot have mutable properties',
+)
+@freezed
+abstract class MutableProperty {
+  MutableProperty._();
+
+  factory MutableProperty() = _MutableProperty;
+
+  int a;
 }

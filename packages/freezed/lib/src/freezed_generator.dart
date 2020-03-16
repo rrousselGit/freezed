@@ -59,6 +59,7 @@ class ConstructorDetails {
     @required this.decorators,
     @required this.hasJsonSerializable,
     @required this.cloneableProperties,
+    @required this.canOverrideToString,
   });
 
   final String name;
@@ -71,6 +72,7 @@ class ConstructorDetails {
   final String fullName;
   final List<String> decorators;
   final List<CloneableProperty> cloneableProperties;
+  final bool canOverrideToString;
 
   String get callbackName => constructorNameToCallbackName(name);
 
@@ -88,6 +90,7 @@ $runtimeType(
   decorators: $decorators,
   hasJsonSerializable: $hasJsonSerializable,
   cloneableProperties: $cloneableProperties,
+  canOverrideToString: $canOverrideToString,
 )
 ''';
   }
@@ -104,6 +107,7 @@ class Data {
     @required this.genericsParameterTemplate,
     @required this.commonProperties,
     @required this.commonCloneableProperties,
+    @required this.shouldUseExtends,
   }) : assert(constructors.isNotEmpty);
 
   final String name;
@@ -114,6 +118,7 @@ class Data {
   final GenericsParameterTemplate genericsParameterTemplate;
   final List<Property> commonProperties;
   final List<CloneableProperty> commonCloneableProperties;
+  final bool shouldUseExtends;
 
   @override
   String toString() {
@@ -127,6 +132,7 @@ $runtimeType(
   genericsParameterTemplate: $genericsParameterTemplate,
   commonProperties: $commonProperties,
   commonCloneableProperties: $commonCloneableProperties,
+  shouldUseExtends: $shouldUseExtends,
 )''';
   }
 }
@@ -188,10 +194,28 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
 
+    // Invalid constructors check
+    for (final constructor in element.constructors) {
+      if (constructor.isFactory) continue;
+      if (constructor.name != '_' || constructor.parameters.isNotEmpty) {
+        throw InvalidGenerationSourceError(
+          'Classes decorated with @freezed can only have a single non-factory'
+          ', without parameters, and named MyClass._()',
+          element: element,
+        );
+      }
+    }
+
     final lateGetters = <LateGetter>[];
 
     for (final field in element.fields) {
       if (field.isStatic) continue;
+      if (field.setter != null) {
+        throw InvalidGenerationSourceError(
+          'Classes decorated with @freezed cannot have mutable properties',
+          element: element,
+        );
+      }
       if (field.getter != null && !field.getter.isSynthetic && field.hasLate) {
         if (element.constructors.any((element) => element.isConst)) {
           throw InvalidGenerationSourceError(
@@ -253,6 +277,9 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     return Data(
       name: element.name,
+      shouldUseExtends: element.constructors.any((ctor) {
+        return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
+      }),
       lateGetters: lateGetters,
       commonCloneableProperties: [
         for (final cloneableProperty
@@ -319,9 +346,25 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         }
       }
 
+      MethodElement userDefinedToString;
+      for (final type in [
+        element,
+        ...element.allSupertypes
+            .map((e) => e.element)
+            .where((e) => !e.isDartCoreObject)
+      ]) {
+        for (final method in type.methods) {
+          if (method.name == 'toString') {
+            userDefinedToString = method;
+            break;
+          }
+        }
+      }
+
       result.add(
         ConstructorDetails(
           name: constructor.name,
+          canOverrideToString: userDefinedToString == null,
           isConst: constructor.isConst,
           fullName: fullName,
           impliedProperties: [
@@ -384,6 +427,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     for (final constructor in data.constructors) {
       yield Concrete(
         name: data.name,
+        shouldUseExtends: data.shouldUseExtends,
         lateGetters: data.lateGetters,
         hasDiagnosticable: globalData.hasDiagnostics,
         shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,

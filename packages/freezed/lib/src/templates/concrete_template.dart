@@ -21,6 +21,7 @@ class Concrete {
     @required this.lateGetters,
     @required this.name,
     @required this.copyWith,
+    @required this.shouldUseExtends,
   });
 
   final ConstructorDetails constructor;
@@ -33,6 +34,7 @@ class Concrete {
   final List<LateGetter> lateGetters;
   final String name;
   final CopyWith copyWith;
+  final bool shouldUseExtends;
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
@@ -40,6 +42,17 @@ class Concrete {
 
   @override
   String toString() {
+    final asserts = _asserts;
+    final superConstructor = _superConstructor;
+
+    var trailing = '';
+    if (asserts.isNotEmpty || superConstructor.isNotEmpty) {
+      trailing = ': ${[
+        if (asserts.isNotEmpty) asserts,
+        if (superConstructor.isNotEmpty) superConstructor
+      ].join(',')}';
+    }
+
     return '''
 ${copyWith.interface}
 
@@ -47,8 +60,8 @@ ${copyWith.concreteImpl(constructor.parameters)}
 
 ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
 ${constructor.decorators.join('\n')}
-class $concreteName$genericsDefinition $_diagnosticable implements ${constructor.redirectedName}$genericsParameter {
-  $_isConst $concreteName(${constructor.parameters.asThis()})$_asserts;
+class $concreteName$genericsDefinition $_diagnosticable $_superKeyword ${constructor.redirectedName}$genericsParameter {
+  $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
 
   $_concreteFromJsonConstructor
 
@@ -69,7 +82,8 @@ $_toJson
 }
 
 
-abstract class ${constructor.redirectedName}$genericsDefinition implements $name$genericsParameter {
+abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter {
+  $_privateConcreteConstructor
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
 
   $_redirectedFromJsonConstructor
@@ -78,6 +92,21 @@ $_abstractProperties
 ${copyWith.abstractCopyWithGetter}
 }
 ''';
+  }
+
+  String get _superConstructor {
+    if (!shouldUseExtends) return '';
+    return 'super._()';
+  }
+
+  String get _privateConcreteConstructor {
+    if (!shouldUseExtends) return '';
+
+    return '$_isConst ${constructor.redirectedName}._(): super._();';
+  }
+
+  String get _superKeyword {
+    return shouldUseExtends ? 'extends' : 'implements';
   }
 
   String get _properties {
@@ -94,7 +123,7 @@ ${copyWith.abstractCopyWithGetter}
     final nonNullableProperties =
         constructor.impliedProperties.where((p) => !p.nullable).toList();
     if (nonNullableProperties.isEmpty) return '';
-    return ': ${nonNullableProperties.map((e) => 'assert(${e.name} != null)').join(',')}';
+    return '${nonNullableProperties.map((e) => 'assert(${e.name} != null)').join(',')}';
   }
 
   String get _isConst {
@@ -237,6 +266,8 @@ ${whenPrototype(allConstructors)} {
   }
 
   String get _toStringMethod {
+    if (!constructor.canOverrideToString) return '';
+
     final parameters = hasDiagnosticable
         ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
         : '';
