@@ -51,6 +51,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
 - [The features](#the-features)
   - [The syntax](#the-syntax)
     - [basics](#basics)
+    - [custom getters and methods](#custom-getters-and-methods)
     - [non-nullable](#non-nullable)
     - [default values](#default-values)
     - [late](#late)
@@ -198,6 +199,43 @@ abstract class Union<T> with _$Union<T> {
 ```
 
 See [unions/Sealed classes](#unionssealed-classes) for more information.
+
+### Custom getters and methods
+
+Sometimes, you may want to manually define methods/properties on that class.
+
+But you will quickly notice that if you try to do:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  const factory Person(String name, {int age}) = _Person;
+
+  void method() {
+    print('hello world');
+  }
+}
+```
+
+then it won't work.
+
+This is because by default, [Freezed] has no way of "extending" the class and
+instead "implements" it.
+
+To fix it, we need to give [Freezed] a way to use that `extends` keyword.\
+To do so, we have to define a single private constructor as such:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  Person._(); // Added constructor
+  const factory Person(String name, {int age}) = _Person;
+
+  void method() {
+    print('hello world');
+  }
+}
+```
 
 ### Non-nullable
 
