@@ -45,3 +45,40 @@ abstract class MixedIn with _$MixedIn, Mixin {
 mixin Mixin {
   int method() => 42;
 }
+
+@freezed
+abstract class CustomToString with _$CustomToString {
+  CustomToString._();
+  factory CustomToString() = _CustomToString;
+
+  @override
+  String toString() {
+    return '42';
+  }
+}
+
+@freezed
+abstract class MixedInToString with _$MixedInToString, ToStringMixin {
+  MixedInToString._();
+  factory MixedInToString() = _MixedInToString;
+}
+
+mixin ToStringMixin {
+  @override
+  String toString() {
+    return '42';
+  }
+}
+
+@freezed
+abstract class BaseToString extends AbstractToString with _$BaseToString {
+  BaseToString._();
+  factory BaseToString() = _BaseToString;
+}
+
+abstract class AbstractToString {
+  @override
+  String toString() {
+    return '42';
+  }
+}

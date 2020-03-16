@@ -266,6 +266,8 @@ ${whenPrototype(allConstructors)} {
   }
 
   String get _toStringMethod {
+    if (!constructor.canOverrideToString) return '';
+
     final parameters = hasDiagnosticable
         ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
         : '';

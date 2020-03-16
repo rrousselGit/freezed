@@ -59,6 +59,7 @@ class ConstructorDetails {
     @required this.decorators,
     @required this.hasJsonSerializable,
     @required this.cloneableProperties,
+    @required this.canOverrideToString,
   });
 
   final String name;
@@ -71,6 +72,7 @@ class ConstructorDetails {
   final String fullName;
   final List<String> decorators;
   final List<CloneableProperty> cloneableProperties;
+  final bool canOverrideToString;
 
   String get callbackName => constructorNameToCallbackName(name);
 
@@ -88,6 +90,7 @@ $runtimeType(
   decorators: $decorators,
   hasJsonSerializable: $hasJsonSerializable,
   cloneableProperties: $cloneableProperties,
+  canOverrideToString: $canOverrideToString,
 )
 ''';
   }
@@ -343,9 +346,25 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         }
       }
 
+      MethodElement userDefinedToString;
+      for (final type in [
+        element,
+        ...element.allSupertypes
+            .map((e) => e.element)
+            .where((e) => !e.isDartCoreObject)
+      ]) {
+        for (final method in type.methods) {
+          if (method.name == 'toString') {
+            userDefinedToString = method;
+            break;
+          }
+        }
+      }
+
       result.add(
         ConstructorDetails(
           name: constructor.name,
+          canOverrideToString: userDefinedToString == null,
           isConst: constructor.isConst,
           fullName: fullName,
           impliedProperties: [

@@ -1,8 +1,4 @@
-// TODO: can use mixin on main class without having an extends
-// TODO: Freezed does not override concrete members
 // TODO: debugFillProperties still works if base class is Diagnosticable
-// TODO: can use `@With` to have union-specific interfaces
-// TODO: `@With` has the same rules as previously mentionned
 
 import 'package:test/test.dart';
 
@@ -29,5 +25,11 @@ void main() {
   });
   test('MixedIn', () {
     expect(MixedIn().method(), 42);
+  });
+
+  test('does not override toString if one is user-defined', () {
+    expect(CustomToString().toString(), '42');
+    expect(MixedInToString().toString(), '42');
+    expect(BaseToString().toString(), '42');
   });
 }
