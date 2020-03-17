@@ -1,6 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
+import 'package:freezed/src/templates/tear_off.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -10,6 +12,40 @@ import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
 
+/// A generated property that has for type a class generated using Freezed
+///
+/// This allows Freezed to support deep copy of the object.
+/// This does include primitives like [int] and [List].
+@immutable
+class CloneableProperty {
+  CloneableProperty({
+    @required this.name,
+    @required this.type,
+    @required this.children,
+    @required this.associatedData,
+  });
+
+  final String name;
+  final String type;
+  final List<CloneableProperty> children;
+  final Data associatedData;
+
+  @override
+  String toString() {
+    return '''
+$runtimeType(
+  name: $name,
+  type: $type,
+  children: $children,
+  associatedData: $associatedData,
+)
+''';
+  }
+}
+
+/// The informations of a specific constructor of a class tagged with `@freezed`.
+///
+/// This only includes constructors where Freezed needs to generate something.
 @immutable
 class ConstructorDetails {
   ConstructorDetails({
@@ -22,6 +58,8 @@ class ConstructorDetails {
     @required this.fullName,
     @required this.decorators,
     @required this.hasJsonSerializable,
+    @required this.cloneableProperties,
+    @required this.canOverrideToString,
   });
 
   final String name;
@@ -33,24 +71,27 @@ class ConstructorDetails {
   final bool hasJsonSerializable;
   final String fullName;
   final List<String> decorators;
+  final List<CloneableProperty> cloneableProperties;
+  final bool canOverrideToString;
 
   String get callbackName => constructorNameToCallbackName(name);
 
   @override
   String toString() {
     return '''
-
-    $runtimeType(
-      name: $name,
-      isConst: $isConst,
-      isDefault: $isDefault,
-      redirectedName: $redirectedName,
-      parameters: $parameters,
-      impliedProperties: $impliedProperties,
-      fullName: $fullName,
-      decorators: $decorators,
-      hasJsonSerializable: $hasJsonSerializable,
-    )
+$runtimeType(
+  name: $name,
+  isConst: $isConst,
+  isDefault: $isDefault,
+  redirectedName: $redirectedName,
+  parameters: $parameters,
+  impliedProperties: $impliedProperties,
+  fullName: $fullName,
+  decorators: $decorators,
+  hasJsonSerializable: $hasJsonSerializable,
+  cloneableProperties: $cloneableProperties,
+  canOverrideToString: $canOverrideToString,
+)
 ''';
   }
 }
@@ -65,6 +106,8 @@ class Data {
     @required this.genericsDefinitionTemplate,
     @required this.genericsParameterTemplate,
     @required this.commonProperties,
+    @required this.commonCloneableProperties,
+    @required this.shouldUseExtends,
   }) : assert(constructors.isNotEmpty);
 
   final String name;
@@ -74,6 +117,8 @@ class Data {
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
   final List<Property> commonProperties;
+  final List<CloneableProperty> commonCloneableProperties;
+  final bool shouldUseExtends;
 
   @override
   String toString() {
@@ -86,6 +131,8 @@ $runtimeType(
   genericsDefinitionTemplate: $genericsDefinitionTemplate,
   genericsParameterTemplate: $genericsParameterTemplate,
   commonProperties: $commonProperties,
+  commonCloneableProperties: $commonCloneableProperties,
+  shouldUseExtends: $shouldUseExtends,
 )''';
   }
 }
@@ -112,6 +159,24 @@ $runtimeType(
 
 @immutable
 class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
+  final _computeElementDataCache = <ClassElement, Data>{};
+
+  Data _computeElementDataFor(ParameterElement parameter) {
+    final parameterTypeElement = parameter?.type?.element;
+    if (parameterTypeElement == null) return null;
+    if (parameterTypeElement is! ClassElement) return null;
+
+    final classElement = parameterTypeElement as ClassElement;
+
+    return _computeElementDataCache.putIfAbsent(classElement, () {
+      if (!typeChecker.hasAnnotationOf(classElement)) return null;
+      return parseElement(
+        _GlobalData(hasDiagnostics: false, hasJson: false),
+        classElement,
+      );
+    });
+  }
+
   @override
   Data parseElement(_GlobalData globalData, Element rawElement) {
     if (rawElement is! ClassElement) {
@@ -129,10 +194,28 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
 
+    // Invalid constructors check
+    for (final constructor in element.constructors) {
+      if (constructor.isFactory) continue;
+      if (constructor.name != '_' || constructor.parameters.isNotEmpty) {
+        throw InvalidGenerationSourceError(
+          'Classes decorated with @freezed can only have a single non-factory'
+          ', without parameters, and named MyClass._()',
+          element: element,
+        );
+      }
+    }
+
     final lateGetters = <LateGetter>[];
 
     for (final field in element.fields) {
       if (field.isStatic) continue;
+      if (field.setter != null) {
+        throw InvalidGenerationSourceError(
+          'Classes decorated with @freezed cannot have mutable properties',
+          element: element,
+        );
+      }
       if (field.getter != null && !field.getter.isSynthetic && field.hasLate) {
         if (element.constructors.any((element) => element.isConst)) {
           throw InvalidGenerationSourceError(
@@ -171,9 +254,9 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     // TODO: verify _$name is mixed-in
 
-    final constructrorsNeedsGeneration =
+    final constructorsNeedsGeneration =
         _parseConstructorsNeedsGeneration(element);
-    if (constructrorsNeedsGeneration.isEmpty) {
+    if (constructorsNeedsGeneration.isEmpty) {
       throw InvalidGenerationSourceError(
         'Marked ${element.name} with @freezed, but freezed has nothing to generate',
         element: rawElement,
@@ -182,38 +265,50 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     // TODO: parse late finals with an initializer and copy-paste them to the concrete class + toString/debugFillProperties
 
+    final commonParameters = constructorsNeedsGeneration
+        .first.parameters.allParameters
+        .where((parameter) {
+      return constructorsNeedsGeneration.every((constructor) {
+        return constructor.parameters.allParameters.any((p) {
+          return p.name == parameter.name && p.type == parameter.type;
+        });
+      });
+    }).toList();
+
     return Data(
       name: element.name,
+      shouldUseExtends: element.constructors.any((ctor) {
+        return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
+      }),
       lateGetters: lateGetters,
+      commonCloneableProperties: [
+        for (final cloneableProperty
+            in constructorsNeedsGeneration.first.cloneableProperties)
+          for (final commonParameter in commonParameters)
+            if (cloneableProperty.name == commonParameter.name)
+              cloneableProperty,
+      ],
       // TODO: test can write manual fromJson ctor
-      commonProperties:
-          constructrorsNeedsGeneration.first.parameters.allParameters
-              .where((parameter) {
-                return constructrorsNeedsGeneration.every((constructor) {
-                  return constructor.parameters.allParameters.any((p) {
-                    return p.name == parameter.name && p.type == parameter.type;
-                  });
-                });
-              })
-              .map((p) => Property(
-                    decorators: p.decorators,
-                    name: p.name,
-                    type: p.type,
-                    nullable: p.nullable,
-                    defaultValueSource: p.defaultValueSource,
-                    // TODO: support hasJsonKey
-                    hasJsonKey: false,
-                  ))
-              .toList(),
+      commonProperties: commonParameters
+          .map((p) => Property(
+                decorators: p.decorators,
+                name: p.name,
+                type: p.type,
+                nullable: p.nullable,
+                defaultValueSource: p.defaultValueSource,
+                // TODO: support hasJsonKey
+                hasJsonKey: false,
+              ))
+          .toList(),
       needsJsonSerializable: globalData.hasJson &&
           element.constructors.any((element) {
             return element.isFactory && element.name == 'fromJson';
           }),
-      constructors: constructrorsNeedsGeneration,
+      constructors: constructorsNeedsGeneration,
       genericsDefinitionTemplate:
-          GenericsDefinitionTemplate(element.typeParameters),
+          GenericsDefinitionTemplate.fromGenericElement(element.typeParameters),
       genericsParameterTemplate:
-          GenericsParameterTemplate(element.typeParameters),
+          GenericsParameterTemplate.fromGenericElement(element.typeParameters),
     );
   }
 
@@ -238,9 +333,38 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           ? '${element.name}$generics'
           : '${element.name}$generics.${constructor.name}';
 
+      Iterable<CloneableProperty> cloneableProperties() sync* {
+        for (final parameter in constructor.parameters) {
+          final data = _computeElementDataFor(parameter);
+          if (data == null) continue;
+          yield CloneableProperty(
+            name: parameter.name,
+            type: parseTypeSource(parameter),
+            children: data.commonCloneableProperties,
+            associatedData: data,
+          );
+        }
+      }
+
+      MethodElement userDefinedToString;
+      for (final type in [
+        element,
+        ...element.allSupertypes
+            .map((e) => e.element)
+            .where((e) => !e.isDartCoreObject)
+      ]) {
+        for (final method in type.methods) {
+          if (method.name == 'toString') {
+            userDefinedToString = method;
+            break;
+          }
+        }
+      }
+
       result.add(
         ConstructorDetails(
           name: constructor.name,
+          canOverrideToString: userDefinedToString == null,
           isConst: constructor.isConst,
           fullName: fullName,
           impliedProperties: [
@@ -250,6 +374,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           decorators: constructor.metadata.map((e) => e.toSource()).toList(),
           isDefault: isDefaultConstructor(constructor),
           hasJsonSerializable: constructor.hasJsonSerializable,
+          cloneableProperties: cloneableProperties().toList(),
           parameters:
               ParametersTemplate.fromParameterElements(constructor.parameters),
           redirectedName: redirectedName,
@@ -257,6 +382,11 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
     return result;
+  }
+
+  @override
+  Iterable<Object> generateForAll(_GlobalData globalData) sync* {
+    yield r'T _$identity<T>(T value) => value;';
   }
 
   @override
@@ -270,6 +400,20 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
 
+    yield TearOff(
+      name: data.name,
+      genericsParameter: data.genericsParameterTemplate,
+      genericsDefinition: data.genericsDefinitionTemplate,
+      allConstructors: data.constructors,
+    );
+
+    final commonCopyWith = CopyWith(
+      clonedClassName: data.name,
+      cloneableProperties: data.commonCloneableProperties,
+      genericsDefinition: data.genericsDefinitionTemplate,
+      genericsParameter: data.genericsParameterTemplate,
+      allProperties: data.commonProperties,
+    );
     yield Abstract(
       name: data.name,
       genericsDefinition: data.genericsDefinitionTemplate,
@@ -277,11 +421,13 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
       abstractProperties: data.commonProperties.asGetters(),
       allConstructors: data.constructors,
+      copyWith: commonCopyWith,
     );
 
     for (final constructor in data.constructors) {
       yield Concrete(
         name: data.name,
+        shouldUseExtends: data.shouldUseExtends,
         lateGetters: data.lateGetters,
         hasDiagnosticable: globalData.hasDiagnostics,
         shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
@@ -290,6 +436,14 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         commonProperties: data.commonProperties,
         genericsDefinition: data.genericsDefinitionTemplate,
         genericsParameter: data.genericsParameterTemplate,
+        copyWith: CopyWith(
+          clonedClassName: constructor.redirectedName,
+          cloneableProperties: constructor.cloneableProperties,
+          genericsDefinition: data.genericsDefinitionTemplate,
+          genericsParameter: data.genericsParameterTemplate,
+          allProperties: constructor.impliedProperties,
+          parent: commonCopyWith,
+        ),
       );
     }
   }

@@ -11,6 +11,18 @@ void main() {
     expect(
         () => RequiredPositional(42).copyWith(a: null), throwsAssertionError);
   });
+  test('DefaultPositional', () {
+    DefaultPositional(42);
+    DefaultPositional();
+    expect(() => DefaultPositional(null), throwsAssertionError);
+    expect(() => DefaultPositional(42).copyWith(a: null), throwsAssertionError);
+  });
+  test('DefaultNamed', () {
+    DefaultNamed(a: 42);
+    DefaultNamed();
+    expect(() => DefaultNamed(a: null), throwsAssertionError);
+    expect(() => DefaultNamed().copyWith(a: null), throwsAssertionError);
+  });
   test('NullableRequiredPositional', () {
     NullableRequiredPositional(42).copyWith(a: 42);
     NullableRequiredPositional(null).copyWith(a: null);

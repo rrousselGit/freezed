@@ -1,3 +1,10 @@
+# 0.10.0
+
+- Consider optional parameters with a default value as non-nullable
+- Add deep-copy support
+- Allow the class to define methods/getters
+- Do not override `toString` if the user-defined class already overrides `toString`
+
 # 0.9.2
 
 Fixes parsing of recursive classes

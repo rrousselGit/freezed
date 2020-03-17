@@ -51,6 +51,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
 - [The features](#the-features)
   - [The syntax](#the-syntax)
     - [basics](#basics)
+    - [custom getters and methods](#custom-getters-and-methods)
     - [non-nullable](#non-nullable)
     - [default values](#default-values)
     - [late](#late)
@@ -58,6 +59,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [decorators](#decorators)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
+    - [deep copy](#deep-copy)
   - [Unions/Sealed classes](#unionssealed-classes)
     - [shared properties](#shared-properties)
     - [when](#when)
@@ -198,6 +200,43 @@ abstract class Union<T> with _$Union<T> {
 
 See [unions/Sealed classes](#unionssealed-classes) for more information.
 
+### Custom getters and methods
+
+Sometimes, you may want to manually define methods/properties on that class.
+
+But you will quickly notice that if you try to do:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  const factory Person(String name, {int age}) = _Person;
+
+  void method() {
+    print('hello world');
+  }
+}
+```
+
+then it won't work.
+
+This is because by default, [Freezed] has no way of "extending" the class and
+instead "implements" it.
+
+To fix it, we need to give [Freezed] a way to use that `extends` keyword.\
+To do so, we have to define a single private constructor as such:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  Person._(); // Added constructor
+  const factory Person(String name, {int age}) = _Person;
+
+  void method() {
+    print('hello world');
+  }
+}
+```
+
 ### Non-nullable
 
 [Freezed] is non-nullable ready and will promote null-safe code.\
@@ -207,11 +246,16 @@ non-nullable types would not compile.
 What this means is, using [Freezed] you have to explicitly tell when a property
 is nullable.
 
-**How [Freezed] infers decides whether a value is nullable or not**:
+**What [Freezed] considers to be non-nullable**:
 
-- non-optional parameters are considered non-nullable by default.
-- optional positional parameters are always nullable.
-- named parameters decorated by `@required` are considered non-nullable too
+- non-optional parameters.
+- optional positional parameters using `@Default`.
+- named parameters decorated by `@required`
+
+**What [Freezd] considers to be nullable**:
+
+- optional parameters
+- parameters decorated with `@nullable`
 
 More concretely, if we define a `Person` class as such:
 
@@ -499,6 +543,102 @@ print(person.copyWith(age: null)); // Person(name: Remi, age: null)
 ```
 
 Notice how `copyWith` correctly was able to understand `null` parameters.
+
+### Deep copy
+
+While `copyWith` is very powerful in itself, it starts to get inconvenient on more complex objects.
+
+Consider the following classes:
+
+```dart
+@freezed
+abstract class Company with _$Company {
+  factory Company({String name, Director director}) = _Company;
+}
+
+@freezed
+abstract class Director with _$Director {
+  factory Director({String name, Assistant assistant}) = _Director;
+}
+
+@freezed
+abstract class Assistant with _$Assistant {
+  factory Assistant({String name, int age}) = _Assistant;
+}
+```
+
+Then, from a reference on `Company`, we may want to perform changes on `Assistant`.\
+For example, to change the `name` of an assistant, using `copyWith` we would have to write:
+
+```dart
+Company company;
+
+Company newCompany = company.copyWith(
+  director: company.director.copyWith(
+    assistant: company.director.assistant.copyWith(
+      name: 'John Smith',
+    ),
+  ),
+);
+```
+
+This _works_, but is relatively verbose with a lot of duplicates.\
+This is where we could use [Freezed]'s "deep copy".
+
+If an object decorated using `@freezed` contains other objects decorated with
+`@freezed`, then [Freezed] will offer an alternate syntax to the previous example:
+
+```dart
+Company company;
+
+Company newCompany = company.copyWith.director.assistant(name: 'John Smith');
+```
+
+This snippet will achieve strictly the same result as the previous snippet
+(creating a new company with an updated assistant name), but no longer has duplicates.
+
+Going deeper in this syntax, if instead, we wanted to change the director's name
+then we could write:
+
+```dart
+Company company;
+Company newCompany = company.copyWith.director(name: 'John Doe');
+```
+
+Overall, from the definition of `Company`/`Director`/`Assistant` mentionned above,
+then these are all the potential "copy" syntaxes that we can do:
+
+```dart
+Company company;
+
+company = company.copyWith(name: 'Google', director: Director(...));
+company = company.copyWith.director(name: 'Larry', assistant: Assistant(...));
+company = company.copyWith.director.assistant(name: 'John', age: 42);
+```
+
+**Null consideration**
+
+Some objects may have for value `null`. For example, using our `Company` class,
+then `Director` may be `null`.
+
+As such, writing:
+
+```dart
+Company company = Company(name: 'Google', director: null);
+Company newCompany = company.copyWith.director.assistant(name: 'John');
+```
+
+doesn't make sense.\
+We can't change the director's assistant if there is no director to begin with.\
+
+In that situation, `company.copyWith.director` will return `null`, and our previous
+example will result in a null exception.
+
+To fix it, we can use the `?.` operator and write:
+
+```dart
+Company newCompany = company.copyWith.director?.assistant(name: 'John');
+```
 
 ## Unions/Sealed classes
 
@@ -819,7 +959,6 @@ abstract class Example with _$Example {
 ```
 
 If you want to define some custom json_serializable flags for all the classes (e.g. `explicit_to_json` or `any_map`) you can do it via `build.yaml` file as described [here](https://pub.dev/packages/json_serializable#build-configuration).
-
 
 See also the [decorators](#decorators) section
 

@@ -31,7 +31,7 @@ Future<void> main() async {
   test('@Default does not imply a @JsonKey if one is already specified', () {
     expect(
       DefaultValueJsonKey.fromJson(<String, dynamic>{}),
-      DefaultValueJsonKey(null),
+      DefaultValueJsonKey(21),
     );
   });
   test('generic json', () {

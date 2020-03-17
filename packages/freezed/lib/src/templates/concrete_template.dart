@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' as annotations;
 
+import 'copy_with.dart';
 import 'parameter_template.dart';
 import 'prototypes.dart';
 
@@ -19,6 +20,8 @@ class Concrete {
     @required this.commonProperties,
     @required this.lateGetters,
     @required this.name,
+    @required this.copyWith,
+    @required this.shouldUseExtends,
   });
 
   final ConstructorDetails constructor;
@@ -30,6 +33,8 @@ class Concrete {
   final bool shouldGenerateJson;
   final List<LateGetter> lateGetters;
   final String name;
+  final CopyWith copyWith;
+  final bool shouldUseExtends;
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
@@ -37,41 +42,74 @@ class Concrete {
 
   @override
   String toString() {
+    final asserts = _asserts;
+    final superConstructor = _superConstructor;
+
+    var trailing = '';
+    if (asserts.isNotEmpty || superConstructor.isNotEmpty) {
+      trailing = ': ${[
+        if (asserts.isNotEmpty) asserts,
+        if (superConstructor.isNotEmpty) superConstructor
+      ].join(',')}';
+    }
+
     return '''
+${copyWith.interface}
+
+${copyWith.concreteImpl(constructor.parameters)}
+
 ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
 ${constructor.decorators.join('\n')}
-class $concreteName$genericsDefinition $diagnosticable implements ${constructor.redirectedName}$genericsParameter {
-  $isConst $concreteName(${constructor.parameters.asThis()})$asserts;
+class $concreteName$genericsDefinition $_diagnosticable $_superKeyword ${constructor.redirectedName}$genericsParameter {
+  $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
 
-  $concreteFromJsonConstructor
+  $_concreteFromJsonConstructor
 
-$properties
+$_properties
+
 ${lateGetters.join()}
-$toStringMethod
-$debugFillProperties
-$operatorEqualMethod
-$hashCodeMethod
-$copyWithMethod
-$when
-$maybeWhen
-$map
-$maybeMap
-$toJson
+
+$_toStringMethod
+$_debugFillProperties
+$_operatorEqualMethod
+$_hashCodeMethod
+${copyWith.concreteCopyWithGetter}
+$_when
+$_maybeWhen
+$_map
+$_maybeMap
+$_toJson
 }
 
-abstract class ${constructor.redirectedName}$genericsDefinition implements $name$genericsParameter {
-  $isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
 
-  $redirectedFromJsonConstructor
+abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter {
+  $_privateConcreteConstructor
+  $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
 
-$abstractProperties
+  $_redirectedFromJsonConstructor
 
-$copyWithPrototype
+$_abstractProperties
+${copyWith.abstractCopyWithGetter}
 }
 ''';
   }
 
-  String get properties {
+  String get _superConstructor {
+    if (!shouldUseExtends) return '';
+    return 'super._()';
+  }
+
+  String get _privateConcreteConstructor {
+    if (!shouldUseExtends) return '';
+
+    return '$_isConst ${constructor.redirectedName}._(): super._();';
+  }
+
+  String get _superKeyword {
+    return shouldUseExtends ? 'extends' : 'implements';
+  }
+
+  String get _properties {
     return constructor.impliedProperties.map((p) {
       var res = '@override $p';
       if (p.defaultValueSource != null && !p.hasJsonKey) {
@@ -81,28 +119,28 @@ $copyWithPrototype
     }).join();
   }
 
-  String get asserts {
+  String get _asserts {
     final nonNullableProperties =
         constructor.impliedProperties.where((p) => !p.nullable).toList();
     if (nonNullableProperties.isEmpty) return '';
-    return ': ${nonNullableProperties.map((e) => 'assert(${e.name} != null)').join(',')}';
+    return '${nonNullableProperties.map((e) => 'assert(${e.name} != null)').join(',')}';
   }
 
-  String get isConst {
+  String get _isConst {
     return constructor.isConst ? 'const' : '';
   }
 
-  String get redirectedFromJsonConstructor {
+  String get _redirectedFromJsonConstructor {
     if (!shouldGenerateJson) return '';
     return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName$genericsParameter.fromJson;';
   }
 
-  String get concreteFromJsonConstructor {
+  String get _concreteFromJsonConstructor {
     if (!shouldGenerateJson) return '';
     return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${concreteName}FromJson(json);';
   }
 
-  String get toJson {
+  String get _toJson {
     if (!shouldGenerateJson) return '';
 
     final addRuntimeType = allConstructors.length > 1
@@ -116,7 +154,7 @@ Map<String, dynamic> toJson() {
 }''';
   }
 
-  String get debugFillProperties {
+  String get _debugFillProperties {
     if (!hasDiagnosticable) return '';
 
     final diagnostics = [
@@ -137,13 +175,13 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
 ''';
   }
 
-  String get diagnosticable {
+  String get _diagnosticable {
     if (!hasDiagnosticable) return '';
 
     return 'with DiagnosticableTreeMixin';
   }
 
-  String get maybeMap {
+  String get _maybeMap {
     if (allConstructors.length < 2) return '';
 
     return '''
@@ -157,7 +195,7 @@ ${maybeMapPrototype(allConstructors, genericsParameter)} {
 }''';
   }
 
-  String get map {
+  String get _map {
     if (allConstructors.length < 2) return '';
 
     final asserts = [
@@ -173,7 +211,7 @@ ${mapPrototype(allConstructors, genericsParameter)} {
 }''';
   }
 
-  String get maybeWhen {
+  String get _maybeWhen {
     if (allConstructors.length < 2) return '';
 
     var callbackParameters = constructor.impliedProperties.map((e) {
@@ -194,7 +232,7 @@ ${maybeWhenPrototype(allConstructors)} {
 }''';
   }
 
-  String get when {
+  String get _when {
     if (allConstructors.length < 2) return '';
 
     final asserts = [
@@ -217,7 +255,7 @@ ${whenPrototype(allConstructors)} {
 }''';
   }
 
-  String get abstractProperties {
+  String get _abstractProperties {
     return constructor.impliedProperties.map((p) {
       if (commonProperties.any((element) => element.name == p.name)) {
         return '@override ${p.getter}';
@@ -227,7 +265,9 @@ ${whenPrototype(allConstructors)} {
     }).join();
   }
 
-  String get toStringMethod {
+  String get _toStringMethod {
+    if (!constructor.canOverrideToString) return '';
+
     final parameters = hasDiagnosticable
         ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
         : '';
@@ -249,69 +289,7 @@ String toString($parameters) {
 ''';
   }
 
-  String get copyWithPrototype {
-    if (constructor.impliedProperties.isEmpty) return '';
-
-    final parameters = constructor.impliedProperties.map((p) {
-      return '${p.decorators.join()} ${p.type} ${p.name}';
-    }).join(',');
-
-    final result = '''
-${constructor.redirectedName}$genericsParameter copyWith({
-$parameters
-});
-''';
-
-    if (commonProperties.isNotEmpty) {
-      return '@override $result';
-    } else {
-      return result;
-    }
-  }
-
-  String get copyWithMethod {
-    if (constructor.impliedProperties.isEmpty) return '';
-
-    final parameters = constructor.impliedProperties.map((p) {
-      return 'Object ${p.name} = freezed,';
-    }).join();
-
-    final constructorParameters = StringBuffer();
-
-    String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == freezed ? this.${p.name} : ${p.name}';
-      if (p.type != 'Object') {
-        ternary = '$ternary as ${p.type}';
-      }
-      return '$ternary,';
-    }
-
-    constructorParameters
-      ..writeAll(
-        [
-          ...constructor.parameters.requiredPositionalParameters,
-          ...constructor.parameters.optionalPositionalParameters,
-        ].map<String>(parameterToValue),
-      )
-      ..writeAll(
-        constructor.parameters.namedParameters.map<String>(
-          (p) {
-            return '${p.name}: ${parameterToValue(p)}';
-          },
-        ),
-      );
-
-    return '''
-@override
-$concreteName$genericsParameter copyWith({$parameters}) {
-  return $concreteName$genericsParameter(
-$constructorParameters
-  );
-}
-''';
-  }
-
-  String get operatorEqualMethod {
+  String get _operatorEqualMethod {
     final properties = constructor.impliedProperties.map((p) {
       return '(identical(other.${p.name}, ${p.name}) || const DeepCollectionEquality().equals(other.${p.name}, ${p.name}))';
     });
@@ -327,7 +305,7 @@ bool operator ==(dynamic other) {
 ''';
   }
 
-  String get hashCodeMethod {
+  String get _hashCodeMethod {
     var hashCodeImpl = constructor.impliedProperties.map((p) {
       return '^ const DeepCollectionEquality().hash(${p.name})';
     }).join();
@@ -347,8 +325,13 @@ extension on Element {
 }
 
 extension IsNullable on ParameterElement {
-  bool get isNullable =>
-      isOptionalPositional || hasNullable || (isNamed && !hasRequired);
+  bool get isNullable {
+    return hasNullable || (_isOptional && defaultValue == null);
+  }
+
+  bool get _isOptional {
+    return isOptionalPositional || (isNamed && !hasRequired);
+  }
 }
 
 class Property {
@@ -423,6 +406,8 @@ extension PropertiesAsGetters on List<Property> {
 }
 
 extension DefaultValue on ParameterElement {
+  /// Returns the sources of the default value associated with a `@Default`,
+  /// or `null` if no `@Default` are specified.
   String get defaultValue {
     const matcher = TypeChecker.fromRuntime(Default);
 
