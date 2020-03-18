@@ -7,12 +7,7 @@ part of 'main.dart';
 // FreezedGenerator
 // **************************************************************************
 
-mixin _$MyClass {
-  String get a;
-  int get b;
-
-  MyClass copyWith({String a, int b});
-}
+T _$identity<T>(T value) => value;
 
 class _$MyClassTearOff {
   const _$MyClassTearOff();
@@ -25,7 +20,67 @@ class _$MyClassTearOff {
   }
 }
 
+// ignore: unused_element
 const $MyClass = _$MyClassTearOff();
+
+mixin _$MyClass {
+  String get a;
+  int get b;
+
+  $MyClassCopyWith<MyClass> get copyWith;
+}
+
+abstract class $MyClassCopyWith<$Res> {
+  factory $MyClassCopyWith(MyClass value, $Res Function(MyClass) then) =
+      _$MyClassCopyWithImpl<$Res>;
+  $Res call({String a, int b});
+}
+
+class _$MyClassCopyWithImpl<$Res> implements $MyClassCopyWith<$Res> {
+  _$MyClassCopyWithImpl(this._value, this._then);
+
+  final MyClass _value;
+  // ignore: unused_field
+  final $Res Function(MyClass) _then;
+
+  @override
+  $Res call({
+    Object a = freezed,
+    Object b = freezed,
+  }) {
+    return _then(_value.copyWith(
+      a: a == freezed ? _value.a : a as String,
+      b: b == freezed ? _value.b : b as int,
+    ));
+  }
+}
+
+abstract class _$MyClassCopyWith<$Res> implements $MyClassCopyWith<$Res> {
+  factory _$MyClassCopyWith(_MyClass value, $Res Function(_MyClass) then) =
+      __$MyClassCopyWithImpl<$Res>;
+  @override
+  $Res call({String a, int b});
+}
+
+class __$MyClassCopyWithImpl<$Res> extends _$MyClassCopyWithImpl<$Res>
+    implements _$MyClassCopyWith<$Res> {
+  __$MyClassCopyWithImpl(_MyClass _value, $Res Function(_MyClass) _then)
+      : super(_value, (v) => _then(v as _MyClass));
+
+  @override
+  _MyClass get _value => super._value as _MyClass;
+
+  @override
+  $Res call({
+    Object a = freezed,
+    Object b = freezed,
+  }) {
+    return _then(_MyClass(
+      a: a == freezed ? _value.a : a as String,
+      b: b == freezed ? _value.b : b as int,
+    ));
+  }
+}
 
 class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   _$_MyClass({this.a, this.b});
@@ -66,15 +121,8 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
       const DeepCollectionEquality().hash(b);
 
   @override
-  _$_MyClass copyWith({
-    Object a = freezed,
-    Object b = freezed,
-  }) {
-    return _$_MyClass(
-      a: a == freezed ? this.a : a as String,
-      b: b == freezed ? this.b : b as int,
-    );
-  }
+  _$MyClassCopyWith<_MyClass> get copyWith =>
+      __$MyClassCopyWithImpl<_MyClass>(this, _$identity);
 }
 
 abstract class _MyClass implements MyClass {
@@ -84,45 +132,8 @@ abstract class _MyClass implements MyClass {
   String get a;
   @override
   int get b;
-
   @override
-  _MyClass copyWith({String a, int b});
-}
-
-mixin _$Union {
-  @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int value), {
-    @required Result loading(),
-    @required Result error(String message),
-    @required Result complex(int a, String b),
-  });
-
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int value), {
-    Result loading(),
-    Result error(String message),
-    Result complex(int a, String b),
-    @required Result orElse(),
-  });
-
-  @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(Data value), {
-    @required Result loading(Loading value),
-    @required Result error(ErrorDetails value),
-    @required Result complex(Complex value),
-  });
-
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(Data value), {
-    Result loading(Loading value),
-    Result error(ErrorDetails value),
-    Result complex(Complex value),
-    @required Result orElse(),
-  });
+  _$MyClassCopyWith<_MyClass> get copyWith;
 }
 
 class _$UnionTearOff {
@@ -152,7 +163,78 @@ class _$UnionTearOff {
   }
 }
 
+// ignore: unused_element
 const $Union = _$UnionTearOff();
+
+mixin _$Union {
+  @optionalTypeArgs
+  Result when<Result extends Object>(
+    Result $default(int value), {
+    @required Result loading(),
+    @required Result error(String message),
+    @required Result complex(int a, String b),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>(
+    Result $default(int value), {
+    Result loading(),
+    Result error(String message),
+    Result complex(int a, String b),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(Data value), {
+    @required Result loading(Loading value),
+    @required Result error(ErrorDetails value),
+    @required Result complex(Complex value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(Data value), {
+    Result loading(Loading value),
+    Result error(ErrorDetails value),
+    Result complex(Complex value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $UnionCopyWith<$Res> {
+  factory $UnionCopyWith(Union value, $Res Function(Union) then) =
+      _$UnionCopyWithImpl<$Res>;
+}
+
+class _$UnionCopyWithImpl<$Res> implements $UnionCopyWith<$Res> {
+  _$UnionCopyWithImpl(this._value, this._then);
+
+  final Union _value;
+  // ignore: unused_field
+  final $Res Function(Union) _then;
+}
+
+abstract class $DataCopyWith<$Res> {
+  factory $DataCopyWith(Data value, $Res Function(Data) then) =
+      _$DataCopyWithImpl<$Res>;
+  $Res call({int value});
+}
+
+class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
+    implements $DataCopyWith<$Res> {
+  _$DataCopyWithImpl(Data _value, $Res Function(Data) _then)
+      : super(_value, (v) => _then(v as Data));
+
+  @override
+  Data get _value => super._value as Data;
+
+  @override
+  $Res call({
+    Object value = freezed,
+  }) {
+    return _then(Data(
+      value == freezed ? _value.value : value as int,
+    ));
+  }
+}
 
 class _$Data with DiagnosticableTreeMixin implements Data {
   const _$Data(this.value) : assert(value != null);
@@ -186,13 +268,8 @@ class _$Data with DiagnosticableTreeMixin implements Data {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
 
   @override
-  _$Data copyWith({
-    Object value = freezed,
-  }) {
-    return _$Data(
-      value == freezed ? this.value : value as int,
-    );
-  }
+  $DataCopyWith<Data> get copyWith =>
+      _$DataCopyWithImpl<Data>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -261,8 +338,21 @@ abstract class Data implements Union {
   const factory Data(int value) = _$Data;
 
   int get value;
+  $DataCopyWith<Data> get copyWith;
+}
 
-  Data copyWith({int value});
+abstract class $LoadingCopyWith<$Res> {
+  factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) =
+      _$LoadingCopyWithImpl<$Res>;
+}
+
+class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
+    implements $LoadingCopyWith<$Res> {
+  _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then)
+      : super(_value, (v) => _then(v as Loading));
+
+  @override
+  Loading get _value => super._value as Loading;
 }
 
 class _$Loading with DiagnosticableTreeMixin implements Loading {
@@ -354,6 +444,32 @@ abstract class Loading implements Union {
   const factory Loading() = _$Loading;
 }
 
+abstract class $ErrorDetailsCopyWith<$Res> {
+  factory $ErrorDetailsCopyWith(
+          ErrorDetails value, $Res Function(ErrorDetails) then) =
+      _$ErrorDetailsCopyWithImpl<$Res>;
+  $Res call({String message});
+}
+
+class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
+    implements $ErrorDetailsCopyWith<$Res> {
+  _$ErrorDetailsCopyWithImpl(
+      ErrorDetails _value, $Res Function(ErrorDetails) _then)
+      : super(_value, (v) => _then(v as ErrorDetails));
+
+  @override
+  ErrorDetails get _value => super._value as ErrorDetails;
+
+  @override
+  $Res call({
+    Object message = freezed,
+  }) {
+    return _then(ErrorDetails(
+      message == freezed ? _value.message : message as String,
+    ));
+  }
+}
+
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   const _$ErrorDetails([this.message]);
 
@@ -386,13 +502,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
 
   @override
-  _$ErrorDetails copyWith({
-    Object message = freezed,
-  }) {
-    return _$ErrorDetails(
-      message == freezed ? this.message : message as String,
-    );
-  }
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
+      _$ErrorDetailsCopyWithImpl<ErrorDetails>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -461,8 +572,33 @@ abstract class ErrorDetails implements Union {
   const factory ErrorDetails([String message]) = _$ErrorDetails;
 
   String get message;
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
+}
 
-  ErrorDetails copyWith({String message});
+abstract class $ComplexCopyWith<$Res> {
+  factory $ComplexCopyWith(Complex value, $Res Function(Complex) then) =
+      _$ComplexCopyWithImpl<$Res>;
+  $Res call({int a, String b});
+}
+
+class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
+    implements $ComplexCopyWith<$Res> {
+  _$ComplexCopyWithImpl(Complex _value, $Res Function(Complex) _then)
+      : super(_value, (v) => _then(v as Complex));
+
+  @override
+  Complex get _value => super._value as Complex;
+
+  @override
+  $Res call({
+    Object a = freezed,
+    Object b = freezed,
+  }) {
+    return _then(Complex(
+      a == freezed ? _value.a : a as int,
+      b == freezed ? _value.b : b as String,
+    ));
+  }
 }
 
 class _$Complex with DiagnosticableTreeMixin implements Complex {
@@ -506,15 +642,8 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
       const DeepCollectionEquality().hash(b);
 
   @override
-  _$Complex copyWith({
-    Object a = freezed,
-    Object b = freezed,
-  }) {
-    return _$Complex(
-      a == freezed ? this.a : a as int,
-      b == freezed ? this.b : b as String,
-    );
-  }
+  $ComplexCopyWith<Complex> get copyWith =>
+      _$ComplexCopyWithImpl<Complex>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -584,40 +713,7 @@ abstract class Complex implements Union {
 
   int get a;
   String get b;
-
-  Complex copyWith({int a, String b});
-}
-
-mixin _$SharedProperty {
-  String get name;
-
-  SharedProperty copyWith({String name});
-
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result city(String name, int population),
-  });
-
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result city(String name, int population),
-    @required Result orElse(),
-  });
-
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SharedProperty0 value),
-    @required Result city(SharedProperty1 value),
-  });
-
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SharedProperty0 value),
-    Result city(SharedProperty1 value),
-    @required Result orElse(),
-  });
+  $ComplexCopyWith<Complex> get copyWith;
 }
 
 class _$SharedPropertyTearOff {
@@ -638,7 +734,93 @@ class _$SharedPropertyTearOff {
   }
 }
 
+// ignore: unused_element
 const $SharedProperty = _$SharedPropertyTearOff();
+
+mixin _$SharedProperty {
+  String get name;
+
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result person(String name, int age),
+    @required Result city(String name, int population),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result person(String name, int age),
+    Result city(String name, int population),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result person(SharedProperty0 value),
+    @required Result city(SharedProperty1 value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result person(SharedProperty0 value),
+    Result city(SharedProperty1 value),
+    @required Result orElse(),
+  });
+
+  $SharedPropertyCopyWith<SharedProperty> get copyWith;
+}
+
+abstract class $SharedPropertyCopyWith<$Res> {
+  factory $SharedPropertyCopyWith(
+          SharedProperty value, $Res Function(SharedProperty) then) =
+      _$SharedPropertyCopyWithImpl<$Res>;
+  $Res call({String name});
+}
+
+class _$SharedPropertyCopyWithImpl<$Res>
+    implements $SharedPropertyCopyWith<$Res> {
+  _$SharedPropertyCopyWithImpl(this._value, this._then);
+
+  final SharedProperty _value;
+  // ignore: unused_field
+  final $Res Function(SharedProperty) _then;
+
+  @override
+  $Res call({
+    Object name = freezed,
+  }) {
+    return _then(_value.copyWith(
+      name: name == freezed ? _value.name : name as String,
+    ));
+  }
+}
+
+abstract class $SharedProperty0CopyWith<$Res>
+    implements $SharedPropertyCopyWith<$Res> {
+  factory $SharedProperty0CopyWith(
+          SharedProperty0 value, $Res Function(SharedProperty0) then) =
+      _$SharedProperty0CopyWithImpl<$Res>;
+  @override
+  $Res call({String name, int age});
+}
+
+class _$SharedProperty0CopyWithImpl<$Res>
+    extends _$SharedPropertyCopyWithImpl<$Res>
+    implements $SharedProperty0CopyWith<$Res> {
+  _$SharedProperty0CopyWithImpl(
+      SharedProperty0 _value, $Res Function(SharedProperty0) _then)
+      : super(_value, (v) => _then(v as SharedProperty0));
+
+  @override
+  SharedProperty0 get _value => super._value as SharedProperty0;
+
+  @override
+  $Res call({
+    Object name = freezed,
+    Object age = freezed,
+  }) {
+    return _then(SharedProperty0(
+      name: name == freezed ? _value.name : name as String,
+      age: age == freezed ? _value.age : age as int,
+    ));
+  }
+}
 
 class _$SharedProperty0
     with DiagnosticableTreeMixin
@@ -681,15 +863,8 @@ class _$SharedProperty0
       const DeepCollectionEquality().hash(age);
 
   @override
-  _$SharedProperty0 copyWith({
-    Object name = freezed,
-    Object age = freezed,
-  }) {
-    return _$SharedProperty0(
-      name: name == freezed ? this.name : name as String,
-      age: age == freezed ? this.age : age as int,
-    );
-  }
+  $SharedProperty0CopyWith<SharedProperty0> get copyWith =>
+      _$SharedProperty0CopyWithImpl<SharedProperty0>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -748,9 +923,39 @@ abstract class SharedProperty0 implements SharedProperty {
   @override
   String get name;
   int get age;
+  @override
+  $SharedProperty0CopyWith<SharedProperty0> get copyWith;
+}
+
+abstract class $SharedProperty1CopyWith<$Res>
+    implements $SharedPropertyCopyWith<$Res> {
+  factory $SharedProperty1CopyWith(
+          SharedProperty1 value, $Res Function(SharedProperty1) then) =
+      _$SharedProperty1CopyWithImpl<$Res>;
+  @override
+  $Res call({String name, int population});
+}
+
+class _$SharedProperty1CopyWithImpl<$Res>
+    extends _$SharedPropertyCopyWithImpl<$Res>
+    implements $SharedProperty1CopyWith<$Res> {
+  _$SharedProperty1CopyWithImpl(
+      SharedProperty1 _value, $Res Function(SharedProperty1) _then)
+      : super(_value, (v) => _then(v as SharedProperty1));
 
   @override
-  SharedProperty0 copyWith({String name, int age});
+  SharedProperty1 get _value => super._value as SharedProperty1;
+
+  @override
+  $Res call({
+    Object name = freezed,
+    Object population = freezed,
+  }) {
+    return _then(SharedProperty1(
+      name: name == freezed ? _value.name : name as String,
+      population: population == freezed ? _value.population : population as int,
+    ));
+  }
 }
 
 class _$SharedProperty1
@@ -795,15 +1000,8 @@ class _$SharedProperty1
       const DeepCollectionEquality().hash(population);
 
   @override
-  _$SharedProperty1 copyWith({
-    Object name = freezed,
-    Object population = freezed,
-  }) {
-    return _$SharedProperty1(
-      name: name == freezed ? this.name : name as String,
-      population: population == freezed ? this.population : population as int,
-    );
-  }
+  $SharedProperty1CopyWith<SharedProperty1> get copyWith =>
+      _$SharedProperty1CopyWithImpl<SharedProperty1>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -862,7 +1060,6 @@ abstract class SharedProperty1 implements SharedProperty {
   @override
   String get name;
   int get population;
-
   @override
-  SharedProperty1 copyWith({String name, int population});
+  $SharedProperty1CopyWith<SharedProperty1> get copyWith;
 }

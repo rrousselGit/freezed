@@ -1,3 +1,8 @@
+# 0.10.1
+
+- Fixed a stack-overflow during generation on recursive classes
+- Fixed invalid generated code for classes with a concrete constructor + using Diagnosticable
+
 # 0.10.0
 
 - Consider optional parameters with a default value as non-nullable

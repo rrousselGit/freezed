@@ -44,3 +44,8 @@ abstract class DeepGeneric<T> with _$DeepGeneric<T> {
 abstract class Generic<T> with _$Generic<T> {
   factory Generic(T value, T value2) = _Generic<T>;
 }
+
+@freezed
+abstract class Recursive with _$Recursive {
+  factory Recursive([Recursive value]) = _Recursive;
+}

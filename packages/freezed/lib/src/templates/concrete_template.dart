@@ -60,7 +60,7 @@ ${copyWith.concreteImpl(constructor.parameters)}
 
 ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
 ${constructor.decorators.join('\n')}
-class $concreteName$genericsDefinition $_diagnosticable $_superKeyword ${constructor.redirectedName}$genericsParameter {
+class $concreteName$genericsDefinition $_concreteSuper {
   $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
 
   $_concreteFromJsonConstructor
@@ -107,6 +107,14 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _superKeyword {
     return shouldUseExtends ? 'extends' : 'implements';
+  }
+
+  String get _concreteSuper {
+    if (shouldUseExtends) {
+      return 'extends ${constructor.redirectedName}$genericsParameter $_diagnosticable';
+    } else {
+      return '$_diagnosticable implements ${constructor.redirectedName}$genericsParameter';
+    }
   }
 
   String get _properties {

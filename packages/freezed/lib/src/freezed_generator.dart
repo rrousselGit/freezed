@@ -335,11 +335,13 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
       Iterable<CloneableProperty> cloneableProperties() sync* {
         for (final parameter in constructor.parameters) {
+          final type = parseTypeSource(parameter);
+          if (type == element.name) continue;
           final data = _computeElementDataFor(parameter);
           if (data == null) continue;
           yield CloneableProperty(
             name: parameter.name,
-            type: parseTypeSource(parameter),
+            type: type,
             children: data.commonCloneableProperties,
             associatedData: data,
           );

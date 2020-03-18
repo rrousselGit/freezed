@@ -11,3 +11,9 @@ abstract class Example<T> with _$Example<T> {
   @late
   int get theAnswer => 42;
 }
+
+@freezed
+abstract class ConcreteExample<T> with _$ConcreteExample<T> {
+  ConcreteExample._();
+  factory ConcreteExample() = _ConcreteExample<T>;
+}
