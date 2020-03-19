@@ -239,17 +239,11 @@ ${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {
   if (_value.${cloneableProperty.name} == null) {
     return null;
   }
-  return ${_clonerFor(cloneableProperty)}(_value.${cloneableProperty.name}, (value) {
+  return ${_clonerInterfaceFor(cloneableProperty)}(_value.${cloneableProperty.name}, (value) {
     return _then(_value.copyWith(${cloneableProperty.name}:  value));
   });
 }''';
     }
-  }
-
-  String _clonerFor(CloneableProperty cloneableProperty) {
-    final name = interfaceNameFrom(
-        cloneableProperty.associatedData.constructors.first.redirectedName);
-    return '${name}Impl${cloneableProperty.associatedData.genericsParameterTemplate.append('\$Res')}';
   }
 
   String _clonerInterfaceFor(CloneableProperty cloneableProperty) {

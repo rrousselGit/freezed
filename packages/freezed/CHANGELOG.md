@@ -1,3 +1,8 @@
+# 0.10.2
+
+- Fixes a bug where deep copy did not compile if the class definitions were
+  spread on multiple files.
+
 # 0.10.1
 
 - Fixed a stack-overflow during generation on recursive classes

@@ -22,6 +22,20 @@ void main() {
 
     expect(errorResult.errors, isEmpty);
   });
+  test('has no issue #2', () async {
+    final main = await resolveSources(
+      {
+        'freezed|test/integration/deep_copy2.dart': useAssetReader,
+      },
+      (r) => r.libraries.firstWhere(
+          (element) => element.source.toString().contains('deep_copy2')),
+    );
+
+    final errorResult = await main.session
+        .getErrors('/freezed/test/integration/deep_copy2.freezed.dart');
+
+    expect(errorResult.errors, isEmpty);
+  });
 
   test('handles null', () {
     Company company = Company(director: null, name: 'Google');
