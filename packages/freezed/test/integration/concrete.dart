@@ -82,3 +82,9 @@ abstract class AbstractToString {
     return '42';
   }
 }
+
+@freezed
+abstract class Const implements _$Const {
+  const Const._();
+  const factory Const(int a) = _Const;
+}

@@ -227,8 +227,8 @@ To do so, we have to define a single private constructor as such:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
-  Person._(); // Added constructor
+abstract class Person implements _$Person { // uses implements instead of with
+  const Person._(); // Added constructor
   const factory Person(String name, {int age}) = _Person;
 
   void method() {
