@@ -1,3 +1,7 @@
+# 0.10.3
+
+- Fixes Freezed trying to generate code for files that don't use it
+
 # 0.10.2
 
 - Fixes a bug where deep copy did not compile if the class definitions were

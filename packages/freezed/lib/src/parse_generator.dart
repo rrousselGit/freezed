@@ -12,13 +12,19 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
     final globalData = parseGlobalData(library.element);
 
-    for (final value in generateForAll(globalData).map((e) => e.toString())) {
-      assert(value == null || (value.length == value.trim().length));
-      values.writeln(value);
-    }
+    var hasGeneratedGlobalCode = false;
 
     for (var element
         in library.annotatedWith(typeChecker).map((e) => e.element)) {
+      if (!hasGeneratedGlobalCode) {
+        hasGeneratedGlobalCode = true;
+        for (final value
+            in generateForAll(globalData).map((e) => e.toString())) {
+          assert(value == null || (value.length == value.trim().length));
+          values.writeln(value);
+        }
+      }
+
       final data = parseElement(globalData, element);
       if (data == null) continue;
 
