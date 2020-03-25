@@ -322,7 +322,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       final location = constructor.nameOffset;
       final source = constructor.source.contents.data;
 
-      final redirectedName = getRedirectedConstructorName(source.substring(location));
+      final redirectedName =
+          getRedirectedConstructorName(source.substring(location));
       if (redirectedName == null) continue;
 
       var generics = element.typeParameters.map((e) {

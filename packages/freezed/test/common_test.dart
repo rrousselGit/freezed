@@ -26,7 +26,6 @@ void main() {
       getRedirectedConstructorName('MyClass(void cb(void cb2())) = \nhello;'),
       'hello',
     );
-
   });
   test('concrete name parser', () {
     expect(
