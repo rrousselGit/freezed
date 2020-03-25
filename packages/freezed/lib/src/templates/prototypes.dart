@@ -5,8 +5,8 @@ import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'parameter_template.dart';
 
-final redirectedConstructorNameRegexp =
-    RegExp(r'^[^;]+?=[\s\n\t]*([^<>(){}]+?)(?:<.+?>)*?;', dotAll: true);
+final _redirectedConstructorNameRegexp =
+    RegExp(r'^[^;{}]+?=[\s\n\t]*([^<>(){}]+?)(?:<.+?>)*?;', dotAll: true);
 
 List<String> parseDecorators(List<ElementAnnotation> metadata) {
   return [
@@ -23,12 +23,29 @@ extension on ElementAnnotation {
   }
 }
 
-String getRedirectedConstructorName(ConstructorElement constructor) {
-  final location = constructor.nameOffset;
-  final source = constructor.source.contents.data;
+String getRedirectedConstructorName(String source) {
+  var firstOpeningParenthesisIndex = 0;
+  while (firstOpeningParenthesisIndex < source.length &&
+      source[firstOpeningParenthesisIndex] != '(') {
+    firstOpeningParenthesisIndex++;
+  }
 
-  return redirectedConstructorNameRegexp
-      .firstMatch(source.substring(location))
+  var parenthesisOpened = 1;
+  var constructorInitializerIndex = firstOpeningParenthesisIndex + 1;
+  while (constructorInitializerIndex < source.length && parenthesisOpened > 0) {
+    if (source[constructorInitializerIndex] == '(') {
+      parenthesisOpened++;
+    }
+    if (source[constructorInitializerIndex] == ')') {
+      parenthesisOpened--;
+    }
+    constructorInitializerIndex++;
+  }
+
+  if (constructorInitializerIndex >= source.length) return null;
+
+  return _redirectedConstructorNameRegexp
+      .firstMatch(source.substring(constructorInitializerIndex))
       ?.group(1);
 }
 

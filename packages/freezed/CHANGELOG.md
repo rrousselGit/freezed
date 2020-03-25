@@ -1,3 +1,7 @@
+# 0.10.4
+
+Fixed Freezed trying to generate code for factory constructors with a complex body.
+
 # 0.10.3
 
 - Fixes Freezed trying to generate code for files that don't use it
