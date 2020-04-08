@@ -10,7 +10,7 @@ class Unrelated {}
 @freezed
 int foo;
 
-@ShouldThrow('@freezed cannot be used on classes with unimplemented getters')
+@ShouldThrow('Getters not decorated with @late requires a MyClass._() constructor')
 @freezed
 abstract class Properties {
   int get regularProperty;
@@ -18,7 +18,7 @@ abstract class Properties {
   factory Properties() = _Properties;
 }
 
-@ShouldThrow('@freezed cannot be used on classes with unimplemented getters')
+@ShouldThrow('Getters not decorated with @late requires a MyClass._() constructor')
 @freezed
 abstract class Get {
   int get regularProperty => 42;

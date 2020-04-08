@@ -47,6 +47,14 @@ mixin Mixin {
 }
 
 @freezed
+abstract class ConcreteGetter with _$ConcreteGetter {
+  ConcreteGetter._();
+  factory ConcreteGetter() = _ConcreteGetter;
+
+  int get getter => 42;
+}
+
+@freezed
 abstract class CustomToString with _$CustomToString {
   CustomToString._();
   factory CustomToString() = _CustomToString;

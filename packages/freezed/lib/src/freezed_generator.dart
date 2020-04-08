@@ -206,6 +206,21 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       }
     }
 
+    // TODO: verify _$name is mixed-in
+
+    final constructorsNeedsGeneration =
+        _parseConstructorsNeedsGeneration(element);
+    if (constructorsNeedsGeneration.isEmpty) {
+      throw InvalidGenerationSourceError(
+        'Marked ${element.name} with @freezed, but freezed has nothing to generate',
+        element: rawElement,
+      );
+    }
+
+    final shouldUseExtends = element.constructors.any((ctor) {
+      return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
+    });
+
     final lateGetters = <LateGetter>[];
 
     for (final field in element.fields) {
@@ -216,7 +231,13 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           element: element,
         );
       }
-      if (field.getter != null && !field.getter.isSynthetic && field.hasLate) {
+      if (field.getter != null && !field.getter.isSynthetic) {
+        if (!shouldUseExtends && !field.hasLate) {
+          throw InvalidGenerationSourceError(
+            'Getters not decorated with @late requires a MyClass._() constructor',
+            element: rawElement,
+          );
+        }
         if (element.constructors.any((element) => element.isConst)) {
           throw InvalidGenerationSourceError(
             '@late cannot be used in combination with const constructors',
@@ -252,17 +273,6 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
 
-    // TODO: verify _$name is mixed-in
-
-    final constructorsNeedsGeneration =
-        _parseConstructorsNeedsGeneration(element);
-    if (constructorsNeedsGeneration.isEmpty) {
-      throw InvalidGenerationSourceError(
-        'Marked ${element.name} with @freezed, but freezed has nothing to generate',
-        element: rawElement,
-      );
-    }
-
     // TODO: parse late finals with an initializer and copy-paste them to the concrete class + toString/debugFillProperties
 
     final commonParameters = constructorsNeedsGeneration
@@ -277,9 +287,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     return Data(
       name: element.name,
-      shouldUseExtends: element.constructors.any((ctor) {
-        return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
-      }),
+      shouldUseExtends: shouldUseExtends,
       lateGetters: lateGetters,
       commonCloneableProperties: [
         for (final cloneableProperty

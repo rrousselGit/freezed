@@ -1,3 +1,7 @@
+# 0.10.5
+
+Fixes classes with getters and a private `MyClass._()` constructor not properly generating.
+
 # 0.10.4
 
 Fixed Freezed trying to generate code for factory constructors with a complex body.
