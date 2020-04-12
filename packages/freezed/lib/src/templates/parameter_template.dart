@@ -157,7 +157,11 @@ class ParametersTemplate {
 
   @override
   String toString() {
-    final buffer = StringBuffer()..writeAll(requiredPositionalParameters, ', ');
+    final buffer = StringBuffer()
+      ..writeAll(
+          requiredPositionalParameters
+              .map<String>((p) => p.toString(skipRequired: true)),
+          ', ');
 
     if (buffer.isNotEmpty &&
         (optionalPositionalParameters.isNotEmpty ||
@@ -236,12 +240,12 @@ class Parameter {
   final bool showDefaultValue;
 
   @override
-  String toString() {
+  String toString({bool skipRequired = false}) {
     var res = '${decorators.join()}  ${type ?? 'dynamic'} $name';
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
-    return isRequired ? '@required $res' : res;
+    return isRequired && !skipRequired ? '@required $res' : res;
   }
 }
 
@@ -264,12 +268,12 @@ class LocalParameter extends Parameter {
         );
 
   @override
-  String toString() {
+  String toString({bool skipRequired = false}) {
     var res = '${decorators.join()} this.$name';
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
-    return isRequired ? '@required $res' : res;
+    return isRequired && !skipRequired ? '@required $res' : res;
   }
 }
 
@@ -295,8 +299,8 @@ class CallbackParameter extends Parameter {
   final ParametersTemplate parameters;
 
   @override
-  String toString() {
+  String toString({bool skipRequired = false}) {
     var res = '${decorators.join()} $type $name($parameters)';
-    return isRequired ? '@required $res' : res;
+    return isRequired && !skipRequired ? '@required $res' : res;
   }
 }
