@@ -299,7 +299,7 @@ String toString($parameters) {
 
   String get _operatorEqualMethod {
     final properties = constructor.impliedProperties.map((p) {
-      return '(identical(other.${p.name}, ${p.name}) || const DeepCollectionEquality().equals(other.${p.name}, ${p.name}))';
+      return '(identical(other.${p.name}, this.${p.name}) || const DeepCollectionEquality().equals(other.${p.name}, this.${p.name}))';
     });
 
     return '''

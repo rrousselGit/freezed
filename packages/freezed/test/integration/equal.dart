@@ -62,3 +62,8 @@ abstract class GenericIterable<T extends Iterable<dynamic>>
     with _$GenericIterable<T> {
   factory GenericIterable(T value) = _GenericIterable<T>;
 }
+
+@freezed
+abstract class ObjectWithOtherProperty with _$ObjectWithOtherProperty {
+  factory ObjectWithOtherProperty(int other) = _ObjectWithOtherProperty;
+}

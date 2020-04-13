@@ -139,4 +139,8 @@ void main() {
       GenericIterable([1]),
     );
   });
+  test('ObjectWithOtherProperty', () {
+    expect(ObjectWithOtherProperty(1), ObjectWithOtherProperty(1));
+    expect(ObjectWithOtherProperty(1), isNot(ObjectWithOtherProperty(2)));
+  });
 }
