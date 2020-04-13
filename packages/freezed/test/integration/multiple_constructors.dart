@@ -43,5 +43,4 @@ abstract class Recursive with _$Recursive {
 abstract class RequiredParams with _$RequiredParams {
   const factory RequiredParams({@required String a}) = RequiredParams0;
   const factory RequiredParams.second({@required String a}) = RequiredParams1;
-  const factory RequiredParams.third({@required String b}) = RequiredParams2;
 }

@@ -312,7 +312,7 @@ import 'multiple_constructors.dart';
 void main() {
   final value = RequiredParams(a: 'a');
 
-  value.when((a) => a, second: (b) => b, third: (c) => c);
+  value.when((a) => a, second: (b) => b);
 }
 
 void redundant(@required String test) {

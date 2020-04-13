@@ -157,11 +157,7 @@ class ParametersTemplate {
 
   @override
   String toString() {
-    final buffer = StringBuffer()
-      ..writeAll(
-          requiredPositionalParameters
-              .map<String>((p) => p.toString(skipRequired: true)),
-          ', ');
+    final buffer = StringBuffer()..writeAll(requiredPositionalParameters, ', ');
 
     if (buffer.isNotEmpty &&
         (optionalPositionalParameters.isNotEmpty ||
@@ -239,13 +235,32 @@ class Parameter {
   final List<String> decorators;
   final bool showDefaultValue;
 
+  Parameter copyWith({
+    String type,
+    String name,
+    String defaultValueSource,
+    bool isRequired,
+    bool nullable,
+    List<String> decorators,
+    bool showDefaultValue,
+  }) =>
+      Parameter(
+        type: type ?? this.type,
+        name: name ?? this.name,
+        defaultValueSource: defaultValueSource ?? this.defaultValueSource,
+        isRequired: isRequired ?? this.isRequired,
+        nullable: nullable ?? this.nullable,
+        decorators: decorators ?? this.decorators,
+        showDefaultValue: showDefaultValue ?? this.showDefaultValue,
+      );
+
   @override
-  String toString({bool skipRequired = false}) {
+  String toString() {
     var res = '${decorators.join()}  ${type ?? 'dynamic'} $name';
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
-    return isRequired && !skipRequired ? '@required $res' : res;
+    return isRequired ? '@required $res' : res;
   }
 }
 
@@ -268,12 +283,12 @@ class LocalParameter extends Parameter {
         );
 
   @override
-  String toString({bool skipRequired = false}) {
+  String toString() {
     var res = '${decorators.join()} this.$name';
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
-    return isRequired && !skipRequired ? '@required $res' : res;
+    return isRequired ? '@required $res' : res;
   }
 }
 
@@ -299,8 +314,8 @@ class CallbackParameter extends Parameter {
   final ParametersTemplate parameters;
 
   @override
-  String toString({bool skipRequired = false}) {
+  String toString() {
     var res = '${decorators.join()} $type $name($parameters)';
-    return isRequired && !skipRequired ? '@required $res' : res;
+    return isRequired ? '@required $res' : res;
   }
 }
