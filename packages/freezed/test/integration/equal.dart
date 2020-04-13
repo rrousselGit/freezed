@@ -65,5 +65,5 @@ abstract class GenericIterable<T extends Iterable<dynamic>>
 
 @freezed
 abstract class ObjectWithOtherProperty with _$ObjectWithOtherProperty {
-  factory ObjectWithOtherProperty(int other) = _ObjectWithOtherProperty;
+  factory ObjectWithOtherProperty(List<int> other) = _ObjectWithOtherProperty;
 }
