@@ -109,7 +109,8 @@ String _whenPrototype(
       return ParametersTemplate([
         ...constructor.parameters.requiredPositionalParameters,
         ...constructor.parameters.optionalPositionalParameters,
-        ...constructor.parameters.namedParameters,
+        ...constructor.parameters.namedParameters
+            .map((e) => e.copyWith(isRequired: false)),
       ]);
     },
   );

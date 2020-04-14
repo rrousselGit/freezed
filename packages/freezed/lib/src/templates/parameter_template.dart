@@ -235,6 +235,25 @@ class Parameter {
   final List<String> decorators;
   final bool showDefaultValue;
 
+  Parameter copyWith({
+    String type,
+    String name,
+    String defaultValueSource,
+    bool isRequired,
+    bool nullable,
+    List<String> decorators,
+    bool showDefaultValue,
+  }) =>
+      Parameter(
+        type: type ?? this.type,
+        name: name ?? this.name,
+        defaultValueSource: defaultValueSource ?? this.defaultValueSource,
+        isRequired: isRequired ?? this.isRequired,
+        nullable: nullable ?? this.nullable,
+        decorators: decorators ?? this.decorators,
+        showDefaultValue: showDefaultValue ?? this.showDefaultValue,
+      );
+
   @override
   String toString() {
     var res = '${decorators.join()}  ${type ?? 'dynamic'} $name';

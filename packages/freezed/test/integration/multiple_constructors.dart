@@ -38,3 +38,9 @@ abstract class Recursive with _$Recursive {
   factory Recursive() = RecursiveImpl;
   factory Recursive.next(RecursiveImpl value) = _RecursiveNext;
 }
+
+@freezed
+abstract class RequiredParams with _$RequiredParams {
+  const factory RequiredParams({@required String a}) = RequiredParams0;
+  const factory RequiredParams.second({@required String a}) = RequiredParams1;
+}
