@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
-import 'dart:math';
 
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
-import 'common.dart';
 import 'integration/multiple_constructors.dart';
 
 void main() {

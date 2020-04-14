@@ -1,3 +1,8 @@
+# 0.10.6
+
+- do not create `@required` annotation for positional arguments on `when`/`map` functions (thanks to @hpoul)
+- Fix == returning false for classes with "other" prop (thanks to @mhmdanas)
+
 # 0.10.5
 
 Fixes classes with getters and a private `MyClass._()` constructor not properly generating.
