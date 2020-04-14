@@ -1,4 +1,4 @@
-// ignore_for_file: redirect_to_non_class, unused_element, avoid_unused_constructor_parameters
+// ignore_for_file: avoid_unused_constructor_parameters, unused_element
 import 'package:source_gen_test/annotations.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -19,6 +19,11 @@ abstract class Properties {
   factory Properties() = _Properties;
 }
 
+class _Properties implements Properties {
+  @override
+  final int regularProperty = 0;
+}
+
 @ShouldThrow(
     'Getters not decorated with @late requires a MyClass._() constructor')
 @freezed
@@ -28,6 +33,11 @@ abstract class Get {
   factory Get() = _Get;
 }
 
+class _Get implements Get {
+  @override
+  final int regularProperty = 0;
+}
+
 @ShouldThrow('@late cannot be used in combination with const constructors')
 @freezed
 abstract class LateConst {
@@ -35,6 +45,13 @@ abstract class LateConst {
 
   @late
   String get name => '42';
+}
+
+class _LateConst implements LateConst {
+  const _LateConst();
+
+  @override
+  final String name = '';
 }
 
 @ShouldThrow('@late can only be used on getters with using =>')
@@ -48,6 +65,11 @@ abstract class LateBody {
   }
 }
 
+class _LateBody implements LateBody {
+  @override
+  final String name = '';
+}
+
 @ShouldThrow('@late can only be used on getters with using =>')
 @freezed
 abstract class LateAbstract {
@@ -57,12 +79,21 @@ abstract class LateAbstract {
   String get name;
 }
 
+class _LateAbstract implements LateAbstract {
+  @override
+  final String name = '';
+}
+
 @ShouldThrow('@Default cannot be used on non-optional parameters')
 @freezed
 abstract class DefaultOnRequiredPositional {
   factory DefaultOnRequiredPositional(
     @Default(42) int a,
   ) = _DefaultOnRequiredPositional;
+}
+
+class _DefaultOnRequiredPositional implements DefaultOnRequiredPositional {
+  _DefaultOnRequiredPositional(int a);
 }
 
 @ShouldThrow(
@@ -110,5 +141,11 @@ abstract class MutableProperty {
 
   factory MutableProperty() = _MutableProperty;
 
+  int a;
+}
+
+@freezed
+abstract class _MutableProperty implements MutableProperty {
+  @override
   int a;
 }
