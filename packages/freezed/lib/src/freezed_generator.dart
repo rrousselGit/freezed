@@ -232,11 +232,14 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         );
       }
       if (field.getter != null && !field.getter.isSynthetic) {
-        if (!shouldUseExtends && !field.hasLate) {
-          throw InvalidGenerationSourceError(
-            'Getters not decorated with @late requires a MyClass._() constructor',
-            element: rawElement,
-          );
+        if (!field.hasLate) {
+          if (!shouldUseExtends) {
+            throw InvalidGenerationSourceError(
+              'Getters not decorated with @late requires a MyClass._() constructor',
+              element: rawElement,
+            );
+          }
+          continue;
         }
         if (element.constructors.any((element) => element.isConst)) {
           throw InvalidGenerationSourceError(

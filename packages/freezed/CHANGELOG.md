@@ -1,3 +1,7 @@
+# 0.10.7
+
+- Fixes a bug where classes with both getters and consts constructors caused an exception. (https://github.com/rrousselGit/freezed/issues/142)
+
 # 0.10.6
 
 - do not create `@required` annotation for positional arguments on `when`/`map` functions (thanks to @hpoul)

@@ -48,8 +48,8 @@ mixin Mixin {
 
 @freezed
 abstract class ConcreteGetter with _$ConcreteGetter {
-  ConcreteGetter._();
-  factory ConcreteGetter() = _ConcreteGetter;
+  const ConcreteGetter._();
+  const factory ConcreteGetter() = _ConcreteGetter;
 
   int get getter => 42;
 }
