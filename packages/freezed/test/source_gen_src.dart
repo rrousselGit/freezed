@@ -144,8 +144,7 @@ abstract class MutableProperty {
   int a;
 }
 
-@freezed
-abstract class _MutableProperty implements MutableProperty {
+class _MutableProperty implements MutableProperty {
   @override
   int a;
 }
