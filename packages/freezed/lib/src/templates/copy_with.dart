@@ -248,7 +248,7 @@ ${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {
 
   String _clonerInterfaceFor(CloneableProperty cloneableProperty) {
     final name = interfaceNameFrom(cloneableProperty.associatedData.name);
-    return '$name${cloneableProperty.associatedData.genericsParameterTemplate.append('\$Res')}';
+    return '$name${cloneableProperty.genericParameters.append('\$Res')}';
   }
 
   String _maybeOverride(String res) {

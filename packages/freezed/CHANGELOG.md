@@ -1,3 +1,7 @@
+# 0.10.8
+
+- Fix code-generation issue for deep-copy of generic objects (https://github.com/rrousselGit/freezed/issues/128)
+
 # 0.10.7
 
 - Fixes a bug where classes with both getters and consts constructors caused an exception. (https://github.com/rrousselGit/freezed/issues/142)

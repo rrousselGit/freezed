@@ -35,3 +35,17 @@ abstract class Union<T> with _$Union<T> {
 abstract class ComplexParameters<T> with _$ComplexParameters<T> {
   const factory ComplexParameters(List<T> value) = _ComplexParameters<T>;
 }
+
+@freezed
+abstract class Inner<I> with _$Inner<I> {
+  const factory Inner({
+    I data,
+  }) = _Inner<I>;
+}
+
+@freezed
+abstract class Outer with _$Outer {
+  const factory Outer({
+    Inner<int> innerData,
+  }) = _Outer;
+}

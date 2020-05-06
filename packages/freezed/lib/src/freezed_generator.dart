@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
@@ -23,12 +24,14 @@ class CloneableProperty {
     @required this.type,
     @required this.children,
     @required this.associatedData,
+    @required this.genericParameters,
   });
 
   final String name;
   final String type;
   final List<CloneableProperty> children;
   final Data associatedData;
+  final GenericsParameterTemplate genericParameters;
 
   @override
   String toString() {
@@ -38,6 +41,7 @@ $runtimeType(
   type: $type,
   children: $children,
   associatedData: $associatedData,
+  genericParameters: $genericParameters,
 )
 ''';
   }
@@ -324,7 +328,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   }
 
   List<ConstructorDetails> _parseConstructorsNeedsGeneration(
-      ClassElement element) {
+    ClassElement element,
+  ) {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
       if (!constructor.isFactory || constructor.name == 'fromJson') {
@@ -354,11 +359,18 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           if (type == element.name) continue;
           final data = _computeElementDataFor(parameter);
           if (data == null) continue;
+
           yield CloneableProperty(
             name: parameter.name,
             type: type,
             children: data.commonCloneableProperties,
             associatedData: data,
+            genericParameters: GenericsParameterTemplate(
+              (parameter.type as InterfaceType)
+                  .typeArguments
+                  .map((e) => e.toString())
+                  .toList(),
+            ),
           );
         }
       }
