@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' as annotations;
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:freezed_annotation/freezed_annotation.dart' as annotations;
 
 import 'copy_with.dart';
 import 'parameter_template.dart';
@@ -120,9 +120,6 @@ ${copyWith.abstractCopyWithGetter}
   String get _properties {
     return constructor.impliedProperties.map((p) {
       var res = '@override $p';
-      if (p.defaultValueSource != null && !p.hasJsonKey) {
-        res = '@JsonKey(defaultValue: ${p.defaultValueSource}) $res';
-      }
       return res;
     }).join();
   }
@@ -349,7 +346,9 @@ class Property {
   final List<String> decorators;
   final bool nullable;
   final String defaultValueSource;
-  final bool hasJsonKey;
+  final JsonKeyOptions jsonKeyOptions;
+
+  bool get hasJsonKey => jsonKeyOptions != null;
 
   Property({
     @required String type,
@@ -357,7 +356,7 @@ class Property {
     @required this.decorators,
     @required this.nullable,
     @required this.defaultValueSource,
-    @required this.hasJsonKey,
+    this.jsonKeyOptions,
   }) : type = type ?? 'dynamic';
 
   factory Property.fromParameter(ParameterElement element) {
@@ -370,23 +369,88 @@ class Property {
       );
     }
 
+    final decorators = parseDecorators(element.metadata);
+
     return Property(
       name: element.name,
       type: parseTypeSource(element),
-      decorators: parseDecorators(element.metadata),
+      decorators: parseDecorators(element.metadata).toList()
+        ..removeWhere((d) => d.contains('@JsonKey')),
       nullable: element.isNullable,
       defaultValueSource: defaultValue,
-      hasJsonKey: element.hasJsonKey,
+      jsonKeyOptions: JsonKeyOptions.fromDecorators(decorators),
     );
   }
 
   @override
   String toString() {
-    return '${decorators.join()} final $type $name;';
+    var jsonKeyOptions = this.jsonKeyOptions ?? JsonKeyOptions();
+
+    if (nullable) {
+      jsonKeyOptions = jsonKeyOptions.mergeValues({
+        'required': 'false',
+        'disallowNullValue': 'false',
+      });
+    } else {
+      jsonKeyOptions = jsonKeyOptions.mergeValues({
+        'required': 'true',
+        'disallowNullValue': 'true',
+      });
+    }
+
+    if (defaultValueSource != null) {
+      jsonKeyOptions = jsonKeyOptions.mergeValues({
+        'defaultValue': defaultValueSource,
+      });
+    }
+
+    return '${decorators.join()} $jsonKeyOptions final $type $name;';
   }
 
   Getter get getter => Getter(
       name: name, type: type, decorators: decorators, nullable: nullable);
+}
+
+class JsonKeyOptions {
+  final Map<String, String> values;
+
+  JsonKeyOptions([this.values = const {}]);
+
+  static JsonKeyOptions fromDecorators(List<String> decorators) {
+    if (decorators == null || decorators.isEmpty) return null;
+
+    String jsonKeyOptions;
+    for (final d in decorators) {
+      if (!d.startsWith('@JsonKey')) continue;
+      jsonKeyOptions = d.split('@JsonKey(')[1].split(')')[0];
+      break;
+    }
+
+    if (jsonKeyOptions == null) return null;
+
+    var values = <String, String>{};
+
+    for (final option in jsonKeyOptions.split(',')) {
+      final part = option.split(':');
+      final name = part[0].trim();
+      final value = part[1].trim();
+      if (name.isNotEmpty && value.isNotEmpty) {
+        values[name] = value;
+      }
+    }
+
+    return JsonKeyOptions(values);
+  }
+
+  @override
+  String toString() {
+    if (values.isEmpty) return '';
+    return '@JsonKey(${values.entries.map((e) => '${e.key}: ${e.value}').join(',')})';
+  }
+
+  JsonKeyOptions mergeValues(Map<String, String> values) {
+    return JsonKeyOptions({}..addAll(this.values)..addAll(values));
+  }
 }
 
 class Getter {
