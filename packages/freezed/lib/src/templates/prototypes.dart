@@ -3,6 +3,7 @@ import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
+
 import 'parameter_template.dart';
 
 final _redirectedConstructorNameRegexp =
@@ -11,7 +12,8 @@ final _redirectedConstructorNameRegexp =
 List<String> parseDecorators(List<ElementAnnotation> metadata) {
   return [
     for (final meta in metadata)
-      if (!meta.isRequired && !meta.isDefault) meta.toSource(),
+      if (!meta.isRequired && !meta.isDefault && !meta.isJsonKey)
+        meta.toSource(),
   ];
 }
 
@@ -19,6 +21,12 @@ extension on ElementAnnotation {
   /// if the element is decorated with `@Default(value)`
   bool get isDefault {
     return const TypeChecker.fromRuntime(Default)
+        .isExactlyType(computeConstantValue().type);
+  }
+
+  /// if the element is decorated with `@JsonKey`
+  bool get isJsonKey {
+    return const TypeChecker.fromRuntime(JsonKey)
         .isExactlyType(computeConstantValue().type);
   }
 }
@@ -47,6 +55,25 @@ String getRedirectedConstructorName(String source) {
   return _redirectedConstructorNameRegexp
       .firstMatch(source.substring(constructorInitializerIndex))
       ?.group(1);
+}
+
+String jsonKeyPrototype(
+  Map<String, String> source, {
+  bool nullable,
+  String defaultValue,
+}) {
+  var values = <String, String>{}..addAll(source ?? {});
+
+  if (source == null && defaultValue == null) {
+    return null;
+  } else if (defaultValue != null && defaultValue.isNotEmpty) {
+    values['defaultValue'] = '$defaultValue';
+  } else if (nullable != null) {
+    values['required'] = '${!nullable}';
+    values['disallowNullValue'] = '${!nullable}';
+  }
+
+  return '@JsonKey(${values.entries.map((e) => '${e.key}: ${e.value}').join(',')})';
 }
 
 String whenPrototype(List<ConstructorDetails> allConstructors) {

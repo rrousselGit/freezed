@@ -311,8 +311,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
                 type: p.type,
                 nullable: p.nullable,
                 defaultValueSource: p.defaultValueSource,
-                // TODO: support hasJsonKey
-                // hasJsonKey: false,
+                jsonKeyValues: p.jsonKeyValues,
               ))
           .toList(),
       needsJsonSerializable: globalData.hasJson &&

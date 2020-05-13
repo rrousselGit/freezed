@@ -346,9 +346,7 @@ class Property {
   final List<String> decorators;
   final bool nullable;
   final String defaultValueSource;
-  final JsonKeyOptions jsonKeyOptions;
-
-  bool get hasJsonKey => jsonKeyOptions != null;
+  final Map<String, String> jsonKeyValues;
 
   Property({
     @required String type,
@@ -356,7 +354,7 @@ class Property {
     @required this.decorators,
     @required this.nullable,
     @required this.defaultValueSource,
-    this.jsonKeyOptions,
+    this.jsonKeyValues,
   }) : type = type ?? 'dynamic';
 
   factory Property.fromParameter(ParameterElement element) {
@@ -369,106 +367,123 @@ class Property {
       );
     }
 
-    final decorators = parseDecorators(element.metadata);
+    final jsonKeyValues = element.jsonKeyValues;
+    if (defaultValue != null &&
+        jsonKeyValues != null &&
+        jsonKeyValues.containsKey('defaultValue')) {
+      throw InvalidGenerationSourceError(
+        '@Default cannot be used in conjunction with @JsonKey(defaultValue:)',
+        todo: 'Remove the defaultValue parameter from @JsonKey and only'
+            'use the @Default decorator instead',
+        element: element,
+      );
+    }
+
+    if (element.hasRequired &&
+        jsonKeyValues != null &&
+        jsonKeyValues.containsKey('required')) {
+      throw InvalidGenerationSourceError(
+        '@required cannot be used in conjunction with @JsonKey(required:)',
+        todo: 'Remove the required parameter from @JsonKey and only'
+            'use the @required decorator instead',
+        element: element,
+      );
+    }
+
+    if (element.hasRequired &&
+        jsonKeyValues != null &&
+        jsonKeyValues.containsKey('disallowNullValue')) {
+      throw InvalidGenerationSourceError(
+        '@required cannot be used in conjunction with @JsonKey(disallowNullValue:)',
+        todo: 'Remove the disallowNullValue parameter from @JsonKey and only'
+            'use the @required decorator instead',
+        element: element,
+      );
+    }
+
+    if (element.isNullable &&
+        jsonKeyValues != null &&
+        jsonKeyValues.containsKey('required')) {
+      throw InvalidGenerationSourceError(
+        '@nullable cannot be used in conjunction with @JsonKey(required:)',
+        todo: 'Remove the required parameter from @JsonKey and only'
+            'use the @nullable decorator instead',
+        element: element,
+      );
+    }
+
+    if (element.isNullable &&
+        jsonKeyValues != null &&
+        jsonKeyValues.containsKey('disallowNullValue')) {
+      throw InvalidGenerationSourceError(
+        '@nullable cannot be used in conjunction with @JsonKey(disallowNullValue:)',
+        todo: 'Remove the disallowNullValue parameter from @JsonKey and only'
+            'use the @nullable decorator instead',
+        element: element,
+      );
+    }
 
     return Property(
       name: element.name,
       type: parseTypeSource(element),
-      decorators: parseDecorators(element.metadata).toList()
-        ..removeWhere((d) => d.contains('@JsonKey')),
+      decorators: parseDecorators(element.metadata),
       nullable: element.isNullable,
       defaultValueSource: defaultValue,
-      jsonKeyOptions: JsonKeyOptions.fromDecorators(decorators),
+      jsonKeyValues: jsonKeyValues,
     );
   }
 
   @override
   String toString() {
-    var jsonKeyOptions = this.jsonKeyOptions ?? JsonKeyOptions();
+    return '$_decorators final $type $name;';
+  }
 
-    if (nullable) {
-      jsonKeyOptions = jsonKeyOptions.mergeValues({
-        'required': 'false',
-        'disallowNullValue': 'false',
-      });
-    } else {
-      jsonKeyOptions = jsonKeyOptions.mergeValues({
-        'required': 'true',
-        'disallowNullValue': 'true',
-      });
+  String get _decorators {
+    var res = '${decorators.join()}';
+    var jsonKey = jsonKeyPrototype(jsonKeyValues,
+        nullable: nullable, defaultValue: defaultValueSource);
+    if (jsonKey != null) {
+      res = '$res $jsonKey';
     }
-
-    if (defaultValueSource != null) {
-      jsonKeyOptions = jsonKeyOptions.mergeValues({
-        'defaultValue': defaultValueSource,
-      });
-    }
-
-    return '${decorators.join()} $jsonKeyOptions final $type $name;';
+    return res;
   }
 
   Getter get getter => Getter(
-      name: name, type: type, decorators: decorators, nullable: nullable);
-}
-
-class JsonKeyOptions {
-  final Map<String, String> values;
-
-  JsonKeyOptions([this.values = const {}]);
-
-  static JsonKeyOptions fromDecorators(List<String> decorators) {
-    if (decorators == null || decorators.isEmpty) return null;
-
-    String jsonKeyOptions;
-    for (final d in decorators) {
-      if (!d.startsWith('@JsonKey')) continue;
-      jsonKeyOptions = d.split('@JsonKey(')[1].split(')')[0];
-      break;
-    }
-
-    if (jsonKeyOptions == null) return null;
-
-    var values = <String, String>{};
-
-    for (final option in jsonKeyOptions.split(',')) {
-      final part = option.split(':');
-      final name = part[0].trim();
-      final value = part[1].trim();
-      if (name.isNotEmpty && value.isNotEmpty) {
-        values[name] = value;
-      }
-    }
-
-    return JsonKeyOptions(values);
-  }
-
-  @override
-  String toString() {
-    if (values.isEmpty) return '';
-    return '@JsonKey(${values.entries.map((e) => '${e.key}: ${e.value}').join(',')})';
-  }
-
-  JsonKeyOptions mergeValues(Map<String, String> values) {
-    return JsonKeyOptions({}..addAll(this.values)..addAll(values));
-  }
+        name: name,
+        type: type,
+        decorators: decorators,
+        jsonKeyValues: jsonKeyValues,
+        nullable: nullable,
+      );
 }
 
 class Getter {
   final String type;
   final String name;
   final List<String> decorators;
+  final Map<String, String> jsonKeyValues;
   final bool nullable;
 
   Getter({
     @required String type,
     @required this.name,
     @required this.decorators,
+    @required this.jsonKeyValues,
     @required this.nullable,
   }) : type = type ?? 'dynamic';
 
   @override
   String toString() {
-    return '${decorators.join()} $type get $name;';
+    return '$_decorators $type get $name;';
+  }
+
+  String get _decorators {
+    var res = '${decorators.join()}';
+    var jsonKey = jsonKeyPrototype(jsonKeyValues, nullable: nullable);
+    if (jsonKey != null) {
+      res = '$res $jsonKey';
+    }
+    return res;
   }
 }
 
@@ -502,9 +517,34 @@ extension DefaultValue on ParameterElement {
     }
     return null;
   }
+}
 
-  bool get hasJsonKey {
-    return const TypeChecker.fromRuntime(JsonKey).hasAnnotationOf(this);
+extension JsonKeyValue on ParameterElement {
+  /// Returns the values associated with the `@JsonKey` decorator,
+  /// or `null` if no `@JsonKey` is specified.
+  Map<String, String> get jsonKeyValues {
+    const matcher = TypeChecker.fromRuntime(JsonKey);
+
+    for (final meta in metadata) {
+      final obj = meta.computeConstantValue();
+      if (matcher.isExactlyType(obj.type)) {
+        final source = meta.toSource();
+        final values = source.substring('@JsonKey('.length, source.length - 1);
+
+        var res = <String, String>{};
+        for (final val in values.split(',')) {
+          final parts = val.split(':');
+          final name = parts[0].trim();
+          final value = parts[1].trim();
+          if (name.isNotEmpty && value.isNotEmpty) {
+            res[name] = value;
+          }
+        }
+
+        return res;
+      }
+    }
+    return null;
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
+import 'package:freezed/src/templates/prototypes.dart';
 import 'package:meta/meta.dart';
 
 class GenericsDefinitionTemplate {
@@ -69,6 +69,7 @@ class ParametersTemplate {
           defaultValueSource: e.defaultValue,
           isRequired: e.hasRequired,
           decorators: parseDecorators(e.metadata),
+          jsonKeyValues: e.jsonKeyValues,
           nullable: e.isNullable,
         );
       }
@@ -78,6 +79,7 @@ class ParametersTemplate {
         isRequired: e.hasRequired,
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
+        jsonKeyValues: e.jsonKeyValues,
         nullable: e.isNullable,
       );
     }
@@ -118,6 +120,7 @@ class ParametersTemplate {
               type: e.type,
               decorators: e.decorators,
               nullable: e.nullable,
+              jsonKeyValues: e.jsonKeyValues,
               defaultValueSource: e.defaultValueSource,
             ),
           )
@@ -142,6 +145,7 @@ class ParametersTemplate {
               decorators: e.decorators,
               nullable: e.nullable,
               defaultValueSource: e.defaultValueSource,
+              jsonKeyValues: e.jsonKeyValues,
               showDefaultValue: showDefaultValue,
             ),
           )
@@ -189,6 +193,7 @@ class ParametersTemplate {
                 isRequired: e.isRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
+                jsonKeyValues: e.jsonKeyValues,
                 defaultValueSource: e.defaultValueSource,
               ))
           .toList(),
@@ -199,6 +204,7 @@ class ParametersTemplate {
                 isRequired: e.isRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
+                jsonKeyValues: e.jsonKeyValues,
                 defaultValueSource: e.defaultValueSource,
               ))
           .toList(),
@@ -209,6 +215,7 @@ class ParametersTemplate {
                 isRequired: e.isRequired,
                 decorators: e.decorators,
                 nullable: e.nullable,
+                jsonKeyValues: e.jsonKeyValues,
                 defaultValueSource: e.defaultValueSource,
               ))
           .toList(),
@@ -224,6 +231,7 @@ class Parameter {
     @required this.isRequired,
     @required this.decorators,
     @required this.nullable,
+    this.jsonKeyValues,
     this.showDefaultValue = false,
   });
 
@@ -233,6 +241,7 @@ class Parameter {
   final bool isRequired;
   final bool nullable;
   final List<String> decorators;
+  final Map<String, String> jsonKeyValues;
   final bool showDefaultValue;
 
   Parameter copyWith({
@@ -242,6 +251,7 @@ class Parameter {
     bool isRequired,
     bool nullable,
     List<String> decorators,
+    Map<String, String> jsonKeyValues,
     bool showDefaultValue,
   }) =>
       Parameter(
@@ -251,16 +261,27 @@ class Parameter {
         isRequired: isRequired ?? this.isRequired,
         nullable: nullable ?? this.nullable,
         decorators: decorators ?? this.decorators,
+        jsonKeyValues: jsonKeyValues ?? this.jsonKeyValues,
         showDefaultValue: showDefaultValue ?? this.showDefaultValue,
       );
 
   @override
   String toString() {
-    var res = '${decorators.join()}  ${type ?? 'dynamic'} $name';
+    var res = '$_decorators ${type ?? 'dynamic'} $name';
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
     return isRequired ? '@required $res' : res;
+  }
+
+  String get _decorators {
+    var res = '${decorators.join()}';
+    var jsonKey = jsonKeyPrototype(jsonKeyValues,
+        nullable: nullable, defaultValue: defaultValueSource);
+    if (jsonKey != null) {
+      res = '$res $jsonKey';
+    }
+    return res;
   }
 }
 
@@ -272,6 +293,7 @@ class LocalParameter extends Parameter {
     @required bool isRequired,
     @required bool nullable,
     @required List<String> decorators,
+    Map<String, String> jsonKeyValues,
   }) : super(
           name: name,
           type: type,
@@ -279,12 +301,13 @@ class LocalParameter extends Parameter {
           isRequired: isRequired,
           decorators: decorators,
           nullable: nullable,
+          jsonKeyValues: jsonKeyValues,
           defaultValueSource: defaultValueSource,
         );
 
   @override
   String toString() {
-    var res = '${decorators.join()} this.$name';
+    var res = '$_decorators this.$name';
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
@@ -308,6 +331,7 @@ class CallbackParameter extends Parameter {
           isRequired: isRequired,
           decorators: decorators,
           nullable: nullable,
+          jsonKeyValues: null,
           defaultValueSource: defaultValueSource,
         );
 
@@ -315,7 +339,7 @@ class CallbackParameter extends Parameter {
 
   @override
   String toString() {
-    var res = '${decorators.join()} $type $name($parameters)';
+    var res = '$_decorators $type $name($parameters)';
     return isRequired ? '@required $res' : res;
   }
 }
