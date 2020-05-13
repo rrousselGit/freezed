@@ -65,13 +65,21 @@ abstract class DefaultValue with _$DefaultValue {
 }
 
 @freezed
-abstract class DefaultValueJsonKey with _$DefaultValueJsonKey {
-  factory DefaultValueJsonKey(
-          [@Default(42) @JsonKey(defaultValue: 21) int value]) =
-      _DefaultValueJsonKey;
+abstract class RequiredValue with _$RequiredValue {
+  @JsonSerializable(checked: true)
+  factory RequiredValue(@required int value) = _RequiredValue;
 
-  factory DefaultValueJsonKey.fromJson(Map<String, dynamic> json) =>
-      _$DefaultValueJsonKeyFromJson(json);
+  factory RequiredValue.fromJson(Map<String, dynamic> json) =>
+      _$RequiredValueFromJson(json);
+}
+
+@freezed
+abstract class NullableValue with _$NullableValue {
+  @JsonSerializable(checked: true)
+  factory NullableValue(@nullable int value) = _NullableValue;
+
+  factory NullableValue.fromJson(Map<String, dynamic> json) =>
+      _$NullableValueFromJson(json);
 }
 
 @freezed

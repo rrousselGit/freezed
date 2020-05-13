@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:build_test/build_test.dart';
-import 'package:test/test.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:matcher/matcher.dart';
+import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/json.dart';
@@ -28,10 +29,38 @@ Future<void> main() async {
       DefaultValue(42),
     );
   });
-  test('@Default does not imply a @JsonKey if one is already specified', () {
+  test('@required implies a @JsonKey', () {
+    final value = RequiredValue(42);
     expect(
-      DefaultValueJsonKey.fromJson(<String, dynamic>{}),
-      DefaultValueJsonKey(21),
+      value.toJson(),
+      {'value': 42},
+    );
+
+    expect(
+      () => RequiredValue.fromJson(<String, dynamic>{}),
+      throwsA(isA<CheckedFromJsonException>()),
+    );
+
+    expect(
+      () => RequiredValue.fromJson(<String, dynamic>{'value': null}),
+      throwsA(isA<CheckedFromJsonException>()),
+    );
+  });
+  test('@nullable implies a @JsonKey', () {
+    final value = NullableValue(null);
+    expect(
+      value.toJson(),
+      {'value': null},
+    );
+
+    expect(
+      NullableValue.fromJson(<String, dynamic>{}),
+      NullableValue(null),
+    );
+
+    expect(
+      NullableValue.fromJson(<String, dynamic>{'value': 42}),
+      NullableValue(42),
     );
   });
   test('generic json', () {
