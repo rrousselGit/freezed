@@ -30,7 +30,7 @@ Future<void> main() async {
     );
   });
   test('@required implies a @JsonKey', () {
-    final value = RequiredValue(42);
+    final value = RequiredValue(value: 42);
     expect(
       value.toJson(),
       {'value': 42},

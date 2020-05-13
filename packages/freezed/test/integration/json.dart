@@ -67,7 +67,7 @@ abstract class DefaultValue with _$DefaultValue {
 @freezed
 abstract class RequiredValue with _$RequiredValue {
   @JsonSerializable(checked: true)
-  factory RequiredValue(@required int value) = _RequiredValue;
+  factory RequiredValue({@required int value}) = _RequiredValue;
 
   factory RequiredValue.fromJson(Map<String, dynamic> json) =>
       _$RequiredValueFromJson(json);
