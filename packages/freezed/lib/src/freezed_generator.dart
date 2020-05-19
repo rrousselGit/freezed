@@ -164,6 +164,7 @@ $runtimeType(
 @immutable
 class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   final _computeElementDataCache = <ClassElement, Data>{};
+  final _parsedElementCheckList = <ClassElement>[];
 
   Data _computeElementDataFor(ParameterElement parameter) {
     final parameterTypeElement = parameter?.type?.element;
@@ -174,6 +175,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     return _computeElementDataCache.putIfAbsent(classElement, () {
       if (!typeChecker.hasAnnotationOf(classElement)) return null;
+      if (_parsedElementCheckList.contains(classElement)) return null;
+      _parsedElementCheckList.add(classElement);
       return parseElement(
         _GlobalData(hasDiagnostics: false, hasJson: false),
         classElement,
@@ -182,7 +185,10 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   }
 
   @override
-  Data parseElement(_GlobalData globalData, Element rawElement) {
+  Data parseElement(_GlobalData globalData, Element rawElement, {bool init}) {
+    if (init == true) {
+      _parsedElementCheckList.clear();
+    }
     if (rawElement is! ClassElement) {
       throw InvalidGenerationSourceError(
         '@freezed can only be applied on classes. Failing element: ${rawElement.name}',

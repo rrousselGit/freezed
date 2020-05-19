@@ -25,9 +25,8 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
         }
       }
 
-      final data = parseElement(globalData, element);
+      final data = parseElement(globalData, element, init: true);
       if (data == null) continue;
-
       for (final value
           in generateForData(globalData, data).map((e) => e.toString())) {
         assert(value == null || (value.length == value.trim().length));
@@ -42,7 +41,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
   GlobalData parseGlobalData(LibraryElement library);
 
-  Data parseElement(GlobalData globalData, Element element);
+  Data parseElement(GlobalData globalData, Element element, {bool init});
 
   Iterable<Object> generateForData(GlobalData globalData, Data data);
 
