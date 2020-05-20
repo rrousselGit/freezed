@@ -27,7 +27,6 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
       final data = parseElement(globalData, element);
       if (data == null) continue;
-
       for (final value
           in generateForData(globalData, data).map((e) => e.toString())) {
         assert(value == null || (value.length == value.trim().length));

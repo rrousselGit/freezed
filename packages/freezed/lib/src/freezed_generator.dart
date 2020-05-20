@@ -164,6 +164,7 @@ $runtimeType(
 @immutable
 class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   final _computeElementDataCache = <ClassElement, Data>{};
+  final _parsedElementCheckSet = <ClassElement>{};
 
   Data _computeElementDataFor(ParameterElement parameter) {
     final parameterTypeElement = parameter?.type?.element;
@@ -174,6 +175,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     return _computeElementDataCache.putIfAbsent(classElement, () {
       if (!typeChecker.hasAnnotationOf(classElement)) return null;
+      if (_parsedElementCheckSet.contains(classElement)) return null;
+      _parsedElementCheckSet.add(classElement);
       return parseElement(
         _GlobalData(hasDiagnostics: false, hasJson: false),
         classElement,
