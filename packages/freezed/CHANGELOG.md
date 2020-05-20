@@ -1,3 +1,7 @@
+# 0.10.9
+
+- Fixes a bug where code-generation could end-up in a Stack Overflow if a class depends on itself
+
 # 0.10.8
 
 - Fix code-generation issue for deep-copy of generic objects (https://github.com/rrousselGit/freezed/issues/128)
