@@ -252,7 +252,7 @@ is nullable.
 - optional positional parameters using `@Default`.
 - named parameters decorated by `@required`
 
-**What [Freezd] considers to be nullable**:
+**What [Freezed] considers to be nullable**:
 
 - optional parameters
 - parameters decorated with `@nullable`
