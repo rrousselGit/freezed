@@ -1,3 +1,7 @@
+# 0.11.0-dev
+
+Generated new extra utilities to help devtools inspect Freezed objects.
+
 # 0.10.9
 
 - Fixes a bug where code-generation could end-up in a Stack Overflow if a class depends on itself

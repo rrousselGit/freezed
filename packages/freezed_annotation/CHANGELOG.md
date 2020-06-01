@@ -1,3 +1,8 @@
+# 0.11.0-dev
+
+Added `$DebugFreezed` interface, to allow devtools to inspect the
+content of an object generated with Freezed.
+
 # 0.7.1
 
 Minor change to `@Default` to fix an issue with complex default values.

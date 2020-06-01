@@ -65,10 +65,23 @@ class $concreteName$genericsDefinition $_concreteSuper {
 
   $_concreteFromJsonConstructor
 
+
 $_properties
 
 ${lateGetters.join()}
 
+
+  @override
+  String get \$debugRedirectedClassName {
+    String res;
+    assert(() {
+      res = '${constructor.redirectedName}';
+      return true;
+    }());
+    return res;
+  }
+
+$_debugToMap
 $_toStringMethod
 $_debugFillProperties
 $_operatorEqualMethod
@@ -94,6 +107,26 @@ ${copyWith.abstractCopyWithGetter}
 ''';
   }
 
+  String get _debugToMap {
+    final properties = constructor //
+        .impliedProperties
+        .map((e) => "'${e.name}': ${e.name},")
+        .join('');
+    return '''
+@override
+Map<String, Object> \$debugToMap() {
+  Map<String, Object> res;
+  assert(() {
+    res = {
+      $properties
+    };
+    return true;
+  }());
+  return res;
+}
+''';
+  }
+
   String get _superConstructor {
     if (!shouldUseExtends) return '';
     return 'super._()';
@@ -111,9 +144,9 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _concreteSuper {
     if (shouldUseExtends) {
-      return 'extends ${constructor.redirectedName}$genericsParameter $_diagnosticable';
+      return 'extends ${constructor.redirectedName}$genericsParameter $_diagnosticable implements \$DebugFreezed';
     } else {
-      return '$_diagnosticable implements ${constructor.redirectedName}$genericsParameter';
+      return '$_diagnosticable implements ${constructor.redirectedName}$genericsParameter, \$DebugFreezed';
     }
   }
 
