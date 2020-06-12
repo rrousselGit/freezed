@@ -20,16 +20,16 @@ void main() {
   });
 
   test('correct generic type generated for constructor and copyWith', () {
-    final header = const WidgetType.header(title: 'test');
-    final page = const WidgetType.page();
+    final header = const Header(title: 'test');
+    final page = const Page();
     expect(header is Header, true);
-    var fapp = FApp(head: header as Header, pages: []);
+    var fapp = FApp(head: header, pages: []);
     expect(
       fapp.pages is List<Page>,
       true,
     );
 
-    fapp = fapp.copyWith(pages: [page as Page]);
+    fapp = fapp.copyWith(pages: [page]);
     expect(
       fapp.pages is List<Page>,
       true,
