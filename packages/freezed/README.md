@@ -57,7 +57,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [late](#late)
     - [constructor tear-off](#constructor-tear-off)
     - [decorators](#decorators)
-    - [Implement interfaces for union types](#implement-interfaces-for-union-types)
+    - [implement interfaces for union types](#implement-interfaces-for-union-types)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
     - [deep copy](#deep-copy)
