@@ -57,6 +57,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [late](#late)
     - [constructor tear-off](#constructor-tear-off)
     - [decorators](#decorators)
+    - [implement interfaces for union types](#implement-interfaces-for-union-types)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
     - [deep copy](#deep-copy)
@@ -493,6 +494,48 @@ abstract class Person with _$Person {
   }) = _Person;
 }
 ```
+
+### Implement interfaces for union types
+
+When you have multiple types in the same class you might want to make
+one of those types to implement a interface. You can do that using the
+`@Implements` decorator. In this case `City` is implementing  
+`GeographicArea`.
+
+```dart
+@freezed
+abstract class Example with _$Example {
+  const factory Example.person(String name, int age) = Person;
+
+  @Implements(GeographicArea)
+  const factory Example.city(String name, int population) = City;
+}
+```
+
+In case you want to specify a generic interface you need to declare it
+as a string using the `Implements.fromString` constructor. Similar
+`Street` implements `AdministrativeArea<House>`.
+
+```dart
+@freezed
+abstract class Example with _$Example {
+  const factory Example.person(String name, int age) = Person;
+
+  @Implements.fromString('AdministrativeArea<House>')
+  const factory Example.street(String name) = Street;
+
+  @Implements(GeographicArea)
+  const factory Example.city(String name, int population) = City;
+}
+```
+
+**Note**: You need to make sure that you comply with the interface
+requirements by implementing all the abstract members. If the interface
+has no members or just fields you can fulfil the interface contract by
+adding them in the constructor of the union type. Keep in mind that if
+the interface defines a method or a getter, that you implement in the
+class, you need to use the
+[Custom getters and methods](#custom-getters-and-methods) instructions.
 
 ## ==/toString
 

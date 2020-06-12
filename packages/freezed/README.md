@@ -128,7 +128,7 @@ abstract class Union with _$Union {
 
 From there, to run the code generator, you have two possibilities:
 
-- `flutter pub pub run build_runner build`, if your package depends on Flutter
+- `flutter pub run build_runner build`, if your package depends on Flutter
 - `pub run build_runner build` otherwise
 
 # The features
@@ -253,7 +253,7 @@ is nullable.
 - optional positional parameters using `@Default`.
 - named parameters decorated by `@required`
 
-**What [Freezd] considers to be nullable**:
+**What [Freezed] considers to be nullable**:
 
 - optional parameters
 - parameters decorated with `@nullable`
