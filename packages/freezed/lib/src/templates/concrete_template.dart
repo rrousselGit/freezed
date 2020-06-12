@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' as annotations;
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:freezed_annotation/freezed_annotation.dart' as annotations;
 
 import 'copy_with.dart';
 import 'parameter_template.dart';
@@ -82,7 +82,7 @@ $_toJson
 }
 
 
-abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter {
+abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter$_implementations {
   $_privateConcreteConstructor
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
 
@@ -92,6 +92,31 @@ $_abstractProperties
 ${copyWith.abstractCopyWithGetter}
 }
 ''';
+  }
+
+  String get _implementations {
+    final implementationTypes = constructor.decorators
+        .where((element) => element.startsWith('@Implements'))
+        .map((element) {
+          // the fromString constructor contains commas
+          final offset = element.contains('fromString') ? 2 : 1;
+          return element.substring(
+              element.indexOf('(') + offset, element.length - offset);
+        })
+        .toList()
+        .join(', ');
+
+    final buffer = StringBuffer();
+    if (implementationTypes.isNotEmpty) {
+      if (shouldUseExtends) {
+        buffer.write(' implements ');
+      } else {
+        buffer.write(', ');
+      }
+    }
+    buffer.write(implementationTypes);
+
+    return buffer.toString();
   }
 
   String get _superConstructor {
