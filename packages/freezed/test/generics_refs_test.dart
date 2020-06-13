@@ -1,6 +1,7 @@
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
+import 'common.dart';
 import 'integration/generics_refs.dart';
 
 void main() {
@@ -19,20 +20,46 @@ void main() {
     expect(errorResult.errors, isEmpty);
   });
 
-  test('correct generic type generated for constructor and copyWith', () {
-    final header = const Header(title: 'test');
+  test('handles lists', () async {
     final page = const Page();
-    expect(header is Header, true);
-    var fapp = FApp(head: header, pages: []);
-    expect(
-      fapp.pages is List<Page>,
-      true,
-    );
 
-    fapp = fapp.copyWith(pages: [page]);
-    expect(
-      fapp.pages is List<Page>,
-      true,
-    );
+    expect(PageList([page]).pages, [page]);
+
+    await expectLater(compile(r'''
+import 'generics_refs.dart';
+
+void main() {
+  const page = Page();
+  PageList([page]);
+}
+'''), completes);
+    await expectLater(compile(r'''
+import 'generics_refs.dart';
+
+void main() {
+  PageList([42]);
+}
+'''), throwsCompileError);
+  });
+  test('handles maps', () async {
+    final page = const Page();
+
+    expect(PageMap({'foo': page}).pages, {'foo': page});
+
+    await expectLater(compile(r'''
+import 'generics_refs.dart';
+
+void main() {
+  const page = Page();
+  PageMap({'foo': page});
+}
+'''), completes);
+    await expectLater(compile(r'''
+import 'generics_refs.dart';
+
+void main() {
+  PageMap({'foo': 42});
+}
+'''), throwsCompileError);
   });
 }
