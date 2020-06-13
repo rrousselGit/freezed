@@ -1,3 +1,20 @@
+# 0.11.0
+
+- Added `@With` and `@Implements` decorators to allow only a specific constructor
+  of a union type to implement an interface:
+
+  ```dart
+  @freezed
+  abstract class Example with _$Example {
+    const factory Example.person(String name, int age) = Person;
+
+    @Implements(GeographicArea)
+    const factory Example.city(String name, int population) = City;
+  }
+  ```
+
+  Thanks to @long1eu~
+
 # 0.10.9
 
 - Fixes a bug where code-generation could end-up in a Stack Overflow if a class depends on itself

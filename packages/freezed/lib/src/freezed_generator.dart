@@ -401,11 +401,11 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
       Iterable<String> withDecorationTypes() sync* {
         for (final metadata in constructor.metadata) {
-          metadata.computeConstantValue();
           if (!metadata.isWith) continue;
-          var type = metadata.constantValue.getField('type');
+          final object = metadata.computeConstantValue();
+          var type = object.getField('type');
           if (type.isNull) {
-            type = metadata.constantValue.getField('stringType');
+            type = object.getField('stringType');
             yield type.toStringValue();
           } else {
             yield type.toTypeValue().getDisplayString();
@@ -415,11 +415,11 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
       Iterable<String> implementsDecorationTypes() sync* {
         for (final metadata in constructor.metadata) {
-          metadata.computeConstantValue();
           if (!metadata.isImplements) continue;
-          var type = metadata.constantValue.getField('type');
+          final object = metadata.computeConstantValue();
+          var type = object.getField('type');
           if (type.isNull) {
-            type = metadata.constantValue.getField('stringType');
+            type = object.getField('stringType');
             yield type.toStringValue();
           } else {
             yield type.toTypeValue().getDisplayString();

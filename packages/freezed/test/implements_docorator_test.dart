@@ -5,9 +5,12 @@ import 'integration/implements_decorator.dart';
 void main() {
   group('Simple', () {
     test('fromString', () {
+      final house = House();
+
       expect(
         const SimpleImplements.street('Sarah'),
-        isA<AdministrativeArea<House>>(),
+        isA<AdministrativeArea<House>>()
+            .having((s) => s.method(house), 'method(house)', house),
       );
     });
     test('fromType', () {
@@ -16,7 +19,8 @@ void main() {
 
       object = const SimpleImplements.country('Morning', 140000);
       expect(object, isA<House>());
-      expect(object, isA<GeographicArea>());
+      expect(object,
+          isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'));
     });
   });
   group('CustomMethod', () {
@@ -32,7 +36,20 @@ void main() {
     test('mixedWithAndImplements', () {
       const object = CustomMethodImplements.city('Morning', 140000);
       expect(object, isA<House>());
-      expect(object, isA<GeographicArea>());
+      expect(object,
+          isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'));
+    });
+    test(
+        'redirected class can be assigned to the interfaces/mixins without cast',
+        () {
+      const city = CityCustomMethod('name', 42);
+
+      // ignore: unused_local_variable
+      House house = city;
+      Named named = city;
+      expect(named.name, 'name');
+      GeographicArea area = city;
+      expect(area.name, 'name');
     });
   });
   group('Generic type', () {
@@ -49,7 +66,8 @@ void main() {
     test('fromType', () {
       const object = GenericImplements<int>.city('Morning', 140000);
       expect(object, isA<House>());
-      expect(object, isA<GeographicArea>());
+      expect(object,
+          isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'));
     });
   });
 }

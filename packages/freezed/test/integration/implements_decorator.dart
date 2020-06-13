@@ -31,6 +31,7 @@ abstract class CustomMethodImplements implements _$CustomMethodImplements {
   const factory CustomMethodImplements.street(String name) = StreetCustomMethod;
 
   @With(House)
+  @Implements(Named)
   @Implements(GeographicArea)
   const factory CustomMethodImplements.city(String name, int population) =
       CityCustomMethod;
@@ -57,7 +58,13 @@ abstract class GeographicArea {
   String get name;
 }
 
-class AdministrativeArea<T> {}
+abstract class Named {
+  String get name;
+}
+
+mixin AdministrativeArea<T> {
+  T method(T value) => value;
+}
 
 class House {}
 

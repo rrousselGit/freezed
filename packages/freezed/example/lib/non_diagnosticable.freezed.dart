@@ -564,7 +564,7 @@ class _$SimpleStreetCopyWithImpl<$Res>
 }
 
 @With.fromString('AdministrativeArea<House>')
-class _$SimpleStreet implements SimpleStreet {
+class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   const _$SimpleStreet(this.name) : assert(name != null);
 
   @override
@@ -655,8 +655,7 @@ class _$SimpleStreet implements SimpleStreet {
 }
 
 abstract class SimpleStreet
-    with AdministrativeArea<House>
-    implements SimpleImplements {
+    implements SimpleImplements, AdministrativeArea<House> {
   const factory SimpleStreet(String name) = _$SimpleStreet;
 
   @override
@@ -696,7 +695,7 @@ class _$SimpleCityCopyWithImpl<$Res>
 }
 
 @With(House)
-class _$SimpleCity implements SimpleCity {
+class _$SimpleCity with House implements SimpleCity {
   const _$SimpleCity(this.name, this.population)
       : assert(name != null),
         assert(population != null);
@@ -795,7 +794,7 @@ class _$SimpleCity implements SimpleCity {
   }
 }
 
-abstract class SimpleCity with House implements SimpleImplements {
+abstract class SimpleCity implements SimpleImplements, House {
   const factory SimpleCity(String name, int population) = _$SimpleCity;
 
   @override
@@ -838,7 +837,7 @@ class _$SimpleCountryCopyWithImpl<$Res>
 
 @With(House)
 @Implements(GeographicArea)
-class _$SimpleCountry implements SimpleCountry {
+class _$SimpleCountry with House implements SimpleCountry {
   const _$SimpleCountry(this.name, this.population)
       : assert(name != null),
         assert(population != null);
@@ -938,8 +937,7 @@ class _$SimpleCountry implements SimpleCountry {
 }
 
 abstract class SimpleCountry
-    with House
-    implements SimpleImplements, GeographicArea {
+    implements SimpleImplements, GeographicArea, House {
   const factory SimpleCountry(String name, int population) = _$SimpleCountry;
 
   @override
@@ -1216,7 +1214,8 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
 
 @With(Shop)
 @With.fromString('AdministrativeArea<House>')
-class _$StreetCustomMethod extends StreetCustomMethod {
+class _$StreetCustomMethod extends StreetCustomMethod
+    with Shop, AdministrativeArea<House> {
   const _$StreetCustomMethod(this.name)
       : assert(name != null),
         super._();
@@ -1309,7 +1308,7 @@ class _$StreetCustomMethod extends StreetCustomMethod {
 }
 
 abstract class StreetCustomMethod extends CustomMethodImplements
-    with Shop, AdministrativeArea<House> {
+    implements Shop, AdministrativeArea<House> {
   const StreetCustomMethod._() : super._();
   const factory StreetCustomMethod(String name) = _$StreetCustomMethod;
 
@@ -1352,7 +1351,7 @@ class _$CityCustomMethodCopyWithImpl<$Res>
 
 @With(House)
 @Implements(GeographicArea)
-class _$CityCustomMethod extends CityCustomMethod {
+class _$CityCustomMethod extends CityCustomMethod with House {
   const _$CityCustomMethod(this.name, this.population)
       : assert(name != null),
         assert(population != null),
@@ -1453,8 +1452,7 @@ class _$CityCustomMethod extends CityCustomMethod {
 }
 
 abstract class CityCustomMethod extends CustomMethodImplements
-    with House
-    implements GeographicArea {
+    implements GeographicArea, House {
   const CityCustomMethod._() : super._();
   const factory CityCustomMethod(String name, int population) =
       _$CityCustomMethod;
@@ -1851,7 +1849,9 @@ class _$GenericStreetCopyWithImpl<T, $Res>
 }
 
 @With.fromString('AdministrativeArea<T>')
-class _$GenericStreet<T> implements GenericStreet<T> {
+class _$GenericStreet<T>
+    with AdministrativeArea<T>
+    implements GenericStreet<T> {
   const _$GenericStreet(this.name, this.value)
       : assert(name != null),
         assert(value != null);
@@ -1944,8 +1944,7 @@ class _$GenericStreet<T> implements GenericStreet<T> {
 }
 
 abstract class GenericStreet<T>
-    with AdministrativeArea<T>
-    implements GenericImplements<T> {
+    implements GenericImplements<T>, AdministrativeArea<T> {
   const factory GenericStreet(String name, T value) = _$GenericStreet<T>;
 
   @override
@@ -1988,7 +1987,7 @@ class _$GenericCityCopyWithImpl<T, $Res>
 
 @With(House)
 @Implements(GeographicArea)
-class _$GenericCity<T> implements GenericCity<T> {
+class _$GenericCity<T> with House implements GenericCity<T> {
   const _$GenericCity(this.name, this.population)
       : assert(name != null),
         assert(population != null);
@@ -2082,8 +2081,7 @@ class _$GenericCity<T> implements GenericCity<T> {
 }
 
 abstract class GenericCity<T>
-    with House
-    implements GenericImplements<T>, GeographicArea {
+    implements GenericImplements<T>, GeographicArea, House {
   const factory GenericCity(String name, int population) = _$GenericCity<T>;
 
   @override
