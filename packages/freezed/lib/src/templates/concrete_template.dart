@@ -3,7 +3,6 @@ import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:freezed_annotation/freezed_annotation.dart' as annotations;
 
 import 'copy_with.dart';
 import 'parameter_template.dart';
@@ -82,7 +81,7 @@ $_toJson
 }
 
 
-abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter {
+abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter$interfaces {
   $_privateConcreteConstructor
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
 
@@ -92,6 +91,31 @@ $_abstractProperties
 ${copyWith.abstractCopyWithGetter}
 }
 ''';
+  }
+
+  String get interfaces {
+    if (constructor.withDecorators.isEmpty &&
+        constructor.implementsDecorators.isEmpty) {
+      return '';
+    }
+
+    final interfaces = [
+      ...constructor.implementsDecorators,
+      ...constructor.withDecorators,
+    ].join(', ');
+
+    final buffer = StringBuffer();
+
+    if (interfaces.isNotEmpty) {
+      if (shouldUseExtends) {
+        buffer.write(' implements ');
+      } else {
+        buffer.write(', ');
+      }
+      buffer.write(interfaces);
+    }
+
+    return buffer.toString();
   }
 
   String get _superConstructor {
@@ -110,10 +134,16 @@ ${copyWith.abstractCopyWithGetter}
   }
 
   String get _concreteSuper {
+    final mixins = [
+      if (hasDiagnosticable) 'DiagnosticableTreeMixin',
+      ...constructor.withDecorators,
+    ];
+    final mixinsStr = mixins.isEmpty ? '' : ' with ${mixins.join(',')}';
+
     if (shouldUseExtends) {
-      return 'extends ${constructor.redirectedName}$genericsParameter $_diagnosticable';
+      return 'extends ${constructor.redirectedName}$genericsParameter $mixinsStr';
     } else {
-      return '$_diagnosticable implements ${constructor.redirectedName}$genericsParameter';
+      return '$mixinsStr implements ${constructor.redirectedName}$genericsParameter';
     }
   }
 
@@ -181,12 +211,6 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     $diagnostics;
 }
 ''';
-  }
-
-  String get _diagnosticable {
-    if (!hasDiagnosticable) return '';
-
-    return 'with DiagnosticableTreeMixin';
   }
 
   String get _maybeMap {
@@ -328,7 +352,7 @@ int get hashCode => runtimeType.hashCode $hashCodeImpl;
 
 extension on Element {
   bool get hasNullable {
-    return TypeChecker.fromRuntime(annotations.nullable.runtimeType)
+    return TypeChecker.fromRuntime(nullable.runtimeType)
         .hasAnnotationOf(this, throwOnUnresolved: false);
   }
 }

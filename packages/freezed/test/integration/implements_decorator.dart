@@ -1,14 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 
-part 'non_diagnosticable.freezed.dart';
-
-@freezed
-abstract class Example<T> with _$Example<T> {
-  factory Example(int a, String b) = _Example<T>;
-
-  factory Example.named(T c) = _Example2<T>;
-}
+part 'implements_decorator.freezed.dart';
 
 @freezed
 abstract class SimpleImplements with _$SimpleImplements {
@@ -38,13 +31,10 @@ abstract class CustomMethodImplements implements _$CustomMethodImplements {
   const factory CustomMethodImplements.street(String name) = StreetCustomMethod;
 
   @With(House)
+  @Implements(Named)
   @Implements(GeographicArea)
   const factory CustomMethodImplements.city(String name, int population) =
       CityCustomMethod;
-
-  @Implements(Shop)
-  @Implements(GeographicArea)
-  const factory CustomMethodImplements.duplex(String name) = DuplexCustomMethod;
 
   void function() {}
 }
@@ -68,7 +58,13 @@ abstract class GeographicArea {
   String get name;
 }
 
-class AdministrativeArea<T> {}
+abstract class Named {
+  String get name;
+}
+
+mixin AdministrativeArea<T> {
+  T method(T value) => value;
+}
 
 class House {}
 
