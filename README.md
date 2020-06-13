@@ -949,7 +949,7 @@ Then [Freezed] will use each JSON object's `runtimeType` to choose the construct
 [
   {
     "runtimeType": "default", 
-     "a": "This JSON object will use constructor MyResponse()" 
+    "a": "This JSON object will use constructor MyResponse()" 
   },
   {
     "runtimeType": "special",
@@ -981,12 +981,12 @@ class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynam
     // you need to find some condition to know which type it is. e.g. check the presence of some field in the json
     if (isTypeData) { 
       return MyResponseData.fromJson(json);
-    } else if (isTypeSpecia) {
+    } else if (isTypeSpecial) {
       return MyResponseSpecial.fromJson(json);
     else if (isTypeError) {
       return MyResponseError.fromJson(json);
     } else {
-      throw Exception("Could not determine the constructor for mapping from JSON";
+      throw Exception("Could not determine the constructor for mapping from JSON");
     }
  }
 
