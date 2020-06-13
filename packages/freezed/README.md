@@ -57,7 +57,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [late](#late)
     - [constructor tear-off](#constructor-tear-off)
     - [decorators](#decorators)
-    - [mixin for individual classes for union types](#mixin-for-individual-classes-for-union-types)
+    - [mixins and interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
     - [deep copy](#deep-copy)
