@@ -947,9 +947,19 @@ Then [Freezed] will use each JSON object's `runtimeType` to choose the construct
 
 ```json
 [
-  { "runtimeType": "default", "a": "This JSON object will use constructor MyResponse()" },
-  { "runtimeType": "special", "a": "This JSON object will use constructor MyResponse.special()", "b": 42 },
-  { "runtimeType": "error", "message": "This JSON object will use constructor MyResponse.error()" }
+  {
+    "runtimeType": "default", 
+     "a": "This JSON object will use constructor MyResponse()" 
+  },
+  {
+    "runtimeType": "special",
+    "a": "This JSON object will use constructor MyResponse.special()",
+    "b": 42 
+  },
+  { 
+    "runtimeType": "error",
+    "message": "This JSON object will use constructor MyResponse.error()"
+  }
 ]
 ```
 
