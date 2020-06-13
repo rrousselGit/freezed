@@ -471,7 +471,7 @@ extension DefaultValue on ParameterElement {
 String parseTypeSource(VariableElement element) {
   var type = element.type?.getDisplayString();
 
-  if (type == null || type.contains('dynamic')) {
+  if (type == null || type == 'dynamic') {
     if (element.type?.element != null &&
         element.type.isDynamic &&
         element.type.element.isSynthetic) {
@@ -482,7 +482,7 @@ String parseTypeSource(VariableElement element) {
     } else if (element.type?.element != null) {
       final source =
           element.source.contents.data.substring(0, element.nameOffset);
-      final match = RegExp(r'(\w+<\w+>)\s+$').firstMatch(source);
+      final match = RegExp(r'(\w+<.+?>)\s+$').firstMatch(source);
       type = match?.group(1);
     }
   }
