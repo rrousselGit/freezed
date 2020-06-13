@@ -82,7 +82,7 @@ $_toJson
 }
 
 
-abstract class ${constructor.redirectedName}$genericsDefinition$_extendsWithDecorators $_superKeyword $name$genericsParameter$_implementsWithDecorators {
+abstract class ${constructor.redirectedName}$genericsDefinition$_extendsDecorators $_superKeyword $name$genericsParameter$_implementsDecorators {
   $_privateConcreteConstructor
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
 
@@ -94,20 +94,38 @@ ${copyWith.abstractCopyWithGetter}
 ''';
   }
 
-  String get _extendsWithDecorators {
+  String get _extendsDecorators {
     if (constructor.withDecorators.isEmpty) {
       return '';
     }
-    final implementationTypes = constructor.withDecorators.join(', ');
-    return shouldUseExtends ? '' : ' with $implementationTypes';
+
+    final withTypes = constructor.withDecorators.join(', ');
+    return shouldUseExtends ? '' : ' with $withTypes';
   }
 
-  String get _implementsWithDecorators {
-    if (constructor.withDecorators.isEmpty) {
+  String get _implementsDecorators {
+    if (constructor.withDecorators.isEmpty &&
+        constructor.implementsDecorators.isEmpty) {
       return '';
     }
-    final implementationTypes = constructor.withDecorators.join(', ');
-    return shouldUseExtends ? ' with $implementationTypes' : '';
+
+    final implementationTypes = constructor.implementsDecorators.join(', ');
+    final withTypes = constructor.withDecorators.join(', ');
+    final buffer = StringBuffer();
+
+    if (withTypes.isNotEmpty && shouldUseExtends) {
+      buffer.write(' with $withTypes');
+    }
+    if (implementationTypes.isNotEmpty) {
+      if (shouldUseExtends) {
+        buffer.write(' implements ');
+      } else {
+        buffer.write(', ');
+      }
+      buffer.write(implementationTypes);
+    }
+
+    return buffer.toString();
   }
 
   String get _superConstructor {

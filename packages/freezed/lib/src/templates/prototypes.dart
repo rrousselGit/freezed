@@ -29,6 +29,13 @@ extension FreezedElementAnnotation on ElementAnnotation {
     return const TypeChecker.fromRuntime(With)
         .isExactlyType(computeConstantValue().type);
   }
+
+  /// if the element is decorated with `@Implements(Type)` or
+  /// `@Implements.fromString('Type')`
+  bool get isImplements {
+    return const TypeChecker.fromRuntime(Implements)
+        .isExactlyType(computeConstantValue().type);
+  }
 }
 
 String getRedirectedConstructorName(String source) {

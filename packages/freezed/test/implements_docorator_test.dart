@@ -11,19 +11,25 @@ void main() {
       );
     });
     test('fromType', () {
-      const object = SimpleImplements.city('Morning', 140000);
+      var object = const SimpleImplements.city('Morning', 140000);
+      expect(object, isA<House>());
+
+      object = const SimpleImplements.country('Morning', 140000);
       expect(object, isA<House>());
       expect(object, isA<GeographicArea>());
     });
   });
   group('CustomMethod', () {
     test('fromString', () {
-      expect(
-        const CustomMethodImplements.street('Sarah'),
-        isA<AdministrativeArea<House>>(),
-      );
+      const object = CustomMethodImplements.street('Sarah');
+      expect(object, isA<Shop>());
     });
-    test('fromType', () {
+    test('mixedFromStringWithFromType', () {
+      const object = CustomMethodImplements.street('Sarah');
+      expect(object, isA<Shop>());
+      expect(object, isA<AdministrativeArea<House>>());
+    });
+    test('mixedWithAndImplements', () {
       const object = CustomMethodImplements.city('Morning', 140000);
       expect(object, isA<House>());
       expect(object, isA<GeographicArea>());

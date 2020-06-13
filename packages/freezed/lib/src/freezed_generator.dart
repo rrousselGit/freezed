@@ -62,6 +62,7 @@ class ConstructorDetails {
     @required this.fullName,
     @required this.decorators,
     @required this.withDecorators,
+    @required this.implementsDecorators,
     @required this.hasJsonSerializable,
     @required this.cloneableProperties,
     @required this.canOverrideToString,
@@ -76,6 +77,7 @@ class ConstructorDetails {
   final bool hasJsonSerializable;
   final String fullName;
   final List<String> withDecorators;
+  final List<String> implementsDecorators;
   final List<String> decorators;
   final List<CloneableProperty> cloneableProperties;
   final bool canOverrideToString;
@@ -95,6 +97,7 @@ $runtimeType(
   fullName: $fullName,
   decorators: $decorators,
   withDecorators: $withDecorators,
+  implementsDecorators: $implementsDecorators,
   hasJsonSerializable: $hasJsonSerializable,
   cloneableProperties: $cloneableProperties,
   canOverrideToString: $canOverrideToString,
@@ -410,6 +413,20 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         }
       }
 
+      Iterable<String> implementsDecorationTypes() sync* {
+        for (final metadata in constructor.metadata) {
+          metadata.computeConstantValue();
+          if (!metadata.isImplements) continue;
+          var type = metadata.constantValue.getField('type');
+          if (type.isNull) {
+            type = metadata.constantValue.getField('stringType');
+            yield type.toStringValue();
+          } else {
+            yield type.toTypeValue().getDisplayString();
+          }
+        }
+      }
+
       result.add(
         ConstructorDetails(
           name: constructor.name,
@@ -421,7 +438,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
               Property.fromParameter(parameter),
           ],
           decorators: constructor.metadata.map((e) => e.toSource()).toList(),
-          withDecorators: withDecorationTypes().toList(),
+          withDecorators: withDecorationTypes().toSet().toList(),
+          implementsDecorators: implementsDecorationTypes().toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
           hasJsonSerializable: constructor.hasJsonSerializable,
           cloneableProperties: cloneableProperties().toList(),

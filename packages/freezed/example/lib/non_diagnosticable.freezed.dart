@@ -321,6 +321,13 @@ class _$SimpleImplementsTearOff {
       population,
     );
   }
+
+  SimpleCountry country(String name, int population) {
+    return SimpleCountry(
+      name,
+      population,
+    );
+  }
 }
 
 // ignore: unused_element
@@ -334,12 +341,14 @@ mixin _$SimpleImplements {
     @required Result person(String name, int age),
     @required Result street(String name),
     @required Result city(String name, int population),
+    @required Result country(String name, int population),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result person(String name, int age),
     Result street(String name),
     Result city(String name, int population),
+    Result country(String name, int population),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -347,12 +356,14 @@ mixin _$SimpleImplements {
     @required Result person(SimplePerson value),
     @required Result street(SimpleStreet value),
     @required Result city(SimpleCity value),
+    @required Result country(SimpleCountry value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result person(SimplePerson value),
     Result street(SimpleStreet value),
     Result city(SimpleCity value),
+    Result country(SimpleCountry value),
     @required Result orElse(),
   });
 
@@ -456,10 +467,12 @@ class _$SimplePerson implements SimplePerson {
     @required Result person(String name, int age),
     @required Result street(String name),
     @required Result city(String name, int population),
+    @required Result country(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(country != null);
     return person(name, age);
   }
 
@@ -469,6 +482,7 @@ class _$SimplePerson implements SimplePerson {
     Result person(String name, int age),
     Result street(String name),
     Result city(String name, int population),
+    Result country(String name, int population),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -484,10 +498,12 @@ class _$SimplePerson implements SimplePerson {
     @required Result person(SimplePerson value),
     @required Result street(SimpleStreet value),
     @required Result city(SimpleCity value),
+    @required Result country(SimpleCountry value),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(country != null);
     return person(this);
   }
 
@@ -497,6 +513,7 @@ class _$SimplePerson implements SimplePerson {
     Result person(SimplePerson value),
     Result street(SimpleStreet value),
     Result city(SimpleCity value),
+    Result country(SimpleCountry value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -580,10 +597,12 @@ class _$SimpleStreet implements SimpleStreet {
     @required Result person(String name, int age),
     @required Result street(String name),
     @required Result city(String name, int population),
+    @required Result country(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(country != null);
     return street(name);
   }
 
@@ -593,6 +612,7 @@ class _$SimpleStreet implements SimpleStreet {
     Result person(String name, int age),
     Result street(String name),
     Result city(String name, int population),
+    Result country(String name, int population),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -608,10 +628,12 @@ class _$SimpleStreet implements SimpleStreet {
     @required Result person(SimplePerson value),
     @required Result street(SimpleStreet value),
     @required Result city(SimpleCity value),
+    @required Result country(SimpleCountry value),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(country != null);
     return street(this);
   }
 
@@ -621,6 +643,7 @@ class _$SimpleStreet implements SimpleStreet {
     Result person(SimplePerson value),
     Result street(SimpleStreet value),
     Result city(SimpleCity value),
+    Result country(SimpleCountry value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -673,7 +696,6 @@ class _$SimpleCityCopyWithImpl<$Res>
 }
 
 @With(House)
-@With(GeographicArea)
 class _$SimpleCity implements SimpleCity {
   const _$SimpleCity(this.name, this.population)
       : assert(name != null),
@@ -716,10 +738,12 @@ class _$SimpleCity implements SimpleCity {
     @required Result person(String name, int age),
     @required Result street(String name),
     @required Result city(String name, int population),
+    @required Result country(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(country != null);
     return city(name, population);
   }
 
@@ -729,6 +753,7 @@ class _$SimpleCity implements SimpleCity {
     Result person(String name, int age),
     Result street(String name),
     Result city(String name, int population),
+    Result country(String name, int population),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -744,10 +769,12 @@ class _$SimpleCity implements SimpleCity {
     @required Result person(SimplePerson value),
     @required Result street(SimpleStreet value),
     @required Result city(SimpleCity value),
+    @required Result country(SimpleCountry value),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(country != null);
     return city(this);
   }
 
@@ -757,6 +784,7 @@ class _$SimpleCity implements SimpleCity {
     Result person(SimplePerson value),
     Result street(SimpleStreet value),
     Result city(SimpleCity value),
+    Result country(SimpleCountry value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -767,9 +795,7 @@ class _$SimpleCity implements SimpleCity {
   }
 }
 
-abstract class SimpleCity
-    with House, GeographicArea
-    implements SimpleImplements {
+abstract class SimpleCity with House implements SimpleImplements {
   const factory SimpleCity(String name, int population) = _$SimpleCity;
 
   @override
@@ -777,6 +803,150 @@ abstract class SimpleCity
   int get population;
   @override
   $SimpleCityCopyWith<SimpleCity> get copyWith;
+}
+
+abstract class $SimpleCountryCopyWith<$Res>
+    implements $SimpleImplementsCopyWith<$Res> {
+  factory $SimpleCountryCopyWith(
+          SimpleCountry value, $Res Function(SimpleCountry) then) =
+      _$SimpleCountryCopyWithImpl<$Res>;
+  @override
+  $Res call({String name, int population});
+}
+
+class _$SimpleCountryCopyWithImpl<$Res>
+    extends _$SimpleImplementsCopyWithImpl<$Res>
+    implements $SimpleCountryCopyWith<$Res> {
+  _$SimpleCountryCopyWithImpl(
+      SimpleCountry _value, $Res Function(SimpleCountry) _then)
+      : super(_value, (v) => _then(v as SimpleCountry));
+
+  @override
+  SimpleCountry get _value => super._value as SimpleCountry;
+
+  @override
+  $Res call({
+    Object name = freezed,
+    Object population = freezed,
+  }) {
+    return _then(SimpleCountry(
+      name == freezed ? _value.name : name as String,
+      population == freezed ? _value.population : population as int,
+    ));
+  }
+}
+
+@With(House)
+@Implements(GeographicArea)
+class _$SimpleCountry implements SimpleCountry {
+  const _$SimpleCountry(this.name, this.population)
+      : assert(name != null),
+        assert(population != null);
+
+  @override
+  final String name;
+  @override
+  final int population;
+
+  @override
+  String toString() {
+    return 'SimpleImplements.country(name: $name, population: $population)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is SimpleCountry &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.population, population) ||
+                const DeepCollectionEquality()
+                    .equals(other.population, population)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(population);
+
+  @override
+  $SimpleCountryCopyWith<SimpleCountry> get copyWith =>
+      _$SimpleCountryCopyWithImpl<SimpleCountry>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result person(String name, int age),
+    @required Result street(String name),
+    @required Result city(String name, int population),
+    @required Result country(String name, int population),
+  }) {
+    assert(person != null);
+    assert(street != null);
+    assert(city != null);
+    assert(country != null);
+    return country(name, population);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result person(String name, int age),
+    Result street(String name),
+    Result city(String name, int population),
+    Result country(String name, int population),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (country != null) {
+      return country(name, population);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result person(SimplePerson value),
+    @required Result street(SimpleStreet value),
+    @required Result city(SimpleCity value),
+    @required Result country(SimpleCountry value),
+  }) {
+    assert(person != null);
+    assert(street != null);
+    assert(city != null);
+    assert(country != null);
+    return country(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result person(SimplePerson value),
+    Result street(SimpleStreet value),
+    Result city(SimpleCity value),
+    Result country(SimpleCountry value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (country != null) {
+      return country(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SimpleCountry
+    with House
+    implements SimpleImplements, GeographicArea {
+  const factory SimpleCountry(String name, int population) = _$SimpleCountry;
+
+  @override
+  String get name;
+  int get population;
+  @override
+  $SimpleCountryCopyWith<SimpleCountry> get copyWith;
 }
 
 class _$CustomMethodImplementsTearOff {
@@ -801,6 +971,12 @@ class _$CustomMethodImplementsTearOff {
       population,
     );
   }
+
+  DuplexCustomMethod duplex(String name) {
+    return DuplexCustomMethod(
+      name,
+    );
+  }
 }
 
 // ignore: unused_element
@@ -814,12 +990,14 @@ mixin _$CustomMethodImplements {
     @required Result person(String name, int age),
     @required Result street(String name),
     @required Result city(String name, int population),
+    @required Result duplex(String name),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result person(String name, int age),
     Result street(String name),
     Result city(String name, int population),
+    Result duplex(String name),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -827,12 +1005,14 @@ mixin _$CustomMethodImplements {
     @required Result person(PersonCustomMethod value),
     @required Result street(StreetCustomMethod value),
     @required Result city(CityCustomMethod value),
+    @required Result duplex(DuplexCustomMethod value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result person(PersonCustomMethod value),
     Result street(StreetCustomMethod value),
     Result city(CityCustomMethod value),
+    Result duplex(DuplexCustomMethod value),
     @required Result orElse(),
   });
 
@@ -937,10 +1117,12 @@ class _$PersonCustomMethod extends PersonCustomMethod {
     @required Result person(String name, int age),
     @required Result street(String name),
     @required Result city(String name, int population),
+    @required Result duplex(String name),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(duplex != null);
     return person(name, age);
   }
 
@@ -950,6 +1132,7 @@ class _$PersonCustomMethod extends PersonCustomMethod {
     Result person(String name, int age),
     Result street(String name),
     Result city(String name, int population),
+    Result duplex(String name),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -965,10 +1148,12 @@ class _$PersonCustomMethod extends PersonCustomMethod {
     @required Result person(PersonCustomMethod value),
     @required Result street(StreetCustomMethod value),
     @required Result city(CityCustomMethod value),
+    @required Result duplex(DuplexCustomMethod value),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(duplex != null);
     return person(this);
   }
 
@@ -978,6 +1163,7 @@ class _$PersonCustomMethod extends PersonCustomMethod {
     Result person(PersonCustomMethod value),
     Result street(StreetCustomMethod value),
     Result city(CityCustomMethod value),
+    Result duplex(DuplexCustomMethod value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1028,6 +1214,7 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
   }
 }
 
+@With(Shop)
 @With.fromString('AdministrativeArea<House>')
 class _$StreetCustomMethod extends StreetCustomMethod {
   const _$StreetCustomMethod(this.name)
@@ -1064,10 +1251,12 @@ class _$StreetCustomMethod extends StreetCustomMethod {
     @required Result person(String name, int age),
     @required Result street(String name),
     @required Result city(String name, int population),
+    @required Result duplex(String name),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(duplex != null);
     return street(name);
   }
 
@@ -1077,6 +1266,7 @@ class _$StreetCustomMethod extends StreetCustomMethod {
     Result person(String name, int age),
     Result street(String name),
     Result city(String name, int population),
+    Result duplex(String name),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1092,10 +1282,12 @@ class _$StreetCustomMethod extends StreetCustomMethod {
     @required Result person(PersonCustomMethod value),
     @required Result street(StreetCustomMethod value),
     @required Result city(CityCustomMethod value),
+    @required Result duplex(DuplexCustomMethod value),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(duplex != null);
     return street(this);
   }
 
@@ -1105,6 +1297,7 @@ class _$StreetCustomMethod extends StreetCustomMethod {
     Result person(PersonCustomMethod value),
     Result street(StreetCustomMethod value),
     Result city(CityCustomMethod value),
+    Result duplex(DuplexCustomMethod value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1116,7 +1309,7 @@ class _$StreetCustomMethod extends StreetCustomMethod {
 }
 
 abstract class StreetCustomMethod extends CustomMethodImplements
-    with AdministrativeArea<House> {
+    with Shop, AdministrativeArea<House> {
   const StreetCustomMethod._() : super._();
   const factory StreetCustomMethod(String name) = _$StreetCustomMethod;
 
@@ -1158,7 +1351,7 @@ class _$CityCustomMethodCopyWithImpl<$Res>
 }
 
 @With(House)
-@With(GeographicArea)
+@Implements(GeographicArea)
 class _$CityCustomMethod extends CityCustomMethod {
   const _$CityCustomMethod(this.name, this.population)
       : assert(name != null),
@@ -1202,10 +1395,12 @@ class _$CityCustomMethod extends CityCustomMethod {
     @required Result person(String name, int age),
     @required Result street(String name),
     @required Result city(String name, int population),
+    @required Result duplex(String name),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(duplex != null);
     return city(name, population);
   }
 
@@ -1215,6 +1410,7 @@ class _$CityCustomMethod extends CityCustomMethod {
     Result person(String name, int age),
     Result street(String name),
     Result city(String name, int population),
+    Result duplex(String name),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1230,10 +1426,12 @@ class _$CityCustomMethod extends CityCustomMethod {
     @required Result person(PersonCustomMethod value),
     @required Result street(StreetCustomMethod value),
     @required Result city(CityCustomMethod value),
+    @required Result duplex(DuplexCustomMethod value),
   }) {
     assert(person != null);
     assert(street != null);
     assert(city != null);
+    assert(duplex != null);
     return city(this);
   }
 
@@ -1243,6 +1441,7 @@ class _$CityCustomMethod extends CityCustomMethod {
     Result person(PersonCustomMethod value),
     Result street(StreetCustomMethod value),
     Result city(CityCustomMethod value),
+    Result duplex(DuplexCustomMethod value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1254,7 +1453,8 @@ class _$CityCustomMethod extends CityCustomMethod {
 }
 
 abstract class CityCustomMethod extends CustomMethodImplements
-    with House, GeographicArea {
+    with House
+    implements GeographicArea {
   const CityCustomMethod._() : super._();
   const factory CityCustomMethod(String name, int population) =
       _$CityCustomMethod;
@@ -1264,6 +1464,140 @@ abstract class CityCustomMethod extends CustomMethodImplements
   int get population;
   @override
   $CityCustomMethodCopyWith<CityCustomMethod> get copyWith;
+}
+
+abstract class $DuplexCustomMethodCopyWith<$Res>
+    implements $CustomMethodImplementsCopyWith<$Res> {
+  factory $DuplexCustomMethodCopyWith(
+          DuplexCustomMethod value, $Res Function(DuplexCustomMethod) then) =
+      _$DuplexCustomMethodCopyWithImpl<$Res>;
+  @override
+  $Res call({String name});
+}
+
+class _$DuplexCustomMethodCopyWithImpl<$Res>
+    extends _$CustomMethodImplementsCopyWithImpl<$Res>
+    implements $DuplexCustomMethodCopyWith<$Res> {
+  _$DuplexCustomMethodCopyWithImpl(
+      DuplexCustomMethod _value, $Res Function(DuplexCustomMethod) _then)
+      : super(_value, (v) => _then(v as DuplexCustomMethod));
+
+  @override
+  DuplexCustomMethod get _value => super._value as DuplexCustomMethod;
+
+  @override
+  $Res call({
+    Object name = freezed,
+  }) {
+    return _then(DuplexCustomMethod(
+      name == freezed ? _value.name : name as String,
+    ));
+  }
+}
+
+@Implements(Shop)
+@Implements(GeographicArea)
+class _$DuplexCustomMethod extends DuplexCustomMethod {
+  const _$DuplexCustomMethod(this.name)
+      : assert(name != null),
+        super._();
+
+  @override
+  final String name;
+
+  @override
+  String toString() {
+    return 'CustomMethodImplements.duplex(name: $name)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is DuplexCustomMethod &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+
+  @override
+  $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith =>
+      _$DuplexCustomMethodCopyWithImpl<DuplexCustomMethod>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result person(String name, int age),
+    @required Result street(String name),
+    @required Result city(String name, int population),
+    @required Result duplex(String name),
+  }) {
+    assert(person != null);
+    assert(street != null);
+    assert(city != null);
+    assert(duplex != null);
+    return duplex(name);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result person(String name, int age),
+    Result street(String name),
+    Result city(String name, int population),
+    Result duplex(String name),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (duplex != null) {
+      return duplex(name);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result person(PersonCustomMethod value),
+    @required Result street(StreetCustomMethod value),
+    @required Result city(CityCustomMethod value),
+    @required Result duplex(DuplexCustomMethod value),
+  }) {
+    assert(person != null);
+    assert(street != null);
+    assert(city != null);
+    assert(duplex != null);
+    return duplex(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result person(PersonCustomMethod value),
+    Result street(StreetCustomMethod value),
+    Result city(CityCustomMethod value),
+    Result duplex(DuplexCustomMethod value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (duplex != null) {
+      return duplex(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DuplexCustomMethod extends CustomMethodImplements
+    implements Shop, GeographicArea {
+  const DuplexCustomMethod._() : super._();
+  const factory DuplexCustomMethod(String name) = _$DuplexCustomMethod;
+
+  @override
+  String get name;
+  @override
+  $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith;
 }
 
 class _$GenericImplementsTearOff {
@@ -1653,7 +1987,7 @@ class _$GenericCityCopyWithImpl<T, $Res>
 }
 
 @With(House)
-@With(GeographicArea)
+@Implements(GeographicArea)
 class _$GenericCity<T> implements GenericCity<T> {
   const _$GenericCity(this.name, this.population)
       : assert(name != null),
@@ -1748,8 +2082,8 @@ class _$GenericCity<T> implements GenericCity<T> {
 }
 
 abstract class GenericCity<T>
-    with House, GeographicArea
-    implements GenericImplements<T> {
+    with House
+    implements GenericImplements<T>, GeographicArea {
   const factory GenericCity(String name, int population) = _$GenericCity<T>;
 
   @override

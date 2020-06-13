@@ -495,37 +495,39 @@ abstract class Person with _$Person {
 }
 ```
 
-### Mixin for individual classes for union types
+### Mixins and Interfaces for individual classes for union types
 
 When you have multiple types in the same class you might want to make
 one of those types to implement a interface or mixin a class. You can do
-that using the `@With` decorator. In this case `City` is implementing
-`GeographicArea`.
+that using the `@Implements` decorator or `@With` respectively. In this
+case `City` is implementing with `GeographicArea`.
 
 ```dart
 @freezed
 abstract class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
 
-  @With(GeographicArea)
+  @Implements(GeographicArea)
   const factory Example.city(String name, int population) = City;
 }
 ```
 
-In case you want to specify a generic interface or mixin you need to
-declare it as a string using the `With.fromString` constructor. Similar
-`Street` implements `AdministrativeArea<House>`.
+In case you want to specify a generic mixin or interface you need to
+declare it as a string using the `With.fromString` constructor,
+`Implements.fromString` respectively. Similar `Street` is mixing with
+`AdministrativeArea<House>`.
 
 ```dart
 @freezed
 abstract class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
 
-  @Implements.fromString('AdministrativeArea<House>')
+  @With.fromString('AdministrativeArea<House>')
   const factory Example.street(String name) = Street;
   
   @With(House)
-  @With(GeographicArea)
+  @Implements(Shop)
+  @Implements(GeographicArea)
   const factory Example.city(String name, int population) = City;
 }
 ```
@@ -541,7 +543,7 @@ abstract class Example<T> with Example<T> {
   const factory Example.street(String name, T value) = Street<T>;
 
   @With(House)
-  @With(GeographicArea)
+  @Implements(GeographicArea)
   const factory Example.city(String name, int population) = City<T>;
 }  
 ```

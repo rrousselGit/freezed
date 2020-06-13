@@ -18,8 +18,12 @@ abstract class SimpleImplements with _$SimpleImplements {
   const factory SimpleImplements.street(String name) = SimpleStreet;
 
   @With(House)
-  @With(GeographicArea)
   const factory SimpleImplements.city(String name, int population) = SimpleCity;
+
+  @With(House)
+  @Implements(GeographicArea)
+  const factory SimpleImplements.country(String name, int population) =
+      SimpleCountry;
 }
 
 @freezed
@@ -29,13 +33,18 @@ abstract class CustomMethodImplements implements _$CustomMethodImplements {
   const factory CustomMethodImplements.person(String name, int age) =
       PersonCustomMethod;
 
+  @With(Shop)
   @With.fromString('AdministrativeArea<House>')
   const factory CustomMethodImplements.street(String name) = StreetCustomMethod;
 
   @With(House)
-  @With(GeographicArea)
+  @Implements(GeographicArea)
   const factory CustomMethodImplements.city(String name, int population) =
       CityCustomMethod;
+
+  @Implements(Shop)
+  @Implements(GeographicArea)
+  const factory CustomMethodImplements.duplex(String name) = DuplexCustomMethod;
 
   void function() {}
 }
@@ -50,13 +59,17 @@ abstract class GenericImplements<T> with _$GenericImplements<T> {
       GenericStreet<T>;
 
   @With(House)
-  @With(GeographicArea)
+  @Implements(GeographicArea)
   const factory GenericImplements.city(String name, int population) =
       GenericCity<T>;
 }
 
-class GeographicArea {}
+abstract class GeographicArea {
+  String get name;
+}
 
 class AdministrativeArea<T> {}
 
 class House {}
+
+class Shop {}
