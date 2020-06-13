@@ -3,6 +3,7 @@ import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
+
 import 'parameter_template.dart';
 
 final _redirectedConstructorNameRegexp =
@@ -15,10 +16,24 @@ List<String> parseDecorators(List<ElementAnnotation> metadata) {
   ];
 }
 
-extension on ElementAnnotation {
+extension FreezedElementAnnotation on ElementAnnotation {
   /// if the element is decorated with `@Default(value)`
   bool get isDefault {
     return const TypeChecker.fromRuntime(Default)
+        .isExactlyType(computeConstantValue().type);
+  }
+
+  /// if the element is decorated with `@With(Type)` or
+  /// `@With.fromString('Type')`
+  bool get isWith {
+    return const TypeChecker.fromRuntime(With)
+        .isExactlyType(computeConstantValue().type);
+  }
+
+  /// if the element is decorated with `@Implements(Type)` or
+  /// `@Implements.fromString('Type')`
+  bool get isImplements {
+    return const TypeChecker.fromRuntime(Implements)
         .isExactlyType(computeConstantValue().type);
   }
 }
