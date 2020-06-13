@@ -66,7 +66,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [maybeWhen](#maybeWhen)
     - [map/maybeMap](#mapMaybeMap)
   - [fromJson/toJson](#fromjsontojson)
-    - [classes with multiple constructors](#classes-with-multiple-constructors)
+    - [classes with multiple constructors](#fromjson-classes-with-multiple-constructors)
 
 # How to use
 
@@ -928,7 +928,7 @@ That's it!\
 With these changes, [Freezed] will automatically ask [json_serializable] to generate all the necessary
 `fromJson`/`toJson`.
 
-### Classes with multiple constructors
+### fromJSON - mapping classes with multiple constructors
 
 For classes with multiple constructors, [Freezed] will check the JSON response for a string element called `runtimeType` and choose the constructor to use based on its value. For example, given the following constructors:
 
