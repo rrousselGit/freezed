@@ -20,7 +20,7 @@ abstract class CustomMethodImplements implements _$CustomMethodImplements {
   const CustomMethodImplements._();
 
   const factory CustomMethodImplements.person(String name, int age) =
-  PersonCustomMethod;
+      PersonCustomMethod;
 
   @With.fromString('AdministrativeArea<House>')
   const factory CustomMethodImplements.street(String name) = StreetCustomMethod;
@@ -28,7 +28,7 @@ abstract class CustomMethodImplements implements _$CustomMethodImplements {
   @With(House)
   @With(GeographicArea)
   const factory CustomMethodImplements.city(String name, int population) =
-  CityCustomMethod;
+      CityCustomMethod;
 
   void function() {}
 }
@@ -36,16 +36,16 @@ abstract class CustomMethodImplements implements _$CustomMethodImplements {
 @freezed
 abstract class GenericImplements<T> with _$GenericImplements<T> {
   const factory GenericImplements.person(String name, int age) =
-  GenericPerson<T>;
+      GenericPerson<T>;
 
   @With.fromString('AdministrativeArea<T>')
   const factory GenericImplements.street(String name, T value) =
-  GenericStreet<T>;
+      GenericStreet<T>;
 
   @With(House)
   @With(GeographicArea)
   const factory GenericImplements.city(String name, int population) =
-  GenericCity<T>;
+      GenericCity<T>;
 }
 
 class GeographicArea {}
