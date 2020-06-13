@@ -507,7 +507,7 @@ that using the `@With` decorator. In this case `City` is implementing
 abstract class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
 
-  @Implements(GeographicArea)
+  @With(GeographicArea)
   const factory Example.city(String name, int population) = City;
 }
 ```
@@ -525,7 +525,7 @@ abstract class Example with _$Example {
   const factory Example.street(String name) = Street;
   
   @With(House)
-  @Implements(GeographicArea)
+  @With(GeographicArea)
   const factory Example.city(String name, int population) = City;
 }
 ```
