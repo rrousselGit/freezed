@@ -1065,7 +1065,7 @@ As such, you can write:
 ```dart
 @freezed
 abstract class Example with _$Example {
-  factory Example(@Jsonkey(name: 'my_property') String myProperty) = _Example;
+  factory Example(@JsonKey(name: 'my_property') String myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
 }
@@ -1079,7 +1079,7 @@ You can pass `@JsonSerializable` annotation by placing it over constructor e.g.:
 @freezed
 abstract class Example with _$Example {
   @JsonSerializable(explicit_to_json: true)
-  factory Example(@Jsonkey(name: 'my_property') SomeOtherClass myProperty) = _Example;
+  factory Example(@JsonKey(name: 'my_property') SomeOtherClass myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
 }
