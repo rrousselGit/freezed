@@ -66,7 +66,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [maybeWhen](#maybeWhen)
     - [map/maybeMap](#mapMaybeMap)
   - [fromJson/toJson](#fromjsontojson)
-    - [mapping multiple constructors](#classeswithmultipleconstructors)
+    - [classes with multiple constructors](#classes-with-multiple-constructors)
 
 # How to use
 
