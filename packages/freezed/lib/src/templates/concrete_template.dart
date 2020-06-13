@@ -479,6 +479,11 @@ String parseTypeSource(VariableElement element) {
           element.source.contents.data.substring(0, element.nameOffset);
       final match = RegExp(r'(\w+)\s+$').firstMatch(source);
       type = match?.group(1);
+    } else if (element.type?.element != null) {
+      final source =
+          element.source.contents.data.substring(0, element.nameOffset);
+      final match = RegExp(r'(\w+<.+?>)\s+$').firstMatch(source);
+      type = match?.group(1);
     }
   }
   return type;
