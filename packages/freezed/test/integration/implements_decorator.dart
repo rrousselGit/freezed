@@ -7,10 +7,11 @@ part 'implements_decorator.freezed.dart';
 abstract class SimpleImplements with _$SimpleImplements {
   const factory SimpleImplements.person(String name, int age) = SimplePerson;
 
-  @Implements.fromString('AdministrativeArea<House>')
+  @With.fromString('AdministrativeArea<House>')
   const factory SimpleImplements.street(String name) = SimpleStreet;
 
-  @Implements(GeographicArea)
+  @With(House)
+  @With(GeographicArea)
   const factory SimpleImplements.city(String name, int population) = SimpleCity;
 }
 
@@ -19,16 +20,32 @@ abstract class CustomMethodImplements implements _$CustomMethodImplements {
   const CustomMethodImplements._();
 
   const factory CustomMethodImplements.person(String name, int age) =
-      PersonCustomMethod;
+  PersonCustomMethod;
 
-  @Implements.fromString('AdministrativeArea<House>')
+  @With.fromString('AdministrativeArea<House>')
   const factory CustomMethodImplements.street(String name) = StreetCustomMethod;
 
-  @Implements(GeographicArea)
+  @With(House)
+  @With(GeographicArea)
   const factory CustomMethodImplements.city(String name, int population) =
-      CityCustomMethod;
+  CityCustomMethod;
 
   void function() {}
+}
+
+@freezed
+abstract class GenericImplements<T> with _$GenericImplements<T> {
+  const factory GenericImplements.person(String name, int age) =
+  GenericPerson<T>;
+
+  @With.fromString('AdministrativeArea<T>')
+  const factory GenericImplements.street(String name, T value) =
+  GenericStreet<T>;
+
+  @With(House)
+  @With(GeographicArea)
+  const factory GenericImplements.city(String name, int population) =
+  GenericCity<T>;
 }
 
 class GeographicArea {}

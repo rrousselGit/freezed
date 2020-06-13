@@ -57,7 +57,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [late](#late)
     - [constructor tear-off](#constructor-tear-off)
     - [decorators](#decorators)
-    - [implement interfaces for union types](#implement-interfaces-for-union-types)
+    - [mixin for individual classes for union types](#mixin-for-individual-classes-for-union-types)
   - [==/toString](#toString)
   - [copyWith](#copyWith)
     - [deep copy](#deep-copy)
@@ -495,11 +495,11 @@ abstract class Person with _$Person {
 }
 ```
 
-### Implement interfaces for union types
+### Mixin for individual classes for union types
 
 When you have multiple types in the same class you might want to make
-one of those types to implement a interface. You can do that using the
-`@Implements` decorator. In this case `City` is implementing  
+one of those types to implement a interface or mixin a class. You can do
+that using the `@With` decorator. In this case `City` is implementing
 `GeographicArea`.
 
 ```dart
@@ -512,8 +512,8 @@ abstract class Example with _$Example {
 }
 ```
 
-In case you want to specify a generic interface you need to declare it
-as a string using the `Implements.fromString` constructor. Similar
+In case you want to specify a generic interface or mixin you need to
+declare it as a string using the `With.fromString` constructor. Similar
 `Street` implements `AdministrativeArea<House>`.
 
 ```dart
@@ -523,15 +523,32 @@ abstract class Example with _$Example {
 
   @Implements.fromString('AdministrativeArea<House>')
   const factory Example.street(String name) = Street;
-
+  
+  @With(House)
   @Implements(GeographicArea)
   const factory Example.city(String name, int population) = City;
 }
 ```
 
+In case you want to make your class generic, you do it like this:
+
+```dart
+@freezed
+abstract class Example<T> with Example<T> {
+  const factory Example.person(String name, int age) = Person<T>;
+
+  @With.fromString('AdministrativeArea<T>')
+  const factory Example.street(String name, T value) = Street<T>;
+
+  @With(House)
+  @With(GeographicArea)
+  const factory Example.city(String name, int population) = City<T>;
+}  
+```
+
 **Note**: You need to make sure that you comply with the interface
 requirements by implementing all the abstract members. If the interface
-has no members or just fields you can fulfil the interface contract by
+has no members or just fields, you can fulfil the interface contract by
 adding them in the constructor of the union type. Keep in mind that if
 the interface defines a method or a getter, that you implement in the
 class, you need to use the

@@ -61,6 +61,7 @@ class ConstructorDetails {
     @required this.impliedProperties,
     @required this.fullName,
     @required this.decorators,
+    @required this.withDecorators,
     @required this.hasJsonSerializable,
     @required this.cloneableProperties,
     @required this.canOverrideToString,
@@ -74,6 +75,7 @@ class ConstructorDetails {
   final bool isDefault;
   final bool hasJsonSerializable;
   final String fullName;
+  final List<String> withDecorators;
   final List<String> decorators;
   final List<CloneableProperty> cloneableProperties;
   final bool canOverrideToString;
@@ -92,6 +94,7 @@ $runtimeType(
   impliedProperties: $impliedProperties,
   fullName: $fullName,
   decorators: $decorators,
+  withDecorators: $withDecorators,
   hasJsonSerializable: $hasJsonSerializable,
   cloneableProperties: $cloneableProperties,
   canOverrideToString: $canOverrideToString,
@@ -393,6 +396,20 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         }
       }
 
+      Iterable<String> withDecorationTypes() sync* {
+        for (final metadata in constructor.metadata) {
+          metadata.computeConstantValue();
+          if (!metadata.isWith) continue;
+          var type = metadata.constantValue.getField('type');
+          if (type.isNull) {
+            type = metadata.constantValue.getField('stringType');
+            yield type.toStringValue();
+          } else {
+            yield type.toTypeValue().getDisplayString();
+          }
+        }
+      }
+
       result.add(
         ConstructorDetails(
           name: constructor.name,
@@ -404,6 +421,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
               Property.fromParameter(parameter),
           ],
           decorators: constructor.metadata.map((e) => e.toSource()).toList(),
+          withDecorators: withDecorationTypes().toList(),
           isDefault: isDefaultConstructor(constructor),
           hasJsonSerializable: constructor.hasJsonSerializable,
           cloneableProperties: cloneableProperties().toList(),

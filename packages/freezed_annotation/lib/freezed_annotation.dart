@@ -67,45 +67,45 @@ class Default {
   final Object defaultValue;
 }
 
-/// Marks a union type to implement the interface [type] or [stringType].
-/// In the case below `City` will implement `GeographicArea`.
+/// Marks a union type to mixin the class [type] or [stringType].
+/// In the case below `City` will mixin with `GeographicArea`.
 /// ```dart
 /// @freezed
 /// abstract class Example with _$Example {
 ///   const factory Example.person(String name, int age) = Person;
 ///
-///   @Implements(GeographicArea)
+///   @With(GeographicArea)
 ///   const factory Example.city(String name, int population) = City;
 /// }
 /// ```
 ///
-/// In case you need to implement a generic class, due to the fact that
+/// In case you need to mixin a generic class, due to the fact that
 /// annotations can't have type arguments, you must use the
-/// [Implements.fromString(stringType)] constructor and provide the type as a
+/// [With.fromString('stringType')] constructor and provide the type as a
 /// String.
 /// ```dart
 /// @freezed
 /// abstract class Example with _$Example {
 ///   const factory Example.person(String name, int age) = Person;
 ///
-///   @Implements.fromString('AdministrativeArea<House>')
+///   @With.fromString('AdministrativeArea<House>')
 ///   const factory Example.street(String name) = Street;
 ///
-///   @Implements(GeographicArea)
+///   @With(GeographicArea)
 ///   const factory Example.city(String name, int population) = City;
 /// }
 /// ```
 ///
 /// Note: You need to make sure that you comply with the interface requirements
 /// by implementing all the abstract members. If the interface has no members or
-/// just fields you can fulfil the interface contract by adding them in the
+/// just fields, you can fulfil the interface contract by adding them in the
 /// constructor of the union type. Keep in mind that if the interface defines a
 /// method or a getter, that you implement in the class, you need to use the
 /// [Custom getters and methods](#custom-getters-and-methods) instructions.
-class Implements {
-  const Implements(this.type) : stringType = null;
+class With {
+  const With(this.type) : stringType = null;
 
-  const Implements.fromString(this.stringType) : type = null;
+  const With.fromString(this.stringType) : type = null;
 
   final Type type;
   final String stringType;

@@ -82,7 +82,7 @@ $_toJson
 }
 
 
-abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter$_implementations {
+abstract class ${constructor.redirectedName}$genericsDefinition$_extendsWithDecorators $_superKeyword $name$genericsParameter$_implementsWithDecorators {
   $_privateConcreteConstructor
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
 
@@ -94,29 +94,20 @@ ${copyWith.abstractCopyWithGetter}
 ''';
   }
 
-  String get _implementations {
-    final implementationTypes = constructor.decorators
-        .where((element) => element.startsWith('@Implements'))
-        .map((element) {
-          // the fromString constructor contains commas
-          final offset = element.contains('fromString') ? 2 : 1;
-          return element.substring(
-              element.indexOf('(') + offset, element.length - offset);
-        })
-        .toList()
-        .join(', ');
-
-    final buffer = StringBuffer();
-    if (implementationTypes.isNotEmpty) {
-      if (shouldUseExtends) {
-        buffer.write(' implements ');
-      } else {
-        buffer.write(', ');
-      }
+  String get _extendsWithDecorators {
+    if (constructor.withDecorators.isEmpty) {
+      return '';
     }
-    buffer.write(implementationTypes);
+    final implementationTypes = constructor.withDecorators.join(', ');
+    return shouldUseExtends ? '' : ' with $implementationTypes';
+  }
 
-    return buffer.toString();
+  String get _implementsWithDecorators {
+    if (constructor.withDecorators.isEmpty) {
+      return '';
+    }
+    final implementationTypes = constructor.withDecorators.join(', ');
+    return shouldUseExtends ? ' with $implementationTypes' : '';
   }
 
   String get _superConstructor {

@@ -11,10 +11,9 @@ void main() {
       );
     });
     test('fromType', () {
-      expect(
-        const SimpleImplements.city('Morning', 140000),
-        isA<GeographicArea>(),
-      );
+      const object = SimpleImplements.city('Morning', 140000);
+      expect(object, isA<House>());
+      expect(object, isA<GeographicArea>());
     });
   });
   group('CustomMethod', () {
@@ -25,10 +24,26 @@ void main() {
       );
     });
     test('fromType', () {
+      const object = CustomMethodImplements.city('Morning', 140000);
+      expect(object, isA<House>());
+      expect(object, isA<GeographicArea>());
+    });
+  });
+  group('Generic type', () {
+    test('fromString', () {
       expect(
-        const CustomMethodImplements.city('Morning', 140000),
-        isA<GeographicArea>(),
+        const GenericImplements<int>.street('Sarah', 5),
+        isA<AdministrativeArea<int>>(),
       );
+      expect(
+        const GenericImplements<String>.street('Sarah', '5'),
+        isA<AdministrativeArea<String>>(),
+      );
+    });
+    test('fromType', () {
+      const object = GenericImplements<int>.city('Morning', 140000);
+      expect(object, isA<House>());
+      expect(object, isA<GeographicArea>());
     });
   });
 }
