@@ -13,7 +13,11 @@
   }
   ```
 
-  Thanks to @long1eu~
+  Thanks to @long1eu
+
+- Fixed a bug where a recursive freezed class may generate a property as dynamic (thanks to @maks)
+
+- Improved the readme (Thanks to @scopendo and @Matsue)
 
 # 0.10.9
 
