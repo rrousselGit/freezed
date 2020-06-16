@@ -471,7 +471,7 @@ extension DefaultValue on ParameterElement {
 String parseTypeSource(VariableElement element) {
   var type = element.type?.getDisplayString();
 
-  if (type == null || type == 'dynamic') {
+  if (type == null || type.contains('dynamic')) {
     if (element.type?.element != null &&
         element.type.isDynamic &&
         element.type.element.isSynthetic) {
