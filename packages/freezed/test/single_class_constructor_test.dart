@@ -172,6 +172,47 @@ void main() {
     expect('${SingleNamedCtor.named(42)}', 'SingleNamedCtor.named(a: 42)');
   });
 
+  test('single-case union does have map', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  SingleNamedCtor.named(1).map;
+}
+'''), completes);
+  });
+
+  test('single-case union does have maybeMap', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  SingleNamedCtor.named(1).maybeMap;
+}
+'''), completes);
+  });
+
+
+  test('single-case union does have when', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  SingleNamedCtor.named(1).when;
+}
+'''), completes);
+  });
+
+  test('single-case union does have maybeWhen', () async {
+    await expectLater(compile(r'''
+import 'single_class_constructor.dart';
+
+void main() {
+  SingleNamedCtor.named(1).maybeWhen;
+}
+'''), completes);
+  });
+
   test('can be created as const', () {
     expect(identical(const MyClass(a: '42'), const MyClass(a: '42')), isTrue);
   });

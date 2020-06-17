@@ -189,9 +189,9 @@ packages:
   freezed_annotation:
     dependency: "direct main"
     description:
-      path: "../../freezed_annotation"
-      relative: true
-    source: path
+      name: freezed_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.11.0"
   glob:
     dependency: transitive

@@ -51,22 +51,22 @@ ${copyWith.commonContreteImpl(abstractProperties)}
   }
 
   String get _when {
-    if (allConstructors.length < 2) return '';
+    if (allConstructors.where((element) => element.name != null && element.name.isNotEmpty).isEmpty) return '';
     return '${whenPrototype(allConstructors)};';
   }
 
   String get _maybeWhen {
-    if (allConstructors.length < 2) return '';
+    if (allConstructors.where((element) => element.name != null && element.name.isNotEmpty).isEmpty) return '';
     return '${maybeWhenPrototype(allConstructors)};';
   }
 
   String get _map {
-    if (allConstructors.length < 2) return '';
+    if (allConstructors.where((element) => element.name != null && element.name.isNotEmpty).isEmpty) return '';
     return '${mapPrototype(allConstructors, genericsParameter)};';
   }
 
   String get _maybeMap {
-    if (allConstructors.length < 2) return '';
+    if (allConstructors.where((element) => element.name != null && element.name.isNotEmpty).isEmpty) return '';
     return '${maybeMapPrototype(allConstructors, genericsParameter)};';
   }
 }
