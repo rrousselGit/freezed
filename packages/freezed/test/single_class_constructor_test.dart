@@ -173,7 +173,10 @@ void main() {
   });
 
   test('single-case union does have map', () async {
-    expect(SingleNamedCtor.named(42).map(named: (WhateverSingleNamedCtor value) => '${value.a}'), '42');
+    expect(
+        SingleNamedCtor.named(42)
+            .map(named: (WhateverSingleNamedCtor value) => '${value.a}'),
+        '42');
   });
 
   test('single-case union does have maybeMap', () async {
@@ -186,7 +189,8 @@ void main() {
   });
 
   test('single-case union does have when', () async {
-    expect(SingleNamedCtor.named(42).when(named: (int value) => '$value'), '42');
+    expect(
+        SingleNamedCtor.named(42).when(named: (int value) => '$value'), '42');
   });
 
   test('single-case union does have maybeWhen', () async {
