@@ -18,16 +18,6 @@ abstract class Union with _$Union {
 }
 
 @freezed
-abstract class SingleCaseUnionWithData with _$SingleCaseUnionWithData {
-  const factory SingleCaseUnionWithData.singleCase(int a, String b) = SingleCaseWithData;
-}
-
-@freezed
-abstract class SingleCaseUnionWithoutData with _$SingleCaseUnionWithoutData {
-  const factory SingleCaseUnionWithoutData.singleCase() = SingleCaseWithoutData;
-}
-
-@freezed
 abstract class SharedProperty with _$SharedProperty {
   factory SharedProperty.person({String name, int age}) = SharedProperty0;
   factory SharedProperty.city({String name, int population}) = SharedProperty1;
@@ -99,72 +89,8 @@ void main() {
   // nice toString
   print(const Union(42)); // Union(value: 42)
   print(const Union.loading()); // Union.loading()
-  print(const Union.error('Failed to fetch')); // Union.error(message: Failed to fetch)
-
-  // union with single case - with data
-  const singleCaseUnionWithDataExample = SingleCaseUnionWithData.singleCase(43, 'string');
-
-  // single-case supports `when`
-  print(singleCaseUnionWithDataExample.when(
-    singleCase: (a, b) {
-      return 'single-case union with data: "$a" "$b"';
-    },
-  ));
-
-  // and `map` too
-  print(
-    singleCaseUnionWithDataExample.map(
-      singleCase: (SingleCaseWithData singleCase) => '$singleCase',
-    ),
-  );
-
-  // even though it has single case, you still can use maybeWhen, so that your code is ready when you add more cases
-  print(
-    singleCaseUnionWithDataExample.maybeWhen(
-      singleCase: (a, b) => '$a $b', // this is optional
-      orElse: () => 'this will not be called, since all cases are covered',
-    ),
-  );
-
-  // same goes for maybeMap
-  print(
-    singleCaseUnionWithDataExample.maybeMap(
-      singleCase: (SingleCaseWithData a) => '$a', // this is optional
-      orElse: () => 'this will not be called, since all cases are covered',
-    ),
-  );
-
-  // union with single case - without data - works the same way as the single case with data.
-  const singleCaseUnionWithoutDataExample = SingleCaseUnionWithoutData.singleCase();
-
-  print(singleCaseUnionWithoutDataExample.when(
-    singleCase: () {
-      return 'single-case union without data';
-    },
-  ));
-
-  print(
-    singleCaseUnionWithoutDataExample.map(
-      singleCase: (SingleCaseWithoutData singleCase) => '$singleCase',
-    ),
-  );
-
-  print(
-    singleCaseUnionWithoutDataExample.maybeWhen(
-      singleCase: () => 'has no data', // this is optional
-      orElse: () => 'this will not be called, since all cases are covered',
-    ),
-  );
-
-  // same goes for maybeMap
-  print(
-    singleCaseUnionWithoutDataExample.maybeMap(
-      singleCase: (SingleCaseWithoutData a) => '$a', // this is optional
-      orElse: () => 'this will not be called, since all cases are covered',
-    ),
-  );
-
-  // ------------------
+  print(const Union.error(
+      'Failed to fetch')); // Union.error(message: Failed to fetch)
 
   // ------------------
 

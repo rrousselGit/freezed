@@ -173,44 +173,29 @@ void main() {
   });
 
   test('single-case union does have map', () async {
-    await expectLater(compile(r'''
-import 'single_class_constructor.dart';
-
-void main() {
-  SingleNamedCtor.named(1).map;
-}
-'''), completes);
+    expect(SingleNamedCtor.named(42).map(named: (WhateverSingleNamedCtor value) => '${value.a}'), '42');
   });
 
   test('single-case union does have maybeMap', () async {
-    await expectLater(compile(r'''
-import 'single_class_constructor.dart';
-
-void main() {
-  SingleNamedCtor.named(1).maybeMap;
-}
-'''), completes);
+    expect(
+        SingleNamedCtor.named(42).maybeMap(
+          named: (WhateverSingleNamedCtor value) => '${value.a}',
+          orElse: () => throw Exception('orElse called'),
+        ),
+        '42');
   });
 
-
   test('single-case union does have when', () async {
-    await expectLater(compile(r'''
-import 'single_class_constructor.dart';
-
-void main() {
-  SingleNamedCtor.named(1).when;
-}
-'''), completes);
+    expect(SingleNamedCtor.named(42).when(named: (int value) => '$value'), '42');
   });
 
   test('single-case union does have maybeWhen', () async {
-    await expectLater(compile(r'''
-import 'single_class_constructor.dart';
-
-void main() {
-  SingleNamedCtor.named(1).maybeWhen;
-}
-'''), completes);
+    expect(
+        SingleNamedCtor.named(42).maybeWhen(
+          named: (int value) => '$value',
+          orElse: () => throw Exception('orElse called'),
+        ),
+        '42');
   });
 
   test('can be created as const', () {

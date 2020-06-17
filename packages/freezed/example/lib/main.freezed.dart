@@ -25,15 +25,14 @@ const $MyClass = _$MyClassTearOff();
 
 mixin _$MyClass {
   String get a;
-
   int get b;
 
   $MyClassCopyWith<MyClass> get copyWith;
 }
 
 abstract class $MyClassCopyWith<$Res> {
-  factory $MyClassCopyWith(MyClass value, $Res Function(MyClass) then) = _$MyClassCopyWithImpl<$Res>;
-
+  factory $MyClassCopyWith(MyClass value, $Res Function(MyClass) then) =
+      _$MyClassCopyWithImpl<$Res>;
   $Res call({String a, int b});
 }
 
@@ -41,7 +40,6 @@ class _$MyClassCopyWithImpl<$Res> implements $MyClassCopyWith<$Res> {
   _$MyClassCopyWithImpl(this._value, this._then);
 
   final MyClass _value;
-
   // ignore: unused_field
   final $Res Function(MyClass) _then;
 
@@ -58,14 +56,16 @@ class _$MyClassCopyWithImpl<$Res> implements $MyClassCopyWith<$Res> {
 }
 
 abstract class _$MyClassCopyWith<$Res> implements $MyClassCopyWith<$Res> {
-  factory _$MyClassCopyWith(_MyClass value, $Res Function(_MyClass) then) = __$MyClassCopyWithImpl<$Res>;
-
+  factory _$MyClassCopyWith(_MyClass value, $Res Function(_MyClass) then) =
+      __$MyClassCopyWithImpl<$Res>;
   @override
   $Res call({String a, int b});
 }
 
-class __$MyClassCopyWithImpl<$Res> extends _$MyClassCopyWithImpl<$Res> implements _$MyClassCopyWith<$Res> {
-  __$MyClassCopyWithImpl(_MyClass _value, $Res Function(_MyClass) _then) : super(_value, (v) => _then(v as _MyClass));
+class __$MyClassCopyWithImpl<$Res> extends _$MyClassCopyWithImpl<$Res>
+    implements _$MyClassCopyWith<$Res> {
+  __$MyClassCopyWithImpl(_MyClass _value, $Res Function(_MyClass) _then)
+      : super(_value, (v) => _then(v as _MyClass));
 
   @override
   _MyClass get _value => super._value as _MyClass;
@@ -98,22 +98,31 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'MyClass'))..add(DiagnosticsProperty('a', a))..add(DiagnosticsProperty('b', b));
+    properties
+      ..add(DiagnosticsProperty('type', 'MyClass'))
+      ..add(DiagnosticsProperty('a', a))
+      ..add(DiagnosticsProperty('b', b));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _MyClass &&
-            (identical(other.a, a) || const DeepCollectionEquality().equals(other.a, a)) &&
-            (identical(other.b, b) || const DeepCollectionEquality().equals(other.b, b)));
+            (identical(other.a, a) ||
+                const DeepCollectionEquality().equals(other.a, a)) &&
+            (identical(other.b, b) ||
+                const DeepCollectionEquality().equals(other.b, b)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ const DeepCollectionEquality().hash(a) ^ const DeepCollectionEquality().hash(b);
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(a) ^
+      const DeepCollectionEquality().hash(b);
 
   @override
-  _$MyClassCopyWith<_MyClass> get copyWith => __$MyClassCopyWithImpl<_MyClass>(this, _$identity);
+  _$MyClassCopyWith<_MyClass> get copyWith =>
+      __$MyClassCopyWithImpl<_MyClass>(this, _$identity);
 }
 
 abstract class _MyClass implements MyClass {
@@ -121,10 +130,8 @@ abstract class _MyClass implements MyClass {
 
   @override
   String get a;
-
   @override
   int get b;
-
   @override
   _$MyClassCopyWith<_MyClass> get copyWith;
 }
@@ -167,7 +174,6 @@ mixin _$Union {
     @required Result error(String message),
     @required Result complex(int a, String b),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(int value), {
@@ -176,7 +182,6 @@ mixin _$Union {
     Result complex(int a, String b),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>(
     Result $default(Data value), {
@@ -184,7 +189,6 @@ mixin _$Union {
     @required Result error(ErrorDetails value),
     @required Result complex(Complex value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
     Result $default(Data value), {
@@ -196,26 +200,28 @@ mixin _$Union {
 }
 
 abstract class $UnionCopyWith<$Res> {
-  factory $UnionCopyWith(Union value, $Res Function(Union) then) = _$UnionCopyWithImpl<$Res>;
+  factory $UnionCopyWith(Union value, $Res Function(Union) then) =
+      _$UnionCopyWithImpl<$Res>;
 }
 
 class _$UnionCopyWithImpl<$Res> implements $UnionCopyWith<$Res> {
   _$UnionCopyWithImpl(this._value, this._then);
 
   final Union _value;
-
   // ignore: unused_field
   final $Res Function(Union) _then;
 }
 
 abstract class $DataCopyWith<$Res> {
-  factory $DataCopyWith(Data value, $Res Function(Data) then) = _$DataCopyWithImpl<$Res>;
-
+  factory $DataCopyWith(Data value, $Res Function(Data) then) =
+      _$DataCopyWithImpl<$Res>;
   $Res call({int value});
 }
 
-class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
-  _$DataCopyWithImpl(Data _value, $Res Function(Data) _then) : super(_value, (v) => _then(v as Data));
+class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
+    implements $DataCopyWith<$Res> {
+  _$DataCopyWithImpl(Data _value, $Res Function(Data) _then)
+      : super(_value, (v) => _then(v as Data));
 
   @override
   Data get _value => super._value as Data;
@@ -244,20 +250,26 @@ class _$Data with DiagnosticableTreeMixin implements Data {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'Union'))..add(DiagnosticsProperty('value', value));
+    properties
+      ..add(DiagnosticsProperty('type', 'Union'))
+      ..add(DiagnosticsProperty('value', value));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is Data && (identical(other.value, value) || const DeepCollectionEquality().equals(other.value, value)));
+        (other is Data &&
+            (identical(other.value, value) ||
+                const DeepCollectionEquality().equals(other.value, value)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
 
   @override
-  $DataCopyWith<Data> get copyWith => _$DataCopyWithImpl<Data>(this, _$identity);
+  $DataCopyWith<Data> get copyWith =>
+      _$DataCopyWithImpl<Data>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -326,16 +338,18 @@ abstract class Data implements Union {
   const factory Data(int value) = _$Data;
 
   int get value;
-
   $DataCopyWith<Data> get copyWith;
 }
 
 abstract class $LoadingCopyWith<$Res> {
-  factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) = _$LoadingCopyWithImpl<$Res>;
+  factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) =
+      _$LoadingCopyWithImpl<$Res>;
 }
 
-class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res> implements $LoadingCopyWith<$Res> {
-  _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then) : super(_value, (v) => _then(v as Loading));
+class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
+    implements $LoadingCopyWith<$Res> {
+  _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then)
+      : super(_value, (v) => _then(v as Loading));
 
   @override
   Loading get _value => super._value as Loading;
@@ -431,13 +445,17 @@ abstract class Loading implements Union {
 }
 
 abstract class $ErrorDetailsCopyWith<$Res> {
-  factory $ErrorDetailsCopyWith(ErrorDetails value, $Res Function(ErrorDetails) then) = _$ErrorDetailsCopyWithImpl<$Res>;
-
+  factory $ErrorDetailsCopyWith(
+          ErrorDetails value, $Res Function(ErrorDetails) then) =
+      _$ErrorDetailsCopyWithImpl<$Res>;
   $Res call({String message});
 }
 
-class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res> implements $ErrorDetailsCopyWith<$Res> {
-  _$ErrorDetailsCopyWithImpl(ErrorDetails _value, $Res Function(ErrorDetails) _then) : super(_value, (v) => _then(v as ErrorDetails));
+class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
+    implements $ErrorDetailsCopyWith<$Res> {
+  _$ErrorDetailsCopyWithImpl(
+      ErrorDetails _value, $Res Function(ErrorDetails) _then)
+      : super(_value, (v) => _then(v as ErrorDetails));
 
   @override
   ErrorDetails get _value => super._value as ErrorDetails;
@@ -466,20 +484,26 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'Union.error'))..add(DiagnosticsProperty('message', message));
+    properties
+      ..add(DiagnosticsProperty('type', 'Union.error'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is ErrorDetails && (identical(other.message, message) || const DeepCollectionEquality().equals(other.message, message)));
+        (other is ErrorDetails &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
 
   @override
-  $ErrorDetailsCopyWith<ErrorDetails> get copyWith => _$ErrorDetailsCopyWithImpl<ErrorDetails>(this, _$identity);
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
+      _$ErrorDetailsCopyWithImpl<ErrorDetails>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -548,18 +572,19 @@ abstract class ErrorDetails implements Union {
   const factory ErrorDetails([String message]) = _$ErrorDetails;
 
   String get message;
-
   $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
 }
 
 abstract class $ComplexCopyWith<$Res> {
-  factory $ComplexCopyWith(Complex value, $Res Function(Complex) then) = _$ComplexCopyWithImpl<$Res>;
-
+  factory $ComplexCopyWith(Complex value, $Res Function(Complex) then) =
+      _$ComplexCopyWithImpl<$Res>;
   $Res call({int a, String b});
 }
 
-class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res> implements $ComplexCopyWith<$Res> {
-  _$ComplexCopyWithImpl(Complex _value, $Res Function(Complex) _then) : super(_value, (v) => _then(v as Complex));
+class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
+    implements $ComplexCopyWith<$Res> {
+  _$ComplexCopyWithImpl(Complex _value, $Res Function(Complex) _then)
+      : super(_value, (v) => _then(v as Complex));
 
   @override
   Complex get _value => super._value as Complex;
@@ -594,22 +619,31 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'Union.complex'))..add(DiagnosticsProperty('a', a))..add(DiagnosticsProperty('b', b));
+    properties
+      ..add(DiagnosticsProperty('type', 'Union.complex'))
+      ..add(DiagnosticsProperty('a', a))
+      ..add(DiagnosticsProperty('b', b));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is Complex &&
-            (identical(other.a, a) || const DeepCollectionEquality().equals(other.a, a)) &&
-            (identical(other.b, b) || const DeepCollectionEquality().equals(other.b, b)));
+            (identical(other.a, a) ||
+                const DeepCollectionEquality().equals(other.a, a)) &&
+            (identical(other.b, b) ||
+                const DeepCollectionEquality().equals(other.b, b)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ const DeepCollectionEquality().hash(a) ^ const DeepCollectionEquality().hash(b);
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(a) ^
+      const DeepCollectionEquality().hash(b);
 
   @override
-  $ComplexCopyWith<Complex> get copyWith => _$ComplexCopyWithImpl<Complex>(this, _$identity);
+  $ComplexCopyWith<Complex> get copyWith =>
+      _$ComplexCopyWithImpl<Complex>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -678,339 +712,8 @@ abstract class Complex implements Union {
   const factory Complex(int a, String b) = _$Complex;
 
   int get a;
-
   String get b;
-
   $ComplexCopyWith<Complex> get copyWith;
-}
-
-class _$SingleCaseUnionWithDataTearOff {
-  const _$SingleCaseUnionWithDataTearOff();
-
-  SingleCaseWithData singleCase(int a, String b) {
-    return SingleCaseWithData(
-      a,
-      b,
-    );
-  }
-}
-
-// ignore: unused_element
-const $SingleCaseUnionWithData = _$SingleCaseUnionWithDataTearOff();
-
-mixin _$SingleCaseUnionWithData {
-  int get a;
-
-  String get b;
-
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result singleCase(int a, String b),
-  });
-
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result singleCase(int a, String b),
-    @required Result orElse(),
-  });
-
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result singleCase(SingleCaseWithData value),
-  });
-
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result singleCase(SingleCaseWithData value),
-    @required Result orElse(),
-  });
-
-  $SingleCaseUnionWithDataCopyWith<SingleCaseUnionWithData> get copyWith;
-}
-
-abstract class $SingleCaseUnionWithDataCopyWith<$Res> {
-  factory $SingleCaseUnionWithDataCopyWith(SingleCaseUnionWithData value, $Res Function(SingleCaseUnionWithData) then) =
-      _$SingleCaseUnionWithDataCopyWithImpl<$Res>;
-
-  $Res call({int a, String b});
-}
-
-class _$SingleCaseUnionWithDataCopyWithImpl<$Res> implements $SingleCaseUnionWithDataCopyWith<$Res> {
-  _$SingleCaseUnionWithDataCopyWithImpl(this._value, this._then);
-
-  final SingleCaseUnionWithData _value;
-
-  // ignore: unused_field
-  final $Res Function(SingleCaseUnionWithData) _then;
-
-  @override
-  $Res call({
-    Object a = freezed,
-    Object b = freezed,
-  }) {
-    return _then(_value.copyWith(
-      a: a == freezed ? _value.a : a as int,
-      b: b == freezed ? _value.b : b as String,
-    ));
-  }
-}
-
-abstract class $SingleCaseWithDataCopyWith<$Res> implements $SingleCaseUnionWithDataCopyWith<$Res> {
-  factory $SingleCaseWithDataCopyWith(SingleCaseWithData value, $Res Function(SingleCaseWithData) then) =
-      _$SingleCaseWithDataCopyWithImpl<$Res>;
-
-  @override
-  $Res call({int a, String b});
-}
-
-class _$SingleCaseWithDataCopyWithImpl<$Res> extends _$SingleCaseUnionWithDataCopyWithImpl<$Res>
-    implements $SingleCaseWithDataCopyWith<$Res> {
-  _$SingleCaseWithDataCopyWithImpl(SingleCaseWithData _value, $Res Function(SingleCaseWithData) _then)
-      : super(_value, (v) => _then(v as SingleCaseWithData));
-
-  @override
-  SingleCaseWithData get _value => super._value as SingleCaseWithData;
-
-  @override
-  $Res call({
-    Object a = freezed,
-    Object b = freezed,
-  }) {
-    return _then(SingleCaseWithData(
-      a == freezed ? _value.a : a as int,
-      b == freezed ? _value.b : b as String,
-    ));
-  }
-}
-
-class _$SingleCaseWithData with DiagnosticableTreeMixin implements SingleCaseWithData {
-  const _$SingleCaseWithData(this.a, this.b)
-      : assert(a != null),
-        assert(b != null);
-
-  @override
-  final int a;
-  @override
-  final String b;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SingleCaseUnionWithData.singleCase(a: $a, b: $b)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'SingleCaseUnionWithData.singleCase'))
-      ..add(DiagnosticsProperty('a', a))
-      ..add(DiagnosticsProperty('b', b));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is SingleCaseWithData &&
-            (identical(other.a, a) || const DeepCollectionEquality().equals(other.a, a)) &&
-            (identical(other.b, b) || const DeepCollectionEquality().equals(other.b, b)));
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode ^ const DeepCollectionEquality().hash(a) ^ const DeepCollectionEquality().hash(b);
-
-  @override
-  $SingleCaseWithDataCopyWith<SingleCaseWithData> get copyWith => _$SingleCaseWithDataCopyWithImpl<SingleCaseWithData>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result singleCase(int a, String b),
-  }) {
-    assert(singleCase != null);
-    return singleCase(a, b);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result singleCase(int a, String b),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (singleCase != null) {
-      return singleCase(a, b);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result singleCase(SingleCaseWithData value),
-  }) {
-    assert(singleCase != null);
-    return singleCase(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result singleCase(SingleCaseWithData value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (singleCase != null) {
-      return singleCase(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SingleCaseWithData implements SingleCaseUnionWithData {
-  const factory SingleCaseWithData(int a, String b) = _$SingleCaseWithData;
-
-  @override
-  int get a;
-
-  @override
-  String get b;
-
-  @override
-  $SingleCaseWithDataCopyWith<SingleCaseWithData> get copyWith;
-}
-
-class _$SingleCaseUnionWithoutDataTearOff {
-  const _$SingleCaseUnionWithoutDataTearOff();
-
-  SingleCaseWithoutData singleCase() {
-    return const SingleCaseWithoutData();
-  }
-}
-
-// ignore: unused_element
-const $SingleCaseUnionWithoutData = _$SingleCaseUnionWithoutDataTearOff();
-
-mixin _$SingleCaseUnionWithoutData {
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result singleCase(),
-  });
-
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result singleCase(),
-    @required Result orElse(),
-  });
-
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result singleCase(SingleCaseWithoutData value),
-  });
-
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result singleCase(SingleCaseWithoutData value),
-    @required Result orElse(),
-  });
-}
-
-abstract class $SingleCaseUnionWithoutDataCopyWith<$Res> {
-  factory $SingleCaseUnionWithoutDataCopyWith(SingleCaseUnionWithoutData value, $Res Function(SingleCaseUnionWithoutData) then) =
-      _$SingleCaseUnionWithoutDataCopyWithImpl<$Res>;
-}
-
-class _$SingleCaseUnionWithoutDataCopyWithImpl<$Res> implements $SingleCaseUnionWithoutDataCopyWith<$Res> {
-  _$SingleCaseUnionWithoutDataCopyWithImpl(this._value, this._then);
-
-  final SingleCaseUnionWithoutData _value;
-
-  // ignore: unused_field
-  final $Res Function(SingleCaseUnionWithoutData) _then;
-}
-
-abstract class $SingleCaseWithoutDataCopyWith<$Res> {
-  factory $SingleCaseWithoutDataCopyWith(SingleCaseWithoutData value, $Res Function(SingleCaseWithoutData) then) =
-      _$SingleCaseWithoutDataCopyWithImpl<$Res>;
-}
-
-class _$SingleCaseWithoutDataCopyWithImpl<$Res> extends _$SingleCaseUnionWithoutDataCopyWithImpl<$Res>
-    implements $SingleCaseWithoutDataCopyWith<$Res> {
-  _$SingleCaseWithoutDataCopyWithImpl(SingleCaseWithoutData _value, $Res Function(SingleCaseWithoutData) _then)
-      : super(_value, (v) => _then(v as SingleCaseWithoutData));
-
-  @override
-  SingleCaseWithoutData get _value => super._value as SingleCaseWithoutData;
-}
-
-class _$SingleCaseWithoutData with DiagnosticableTreeMixin implements SingleCaseWithoutData {
-  const _$SingleCaseWithoutData();
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SingleCaseUnionWithoutData.singleCase()';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'SingleCaseUnionWithoutData.singleCase'));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is SingleCaseWithoutData);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result singleCase(),
-  }) {
-    assert(singleCase != null);
-    return singleCase();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result singleCase(),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (singleCase != null) {
-      return singleCase();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result singleCase(SingleCaseWithoutData value),
-  }) {
-    assert(singleCase != null);
-    return singleCase(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result singleCase(SingleCaseWithoutData value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (singleCase != null) {
-      return singleCase(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SingleCaseWithoutData implements SingleCaseUnionWithoutData {
-  const factory SingleCaseWithoutData() = _$SingleCaseWithoutData;
 }
 
 class _$SharedPropertyTearOff {
@@ -1042,20 +745,17 @@ mixin _$SharedProperty {
     @required Result person(String name, int age),
     @required Result city(String name, int population),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result person(String name, int age),
     Result city(String name, int population),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result person(SharedProperty0 value),
     @required Result city(SharedProperty1 value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result person(SharedProperty0 value),
@@ -1067,16 +767,17 @@ mixin _$SharedProperty {
 }
 
 abstract class $SharedPropertyCopyWith<$Res> {
-  factory $SharedPropertyCopyWith(SharedProperty value, $Res Function(SharedProperty) then) = _$SharedPropertyCopyWithImpl<$Res>;
-
+  factory $SharedPropertyCopyWith(
+          SharedProperty value, $Res Function(SharedProperty) then) =
+      _$SharedPropertyCopyWithImpl<$Res>;
   $Res call({String name});
 }
 
-class _$SharedPropertyCopyWithImpl<$Res> implements $SharedPropertyCopyWith<$Res> {
+class _$SharedPropertyCopyWithImpl<$Res>
+    implements $SharedPropertyCopyWith<$Res> {
   _$SharedPropertyCopyWithImpl(this._value, this._then);
 
   final SharedProperty _value;
-
   // ignore: unused_field
   final $Res Function(SharedProperty) _then;
 
@@ -1090,15 +791,20 @@ class _$SharedPropertyCopyWithImpl<$Res> implements $SharedPropertyCopyWith<$Res
   }
 }
 
-abstract class $SharedProperty0CopyWith<$Res> implements $SharedPropertyCopyWith<$Res> {
-  factory $SharedProperty0CopyWith(SharedProperty0 value, $Res Function(SharedProperty0) then) = _$SharedProperty0CopyWithImpl<$Res>;
-
+abstract class $SharedProperty0CopyWith<$Res>
+    implements $SharedPropertyCopyWith<$Res> {
+  factory $SharedProperty0CopyWith(
+          SharedProperty0 value, $Res Function(SharedProperty0) then) =
+      _$SharedProperty0CopyWithImpl<$Res>;
   @override
   $Res call({String name, int age});
 }
 
-class _$SharedProperty0CopyWithImpl<$Res> extends _$SharedPropertyCopyWithImpl<$Res> implements $SharedProperty0CopyWith<$Res> {
-  _$SharedProperty0CopyWithImpl(SharedProperty0 _value, $Res Function(SharedProperty0) _then)
+class _$SharedProperty0CopyWithImpl<$Res>
+    extends _$SharedPropertyCopyWithImpl<$Res>
+    implements $SharedProperty0CopyWith<$Res> {
+  _$SharedProperty0CopyWithImpl(
+      SharedProperty0 _value, $Res Function(SharedProperty0) _then)
       : super(_value, (v) => _then(v as SharedProperty0));
 
   @override
@@ -1116,7 +822,9 @@ class _$SharedProperty0CopyWithImpl<$Res> extends _$SharedPropertyCopyWithImpl<$
   }
 }
 
-class _$SharedProperty0 with DiagnosticableTreeMixin implements SharedProperty0 {
+class _$SharedProperty0
+    with DiagnosticableTreeMixin
+    implements SharedProperty0 {
   _$SharedProperty0({this.name, this.age});
 
   @override
@@ -1142,15 +850,21 @@ class _$SharedProperty0 with DiagnosticableTreeMixin implements SharedProperty0 
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is SharedProperty0 &&
-            (identical(other.name, name) || const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.age, age) || const DeepCollectionEquality().equals(other.age, age)));
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.age, age) ||
+                const DeepCollectionEquality().equals(other.age, age)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ const DeepCollectionEquality().hash(name) ^ const DeepCollectionEquality().hash(age);
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(age);
 
   @override
-  $SharedProperty0CopyWith<SharedProperty0> get copyWith => _$SharedProperty0CopyWithImpl<SharedProperty0>(this, _$identity);
+  $SharedProperty0CopyWith<SharedProperty0> get copyWith =>
+      _$SharedProperty0CopyWithImpl<SharedProperty0>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1208,22 +922,25 @@ abstract class SharedProperty0 implements SharedProperty {
 
   @override
   String get name;
-
   int get age;
-
   @override
   $SharedProperty0CopyWith<SharedProperty0> get copyWith;
 }
 
-abstract class $SharedProperty1CopyWith<$Res> implements $SharedPropertyCopyWith<$Res> {
-  factory $SharedProperty1CopyWith(SharedProperty1 value, $Res Function(SharedProperty1) then) = _$SharedProperty1CopyWithImpl<$Res>;
-
+abstract class $SharedProperty1CopyWith<$Res>
+    implements $SharedPropertyCopyWith<$Res> {
+  factory $SharedProperty1CopyWith(
+          SharedProperty1 value, $Res Function(SharedProperty1) then) =
+      _$SharedProperty1CopyWithImpl<$Res>;
   @override
   $Res call({String name, int population});
 }
 
-class _$SharedProperty1CopyWithImpl<$Res> extends _$SharedPropertyCopyWithImpl<$Res> implements $SharedProperty1CopyWith<$Res> {
-  _$SharedProperty1CopyWithImpl(SharedProperty1 _value, $Res Function(SharedProperty1) _then)
+class _$SharedProperty1CopyWithImpl<$Res>
+    extends _$SharedPropertyCopyWithImpl<$Res>
+    implements $SharedProperty1CopyWith<$Res> {
+  _$SharedProperty1CopyWithImpl(
+      SharedProperty1 _value, $Res Function(SharedProperty1) _then)
       : super(_value, (v) => _then(v as SharedProperty1));
 
   @override
@@ -1241,7 +958,9 @@ class _$SharedProperty1CopyWithImpl<$Res> extends _$SharedPropertyCopyWithImpl<$
   }
 }
 
-class _$SharedProperty1 with DiagnosticableTreeMixin implements SharedProperty1 {
+class _$SharedProperty1
+    with DiagnosticableTreeMixin
+    implements SharedProperty1 {
   _$SharedProperty1({this.name, this.population});
 
   @override
@@ -1267,15 +986,22 @@ class _$SharedProperty1 with DiagnosticableTreeMixin implements SharedProperty1 
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is SharedProperty1 &&
-            (identical(other.name, name) || const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.population, population) || const DeepCollectionEquality().equals(other.population, population)));
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.population, population) ||
+                const DeepCollectionEquality()
+                    .equals(other.population, population)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ const DeepCollectionEquality().hash(name) ^ const DeepCollectionEquality().hash(population);
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(population);
 
   @override
-  $SharedProperty1CopyWith<SharedProperty1> get copyWith => _$SharedProperty1CopyWithImpl<SharedProperty1>(this, _$identity);
+  $SharedProperty1CopyWith<SharedProperty1> get copyWith =>
+      _$SharedProperty1CopyWithImpl<SharedProperty1>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1333,9 +1059,7 @@ abstract class SharedProperty1 implements SharedProperty {
 
   @override
   String get name;
-
   int get population;
-
   @override
   $SharedProperty1CopyWith<SharedProperty1> get copyWith;
 }
