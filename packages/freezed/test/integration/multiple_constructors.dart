@@ -44,3 +44,32 @@ abstract class RequiredParams with _$RequiredParams {
   const factory RequiredParams({@required String a}) = RequiredParams0;
   const factory RequiredParams.second({@required String a}) = RequiredParams1;
 }
+
+@freezed
+abstract class NestedList with _$NestedList {
+  factory NestedList.shallow(List<LeafNestedListItem> children) =
+      ShallowNestedList;
+  factory NestedList.deep(List<InnerNestedListItem> children) = DeepNestedList;
+}
+
+@freezed
+abstract class NestedListItem with _$NestedListItem {
+  factory NestedListItem.leaf() = LeafNestedListItem;
+  factory NestedListItem.inner(List<LeafNestedListItem> children) =
+      InnerNestedListItem;
+}
+
+@freezed
+abstract class NestedMap with _$NestedMap {
+  factory NestedMap.shallow(Map<String, LeafNestedMapItem> children) =
+      ShallowNestedMap;
+  factory NestedMap.deep(Map<String, InnerNestedMapItem> children) =
+      DeepNestedMap;
+}
+
+@freezed
+abstract class NestedMapItem with _$NestedMapItem {
+  factory NestedMapItem.leaf() = LeafNestedMapItem;
+  factory NestedMapItem.inner(Map<String, LeafNestedMapItem> children) =
+      InnerNestedMapItem;
+}

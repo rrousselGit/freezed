@@ -485,6 +485,34 @@ String parseTypeSource(VariableElement element) {
       final match = RegExp(r'(\w+<.+?>)\s+$').firstMatch(source);
       type = match?.group(1);
     }
+  } else if (type.contains('dynamic')) {
+    type = _parseNestedTypeSource(type, element);
   }
   return type;
+}
+
+String _parseNestedTypeSource(String fallbakcType, VariableElement element) {
+  const delimiter = ' ';
+  final enclosingElementList =
+      element.enclosingElement.toString().split(RegExp(delimiter));
+  if (enclosingElementList.length < 2) {
+    return fallbakcType;
+  }
+
+  final pattern = RegExp.escape(enclosingElementList
+          .sublist(1, enclosingElementList.length)
+          .join(delimiter))
+      .replaceAll('dynamic', '.*');
+  final source = element.source.contents.data;
+  final lineMatch = RegExp(pattern).firstMatch(source);
+  if (lineMatch == null) {
+    return fallbakcType;
+  }
+
+  final typeMatch = RegExp(r'\((.+)\s+\w+\)').firstMatch(lineMatch.group(0));
+  if (typeMatch == null) {
+    return fallbakcType;
+  }
+
+  return typeMatch.group(1);
 }
