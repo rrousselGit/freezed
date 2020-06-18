@@ -19,17 +19,7 @@ typedef NoCommonParamNamedTearOff = NoCommonParam1 Function(
 
 void main() {
   test('recursive class does not generate dynamic', () async {
-    final sources = await resolveSources(
-      {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
-      (r) {
-        return r.libraries.firstWhere((element) =>
-            element.source.toString().contains('multiple_constructors'));
-      },
-    );
-
-    final recursiveClass = sources.topLevelElements
-        .whereType<ClassElement>()
-        .firstWhere((element) => element.name == '_RecursiveNext');
+    final recursiveClass = await _getClassElement('_RecursiveNext');
 
     expect(recursiveClass.getField('value').type.isDynamic, isFalse);
   });
@@ -327,4 +317,57 @@ void main() {
       error,
     );
   });
+  group('NestedList', () {
+    test('generates List of correct type', () async {
+      final nestedListClass = await _getClassElement('ShallowNestedList');
+
+      expect(nestedListClass.getField('children').type.getDisplayString(),
+          'List<LeafNestedListItem>');
+    });
+
+    test('generates List of correct type for deeply nested case', () async {
+      final nestedListClass = await _getClassElement('DeepNestedList');
+
+      expect(nestedListClass.getField('children').type.getDisplayString(),
+          'List<InnerNestedListItem>');
+
+      final nestedListItemClass = await _getClassElement('InnerNestedListItem');
+
+      expect(nestedListItemClass.getField('children').type.getDisplayString(),
+          'List<LeafNestedListItem>');
+    });
+  });
+  group('NestedMap', () {
+    test('generates Map of correct type', () async {
+      final nestedMapClass = await _getClassElement('ShallowNestedMap');
+
+      expect(nestedMapClass.getField('children').type.getDisplayString(),
+          'Map<String, LeafNestedMapItem>');
+    });
+
+    test('generates Map of correct type for deeply nested case', () async {
+      final nestedMapClass = await _getClassElement('DeepNestedMap');
+
+      expect(nestedMapClass.getField('children').type.getDisplayString(),
+          'Map<String, InnerNestedMapItem>');
+
+      final nestedMapItemClass = await _getClassElement('InnerNestedMapItem');
+
+      expect(nestedMapItemClass.getField('children').type.getDisplayString(),
+          'Map<String, LeafNestedMapItem>');
+    });
+  });
+}
+
+Future<ClassElement> _getClassElement(String elementName) async {
+  final sources = await resolveSources(
+    {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
+    (r) {
+      return r.libraries.firstWhere((element) =>
+          element.source.toString().contains('multiple_constructors'));
+    },
+  );
+  return sources.topLevelElements
+      .whereType<ClassElement>()
+      .firstWhere((element) => element.name == elementName);
 }
