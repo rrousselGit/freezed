@@ -1,3 +1,7 @@
+# 0.11.2
+
+- Generate `when`/`map`/... even for classes with a single constructors (thanks @andrzejchm)
+
 # 0.11.1
 
 - Further improve the parsing of recursive freezed class to avoid `dynamic`s
