@@ -1,3 +1,7 @@
+# 0.11.1
+
+- Further improve the parsing of recursive freezed class to avoid `dynamic`s
+
 # 0.11.0
 
 - Added `@With` and `@Implements` decorators to allow only a specific constructor

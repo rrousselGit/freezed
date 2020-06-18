@@ -2,7 +2,7 @@ name: freezed
 description: >
   Code generation for immutable classes that has a simple syntax/API without
   compromising on the features.
-version: 0.11.0
+version: 0.11.1
 homepage: https://github.com/rrousselGit/freezed
 authors:
   - Remi Rousselet <darky12s@gmail.com>
