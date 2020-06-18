@@ -280,14 +280,14 @@ void main() {
     );
   });
   group('NestedList', () {
-    test('does not generate dynamic', () async {
+    test('generates List of correct type', () async {
       final nestedListClass = await _getClassElement('ShallowNestedList');
 
       expect(nestedListClass.getField('children').type.getDisplayString(),
           'List<LeafNestedListItem>');
     });
 
-    test('does not generate dynamic for deep nested case', () async {
+    test('generates List of correct type for deeply nested case', () async {
       final nestedListClass = await _getClassElement('DeepNestedList');
 
       expect(nestedListClass.getField('children').type.getDisplayString(),
@@ -300,14 +300,14 @@ void main() {
     });
   });
   group('NestedMap', () {
-    test('does not generate dynamic', () async {
+    test('generates Map of correct type', () async {
       final nestedMapClass = await _getClassElement('ShallowNestedMap');
 
       expect(nestedMapClass.getField('children').type.getDisplayString(),
           'Map<String, LeafNestedMapItem>');
     });
 
-    test('does not generate dynamic for deep nested case', () async {
+    test('generates Map of correct type for deeply nested case', () async {
       final nestedMapClass = await _getClassElement('DeepNestedMap');
 
       expect(nestedMapClass.getField('children').type.getDisplayString(),
