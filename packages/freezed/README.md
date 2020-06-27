@@ -67,6 +67,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib
     - [maybeWhen](#maybeWhen)
     - [map/maybeMap](#mapMaybeMap)
   - [fromJson/toJson](#fromjsontojson)
+    - [classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
 
 # How to use
 
@@ -989,8 +990,72 @@ That's it!\
 With these changes, [Freezed] will automatically ask [json_serializable] to generate all the necessary
 `fromJson`/`toJson`.
 
-Then, for classes with multiple constructors, [Freezed] will take care of deciding which
-constructor should be used.
+### fromJSON - classes with multiple constructors
+
+For classes with multiple constructors, [Freezed] will check the JSON response for a string element called `runtimeType` and choose the constructor to use based on its value. For example, given the following constructors:
+
+```dart
+@freezed
+abstract class MyResponse with _$MyResponse {
+  const factory MyResponse(String a) = MyResponseData;
+  const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+  const factory MyResponse.error(String message) = MyResponseError;
+  
+  factory MyResponse.fromJson(Map<String, dynamic> json) => _$MyResponseFromJson(json);
+}
+```
+
+Then [Freezed] will use each JSON object's `runtimeType` to choose the constructor as follows:
+
+```json
+[
+  {
+    "runtimeType": "default", 
+    "a": "This JSON object will use constructor MyResponse()" 
+  },
+  {
+    "runtimeType": "special",
+    "a": "This JSON object will use constructor MyResponse.special()",
+    "b": 42 
+  },
+  { 
+    "runtimeType": "error",
+    "message": "This JSON object will use constructor MyResponse.error()"
+  }
+]
+```
+
+If you don't control the JSON response, then you can implement a custom converter. Your custom converter will need to implement its own logic for determining which constructor to use.
+
+```dart
+class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynamic>> {
+  const MyResponseConverter();
+
+  @override
+  MyResponse fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    // type data was already set (e.g. because we serialized it ourselves)
+    if (json['runtimeType'] != null) {
+      return MyResponse.fromJson(json);
+    }
+    // you need to find some condition to know which type it is. e.g. check the presence of some field in the json
+    if (isTypeData) {
+      return MyResponseData.fromJson(json);
+    } else if (isTypeSpecial) {
+      return MyResponseSpecial.fromJson(json);
+    } else if (isTypeError) {
+      return MyResponseError.fromJson(json);
+    } else {
+      throw Exception('Could not determine the constructor for mapping from JSON');
+    }
+ }
+
+  @override
+  Map<String, dynamic> toJson(MyResponse data) => data.toJson();
+}
+```
 
 **What about `@JsonKey` annotation?**
 
@@ -1000,7 +1065,7 @@ As such, you can write:
 ```dart
 @freezed
 abstract class Example with _$Example {
-  factory Example(@Jsonkey(name: 'my_property') String myProperty) = _Example;
+  factory Example(@JsonKey(name: 'my_property') String myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
 }
@@ -1014,7 +1079,7 @@ You can pass `@JsonSerializable` annotation by placing it over constructor e.g.:
 @freezed
 abstract class Example with _$Example {
   @JsonSerializable(explicit_to_json: true)
-  factory Example(@Jsonkey(name: 'my_property') SomeOtherClass myProperty) = _Example;
+  factory Example(@JsonKey(name: 'my_property') SomeOtherClass myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
 }
