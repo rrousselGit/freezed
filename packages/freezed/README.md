@@ -41,7 +41,7 @@ Current generators have two approaches:
 
 **Say hello to [Freezed]~**, with support for advanced use-cases _without_ compromising on the syntax.
 
-See [the example](https://github.com/rrousselGit/freezed/blob/master/example/lib/main.dart) or [the index](#index) for a preview on what's available
+See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/freezed/example/lib/main.dart) or [the index](#index) for a preview on what's available
 
 # Index
 
