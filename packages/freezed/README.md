@@ -6,7 +6,7 @@ Welcome to [Freezed], yet another code generator for unions/pattern-matching/cop
 # Motivation
 
 While there are many code-generators available to help you deal with immutable objects, they usually come with a trade-off.\
-Either they have a simple syntax but lack in feature, or they have very advanced
+Either they have a simple syntax but lack features, or they have very advanced
 features but with complex syntax.
 
 A typical example would be a "clone" method.\
@@ -86,7 +86,7 @@ dev_dependencies:
   freezed:
 ```
 
-This install three packages:
+This installs three packages:
 
 - build_runner, the tool to run code-generators
 - [freezed], the code generator
@@ -94,7 +94,7 @@ This install three packages:
 
 ## Run the generator
 
-Like most code-generators, [Freezed] will need you to both imports the annotation ([meta]),
+Like most code-generators, [Freezed] will need you to both import the annotation ([meta])
 and use the `part` keyword on the top of your files.
 
 As such, a file that wants to use [Freezed] will start with:
@@ -105,7 +105,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'my_file.freezed.dart';
 ```
 
-**CONSIDER**: also importing `package:flutter/foundation.dart`.\
+**CONSIDER** also importing `package:flutter/foundation.dart`.\
 The reason being, importing `foundation.dart` also imports classes to make an
 object nicely readable in Flutter's devtool.\
 If you import `foundation.dart`, [Freezed] will automatically do it for you.
@@ -139,7 +139,7 @@ From there, to run the code generator, you have two possibilities:
 ### Basics
 
 [Freezed] works differently than most generators. To define a class using [Freezed],
-you will not declare properties but factory constructors instead.
+you will not declare properties but instead factory constructors.
 
 For example, if you want to define a `Person` class, which has 2 properties:
 
@@ -166,7 +166,7 @@ print(person.age); // 24
 **NOTE**:\
 You do not have to use named parameters for your constructor.
 
-All valid parameter syntax is supported. As such you could write:
+All valid parameter syntaxes are supported. As such you could write:
 
 ```dart
 @freezed
@@ -668,8 +668,8 @@ Company company;
 Company newCompany = company.copyWith.director(name: 'John Doe');
 ```
 
-Overall, from the definition of `Company`/`Director`/`Assistant` mentionned above,
-then these are all the potential "copy" syntaxes that we can do:
+Overall, based on the definitions of `Company`/`Director`/`Assistant` mentioned above,
+all the following "copy" syntaxes will work:
 
 ```dart
 Company company;
@@ -681,7 +681,7 @@ company = company.copyWith.director.assistant(name: 'John', age: 42);
 
 **Null consideration**
 
-Some objects may have for value `null`. For example, using our `Company` class,
+Some objects may can also be `null`. For example, using our `Company` class,
 then `Director` may be `null`.
 
 As such, writing:
@@ -727,7 +727,7 @@ They will come in handy later.
 
 ### Shared properties
 
-When defining multiple constructors, you will lose the ability to do read properties that are not common to all constructors:
+When defining multiple constructors, you will lose the ability to read properties that are not common to all constructors:
 
 For example, if you write:
 
