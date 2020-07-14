@@ -50,7 +50,7 @@ class RecursiveImportLocator {
     }
 
     return library.exportedLibraries.any((export) {
-      return library.isRelevant(whereLibrary) &&
+      return export.isRelevant(whereLibrary) &&
           _doesExportRecursively(
             library: export,
             where: where,
