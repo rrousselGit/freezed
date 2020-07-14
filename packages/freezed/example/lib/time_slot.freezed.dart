@@ -82,7 +82,7 @@ class __$TimeSlotCopyWithImpl<$Res> extends _$TimeSlotCopyWithImpl<$Res>
   }
 }
 
-class _$_TimeSlot with DiagnosticableTreeMixin implements _TimeSlot {
+class _$_TimeSlot implements _TimeSlot {
   _$_TimeSlot({this.start, this.end});
 
   @override
@@ -91,17 +91,8 @@ class _$_TimeSlot with DiagnosticableTreeMixin implements _TimeSlot {
   final TimeOfDay end;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'TimeSlot(start: $start, end: $end)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'TimeSlot'))
-      ..add(DiagnosticsProperty('start', start))
-      ..add(DiagnosticsProperty('end', end));
   }
 
   @override

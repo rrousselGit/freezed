@@ -21,7 +21,17 @@ class RecursiveImportLocator {
     @required ExportPredicate where,
     LibraryPredicate whereLibrary,
   }) {
-    return root.importedLibraries.any((lib) => _doesExportRecursively(
+    // based on importedLibraries in
+    // analyzer-0.39.4/lib/src/dart/element/element.dart:5321
+    final libraries = <_LibraryWithVisibility>{};
+    for (final import in root.imports) {
+      final library = import.importedLibrary;
+      if (library != null) {
+        libraries.add(_LibraryWithVisibility.root(library, import.combinators));
+      }
+    }
+
+    return libraries.any((lib) => _doesExportRecursively(
           library: lib,
           where: where,
           whereLibrary: whereLibrary,
@@ -29,32 +39,97 @@ class RecursiveImportLocator {
   }
 
   bool _doesExportRecursively({
-    @required LibraryElement library,
+    @required _LibraryWithVisibility library,
     @required ExportPredicate where,
     LibraryPredicate whereLibrary,
   }) {
-    assert(library != null);
-    assert(where != null);
-
-    if (whereLibrary?.call(library) ?? true) {
-      if (library.topLevelElements.any(where)) {
+    if (library.isRelevant(whereLibrary)) {
+      if (library.exportedTopLevelElements.any(where)) {
         return true;
       }
     }
 
     return library.exportedLibraries.any((export) {
-      final shouldContinueRecursion = whereLibrary?.call(export) ?? true;
-
-      if (shouldContinueRecursion) {
-        return shouldContinueRecursion &&
-            _doesExportRecursively(
-              library: export,
-              where: where,
-              whereLibrary: whereLibrary,
-            );
-      } else {
-        return false;
-      }
+      return library.isRelevant(whereLibrary) &&
+          _doesExportRecursively(
+            library: export,
+            where: where,
+            whereLibrary: whereLibrary,
+          );
     });
   }
+}
+
+/// this is a simple approach and it might not
+/// consider every possible show/hide case
+/// but it works for now
+class _LibraryWithVisibility {
+  final LibraryElement library;
+  final Set<String> hidden;
+  final Set<String> shown;
+
+  _LibraryWithVisibility(
+    this.library,
+    Set<String> parentHidden,
+    Set<String> parentShown,
+    Iterable<NamespaceCombinator> combinators,
+  )   : hidden = parentHidden.union(combinators.hidden),
+        shown = parentShown.union(combinators.shown);
+
+  _LibraryWithVisibility.root(
+    LibraryElement library,
+    Iterable<NamespaceCombinator> combinators,
+  ) : this(library, {}, {}, combinators);
+
+  bool isRelevant(LibraryPredicate whereLibrary) =>
+      whereLibrary?.call(library) ?? true;
+
+  Iterable<Element> get exportedTopLevelElements =>
+      library.topLevelElements.where(_isExported);
+
+  bool _isExported(Element element) {
+    if (hidden.isEmpty && shown.isEmpty) {
+      return true;
+    } else if (shown.isNotEmpty) {
+      return shown.contains(element.name);
+    } else {
+      return !hidden.contains(element.name);
+    }
+  }
+
+  /// based on exportedLibraries in
+  /// analyzer-0.39.4/lib/src/dart/element/element.dart:5230
+  List<_LibraryWithVisibility> get exportedLibraries {
+    final libraries = <_LibraryWithVisibility>{};
+    for (final export in library.exports) {
+      final library = export.exportedLibrary;
+      if (library != null) {
+        libraries.add(_LibraryWithVisibility(
+          library,
+          hidden,
+          shown,
+          export.combinators,
+        ));
+      }
+    }
+    return libraries.toList(growable: false);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _LibraryWithVisibility &&
+          runtimeType == other.runtimeType &&
+          library == other.library;
+
+  @override
+  int get hashCode => library.hashCode;
+}
+
+extension on Iterable<NamespaceCombinator> {
+  Set<String> get hidden =>
+      whereType<HideElementCombinator>().expand((e) => e.hiddenNames).toSet();
+
+  Set<String> get shown =>
+      whereType<ShowElementCombinator>().expand((e) => e.shownNames).toSet();
 }
