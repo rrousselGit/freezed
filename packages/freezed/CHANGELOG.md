@@ -1,3 +1,7 @@
+# 0.11.3
+
+- Fixed a bug where the generated class incorrectly used `Diagnosticable` event if `package:flutter/foundation` wasn't imported. (Thanks to @avbk)
+
 # 0.11.2
 
 - Generate `when`/`map`/... even for classes with a single constructors (thanks @andrzejchm)
