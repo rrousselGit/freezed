@@ -50,16 +50,26 @@ void main() {
     var errorResult =
         await main.session.getErrors('/freezed/test/integration/main.dart');
     expect(
-      errorResult.errors.map((e) => e.errorCode.name),
-      [
-        'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-        'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-        'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-        'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-        // TODO: find out why copyWith doesn't warn even if deprecated
-        // 'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-        // 'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-      ],
-    );
+        errorResult.errors.map((e) => e.errorCode.name),
+        anyOf([
+          [
+            'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+            'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+            'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+            'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+            // TODO: find out why copyWith doesn't warn even if deprecated
+            // 'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+            // 'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+          ],
+          [
+            'DEPRECATED_MEMBER_USE',
+            'DEPRECATED_MEMBER_USE',
+            'DEPRECATED_MEMBER_USE',
+            'DEPRECATED_MEMBER_USE',
+            // TODO: find out why copyWith doesn't warn even if deprecated
+            // 'DEPRECATED_MEMBER_USE',
+            // 'DEPRECATED_MEMBER_USE',
+          ],
+        ]));
   });
 }
