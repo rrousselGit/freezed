@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:example/diagnosticable.dart' as diagnosticable;
 import 'package:example/non_diagnosticable.dart' as non_diagnosticable;
+import 'package:example/time_slot.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('use Diagnosticable instead of toString if possible', () {
@@ -57,5 +58,13 @@ void main() {
     value = non_diagnosticable.Example.named(42);
     expect(value, isNot(isA<DiagnosticableTree>()));
     expect(value.toString(), 'Example<int>.named(c: 42)');
+  });
+  test('timeslot is not Diagnosticable', () {
+    final timeslot = TimeSlot(
+      start: const TimeOfDay(hour: 10, minute: 30),
+      end: const TimeOfDay(hour: 12, minute: 45),
+    );
+
+    expect(timeslot, isNot(isA<DiagnosticableTree>()));
   });
 }

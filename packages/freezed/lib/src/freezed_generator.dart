@@ -4,6 +4,7 @@ import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/tear_off.dart';
+import 'package:freezed/src/tools/recursive_import_locator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -519,47 +520,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   @override
   _GlobalData parseGlobalData(LibraryElement library) {
     return _GlobalData(
-      hasJson: library.importedLibraries.any(_libraryHasJson),
-      hasDiagnostics: library.importedLibraries.any(_libraryHasDiagnosticable),
-    );
-  }
-
-  bool _libraryHasElement(
-    LibraryElement library,
-    String pathStartsWith,
-    bool Function(Element) matcher,
-  ) {
-    if (library.librarySource.fullName.startsWith(pathStartsWith)) {
-      for (final element in library.topLevelElements) {
-        if (matcher(element)) {
-          return true;
-        }
-      }
-    }
-
-    return library.exportedLibraries.any((library) {
-      return library.librarySource.fullName.startsWith(pathStartsWith) &&
-          _libraryHasElement(library, pathStartsWith, matcher);
-    });
-  }
-
-  bool _libraryHasDiagnosticable(LibraryElement library) {
-    return _libraryHasElement(
-      library,
-      '/flutter/',
-      (element) =>
-          element.displayName.contains('Diagnosticable') &&
-          element.kind == ElementKind.CLASS,
-    );
-  }
-
-  bool _libraryHasJson(LibraryElement library) {
-    return _libraryHasElement(
-      library,
-      '/json_annotation/',
-      (element) =>
-          element.displayName.contains('JsonSerializable') &&
-          element.kind == ElementKind.CLASS,
+      hasJson: library.importsJsonSerializable,
+      hasDiagnostics: library.importsDiagnosticable,
     );
   }
 }
@@ -571,6 +533,20 @@ extension on FieldElement {
       throwOnUnresolved: false,
     );
   }
+}
+
+extension on LibraryElement {
+  bool get importsJsonSerializable => const RecursiveImportLocator().hasImport(
+        root: this,
+        where: isClass('JsonSerializable'),
+        whereLibrary: isWithin('json_annotation'),
+      );
+
+  bool get importsDiagnosticable => const RecursiveImportLocator().hasImport(
+        root: this,
+        where: isClass('Diagnosticable'),
+        whereLibrary: isWithin('flutter'),
+      );
 }
 
 extension on Element {
