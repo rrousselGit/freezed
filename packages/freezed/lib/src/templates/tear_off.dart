@@ -62,6 +62,7 @@ const $outputName = _\$${name}TearOff();
       }
 
       yield '''
+// ignore: unused_element
 ${targetConstructor.redirectedName}$genericsParameter $ctorName$genericsDefinition(${targetConstructor.parameters.asExpanded(showDefaultValue: true)}) {
   return $prefix ${targetConstructor.redirectedName}$genericsParameter($parameters);
 }

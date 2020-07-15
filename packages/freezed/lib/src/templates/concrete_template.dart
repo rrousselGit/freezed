@@ -214,9 +214,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   }
 
   String get _maybeMap {
-    if (allConstructors
-        .where((element) => element.name != null && element.name.isNotEmpty)
-        .isEmpty) return '';
+    if (!allConstructors.shouldGenerateUnions) return '';
 
     return '''
 @override
@@ -230,9 +228,7 @@ ${maybeMapPrototype(allConstructors, genericsParameter)} {
   }
 
   String get _map {
-    if (allConstructors
-        .where((element) => element.name != null && element.name.isNotEmpty)
-        .isEmpty) return '';
+    if (!allConstructors.shouldGenerateUnions) return '';
 
     final asserts = [
       for (final ctor in allConstructors)
@@ -248,9 +244,7 @@ ${mapPrototype(allConstructors, genericsParameter)} {
   }
 
   String get _maybeWhen {
-    if (allConstructors
-        .where((element) => element.name != null && element.name.isNotEmpty)
-        .isEmpty) return '';
+    if (!allConstructors.shouldGenerateUnions) return '';
 
     var callbackParameters = constructor.impliedProperties.map((e) {
       if (allConstructors.any((c) => c.callbackName == e.name)) {
@@ -271,9 +265,7 @@ ${maybeWhenPrototype(allConstructors)} {
   }
 
   String get _when {
-    if (allConstructors
-        .where((element) => element.name != null && element.name.isNotEmpty)
-        .isEmpty) return '';
+    if (!allConstructors.shouldGenerateUnions) return '';
 
     final asserts = [
       for (final ctor in allConstructors)

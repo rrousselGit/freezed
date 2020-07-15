@@ -1,3 +1,7 @@
+# 0.11.4
+
+- No-longer generate `when`/... for private constructors. 
+
 # 0.11.3
 
 - Fixed a bug where the generated class incorrectly used `Diagnosticable` event if `package:flutter/foundation` wasn't imported. (Thanks to @avbk)

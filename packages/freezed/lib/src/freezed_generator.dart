@@ -231,6 +231,14 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
 
+    if (constructorsNeedsGeneration.length > 1 &&
+        constructorsNeedsGeneration.any((c) => c.name.startsWith('_'))) {
+      throw InvalidGenerationSourceError(
+        'A freezed union cannot have private constructors',
+        element: rawElement,
+      );
+    }
+
     final shouldUseExtends = element.constructors.any((ctor) {
       return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
     });
@@ -612,4 +620,13 @@ String parseLateGetterSource(String source) {
     }
   }
   return null;
+}
+
+extension ShouldGenerateWhen on List<ConstructorDetails> {
+  bool get shouldGenerateUnions {
+    return where((element) =>
+        element.name != null &&
+        element.name.isNotEmpty &&
+        !element.name.startsWith('_')).isNotEmpty;
+  }
 }

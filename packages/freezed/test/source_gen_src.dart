@@ -96,6 +96,13 @@ class _DefaultOnRequiredPositional implements DefaultOnRequiredPositional {
   _DefaultOnRequiredPositional(int a);
 }
 
+@ShouldThrow('A freezed union cannot have private constructors')
+@freezed
+abstract class Mixed {
+  factory Mixed._internal(String a) = Mixed0;
+  factory Mixed.named(String b) = Mixed1;
+}
+
 @ShouldThrow(
   'Classes decorated with @freezed can only have a single non-factory'
   ', without parameters, and named MyClass._()',
@@ -147,4 +154,12 @@ abstract class MutableProperty {
 class _MutableProperty implements MutableProperty {
   @override
   int a;
+}
+
+class Mixed1 implements Mixed {
+  Mixed1(String b);
+}
+
+class Mixed0 implements Mixed {
+  Mixed0(String a);
 }
