@@ -88,9 +88,9 @@ dev_dependencies:
 
 This installs three packages:
 
-- build_runner, the tool to run code-generators
+- [build_runner](https://pub.dev/packages/build_runner), the tool to run code-generators
 - [freezed], the code generator
-- freezed_annotation, a package containing annotations for [freezed].
+- [freezed_annotation](https://pub.dev/packages/freezed_annotation), a package containing annotations for [freezed].
 
 ## Run the generator
 
