@@ -1,6 +1,6 @@
-export "package:collection/collection.dart";
-export "package:json_annotation/json_annotation.dart";
-export "package:meta/meta.dart";
+export 'package:collection/collection.dart';
+export 'package:json_annotation/json_annotation.dart';
+export 'package:meta/meta.dart';
 
 class Freezed {
   const Freezed._();
