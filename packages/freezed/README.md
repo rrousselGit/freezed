@@ -1083,6 +1083,8 @@ abstract class MyModel with _$MyModel {
 }
 ```
 
+**Note**: In order to serialize nested lists of freezed objects, you are supposed to either specify a `@JsonSerializable(explicitToJson: true)` or change `explicitToJson` inside your `build.yaml` file ([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)).
+
 **What about `@JsonKey` annotation?**
 
 All decorators passed to a constructor parameter are "copy-pasted" to the generated property too.\
