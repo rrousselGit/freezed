@@ -1,3 +1,7 @@
+# 0.11.5
+
+- Fixed a bug in which case Freezed generated an invalid `copyWith` implementation
+
 # 0.11.4
 
 - No-longer generate `when`/... for private constructors. 
