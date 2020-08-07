@@ -45,29 +45,31 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 
 # Index
 
+- [Motivation](#motivation)
+- [Index](#index)
 - [How to use](#how-to-use)
   - [Install](#install)
   - [Run the generator](#run-the-generator)
 - [The features](#the-features)
   - [The syntax](#the-syntax)
-    - [basics](#basics)
-    - [custom getters and methods](#custom-getters-and-methods)
-    - [non-nullable](#non-nullable)
-    - [default values](#default-values)
-    - [late](#late)
-    - [constructor tear-off](#constructor-tear-off)
-    - [decorators](#decorators)
-    - [mixins and interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
-  - [==/toString](#toString)
-  - [copyWith](#copyWith)
-    - [deep copy](#deep-copy)
+    - [Basics](#basics)
+    - [Custom getters and methods](#custom-getters-and-methods)
+    - [Non-nullable](#non-nullable)
+    - [Default values](#default-values)
+    - [Late](#late)
+    - [Constructor tear-off](#constructor-tear-off)
+    - [Decorators](#decorators)
+    - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
+  - [==/toString](#tostring)
+  - [copyWith](#copywith)
+    - [Deep copy](#deep-copy)
   - [Unions/Sealed classes](#unionssealed-classes)
-    - [shared properties](#shared-properties)
-    - [when](#when)
-    - [maybeWhen](#maybeWhen)
-    - [map/maybeMap](#mapMaybeMap)
-  - [fromJson/toJson](#fromjsontojson)
-    - [classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
+    - [Shared properties](#shared-properties)
+    - [When](#when)
+    - [MaybeWhen](#maybewhen)
+    - [Map/MaybeMap](#mapmaybemap)
+  - [FromJson/ToJson](#fromjsontojson)
+    - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
 
 # How to use
 
@@ -1056,6 +1058,32 @@ class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynam
   Map<String, dynamic> toJson(MyResponse data) => data.toJson();
 }
 ```
+
+To then apply your custom converter pass the decorator to a constructor parameter.
+
+```dart
+@freezed
+abstract class MyModel with _$MyModel {
+  const factory MyModel(@MyResponseConverter() MyResponse myResponse) = MyModelData;
+  
+  factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
+}
+```
+
+By doing this, json serializable will use `MyResponseConverter.fromJson()` and `MyResponseConverter.toJson()` to convert `MyResponse`.
+
+You can also use a custom converter on a constructor parameter contained in a `List`.
+
+```dart
+@freezed
+abstract class MyModel with _$MyModel {
+  const factory MyModel(@MyResponseConverter() List<MyResponse> myResponse) = MyModelData;
+  
+  factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
+}
+```
+
+**Note**: In order to serialize nested lists of freezed objects, you are supposed to either specify a `@JsonSerializable(explicitToJson: true)` or change `explicit_to_json` inside your `build.yaml` file ([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)).
 
 **What about `@JsonKey` annotation?**
 
