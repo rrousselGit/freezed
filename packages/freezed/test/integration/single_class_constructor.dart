@@ -1,7 +1,14 @@
+import 'dart:async';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
+
+@freezed
+abstract class Test with _$Test {
+  const factory Test.something(Completer completer) = TestSomething;
+}
 
 @freezed
 abstract class Private implements _$Private {

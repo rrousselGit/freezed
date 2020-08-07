@@ -224,6 +224,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     final constructorsNeedsGeneration =
         _parseConstructorsNeedsGeneration(element);
+
     if (constructorsNeedsGeneration.isEmpty) {
       throw InvalidGenerationSourceError(
         'Marked ${element.name} with @freezed, but freezed has nothing to generate',
@@ -322,17 +323,18 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
               cloneableProperty,
       ],
       // TODO: test can write manual fromJson ctor
-      commonProperties: commonParameters
-          .map((p) => Property(
-                decorators: p.decorators,
-                name: p.name,
-                type: p.type,
-                nullable: p.nullable,
-                defaultValueSource: p.defaultValueSource,
-                // TODO: support hasJsonKey
-                hasJsonKey: false,
-              ))
-          .toList(),
+      commonProperties: [
+        for (final commonProperty in commonParameters)
+          Property(
+            decorators: commonProperty.decorators,
+            name: commonProperty.name,
+            type: commonProperty.type,
+            nullable: commonProperty.nullable,
+            defaultValueSource: commonProperty.defaultValueSource,
+            // TODO: support hasJsonKey
+            hasJsonKey: false,
+          ),
+      ],
       needsJsonSerializable: globalData.hasJson &&
           element.constructors.any((element) {
             return element.isFactory && element.name == 'fromJson';

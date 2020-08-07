@@ -483,7 +483,7 @@ String parseTypeSource(VariableElement element) {
       final source =
           element.source.contents.data.substring(0, element.nameOffset);
       final match = RegExp(r'(\w+<.+?>)\s+$').firstMatch(source);
-      type = match?.group(1);
+      type = match?.group(1) ?? type;
     }
   }
   return type;

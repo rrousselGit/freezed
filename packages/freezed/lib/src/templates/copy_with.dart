@@ -166,7 +166,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   }) {
     String parameterToValue(Parameter p) {
       var ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name}';
-      if (p.type != 'Object') {
+      if (p.type != 'Object' && p.type != null) {
         ternary = '$ternary as ${p.type}';
       }
       return '$ternary,';
