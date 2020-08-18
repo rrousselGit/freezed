@@ -70,6 +70,8 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
     - [Map/MaybeMap](#mapmaybemap)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
+- [Utilities](#utilities)
+
 
 # How to use
 
@@ -1116,6 +1118,15 @@ abstract class Example with _$Example {
 If you want to define some custom json_serializable flags for all the classes (e.g. `explicit_to_json` or `any_map`) you can do it via `build.yaml` file as described [here](https://pub.dev/packages/json_serializable#build-configuration).
 
 See also the [decorators](#decorators) section
+
+# Utilities
+
+### Freezed extension for VSCode
+
+The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed) extension might help you work faster with freezed. For example : 
+* Use `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac) to quickly build using `build_runner`.
+* Quickly generate a Freezed class by using `Ctrl+Shift+P` > `Generate Freezed class`.
+
 
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
