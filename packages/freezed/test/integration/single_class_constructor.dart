@@ -5,6 +5,15 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+// Regression test for https://github.com/rrousselGit/freezed/issues/219
+@freezed
+abstract class LateField with _$LateField {
+  factory LateField() = _LateField;
+
+  @late
+  Map<String, dynamic> get editableProps => <String, dynamic>{};
+}
+
 /// Regression test for https://github.com/rrousselGit/freezed/issues/213
 @freezed
 abstract class Product with _$Product {

@@ -2,6 +2,8 @@
 
 - Fixed a bug where deep-copy did not work properly for recursive classes (https://github.com/rrousselGit/freezed/issues/213)
 
+- Fixed a situation where `@late` properties could trigger a `RangeError` (https://github.com/rrousselGit/freezed/issues/219)
+
 # 0.11.5
 
 - Fixed a bug in which case Freezed generated an invalid `copyWith` implementation
