@@ -21,7 +21,7 @@ void main() {
         .getErrors('/freezed/test/integration/deep_copy.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
-  });
+  }, skip: true);
   test('has no issue #2', () async {
     final main = await resolveSources(
       {

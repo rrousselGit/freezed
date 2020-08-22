@@ -41,6 +41,7 @@ void main() {
 }
 '''), throwsCompileError);
   });
+
   test('handles maps', () async {
     final page = const Page();
 

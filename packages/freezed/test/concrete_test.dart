@@ -12,6 +12,7 @@ void main() {
           .having((source) => (source as EmptyExtends).value, 'value', 42),
     );
   });
+
   test('Concrete', () {
     expect(
       Concrete(42),
@@ -20,9 +21,11 @@ void main() {
           .having((source) => source.value, 'value', 42),
     );
   });
+
   test('can have const', () {
     const ConstConcrete();
   });
+
   test('MixedIn', () {
     expect(MixedIn().method(), 42);
   });

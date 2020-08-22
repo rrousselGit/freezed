@@ -9,30 +9,35 @@ void main() {
       Simple(42),
     );
   });
+
   test('ListEqual', () {
     expect(
       ListEqual([1]),
       ListEqual([1]),
     );
   });
+
   test('MapEqual', () {
     expect(
       MapEqual({1: 1}),
       MapEqual({1: 1}),
     );
   });
+
   test('SetEqual', () {
     expect(
       SetEqual({1}),
       SetEqual({1}),
     );
   });
+
   test('IterableEqual', () {
     expect(
       IterableEqual([1]),
       IterableEqual([1]),
     );
   });
+
   test('ListObjectEqual', () {
     expect(
       ListObjectEqual([1]),
@@ -47,6 +52,7 @@ void main() {
       ]),
     );
   });
+
   test('ListDynamicEqual', () {
     expect(
       ListDynamicEqual(<dynamic>[1]),
@@ -61,6 +67,7 @@ void main() {
       ]),
     );
   });
+
   test('ObjectEqual', () {
     expect(
       ObjectEqual(1),
@@ -79,6 +86,7 @@ void main() {
       ]),
     );
   });
+
   test('DynamicEqual', () {
     expect(
       DynamicEqual(1),
@@ -97,6 +105,7 @@ void main() {
       ]),
     );
   });
+
   test('Generic', () {
     expect(
       Generic(42),
@@ -115,6 +124,7 @@ void main() {
       ]),
     );
   });
+
   test('GenericObject', () {
     expect(
       GenericObject(42),
@@ -133,12 +143,14 @@ void main() {
       ]),
     );
   });
+
   test('GenericIterable', () {
     expect(
       GenericIterable([1]),
       GenericIterable([1]),
     );
   });
+
   test('ObjectWithOtherProperty', () {
     expect(ObjectWithOtherProperty(const [2, 3]),
         ObjectWithOtherProperty(const [2, 3]));

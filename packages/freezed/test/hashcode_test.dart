@@ -9,30 +9,35 @@ void main() {
       Simple(42).hashCode,
     );
   });
+
   test('ListEqual', () {
     expect(
       ListEqual([1]).hashCode,
       ListEqual([1]).hashCode,
     );
   });
+
   test('MapEqual', () {
     expect(
       MapEqual({1: 1}).hashCode,
       MapEqual({1: 1}).hashCode,
     );
   });
+
   test('SetEqual', () {
     expect(
       SetEqual({1}).hashCode,
       SetEqual({1}).hashCode,
     );
   });
+
   test('IterableEqual', () {
     expect(
       IterableEqual([1]).hashCode,
       IterableEqual([1]).hashCode,
     );
   });
+
   test('ListObjectEqual', () {
     expect(
       ListObjectEqual([1]).hashCode,
@@ -47,6 +52,7 @@ void main() {
       ]).hashCode,
     );
   });
+
   test('ListDynamicEqual', () {
     expect(
       ListDynamicEqual(<dynamic>[1]).hashCode,
@@ -61,6 +67,7 @@ void main() {
       ]).hashCode,
     );
   });
+
   test('ObjectEqual', () {
     expect(
       ObjectEqual(1).hashCode,
@@ -79,6 +86,7 @@ void main() {
       ]).hashCode,
     );
   });
+
   test('DynamicEqual', () {
     expect(
       DynamicEqual(1).hashCode,
@@ -97,6 +105,7 @@ void main() {
       ]).hashCode,
     );
   });
+
   test('Generic', () {
     expect(
       Generic(42).hashCode,
@@ -115,6 +124,7 @@ void main() {
       ]).hashCode,
     );
   });
+
   test('GenericObject', () {
     expect(
       GenericObject(42).hashCode,
@@ -133,6 +143,7 @@ void main() {
       ]).hashCode,
     );
   });
+
   test('GenericIterable', () {
     expect(
       GenericIterable([1]).hashCode,

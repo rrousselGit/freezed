@@ -21,12 +21,14 @@ void main() {
       })''',
     );
   });
+
   test('functions as parameters', () {
     expect(
       getRedirectedConstructorName('MyClass(void cb(void cb2())) = \nhello;'),
       'hello',
     );
   });
+
   test('concrete name parser', () {
     expect(
       getRedirectedConstructorName('MyClass() = \nhello;'),
@@ -52,6 +54,7 @@ void main() {
       'A',
     );
   });
+
   test('generic ctor', () {
     expect(
       getRedirectedConstructorName('MyClass() =\thello<A, B>;'),
@@ -72,6 +75,7 @@ void main() {
       'WhateverPositionalMixedParam',
     );
   });
+
   test('factory ctor', () {
     expect(
       getRedirectedConstructorName(

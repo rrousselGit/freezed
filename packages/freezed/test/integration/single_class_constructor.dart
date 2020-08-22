@@ -5,6 +5,15 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+/// Regression test for https://github.com/rrousselGit/freezed/issues/213
+@freezed
+abstract class Product with _$Product {
+  const factory Product({
+    String name,
+    Product parent,
+  }) = _ProductDataClass;
+}
+
 @freezed
 abstract class Test with _$Test {
   const factory Test.something(Completer completer) = TestSomething;

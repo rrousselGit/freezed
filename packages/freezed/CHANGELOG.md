@@ -1,10 +1,14 @@
+# 0.11.6
+
+- Fixed a bug where deep-copy did not work properly for recursive classes (https://github.com/rrousselGit/freezed/issues/213)
+
 # 0.11.5
 
 - Fixed a bug in which case Freezed generated an invalid `copyWith` implementation
 
 # 0.11.4
 
-- No-longer generate `when`/... for private constructors. 
+- No-longer generate `when`/... for private constructors.
 
 # 0.11.3
 

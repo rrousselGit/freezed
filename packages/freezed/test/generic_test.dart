@@ -22,6 +22,7 @@ Future<void> main() async {
       const Union<int>.error('msg'),
     );
   });
+
   test('has no issue', () async {
     final main = await resolveSources(
       {
@@ -35,7 +36,7 @@ Future<void> main() async {
         .getErrors('/freezed/test/integration/generic.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
-  });
+  }, skip: true);
 
   test('is generic', () {
     Generic<Model<int>> value = Generic(Model(42));
@@ -43,6 +44,7 @@ Future<void> main() async {
 
     expect(model.value, 42);
   });
+
   test('map is generic too', () {
     var result = MultipleConstructors<int, double>(false)
         .map<MultipleConstructors<int, double>>(
@@ -63,12 +65,14 @@ Future<void> main() async {
 
     expect(result, MultipleConstructors<int, double>(false));
   });
+
   test('is generic2', () {
     MultiGeneric<int, Model<int>> value = MultiGeneric(Model(42));
     Model<int> model = value.model;
 
     expect(model.value, 42);
   });
+
   test('toString', () {
     expect('${MultipleConstructors<int, String>.first(42)}',
         'MultipleConstructors<int, String>.first(a: 42)');
@@ -77,6 +81,7 @@ Future<void> main() async {
     expect('${MultipleConstructors<int, String>(false)}',
         'MultipleConstructors<int, String>(flag: false)');
   });
+
   test('copy returns generic ', () {
     Generic<Model<int>> generic = Generic(Model(42));
     generic = generic.copyWith(model: Model(24));
@@ -86,6 +91,7 @@ Future<void> main() async {
     generic2 = generic2.copyWith(model: Model(24));
     expect(generic2.model.value, 24);
   });
+
   test('did pass generic constraints', () async {
     await expectLater(compile(r'''
 import 'generic.dart';

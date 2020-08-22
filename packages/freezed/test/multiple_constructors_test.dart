@@ -23,6 +23,7 @@ void main() {
 
     expect(recursiveClass.getField('value').type.isDynamic, isFalse);
   });
+
   test('tear off', () {
     expect(
       $NoCommonParam('a', b: 42),
