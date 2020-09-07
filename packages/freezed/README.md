@@ -523,6 +523,11 @@ that using the `@Implements` decorator or `@With` respectively. In this
 case `City` is implementing with `GeographicArea`.
 
 ```dart
+abstract class GeographicArea {
+  int get population;
+  String get name;
+}
+
 @freezed
 abstract class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
@@ -538,6 +543,11 @@ declare it as a string using the `With.fromString` constructor,
 `AdministrativeArea<House>`.
 
 ```dart
+abstract class GeographicArea {}
+abstract class House {}
+abstract class Shop {}
+abstract class AdministrativeArea<T> {}
+
 @freezed
 abstract class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
@@ -575,6 +585,9 @@ adding them in the constructor of the union type. Keep in mind that if
 the interface defines a method or a getter, that you implement in the
 class, you need to use the
 [Custom getters and methods](#custom-getters-and-methods) instructions.
+
+**Note 2**: You cannot use `@With`/`@Implements` with freezed classes.
+Freezed classes can neither be extended nor implemented.
 
 ## ==/toString
 
