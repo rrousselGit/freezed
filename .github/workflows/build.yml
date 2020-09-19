@@ -84,6 +84,7 @@ jobs:
           if grep -q build_runner "pubspec.yaml"; then
             flutter pub run build_runner build --delete-conflicting-outputs
           fi
+        working-directory: ${{ matrix.package }}
 
       - name: Analyze
         run: flutter analyze
