@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
@@ -22,6 +23,37 @@ class MyObject {
 }
 
 Future<void> main() async {
+  final singleClassLibrary = await resolveSources(
+    {
+      'freezed|test/integration/single_class_constructor.dart': useAssetReader,
+    },
+    (r) => r.libraries.firstWhere((e) {
+      return e.source.fullName ==
+          '/freezed/test/integration/single_class_constructor.dart';
+    }),
+  );
+
+  test('documentation', () async {
+    final doc = singleClassLibrary.topLevelElements
+        .firstWhere((e) => e.name == 'Doc') as ClassElement;
+
+    expect(doc.mixins.first.accessors.where((e) => e.name != 'copyWith'), [
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'positional')
+          .having((e) => e.documentationComment, 'doc', '''
+/// Multi
+/// line
+/// positional'''),
+      isA<PropertyAccessorElement>() //
+          .having((e) => e.name, 'name', 'named')
+          .having(
+              (e) => e.documentationComment, 'doc', '/// Single line named'),
+      isA<PropertyAccessorElement>() //
+          .having((e) => e.name, 'name', 'simple')
+          .having((e) => e.documentationComment, 'doc', null),
+    ]);
+  });
+
   test('tear off uses const ctor if possible', () {
     expect(identical($Empty(), const Empty()), isTrue);
   });
@@ -65,6 +97,7 @@ Future<void> main() async {
         IntDefault(42),
       );
     });
+
     test('double', () {
       expect(
         DoubleDefault(),
@@ -75,6 +108,7 @@ Future<void> main() async {
         DoubleDefault(42),
       );
     });
+
     test('String', () {
       expect(
         StringDefault(),
@@ -85,6 +119,7 @@ Future<void> main() async {
         StringDefault('42'),
       );
     });
+
     test('List', () {
       expect(
         ListDefault(),
@@ -95,6 +130,7 @@ Future<void> main() async {
         ListDefault([42]),
       );
     });
+
     test('Type', () {
       expect(
         TypeDefault(),
@@ -191,16 +227,7 @@ void main() {
   });
 
   test('has no issue', () async {
-    final main = await resolveSources(
-      {
-        'freezed|test/integration/single_class_constructor.dart':
-            useAssetReader,
-      },
-      (r) => r.libraries.firstWhere((element) =>
-          element.source.toString().contains('single_class_constructor')),
-    );
-
-    final errorResult = await main.session.getErrors(
+    final errorResult = await singleClassLibrary.session.getErrors(
         '/freezed/test/integration/single_class_constructor.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
@@ -323,6 +350,7 @@ void main() {
       expect(identical(clone, value), isFalse);
       expect(clone, value);
     });
+
     test('clone can update values', () {
       expect(
         MyClass(a: '42', b: 42).copyWith(a: '24'),
@@ -333,6 +361,7 @@ void main() {
         MyClass(a: '42', b: 24),
       );
     });
+
     test('clone can assign values to null', () {
       expect(
         MyClass(a: '42', b: 42).copyWith(a: null),
@@ -343,6 +372,7 @@ void main() {
         MyClass(a: '42', b: null),
       );
     });
+
     test('cannot assign futures to copyWith parameters', () async {
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';

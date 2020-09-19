@@ -5,6 +5,22 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+@freezed
+abstract class Doc with _$Doc {
+  factory Doc(
+    /// Multi
+    /// line
+    /// positional
+    int positional, {
+
+    /// Single line named
+    int named,
+
+    // Simple
+    int simple,
+  }) = _Doc;
+}
+
 // Regression test for https://github.com/rrousselGit/freezed/issues/219
 @freezed
 abstract class LateField with _$LateField {

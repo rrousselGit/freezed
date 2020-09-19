@@ -196,6 +196,7 @@ void main() {
 '''), throwsCompileError);
       });
     });
+
     test('Union.copyWith.something', () async {
       final assistant = Assistant(name: 'John', age: 21);
       Union value = Union.first(assistant, assistant);
@@ -235,6 +236,7 @@ void main() {
 }
 '''), throwsCompileError);
     });
+
     test('UnionFirst.copyWith.something', () async {
       final assistant = Assistant(name: 'John', age: 21);
       UnionFirst value = UnionFirst(assistant, assistant);
@@ -282,6 +284,7 @@ void main() {
 }
 '''), throwsCompileError);
     });
+
     test('UnionSecond.copyWith.something', () async {
       final assistant = Assistant(name: 'John', age: 21);
       UnionSecond value = UnionSecond(assistant, assistant);
@@ -402,6 +405,7 @@ void main() {
         NoCommonPropertyAssistant(Assistant(age: 21, name: 'John')),
       );
     });
+
     test('NoCommonPropertyAssistant can copy assistant', () {
       NoCommonPropertyAssistant value = NoCommonPropertyAssistant(
         Assistant(age: 42, name: 'John'),
@@ -532,6 +536,7 @@ void main() {
 '''), throwsCompileError);
       });
     });
+
     test('Simple', () {
       final company = Company(
         name: 'Google',

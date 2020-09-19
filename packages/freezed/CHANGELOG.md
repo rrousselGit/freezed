@@ -1,3 +1,17 @@
+# [Unreleased]
+
+- Added support for documenting properties, by documenting the constructor parameters:
+
+  ```dart
+  @freezed
+  abstract class Example with _$Example {
+    const factory Example(
+      /// Some documentation
+      String parameter,
+    ) = Person;
+  }
+  ```
+
 # 0.11.6
 
 - Fixed a bug where deep-copy did not work properly for recursive classes (https://github.com/rrousselGit/freezed/issues/213)

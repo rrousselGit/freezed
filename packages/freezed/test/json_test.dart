@@ -87,6 +87,7 @@ Future<void> main() async {
     test('support JsonKeys', () {
       expect(Decorator('42').toJson(), {'what': '42'});
     });
+
     test('works', () {
       expect(
         Json().toJson(),

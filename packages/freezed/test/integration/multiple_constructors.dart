@@ -16,9 +16,27 @@ abstract class SharedParam with _$SharedParam {
 
 @freezed
 abstract class Complex with _$Complex {
-  const factory Complex(String a) = Complex0;
-  const factory Complex.first(String a, {bool b, double d}) = Complex1;
-  const factory Complex.second(String a, [int c, double d]) = Complex2;
+  const factory Complex(
+    /// Hello
+    String a,
+  ) = Complex0;
+
+  const factory Complex.first(
+    /// World
+    String a, {
+
+    /// B
+    bool b,
+    double d,
+  }) = Complex1;
+
+  const factory Complex.second(
+    String a, [
+
+    /// C
+    int c,
+    double d,
+  ]) = Complex2;
 }
 
 @freezed

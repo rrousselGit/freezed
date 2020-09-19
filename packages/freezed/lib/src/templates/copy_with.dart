@@ -68,6 +68,7 @@ ${_abstractDeepCopyMethods().join()}
               defaultValueSource: '',
               nullable: e.nullable,
               type: e.type,
+              doc: e.doc,
             );
           }).toList(),
         ),

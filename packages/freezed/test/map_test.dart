@@ -154,6 +154,7 @@ void main() {
         );
       });
     });
+
     test('named parameters are marked as required', () async {
       final main = await resolveSources(
         {
@@ -212,6 +213,7 @@ void main() {
         'a 21 0.42',
       );
     });
+
     test('assert orElse is passed', () {
       var value = Complex('a');
 
@@ -242,6 +244,7 @@ void main() {
         throwsA(isA<AssertionError>()),
       );
     });
+
     test('orElse is called', () {
       var value = Complex('a');
 
@@ -255,6 +258,7 @@ void main() {
 
       expect(value.maybeMap(null, orElse: () => 42), 42);
     });
+
     test('named parameters are not required', () async {
       final main = await resolveSources(
         {
@@ -277,6 +281,7 @@ void main() {
 
       expect(errorResult.errors, isEmpty);
     });
+
     test('orElse is required', () async {
       final main = await resolveSources(
         {
@@ -299,6 +304,7 @@ void main() {
 
       expect(errorResult.errors, isNotEmpty);
     });
+
     test('when is not marked @required', () async {
       final main = await resolveSources(
         {
