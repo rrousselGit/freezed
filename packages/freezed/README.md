@@ -59,7 +59,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
     - [Default values](#default-values)
     - [Late](#late)
     - [Constructor tear-off](#constructor-tear-off)
-    - [Decorators](#decorators)
+    - [Decorators and comments](#decorators-and-comments)
     - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
   - [==/toString](#tostring)
   - [copyWith](#copywith)
@@ -446,10 +446,10 @@ This new code is strictly equivalent to the previous snippet, just shorter.
 
 Note that this is both compatible with [default values](#default-values) and generics.
 
-### Decorators
+### Decorators and comments
 
-[Freezed] supports property and class level decorators by decorating their
-respective parameter and constructor definition.
+[Freezed] supports property and class level decorators/documentation by
+decorating/documenting their respective parameter and constructor definition.
 
 Consider:
 
@@ -457,6 +457,22 @@ Consider:
 @freezed
 abstract class Person with _$Person {
   const factory Person({
+    String name,
+    int age,
+    Gender gender,
+  }) = _Person;
+}
+```
+
+If you want to document `name`, you can do:
+
+```dart
+@freezed
+abstract class Person with _$Person {
+  const factory Person({
+    /// The name of the user.
+    ///
+    /// Must not be null
     String name,
     int age,
     Gender gender,
