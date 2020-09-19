@@ -324,13 +324,14 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       ],
       // TODO: test can write manual fromJson ctor
       commonProperties: [
-        for (final commonProperty in commonParameters)
+        for (final commonParameter in commonParameters)
           Property(
-            decorators: commonProperty.decorators,
-            name: commonProperty.name,
-            type: commonProperty.type,
-            nullable: commonProperty.nullable,
-            defaultValueSource: commonProperty.defaultValueSource,
+            decorators: commonParameter.decorators,
+            name: commonParameter.name,
+            doc: commonParameter.doc,
+            type: commonParameter.type,
+            nullable: commonParameter.nullable,
+            defaultValueSource: commonParameter.defaultValueSource,
             // TODO: support hasJsonKey
             hasJsonKey: false,
           ),

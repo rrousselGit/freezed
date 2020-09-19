@@ -17,11 +17,70 @@ typedef NoCommonParamNamedTearOff = NoCommonParam1 Function(
   Object d,
 ]);
 
-void main() {
+Future<void> main() async {
+  final sources = await resolveSources(
+    {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
+    (r) {
+      return r.libraries.firstWhere((element) =>
+          element.source.toString().contains('multiple_constructors'));
+    },
+  );
+
+  ClassElement _getClassElement(String elementName) {
+    return sources.topLevelElements
+        .whereType<ClassElement>()
+        .firstWhere((element) => element.name == elementName);
+  }
+
   test('recursive class does not generate dynamic', () async {
-    final recursiveClass = await _getClassElement('_RecursiveNext');
+    final recursiveClass = _getClassElement('_RecursiveNext');
 
     expect(recursiveClass.getField('value').type.isDynamic, isFalse);
+  });
+
+  test('doc', () {
+    final complex = _getClassElement('Complex');
+    final complex0 = _getClassElement('Complex0');
+    final complex1 = _getClassElement('Complex1');
+    final complex2 = _getClassElement('Complex2');
+
+    expect(
+      complex.mixins.first.accessors.first,
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'a')
+          .having((e) => e.documentationComment, 'doc', '/// Hello'),
+    );
+
+    expect(complex0.accessors.where((e) => e.name != 'copyWith'), [
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'a')
+          .having((e) => e.documentationComment, 'doc', '/// Hello'),
+    ]);
+
+    expect(complex1.accessors.where((e) => e.name != 'copyWith'), [
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'a')
+          .having((e) => e.documentationComment, 'doc', '/// World'),
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'b')
+          .having((e) => e.documentationComment, 'doc', '/// B'),
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'd')
+          .having((e) => e.documentationComment, 'doc', null),
+    ]);
+
+    expect(complex2.accessors.where((e) => e.name != 'copyWith'), [
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'a')
+          // The doc is inherited from `Complex`
+          .having((e) => e.documentationComment, 'doc', null),
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'c')
+          .having((e) => e.documentationComment, 'doc', '/// C'),
+      isA<PropertyAccessorElement>()
+          .having((e) => e.name, 'name', 'd')
+          .having((e) => e.documentationComment, 'doc', null),
+    ]);
   });
 
   test('tear off', () {
@@ -63,6 +122,7 @@ void main() {
 }
 '''), throwsCompileError);
     });
+
     test('no warning', () async {
       final main = await resolveSources(
         {
@@ -77,6 +137,7 @@ void main() {
 
       expect(errorResult.errors, isEmpty);
     });
+
     test('when works on unnamed constructors', () {
       expect(RequiredParams(a: 'a').when((a) => 21, second: (_) => 42), 21);
       expect(
@@ -84,6 +145,7 @@ void main() {
         42,
       );
     });
+
     test('map works on unnamed constructors', () {
       expect(RequiredParams(a: 'a').map((a) => 21, second: (_) => 42), 21);
       expect(
@@ -91,6 +153,7 @@ void main() {
         42,
       );
     });
+
     test('maybeMap works on unnamed constructors', () {
       expect(RequiredParams(a: 'a').maybeMap((a) => 21, orElse: () => 42), 21);
       expect(
@@ -103,6 +166,7 @@ void main() {
         42,
       );
     });
+
     test('maybeWhen works on unnamed constructors', () {
       expect(RequiredParams(a: 'a').maybeWhen((a) => 21, orElse: () => 42), 21);
       expect(
@@ -115,6 +179,7 @@ void main() {
         42,
       );
     });
+
     test('maybeMap can use FutureOr', () async {
       var res = NoDefault.first('a').maybeMap<FutureOr<int>>(
         first: (a) => 21,
@@ -130,6 +195,7 @@ void main() {
 
       await expectLater(res, completion(42));
     });
+
     test('map can use FutureOr', () async {
       var res = NoDefault.first('a').map<FutureOr<int>>(
         first: (a) => 21,
@@ -161,6 +227,7 @@ void main() {
 
       await expectLater(res, completion(42));
     });
+
     test('when can use FutureOr', () async {
       var res = NoDefault.first('a').when<FutureOr<int>>(
         first: (a) => 21,
@@ -176,6 +243,7 @@ void main() {
 
       await expectLater(res, completion(42));
     });
+
     test('redirected constructors do have public properties', () {
       final ctor0 = NoCommonParam0('a', b: 42);
       String a = ctor0.a;
@@ -191,6 +259,7 @@ void main() {
       expect(c, .42);
       expect(d, const Object());
     });
+
     test('redirected can be cloned', () {
       var ctor0 = NoCommonParam0('a', b: 42);
       ctor0 = ctor0.copyWith(a: '2', b: 21);
@@ -202,6 +271,7 @@ void main() {
       expect(ctor1.c, .21);
       expect(ctor1.d, const Object());
     });
+
     test("redirected's copyWith doesn't have parameters of other constructors",
         () async {
       await expectLater(compile(r'''
@@ -229,6 +299,7 @@ void main() {
   param.copyWith(a: 'a');
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -239,6 +310,7 @@ void main() {
 '''), throwsCompileError);
     });
   });
+
   group('SharedParam', () {
     test('has the common properties available', () {
       SharedParam value = SharedParam('a', 42);
@@ -247,6 +319,7 @@ void main() {
       value = SharedParam.named('b', 24);
       expect(value.a, 'b');
     });
+
     test("doesn't have the non-shared properties", () async {
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
@@ -273,12 +346,14 @@ void main() {
 }
 '''), throwsCompileError);
     });
+
     test('copyWith on common properties', () {
       SharedParam value = SharedParam('a', 42);
       expect(value.a, 'a');
       value = value.copyWith(a: '2');
       expect(value.a, '2');
     });
+
     test("copy doesn't have the non-shared params", () async {
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
@@ -320,19 +395,19 @@ void main() {
   });
   group('NestedList', () {
     test('generates List of correct type', () async {
-      final nestedListClass = await _getClassElement('ShallowNestedList');
+      final nestedListClass = _getClassElement('ShallowNestedList');
 
       expect(nestedListClass.getField('children').type.getDisplayString(),
           'List<LeafNestedListItem>');
     });
 
     test('generates List of correct type for deeply nested case', () async {
-      final nestedListClass = await _getClassElement('DeepNestedList');
+      final nestedListClass = _getClassElement('DeepNestedList');
 
       expect(nestedListClass.getField('children').type.getDisplayString(),
           'List<InnerNestedListItem>');
 
-      final nestedListItemClass = await _getClassElement('InnerNestedListItem');
+      final nestedListItemClass = _getClassElement('InnerNestedListItem');
 
       expect(nestedListItemClass.getField('children').type.getDisplayString(),
           'List<LeafNestedListItem>');
@@ -340,35 +415,22 @@ void main() {
   });
   group('NestedMap', () {
     test('generates Map of correct type', () async {
-      final nestedMapClass = await _getClassElement('ShallowNestedMap');
+      final nestedMapClass = _getClassElement('ShallowNestedMap');
 
       expect(nestedMapClass.getField('children').type.getDisplayString(),
           'Map<String, LeafNestedMapItem>');
     });
 
     test('generates Map of correct type for deeply nested case', () async {
-      final nestedMapClass = await _getClassElement('DeepNestedMap');
+      final nestedMapClass = _getClassElement('DeepNestedMap');
 
       expect(nestedMapClass.getField('children').type.getDisplayString(),
           'Map<String, InnerNestedMapItem>');
 
-      final nestedMapItemClass = await _getClassElement('InnerNestedMapItem');
+      final nestedMapItemClass = _getClassElement('InnerNestedMapItem');
 
       expect(nestedMapItemClass.getField('children').type.getDisplayString(),
           'Map<String, LeafNestedMapItem>');
     });
   });
-}
-
-Future<ClassElement> _getClassElement(String elementName) async {
-  final sources = await resolveSources(
-    {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
-    (r) {
-      return r.libraries.firstWhere((element) =>
-          element.source.toString().contains('multiple_constructors'));
-    },
-  );
-  return sources.topLevelElements
-      .whereType<ClassElement>()
-      .firstWhere((element) => element.name == elementName);
 }

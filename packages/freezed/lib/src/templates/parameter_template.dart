@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
+import 'package:freezed/src/utils.dart';
 import 'package:meta/meta.dart';
 
 class GenericsDefinitionTemplate {
@@ -70,6 +71,7 @@ class ParametersTemplate {
           isRequired: e.hasRequired,
           decorators: parseDecorators(e.metadata),
           nullable: e.isNullable,
+          doc: documentationOfParameter(e),
         );
       }
       return Parameter(
@@ -79,6 +81,7 @@ class ParametersTemplate {
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
         nullable: e.isNullable,
+        doc: documentationOfParameter(e),
       );
     }
 
@@ -119,6 +122,7 @@ class ParametersTemplate {
               decorators: e.decorators,
               nullable: e.nullable,
               defaultValueSource: e.defaultValueSource,
+              doc: e.doc,
             ),
           )
           .toList();
@@ -143,6 +147,7 @@ class ParametersTemplate {
               nullable: e.nullable,
               defaultValueSource: e.defaultValueSource,
               showDefaultValue: showDefaultValue,
+              doc: e.doc,
             ),
           )
           .toList();
@@ -190,6 +195,7 @@ class ParametersTemplate {
                 decorators: e.decorators,
                 nullable: e.nullable,
                 defaultValueSource: e.defaultValueSource,
+                doc: e.doc,
               ))
           .toList(),
       namedParameters: namedParameters
@@ -200,6 +206,7 @@ class ParametersTemplate {
                 decorators: e.decorators,
                 nullable: e.nullable,
                 defaultValueSource: e.defaultValueSource,
+                doc: e.doc,
               ))
           .toList(),
       optionalPositionalParameters: optionalPositionalParameters
@@ -210,6 +217,7 @@ class ParametersTemplate {
                 decorators: e.decorators,
                 nullable: e.nullable,
                 defaultValueSource: e.defaultValueSource,
+                doc: e.doc,
               ))
           .toList(),
     );
@@ -224,6 +232,7 @@ class Parameter {
     @required this.isRequired,
     @required this.decorators,
     @required this.nullable,
+    @required this.doc,
     this.showDefaultValue = false,
   });
 
@@ -234,6 +243,7 @@ class Parameter {
   final bool nullable;
   final List<String> decorators;
   final bool showDefaultValue;
+  final String doc;
 
   Parameter copyWith({
     String type,
@@ -243,6 +253,7 @@ class Parameter {
     bool nullable,
     List<String> decorators,
     bool showDefaultValue,
+    String doc,
   }) =>
       Parameter(
         type: type ?? this.type,
@@ -252,6 +263,7 @@ class Parameter {
         nullable: nullable ?? this.nullable,
         decorators: decorators ?? this.decorators,
         showDefaultValue: showDefaultValue ?? this.showDefaultValue,
+        doc: doc ?? this.doc,
       );
 
   @override
@@ -272,6 +284,7 @@ class LocalParameter extends Parameter {
     @required bool isRequired,
     @required bool nullable,
     @required List<String> decorators,
+    @required String doc,
   }) : super(
           name: name,
           type: type,
@@ -280,6 +293,7 @@ class LocalParameter extends Parameter {
           decorators: decorators,
           nullable: nullable,
           defaultValueSource: defaultValueSource,
+          doc: doc,
         );
 
   @override
@@ -301,6 +315,7 @@ class CallbackParameter extends Parameter {
     @required bool nullable,
     @required List<String> decorators,
     @required this.parameters,
+    @required String doc,
   }) : super(
           name: name,
           type: type,
@@ -309,6 +324,7 @@ class CallbackParameter extends Parameter {
           decorators: decorators,
           nullable: nullable,
           defaultValueSource: defaultValueSource,
+          doc: doc,
         );
 
   final ParametersTemplate parameters;

@@ -13,6 +13,7 @@ void main() {
 }
 '''), completes);
     });
+
     test('does not compile', () async {
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';

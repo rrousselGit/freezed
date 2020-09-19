@@ -13,6 +13,7 @@ void main() {
             .having((s) => s.method(house), 'method(house)', house),
       );
     });
+
     test('fromType', () {
       var object = const SimpleImplements.city('Morning', 140000);
       expect(object, isA<House>());
@@ -28,17 +29,20 @@ void main() {
       const object = CustomMethodImplements.street('Sarah');
       expect(object, isA<Shop>());
     });
+
     test('mixedFromStringWithFromType', () {
       const object = CustomMethodImplements.street('Sarah');
       expect(object, isA<Shop>());
       expect(object, isA<AdministrativeArea<House>>());
     });
+
     test('mixedWithAndImplements', () {
       const object = CustomMethodImplements.city('Morning', 140000);
       expect(object, isA<House>());
       expect(object,
           isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'));
     });
+
     test(
         'redirected class can be assigned to the interfaces/mixins without cast',
         () {
@@ -63,6 +67,7 @@ void main() {
         isA<AdministrativeArea<String>>(),
       );
     });
+
     test('fromType', () {
       const object = GenericImplements<int>.city('Morning', 140000);
       expect(object, isA<House>());
