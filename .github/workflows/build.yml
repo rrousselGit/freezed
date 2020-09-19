@@ -54,7 +54,7 @@ jobs:
           if grep -q "name: freezed_annotation" "pubspec.yaml"; then
            echo "skip"
           elif grep -q "name: freezed" "pubspec.yaml"; then
-            dart test
+            dart pub get && dart test
           else
             flutter test
           fi
