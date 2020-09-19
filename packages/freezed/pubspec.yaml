@@ -4,8 +4,6 @@ description: >
   compromising on the features.
 version: 0.12.0
 homepage: https://github.com/rrousselGit/freezed
-authors:
-  - Remi Rousselet <darky12s@gmail.com>
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -17,6 +15,7 @@ dependencies:
   meta: ^1.1.0
   source_gen: ^0.9.0
   freezed_annotation: '>= 0.12.0 <2.0.0'
+  _fe_analyzer_shared: '>= 7.0.0 <8.0.0'
 
 dev_dependencies:
   json_serializable:
