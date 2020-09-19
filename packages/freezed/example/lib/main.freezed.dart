@@ -12,6 +12,7 @@ T _$identity<T>(T value) => value;
 class _$MyClassTearOff {
   const _$MyClassTearOff();
 
+// ignore: unused_element
   _MyClass call({String a, int b}) {
     return _MyClass(
       a: a,
@@ -139,22 +140,26 @@ abstract class _MyClass implements MyClass {
 class _$UnionTearOff {
   const _$UnionTearOff();
 
+// ignore: unused_element
   Data call(int value) {
     return Data(
       value,
     );
   }
 
+// ignore: unused_element
   Loading loading() {
     return const Loading();
   }
 
+// ignore: unused_element
   ErrorDetails error([String message]) {
     return ErrorDetails(
       message,
     );
   }
 
+// ignore: unused_element
   Complex complex(int a, String b) {
     return Complex(
       a,
@@ -719,6 +724,7 @@ abstract class Complex implements Union {
 class _$SharedPropertyTearOff {
   const _$SharedPropertyTearOff();
 
+// ignore: unused_element
   SharedProperty0 person({String name, int age}) {
     return SharedProperty0(
       name: name,
@@ -726,6 +732,7 @@ class _$SharedPropertyTearOff {
     );
   }
 
+// ignore: unused_element
   SharedProperty1 city({String name, int population}) {
     return SharedProperty1(
       name: name,

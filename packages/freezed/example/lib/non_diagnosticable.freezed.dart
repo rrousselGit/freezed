@@ -12,6 +12,7 @@ T _$identity<T>(T value) => value;
 class _$ExampleTearOff {
   const _$ExampleTearOff();
 
+// ignore: unused_element
   _Example<T> call<T>(int a, String b) {
     return _Example<T>(
       a,
@@ -19,6 +20,7 @@ class _$ExampleTearOff {
     );
   }
 
+// ignore: unused_element
   _Example2<T> named<T>(T c) {
     return _Example2<T>(
       c,
@@ -302,6 +304,7 @@ abstract class _Example2<T> implements Example<T> {
 class _$SimpleImplementsTearOff {
   const _$SimpleImplementsTearOff();
 
+// ignore: unused_element
   SimplePerson person(String name, int age) {
     return SimplePerson(
       name,
@@ -309,12 +312,14 @@ class _$SimpleImplementsTearOff {
     );
   }
 
+// ignore: unused_element
   SimpleStreet street(String name) {
     return SimpleStreet(
       name,
     );
   }
 
+// ignore: unused_element
   SimpleCity city(String name, int population) {
     return SimpleCity(
       name,
@@ -322,6 +327,7 @@ class _$SimpleImplementsTearOff {
     );
   }
 
+// ignore: unused_element
   SimpleCountry country(String name, int population) {
     return SimpleCountry(
       name,
@@ -950,6 +956,7 @@ abstract class SimpleCountry
 class _$CustomMethodImplementsTearOff {
   const _$CustomMethodImplementsTearOff();
 
+// ignore: unused_element
   PersonCustomMethod person(String name, int age) {
     return PersonCustomMethod(
       name,
@@ -957,12 +964,14 @@ class _$CustomMethodImplementsTearOff {
     );
   }
 
+// ignore: unused_element
   StreetCustomMethod street(String name) {
     return StreetCustomMethod(
       name,
     );
   }
 
+// ignore: unused_element
   CityCustomMethod city(String name, int population) {
     return CityCustomMethod(
       name,
@@ -970,6 +979,7 @@ class _$CustomMethodImplementsTearOff {
     );
   }
 
+// ignore: unused_element
   DuplexCustomMethod duplex(String name) {
     return DuplexCustomMethod(
       name,
@@ -1601,6 +1611,7 @@ abstract class DuplexCustomMethod extends CustomMethodImplements
 class _$GenericImplementsTearOff {
   const _$GenericImplementsTearOff();
 
+// ignore: unused_element
   GenericPerson<T> person<T>(String name, int age) {
     return GenericPerson<T>(
       name,
@@ -1608,6 +1619,7 @@ class _$GenericImplementsTearOff {
     );
   }
 
+// ignore: unused_element
   GenericStreet<T> street<T>(String name, T value) {
     return GenericStreet<T>(
       name,
@@ -1615,6 +1627,7 @@ class _$GenericImplementsTearOff {
     );
   }
 
+// ignore: unused_element
   GenericCity<T> city<T>(String name, int population) {
     return GenericCity<T>(
       name,

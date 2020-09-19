@@ -12,6 +12,7 @@ T _$identity<T>(T value) => value;
 class _$ExampleTearOff {
   const _$ExampleTearOff();
 
+// ignore: unused_element
   _Example<T> call<T>(int a, String b) {
     return _Example<T>(
       a,
@@ -19,6 +20,7 @@ class _$ExampleTearOff {
     );
   }
 
+// ignore: unused_element
   _Example2<T> named<T>(T c) {
     return _Example2<T>(
       c,
@@ -345,6 +347,7 @@ abstract class _Example2<T> implements Example<T> {
 class _$ConcreteExampleTearOff {
   const _$ConcreteExampleTearOff();
 
+// ignore: unused_element
   _ConcreteExample<T> call<T>() {
     return _ConcreteExample<T>();
   }
