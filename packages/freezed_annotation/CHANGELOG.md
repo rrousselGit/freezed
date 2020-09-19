@@ -1,4 +1,4 @@
-# [Unreleased]
+# 0.12.0
 
 - Added `Assert` decorator to generate `assert(...)` statements on Freezed classes:
 
@@ -12,6 +12,11 @@
     }) = _Person;
   }
   ```
+
+- Added a way to customize the de/serialization of union types using the
+  `@Freezed(unionKey: 'my-key')` decorator.
+
+  See also https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors
 
 # 0.11.0
 
