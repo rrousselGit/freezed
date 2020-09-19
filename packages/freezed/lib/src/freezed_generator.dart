@@ -499,6 +499,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     yield TearOff(
       name: data.name,
+      serializable: globalData.hasJson && data.needsJsonSerializable,
       genericsParameter: data.genericsParameterTemplate,
       genericsDefinition: data.genericsDefinitionTemplate,
       allConstructors: data.constructors,

@@ -5,12 +5,14 @@ import 'parameter_template.dart';
 class TearOff {
   TearOff({
     @required this.name,
+    @required this.serializable,
     @required this.genericsParameter,
     @required this.genericsDefinition,
     @required this.allConstructors,
   });
 
   final String name;
+  final bool serializable;
   final GenericsParameterTemplate genericsParameter;
   final GenericsDefinitionTemplate genericsDefinition;
   final List<ConstructorDetails> allConstructors;
@@ -65,6 +67,15 @@ const $outputName = _\$${name}TearOff();
 // ignore: unused_element
 ${targetConstructor.redirectedName}$genericsParameter $ctorName$genericsDefinition(${targetConstructor.parameters.asExpanded(showDefaultValue: true)}) {
   return $prefix ${targetConstructor.redirectedName}$genericsParameter($parameters);
+}
+''';
+    }
+
+    if (serializable) {
+      yield '''
+// ignore: unused_element
+$name$genericsParameter fromJson$genericsDefinition(Map<String, Object> json) {
+  return $name$genericsParameter.fromJson(json);
 }
 ''';
     }

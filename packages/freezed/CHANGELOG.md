@@ -15,6 +15,7 @@
 - Added `Assert` decorator to generate `assert(...)` statements on Freezed classes:
 
   ```dart
+  @freezed
   abstract class Person with _$Person {
     @Assert('name.trim().isNotEmpty', 'name cannot be empty')
     @Assert('age >= 0')
@@ -23,6 +24,21 @@
       int age,
     }) = _Person;
   }
+  ```
+
+- Now generates a constructor tear-off for `fromJson` too:
+
+  ```dart
+  @freezed
+  abstract class Person with _$Person {
+    factory Person({ String name, int age}) = _Person;
+
+    factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+  }
+
+  List<Map<String, dynamic>> list;
+
+  List<MyClass> persons = list.map($Person.fromJson).toList();
   ```
 
 # 0.11.6
