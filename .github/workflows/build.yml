@@ -50,5 +50,8 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Run tests
-        run: flutter test
+        run: |
+          if ! grep -q "name: freezed_annotation" "pubspec.yaml"; then
+            flutter test
+          fi
         working-directory: ${{ matrix.package }}
