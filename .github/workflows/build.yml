@@ -51,7 +51,11 @@ jobs:
 
       - name: Run tests
         run: |
-          if ! grep -q "name: freezed_annotation" "pubspec.yaml"; then
+          if grep -q "name: freezed_annotation" "pubspec.yaml"; then
+           echo "skip"
+          elif grep -q "name: freezed" "pubspec.yaml"; then
+            dart test
+          else
             flutter test
           fi
         working-directory: ${{ matrix.package }}
