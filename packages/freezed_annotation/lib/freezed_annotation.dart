@@ -2,11 +2,71 @@ export 'package:collection/collection.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:meta/meta.dart';
 
+/// {@template freezed_annotation.freezed}
+/// Flags a class as needing to be processed by Freezed and allows passing options.
+/// {@endtemplate}
 class Freezed {
-  const Freezed._();
+  /// {@template freezed_annotation.freezed}
+  const Freezed({
+    this.unionKey,
+  });
+
+  /// Determines what key should be used to de/serialize union types.
+  ///
+  /// Consider:
+  ///
+  /// ```dart
+  /// @freezed
+  /// abstract class Union with _$Union {
+  ///   factory Union.first() = _First;
+  ///   factory Union.second() = _Second;
+  ///
+  ///   factory Union.fromJson(Map<String, Object> json) => _$UnionFromJson(json);
+  /// }
+  /// ```
+  ///
+  /// When serializing or deserializing `Union`, Freezed will ask/demand for an
+  /// extra json key, which represents which constructor should be used.
+  ///
+  /// More specifically, when calling `Union.toJson`, we will have:
+  ///
+  /// ```dart
+  /// void main() {
+  ///   print(Union.first().toJson()); // { 'runtimeType': 'first' }
+  ///   print(Union.second().toJson()); // { 'runtimeType': 'second' }
+  /// }
+  /// ```
+  ///
+  /// This variable allows customizing the key used ("runtimeType" by default).
+  ///
+  /// For example, we could change our previous `Union` implementation to:
+  ///
+  /// ```dart
+  /// @Freezed(unionKey: 'type')
+  /// abstract class Union with _$Union {
+  ///   // ...
+  /// }
+  /// ```
+  ///
+  /// which changes how `fromJson`/`toJson` behaves:
+  ///
+  /// ```dart
+  /// void main() {
+  ///   print(Union.first().toJson()); // { 'type': 'first' }
+  ///   print(Union.second().toJson()); // { 'type': 'second' }
+  /// }
+  /// ```
+  final String unionKey;
 }
 
-/// A decorator that allowed adding `assert(...)` on the generated classes.
+/// An annotation for the `freezed` package.
+///
+/// Annotating a class with this annotation will flag it as needing to be
+/// processed by the `freezed` code generator.
+const freezed = Freezed();
+
+/// {@template freezed_annotation.assert}
+/// A decorator that allows adding `assert(...)` on the generated classes.
 ///
 /// Usage example:
 ///
@@ -20,7 +80,9 @@ class Freezed {
 ///   }) = _Person;
 /// }
 /// ```
+/// {@endtemplate}
 class Assert {
+  /// {@macro freezed_annotation.assert}
   const Assert(this.eval, [this.message]);
 
   /// A string representation of the source code that will be executed by the assert.
@@ -29,12 +91,6 @@ class Assert {
   /// An optional message to show if the assertion failed.
   final String message;
 }
-
-/// An annotation for the `freezed` package.
-///
-/// Annotating a class with this annotation will flag it as needing to be
-/// processed by the `freezed` code generator.
-const freezed = Freezed._();
 
 class _Nullable {
   const _Nullable._();

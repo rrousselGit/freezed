@@ -20,6 +20,7 @@ class Concrete {
     @required this.commonProperties,
     @required this.lateGetters,
     @required this.name,
+    @required this.unionKey,
     @required this.copyWith,
     @required this.shouldUseExtends,
   });
@@ -33,6 +34,7 @@ class Concrete {
   final bool shouldGenerateJson;
   final List<LateGetter> lateGetters;
   final String name;
+  final String unionKey;
   final CopyWith copyWith;
   final bool shouldUseExtends;
 
@@ -186,7 +188,7 @@ ${copyWith.abstractCopyWithGetter}
     if (!shouldGenerateJson) return '';
 
     final addRuntimeType = allConstructors.length > 1
-        ? "..['runtimeType'] = '${constructor.isDefault ? 'default' : constructor.name}'"
+        ? "..['$unionKey'] = '${constructor.isDefault ? 'default' : constructor.name}'"
         : '';
 
     return '''

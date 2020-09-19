@@ -3,6 +3,15 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'json.freezed.dart';
 part 'json.g.dart';
 
+@Freezed(unionKey: 'type')
+abstract class CustomKey with _$CustomKey {
+  const factory CustomKey.first(int a) = _CustomKeyFirst;
+  const factory CustomKey.second(int a) = _CustomKeySecond;
+
+  factory CustomKey.fromJson(Map<String, dynamic> json) =>
+      _$CustomKeyFromJson(json);
+}
+
 @freezed
 abstract class Single with _$Single {
   const factory Single(int a) = _Single;

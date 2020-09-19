@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'main.freezed.dart';
+part 'main.g.dart';
 
 @freezed
 abstract class MyClass with _$MyClass {
@@ -15,6 +16,8 @@ abstract class Union with _$Union {
   const factory Union.loading() = Loading;
   const factory Union.error([String message]) = ErrorDetails;
   const factory Union.complex(int a, String b) = Complex;
+
+  factory Union.fromJson(Map<String, Object> json) => _$UnionFromJson(json);
 }
 
 @freezed
