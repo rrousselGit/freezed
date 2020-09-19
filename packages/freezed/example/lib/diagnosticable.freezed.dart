@@ -9,6 +9,7 @@ part of 'diagnosticable.dart';
 
 T _$identity<T>(T value) => value;
 
+/// @nodoc
 class _$ExampleTearOff {
   const _$ExampleTearOff();
 
@@ -28,9 +29,11 @@ class _$ExampleTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $Example = _$ExampleTearOff();
 
+/// @nodoc
 mixin _$Example<T> {
   @optionalTypeArgs
   Result when<Result extends Object>(
@@ -56,11 +59,13 @@ mixin _$Example<T> {
   });
 }
 
+/// @nodoc
 abstract class $ExampleCopyWith<T, $Res> {
   factory $ExampleCopyWith(Example<T> value, $Res Function(Example<T>) then) =
       _$ExampleCopyWithImpl<T, $Res>;
 }
 
+/// @nodoc
 class _$ExampleCopyWithImpl<T, $Res> implements $ExampleCopyWith<T, $Res> {
   _$ExampleCopyWithImpl(this._value, this._then);
 
@@ -69,6 +74,7 @@ class _$ExampleCopyWithImpl<T, $Res> implements $ExampleCopyWith<T, $Res> {
   final $Res Function(Example<T>) _then;
 }
 
+/// @nodoc
 abstract class _$ExampleCopyWith<T, $Res> {
   factory _$ExampleCopyWith(
           _Example<T> value, $Res Function(_Example<T>) then) =
@@ -76,6 +82,7 @@ abstract class _$ExampleCopyWith<T, $Res> {
   $Res call({int a, String b});
 }
 
+/// @nodoc
 class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
     implements _$ExampleCopyWith<T, $Res> {
   __$ExampleCopyWithImpl(_Example<T> _value, $Res Function(_Example<T>) _then)
@@ -96,6 +103,7 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
   }
 }
 
+/// @nodoc
 class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
   _$_Example(this.a, this.b)
       : assert(a != null),
@@ -212,6 +220,7 @@ abstract class _Example<T> implements Example<T> {
   _$ExampleCopyWith<T, _Example<T>> get copyWith;
 }
 
+/// @nodoc
 abstract class _$Example2CopyWith<T, $Res> {
   factory _$Example2CopyWith(
           _Example2<T> value, $Res Function(_Example2<T>) then) =
@@ -219,6 +228,7 @@ abstract class _$Example2CopyWith<T, $Res> {
   $Res call({T c});
 }
 
+/// @nodoc
 class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
     implements _$Example2CopyWith<T, $Res> {
   __$Example2CopyWithImpl(
@@ -238,6 +248,7 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
   }
 }
 
+/// @nodoc
 class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
   _$_Example2(this.c) : assert(c != null);
 
@@ -344,6 +355,7 @@ abstract class _Example2<T> implements Example<T> {
   _$Example2CopyWith<T, _Example2<T>> get copyWith;
 }
 
+/// @nodoc
 class _$ConcreteExampleTearOff {
   const _$ConcreteExampleTearOff();
 
@@ -353,17 +365,21 @@ class _$ConcreteExampleTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $ConcreteExample = _$ConcreteExampleTearOff();
 
+/// @nodoc
 mixin _$ConcreteExample<T> {}
 
+/// @nodoc
 abstract class $ConcreteExampleCopyWith<T, $Res> {
   factory $ConcreteExampleCopyWith(
           ConcreteExample<T> value, $Res Function(ConcreteExample<T>) then) =
       _$ConcreteExampleCopyWithImpl<T, $Res>;
 }
 
+/// @nodoc
 class _$ConcreteExampleCopyWithImpl<T, $Res>
     implements $ConcreteExampleCopyWith<T, $Res> {
   _$ConcreteExampleCopyWithImpl(this._value, this._then);
@@ -373,12 +389,14 @@ class _$ConcreteExampleCopyWithImpl<T, $Res>
   final $Res Function(ConcreteExample<T>) _then;
 }
 
+/// @nodoc
 abstract class _$ConcreteExampleCopyWith<T, $Res> {
   factory _$ConcreteExampleCopyWith(
           _ConcreteExample<T> value, $Res Function(_ConcreteExample<T>) then) =
       __$ConcreteExampleCopyWithImpl<T, $Res>;
 }
 
+/// @nodoc
 class __$ConcreteExampleCopyWithImpl<T, $Res>
     extends _$ConcreteExampleCopyWithImpl<T, $Res>
     implements _$ConcreteExampleCopyWith<T, $Res> {
@@ -390,6 +408,7 @@ class __$ConcreteExampleCopyWithImpl<T, $Res>
   _ConcreteExample<T> get _value => super._value as _ConcreteExample<T>;
 }
 
+/// @nodoc
 class _$_ConcreteExample<T> extends _ConcreteExample<T>
     with DiagnosticableTreeMixin {
   _$_ConcreteExample() : super._();

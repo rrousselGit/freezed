@@ -27,6 +27,7 @@ class Abstract {
   @override
   String toString() {
     return '''
+/// @nodoc
 mixin _\$$name$genericsDefinition {
 ${abstractProperties.join()}
 

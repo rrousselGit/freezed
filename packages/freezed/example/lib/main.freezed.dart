@@ -9,6 +9,7 @@ part of 'main.dart';
 
 T _$identity<T>(T value) => value;
 
+/// @nodoc
 class _$MyClassTearOff {
   const _$MyClassTearOff();
 
@@ -21,9 +22,11 @@ class _$MyClassTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $MyClass = _$MyClassTearOff();
 
+/// @nodoc
 mixin _$MyClass {
   String get a;
   int get b;
@@ -31,12 +34,14 @@ mixin _$MyClass {
   $MyClassCopyWith<MyClass> get copyWith;
 }
 
+/// @nodoc
 abstract class $MyClassCopyWith<$Res> {
   factory $MyClassCopyWith(MyClass value, $Res Function(MyClass) then) =
       _$MyClassCopyWithImpl<$Res>;
   $Res call({String a, int b});
 }
 
+/// @nodoc
 class _$MyClassCopyWithImpl<$Res> implements $MyClassCopyWith<$Res> {
   _$MyClassCopyWithImpl(this._value, this._then);
 
@@ -56,6 +61,7 @@ class _$MyClassCopyWithImpl<$Res> implements $MyClassCopyWith<$Res> {
   }
 }
 
+/// @nodoc
 abstract class _$MyClassCopyWith<$Res> implements $MyClassCopyWith<$Res> {
   factory _$MyClassCopyWith(_MyClass value, $Res Function(_MyClass) then) =
       __$MyClassCopyWithImpl<$Res>;
@@ -63,6 +69,7 @@ abstract class _$MyClassCopyWith<$Res> implements $MyClassCopyWith<$Res> {
   $Res call({String a, int b});
 }
 
+/// @nodoc
 class __$MyClassCopyWithImpl<$Res> extends _$MyClassCopyWithImpl<$Res>
     implements _$MyClassCopyWith<$Res> {
   __$MyClassCopyWithImpl(_MyClass _value, $Res Function(_MyClass) _then)
@@ -83,6 +90,7 @@ class __$MyClassCopyWithImpl<$Res> extends _$MyClassCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   _$_MyClass({this.a, this.b});
 
@@ -137,6 +145,7 @@ abstract class _MyClass implements MyClass {
   _$MyClassCopyWith<_MyClass> get copyWith;
 }
 
+/// @nodoc
 class _$UnionTearOff {
   const _$UnionTearOff();
 
@@ -168,9 +177,11 @@ class _$UnionTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $Union = _$UnionTearOff();
 
+/// @nodoc
 mixin _$Union {
   @optionalTypeArgs
   Result when<Result extends Object>(
@@ -204,11 +215,13 @@ mixin _$Union {
   });
 }
 
+/// @nodoc
 abstract class $UnionCopyWith<$Res> {
   factory $UnionCopyWith(Union value, $Res Function(Union) then) =
       _$UnionCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class _$UnionCopyWithImpl<$Res> implements $UnionCopyWith<$Res> {
   _$UnionCopyWithImpl(this._value, this._then);
 
@@ -217,12 +230,14 @@ class _$UnionCopyWithImpl<$Res> implements $UnionCopyWith<$Res> {
   final $Res Function(Union) _then;
 }
 
+/// @nodoc
 abstract class $DataCopyWith<$Res> {
   factory $DataCopyWith(Data value, $Res Function(Data) then) =
       _$DataCopyWithImpl<$Res>;
   $Res call({int value});
 }
 
+/// @nodoc
 class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
     implements $DataCopyWith<$Res> {
   _$DataCopyWithImpl(Data _value, $Res Function(Data) _then)
@@ -241,6 +256,7 @@ class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$Data with DiagnosticableTreeMixin implements Data {
   const _$Data(this.value) : assert(value != null);
 
@@ -346,11 +362,13 @@ abstract class Data implements Union {
   $DataCopyWith<Data> get copyWith;
 }
 
+/// @nodoc
 abstract class $LoadingCopyWith<$Res> {
   factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) =
       _$LoadingCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
     implements $LoadingCopyWith<$Res> {
   _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then)
@@ -360,6 +378,7 @@ class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   Loading get _value => super._value as Loading;
 }
 
+/// @nodoc
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
@@ -449,6 +468,7 @@ abstract class Loading implements Union {
   const factory Loading() = _$Loading;
 }
 
+/// @nodoc
 abstract class $ErrorDetailsCopyWith<$Res> {
   factory $ErrorDetailsCopyWith(
           ErrorDetails value, $Res Function(ErrorDetails) then) =
@@ -456,6 +476,7 @@ abstract class $ErrorDetailsCopyWith<$Res> {
   $Res call({String message});
 }
 
+/// @nodoc
 class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
     implements $ErrorDetailsCopyWith<$Res> {
   _$ErrorDetailsCopyWithImpl(
@@ -475,6 +496,7 @@ class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   const _$ErrorDetails([this.message]);
 
@@ -580,12 +602,14 @@ abstract class ErrorDetails implements Union {
   $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
 }
 
+/// @nodoc
 abstract class $ComplexCopyWith<$Res> {
   factory $ComplexCopyWith(Complex value, $Res Function(Complex) then) =
       _$ComplexCopyWithImpl<$Res>;
   $Res call({int a, String b});
 }
 
+/// @nodoc
 class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
     implements $ComplexCopyWith<$Res> {
   _$ComplexCopyWithImpl(Complex _value, $Res Function(Complex) _then)
@@ -606,6 +630,7 @@ class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$Complex with DiagnosticableTreeMixin implements Complex {
   const _$Complex(this.a, this.b)
       : assert(a != null),
@@ -721,6 +746,7 @@ abstract class Complex implements Union {
   $ComplexCopyWith<Complex> get copyWith;
 }
 
+/// @nodoc
 class _$SharedPropertyTearOff {
   const _$SharedPropertyTearOff();
 
@@ -741,9 +767,11 @@ class _$SharedPropertyTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $SharedProperty = _$SharedPropertyTearOff();
 
+/// @nodoc
 mixin _$SharedProperty {
   String get name;
 
@@ -773,6 +801,7 @@ mixin _$SharedProperty {
   $SharedPropertyCopyWith<SharedProperty> get copyWith;
 }
 
+/// @nodoc
 abstract class $SharedPropertyCopyWith<$Res> {
   factory $SharedPropertyCopyWith(
           SharedProperty value, $Res Function(SharedProperty) then) =
@@ -780,6 +809,7 @@ abstract class $SharedPropertyCopyWith<$Res> {
   $Res call({String name});
 }
 
+/// @nodoc
 class _$SharedPropertyCopyWithImpl<$Res>
     implements $SharedPropertyCopyWith<$Res> {
   _$SharedPropertyCopyWithImpl(this._value, this._then);
@@ -798,6 +828,7 @@ class _$SharedPropertyCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 abstract class $SharedProperty0CopyWith<$Res>
     implements $SharedPropertyCopyWith<$Res> {
   factory $SharedProperty0CopyWith(
@@ -807,6 +838,7 @@ abstract class $SharedProperty0CopyWith<$Res>
   $Res call({String name, int age});
 }
 
+/// @nodoc
 class _$SharedProperty0CopyWithImpl<$Res>
     extends _$SharedPropertyCopyWithImpl<$Res>
     implements $SharedProperty0CopyWith<$Res> {
@@ -829,6 +861,7 @@ class _$SharedProperty0CopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$SharedProperty0
     with DiagnosticableTreeMixin
     implements SharedProperty0 {
@@ -934,6 +967,7 @@ abstract class SharedProperty0 implements SharedProperty {
   $SharedProperty0CopyWith<SharedProperty0> get copyWith;
 }
 
+/// @nodoc
 abstract class $SharedProperty1CopyWith<$Res>
     implements $SharedPropertyCopyWith<$Res> {
   factory $SharedProperty1CopyWith(
@@ -943,6 +977,7 @@ abstract class $SharedProperty1CopyWith<$Res>
   $Res call({String name, int population});
 }
 
+/// @nodoc
 class _$SharedProperty1CopyWithImpl<$Res>
     extends _$SharedPropertyCopyWithImpl<$Res>
     implements $SharedProperty1CopyWith<$Res> {
@@ -965,6 +1000,7 @@ class _$SharedProperty1CopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$SharedProperty1
     with DiagnosticableTreeMixin
     implements SharedProperty1 {
