@@ -7,6 +7,7 @@ import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/multiple_constructors.dart';
+import 'nullable_test.dart';
 
 typedef NoCommonParamDefaultTearOff = NoCommonParam0 Function(
   String a, {
@@ -81,6 +82,33 @@ Future<void> main() async {
           .having((e) => e.name, 'name', 'd')
           .having((e) => e.documentationComment, 'doc', null),
     ]);
+  });
+
+  test('asserts', () {
+    expect(
+      () => Complex(''),
+      throwsA(
+        isA<AssertionError>()
+            .having((e) => '$e', 'toString', contains('"Hello"')),
+      ),
+    );
+    expect(
+      const Complex('a'),
+      isA<Complex0>().having((e) => e.a, 'a', 'a'),
+    );
+
+    expect(() => Complex.first('a', b: true), throwsAssertionError);
+    expect(
+      () => Complex.first('', b: false),
+      throwsA(
+        isA<AssertionError>()
+            .having((e) => '$e', 'toString', contains('b must be true')),
+      ),
+    );
+    expect(
+      const Complex.first('', b: true),
+      isA<Complex1>().having((e) => e.a, 'a', ''),
+    );
   });
 
   test('tear off', () {

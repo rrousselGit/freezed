@@ -159,10 +159,12 @@ ${copyWith.abstractCopyWithGetter}
   }
 
   String get _asserts {
-    final nonNullableProperties =
-        constructor.impliedProperties.where((p) => !p.nullable).toList();
-    if (nonNullableProperties.isEmpty) return '';
-    return '${nonNullableProperties.map((e) => 'assert(${e.name} != null)').join(',')}';
+    return [
+      ...constructor.impliedProperties
+          .where((p) => !p.nullable)
+          .map((e) => 'assert(${e.name} != null)'),
+      ...constructor.asserts,
+    ].join(',');
   }
 
   String get _isConst {

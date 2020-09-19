@@ -3,55 +3,14 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  dart:
+  freezed:
     runs-on: ubuntu-latest
-    container: google/dart:dev
 
     strategy:
       matrix:
         package:
           - packages/freezed
           - packages/freezed_annotation
-        channel:
-          - master
-
-    steps:
-      - uses: actions/checkout@v2
-
-      # It is executed separatly
-      - name: Removing example folder
-        run: rm -rf example
-        working-directory: ${{ matrix.package }}
-
-      - name: Install dependencies
-        run: dart pub get
-        working-directory: ${{ matrix.package }}
-
-      - name: Check format
-        run: dart format --set-exit-if-changed .
-        working-directory: ${{ matrix.package }}
-
-      - name: Generate
-        run: |
-          if grep -q build_runner "pubspec.yaml"; then
-            dart pub run build_runner build --delete-conflicting-outputs
-          fi
-        working-directory: ${{ matrix.package }}
-
-      - name: Analyze
-        run: dart analyze
-        working-directory: ${{ matrix.package }}
-
-      - name: Run tests
-        run: dart test
-        working-directory: ${{ matrix.package }}
-
-  flutter:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        package:
           - packages/freezed/example
         channel:
           - dev
@@ -91,5 +50,12 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Run tests
-        run: flutter test
+        run: |
+          if grep -q "name: freezed_annotation" "pubspec.yaml"; then
+           echo "skip"
+          elif grep -q "name: freezed" "pubspec.yaml"; then
+            dart pub get && dart test
+          else
+            flutter test
+          fi
         working-directory: ${{ matrix.package }}

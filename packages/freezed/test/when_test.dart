@@ -29,7 +29,7 @@ void main() {
     });
     group('default ctor', () {
       test("assert callbacks can't be null", () {
-        final value = Complex('a');
+        final value = SwitchTest('a');
 
         expect(
           () => value.when(
@@ -57,7 +57,7 @@ void main() {
         );
       });
       test('calls default callback', () {
-        final value = Complex('a');
+        final value = SwitchTest('a');
 
         expect(
           value.when(
@@ -71,7 +71,7 @@ void main() {
     });
     group('first ctor', () {
       test("assert callbacks can't be null", () {
-        final value = Complex.first('a');
+        final value = SwitchTest.first('a');
 
         expect(
           () => value.when(
@@ -99,7 +99,7 @@ void main() {
         );
       });
       test('calls first callback', () {
-        final value = Complex.first('a', b: false, d: .42);
+        final value = SwitchTest.first('a', b: false, d: .42);
 
         expect(
           value.when(
@@ -113,7 +113,7 @@ void main() {
     });
     group('second ctor', () {
       test("assert callbacks can't be null", () {
-        final value = Complex.second('a');
+        final value = SwitchTest.second('a');
 
         expect(
           () => value.when(
@@ -141,7 +141,7 @@ void main() {
         );
       });
       test('calls second callback', () {
-        final value = Complex.second('a', 21, .42);
+        final value = SwitchTest.second('a', 21, .42);
 
         expect(
           value.when(
@@ -162,7 +162,7 @@ library main;
 import 'multiple_constructors.dart';
 
 void main() {
-  final value = Complex.first('a', b: false, d: .42);
+  final value = SwitchTest.first('a', b: false, d: .42);
 
   value.when(
     (String a) => 42,
@@ -182,14 +182,14 @@ void main() {
 
   group('maybeWhen', () {
     test('returns callback result if has callback', () {
-      var value = Complex('a');
+      var value = SwitchTest('a');
 
       expect(
         value.maybeWhen((a) => '$a default', orElse: () => throw Error()),
         'a default',
       );
 
-      value = Complex.first('a', b: false, d: .42);
+      value = SwitchTest.first('a', b: false, d: .42);
 
       expect(
         value.maybeWhen(null,
@@ -197,7 +197,7 @@ void main() {
         'a false 0.42',
       );
 
-      value = Complex.second('a', 21, 0.42);
+      value = SwitchTest.second('a', 21, 0.42);
 
       expect(
         value.maybeWhen(null,
@@ -207,14 +207,14 @@ void main() {
     });
 
     test('assert orElse is passed', () {
-      var value = Complex('a');
+      var value = SwitchTest('a');
 
       expect(
         () => value.maybeWhen((a) => '$a default', orElse: null),
         throwsA(isA<AssertionError>()),
       );
 
-      value = Complex.first('a', b: false, d: .42);
+      value = SwitchTest.first('a', b: false, d: .42);
 
       expect(
         () =>
@@ -222,7 +222,7 @@ void main() {
         throwsA(isA<AssertionError>()),
       );
 
-      value = Complex.second('a', 21, 0.42);
+      value = SwitchTest.second('a', 21, 0.42);
 
       expect(
         () => value.maybeWhen(null,
@@ -232,15 +232,15 @@ void main() {
     });
 
     test('orElse is called', () {
-      var value = Complex('a');
+      var value = SwitchTest('a');
 
       expect(value.maybeWhen(null, orElse: () => 42), 42);
 
-      value = Complex.first('a', b: false, d: .42);
+      value = SwitchTest.first('a', b: false, d: .42);
 
       expect(value.maybeWhen(null, orElse: () => 42), 42);
 
-      value = Complex.second('a', 21, 0.42);
+      value = SwitchTest.second('a', 21, 0.42);
 
       expect(value.maybeWhen(null, orElse: () => 42), 42);
     });
@@ -253,7 +253,7 @@ library main;
 import 'multiple_constructors.dart';
 
 void main() {
-  final value = Complex('a');
+  final value = SwitchTest('a');
 
   value.maybeWhen(null, orElse: () => 42);
 }
@@ -276,7 +276,7 @@ library main;
 import 'multiple_constructors.dart';
 
 void main() {
-  final value = Complex('a');
+  final value = SwitchTest('a');
 
   value.maybeWhen(null);
 }

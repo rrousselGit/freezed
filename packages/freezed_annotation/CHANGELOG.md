@@ -1,3 +1,18 @@
+# [Unreleased]
+
+- Added `Assert` decorator to generate `assert(...)` statements on Freezed classes:
+
+  ```dart
+  abstract class Person with _$Person {
+    @Assert('name.trim().isNotEmpty', 'name cannot be empty')
+    @Assert('age >= 0')
+    factory Person({
+      String name,
+      int age,
+    }) = _Person;
+  }
+  ```
+
 # 0.11.0
 
 - Added `@With` and `@Implements` decorators to allow only a specific constructor

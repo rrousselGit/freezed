@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
@@ -67,6 +68,7 @@ class ConstructorDetails {
     @required this.hasJsonSerializable,
     @required this.cloneableProperties,
     @required this.canOverrideToString,
+    @required this.asserts,
   });
 
   final String name;
@@ -82,6 +84,7 @@ class ConstructorDetails {
   final List<String> decorators;
   final List<CloneableProperty> cloneableProperties;
   final bool canOverrideToString;
+  final List<AssertTemplate> asserts;
 
   String get callbackName => constructorNameToCallbackName(name);
 
@@ -94,6 +97,7 @@ $runtimeType(
   isDefault: $isDefault,
   redirectedName: $redirectedName,
   parameters: $parameters,
+  asserts: $asserts,
   impliedProperties: $impliedProperties,
   fullName: $fullName,
   decorators: $decorators,
@@ -440,6 +444,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
       result.add(
         ConstructorDetails(
+          asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
           canOverrideToString: userDefinedToString == null,
           isConst: constructor.isConst,
@@ -448,7 +453,10 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
             for (final parameter in constructor.parameters)
               Property.fromParameter(parameter),
           ],
-          decorators: constructor.metadata.map((e) => e.toSource()).toList(),
+          decorators: constructor.metadata
+              .map((e) => e.toSource())
+              .where((e) => !e.startsWith('@Assert('))
+              .toList(),
           withDecorators: withDecorationTypes().toSet().toList(),
           implementsDecorators: implementsDecorationTypes().toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
@@ -461,6 +469,16 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       );
     }
     return result;
+  }
+
+  Iterable<AssertTemplate> _parseAsserts(ConstructorElement constructor) sync* {
+    for (final meta
+        in const TypeChecker.fromRuntime(Assert).annotationsOf(constructor)) {
+      yield AssertTemplate(
+        eval: meta.getField('eval').toStringValue(),
+        message: meta.getField('message').toStringValue(),
+      );
+    }
   }
 
   @override

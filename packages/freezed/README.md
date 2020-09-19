@@ -55,6 +55,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
   - [The syntax](#the-syntax)
     - [Basics](#basics)
     - [Custom getters and methods](#custom-getters-and-methods)
+    - [Asserts](#asserts)
     - [Non-nullable](#non-nullable)
     - [Default values](#default-values)
     - [Late](#late)
@@ -255,6 +256,37 @@ abstract class Person implements _$Person { // uses implements instead of with
   void method() {
     print('hello world');
   }
+}
+```
+
+### Asserts
+
+A common use-case with classes is to want to add `assert(...)` statements to a
+construtor:
+
+```dart
+class Person {
+  Person({
+    String name,
+    int age,
+  })  : assert(name.isNotEmpty, 'name cannot be empty'),
+        assert(age >= 0);
+
+  final String name;
+  final int age;
+}
+```
+
+Freezed supports this use-case through the `@Assert` decorator:
+
+```dart
+abstract class Person with _$Person {
+  @Assert('name.isNotEmpty', 'name cannot be empty')
+  @Assert('age >= 0')
+  factory Person({
+    String name,
+    int age,
+  }) = _Person;
 }
 ```
 
