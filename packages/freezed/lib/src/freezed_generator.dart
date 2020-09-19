@@ -117,17 +117,20 @@ class Data {
     @required this.name,
     @required this.lateGetters,
     @required this.needsJsonSerializable,
+    @required this.unionKey,
     @required this.constructors,
     @required this.genericsDefinitionTemplate,
     @required this.genericsParameterTemplate,
     @required this.commonProperties,
     @required this.commonCloneableProperties,
     @required this.shouldUseExtends,
-  }) : assert(constructors.isNotEmpty);
+  })  : assert(constructors.isNotEmpty),
+        assert(unionKey != null);
 
   final String name;
   final List<LateGetter> lateGetters;
   final bool needsJsonSerializable;
+  final String unionKey;
   final List<ConstructorDetails> constructors;
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
@@ -142,6 +145,7 @@ $runtimeType(
   name: $name,
   lateGetters: $lateGetters,
   needsJsonSerializable: $needsJsonSerializable,
+  unionKey: $unionKey,
   constructors: $constructors,
   genericsDefinitionTemplate: $genericsDefinitionTemplate,
   genericsParameterTemplate: $genericsParameterTemplate,
@@ -174,6 +178,9 @@ $runtimeType(
 
 @immutable
 class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
+  FreezedGenerator(this.configs);
+
+  final Map<String, Object> configs;
   final _computeElementDataCache = <ClassElement, Data>{};
   final _parsedElementCheckSet = <ClassElement>{};
 
@@ -197,6 +204,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
   @override
   Data parseElement(_GlobalData globalData, Element rawElement) {
+    final configs = _parseConfig(rawElement);
+
     if (rawElement is! ClassElement) {
       throw InvalidGenerationSourceError(
         '@freezed can only be applied on classes. Failing element: ${rawElement.name}',
@@ -344,6 +353,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           element.constructors.any((element) {
             return element.isFactory && element.name == 'fromJson';
           }),
+      unionKey: configs.unionKey,
       constructors: constructorsNeedsGeneration,
       genericsDefinitionTemplate:
           GenericsDefinitionTemplate.fromGenericElement(element.typeParameters),
@@ -471,6 +481,17 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     return result;
   }
 
+  Freezed _parseConfig(Element element) {
+    final annotation = const TypeChecker.fromRuntime(Freezed)
+        .firstAnnotationOf(element, throwOnUnresolved: false);
+
+    return Freezed(
+      unionKey: annotation.getField('unionKey')?.toStringValue() ??
+          configs['union_key']?.toString() ??
+          'runtimeType',
+    );
+  }
+
   Iterable<AssertTemplate> _parseAsserts(ConstructorElement constructor) sync* {
     for (final meta
         in const TypeChecker.fromRuntime(Assert).annotationsOf(constructor)) {
@@ -487,10 +508,14 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   }
 
   @override
-  Iterable<Object> generateForData(_GlobalData globalData, Data data) sync* {
+  Iterable<Object> generateForData(
+    _GlobalData globalData,
+    Data data,
+  ) sync* {
     if (globalData.hasJson && data.needsJsonSerializable) {
       yield FromJson(
         name: data.name,
+        unionKey: data.unionKey,
         constructors: data.constructors,
         genericParameters: data.genericsParameterTemplate,
         genericDefinitions: data.genericsDefinitionTemplate,
@@ -525,6 +550,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     for (final constructor in data.constructors) {
       yield Concrete(
         name: data.name,
+        unionKey: data.unionKey,
         shouldUseExtends: data.shouldUseExtends,
         lateGetters: data.lateGetters,
         hasDiagnosticable: globalData.hasDiagnostics,

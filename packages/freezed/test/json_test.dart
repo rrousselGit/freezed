@@ -8,6 +8,32 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
+  group('Freezed.unionKey', () {
+    test('fromJson', () {
+      expect(
+        CustomKey.fromJson(<String, dynamic>{'type': 'first', 'a': 42}),
+        CustomKey.first(42),
+      );
+
+      expect(
+        CustomKey.fromJson(<String, dynamic>{'type': 'second', 'a': 21}),
+        CustomKey.second(21),
+      );
+    });
+
+    test('toJson', () {
+      expect(
+        CustomKey.first(42).toJson(),
+        <String, dynamic>{'type': 'first', 'a': 42},
+      );
+
+      expect(
+        CustomKey.second(21).toJson(),
+        <String, dynamic>{'type': 'second', 'a': 21},
+      );
+    });
+  });
+
   test('class decorators are applied on the generated class', () {
     expect(
       ClassDecorator('Complex name').toJson(),
@@ -136,13 +162,14 @@ Future<void> main() async {
     );
   });
 
-  test('fromJsom', () {
+  test('fromJson', () {
     expect(
       Json.fromJson(<String, dynamic>{
         'runtimeType': 'default',
       }),
       Json(),
     );
+
     expect(
       Json.fromJson(<String, dynamic>{
         'runtimeType': 'first',
@@ -150,6 +177,7 @@ Future<void> main() async {
       }),
       Json.first('42'),
     );
+
     expect(
       Json.fromJson(<String, dynamic>{
         'runtimeType': 'second',

@@ -1072,7 +1072,9 @@ With these changes, [Freezed] will automatically ask [json_serializable] to gene
 
 ### fromJSON - classes with multiple constructors
 
-For classes with multiple constructors, [Freezed] will check the JSON response for a string element called `runtimeType` and choose the constructor to use based on its value. For example, given the following constructors:
+For classes with multiple constructors, [Freezed] will check the JSON response
+for a string element called `runtimeType` and choose the constructor to use based
+on its value. For example, given the following constructors:
 
 ```dart
 @freezed
@@ -1105,7 +1107,39 @@ Then [Freezed] will use each JSON object's `runtimeType` to choose the construct
 ]
 ```
 
-If you don't control the JSON response, then you can implement a custom converter. Your custom converter will need to implement its own logic for determining which constructor to use.
+You can customize this key to replace `runtimeType` with something different
+using the `@Freezed` decorator:
+
+```dart
+@Freezed(unionKey: 'type')
+abstract class MyResponse with _$MyResponse {
+  // ...
+}
+```
+
+which would update the previous json to:
+
+```json
+[
+  {
+    "type": "default",
+    "a": "This JSON object will use constructor MyResponse()"
+  },
+  {
+    "type": "special",
+    "a": "This JSON object will use constructor MyResponse.special()",
+    "b": 42
+  },
+  {
+    "type": "error",
+    "message": "This JSON object will use constructor MyResponse.error()"
+  }
+]
+```
+
+If you don't control the JSON response, then you can implement a custom converter.
+Your custom converter will need to implement its own logic for determining which
+constructor to use.
 
 ```dart
 class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynamic>> {
@@ -1161,11 +1195,15 @@ abstract class MyModel with _$MyModel {
 }
 ```
 
-**Note**: In order to serialize nested lists of freezed objects, you are supposed to either specify a `@JsonSerializable(explicitToJson: true)` or change `explicit_to_json` inside your `build.yaml` file ([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)).
+**Note**:  
+In order to serialize nested lists of freezed objects, you are supposed to either
+specify a `@JsonSerializable(explicitToJson: true)` or change `explicit_to_json`
+inside your `build.yaml` file ([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)).
 
 **What about `@JsonKey` annotation?**
 
-All decorators passed to a constructor parameter are "copy-pasted" to the generated property too.\
+All decorators passed to a constructor parameter are "copy-pasted" to the generated
+property too.\
 As such, you can write:
 
 ```dart
