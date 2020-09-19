@@ -5,12 +5,14 @@ import 'package:meta/meta.dart';
 class FromJson {
   FromJson({
     @required this.name,
+    @required this.unionKey,
     @required this.constructors,
     @required this.genericParameters,
     @required this.genericDefinitions,
   });
 
   final String name;
+  final String unionKey;
   final List<ConstructorDetails> constructors;
   final GenericsParameterTemplate genericParameters;
   final GenericsDefinitionTemplate genericDefinitions;
@@ -34,7 +36,7 @@ class FromJson {
       }).join();
 
       content = '''
-        switch (json['runtimeType'] as String) {
+        switch (json['$unionKey'] as String) {
           $cases
           default:
             throw FallThroughError();

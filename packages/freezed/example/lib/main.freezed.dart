@@ -137,6 +137,22 @@ abstract class _MyClass implements MyClass {
   _$MyClassCopyWith<_MyClass> get copyWith;
 }
 
+Union _$UnionFromJson(Map<String, dynamic> json) {
+  switch (json['custom-key'] as String) {
+    case 'default':
+      return Data.fromJson(json);
+    case 'loading':
+      return Loading.fromJson(json);
+    case 'error':
+      return ErrorDetails.fromJson(json);
+    case 'complex':
+      return Complex.fromJson(json);
+
+    default:
+      throw FallThroughError();
+  }
+}
+
 class _$UnionTearOff {
   const _$UnionTearOff();
 
@@ -202,6 +218,7 @@ mixin _$Union {
     Result complex(Complex value),
     @required Result orElse(),
   });
+  Map<String, dynamic> toJson();
 }
 
 abstract class $UnionCopyWith<$Res> {
@@ -241,8 +258,11 @@ class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
+@JsonSerializable()
 class _$Data with DiagnosticableTreeMixin implements Data {
   const _$Data(this.value) : assert(value != null);
+
+  factory _$Data.fromJson(Map<String, dynamic> json) => _$_$DataFromJson(json);
 
   @override
   final int value;
@@ -337,10 +357,17 @@ class _$Data with DiagnosticableTreeMixin implements Data {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$DataToJson(this)..['custom-key'] = 'default';
+  }
 }
 
 abstract class Data implements Union {
   const factory Data(int value) = _$Data;
+
+  factory Data.fromJson(Map<String, dynamic> json) = _$Data.fromJson;
 
   int get value;
   $DataCopyWith<Data> get copyWith;
@@ -360,8 +387,12 @@ class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   Loading get _value => super._value as Loading;
 }
 
+@JsonSerializable()
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
+
+  factory _$Loading.fromJson(Map<String, dynamic> json) =>
+      _$_$LoadingFromJson(json);
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -443,10 +474,17 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$LoadingToJson(this)..['custom-key'] = 'loading';
+  }
 }
 
 abstract class Loading implements Union {
   const factory Loading() = _$Loading;
+
+  factory Loading.fromJson(Map<String, dynamic> json) = _$Loading.fromJson;
 }
 
 abstract class $ErrorDetailsCopyWith<$Res> {
@@ -475,8 +513,12 @@ class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
+@JsonSerializable()
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   const _$ErrorDetails([this.message]);
+
+  factory _$ErrorDetails.fromJson(Map<String, dynamic> json) =>
+      _$_$ErrorDetailsFromJson(json);
 
   @override
   final String message;
@@ -571,10 +613,18 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$ErrorDetailsToJson(this)..['custom-key'] = 'error';
+  }
 }
 
 abstract class ErrorDetails implements Union {
   const factory ErrorDetails([String message]) = _$ErrorDetails;
+
+  factory ErrorDetails.fromJson(Map<String, dynamic> json) =
+      _$ErrorDetails.fromJson;
 
   String get message;
   $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
@@ -606,10 +656,14 @@ class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
+@JsonSerializable()
 class _$Complex with DiagnosticableTreeMixin implements Complex {
   const _$Complex(this.a, this.b)
       : assert(a != null),
         assert(b != null);
+
+  factory _$Complex.fromJson(Map<String, dynamic> json) =>
+      _$_$ComplexFromJson(json);
 
   @override
   final int a;
@@ -711,10 +765,17 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$ComplexToJson(this)..['custom-key'] = 'complex';
+  }
 }
 
 abstract class Complex implements Union {
   const factory Complex(int a, String b) = _$Complex;
+
+  factory Complex.fromJson(Map<String, dynamic> json) = _$Complex.fromJson;
 
   int get a;
   String get b;
