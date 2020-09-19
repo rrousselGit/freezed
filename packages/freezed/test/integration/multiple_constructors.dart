@@ -16,11 +16,14 @@ abstract class SharedParam with _$SharedParam {
 
 @freezed
 abstract class Complex with _$Complex {
+  @Assert("a != ''", '"Hello"')
   const factory Complex(
     /// Hello
     String a,
   ) = Complex0;
 
+  @Assert("a == ''")
+  @Assert('b', 'b must be true')
   const factory Complex.first(
     /// World
     String a, {
@@ -37,6 +40,13 @@ abstract class Complex with _$Complex {
     int c,
     double d,
   ]) = Complex2;
+}
+
+@freezed
+abstract class SwitchTest with _$SwitchTest {
+  const factory SwitchTest(String a) = SwitchTest0;
+  const factory SwitchTest.first(String a, {bool b, double d}) = SwitchTest1;
+  const factory SwitchTest.second(String a, [int c, double d]) = SwitchTest2;
 }
 
 @freezed

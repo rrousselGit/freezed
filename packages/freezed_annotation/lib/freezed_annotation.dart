@@ -6,6 +6,30 @@ class Freezed {
   const Freezed._();
 }
 
+/// A decorator that allowed adding `assert(...)` on the generated classes.
+///
+/// Usage example:
+///
+/// ```dart
+/// abstract class Person with _$Person {
+///   @Assert('name.trim().isNotEmpty', 'name cannot be empty')
+///   @Assert('age >= 0')
+///   factory Person({
+///     String name,
+///     int age,
+///   }) = _Person;
+/// }
+/// ```
+class Assert {
+  const Assert(this.eval, [this.message]);
+
+  /// A string representation of the source code that will be executed by the assert.
+  final String eval;
+
+  /// An optional message to show if the assertion failed.
+  final String message;
+}
+
 /// An annotation for the `freezed` package.
 ///
 /// Annotating a class with this annotation will flag it as needing to be
@@ -50,7 +74,7 @@ const late = _Late._();
 ///
 /// ```dart
 /// abstract class Example with _$Example {
-///  factory Example(@Default(42) int value) = _Example;
+///   factory Example(@Default(42) int value) = _Example;
 /// }
 /// ```
 ///
@@ -58,7 +82,7 @@ const late = _Late._();
 ///
 /// ```dart
 /// abstract class Example with _$Example {
-///  factory Example(@JsonKey(defaultValue: 42) int value = 42) = _Example;
+///   factory Example(@JsonKey(defaultValue: 42) int value = 42) = _Example;
 /// }
 /// ```
 class Default {
