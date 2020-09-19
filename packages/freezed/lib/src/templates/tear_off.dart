@@ -27,12 +27,14 @@ class TearOff {
     }
 
     return '''
+/// @nodoc
 class _\$${name}TearOff {
   const _\$${name}TearOff();
 
 ${tearOffs.join()}
 }
 
+/// @nodoc
 // ignore: unused_element
 const $outputName = _\$${name}TearOff();
 ''';

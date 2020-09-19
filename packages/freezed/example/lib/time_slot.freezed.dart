@@ -9,6 +9,7 @@ part of 'time_slot.dart';
 
 T _$identity<T>(T value) => value;
 
+/// @nodoc
 class _$TimeSlotTearOff {
   const _$TimeSlotTearOff();
 
@@ -21,9 +22,11 @@ class _$TimeSlotTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $TimeSlot = _$TimeSlotTearOff();
 
+/// @nodoc
 mixin _$TimeSlot {
   TimeOfDay get start;
   TimeOfDay get end;
@@ -31,12 +34,14 @@ mixin _$TimeSlot {
   $TimeSlotCopyWith<TimeSlot> get copyWith;
 }
 
+/// @nodoc
 abstract class $TimeSlotCopyWith<$Res> {
   factory $TimeSlotCopyWith(TimeSlot value, $Res Function(TimeSlot) then) =
       _$TimeSlotCopyWithImpl<$Res>;
   $Res call({TimeOfDay start, TimeOfDay end});
 }
 
+/// @nodoc
 class _$TimeSlotCopyWithImpl<$Res> implements $TimeSlotCopyWith<$Res> {
   _$TimeSlotCopyWithImpl(this._value, this._then);
 
@@ -56,6 +61,7 @@ class _$TimeSlotCopyWithImpl<$Res> implements $TimeSlotCopyWith<$Res> {
   }
 }
 
+/// @nodoc
 abstract class _$TimeSlotCopyWith<$Res> implements $TimeSlotCopyWith<$Res> {
   factory _$TimeSlotCopyWith(_TimeSlot value, $Res Function(_TimeSlot) then) =
       __$TimeSlotCopyWithImpl<$Res>;
@@ -63,6 +69,7 @@ abstract class _$TimeSlotCopyWith<$Res> implements $TimeSlotCopyWith<$Res> {
   $Res call({TimeOfDay start, TimeOfDay end});
 }
 
+/// @nodoc
 class __$TimeSlotCopyWithImpl<$Res> extends _$TimeSlotCopyWithImpl<$Res>
     implements _$TimeSlotCopyWith<$Res> {
   __$TimeSlotCopyWithImpl(_TimeSlot _value, $Res Function(_TimeSlot) _then)
@@ -83,6 +90,7 @@ class __$TimeSlotCopyWithImpl<$Res> extends _$TimeSlotCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$_TimeSlot implements _TimeSlot {
   _$_TimeSlot({this.start, this.end});
 

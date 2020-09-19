@@ -33,6 +33,7 @@ class CopyWith {
         ? 'implements ${parent._abstractClassName}${genericsParameter.append('\$Res')}'
         : '';
     return '''
+/// @nodoc
 abstract class $_abstractClassName${genericsDefinition.append('\$Res')} $implements {
   factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) then) = $_implClassName${genericsParameter.append('\$Res')};
 ${_copyWithPrototype('call')}
@@ -79,6 +80,7 @@ ${_abstractDeepCopyMethods().join()}
     }
 
     return '''
+/// @nodoc
 class $_implClassName${genericsDefinition.append('\$Res')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
   $_implClassName(this._value, this._then);
 
@@ -212,6 +214,7 @@ $constructorParameters
   /// and the cloneable properties.
   String concreteImpl(ParametersTemplate parametersTemplate) {
     return '''
+/// @nodoc
 class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent._implClassName}${genericsParameter.append('\$Res')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
   $_implClassName($clonedClassName$genericsParameter _value, \$Res Function($clonedClassName$genericsParameter) _then)
       : super(_value, (v) => _then(v as $clonedClassName$genericsParameter));

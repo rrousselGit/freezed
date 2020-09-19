@@ -62,6 +62,7 @@ ${copyWith.concreteImpl(constructor.parameters)}
 
 ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
 ${constructor.decorators.join('\n')}
+/// @nodoc
 class $concreteName$genericsDefinition $_concreteSuper {
   $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
 

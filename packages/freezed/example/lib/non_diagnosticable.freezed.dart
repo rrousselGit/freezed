@@ -9,6 +9,7 @@ part of 'non_diagnosticable.dart';
 
 T _$identity<T>(T value) => value;
 
+/// @nodoc
 class _$ExampleTearOff {
   const _$ExampleTearOff();
 
@@ -28,9 +29,11 @@ class _$ExampleTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $Example = _$ExampleTearOff();
 
+/// @nodoc
 mixin _$Example<T> {
   @optionalTypeArgs
   Result when<Result extends Object>(
@@ -56,11 +59,13 @@ mixin _$Example<T> {
   });
 }
 
+/// @nodoc
 abstract class $ExampleCopyWith<T, $Res> {
   factory $ExampleCopyWith(Example<T> value, $Res Function(Example<T>) then) =
       _$ExampleCopyWithImpl<T, $Res>;
 }
 
+/// @nodoc
 class _$ExampleCopyWithImpl<T, $Res> implements $ExampleCopyWith<T, $Res> {
   _$ExampleCopyWithImpl(this._value, this._then);
 
@@ -69,6 +74,7 @@ class _$ExampleCopyWithImpl<T, $Res> implements $ExampleCopyWith<T, $Res> {
   final $Res Function(Example<T>) _then;
 }
 
+/// @nodoc
 abstract class _$ExampleCopyWith<T, $Res> {
   factory _$ExampleCopyWith(
           _Example<T> value, $Res Function(_Example<T>) then) =
@@ -76,6 +82,7 @@ abstract class _$ExampleCopyWith<T, $Res> {
   $Res call({int a, String b});
 }
 
+/// @nodoc
 class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
     implements _$ExampleCopyWith<T, $Res> {
   __$ExampleCopyWithImpl(_Example<T> _value, $Res Function(_Example<T>) _then)
@@ -96,6 +103,7 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
   }
 }
 
+/// @nodoc
 class _$_Example<T> implements _Example<T> {
   _$_Example(this.a, this.b)
       : assert(a != null),
@@ -190,6 +198,7 @@ abstract class _Example<T> implements Example<T> {
   _$ExampleCopyWith<T, _Example<T>> get copyWith;
 }
 
+/// @nodoc
 abstract class _$Example2CopyWith<T, $Res> {
   factory _$Example2CopyWith(
           _Example2<T> value, $Res Function(_Example2<T>) then) =
@@ -197,6 +206,7 @@ abstract class _$Example2CopyWith<T, $Res> {
   $Res call({T c});
 }
 
+/// @nodoc
 class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
     implements _$Example2CopyWith<T, $Res> {
   __$Example2CopyWithImpl(
@@ -216,6 +226,7 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
   }
 }
 
+/// @nodoc
 class _$_Example2<T> implements _Example2<T> {
   _$_Example2(this.c) : assert(c != null);
 
@@ -301,6 +312,7 @@ abstract class _Example2<T> implements Example<T> {
   _$Example2CopyWith<T, _Example2<T>> get copyWith;
 }
 
+/// @nodoc
 class _$SimpleImplementsTearOff {
   const _$SimpleImplementsTearOff();
 
@@ -336,9 +348,11 @@ class _$SimpleImplementsTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $SimpleImplements = _$SimpleImplementsTearOff();
 
+/// @nodoc
 mixin _$SimpleImplements {
   String get name;
 
@@ -376,6 +390,7 @@ mixin _$SimpleImplements {
   $SimpleImplementsCopyWith<SimpleImplements> get copyWith;
 }
 
+/// @nodoc
 abstract class $SimpleImplementsCopyWith<$Res> {
   factory $SimpleImplementsCopyWith(
           SimpleImplements value, $Res Function(SimpleImplements) then) =
@@ -383,6 +398,7 @@ abstract class $SimpleImplementsCopyWith<$Res> {
   $Res call({String name});
 }
 
+/// @nodoc
 class _$SimpleImplementsCopyWithImpl<$Res>
     implements $SimpleImplementsCopyWith<$Res> {
   _$SimpleImplementsCopyWithImpl(this._value, this._then);
@@ -401,6 +417,7 @@ class _$SimpleImplementsCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 abstract class $SimplePersonCopyWith<$Res>
     implements $SimpleImplementsCopyWith<$Res> {
   factory $SimplePersonCopyWith(
@@ -410,6 +427,7 @@ abstract class $SimplePersonCopyWith<$Res>
   $Res call({String name, int age});
 }
 
+/// @nodoc
 class _$SimplePersonCopyWithImpl<$Res>
     extends _$SimpleImplementsCopyWithImpl<$Res>
     implements $SimplePersonCopyWith<$Res> {
@@ -432,6 +450,7 @@ class _$SimplePersonCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$SimplePerson implements SimplePerson {
   const _$SimplePerson(this.name, this.age)
       : assert(name != null),
@@ -540,6 +559,7 @@ abstract class SimplePerson implements SimpleImplements {
   $SimplePersonCopyWith<SimplePerson> get copyWith;
 }
 
+/// @nodoc
 abstract class $SimpleStreetCopyWith<$Res>
     implements $SimpleImplementsCopyWith<$Res> {
   factory $SimpleStreetCopyWith(
@@ -549,6 +569,7 @@ abstract class $SimpleStreetCopyWith<$Res>
   $Res call({String name});
 }
 
+/// @nodoc
 class _$SimpleStreetCopyWithImpl<$Res>
     extends _$SimpleImplementsCopyWithImpl<$Res>
     implements $SimpleStreetCopyWith<$Res> {
@@ -570,6 +591,8 @@ class _$SimpleStreetCopyWithImpl<$Res>
 }
 
 @With.fromString('AdministrativeArea<House>')
+
+/// @nodoc
 class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   const _$SimpleStreet(this.name) : assert(name != null);
 
@@ -670,6 +693,7 @@ abstract class SimpleStreet
   $SimpleStreetCopyWith<SimpleStreet> get copyWith;
 }
 
+/// @nodoc
 abstract class $SimpleCityCopyWith<$Res>
     implements $SimpleImplementsCopyWith<$Res> {
   factory $SimpleCityCopyWith(
@@ -679,6 +703,7 @@ abstract class $SimpleCityCopyWith<$Res>
   $Res call({String name, int population});
 }
 
+/// @nodoc
 class _$SimpleCityCopyWithImpl<$Res>
     extends _$SimpleImplementsCopyWithImpl<$Res>
     implements $SimpleCityCopyWith<$Res> {
@@ -701,6 +726,8 @@ class _$SimpleCityCopyWithImpl<$Res>
 }
 
 @With(House)
+
+/// @nodoc
 class _$SimpleCity with House implements SimpleCity {
   const _$SimpleCity(this.name, this.population)
       : assert(name != null),
@@ -810,6 +837,7 @@ abstract class SimpleCity implements SimpleImplements, House {
   $SimpleCityCopyWith<SimpleCity> get copyWith;
 }
 
+/// @nodoc
 abstract class $SimpleCountryCopyWith<$Res>
     implements $SimpleImplementsCopyWith<$Res> {
   factory $SimpleCountryCopyWith(
@@ -819,6 +847,7 @@ abstract class $SimpleCountryCopyWith<$Res>
   $Res call({String name, int population});
 }
 
+/// @nodoc
 class _$SimpleCountryCopyWithImpl<$Res>
     extends _$SimpleImplementsCopyWithImpl<$Res>
     implements $SimpleCountryCopyWith<$Res> {
@@ -843,6 +872,8 @@ class _$SimpleCountryCopyWithImpl<$Res>
 
 @With(House)
 @Implements(GeographicArea)
+
+/// @nodoc
 class _$SimpleCountry with House implements SimpleCountry {
   const _$SimpleCountry(this.name, this.population)
       : assert(name != null),
@@ -953,6 +984,7 @@ abstract class SimpleCountry
   $SimpleCountryCopyWith<SimpleCountry> get copyWith;
 }
 
+/// @nodoc
 class _$CustomMethodImplementsTearOff {
   const _$CustomMethodImplementsTearOff();
 
@@ -987,9 +1019,11 @@ class _$CustomMethodImplementsTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $CustomMethodImplements = _$CustomMethodImplementsTearOff();
 
+/// @nodoc
 mixin _$CustomMethodImplements {
   String get name;
 
@@ -1027,6 +1061,7 @@ mixin _$CustomMethodImplements {
   $CustomMethodImplementsCopyWith<CustomMethodImplements> get copyWith;
 }
 
+/// @nodoc
 abstract class $CustomMethodImplementsCopyWith<$Res> {
   factory $CustomMethodImplementsCopyWith(CustomMethodImplements value,
           $Res Function(CustomMethodImplements) then) =
@@ -1034,6 +1069,7 @@ abstract class $CustomMethodImplementsCopyWith<$Res> {
   $Res call({String name});
 }
 
+/// @nodoc
 class _$CustomMethodImplementsCopyWithImpl<$Res>
     implements $CustomMethodImplementsCopyWith<$Res> {
   _$CustomMethodImplementsCopyWithImpl(this._value, this._then);
@@ -1052,6 +1088,7 @@ class _$CustomMethodImplementsCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 abstract class $PersonCustomMethodCopyWith<$Res>
     implements $CustomMethodImplementsCopyWith<$Res> {
   factory $PersonCustomMethodCopyWith(
@@ -1061,6 +1098,7 @@ abstract class $PersonCustomMethodCopyWith<$Res>
   $Res call({String name, int age});
 }
 
+/// @nodoc
 class _$PersonCustomMethodCopyWithImpl<$Res>
     extends _$CustomMethodImplementsCopyWithImpl<$Res>
     implements $PersonCustomMethodCopyWith<$Res> {
@@ -1083,6 +1121,7 @@ class _$PersonCustomMethodCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$PersonCustomMethod extends PersonCustomMethod {
   const _$PersonCustomMethod(this.name, this.age)
       : assert(name != null),
@@ -1193,6 +1232,7 @@ abstract class PersonCustomMethod extends CustomMethodImplements {
   $PersonCustomMethodCopyWith<PersonCustomMethod> get copyWith;
 }
 
+/// @nodoc
 abstract class $StreetCustomMethodCopyWith<$Res>
     implements $CustomMethodImplementsCopyWith<$Res> {
   factory $StreetCustomMethodCopyWith(
@@ -1202,6 +1242,7 @@ abstract class $StreetCustomMethodCopyWith<$Res>
   $Res call({String name});
 }
 
+/// @nodoc
 class _$StreetCustomMethodCopyWithImpl<$Res>
     extends _$CustomMethodImplementsCopyWithImpl<$Res>
     implements $StreetCustomMethodCopyWith<$Res> {
@@ -1224,6 +1265,8 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
 
 @With(Shop)
 @With.fromString('AdministrativeArea<House>')
+
+/// @nodoc
 class _$StreetCustomMethod extends StreetCustomMethod
     with Shop, AdministrativeArea<House> {
   const _$StreetCustomMethod(this.name)
@@ -1328,6 +1371,7 @@ abstract class StreetCustomMethod extends CustomMethodImplements
   $StreetCustomMethodCopyWith<StreetCustomMethod> get copyWith;
 }
 
+/// @nodoc
 abstract class $CityCustomMethodCopyWith<$Res>
     implements $CustomMethodImplementsCopyWith<$Res> {
   factory $CityCustomMethodCopyWith(
@@ -1337,6 +1381,7 @@ abstract class $CityCustomMethodCopyWith<$Res>
   $Res call({String name, int population});
 }
 
+/// @nodoc
 class _$CityCustomMethodCopyWithImpl<$Res>
     extends _$CustomMethodImplementsCopyWithImpl<$Res>
     implements $CityCustomMethodCopyWith<$Res> {
@@ -1361,6 +1406,8 @@ class _$CityCustomMethodCopyWithImpl<$Res>
 
 @With(House)
 @Implements(GeographicArea)
+
+/// @nodoc
 class _$CityCustomMethod extends CityCustomMethod with House {
   const _$CityCustomMethod(this.name, this.population)
       : assert(name != null),
@@ -1474,6 +1521,7 @@ abstract class CityCustomMethod extends CustomMethodImplements
   $CityCustomMethodCopyWith<CityCustomMethod> get copyWith;
 }
 
+/// @nodoc
 abstract class $DuplexCustomMethodCopyWith<$Res>
     implements $CustomMethodImplementsCopyWith<$Res> {
   factory $DuplexCustomMethodCopyWith(
@@ -1483,6 +1531,7 @@ abstract class $DuplexCustomMethodCopyWith<$Res>
   $Res call({String name});
 }
 
+/// @nodoc
 class _$DuplexCustomMethodCopyWithImpl<$Res>
     extends _$CustomMethodImplementsCopyWithImpl<$Res>
     implements $DuplexCustomMethodCopyWith<$Res> {
@@ -1505,6 +1554,8 @@ class _$DuplexCustomMethodCopyWithImpl<$Res>
 
 @Implements(Shop)
 @Implements(GeographicArea)
+
+/// @nodoc
 class _$DuplexCustomMethod extends DuplexCustomMethod {
   const _$DuplexCustomMethod(this.name)
       : assert(name != null),
@@ -1608,6 +1659,7 @@ abstract class DuplexCustomMethod extends CustomMethodImplements
   $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith;
 }
 
+/// @nodoc
 class _$GenericImplementsTearOff {
   const _$GenericImplementsTearOff();
 
@@ -1636,9 +1688,11 @@ class _$GenericImplementsTearOff {
   }
 }
 
+/// @nodoc
 // ignore: unused_element
 const $GenericImplements = _$GenericImplementsTearOff();
 
+/// @nodoc
 mixin _$GenericImplements<T> {
   String get name;
 
@@ -1672,6 +1726,7 @@ mixin _$GenericImplements<T> {
   $GenericImplementsCopyWith<T, GenericImplements<T>> get copyWith;
 }
 
+/// @nodoc
 abstract class $GenericImplementsCopyWith<T, $Res> {
   factory $GenericImplementsCopyWith(GenericImplements<T> value,
           $Res Function(GenericImplements<T>) then) =
@@ -1679,6 +1734,7 @@ abstract class $GenericImplementsCopyWith<T, $Res> {
   $Res call({String name});
 }
 
+/// @nodoc
 class _$GenericImplementsCopyWithImpl<T, $Res>
     implements $GenericImplementsCopyWith<T, $Res> {
   _$GenericImplementsCopyWithImpl(this._value, this._then);
@@ -1697,6 +1753,7 @@ class _$GenericImplementsCopyWithImpl<T, $Res>
   }
 }
 
+/// @nodoc
 abstract class $GenericPersonCopyWith<T, $Res>
     implements $GenericImplementsCopyWith<T, $Res> {
   factory $GenericPersonCopyWith(
@@ -1706,6 +1763,7 @@ abstract class $GenericPersonCopyWith<T, $Res>
   $Res call({String name, int age});
 }
 
+/// @nodoc
 class _$GenericPersonCopyWithImpl<T, $Res>
     extends _$GenericImplementsCopyWithImpl<T, $Res>
     implements $GenericPersonCopyWith<T, $Res> {
@@ -1728,6 +1786,7 @@ class _$GenericPersonCopyWithImpl<T, $Res>
   }
 }
 
+/// @nodoc
 class _$GenericPerson<T> implements GenericPerson<T> {
   const _$GenericPerson(this.name, this.age)
       : assert(name != null),
@@ -1830,6 +1889,7 @@ abstract class GenericPerson<T> implements GenericImplements<T> {
   $GenericPersonCopyWith<T, GenericPerson<T>> get copyWith;
 }
 
+/// @nodoc
 abstract class $GenericStreetCopyWith<T, $Res>
     implements $GenericImplementsCopyWith<T, $Res> {
   factory $GenericStreetCopyWith(
@@ -1839,6 +1899,7 @@ abstract class $GenericStreetCopyWith<T, $Res>
   $Res call({String name, T value});
 }
 
+/// @nodoc
 class _$GenericStreetCopyWithImpl<T, $Res>
     extends _$GenericImplementsCopyWithImpl<T, $Res>
     implements $GenericStreetCopyWith<T, $Res> {
@@ -1862,6 +1923,8 @@ class _$GenericStreetCopyWithImpl<T, $Res>
 }
 
 @With.fromString('AdministrativeArea<T>')
+
+/// @nodoc
 class _$GenericStreet<T>
     with AdministrativeArea<T>
     implements GenericStreet<T> {
@@ -1967,6 +2030,7 @@ abstract class GenericStreet<T>
   $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith;
 }
 
+/// @nodoc
 abstract class $GenericCityCopyWith<T, $Res>
     implements $GenericImplementsCopyWith<T, $Res> {
   factory $GenericCityCopyWith(
@@ -1976,6 +2040,7 @@ abstract class $GenericCityCopyWith<T, $Res>
   $Res call({String name, int population});
 }
 
+/// @nodoc
 class _$GenericCityCopyWithImpl<T, $Res>
     extends _$GenericImplementsCopyWithImpl<T, $Res>
     implements $GenericCityCopyWith<T, $Res> {
@@ -2000,6 +2065,8 @@ class _$GenericCityCopyWithImpl<T, $Res>
 
 @With(House)
 @Implements(GeographicArea)
+
+/// @nodoc
 class _$GenericCity<T> with House implements GenericCity<T> {
   const _$GenericCity(this.name, this.population)
       : assert(name != null),
