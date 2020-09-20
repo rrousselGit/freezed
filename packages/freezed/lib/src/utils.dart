@@ -1,6 +1,4 @@
-// ignore: implementation_imports
-import 'package:_fe_analyzer_shared/src/scanner/token.dart'
-    show CommentToken, Token;
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/element/element.dart';
 
 String documentationOfParameter(ParameterElement parameter) {
@@ -12,7 +10,7 @@ String documentationOfParameter(ParameterElement parameter) {
           ?.node
           ?.beginToken
           ?.precedingComments;
-      token is CommentToken;
+      token != null;
       token = token.next) {
     builder.writeln(token);
   }
