@@ -4,6 +4,8 @@
 - fixed a bug where a custom `fromJson` constructor still generated the `fromJson`
   constructor with json_serializable
   (see also https://github.com/rrousselGit/freezed/issues/280)
+- fixed a generation issue when `unionKey` contains special characters
+  (see also https://github.com/rrousselGit/freezed/issues/274)
 
 # 0.12.1
 

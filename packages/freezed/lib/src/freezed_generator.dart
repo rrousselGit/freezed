@@ -494,10 +494,12 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
     final annotation = const TypeChecker.fromRuntime(Freezed)
         .firstAnnotationOf(element, throwOnUnresolved: false);
 
+    final rawUnionKey = annotation.getField('unionKey')?.toStringValue() ??
+        configs['union_key']?.toString() ??
+        'runtimeType';
+
     return Freezed(
-      unionKey: annotation.getField('unionKey')?.toStringValue() ??
-          configs['union_key']?.toString() ??
-          'runtimeType',
+      unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
     );
   }
 
