@@ -324,6 +324,18 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       });
     }).toList();
 
+    final needsJsonSerializable = globalData.hasJson &&
+        element.constructors.any((element) {
+          if (element.isFactory && element.name == 'fromJson') {
+            final ast = element.session
+                .getParsedLibraryByElement(element.library)
+                .getElementDeclaration(element)
+                ?.node;
+            return ast.endToken.stringValue == ';';
+          }
+          return false;
+        });
+
     return Data(
       name: element.name,
       shouldUseExtends: shouldUseExtends,
@@ -349,10 +361,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
             hasJsonKey: false,
           ),
       ],
-      needsJsonSerializable: globalData.hasJson &&
-          element.constructors.any((element) {
-            return element.isFactory && element.name == 'fromJson';
-          }),
+      needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey,
       constructors: constructorsNeedsGeneration,
       genericsDefinitionTemplate:

@@ -1,6 +1,9 @@
 # Unrelease
 
 - Upgrade the depenencies (analyzer, build_runner)
+- fixed a bug where a custom `fromJson` constructor still generated the `fromJson`
+  constructor with json_serializable
+  (see also https://github.com/rrousselGit/freezed/issues/280)
 
 # 0.12.1
 
