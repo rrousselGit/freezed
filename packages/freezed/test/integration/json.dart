@@ -23,6 +23,24 @@ abstract class Regression280n2 with _$Regression280n2 {
   }
 }
 
+@Freezed(unionKey: 'ty"\'pe')
+abstract class FancyCustomKey with _$FancyCustomKey {
+  const factory FancyCustomKey.first(int a) = _FancyCustomKeyFirst;
+  const factory FancyCustomKey.second(int a) = _FancyCustomKeySecond;
+
+  factory FancyCustomKey.fromJson(Map<String, dynamic> json) =>
+      _$FancyCustomKeyFromJson(json);
+}
+
+@Freezed(unionKey: r'$type')
+abstract class RawCustomKey with _$RawCustomKey {
+  const factory RawCustomKey.first(int a) = _RawCustomKeyFirst;
+  const factory RawCustomKey.second(int a) = _RawCustomKeySecond;
+
+  factory RawCustomKey.fromJson(Map<String, dynamic> json) =>
+      _$RawCustomKeyFromJson(json);
+}
+
 @Freezed(unionKey: 'type')
 abstract class CustomKey with _$CustomKey {
   const factory CustomKey.first(int a) = _CustomKeyFirst;

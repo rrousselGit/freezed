@@ -26,6 +26,16 @@ Future<void> main() async {
         CustomKey.fromJson(<String, dynamic>{'type': 'second', 'a': 21}),
         CustomKey.second(21),
       );
+
+      expect(
+        RawCustomKey.fromJson(<String, dynamic>{'\$type': 'first', 'a': 42}),
+        RawCustomKey.first(42),
+      );
+
+      expect(
+        FancyCustomKey.fromJson(<String, dynamic>{'ty"\'pe': 'first', 'a': 42}),
+        FancyCustomKey.first(42),
+      );
     });
 
     test('toJson', () {
@@ -37,6 +47,16 @@ Future<void> main() async {
       expect(
         CustomKey.second(21).toJson(),
         <String, dynamic>{'type': 'second', 'a': 21},
+      );
+
+      expect(
+        RawCustomKey.first(42).toJson(),
+        <String, dynamic>{'\$type': 'first', 'a': 42},
+      );
+
+      expect(
+        FancyCustomKey.first(42).toJson(),
+        <String, dynamic>{'ty"\'pe': 'first', 'a': 42},
       );
     });
   });
