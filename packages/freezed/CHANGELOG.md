@@ -1,4 +1,4 @@
-# Unrelease
+# 0.12.2
 
 - Upgrade the depenencies (analyzer, build_runner)
 - fixed a bug where a custom `fromJson` constructor still generated the `fromJson`
