@@ -1,3 +1,7 @@
+# Unrelease
+
+- Upgrade the depenencies (analyzer, build_runner)
+
 # 0.12.1
 
 - Removed dependency on `_fe_analyzer_shared`

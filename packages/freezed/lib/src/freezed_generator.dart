@@ -402,7 +402,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
             genericParameters: GenericsParameterTemplate(
               (parameter.type as InterfaceType)
                   .typeArguments
-                  .map((e) => e.toString())
+                  .map((e) => e.getDisplayString(withNullability: false))
                   .toList(),
             ),
           );
@@ -433,7 +433,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
             type = object.getField('stringType');
             yield type.toStringValue();
           } else {
-            yield type.toTypeValue().getDisplayString();
+            yield type.toTypeValue().getDisplayString(withNullability: false);
           }
         }
       }
@@ -447,7 +447,7 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
             type = object.getField('stringType');
             yield type.toStringValue();
           } else {
-            yield type.toTypeValue().getDisplayString();
+            yield type.toTypeValue().getDisplayString(withNullability: false);
           }
         }
       }

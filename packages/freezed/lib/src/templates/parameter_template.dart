@@ -10,7 +10,7 @@ class GenericsDefinitionTemplate {
   factory GenericsDefinitionTemplate.fromGenericElement(
       List<TypeParameterElement> generics) {
     return GenericsDefinitionTemplate(
-      generics.map((e) => e.toString()).toList(),
+      generics.map((e) => e.getDisplayString(withNullability: false)).toList(),
     );
   }
 
@@ -32,7 +32,8 @@ class GenericsParameterTemplate {
   GenericsParameterTemplate(this.typeParameters);
 
   factory GenericsParameterTemplate.fromGenericElement(
-      List<TypeParameterElement> generics) {
+    List<TypeParameterElement> generics,
+  ) {
     return GenericsParameterTemplate(
       generics.map((e) => e.name).toList(),
     );
