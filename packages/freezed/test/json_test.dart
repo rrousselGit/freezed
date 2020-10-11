@@ -8,6 +8,13 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
+  test('can have a custom fromJson', () {
+    expect(
+      Regression280.fromJson(<String, String>{'foo': 'value'}),
+      Regression280('value'),
+    );
+  });
+
   group('Freezed.unionKey', () {
     test('fromJson', () {
       expect(

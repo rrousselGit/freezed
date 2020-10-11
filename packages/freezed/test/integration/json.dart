@@ -3,6 +3,26 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'json.freezed.dart';
 part 'json.g.dart';
 
+// regression test for https://github.com/rrousselGit/freezed/issues/280
+
+@freezed
+abstract class Regression280 with _$Regression280 {
+  const factory Regression280(String label) = _Regression280;
+
+  factory Regression280.fromJson(Map<String, dynamic> val) {
+    return Regression280(val['foo'] as String);
+  }
+}
+
+@freezed
+abstract class Regression280n2 with _$Regression280n2 {
+  const factory Regression280n2(String label) = _Regression280n2;
+
+  factory Regression280n2.fromJson(String val) {
+    return Regression280n2(val);
+  }
+}
+
 @Freezed(unionKey: 'type')
 abstract class CustomKey with _$CustomKey {
   const factory CustomKey.first(int a) = _CustomKeyFirst;
