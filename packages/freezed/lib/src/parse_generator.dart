@@ -8,33 +8,39 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     extends GeneratorForAnnotation<Annotation> {
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
-    final values = StringBuffer();
+    try {
+      final values = StringBuffer();
 
-    final globalData = parseGlobalData(library.element);
+      final globalData = parseGlobalData(library.element);
 
-    var hasGeneratedGlobalCode = false;
+      var hasGeneratedGlobalCode = false;
 
-    for (var element
-        in library.annotatedWith(typeChecker).map((e) => e.element)) {
-      if (!hasGeneratedGlobalCode) {
-        hasGeneratedGlobalCode = true;
+      for (var element
+          in library.annotatedWith(typeChecker).map((e) => e.element)) {
+        if (!hasGeneratedGlobalCode) {
+          hasGeneratedGlobalCode = true;
+          for (final value
+              in generateForAll(globalData).map((e) => e.toString())) {
+            assert(value == null || (value.length == value.trim().length));
+            values.writeln(value);
+          }
+        }
+
+        final data = parseElement(globalData, element);
+        if (data == null) continue;
         for (final value
-            in generateForAll(globalData).map((e) => e.toString())) {
+            in generateForData(globalData, data).map((e) => e.toString())) {
           assert(value == null || (value.length == value.trim().length));
           values.writeln(value);
         }
       }
 
-      final data = parseElement(globalData, element);
-      if (data == null) continue;
-      for (final value
-          in generateForData(globalData, data).map((e) => e.toString())) {
-        assert(value == null || (value.length == value.trim().length));
-        values.writeln(value);
-      }
+      return values.toString();
+    } catch (err, stack) {
+      print('Error $err');
+      print(stack);
+      rethrow;
     }
-
-    return values.toString();
   }
 
   Iterable<Object> generateForAll(GlobalData globalData) sync* {}
@@ -47,11 +53,16 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
   @override
   Iterable<String> generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) sync* {
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) sync* {
     // implemented for source_gen_test – otherwise unused
     final globalData = parseGlobalData(element.library);
     final data = parseElement(globalData, element);
+
     if (data == null) return;
+
     yield* generateForData(globalData, data)
         .map((element) => element.toString());
   }
