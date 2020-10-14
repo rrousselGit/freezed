@@ -1,3 +1,8 @@
+# Unreleased
+
+- Fixed a bug where a `fromJson` constructor is not generated when using the
+  block body syntax.
+
 # 0.12.2
 
 - Upgrade the depenencies (analyzer, build_runner)

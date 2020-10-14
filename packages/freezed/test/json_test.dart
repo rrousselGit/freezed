@@ -8,6 +8,17 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
+  test('Should be able to declare fromJson constructor using block body syntax', () {
+    expect(
+      Regression285.fromJson(<String, String>{'a': 'value'}),
+      Regression285('value'),
+    );
+    expect(
+      Regression285n2.fromJson(<String, String>{'a': 'value2'}),
+      Regression285n2('value2'),
+    );
+  });
+
   test('can have a custom fromJson', () {
     expect(
       Regression280.fromJson(<String, String>{'foo': 'value'}),
