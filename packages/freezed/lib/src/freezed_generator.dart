@@ -329,8 +329,12 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           return element.isFactory &&
               element.name == 'fromJson' &&
               element.parameters.length == 1 &&
-              (element.parameters[0].type.getDisplayString(withNullability: false) == 'dynamic' ||
-                  element.parameters[0].type.getDisplayString(withNullability: false) == 'Map<String, dynamic>');
+              (element.parameters[0].type
+                          .getDisplayString(withNullability: false) ==
+                      'dynamic' ||
+                  element.parameters[0].type
+                          .getDisplayString(withNullability: false) ==
+                      'Map<String, dynamic>');
         });
 
     return Data(

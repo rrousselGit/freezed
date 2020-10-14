@@ -8,7 +8,8 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
-  test('Should be able to declare fromJson constructor using block body syntax', () {
+  test('Should be able to declare fromJson constructor using block body syntax',
+      () {
     expect(
       Regression285.fromJson(<String, String>{'a': 'value'}),
       Regression285('value'),
