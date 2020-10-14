@@ -8,10 +8,36 @@ import 'common.dart';
 import 'integration/json.dart';
 
 Future<void> main() async {
+  final jsonFile = await resolveSources(
+    {'freezed|test/integration/json.dart': useAssetReader},
+    (r) => r.libraries
+        .firstWhere((element) => element.source.toString().contains('json')),
+  );
+
   test('can have a custom fromJson', () {
     expect(
       Regression280.fromJson(<String, String>{'foo': 'value'}),
       Regression280('value'),
+    );
+    expect(
+      Regression280n2.fromJson('hello'),
+      Regression280n2('hello'),
+    );
+
+    expect(
+      jsonFile.topLevelElements.any((e) => e.name == r'_$Regresssion280'),
+      isFalse,
+    );
+    expect(
+      jsonFile.topLevelElements.any((e) => e.name == r'_$Regresssion280n2'),
+      isFalse,
+    );
+  });
+
+  test('custom fromJson + json_serializable', () {
+    expect(
+      CustomJson.fromJson(<String, dynamic>{'key': 'value'}),
+      CustomJson('value'),
     );
   });
 
@@ -116,15 +142,7 @@ Future<void> main() async {
   });
 
   test('has no issue', () async {
-    final main = await resolveSources(
-      {
-        'freezed|test/integration/json.dart': useAssetReader,
-      },
-      (r) => r.libraries
-          .firstWhere((element) => element.source.toString().contains('json')),
-    );
-
-    var errorResult = await main.session
+    var errorResult = await jsonFile.session
         .getErrors('/freezed/test/integration/json.freezed.dart');
     expect(errorResult.errors, isEmpty);
   }, skip: true);

@@ -23,6 +23,19 @@ abstract class Regression280n2 with _$Regression280n2 {
   }
 }
 
+CustomJson _fromJson(Map<String, dynamic> json) {
+  return _$CustomJsonFromJson(<String, dynamic>{
+    'label': json['key'],
+  });
+}
+
+@freezed
+abstract class CustomJson with _$CustomJson {
+  const factory CustomJson(String label) = _CustomJson;
+
+  factory CustomJson.fromJson(Map<String, dynamic> json) => _fromJson(json);
+}
+
 @Freezed(unionKey: 'ty"\'pe')
 abstract class FancyCustomKey with _$FancyCustomKey {
   const factory FancyCustomKey.first(int a) = _FancyCustomKeyFirst;
