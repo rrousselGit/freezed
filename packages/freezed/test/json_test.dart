@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
-// ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
