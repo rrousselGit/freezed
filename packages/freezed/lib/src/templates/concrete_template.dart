@@ -384,7 +384,10 @@ class Property {
     @required this.doc,
   }) : type = type ?? 'dynamic';
 
-  factory Property.fromParameter(ParameterElement element) {
+  factory Property.fromParameter(
+    ParameterElement element, {
+    @required bool includeDocumentation,
+  }) {
     final defaultValue = element.defaultValue;
     if (defaultValue != null &&
         (element.hasRequired || element.isRequiredPositional)) {
@@ -396,7 +399,7 @@ class Property {
 
     return Property(
       name: element.name,
-      doc: documentationOfParameter(element),
+      doc: includeDocumentation ? documentationOfParameter(element) : null,
       type: parseTypeSource(element),
       decorators: parseDecorators(element.metadata),
       nullable: element.isNullable,

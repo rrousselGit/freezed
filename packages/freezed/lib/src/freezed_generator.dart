@@ -195,15 +195,21 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       if (!typeChecker.hasAnnotationOf(classElement)) return null;
       if (_parsedElementCheckSet.contains(classElement)) return null;
       _parsedElementCheckSet.add(classElement);
+
       return parseElement(
         _GlobalData(hasDiagnostics: false, hasJson: false),
         classElement,
+        includeJsonAndComments: false,
       );
     });
   }
 
   @override
-  Data parseElement(_GlobalData globalData, Element rawElement) {
+  Data parseElement(
+    _GlobalData globalData,
+    Element rawElement, {
+    bool includeJsonAndComments = true,
+  }) {
     final configs = _parseConfig(rawElement);
 
     if (rawElement is! ClassElement) {
@@ -235,8 +241,10 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
 
     // TODO: verify _$name is mixed-in
 
-    final constructorsNeedsGeneration =
-        _parseConstructorsNeedsGeneration(element);
+    final constructorsNeedsGeneration = _parseConstructorsNeedsGeneration(
+      element,
+      includeDocumentation: includeJsonAndComments,
+    );
 
     if (constructorsNeedsGeneration.isEmpty) {
       throw InvalidGenerationSourceError(
@@ -257,8 +265,63 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
     });
 
-    final lateGetters = <LateGetter>[];
+    // TODO: parse late finals with an initializer and copy-paste them to the concrete class + toString/debugFillProperties
 
+    final commonParameters = constructorsNeedsGeneration
+        .first.parameters.allParameters
+        .where((parameter) {
+      return constructorsNeedsGeneration.every((constructor) {
+        return constructor.parameters.allParameters.any((p) {
+          return p.name == parameter.name && p.type == parameter.type;
+        });
+      });
+    }).toList();
+
+    return Data(
+      name: element.name,
+      shouldUseExtends: shouldUseExtends,
+      lateGetters: _lateGetters(
+        rawElement,
+        element,
+        shouldUseExtends: shouldUseExtends,
+      ).toList(),
+      commonCloneableProperties: [
+        for (final cloneableProperty
+            in constructorsNeedsGeneration.first.cloneableProperties)
+          for (final commonParameter in commonParameters)
+            if (cloneableProperty.name == commonParameter.name)
+              cloneableProperty,
+      ],
+      // TODO: test can write manual fromJson ctor
+      commonProperties: [
+        for (final commonParameter in commonParameters)
+          Property(
+            decorators: commonParameter.decorators,
+            name: commonParameter.name,
+            doc: commonParameter.doc,
+            type: commonParameter.type,
+            nullable: commonParameter.nullable,
+            defaultValueSource: commonParameter.defaultValueSource,
+            // TODO: support hasJsonKey
+            hasJsonKey: false,
+          ),
+      ],
+      needsJsonSerializable:
+          includeJsonAndComments && _needsJsonSerializable(globalData, element),
+      unionKey: configs.unionKey,
+      constructors: constructorsNeedsGeneration,
+      genericsDefinitionTemplate:
+          GenericsDefinitionTemplate.fromGenericElement(element.typeParameters),
+      genericsParameterTemplate:
+          GenericsParameterTemplate.fromGenericElement(element.typeParameters),
+    );
+  }
+
+  Iterable<LateGetter> _lateGetters(
+    Element rawElement,
+    ClassElement element, {
+    bool shouldUseExtends,
+  }) sync* {
     for (final field in element.fields) {
       if (field.isStatic) continue;
       if (field.setter != null) {
@@ -295,13 +358,12 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
             element: rawElement,
           );
         }
-        lateGetters.add(
-          LateGetter(
-            type: parseTypeSource(field),
-            name: field.name,
-            decorators: field.metadata.map((e) => e.toSource()).toList(),
-            source: source,
-          ),
+
+        yield LateGetter(
+          type: parseTypeSource(field),
+          name: field.name,
+          decorators: field.metadata.map((e) => e.toSource()).toList(),
+          source: source,
         );
         continue;
       }
@@ -311,20 +373,13 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
         element: rawElement,
       );
     }
+  }
 
-    // TODO: parse late finals with an initializer and copy-paste them to the concrete class + toString/debugFillProperties
-
-    final commonParameters = constructorsNeedsGeneration
-        .first.parameters.allParameters
-        .where((parameter) {
-      return constructorsNeedsGeneration.every((constructor) {
-        return constructor.parameters.allParameters.any((p) {
-          return p.name == parameter.name && p.type == parameter.type;
-        });
-      });
-    }).toList();
-
-    final needsJsonSerializable = globalData.hasJson &&
+  bool _needsJsonSerializable(
+    _GlobalData globalData,
+    ClassElement element,
+  ) {
+    return globalData.hasJson &&
         element.constructors.any((element) {
           if (element.isFactory && element.name == 'fromJson') {
             final ast = element.session
@@ -335,45 +390,12 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           }
           return false;
         });
-
-    return Data(
-      name: element.name,
-      shouldUseExtends: shouldUseExtends,
-      lateGetters: lateGetters,
-      commonCloneableProperties: [
-        for (final cloneableProperty
-            in constructorsNeedsGeneration.first.cloneableProperties)
-          for (final commonParameter in commonParameters)
-            if (cloneableProperty.name == commonParameter.name)
-              cloneableProperty,
-      ],
-      // TODO: test can write manual fromJson ctor
-      commonProperties: [
-        for (final commonParameter in commonParameters)
-          Property(
-            decorators: commonParameter.decorators,
-            name: commonParameter.name,
-            doc: commonParameter.doc,
-            type: commonParameter.type,
-            nullable: commonParameter.nullable,
-            defaultValueSource: commonParameter.defaultValueSource,
-            // TODO: support hasJsonKey
-            hasJsonKey: false,
-          ),
-      ],
-      needsJsonSerializable: needsJsonSerializable,
-      unionKey: configs.unionKey,
-      constructors: constructorsNeedsGeneration,
-      genericsDefinitionTemplate:
-          GenericsDefinitionTemplate.fromGenericElement(element.typeParameters),
-      genericsParameterTemplate:
-          GenericsParameterTemplate.fromGenericElement(element.typeParameters),
-    );
   }
 
   List<ConstructorDetails> _parseConstructorsNeedsGeneration(
-    ClassElement element,
-  ) {
+    ClassElement element, {
+    @required bool includeDocumentation,
+  }) {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
       if (!constructor.isFactory || constructor.name == 'fromJson') {
@@ -470,7 +492,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           fullName: fullName,
           impliedProperties: [
             for (final parameter in constructor.parameters)
-              Property.fromParameter(parameter),
+              Property.fromParameter(parameter,
+                  includeDocumentation: includeDocumentation),
           ],
           decorators: constructor.metadata
               .map((e) => e.toSource())
@@ -481,8 +504,10 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
           isDefault: isDefaultConstructor(constructor),
           hasJsonSerializable: constructor.hasJsonSerializable,
           cloneableProperties: cloneableProperties().toList(),
-          parameters:
-              ParametersTemplate.fromParameterElements(constructor.parameters),
+          parameters: ParametersTemplate.fromParameterElements(
+            constructor.parameters,
+            includeDocumentation: includeDocumentation,
+          ),
           redirectedName: redirectedName,
         ),
       );

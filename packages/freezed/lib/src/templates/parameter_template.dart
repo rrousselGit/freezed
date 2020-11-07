@@ -62,6 +62,7 @@ class ParametersTemplate {
   factory ParametersTemplate.fromParameterElements(
     List<ParameterElement> parameters, {
     bool isAssignedToThis = false,
+    @required bool includeDocumentation,
   }) {
     Parameter asParameter(ParameterElement e) {
       if (isAssignedToThis) {
@@ -72,7 +73,7 @@ class ParametersTemplate {
           isRequired: e.hasRequired,
           decorators: parseDecorators(e.metadata),
           nullable: e.isNullable,
-          doc: documentationOfParameter(e),
+          doc: includeDocumentation ? documentationOfParameter(e) : null,
         );
       }
       return Parameter(
@@ -82,7 +83,7 @@ class ParametersTemplate {
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
         nullable: e.isNullable,
-        doc: documentationOfParameter(e),
+        doc: includeDocumentation ? documentationOfParameter(e) : null,
       );
     }
 

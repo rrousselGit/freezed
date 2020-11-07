@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
@@ -7,16 +5,19 @@ import 'package:source_gen/source_gen.dart';
 abstract class ParserGenerator<GlobalData, Data, Annotation>
     extends GeneratorForAnnotation<Annotation> {
   @override
-  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
+  Future<String> generate(LibraryReader oldLibrary, BuildStep buildStep) async {
+    final library = await buildStep.resolver.libraryFor(
+      await buildStep.resolver.assetIdForElement(oldLibrary.element),
+    );
+
     try {
       final values = StringBuffer();
-
-      final globalData = parseGlobalData(library.element);
+      final globalData = parseGlobalData(library);
 
       var hasGeneratedGlobalCode = false;
 
       for (var element
-          in library.annotatedWith(typeChecker).map((e) => e.element)) {
+          in library.topLevelElements.where(typeChecker.hasAnnotationOf)) {
         if (!hasGeneratedGlobalCode) {
           hasGeneratedGlobalCode = true;
           for (final value
@@ -52,18 +53,19 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
   Iterable<Object> generateForData(GlobalData globalData, Data data);
 
   @override
-  Iterable<String> generateForAnnotatedElement(
+  Stream<String> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
-  ) sync* {
+  ) async* {
     // implemented for source_gen_test – otherwise unused
     final globalData = parseGlobalData(element.library);
     final data = parseElement(globalData, element);
 
     if (data == null) return;
 
-    yield* generateForData(globalData, data)
-        .map((element) => element.toString());
+    for (final value in generateForData(globalData, data)) {
+      yield value.toString();
+    }
   }
 }
