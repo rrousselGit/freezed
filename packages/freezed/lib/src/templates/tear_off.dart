@@ -1,5 +1,5 @@
-import 'package:freezed/src/freezed_generator.dart';
 import 'package:meta/meta.dart';
+import '../models.dart';
 import 'parameter_template.dart';
 
 class TearOff {

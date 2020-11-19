@@ -1,8 +1,8 @@
-import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
+import 'package:freezed/src/templates/properties.dart';
 import 'package:meta/meta.dart';
 
-import '../freezed_generator.dart';
+import '../models.dart';
 
 class CopyWith {
   CopyWith({

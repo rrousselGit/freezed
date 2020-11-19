@@ -1,8 +1,8 @@
-import 'package:freezed/src/freezed_generator.dart';
-import 'package:freezed/src/templates/concrete_template.dart';
+import 'package:freezed/src/models.dart';
 import 'package:meta/meta.dart';
 import 'copy_with.dart';
 import 'parameter_template.dart';
+import 'properties.dart';
 import 'prototypes.dart';
 
 class Abstract {

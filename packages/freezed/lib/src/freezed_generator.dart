@@ -3,6 +3,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
+import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/tear_off.dart';
 import 'package:freezed/src/tools/recursive_import_locator.dart';
@@ -10,174 +11,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'models.dart';
 import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
 
-/// A generated property that has for type a class generated using Freezed
-///
-/// This allows Freezed to support deep copy of the object.
-/// This does include primitives like [int] and [List].
 @immutable
-class CloneableProperty {
-  CloneableProperty({
-    @required this.name,
-    @required this.type,
-    @required this.children,
-    @required this.associatedData,
-    @required this.genericParameters,
-  });
-
-  final String name;
-  final String type;
-  final List<CloneableProperty> children;
-  final Data associatedData;
-  final GenericsParameterTemplate genericParameters;
-
-  @override
-  String toString() {
-    return '''
-$runtimeType(
-  name: $name,
-  type: $type,
-  children: $children,
-  associatedData: $associatedData,
-  genericParameters: $genericParameters,
-)
-''';
-  }
-}
-
-/// The informations of a specific constructor of a class tagged with `@freezed`.
-///
-/// This only includes constructors where Freezed needs to generate something.
-@immutable
-class ConstructorDetails {
-  ConstructorDetails({
-    @required this.name,
-    @required this.isConst,
-    @required this.isDefault,
-    @required this.redirectedName,
-    @required this.parameters,
-    @required this.impliedProperties,
-    @required this.fullName,
-    @required this.decorators,
-    @required this.withDecorators,
-    @required this.implementsDecorators,
-    @required this.hasJsonSerializable,
-    @required this.cloneableProperties,
-    @required this.canOverrideToString,
-    @required this.asserts,
-  });
-
-  final String name;
-  final bool isConst;
-  final String redirectedName;
-  final ParametersTemplate parameters;
-  final List<Property> impliedProperties;
-  final bool isDefault;
-  final bool hasJsonSerializable;
-  final String fullName;
-  final List<String> withDecorators;
-  final List<String> implementsDecorators;
-  final List<String> decorators;
-  final List<CloneableProperty> cloneableProperties;
-  final bool canOverrideToString;
-  final List<AssertTemplate> asserts;
-
-  String get callbackName => constructorNameToCallbackName(name);
-
-  @override
-  String toString() {
-    return '''
-$runtimeType(
-  name: $name,
-  isConst: $isConst,
-  isDefault: $isDefault,
-  redirectedName: $redirectedName,
-  parameters: $parameters,
-  asserts: $asserts,
-  impliedProperties: $impliedProperties,
-  fullName: $fullName,
-  decorators: $decorators,
-  withDecorators: $withDecorators,
-  implementsDecorators: $implementsDecorators,
-  hasJsonSerializable: $hasJsonSerializable,
-  cloneableProperties: $cloneableProperties,
-  canOverrideToString: $canOverrideToString,
-)
-''';
-  }
-}
-
-@immutable
-class Data {
-  Data({
-    @required this.name,
-    @required this.lateGetters,
-    @required this.needsJsonSerializable,
-    @required this.unionKey,
-    @required this.constructors,
-    @required this.genericsDefinitionTemplate,
-    @required this.genericsParameterTemplate,
-    @required this.commonProperties,
-    @required this.commonCloneableProperties,
-    @required this.shouldUseExtends,
-  })  : assert(constructors.isNotEmpty),
-        assert(unionKey != null);
-
-  final String name;
-  final List<LateGetter> lateGetters;
-  final bool needsJsonSerializable;
-  final String unionKey;
-  final List<ConstructorDetails> constructors;
-  final GenericsDefinitionTemplate genericsDefinitionTemplate;
-  final GenericsParameterTemplate genericsParameterTemplate;
-  final List<Property> commonProperties;
-  final List<CloneableProperty> commonCloneableProperties;
-  final bool shouldUseExtends;
-
-  @override
-  String toString() {
-    return '''
-$runtimeType(
-  name: $name,
-  lateGetters: $lateGetters,
-  needsJsonSerializable: $needsJsonSerializable,
-  unionKey: $unionKey,
-  constructors: $constructors,
-  genericsDefinitionTemplate: $genericsDefinitionTemplate,
-  genericsParameterTemplate: $genericsParameterTemplate,
-  commonProperties: $commonProperties,
-  commonCloneableProperties: $commonCloneableProperties,
-  shouldUseExtends: $shouldUseExtends,
-)''';
-  }
-}
-
-@immutable
-class _GlobalData {
-  _GlobalData({
-    @required this.hasDiagnostics,
-    @required this.hasJson,
-  });
-
-  final bool hasJson;
-  final bool hasDiagnostics;
-
-  @override
-  String toString() {
-    return '''
-$runtimeType(
-  hasJson: $hasJson,
-  hasDiagnostics: $hasDiagnostics,
-)''';
-  }
-}
-
-@immutable
-class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
+class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   FreezedGenerator(this.configs);
 
   final Map<String, Object> configs;
@@ -196,14 +37,14 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
       if (_parsedElementCheckSet.contains(classElement)) return null;
       _parsedElementCheckSet.add(classElement);
       return parseElement(
-        _GlobalData(hasDiagnostics: false, hasJson: false),
+        GlobalData(hasDiagnostics: false, hasJson: false),
         classElement,
       );
     });
   }
 
   @override
-  Data parseElement(_GlobalData globalData, Element rawElement) {
+  Data parseElement(GlobalData globalData, Element rawElement) {
     final configs = _parseConfig(rawElement);
 
     if (rawElement is! ClassElement) {
@@ -514,13 +355,13 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   }
 
   @override
-  Iterable<Object> generateForAll(_GlobalData globalData) sync* {
+  Iterable<Object> generateForAll(GlobalData globalData) sync* {
     yield r'T _$identity<T>(T value) => value;';
   }
 
   @override
   Iterable<Object> generateForData(
-    _GlobalData globalData,
+    GlobalData globalData,
     Data data,
   ) sync* {
     if (globalData.hasJson && data.needsJsonSerializable) {
@@ -584,8 +425,8 @@ class FreezedGenerator extends ParserGenerator<_GlobalData, Data, Freezed> {
   }
 
   @override
-  _GlobalData parseGlobalData(LibraryElement library) {
-    return _GlobalData(
+  GlobalData parseGlobalData(LibraryElement library) {
+    return GlobalData(
       hasJson: library.importsJsonSerializable,
       hasDiagnostics: library.importsDiagnosticable,
     );
@@ -624,37 +465,6 @@ extension on Element {
   }
 }
 
-class LateGetter {
-  final String type;
-  final String name;
-  final List<String> decorators;
-  final String source;
-
-  LateGetter({
-    @required this.type,
-    @required this.name,
-    @required this.decorators,
-    @required this.source,
-  });
-
-  @override
-  String toString() {
-    return '''
-bool _did$name = false;
-${type ?? 'dynamic'} _$name;
-
-@override
-${decorators.join()}
-${type ?? 'dynamic'} get $name {
-  if (_did$name == false) {
-    _did$name = true;
-    _$name = $source;
-  }
-  return _$name;
-}''';
-  }
-}
-
 String parseLateGetterSource(String source) {
   var parenthesis = 0;
 
@@ -678,13 +488,4 @@ String parseLateGetterSource(String source) {
     }
   }
   return null;
-}
-
-extension ShouldGenerateWhen on List<ConstructorDetails> {
-  bool get shouldGenerateUnions {
-    return where((element) =>
-        element.name != null &&
-        element.name.isNotEmpty &&
-        !element.name.startsWith('_')).isNotEmpty;
-  }
 }
