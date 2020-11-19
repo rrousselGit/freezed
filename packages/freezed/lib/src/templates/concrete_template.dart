@@ -5,7 +5,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
-import '../utils.dart';
 import 'copy_with.dart';
 import 'parameter_template.dart';
 import 'prototypes.dart';
