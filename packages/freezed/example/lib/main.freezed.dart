@@ -205,34 +205,34 @@ const $Union = _$UnionTearOff();
 /// @nodoc
 mixin _$Union {
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int value), {
-    @required Result loading(),
-    @required Result error(String message),
-    @required Result complex(int a, String b),
+  TResult when<TResult extends Object>(
+    TResult $default(int value), {
+    @required TResult loading(),
+    @required TResult error(String message),
+    @required TResult complex(int a, String b),
   });
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int value), {
-    Result loading(),
-    Result error(String message),
-    Result complex(int a, String b),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int value), {
+    TResult loading(),
+    TResult error(String message),
+    TResult complex(int a, String b),
+    @required TResult orElse(),
   });
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(Data value), {
-    @required Result loading(Loading value),
-    @required Result error(ErrorDetails value),
-    @required Result complex(Complex value),
+  TResult map<TResult extends Object>(
+    TResult $default(Data value), {
+    @required TResult loading(Loading value),
+    @required TResult error(ErrorDetails value),
+    @required TResult complex(Complex value),
   });
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(Data value), {
-    Result loading(Loading value),
-    Result error(ErrorDetails value),
-    Result complex(Complex value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(Data value), {
+    TResult loading(Loading value),
+    TResult error(ErrorDetails value),
+    TResult complex(Complex value),
+    @required TResult orElse(),
   });
   Map<String, dynamic> toJson();
 }
@@ -320,11 +320,11 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int value), {
-    @required Result loading(),
-    @required Result error(String message),
-    @required Result complex(int a, String b),
+  TResult when<TResult extends Object>(
+    TResult $default(int value), {
+    @required TResult loading(),
+    @required TResult error(String message),
+    @required TResult complex(int a, String b),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -335,12 +335,12 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int value), {
-    Result loading(),
-    Result error(String message),
-    Result complex(int a, String b),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int value), {
+    TResult loading(),
+    TResult error(String message),
+    TResult complex(int a, String b),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if ($default != null) {
@@ -351,11 +351,11 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(Data value), {
-    @required Result loading(Loading value),
-    @required Result error(ErrorDetails value),
-    @required Result complex(Complex value),
+  TResult map<TResult extends Object>(
+    TResult $default(Data value), {
+    @required TResult loading(Loading value),
+    @required TResult error(ErrorDetails value),
+    @required TResult complex(Complex value),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -366,12 +366,12 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(Data value), {
-    Result loading(Loading value),
-    Result error(ErrorDetails value),
-    Result complex(Complex value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(Data value), {
+    TResult loading(Loading value),
+    TResult error(ErrorDetails value),
+    TResult complex(Complex value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if ($default != null) {
@@ -441,11 +441,11 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int value), {
-    @required Result loading(),
-    @required Result error(String message),
-    @required Result complex(int a, String b),
+  TResult when<TResult extends Object>(
+    TResult $default(int value), {
+    @required TResult loading(),
+    @required TResult error(String message),
+    @required TResult complex(int a, String b),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -456,12 +456,12 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int value), {
-    Result loading(),
-    Result error(String message),
-    Result complex(int a, String b),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int value), {
+    TResult loading(),
+    TResult error(String message),
+    TResult complex(int a, String b),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (loading != null) {
@@ -472,11 +472,11 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(Data value), {
-    @required Result loading(Loading value),
-    @required Result error(ErrorDetails value),
-    @required Result complex(Complex value),
+  TResult map<TResult extends Object>(
+    TResult $default(Data value), {
+    @required TResult loading(Loading value),
+    @required TResult error(ErrorDetails value),
+    @required TResult complex(Complex value),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -487,12 +487,12 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(Data value), {
-    Result loading(Loading value),
-    Result error(ErrorDetails value),
-    Result complex(Complex value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(Data value), {
+    TResult loading(Loading value),
+    TResult error(ErrorDetails value),
+    TResult complex(Complex value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (loading != null) {
@@ -584,11 +584,11 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int value), {
-    @required Result loading(),
-    @required Result error(String message),
-    @required Result complex(int a, String b),
+  TResult when<TResult extends Object>(
+    TResult $default(int value), {
+    @required TResult loading(),
+    @required TResult error(String message),
+    @required TResult complex(int a, String b),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -599,12 +599,12 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int value), {
-    Result loading(),
-    Result error(String message),
-    Result complex(int a, String b),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int value), {
+    TResult loading(),
+    TResult error(String message),
+    TResult complex(int a, String b),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (error != null) {
@@ -615,11 +615,11 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(Data value), {
-    @required Result loading(Loading value),
-    @required Result error(ErrorDetails value),
-    @required Result complex(Complex value),
+  TResult map<TResult extends Object>(
+    TResult $default(Data value), {
+    @required TResult loading(Loading value),
+    @required TResult error(ErrorDetails value),
+    @required TResult complex(Complex value),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -630,12 +630,12 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(Data value), {
-    Result loading(Loading value),
-    Result error(ErrorDetails value),
-    Result complex(Complex value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(Data value), {
+    TResult loading(Loading value),
+    TResult error(ErrorDetails value),
+    TResult complex(Complex value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (error != null) {
@@ -740,11 +740,11 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int value), {
-    @required Result loading(),
-    @required Result error(String message),
-    @required Result complex(int a, String b),
+  TResult when<TResult extends Object>(
+    TResult $default(int value), {
+    @required TResult loading(),
+    @required TResult error(String message),
+    @required TResult complex(int a, String b),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -755,12 +755,12 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int value), {
-    Result loading(),
-    Result error(String message),
-    Result complex(int a, String b),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int value), {
+    TResult loading(),
+    TResult error(String message),
+    TResult complex(int a, String b),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (complex != null) {
@@ -771,11 +771,11 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(Data value), {
-    @required Result loading(Loading value),
-    @required Result error(ErrorDetails value),
-    @required Result complex(Complex value),
+  TResult map<TResult extends Object>(
+    TResult $default(Data value), {
+    @required TResult loading(Loading value),
+    @required TResult error(ErrorDetails value),
+    @required TResult complex(Complex value),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -786,12 +786,12 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(Data value), {
-    Result loading(Loading value),
-    Result error(ErrorDetails value),
-    Result complex(Complex value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(Data value), {
+    TResult loading(Loading value),
+    TResult error(ErrorDetails value),
+    TResult complex(Complex value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (complex != null) {
@@ -846,26 +846,26 @@ mixin _$SharedProperty {
   String get name;
 
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result city(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult city(String name, int population),
   });
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result city(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult city(String name, int population),
+    @required TResult orElse(),
   });
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SharedProperty0 value),
-    @required Result city(SharedProperty1 value),
+  TResult map<TResult extends Object>({
+    @required TResult person(SharedProperty0 value),
+    @required TResult city(SharedProperty1 value),
   });
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SharedProperty0 value),
-    Result city(SharedProperty1 value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(SharedProperty0 value),
+    TResult city(SharedProperty1 value),
+    @required TResult orElse(),
   });
 
   $SharedPropertyCopyWith<SharedProperty> get copyWith;
@@ -978,9 +978,9 @@ class _$SharedProperty0
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result city(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult city(String name, int population),
   }) {
     assert(person != null);
     assert(city != null);
@@ -989,10 +989,10 @@ class _$SharedProperty0
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result city(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult city(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (person != null) {
@@ -1003,9 +1003,9 @@ class _$SharedProperty0
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SharedProperty0 value),
-    @required Result city(SharedProperty1 value),
+  TResult map<TResult extends Object>({
+    @required TResult person(SharedProperty0 value),
+    @required TResult city(SharedProperty1 value),
   }) {
     assert(person != null);
     assert(city != null);
@@ -1014,10 +1014,10 @@ class _$SharedProperty0
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SharedProperty0 value),
-    Result city(SharedProperty1 value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(SharedProperty0 value),
+    TResult city(SharedProperty1 value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (person != null) {
@@ -1118,9 +1118,9 @@ class _$SharedProperty1
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result city(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult city(String name, int population),
   }) {
     assert(person != null);
     assert(city != null);
@@ -1129,10 +1129,10 @@ class _$SharedProperty1
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result city(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult city(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (city != null) {
@@ -1143,9 +1143,9 @@ class _$SharedProperty1
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SharedProperty0 value),
-    @required Result city(SharedProperty1 value),
+  TResult map<TResult extends Object>({
+    @required TResult person(SharedProperty0 value),
+    @required TResult city(SharedProperty1 value),
   }) {
     assert(person != null);
     assert(city != null);
@@ -1154,10 +1154,10 @@ class _$SharedProperty1
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SharedProperty0 value),
-    Result city(SharedProperty1 value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(SharedProperty0 value),
+    TResult city(SharedProperty1 value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (city != null) {

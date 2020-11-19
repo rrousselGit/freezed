@@ -36,26 +36,26 @@ const $Example = _$ExampleTearOff();
 /// @nodoc
 mixin _$Example<T> {
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int a, String b), {
-    @required Result named(T c),
+  TResult when<TResult extends Object>(
+    TResult $default(int a, String b), {
+    @required TResult named(T c),
   });
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int a, String b), {
-    Result named(T c),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int a, String b), {
+    TResult named(T c),
+    @required TResult orElse(),
   });
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(_Example<T> value), {
-    @required Result named(_Example2<T> value),
+  TResult map<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    @required TResult named(_Example2<T> value),
   });
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(_Example<T> value), {
-    Result named(_Example2<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    TResult named(_Example2<T> value),
+    @required TResult orElse(),
   });
 }
 
@@ -141,9 +141,9 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int a, String b), {
-    @required Result named(T c),
+  TResult when<TResult extends Object>(
+    TResult $default(int a, String b), {
+    @required TResult named(T c),
   }) {
     assert($default != null);
     assert(named != null);
@@ -152,10 +152,10 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int a, String b), {
-    Result named(T c),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int a, String b), {
+    TResult named(T c),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if ($default != null) {
@@ -166,9 +166,9 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(_Example<T> value), {
-    @required Result named(_Example2<T> value),
+  TResult map<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    @required TResult named(_Example2<T> value),
   }) {
     assert($default != null);
     assert(named != null);
@@ -177,10 +177,10 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(_Example<T> value), {
-    Result named(_Example2<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    TResult named(_Example2<T> value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if ($default != null) {
@@ -256,9 +256,9 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int a, String b), {
-    @required Result named(T c),
+  TResult when<TResult extends Object>(
+    TResult $default(int a, String b), {
+    @required TResult named(T c),
   }) {
     assert($default != null);
     assert(named != null);
@@ -267,10 +267,10 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int a, String b), {
-    Result named(T c),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int a, String b), {
+    TResult named(T c),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (named != null) {
@@ -281,9 +281,9 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(_Example<T> value), {
-    @required Result named(_Example2<T> value),
+  TResult map<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    @required TResult named(_Example2<T> value),
   }) {
     assert($default != null);
     assert(named != null);
@@ -292,10 +292,10 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(_Example<T> value), {
-    Result named(_Example2<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    TResult named(_Example2<T> value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (named != null) {
@@ -357,34 +357,34 @@ mixin _$SimpleImplements {
   String get name;
 
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result country(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult country(String name, int population),
   });
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result country(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult country(String name, int population),
+    @required TResult orElse(),
   });
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SimplePerson value),
-    @required Result street(SimpleStreet value),
-    @required Result city(SimpleCity value),
-    @required Result country(SimpleCountry value),
+  TResult map<TResult extends Object>({
+    @required TResult person(SimplePerson value),
+    @required TResult street(SimpleStreet value),
+    @required TResult city(SimpleCity value),
+    @required TResult country(SimpleCountry value),
   });
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SimplePerson value),
-    Result street(SimpleStreet value),
-    Result city(SimpleCity value),
-    Result country(SimpleCountry value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(SimplePerson value),
+    TResult street(SimpleStreet value),
+    TResult city(SimpleCity value),
+    TResult country(SimpleCountry value),
+    @required TResult orElse(),
   });
 
   $SimpleImplementsCopyWith<SimpleImplements> get copyWith;
@@ -488,11 +488,11 @@ class _$SimplePerson implements SimplePerson {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result country(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult country(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
@@ -503,12 +503,12 @@ class _$SimplePerson implements SimplePerson {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result country(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult country(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (person != null) {
@@ -519,11 +519,11 @@ class _$SimplePerson implements SimplePerson {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SimplePerson value),
-    @required Result street(SimpleStreet value),
-    @required Result city(SimpleCity value),
-    @required Result country(SimpleCountry value),
+  TResult map<TResult extends Object>({
+    @required TResult person(SimplePerson value),
+    @required TResult street(SimpleStreet value),
+    @required TResult city(SimpleCity value),
+    @required TResult country(SimpleCountry value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -534,12 +534,12 @@ class _$SimplePerson implements SimplePerson {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SimplePerson value),
-    Result street(SimpleStreet value),
-    Result city(SimpleCity value),
-    Result country(SimpleCountry value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(SimplePerson value),
+    TResult street(SimpleStreet value),
+    TResult city(SimpleCity value),
+    TResult country(SimpleCountry value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (person != null) {
@@ -622,11 +622,11 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result country(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult country(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
@@ -637,12 +637,12 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result country(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult country(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (street != null) {
@@ -653,11 +653,11 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SimplePerson value),
-    @required Result street(SimpleStreet value),
-    @required Result city(SimpleCity value),
-    @required Result country(SimpleCountry value),
+  TResult map<TResult extends Object>({
+    @required TResult person(SimplePerson value),
+    @required TResult street(SimpleStreet value),
+    @required TResult city(SimpleCity value),
+    @required TResult country(SimpleCountry value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -668,12 +668,12 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SimplePerson value),
-    Result street(SimpleStreet value),
-    Result city(SimpleCity value),
-    Result country(SimpleCountry value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(SimplePerson value),
+    TResult street(SimpleStreet value),
+    TResult city(SimpleCity value),
+    TResult country(SimpleCountry value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (street != null) {
@@ -766,11 +766,11 @@ class _$SimpleCity with House implements SimpleCity {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result country(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult country(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
@@ -781,12 +781,12 @@ class _$SimpleCity with House implements SimpleCity {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result country(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult country(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (city != null) {
@@ -797,11 +797,11 @@ class _$SimpleCity with House implements SimpleCity {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SimplePerson value),
-    @required Result street(SimpleStreet value),
-    @required Result city(SimpleCity value),
-    @required Result country(SimpleCountry value),
+  TResult map<TResult extends Object>({
+    @required TResult person(SimplePerson value),
+    @required TResult street(SimpleStreet value),
+    @required TResult city(SimpleCity value),
+    @required TResult country(SimpleCountry value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -812,12 +812,12 @@ class _$SimpleCity with House implements SimpleCity {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SimplePerson value),
-    Result street(SimpleStreet value),
-    Result city(SimpleCity value),
-    Result country(SimpleCountry value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(SimplePerson value),
+    TResult street(SimpleStreet value),
+    TResult city(SimpleCity value),
+    TResult country(SimpleCountry value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (city != null) {
@@ -912,11 +912,11 @@ class _$SimpleCountry with House implements SimpleCountry {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result country(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult country(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
@@ -927,12 +927,12 @@ class _$SimpleCountry with House implements SimpleCountry {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result country(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult country(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (country != null) {
@@ -943,11 +943,11 @@ class _$SimpleCountry with House implements SimpleCountry {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(SimplePerson value),
-    @required Result street(SimpleStreet value),
-    @required Result city(SimpleCity value),
-    @required Result country(SimpleCountry value),
+  TResult map<TResult extends Object>({
+    @required TResult person(SimplePerson value),
+    @required TResult street(SimpleStreet value),
+    @required TResult city(SimpleCity value),
+    @required TResult country(SimpleCountry value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -958,12 +958,12 @@ class _$SimpleCountry with House implements SimpleCountry {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(SimplePerson value),
-    Result street(SimpleStreet value),
-    Result city(SimpleCity value),
-    Result country(SimpleCountry value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(SimplePerson value),
+    TResult street(SimpleStreet value),
+    TResult city(SimpleCity value),
+    TResult country(SimpleCountry value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (country != null) {
@@ -1028,34 +1028,34 @@ mixin _$CustomMethodImplements {
   String get name;
 
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result duplex(String name),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult duplex(String name),
   });
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result duplex(String name),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult duplex(String name),
+    @required TResult orElse(),
   });
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(PersonCustomMethod value),
-    @required Result street(StreetCustomMethod value),
-    @required Result city(CityCustomMethod value),
-    @required Result duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object>({
+    @required TResult person(PersonCustomMethod value),
+    @required TResult street(StreetCustomMethod value),
+    @required TResult city(CityCustomMethod value),
+    @required TResult duplex(DuplexCustomMethod value),
   });
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(PersonCustomMethod value),
-    Result street(StreetCustomMethod value),
-    Result city(CityCustomMethod value),
-    Result duplex(DuplexCustomMethod value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(PersonCustomMethod value),
+    TResult street(StreetCustomMethod value),
+    TResult city(CityCustomMethod value),
+    TResult duplex(DuplexCustomMethod value),
+    @required TResult orElse(),
   });
 
   $CustomMethodImplementsCopyWith<CustomMethodImplements> get copyWith;
@@ -1160,11 +1160,11 @@ class _$PersonCustomMethod extends PersonCustomMethod {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result duplex(String name),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult duplex(String name),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1175,12 +1175,12 @@ class _$PersonCustomMethod extends PersonCustomMethod {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result duplex(String name),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult duplex(String name),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (person != null) {
@@ -1191,11 +1191,11 @@ class _$PersonCustomMethod extends PersonCustomMethod {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(PersonCustomMethod value),
-    @required Result street(StreetCustomMethod value),
-    @required Result city(CityCustomMethod value),
-    @required Result duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object>({
+    @required TResult person(PersonCustomMethod value),
+    @required TResult street(StreetCustomMethod value),
+    @required TResult city(CityCustomMethod value),
+    @required TResult duplex(DuplexCustomMethod value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1206,12 +1206,12 @@ class _$PersonCustomMethod extends PersonCustomMethod {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(PersonCustomMethod value),
-    Result street(StreetCustomMethod value),
-    Result city(CityCustomMethod value),
-    Result duplex(DuplexCustomMethod value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(PersonCustomMethod value),
+    TResult street(StreetCustomMethod value),
+    TResult city(CityCustomMethod value),
+    TResult duplex(DuplexCustomMethod value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (person != null) {
@@ -1299,11 +1299,11 @@ class _$StreetCustomMethod extends StreetCustomMethod
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result duplex(String name),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult duplex(String name),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1314,12 +1314,12 @@ class _$StreetCustomMethod extends StreetCustomMethod
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result duplex(String name),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult duplex(String name),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (street != null) {
@@ -1330,11 +1330,11 @@ class _$StreetCustomMethod extends StreetCustomMethod
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(PersonCustomMethod value),
-    @required Result street(StreetCustomMethod value),
-    @required Result city(CityCustomMethod value),
-    @required Result duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object>({
+    @required TResult person(PersonCustomMethod value),
+    @required TResult street(StreetCustomMethod value),
+    @required TResult city(CityCustomMethod value),
+    @required TResult duplex(DuplexCustomMethod value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1345,12 +1345,12 @@ class _$StreetCustomMethod extends StreetCustomMethod
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(PersonCustomMethod value),
-    Result street(StreetCustomMethod value),
-    Result city(CityCustomMethod value),
-    Result duplex(DuplexCustomMethod value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(PersonCustomMethod value),
+    TResult street(StreetCustomMethod value),
+    TResult city(CityCustomMethod value),
+    TResult duplex(DuplexCustomMethod value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (street != null) {
@@ -1447,11 +1447,11 @@ class _$CityCustomMethod extends CityCustomMethod with House {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result duplex(String name),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult duplex(String name),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1462,12 +1462,12 @@ class _$CityCustomMethod extends CityCustomMethod with House {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result duplex(String name),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult duplex(String name),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (city != null) {
@@ -1478,11 +1478,11 @@ class _$CityCustomMethod extends CityCustomMethod with House {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(PersonCustomMethod value),
-    @required Result street(StreetCustomMethod value),
-    @required Result city(CityCustomMethod value),
-    @required Result duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object>({
+    @required TResult person(PersonCustomMethod value),
+    @required TResult street(StreetCustomMethod value),
+    @required TResult city(CityCustomMethod value),
+    @required TResult duplex(DuplexCustomMethod value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1493,12 +1493,12 @@ class _$CityCustomMethod extends CityCustomMethod with House {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(PersonCustomMethod value),
-    Result street(StreetCustomMethod value),
-    Result city(CityCustomMethod value),
-    Result duplex(DuplexCustomMethod value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(PersonCustomMethod value),
+    TResult street(StreetCustomMethod value),
+    TResult city(CityCustomMethod value),
+    TResult duplex(DuplexCustomMethod value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (city != null) {
@@ -1587,11 +1587,11 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name),
-    @required Result city(String name, int population),
-    @required Result duplex(String name),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name),
+    @required TResult city(String name, int population),
+    @required TResult duplex(String name),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1602,12 +1602,12 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name),
-    Result city(String name, int population),
-    Result duplex(String name),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name),
+    TResult city(String name, int population),
+    TResult duplex(String name),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (duplex != null) {
@@ -1618,11 +1618,11 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(PersonCustomMethod value),
-    @required Result street(StreetCustomMethod value),
-    @required Result city(CityCustomMethod value),
-    @required Result duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object>({
+    @required TResult person(PersonCustomMethod value),
+    @required TResult street(StreetCustomMethod value),
+    @required TResult city(CityCustomMethod value),
+    @required TResult duplex(DuplexCustomMethod value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1633,12 +1633,12 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(PersonCustomMethod value),
-    Result street(StreetCustomMethod value),
-    Result city(CityCustomMethod value),
-    Result duplex(DuplexCustomMethod value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(PersonCustomMethod value),
+    TResult street(StreetCustomMethod value),
+    TResult city(CityCustomMethod value),
+    TResult duplex(DuplexCustomMethod value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (duplex != null) {
@@ -1697,30 +1697,30 @@ mixin _$GenericImplements<T> {
   String get name;
 
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name, T value),
-    @required Result city(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name, T value),
+    @required TResult city(String name, int population),
   });
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name, T value),
-    Result city(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name, T value),
+    TResult city(String name, int population),
+    @required TResult orElse(),
   });
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(GenericPerson<T> value),
-    @required Result street(GenericStreet<T> value),
-    @required Result city(GenericCity<T> value),
+  TResult map<TResult extends Object>({
+    @required TResult person(GenericPerson<T> value),
+    @required TResult street(GenericStreet<T> value),
+    @required TResult city(GenericCity<T> value),
   });
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(GenericPerson<T> value),
-    Result street(GenericStreet<T> value),
-    Result city(GenericCity<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(GenericPerson<T> value),
+    TResult street(GenericStreet<T> value),
+    TResult city(GenericCity<T> value),
+    @required TResult orElse(),
   });
 
   $GenericImplementsCopyWith<T, GenericImplements<T>> get copyWith;
@@ -1824,10 +1824,10 @@ class _$GenericPerson<T> implements GenericPerson<T> {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name, T value),
-    @required Result city(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name, T value),
+    @required TResult city(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1837,11 +1837,11 @@ class _$GenericPerson<T> implements GenericPerson<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name, T value),
-    Result city(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name, T value),
+    TResult city(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (person != null) {
@@ -1852,10 +1852,10 @@ class _$GenericPerson<T> implements GenericPerson<T> {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(GenericPerson<T> value),
-    @required Result street(GenericStreet<T> value),
-    @required Result city(GenericCity<T> value),
+  TResult map<TResult extends Object>({
+    @required TResult person(GenericPerson<T> value),
+    @required TResult street(GenericStreet<T> value),
+    @required TResult city(GenericCity<T> value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1865,11 +1865,11 @@ class _$GenericPerson<T> implements GenericPerson<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(GenericPerson<T> value),
-    Result street(GenericStreet<T> value),
-    Result city(GenericCity<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(GenericPerson<T> value),
+    TResult street(GenericStreet<T> value),
+    TResult city(GenericCity<T> value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (person != null) {
@@ -1964,10 +1964,10 @@ class _$GenericStreet<T>
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name, T value),
-    @required Result city(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name, T value),
+    @required TResult city(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
@@ -1977,11 +1977,11 @@ class _$GenericStreet<T>
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name, T value),
-    Result city(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name, T value),
+    TResult city(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (street != null) {
@@ -1992,10 +1992,10 @@ class _$GenericStreet<T>
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(GenericPerson<T> value),
-    @required Result street(GenericStreet<T> value),
-    @required Result city(GenericCity<T> value),
+  TResult map<TResult extends Object>({
+    @required TResult person(GenericPerson<T> value),
+    @required TResult street(GenericStreet<T> value),
+    @required TResult city(GenericCity<T> value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -2005,11 +2005,11 @@ class _$GenericStreet<T>
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(GenericPerson<T> value),
-    Result street(GenericStreet<T> value),
-    Result city(GenericCity<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(GenericPerson<T> value),
+    TResult street(GenericStreet<T> value),
+    TResult city(GenericCity<T> value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (street != null) {
@@ -2105,10 +2105,10 @@ class _$GenericCity<T> with House implements GenericCity<T> {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result person(String name, int age),
-    @required Result street(String name, T value),
-    @required Result city(String name, int population),
+  TResult when<TResult extends Object>({
+    @required TResult person(String name, int age),
+    @required TResult street(String name, T value),
+    @required TResult city(String name, int population),
   }) {
     assert(person != null);
     assert(street != null);
@@ -2118,11 +2118,11 @@ class _$GenericCity<T> with House implements GenericCity<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result person(String name, int age),
-    Result street(String name, T value),
-    Result city(String name, int population),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>({
+    TResult person(String name, int age),
+    TResult street(String name, T value),
+    TResult city(String name, int population),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (city != null) {
@@ -2133,10 +2133,10 @@ class _$GenericCity<T> with House implements GenericCity<T> {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result person(GenericPerson<T> value),
-    @required Result street(GenericStreet<T> value),
-    @required Result city(GenericCity<T> value),
+  TResult map<TResult extends Object>({
+    @required TResult person(GenericPerson<T> value),
+    @required TResult street(GenericStreet<T> value),
+    @required TResult city(GenericCity<T> value),
   }) {
     assert(person != null);
     assert(street != null);
@@ -2146,11 +2146,11 @@ class _$GenericCity<T> with House implements GenericCity<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result person(GenericPerson<T> value),
-    Result street(GenericStreet<T> value),
-    Result city(GenericCity<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>({
+    TResult person(GenericPerson<T> value),
+    TResult street(GenericStreet<T> value),
+    TResult city(GenericCity<T> value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (city != null) {

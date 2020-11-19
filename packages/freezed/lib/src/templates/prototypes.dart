@@ -139,13 +139,13 @@ String _unionPrototype(
   @required ParametersTemplate Function(ConstructorDetails) ctor2parameters,
 }) {
   final buffer =
-      StringBuffer('@optionalTypeArgs Result $name<Result extends Object>(');
+      StringBuffer('@optionalTypeArgs TResult $name<TResult extends Object>(');
 
   final parameters = <CallbackParameter>[];
   for (final constructor in allConstructors) {
     var template = CallbackParameter(
       name: constructorNameToCallbackName(constructor.name),
-      type: 'Result',
+      type: 'TResult',
       isRequired: !constructor.isDefault && areCallbacksRequired,
       parameters: ctor2parameters(constructor),
       decorators: const [],
@@ -167,7 +167,7 @@ String _unionPrototype(
     ..write(',');
 
   if (!areCallbacksRequired) {
-    buffer.write('@required Result orElse(),');
+    buffer.write('@required TResult orElse(),');
   }
   buffer.write('})');
   return buffer.toString();

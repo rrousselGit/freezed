@@ -36,26 +36,26 @@ const $Example = _$ExampleTearOff();
 /// @nodoc
 mixin _$Example<T> {
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int a, String b), {
-    @required Result named(T c),
+  TResult when<TResult extends Object>(
+    TResult $default(int a, String b), {
+    @required TResult named(T c),
   });
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int a, String b), {
-    Result named(T c),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int a, String b), {
+    TResult named(T c),
+    @required TResult orElse(),
   });
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(_Example<T> value), {
-    @required Result named(_Example2<T> value),
+  TResult map<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    @required TResult named(_Example2<T> value),
   });
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(_Example<T> value), {
-    Result named(_Example2<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    TResult named(_Example2<T> value),
+    @required TResult orElse(),
   });
 }
 
@@ -163,9 +163,9 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int a, String b), {
-    @required Result named(T c),
+  TResult when<TResult extends Object>(
+    TResult $default(int a, String b), {
+    @required TResult named(T c),
   }) {
     assert($default != null);
     assert(named != null);
@@ -174,10 +174,10 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int a, String b), {
-    Result named(T c),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int a, String b), {
+    TResult named(T c),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if ($default != null) {
@@ -188,9 +188,9 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(_Example<T> value), {
-    @required Result named(_Example2<T> value),
+  TResult map<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    @required TResult named(_Example2<T> value),
   }) {
     assert($default != null);
     assert(named != null);
@@ -199,10 +199,10 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(_Example<T> value), {
-    Result named(_Example2<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    TResult named(_Example2<T> value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if ($default != null) {
@@ -299,9 +299,9 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>(
-    Result $default(int a, String b), {
-    @required Result named(T c),
+  TResult when<TResult extends Object>(
+    TResult $default(int a, String b), {
+    @required TResult named(T c),
   }) {
     assert($default != null);
     assert(named != null);
@@ -310,10 +310,10 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>(
-    Result $default(int a, String b), {
-    Result named(T c),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object>(
+    TResult $default(int a, String b), {
+    TResult named(T c),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (named != null) {
@@ -324,9 +324,9 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>(
-    Result $default(_Example<T> value), {
-    @required Result named(_Example2<T> value),
+  TResult map<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    @required TResult named(_Example2<T> value),
   }) {
     assert($default != null);
     assert(named != null);
@@ -335,10 +335,10 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>(
-    Result $default(_Example<T> value), {
-    Result named(_Example2<T> value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object>(
+    TResult $default(_Example<T> value), {
+    TResult named(_Example2<T> value),
+    @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (named != null) {

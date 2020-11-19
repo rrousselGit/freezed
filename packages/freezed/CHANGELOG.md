@@ -1,3 +1,7 @@
+# 0.12.3
+
+- Renamed `Result` in generated code to `TResult` to avoid naming conflicts
+
 # 0.12.2
 
 - Upgrade the depenencies (analyzer, build_runner)
