@@ -45,8 +45,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
   @override
   Data parseElement(GlobalData globalData, Element rawElement) {
-    final configs = _parseConfig(rawElement);
-
     if (rawElement is! ClassElement) {
       throw InvalidGenerationSourceError(
         '@freezed can only be applied on classes. Failing element: ${rawElement.name}',
@@ -74,108 +72,28 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       }
     }
 
+    final configs = _parseConfig(rawElement);
+
     // TODO: verify _$name is mixed-in
 
     final constructorsNeedsGeneration =
         _parseConstructorsNeedsGeneration(element);
 
-    if (constructorsNeedsGeneration.isEmpty) {
-      throw InvalidGenerationSourceError(
-        'Marked ${element.name} with @freezed, but freezed has nothing to generate',
-        element: rawElement,
-      );
-    }
-
-    if (constructorsNeedsGeneration.length > 1 &&
-        constructorsNeedsGeneration.any((c) => c.name.startsWith('_'))) {
-      throw InvalidGenerationSourceError(
-        'A freezed union cannot have private constructors',
-        element: rawElement,
-      );
-    }
-
     final shouldUseExtends = element.constructors.any((ctor) {
       return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
     });
 
-    final lateGetters = <LateGetter>[];
-
-    for (final field in element.fields) {
-      if (field.isStatic) continue;
-      if (field.setter != null) {
-        throw InvalidGenerationSourceError(
-          'Classes decorated with @freezed cannot have mutable properties',
-          element: element,
-        );
-      }
-      if (field.getter != null && !field.getter.isSynthetic) {
-        if (!field.hasLate) {
-          if (!shouldUseExtends) {
-            throw InvalidGenerationSourceError(
-              'Getters not decorated with @late requires a MyClass._() constructor',
-              element: rawElement,
-            );
-          }
-          continue;
-        }
-        if (element.constructors.any((element) => element.isConst)) {
-          throw InvalidGenerationSourceError(
-            '@late cannot be used in combination with const constructors',
-            element: rawElement,
-          );
-        }
-        final source = parseLateGetterSource(
-          field.getter.source.contents.data.substring(
-            field.getter.nameOffset + field.getter.nameLength,
-          ),
-        );
-
-        if (source == null) {
-          throw InvalidGenerationSourceError(
-            '@late can only be used on getters with using =>',
-            element: rawElement,
-          );
-        }
-        lateGetters.add(
-          LateGetter(
-            type: parseTypeSource(field),
-            name: field.name,
-            decorators: field.metadata.map((e) => e.toSource()).toList(),
-            source: source,
-          ),
-        );
-        continue;
-      }
-
-      throw InvalidGenerationSourceError(
-        '@freezed cannot be used on classes with unimplemented getters',
-        element: rawElement,
-      );
-    }
+    final lateGetters = _lateGetters(
+      element,
+      shouldUseExtends: shouldUseExtends,
+    ).toList();
 
     // TODO: parse late finals with an initializer and copy-paste them to the concrete class + toString/debugFillProperties
 
-    final commonParameters = constructorsNeedsGeneration
-        .first.parameters.allParameters
-        .where((parameter) {
-      return constructorsNeedsGeneration.every((constructor) {
-        return constructor.parameters.allParameters.any((p) {
-          return p.name == parameter.name && p.type == parameter.type;
-        });
-      });
-    }).toList();
+    final commonParameters =
+        _commonParametersBetweenAllConstructors(constructorsNeedsGeneration);
 
-    final needsJsonSerializable = globalData.hasJson &&
-        element.constructors.any((element) {
-          if (element.isFactory && element.name == 'fromJson') {
-            final ast = element.session
-                .getParsedLibraryByElement(element.library)
-                .getElementDeclaration(element)
-                ?.node;
-            return ast.endToken.stringValue == ';';
-          }
-          return false;
-        });
+    final needsJsonSerializable = _needsJsonSerializable(globalData, element);
 
     return Data(
       name: element.name,
@@ -188,7 +106,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
             if (cloneableProperty.name == commonParameter.name)
               cloneableProperty,
       ],
-      // TODO: test can write manual fromJson ctor
       commonProperties: [
         for (final commonParameter in commonParameters)
           Property(
@@ -212,6 +129,93 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     );
   }
 
+  Iterable<LateGetter> _lateGetters(
+    ClassElement element, {
+    @required bool shouldUseExtends,
+  }) sync* {
+    for (final field in element.fields) {
+      if (field.isStatic) continue;
+      if (field.setter != null) {
+        throw InvalidGenerationSourceError(
+          'Classes decorated with @freezed cannot have mutable properties',
+          element: element,
+        );
+      }
+      if (field.getter != null && !field.getter.isSynthetic) {
+        if (!field.hasLate) {
+          if (!shouldUseExtends) {
+            throw InvalidGenerationSourceError(
+              'Getters not decorated with @late requires a MyClass._() constructor',
+              element: element,
+            );
+          }
+          continue;
+        }
+        if (element.constructors.any((element) => element.isConst)) {
+          throw InvalidGenerationSourceError(
+            '@late cannot be used in combination with const constructors',
+            element: element,
+          );
+        }
+        final source = parseLateGetterSource(
+          field.getter.source.contents.data.substring(
+            field.getter.nameOffset + field.getter.nameLength,
+          ),
+        );
+
+        if (source == null) {
+          throw InvalidGenerationSourceError(
+            '@late can only be used on getters with using =>',
+            element: element,
+          );
+        }
+
+        yield LateGetter(
+          type: parseTypeSource(field),
+          name: field.name,
+          decorators: field.metadata.map((e) => e.toSource()).toList(),
+          source: source,
+        );
+        continue;
+      }
+
+      throw InvalidGenerationSourceError(
+        '@freezed cannot be used on classes with unimplemented getters',
+        element: element,
+      );
+    }
+  }
+
+  bool _needsJsonSerializable(
+    GlobalData globalData,
+    ClassElement element,
+  ) {
+    return globalData.hasJson &&
+        element.constructors.any((element) {
+          if (element.isFactory && element.name == 'fromJson') {
+            final ast = element.session
+                .getParsedLibraryByElement(element.library)
+                .getElementDeclaration(element)
+                ?.node;
+            return ast.endToken.stringValue == ';';
+          }
+          return false;
+        });
+  }
+
+  List<Parameter> _commonParametersBetweenAllConstructors(
+    List<ConstructorDetails> constructorsNeedsGeneration,
+  ) {
+    return constructorsNeedsGeneration.first.parameters.allParameters
+        .where((parameter) {
+      return constructorsNeedsGeneration.every((constructor) {
+        return constructor.parameters.allParameters.any((p) {
+          return p.name == parameter.name && p.type == parameter.type;
+        });
+      });
+    }).toList();
+  }
+
   List<ConstructorDetails> _parseConstructorsNeedsGeneration(
     ClassElement element,
   ) {
@@ -227,88 +231,13 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           getRedirectedConstructorName(source.substring(location));
       if (redirectedName == null) continue;
 
-      var generics = element.typeParameters.map((e) {
-        return '\$${e.name}';
-      }).join(', ');
-      if (generics.isNotEmpty) {
-        generics = '<$generics>';
-      }
-
-      final fullName = constructor.name == null || constructor.name.isEmpty
-          ? '${element.name}$generics'
-          : '${element.name}$generics.${constructor.name}';
-
-      Iterable<CloneableProperty> cloneableProperties() sync* {
-        for (final parameter in constructor.parameters) {
-          final type = parseTypeSource(parameter);
-          final data = _computeElementDataFor(parameter);
-          if (data == null) continue;
-
-          yield CloneableProperty(
-            name: parameter.name,
-            type: type,
-            children: data.commonCloneableProperties,
-            associatedData: data,
-            genericParameters: GenericsParameterTemplate(
-              (parameter.type as InterfaceType)
-                  .typeArguments
-                  .map((e) => e.getDisplayString(withNullability: false))
-                  .toList(),
-            ),
-          );
-        }
-      }
-
-      MethodElement userDefinedToString;
-      for (final type in [
-        element,
-        ...element.allSupertypes
-            .map((e) => e.element)
-            .where((e) => !e.isDartCoreObject)
-      ]) {
-        for (final method in type.methods) {
-          if (method.name == 'toString') {
-            userDefinedToString = method;
-            break;
-          }
-        }
-      }
-
-      Iterable<String> withDecorationTypes() sync* {
-        for (final metadata in constructor.metadata) {
-          if (!metadata.isWith) continue;
-          final object = metadata.computeConstantValue();
-          var type = object.getField('type');
-          if (type.isNull) {
-            type = object.getField('stringType');
-            yield type.toStringValue();
-          } else {
-            yield type.toTypeValue().getDisplayString(withNullability: false);
-          }
-        }
-      }
-
-      Iterable<String> implementsDecorationTypes() sync* {
-        for (final metadata in constructor.metadata) {
-          if (!metadata.isImplements) continue;
-          final object = metadata.computeConstantValue();
-          var type = object.getField('type');
-          if (type.isNull) {
-            type = object.getField('stringType');
-            yield type.toStringValue();
-          } else {
-            yield type.toTypeValue().getDisplayString(withNullability: false);
-          }
-        }
-      }
-
       result.add(
         ConstructorDetails(
           asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
-          canOverrideToString: userDefinedToString == null,
+          canOverrideToString: _canOverrideToString(element),
           isConst: constructor.isConst,
-          fullName: fullName,
+          fullName: _fullName(element, constructor),
           impliedProperties: [
             for (final parameter in constructor.parameters)
               Property.fromParameter(parameter),
@@ -317,18 +246,87 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
               .map((e) => e.toSource())
               .where((e) => !e.startsWith('@Assert('))
               .toList(),
-          withDecorators: withDecorationTypes().toSet().toList(),
-          implementsDecorators: implementsDecorationTypes().toSet().toList(),
+          withDecorators: _withDecorationTypes(constructor).toSet().toList(),
+          implementsDecorators:
+              _implementsDecorationTypes(constructor).toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
           hasJsonSerializable: constructor.hasJsonSerializable,
-          cloneableProperties: cloneableProperties().toList(),
+          cloneableProperties: _cloneableProperties(constructor).toList(),
           parameters:
               ParametersTemplate.fromParameterElements(constructor.parameters),
           redirectedName: redirectedName,
         ),
       );
     }
+
+    if (result.isEmpty) {
+      throw InvalidGenerationSourceError(
+        'Marked ${element.name} with @freezed, but freezed has nothing to generate',
+        element: element,
+      );
+    }
+
+    if (result.length > 1 && result.any((c) => c.name.startsWith('_'))) {
+      throw InvalidGenerationSourceError(
+        'A freezed union cannot have private constructors',
+        element: element,
+      );
+    }
+
     return result;
+  }
+
+  Iterable<String> _withDecorationTypes(ConstructorElement constructor) sync* {
+    for (final metadata in constructor.metadata) {
+      if (!metadata.isWith) continue;
+      final object = metadata.computeConstantValue();
+      var type = object.getField('type');
+      if (type.isNull) {
+        type = object.getField('stringType');
+        yield type.toStringValue();
+      } else {
+        yield type.toTypeValue().getDisplayString(withNullability: false);
+      }
+    }
+  }
+
+  Iterable<String> _implementsDecorationTypes(
+    ConstructorElement constructor,
+  ) sync* {
+    for (final metadata in constructor.metadata) {
+      if (!metadata.isImplements) continue;
+      final object = metadata.computeConstantValue();
+      var type = object.getField('type');
+      if (type.isNull) {
+        type = object.getField('stringType');
+        yield type.toStringValue();
+      } else {
+        yield type.toTypeValue().getDisplayString(withNullability: false);
+      }
+    }
+  }
+
+  Iterable<CloneableProperty> _cloneableProperties(
+    ConstructorElement constructor,
+  ) sync* {
+    for (final parameter in constructor.parameters) {
+      final type = parseTypeSource(parameter);
+      final data = _computeElementDataFor(parameter);
+      if (data == null) continue;
+
+      yield CloneableProperty(
+        name: parameter.name,
+        type: type,
+        children: data.commonCloneableProperties,
+        associatedData: data,
+        genericParameters: GenericsParameterTemplate(
+          (parameter.type as InterfaceType)
+              .typeArguments
+              .map((e) => e.getDisplayString(withNullability: false))
+              .toList(),
+        ),
+      );
+    }
   }
 
   Freezed _parseConfig(Element element) {
@@ -430,6 +428,38 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       hasJson: library.importsJsonSerializable,
       hasDiagnostics: library.importsDiagnosticable,
     );
+  }
+
+  bool _canOverrideToString(ClassElement element) {
+    MethodElement userDefinedToString;
+    for (final type in [
+      element,
+      ...element.allSupertypes
+          .map((e) => e.element)
+          .where((e) => !e.isDartCoreObject)
+    ]) {
+      for (final method in type.methods) {
+        if (method.name == 'toString') {
+          userDefinedToString = method;
+          break;
+        }
+      }
+    }
+
+    return userDefinedToString == null;
+  }
+
+  String _fullName(ClassElement element, ConstructorElement constructor) {
+    var generics = element.typeParameters.map((e) {
+      return '\$${e.name}';
+    }).join(', ');
+    if (generics.isNotEmpty) {
+      generics = '<$generics>';
+    }
+
+    return constructor.name == null || constructor.name.isEmpty
+        ? '${element.name}$generics'
+        : '${element.name}$generics.${constructor.name}';
   }
 }
 
