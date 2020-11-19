@@ -1,4 +1,4 @@
-# 0.12.3
+# Unreleased patch
 
 - Renamed `Result` in generated code to `TResult` to avoid naming conflicts
 
