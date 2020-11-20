@@ -149,18 +149,18 @@ packages:
     source: hosted
     version: "0.10.11"
   freezed:
-    dependency: "direct overridden"
+    dependency: "direct dev"
     description:
-      path: "../freezed"
-      relative: true
-    source: path
+      name: freezed
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.12.2"
   freezed_annotation:
     dependency: "direct main"
     description:
-      path: "../freezed_annotation"
-      relative: true
-    source: path
+      name: freezed_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.12.0"
   glob:
     dependency: transitive
