@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -17,7 +18,10 @@ class Property {
     @required this.doc,
   }) : type = type ?? 'dynamic';
 
-  factory Property.fromParameter(ParameterElement element) {
+  static Future<Property> fromParameter(
+    ParameterElement element,
+    BuildStep buildStep,
+  ) async {
     final defaultValue = element.defaultValue;
     if (defaultValue != null &&
         (element.hasRequired || element.isRequiredPositional)) {
@@ -29,7 +33,7 @@ class Property {
 
     return Property(
       name: element.name,
-      doc: documentationOfParameter(element),
+      doc: await documentationOfParameter(element, buildStep),
       type: parseTypeSource(element),
       decorators: parseDecorators(element.metadata),
       nullable: element.isNullable,
