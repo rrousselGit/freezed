@@ -8,6 +8,7 @@ import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/tear_off.dart';
 import 'package:freezed/src/tools/recursive_import_locator.dart';
+import 'package:freezed/src/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -80,7 +81,11 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       cloneablePropertiesCache: cloneablePropertiesCache,
     );
 
-    final needsJsonSerializable = _needsJsonSerializable(globalData, element);
+    final needsJsonSerializable = await _needsJsonSerializable(
+      buildStep,
+      globalData,
+      element,
+    );
 
     return Data(
       name: element.name,
@@ -173,21 +178,21 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     }
   }
 
-  bool _needsJsonSerializable(
+  Future<bool> _needsJsonSerializable(
+    BuildStep buildStep,
     GlobalData globalData,
     ClassElement element,
-  ) {
-    return globalData.hasJson &&
-        element.constructors.any((element) {
-          if (element.isFactory && element.name == 'fromJson') {
-            final ast = element.session
-                .getParsedLibraryByElement(element.library)
-                .getElementDeclaration(element)
-                ?.node;
-            return ast.endToken.stringValue == ';';
-          }
-          return false;
-        });
+  ) async {
+    if (!globalData.hasJson) return false;
+
+    for (final constructor in element.constructors) {
+      if (constructor.isFactory && constructor.name == 'fromJson') {
+        final ast = await tryGetAstNodeForElement(constructor, buildStep);
+        return ast.endToken.stringValue == ';';
+      }
+    }
+
+    return false;
   }
 
   List<Parameter> _commonParametersBetweenAllConstructors(
