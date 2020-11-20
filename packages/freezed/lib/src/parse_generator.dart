@@ -7,16 +7,23 @@ import 'package:source_gen/source_gen.dart';
 abstract class ParserGenerator<GlobalData, Data, Annotation>
     extends GeneratorForAnnotation<Annotation> {
   @override
-  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
+  FutureOr<String> generate(
+    LibraryReader oldLibrary,
+    BuildStep buildStep,
+  ) async {
     try {
+      var library = await buildStep.resolver.libraryFor(
+        await buildStep.resolver.assetIdForElement(oldLibrary.element),
+      );
+
       final values = StringBuffer();
 
-      final globalData = parseGlobalData(library.element);
+      final globalData = parseGlobalData(library);
 
       var hasGeneratedGlobalCode = false;
 
       for (var element
-          in library.annotatedWith(typeChecker).map((e) => e.element)) {
+          in library.topLevelElements.where(typeChecker.hasAnnotationOf)) {
         if (!hasGeneratedGlobalCode) {
           hasGeneratedGlobalCode = true;
           for (final value
@@ -26,7 +33,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
           }
         }
 
-        final data = parseElement(globalData, element);
+        final data = await parseElement(buildStep, globalData, element);
         if (data == null) continue;
         for (final value
             in generateForData(globalData, data).map((e) => e.toString())) {
@@ -47,23 +54,28 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
   GlobalData parseGlobalData(LibraryElement library);
 
-  Data parseElement(GlobalData globalData, Element element);
+  FutureOr<Data> parseElement(
+    BuildStep buildStep,
+    GlobalData globalData,
+    Element element,
+  );
 
   Iterable<Object> generateForData(GlobalData globalData, Data data);
 
   @override
-  Iterable<String> generateForAnnotatedElement(
+  Stream<String> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
-  ) sync* {
+  ) async* {
     // implemented for source_gen_test – otherwise unused
     final globalData = parseGlobalData(element.library);
-    final data = parseElement(globalData, element);
+    final data = parseElement(buildStep, globalData, element);
 
     if (data == null) return;
 
-    yield* generateForData(globalData, data)
-        .map((element) => element.toString());
+    for (final value in generateForData(globalData, await data)) {
+      yield value.toString();
+    }
   }
 }

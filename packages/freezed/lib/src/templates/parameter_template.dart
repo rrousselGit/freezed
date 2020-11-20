@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/utils.dart';
@@ -59,11 +60,12 @@ class ParametersTemplate {
     this.namedParameters = const [],
   });
 
-  factory ParametersTemplate.fromParameterElements(
+  static Future<ParametersTemplate> fromParameterElements(
+    BuildStep buildStep,
     List<ParameterElement> parameters, {
     bool isAssignedToThis = false,
-  }) {
-    Parameter asParameter(ParameterElement e) {
+  }) async {
+    Future<Parameter> asParameter(ParameterElement e) async {
       if (isAssignedToThis) {
         return LocalParameter(
           type: parseTypeSource(e),
@@ -72,7 +74,7 @@ class ParametersTemplate {
           isRequired: e.hasRequired,
           decorators: parseDecorators(e.metadata),
           nullable: e.isNullable,
-          doc: documentationOfParameter(e),
+          doc: await documentationOfParameter(e, buildStep),
         );
       }
       return Parameter(
@@ -82,18 +84,20 @@ class ParametersTemplate {
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
         nullable: e.isNullable,
-        doc: documentationOfParameter(e),
+        doc: await documentationOfParameter(e, buildStep),
       );
     }
 
     return ParametersTemplate(
-      parameters.where((p) => p.isRequiredPositional).map(asParameter).toList(),
-      optionalPositionalParameters: parameters
-          .where((p) => p.isOptionalPositional)
-          .map(asParameter)
-          .toList(),
-      namedParameters:
-          parameters.where((p) => p.isNamed).map(asParameter).toList(),
+      await Future.wait(
+        parameters.where((p) => p.isRequiredPositional).map(asParameter),
+      ),
+      optionalPositionalParameters: await Future.wait(
+        parameters.where((p) => p.isOptionalPositional).map(asParameter),
+      ),
+      namedParameters: await Future.wait(
+        parameters.where((p) => p.isNamed).map(asParameter),
+      ),
     );
   }
 
