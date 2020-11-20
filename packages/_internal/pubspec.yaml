@@ -9,9 +9,4 @@ dependencies:
 
 dev_dependencies:
   build_runner:
-
-dependency_overrides:
   freezed:
-    path: ../freezed
-  freezed_annotation:
-    path: ../freezed_annotation

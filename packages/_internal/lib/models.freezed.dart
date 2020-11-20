@@ -10,239 +10,6 @@ part of 'models.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-class _$CloneablePropertyTearOff {
-  const _$CloneablePropertyTearOff();
-
-// ignore: unused_element
-  _CloneableProperty call(
-      {@required String name,
-      @required String type,
-      @required List<CloneableProperty> children,
-      @required Data associatedData,
-      @required GenericsParameterTemplate genericParameters}) {
-    return _CloneableProperty(
-      name: name,
-      type: type,
-      children: children,
-      associatedData: associatedData,
-      genericParameters: genericParameters,
-    );
-  }
-}
-
-/// @nodoc
-// ignore: unused_element
-const $CloneableProperty = _$CloneablePropertyTearOff();
-
-/// @nodoc
-mixin _$CloneableProperty {
-  String get name;
-  String get type;
-  List<CloneableProperty> get children;
-  Data get associatedData;
-  GenericsParameterTemplate get genericParameters;
-
-  $CloneablePropertyCopyWith<CloneableProperty> get copyWith;
-}
-
-/// @nodoc
-abstract class $CloneablePropertyCopyWith<$Res> {
-  factory $CloneablePropertyCopyWith(
-          CloneableProperty value, $Res Function(CloneableProperty) then) =
-      _$CloneablePropertyCopyWithImpl<$Res>;
-  $Res call(
-      {String name,
-      String type,
-      List<CloneableProperty> children,
-      Data associatedData,
-      GenericsParameterTemplate genericParameters});
-
-  $DataCopyWith<$Res> get associatedData;
-}
-
-/// @nodoc
-class _$CloneablePropertyCopyWithImpl<$Res>
-    implements $CloneablePropertyCopyWith<$Res> {
-  _$CloneablePropertyCopyWithImpl(this._value, this._then);
-
-  final CloneableProperty _value;
-  // ignore: unused_field
-  final $Res Function(CloneableProperty) _then;
-
-  @override
-  $Res call({
-    Object name = freezed,
-    Object type = freezed,
-    Object children = freezed,
-    Object associatedData = freezed,
-    Object genericParameters = freezed,
-  }) {
-    return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
-      type: type == freezed ? _value.type : type as String,
-      children: children == freezed
-          ? _value.children
-          : children as List<CloneableProperty>,
-      associatedData: associatedData == freezed
-          ? _value.associatedData
-          : associatedData as Data,
-      genericParameters: genericParameters == freezed
-          ? _value.genericParameters
-          : genericParameters as GenericsParameterTemplate,
-    ));
-  }
-
-  @override
-  $DataCopyWith<$Res> get associatedData {
-    if (_value.associatedData == null) {
-      return null;
-    }
-    return $DataCopyWith<$Res>(_value.associatedData, (value) {
-      return _then(_value.copyWith(associatedData: value));
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$CloneablePropertyCopyWith<$Res>
-    implements $CloneablePropertyCopyWith<$Res> {
-  factory _$CloneablePropertyCopyWith(
-          _CloneableProperty value, $Res Function(_CloneableProperty) then) =
-      __$CloneablePropertyCopyWithImpl<$Res>;
-  @override
-  $Res call(
-      {String name,
-      String type,
-      List<CloneableProperty> children,
-      Data associatedData,
-      GenericsParameterTemplate genericParameters});
-
-  @override
-  $DataCopyWith<$Res> get associatedData;
-}
-
-/// @nodoc
-class __$CloneablePropertyCopyWithImpl<$Res>
-    extends _$CloneablePropertyCopyWithImpl<$Res>
-    implements _$CloneablePropertyCopyWith<$Res> {
-  __$CloneablePropertyCopyWithImpl(
-      _CloneableProperty _value, $Res Function(_CloneableProperty) _then)
-      : super(_value, (v) => _then(v as _CloneableProperty));
-
-  @override
-  _CloneableProperty get _value => super._value as _CloneableProperty;
-
-  @override
-  $Res call({
-    Object name = freezed,
-    Object type = freezed,
-    Object children = freezed,
-    Object associatedData = freezed,
-    Object genericParameters = freezed,
-  }) {
-    return _then(_CloneableProperty(
-      name: name == freezed ? _value.name : name as String,
-      type: type == freezed ? _value.type : type as String,
-      children: children == freezed
-          ? _value.children
-          : children as List<CloneableProperty>,
-      associatedData: associatedData == freezed
-          ? _value.associatedData
-          : associatedData as Data,
-      genericParameters: genericParameters == freezed
-          ? _value.genericParameters
-          : genericParameters as GenericsParameterTemplate,
-    ));
-  }
-}
-
-/// @nodoc
-class _$_CloneableProperty implements _CloneableProperty {
-  _$_CloneableProperty(
-      {@required this.name,
-      @required this.type,
-      @required this.children,
-      @required this.associatedData,
-      @required this.genericParameters})
-      : assert(name != null),
-        assert(type != null),
-        assert(children != null),
-        assert(associatedData != null),
-        assert(genericParameters != null);
-
-  @override
-  final String name;
-  @override
-  final String type;
-  @override
-  final List<CloneableProperty> children;
-  @override
-  final Data associatedData;
-  @override
-  final GenericsParameterTemplate genericParameters;
-
-  @override
-  String toString() {
-    return 'CloneableProperty(name: $name, type: $type, children: $children, associatedData: $associatedData, genericParameters: $genericParameters)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is _CloneableProperty &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.children, children) ||
-                const DeepCollectionEquality()
-                    .equals(other.children, children)) &&
-            (identical(other.associatedData, associatedData) ||
-                const DeepCollectionEquality()
-                    .equals(other.associatedData, associatedData)) &&
-            (identical(other.genericParameters, genericParameters) ||
-                const DeepCollectionEquality()
-                    .equals(other.genericParameters, genericParameters)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(children) ^
-      const DeepCollectionEquality().hash(associatedData) ^
-      const DeepCollectionEquality().hash(genericParameters);
-
-  @override
-  _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith =>
-      __$CloneablePropertyCopyWithImpl<_CloneableProperty>(this, _$identity);
-}
-
-abstract class _CloneableProperty implements CloneableProperty {
-  factory _CloneableProperty(
-          {@required String name,
-          @required String type,
-          @required List<CloneableProperty> children,
-          @required Data associatedData,
-          @required GenericsParameterTemplate genericParameters}) =
-      _$_CloneableProperty;
-
-  @override
-  String get name;
-  @override
-  String get type;
-  @override
-  List<CloneableProperty> get children;
-  @override
-  Data get associatedData;
-  @override
-  GenericsParameterTemplate get genericParameters;
-  @override
-  _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith;
-}
-
-/// @nodoc
 class _$ConstructorDetailsTearOff {
   const _$ConstructorDetailsTearOff();
 
@@ -259,7 +26,7 @@ class _$ConstructorDetailsTearOff {
       @required List<String> withDecorators,
       @required List<String> implementsDecorators,
       @required List<String> decorators,
-      @required List<CloneableProperty> cloneableProperties,
+      @required List<CloneablePropertyBuilder> cloneableProperties,
       @required bool canOverrideToString,
       @required List<AssertTemplate> asserts}) {
     return _ConstructorDetails(
@@ -298,7 +65,7 @@ mixin _$ConstructorDetails {
   List<String> get withDecorators;
   List<String> get implementsDecorators;
   List<String> get decorators;
-  List<CloneableProperty> get cloneableProperties;
+  List<CloneablePropertyBuilder> get cloneableProperties;
   bool get canOverrideToString;
   List<AssertTemplate> get asserts;
 
@@ -322,7 +89,7 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
-      List<CloneableProperty> cloneableProperties,
+      List<CloneablePropertyBuilder> cloneableProperties,
       bool canOverrideToString,
       List<AssertTemplate> asserts});
 }
@@ -381,7 +148,7 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
           : decorators as List<String>,
       cloneableProperties: cloneableProperties == freezed
           ? _value.cloneableProperties
-          : cloneableProperties as List<CloneableProperty>,
+          : cloneableProperties as List<CloneablePropertyBuilder>,
       canOverrideToString: canOverrideToString == freezed
           ? _value.canOverrideToString
           : canOverrideToString as bool,
@@ -410,7 +177,7 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
-      List<CloneableProperty> cloneableProperties,
+      List<CloneablePropertyBuilder> cloneableProperties,
       bool canOverrideToString,
       List<AssertTemplate> asserts});
 }
@@ -471,7 +238,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
           : decorators as List<String>,
       cloneableProperties: cloneableProperties == freezed
           ? _value.cloneableProperties
-          : cloneableProperties as List<CloneableProperty>,
+          : cloneableProperties as List<CloneablePropertyBuilder>,
       canOverrideToString: canOverrideToString == freezed
           ? _value.canOverrideToString
           : canOverrideToString as bool,
@@ -537,7 +304,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   @override
   final List<String> decorators;
   @override
-  final List<CloneableProperty> cloneableProperties;
+  final List<CloneablePropertyBuilder> cloneableProperties;
   @override
   final bool canOverrideToString;
   @override
@@ -631,7 +398,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       @required List<String> withDecorators,
       @required List<String> implementsDecorators,
       @required List<String> decorators,
-      @required List<CloneableProperty> cloneableProperties,
+      @required List<CloneablePropertyBuilder> cloneableProperties,
       @required bool canOverrideToString,
       @required List<AssertTemplate> asserts}) = _$_ConstructorDetails;
 
@@ -658,7 +425,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   @override
   List<String> get decorators;
   @override
-  List<CloneableProperty> get cloneableProperties;
+  List<CloneablePropertyBuilder> get cloneableProperties;
   @override
   bool get canOverrideToString;
   @override
@@ -680,8 +447,6 @@ class _$DataTearOff {
       @required List<ConstructorDetails> constructors,
       @required GenericsDefinitionTemplate genericsDefinitionTemplate,
       @required GenericsParameterTemplate genericsParameterTemplate,
-      @required List<Property> commonProperties,
-      @required List<CloneableProperty> commonCloneableProperties,
       @required bool shouldUseExtends}) {
     return _Data(
       name: name,
@@ -691,8 +456,6 @@ class _$DataTearOff {
       constructors: constructors,
       genericsDefinitionTemplate: genericsDefinitionTemplate,
       genericsParameterTemplate: genericsParameterTemplate,
-      commonProperties: commonProperties,
-      commonCloneableProperties: commonCloneableProperties,
       shouldUseExtends: shouldUseExtends,
     );
   }
@@ -711,8 +474,6 @@ mixin _$Data {
   List<ConstructorDetails> get constructors;
   GenericsDefinitionTemplate get genericsDefinitionTemplate;
   GenericsParameterTemplate get genericsParameterTemplate;
-  List<Property> get commonProperties;
-  List<CloneableProperty> get commonCloneableProperties;
   bool get shouldUseExtends;
 
   $DataCopyWith<Data> get copyWith;
@@ -730,8 +491,6 @@ abstract class $DataCopyWith<$Res> {
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
-      List<Property> commonProperties,
-      List<CloneableProperty> commonCloneableProperties,
       bool shouldUseExtends});
 }
 
@@ -752,8 +511,6 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
     Object constructors = freezed,
     Object genericsDefinitionTemplate = freezed,
     Object genericsParameterTemplate = freezed,
-    Object commonProperties = freezed,
-    Object commonCloneableProperties = freezed,
     Object shouldUseExtends = freezed,
   }) {
     return _then(_value.copyWith(
@@ -774,12 +531,6 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
       genericsParameterTemplate: genericsParameterTemplate == freezed
           ? _value.genericsParameterTemplate
           : genericsParameterTemplate as GenericsParameterTemplate,
-      commonProperties: commonProperties == freezed
-          ? _value.commonProperties
-          : commonProperties as List<Property>,
-      commonCloneableProperties: commonCloneableProperties == freezed
-          ? _value.commonCloneableProperties
-          : commonCloneableProperties as List<CloneableProperty>,
       shouldUseExtends: shouldUseExtends == freezed
           ? _value.shouldUseExtends
           : shouldUseExtends as bool,
@@ -800,8 +551,6 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
-      List<Property> commonProperties,
-      List<CloneableProperty> commonCloneableProperties,
       bool shouldUseExtends});
 }
 
@@ -823,8 +572,6 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
     Object constructors = freezed,
     Object genericsDefinitionTemplate = freezed,
     Object genericsParameterTemplate = freezed,
-    Object commonProperties = freezed,
-    Object commonCloneableProperties = freezed,
     Object shouldUseExtends = freezed,
   }) {
     return _then(_Data(
@@ -845,12 +592,6 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
       genericsParameterTemplate: genericsParameterTemplate == freezed
           ? _value.genericsParameterTemplate
           : genericsParameterTemplate as GenericsParameterTemplate,
-      commonProperties: commonProperties == freezed
-          ? _value.commonProperties
-          : commonProperties as List<Property>,
-      commonCloneableProperties: commonCloneableProperties == freezed
-          ? _value.commonCloneableProperties
-          : commonCloneableProperties as List<CloneableProperty>,
       shouldUseExtends: shouldUseExtends == freezed
           ? _value.shouldUseExtends
           : shouldUseExtends as bool,
@@ -868,8 +609,6 @@ class _$_Data implements _Data {
       @required this.constructors,
       @required this.genericsDefinitionTemplate,
       @required this.genericsParameterTemplate,
-      @required this.commonProperties,
-      @required this.commonCloneableProperties,
       @required this.shouldUseExtends})
       : assert(name != null),
         assert(lateGetters != null),
@@ -878,8 +617,6 @@ class _$_Data implements _Data {
         assert(constructors != null),
         assert(genericsDefinitionTemplate != null),
         assert(genericsParameterTemplate != null),
-        assert(commonProperties != null),
-        assert(commonCloneableProperties != null),
         assert(shouldUseExtends != null),
         assert(constructors.isNotEmpty),
         assert(unionKey != null);
@@ -899,15 +636,11 @@ class _$_Data implements _Data {
   @override
   final GenericsParameterTemplate genericsParameterTemplate;
   @override
-  final List<Property> commonProperties;
-  @override
-  final List<CloneableProperty> commonCloneableProperties;
-  @override
   final bool shouldUseExtends;
 
   @override
   String toString() {
-    return 'Data(name: $name, lateGetters: $lateGetters, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, commonProperties: $commonProperties, commonCloneableProperties: $commonCloneableProperties, shouldUseExtends: $shouldUseExtends)';
+    return 'Data(name: $name, lateGetters: $lateGetters, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
   }
 
   @override
@@ -938,14 +671,6 @@ class _$_Data implements _Data {
                 const DeepCollectionEquality().equals(
                     other.genericsParameterTemplate,
                     genericsParameterTemplate)) &&
-            (identical(other.commonProperties, commonProperties) ||
-                const DeepCollectionEquality()
-                    .equals(other.commonProperties, commonProperties)) &&
-            (identical(other.commonCloneableProperties,
-                    commonCloneableProperties) ||
-                const DeepCollectionEquality().equals(
-                    other.commonCloneableProperties,
-                    commonCloneableProperties)) &&
             (identical(other.shouldUseExtends, shouldUseExtends) ||
                 const DeepCollectionEquality()
                     .equals(other.shouldUseExtends, shouldUseExtends)));
@@ -961,8 +686,6 @@ class _$_Data implements _Data {
       const DeepCollectionEquality().hash(constructors) ^
       const DeepCollectionEquality().hash(genericsDefinitionTemplate) ^
       const DeepCollectionEquality().hash(genericsParameterTemplate) ^
-      const DeepCollectionEquality().hash(commonProperties) ^
-      const DeepCollectionEquality().hash(commonCloneableProperties) ^
       const DeepCollectionEquality().hash(shouldUseExtends);
 
   @override
@@ -979,8 +702,6 @@ abstract class _Data implements Data {
       @required List<ConstructorDetails> constructors,
       @required GenericsDefinitionTemplate genericsDefinitionTemplate,
       @required GenericsParameterTemplate genericsParameterTemplate,
-      @required List<Property> commonProperties,
-      @required List<CloneableProperty> commonCloneableProperties,
       @required bool shouldUseExtends}) = _$_Data;
 
   @override
@@ -997,10 +718,6 @@ abstract class _Data implements Data {
   GenericsDefinitionTemplate get genericsDefinitionTemplate;
   @override
   GenericsParameterTemplate get genericsParameterTemplate;
-  @override
-  List<Property> get commonProperties;
-  @override
-  List<CloneableProperty> get commonCloneableProperties;
   @override
   bool get shouldUseExtends;
   @override

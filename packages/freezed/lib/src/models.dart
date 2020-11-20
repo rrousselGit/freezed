@@ -14,15 +14,12 @@ part 'models.freezed.dart';
 ///
 /// This allows Freezed to support deep copy of the object.
 /// This does include primitives like [int] and [List].
-@freezed
-abstract class CloneableProperty with _$CloneableProperty {
-  factory CloneableProperty({
-    @required String name,
-    @required String type,
-    @required List<CloneableProperty> children,
-    @required Data associatedData,
-    @required GenericsParameterTemplate genericParameters,
-  }) = _CloneableProperty;
+class CloneablePropertyBuilder {
+  String name;
+  String typeName;
+  String type;
+  List<CloneablePropertyBuilder> children;
+  GenericsParameterTemplate genericParameters;
 }
 
 /// The informations of a specific constructor of a class tagged with `@freezed`.
@@ -42,7 +39,7 @@ abstract class ConstructorDetails with _$ConstructorDetails {
     @required List<String> withDecorators,
     @required List<String> implementsDecorators,
     @required List<String> decorators,
-    @required List<CloneableProperty> cloneableProperties,
+    @required List<CloneablePropertyBuilder> cloneableProperties,
     @required bool canOverrideToString,
     @required List<AssertTemplate> asserts,
   }) = _ConstructorDetails;
@@ -64,8 +61,6 @@ abstract class Data with _$Data {
     @required List<ConstructorDetails> constructors,
     @required GenericsDefinitionTemplate genericsDefinitionTemplate,
     @required GenericsParameterTemplate genericsParameterTemplate,
-    @required List<Property> commonProperties,
-    @required List<CloneableProperty> commonCloneableProperties,
     @required bool shouldUseExtends,
   }) = _Data;
 }
