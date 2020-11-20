@@ -1,6 +1,7 @@
-# Unreleased patch
+# 0.12.3-dev
 
 - Renamed `Result` in generated code to `TResult` to avoid naming conflicts
+- Fixes `InconsistentAnalysisException` sometimes being thrown (https://github.com/rrousselGit/freezed/issues/294)
 
 # 0.12.2
 
