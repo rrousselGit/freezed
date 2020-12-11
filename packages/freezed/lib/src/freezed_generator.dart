@@ -123,7 +123,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
   Iterable<LateGetter> _lateGetters(
     ClassElement element, {
-    @required bool shouldUseExtends,
+    required bool shouldUseExtends,
   }) sync* {
     for (final field in element.fields) {
       if (field.isStatic) continue;
@@ -211,9 +211,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
     ClassElement element, {
-    @required
-        Map<ParameterElement, CloneablePropertyBuilder>
-            cloneablePropertiesCache,
+    required Map<ParameterElement, CloneablePropertyBuilder>
+        cloneablePropertiesCache,
   }) async {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
@@ -313,9 +312,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     BuildStep buildStep,
     ClassElement element,
     ConstructorElement constructor, {
-    @required
-        Map<ParameterElement, CloneablePropertyBuilder>
-            cloneablePropertiesCache,
+    required Map<ParameterElement, CloneablePropertyBuilder>
+        cloneablePropertiesCache,
   }) async* {
     for (final parameter in constructor.parameters) {
       final type = parseTypeSource(parameter);
@@ -329,7 +327,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       if (!typeChecker.hasAnnotationOf(classElement)) continue;
 
       if (cloneablePropertiesCache[parameter] != null) {
-        yield cloneablePropertiesCache[parameter];
+        yield cloneablePropertiesCache[parameter]!;
         continue;
       }
 
@@ -482,7 +480,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   }
 
   bool _canOverrideToString(ClassElement element) {
-    MethodElement userDefinedToString;
+    MethodElement? userDefinedToString;
     for (final type in [
       element,
       ...element.allSupertypes
@@ -546,7 +544,7 @@ extension on Element {
   }
 }
 
-String parseLateGetterSource(String source) {
+String? parseLateGetterSource(String source) {
   var parenthesis = 0;
 
   for (var i = 0; i < source.length; i++) {

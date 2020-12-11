@@ -1,6 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../utils.dart';
@@ -9,13 +8,13 @@ import 'prototypes.dart';
 
 class Property {
   Property({
-    @required String type,
-    @required this.name,
-    @required this.decorators,
-    @required this.nullable,
-    @required this.defaultValueSource,
-    @required this.hasJsonKey,
-    @required this.doc,
+    required String type,
+    required this.name,
+    required this.decorators,
+    required this.nullable,
+    required this.defaultValueSource,
+    required this.hasJsonKey,
+    required this.doc,
   }) : type = type ?? 'dynamic';
 
   static Future<Property> fromParameter(
@@ -46,7 +45,7 @@ class Property {
   final String name;
   final List<String> decorators;
   final bool nullable;
-  final String defaultValueSource;
+  final String? defaultValueSource;
   final bool hasJsonKey;
   final String doc;
 
@@ -66,11 +65,11 @@ class Property {
 
 class Getter {
   Getter({
-    @required String type,
-    @required this.name,
-    @required this.decorators,
-    @required this.nullable,
-    @required this.doc,
+    required String type,
+    required this.name,
+    required this.decorators,
+    required this.nullable,
+    required this.doc,
   }) : type = type ?? 'dynamic';
 
   final String type;
@@ -98,10 +97,10 @@ class LateGetter {
   final String source;
 
   LateGetter({
-    @required this.type,
-    @required this.name,
-    @required this.decorators,
-    @required this.source,
+    required this.type,
+    required this.name,
+    required this.decorators,
+    required this.source,
   });
 
   @override

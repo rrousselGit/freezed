@@ -12,7 +12,7 @@ Future<String> documentationOfParameter(
 
   final astNode = await tryGetAstNodeForElement(parameter, buildStep);
 
-  for (Token token = astNode?.beginToken?.precedingComments;
+  for (Token? token = astNode?.beginToken?.precedingComments;
       token != null;
       token = token.next) {
     builder.writeln(token);

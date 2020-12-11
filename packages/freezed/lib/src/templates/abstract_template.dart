@@ -1,5 +1,5 @@
 import 'package:freezed/src/models.dart';
-import 'package:meta/meta.dart';
+
 import 'copy_with.dart';
 import 'parameter_template.dart';
 import 'properties.dart';
@@ -7,13 +7,13 @@ import 'prototypes.dart';
 
 class Abstract {
   Abstract({
-    @required this.name,
-    @required this.genericsParameter,
-    @required this.genericsDefinition,
-    @required this.abstractProperties,
-    @required this.shouldGenerateJson,
-    @required this.allConstructors,
-    @required this.copyWith,
+    required this.name,
+    required this.genericsParameter,
+    required this.genericsDefinition,
+    required this.abstractProperties,
+    required this.shouldGenerateJson,
+    required this.allConstructors,
+    required this.copyWith,
   });
 
   final String name;

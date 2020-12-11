@@ -7,7 +7,7 @@ part 'main.g.dart';
 
 @freezed
 abstract class MyClass with _$MyClass {
-  factory MyClass({String a, int b}) = _MyClass;
+  factory MyClass({String? a, int b}) = _MyClass;
 }
 
 @freezed

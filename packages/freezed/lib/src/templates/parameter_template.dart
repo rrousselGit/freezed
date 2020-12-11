@@ -1,9 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
+import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/utils.dart';
-import 'package:meta/meta.dart';
 
 class GenericsDefinitionTemplate {
   GenericsDefinitionTemplate(this.typeParameters);
@@ -231,19 +230,19 @@ class ParametersTemplate {
 
 class Parameter {
   Parameter({
-    @required this.type,
-    @required this.name,
-    @required this.defaultValueSource,
-    @required this.isRequired,
-    @required this.decorators,
-    @required this.nullable,
-    @required this.doc,
+    required this.type,
+    required this.name,
+    required this.defaultValueSource,
+    required this.isRequired,
+    required this.decorators,
+    required this.nullable,
+    required this.doc,
     this.showDefaultValue = false,
   });
 
   final String type;
   final String name;
-  final String defaultValueSource;
+  final String? defaultValueSource;
   final bool isRequired;
   final bool nullable;
   final List<String> decorators;
@@ -251,14 +250,14 @@ class Parameter {
   final String doc;
 
   Parameter copyWith({
-    String type,
-    String name,
-    String defaultValueSource,
-    bool isRequired,
-    bool nullable,
-    List<String> decorators,
-    bool showDefaultValue,
-    String doc,
+    String? type,
+    String? name,
+    String? defaultValueSource,
+    bool? isRequired,
+    bool? nullable,
+    List<String>? decorators,
+    bool? showDefaultValue,
+    String? doc,
   }) =>
       Parameter(
         type: type ?? this.type,
@@ -283,13 +282,13 @@ class Parameter {
 
 class LocalParameter extends Parameter {
   LocalParameter({
-    @required String name,
-    @required String type,
-    @required String defaultValueSource,
-    @required bool isRequired,
-    @required bool nullable,
-    @required List<String> decorators,
-    @required String doc,
+    required String name,
+    required String type,
+    required String? defaultValueSource,
+    required bool isRequired,
+    required bool nullable,
+    required List<String> decorators,
+    required String doc,
   }) : super(
           name: name,
           type: type,
@@ -313,14 +312,14 @@ class LocalParameter extends Parameter {
 
 class CallbackParameter extends Parameter {
   CallbackParameter({
-    @required String name,
-    @required String defaultValueSource,
-    @required String type,
-    @required bool isRequired,
-    @required bool nullable,
-    @required List<String> decorators,
-    @required this.parameters,
-    @required String doc,
+    required String name,
+    required String defaultValueSource,
+    required String type,
+    required bool isRequired,
+    required bool nullable,
+    required List<String> decorators,
+    required this.parameters,
+    required String doc,
   }) : super(
           name: name,
           type: type,

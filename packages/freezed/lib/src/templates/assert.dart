@@ -4,8 +4,8 @@ class AssertTemplate {
     this.message,
   });
 
-  final String eval;
-  final String message;
+  final String? eval;
+  final String? message;
 
   @override
   String toString() {

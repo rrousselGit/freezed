@@ -15,11 +15,11 @@ part 'models.freezed.dart';
 /// This allows Freezed to support deep copy of the object.
 /// This does include primitives like [int] and [List].
 class CloneablePropertyBuilder {
-  String name;
-  String typeName;
-  String type;
-  List<CloneablePropertyBuilder> children;
-  GenericsParameterTemplate genericParameters;
+  String? name;
+  String? typeName;
+  String? type;
+  List<CloneablePropertyBuilder>? children;
+  GenericsParameterTemplate? genericParameters;
 }
 
 /// The informations of a specific constructor of a class tagged with `@freezed`.

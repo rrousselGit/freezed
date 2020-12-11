@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:meta/meta.dart';
 
 typedef ExportPredicate = bool Function(Element);
 typedef LibraryPredicate = bool Function(LibraryElement);
@@ -17,9 +16,9 @@ class RecursiveImportLocator {
   const RecursiveImportLocator();
 
   bool hasImport({
-    @required LibraryElement root,
-    @required ExportPredicate where,
-    LibraryPredicate whereLibrary,
+    required LibraryElement root,
+    required ExportPredicate where,
+    LibraryPredicate? whereLibrary,
   }) {
     // based on importedLibraries in
     // analyzer-0.39.4/lib/src/dart/element/element.dart:5321
@@ -39,9 +38,9 @@ class RecursiveImportLocator {
   }
 
   bool _doesExportRecursively({
-    @required _LibraryWithVisibility library,
-    @required ExportPredicate where,
-    LibraryPredicate whereLibrary,
+    required _LibraryWithVisibility library,
+    required ExportPredicate where,
+    LibraryPredicate? whereLibrary,
   }) {
     if (library.isRelevant(whereLibrary)) {
       if (library.exportedTopLevelElements.any(where)) {
@@ -81,7 +80,7 @@ class _LibraryWithVisibility {
     Iterable<NamespaceCombinator> combinators,
   ) : this(library, {}, {}, combinators);
 
-  bool isRelevant(LibraryPredicate whereLibrary) =>
+  bool isRelevant(LibraryPredicate? whereLibrary) =>
       whereLibrary?.call(library) ?? true;
 
   Iterable<Element> get exportedTopLevelElements =>

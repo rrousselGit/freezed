@@ -135,7 +135,7 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
 }
 
 abstract class _MyClass implements MyClass {
-  factory _MyClass({String a, int b}) = _$_MyClass;
+  factory _MyClass({String? a, int b}) = _$_MyClass;
 
   @override
   String get a;
