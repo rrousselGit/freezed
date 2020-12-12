@@ -10,6 +10,196 @@ part of 'models.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
+class _$CloneablePropertyTearOff {
+  const _$CloneablePropertyTearOff();
+
+// ignore: unused_element
+  _CloneableProperty call(
+      {@required String name,
+      @required String typeName,
+      @required String type,
+      @required GenericsParameterTemplate genericParameters}) {
+    return _CloneableProperty(
+      name: name,
+      typeName: typeName,
+      type: type,
+      genericParameters: genericParameters,
+    );
+  }
+}
+
+/// @nodoc
+// ignore: unused_element
+const $CloneableProperty = _$CloneablePropertyTearOff();
+
+/// @nodoc
+mixin _$CloneableProperty {
+  String get name;
+  String get typeName;
+  String get type;
+  GenericsParameterTemplate get genericParameters;
+
+  $CloneablePropertyCopyWith<CloneableProperty> get copyWith;
+}
+
+/// @nodoc
+abstract class $CloneablePropertyCopyWith<$Res> {
+  factory $CloneablePropertyCopyWith(
+          CloneableProperty value, $Res Function(CloneableProperty) then) =
+      _$CloneablePropertyCopyWithImpl<$Res>;
+  $Res call(
+      {String name,
+      String typeName,
+      String type,
+      GenericsParameterTemplate genericParameters});
+}
+
+/// @nodoc
+class _$CloneablePropertyCopyWithImpl<$Res>
+    implements $CloneablePropertyCopyWith<$Res> {
+  _$CloneablePropertyCopyWithImpl(this._value, this._then);
+
+  final CloneableProperty _value;
+  // ignore: unused_field
+  final $Res Function(CloneableProperty) _then;
+
+  @override
+  $Res call({
+    Object name = freezed,
+    Object typeName = freezed,
+    Object type = freezed,
+    Object genericParameters = freezed,
+  }) {
+    return _then(_value.copyWith(
+      name: name == freezed ? _value.name : name as String,
+      typeName: typeName == freezed ? _value.typeName : typeName as String,
+      type: type == freezed ? _value.type : type as String,
+      genericParameters: genericParameters == freezed
+          ? _value.genericParameters
+          : genericParameters as GenericsParameterTemplate,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$CloneablePropertyCopyWith<$Res>
+    implements $CloneablePropertyCopyWith<$Res> {
+  factory _$CloneablePropertyCopyWith(
+          _CloneableProperty value, $Res Function(_CloneableProperty) then) =
+      __$CloneablePropertyCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {String name,
+      String typeName,
+      String type,
+      GenericsParameterTemplate genericParameters});
+}
+
+/// @nodoc
+class __$CloneablePropertyCopyWithImpl<$Res>
+    extends _$CloneablePropertyCopyWithImpl<$Res>
+    implements _$CloneablePropertyCopyWith<$Res> {
+  __$CloneablePropertyCopyWithImpl(
+      _CloneableProperty _value, $Res Function(_CloneableProperty) _then)
+      : super(_value, (v) => _then(v as _CloneableProperty));
+
+  @override
+  _CloneableProperty get _value => super._value as _CloneableProperty;
+
+  @override
+  $Res call({
+    Object name = freezed,
+    Object typeName = freezed,
+    Object type = freezed,
+    Object genericParameters = freezed,
+  }) {
+    return _then(_CloneableProperty(
+      name: name == freezed ? _value.name : name as String,
+      typeName: typeName == freezed ? _value.typeName : typeName as String,
+      type: type == freezed ? _value.type : type as String,
+      genericParameters: genericParameters == freezed
+          ? _value.genericParameters
+          : genericParameters as GenericsParameterTemplate,
+    ));
+  }
+}
+
+/// @nodoc
+class _$_CloneableProperty implements _CloneableProperty {
+  _$_CloneableProperty(
+      {@required this.name,
+      @required this.typeName,
+      @required this.type,
+      @required this.genericParameters})
+      : assert(name != null),
+        assert(typeName != null),
+        assert(type != null),
+        assert(genericParameters != null);
+
+  @override
+  final String name;
+  @override
+  final String typeName;
+  @override
+  final String type;
+  @override
+  final GenericsParameterTemplate genericParameters;
+
+  @override
+  String toString() {
+    return 'CloneableProperty(name: $name, typeName: $typeName, type: $type, genericParameters: $genericParameters)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _CloneableProperty &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.typeName, typeName) ||
+                const DeepCollectionEquality()
+                    .equals(other.typeName, typeName)) &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.genericParameters, genericParameters) ||
+                const DeepCollectionEquality()
+                    .equals(other.genericParameters, genericParameters)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(typeName) ^
+      const DeepCollectionEquality().hash(type) ^
+      const DeepCollectionEquality().hash(genericParameters);
+
+  @override
+  _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith =>
+      __$CloneablePropertyCopyWithImpl<_CloneableProperty>(this, _$identity);
+}
+
+abstract class _CloneableProperty implements CloneableProperty {
+  factory _CloneableProperty(
+          {@required String name,
+          @required String typeName,
+          @required String type,
+          @required GenericsParameterTemplate genericParameters}) =
+      _$_CloneableProperty;
+
+  @override
+  String get name;
+  @override
+  String get typeName;
+  @override
+  String get type;
+  @override
+  GenericsParameterTemplate get genericParameters;
+  @override
+  _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith;
+}
+
+/// @nodoc
 class _$ConstructorDetailsTearOff {
   const _$ConstructorDetailsTearOff();
 
@@ -26,7 +216,7 @@ class _$ConstructorDetailsTearOff {
       @required List<String> withDecorators,
       @required List<String> implementsDecorators,
       @required List<String> decorators,
-      @required List<CloneablePropertyBuilder> cloneableProperties,
+      @required List<CloneableProperty> cloneableProperties,
       @required bool canOverrideToString,
       @required List<AssertTemplate> asserts}) {
     return _ConstructorDetails(
@@ -65,7 +255,7 @@ mixin _$ConstructorDetails {
   List<String> get withDecorators;
   List<String> get implementsDecorators;
   List<String> get decorators;
-  List<CloneablePropertyBuilder> get cloneableProperties;
+  List<CloneableProperty> get cloneableProperties;
   bool get canOverrideToString;
   List<AssertTemplate> get asserts;
 
@@ -89,7 +279,7 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
-      List<CloneablePropertyBuilder> cloneableProperties,
+      List<CloneableProperty> cloneableProperties,
       bool canOverrideToString,
       List<AssertTemplate> asserts});
 }
@@ -148,7 +338,7 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
           : decorators as List<String>,
       cloneableProperties: cloneableProperties == freezed
           ? _value.cloneableProperties
-          : cloneableProperties as List<CloneablePropertyBuilder>,
+          : cloneableProperties as List<CloneableProperty>,
       canOverrideToString: canOverrideToString == freezed
           ? _value.canOverrideToString
           : canOverrideToString as bool,
@@ -177,7 +367,7 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
-      List<CloneablePropertyBuilder> cloneableProperties,
+      List<CloneableProperty> cloneableProperties,
       bool canOverrideToString,
       List<AssertTemplate> asserts});
 }
@@ -238,7 +428,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
           : decorators as List<String>,
       cloneableProperties: cloneableProperties == freezed
           ? _value.cloneableProperties
-          : cloneableProperties as List<CloneablePropertyBuilder>,
+          : cloneableProperties as List<CloneableProperty>,
       canOverrideToString: canOverrideToString == freezed
           ? _value.canOverrideToString
           : canOverrideToString as bool,
@@ -304,7 +494,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   @override
   final List<String> decorators;
   @override
-  final List<CloneablePropertyBuilder> cloneableProperties;
+  final List<CloneableProperty> cloneableProperties;
   @override
   final bool canOverrideToString;
   @override
@@ -398,7 +588,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       @required List<String> withDecorators,
       @required List<String> implementsDecorators,
       @required List<String> decorators,
-      @required List<CloneablePropertyBuilder> cloneableProperties,
+      @required List<CloneableProperty> cloneableProperties,
       @required bool canOverrideToString,
       @required List<AssertTemplate> asserts}) = _$_ConstructorDetails;
 
@@ -425,7 +615,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   @override
   List<String> get decorators;
   @override
-  List<CloneablePropertyBuilder> get cloneableProperties;
+  List<CloneableProperty> get cloneableProperties;
   @override
   bool get canOverrideToString;
   @override

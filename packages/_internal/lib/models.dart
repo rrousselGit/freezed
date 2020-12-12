@@ -16,18 +16,22 @@ class AssertTemplate {}
 
 class LateGetter {}
 
+class Element {}
+
 String constructorNameToCallbackName(String name) => name;
 
 /// A generated property that has for type a class generated using Freezed
 ///
 /// This allows Freezed to support deep copy of the object.
 /// This does include primitives like [int] and [List].
-class CloneablePropertyBuilder {
-  String name;
-  String typeName;
-  String type;
-  List<CloneablePropertyBuilder> children;
-  GenericsParameterTemplate genericParameters;
+@freezed
+abstract class CloneableProperty with _$CloneableProperty {
+  factory CloneableProperty({
+    @required String name,
+    @required String typeName,
+    @required String type,
+    @required GenericsParameterTemplate genericParameters,
+  }) = _CloneableProperty;
 }
 
 /// The informations of a specific constructor of a class tagged with `@freezed`.
@@ -47,7 +51,7 @@ abstract class ConstructorDetails with _$ConstructorDetails {
     @required List<String> withDecorators,
     @required List<String> implementsDecorators,
     @required List<String> decorators,
-    @required List<CloneablePropertyBuilder> cloneableProperties,
+    @required List<CloneableProperty> cloneableProperties,
     @required bool canOverrideToString,
     @required List<AssertTemplate> asserts,
   }) = _ConstructorDetails;
