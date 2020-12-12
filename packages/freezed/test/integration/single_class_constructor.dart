@@ -14,7 +14,6 @@ abstract class Doc317 with _$Doc317 {
   }) = _Doc317;
 }
 
-
 @freezed
 abstract class Doc with _$Doc {
   factory Doc(
