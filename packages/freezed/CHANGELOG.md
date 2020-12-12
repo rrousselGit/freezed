@@ -1,3 +1,7 @@
+# 0.12.5
+
+- Fixes a bug where comments on named parameters could break generation (https://github.com/rrousselGit/freezed/issues/317)
+
 # 0.12.4
 
 - fixed a bug that caused the code-generation to never complete (https://github.com/rrousselGit/freezed/issues/312)
