@@ -1,3 +1,7 @@
+# 0.12.4
+
+- fixed a bug that caused the code-generation to never complete (https://github.com/rrousselGit/freezed/issues/312)
+
 # 0.12.3
 
 - Renamed `Result` in generated code to `TResult` to avoid naming conflicts
