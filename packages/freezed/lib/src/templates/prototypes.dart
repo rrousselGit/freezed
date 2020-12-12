@@ -6,9 +6,6 @@ import 'package:source_gen/source_gen.dart';
 import '../models.dart';
 import 'parameter_template.dart';
 
-final _redirectedConstructorNameRegexp =
-    RegExp(r'^[^;{}]+?=[\s\n\t]*([^<>(){}]+?)(?:<.+?>)*?;', dotAll: true);
-
 List<String> parseDecorators(List<ElementAnnotation> metadata) {
   return [
     for (final meta in metadata)
@@ -36,32 +33,6 @@ extension FreezedElementAnnotation on ElementAnnotation {
     return const TypeChecker.fromRuntime(Implements)
         .isExactlyType(computeConstantValue().type);
   }
-}
-
-String getRedirectedConstructorName(String source) {
-  var firstOpeningParenthesisIndex = 0;
-  while (firstOpeningParenthesisIndex < source.length &&
-      source[firstOpeningParenthesisIndex] != '(') {
-    firstOpeningParenthesisIndex++;
-  }
-
-  var parenthesisOpened = 1;
-  var constructorInitializerIndex = firstOpeningParenthesisIndex + 1;
-  while (constructorInitializerIndex < source.length && parenthesisOpened > 0) {
-    if (source[constructorInitializerIndex] == '(') {
-      parenthesisOpened++;
-    }
-    if (source[constructorInitializerIndex] == ')') {
-      parenthesisOpened--;
-    }
-    constructorInitializerIndex++;
-  }
-
-  if (constructorInitializerIndex >= source.length) return null;
-
-  return _redirectedConstructorNameRegexp
-      .firstMatch(source.substring(constructorInitializerIndex))
-      ?.group(1);
 }
 
 String whenPrototype(List<ConstructorDetails> allConstructors) {
