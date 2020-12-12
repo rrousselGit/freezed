@@ -25,7 +25,7 @@ class CopyWith {
   final GenericsDefinitionTemplate genericsDefinition;
   final GenericsParameterTemplate genericsParameter;
   final List<Property> allProperties;
-  final List<CloneablePropertyBuilder> cloneableProperties;
+  final List<CloneableProperty> cloneableProperties;
   final CopyWith parent;
 
   String get interface {
@@ -250,7 +250,7 @@ ${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {
     }
   }
 
-  String _clonerInterfaceFor(CloneablePropertyBuilder cloneableProperty) {
+  String _clonerInterfaceFor(CloneableProperty cloneableProperty) {
     final name = interfaceNameFrom(cloneableProperty.typeName);
     return '$name${cloneableProperty.genericParameters.append('\$Res')}';
   }

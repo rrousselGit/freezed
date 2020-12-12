@@ -29,10 +29,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   Future<Data> parseElement(
     BuildStep buildStep,
     GlobalData globalData,
-    Element rawElement, {
-    Map<ParameterElement, CloneablePropertyBuilder> cloneablePropertiesCache =
-        const {},
-  }) async {
+    Element rawElement,
+  ) async {
     if (rawElement is! ClassElement) {
       throw InvalidGenerationSourceError(
         '@freezed can only be applied on classes. Failing element: ${rawElement.name}',
@@ -78,7 +76,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
       buildStep,
       element,
-      cloneablePropertiesCache: cloneablePropertiesCache,
     );
 
     final needsJsonSerializable = await _needsJsonSerializable(
@@ -210,11 +207,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
-    ClassElement element, {
-    @required
-        Map<ParameterElement, CloneablePropertyBuilder>
-            cloneablePropertiesCache,
-  }) async {
+    ClassElement element,
+  ) async {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
       if (!constructor.isFactory || constructor.name == 'fromJson') {
@@ -251,7 +245,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
             buildStep,
             element,
             constructor,
-            cloneablePropertiesCache: cloneablePropertiesCache,
           ).toList(),
           parameters: await ParametersTemplate.fromParameterElements(
             buildStep,
@@ -309,14 +302,11 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     }
   }
 
-  Stream<CloneablePropertyBuilder> _cloneableProperties(
+  Stream<CloneableProperty> _cloneableProperties(
     BuildStep buildStep,
     ClassElement element,
-    ConstructorElement constructor, {
-    @required
-        Map<ParameterElement, CloneablePropertyBuilder>
-            cloneablePropertiesCache,
-  }) async* {
+    ConstructorElement constructor,
+  ) async* {
     for (final parameter in constructor.parameters) {
       final type = parseTypeSource(parameter);
 
@@ -328,41 +318,21 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
       if (!typeChecker.hasAnnotationOf(classElement)) continue;
 
-      if (cloneablePropertiesCache[parameter] != null) {
-        yield cloneablePropertiesCache[parameter];
-        continue;
-      }
-
-      // Using a mutable builder to represent deeply cloneable objects
-      // as a class can be recursive
-      final builder = CloneablePropertyBuilder();
-      yield builder;
-
-      final constructorsNeedsGeneration =
-          await _parseConstructorsNeedsGeneration(buildStep, element,
-              cloneablePropertiesCache: {
-            ...cloneablePropertiesCache,
-            parameter: builder,
-          });
-
-      builder
-        ..name = parameter.name
-        ..type = type
-        ..typeName = parameter.type.element.name
-        ..children = _commonCloneableProperties(
-          constructorsNeedsGeneration,
-          _commonProperties(constructorsNeedsGeneration),
-        ).toList()
-        ..genericParameters = GenericsParameterTemplate(
+      yield CloneableProperty(
+        name: parameter.name,
+        type: type,
+        typeName: parameter.type.element.name,
+        genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType)
               .typeArguments
               .map((e) => e.getDisplayString(withNullability: false))
               .toList(),
-        );
+        ),
+      );
     }
   }
 
-  Iterable<CloneablePropertyBuilder> _commonCloneableProperties(
+  Iterable<CloneableProperty> _commonCloneableProperties(
     List<ConstructorDetails> constructors,
     List<Property> commonProperties,
   ) sync* {
