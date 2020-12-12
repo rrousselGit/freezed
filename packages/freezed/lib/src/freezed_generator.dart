@@ -214,11 +214,10 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       if (!constructor.isFactory || constructor.name == 'fromJson') {
         continue;
       }
-      final location = constructor.nameOffset;
-      final source = constructor.source.contents.data;
 
       final redirectedName =
-          getRedirectedConstructorName(source.substring(location));
+          await _getConstructorRedirectedName(constructor, buildStep);
+
       if (redirectedName == null) continue;
 
       result.add(
@@ -481,6 +480,42 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     return constructor.name == null || constructor.name.isEmpty
         ? '${element.name}$generics'
         : '${element.name}$generics.${constructor.name}';
+  }
+
+  /// For:
+  ///
+  /// ```dart
+  /// Constructor.named() = _Redirection<T>;
+  /// ```
+  ///
+  /// returns `_Redirection`;
+  Future<String> _getConstructorRedirectedName(
+    ConstructorElement constructor,
+    BuildStep buildStep,
+  ) async {
+    final ast = await tryGetAstNodeForElement(constructor, buildStep);
+
+    if (ast.endToken.stringValue != ';') return null;
+
+    var equalToken = ast.endToken.previous;
+    while (equalToken.stringValue != '=') {
+      equalToken = equalToken.previous;
+    }
+
+    var genericOrEndToken = equalToken;
+    while (genericOrEndToken.stringValue != '<' &&
+        genericOrEndToken.stringValue != ';') {
+      genericOrEndToken = genericOrEndToken.next;
+    }
+
+    final source = constructor.source.contents.data;
+    final redirectedName = source
+        .substring(equalToken.charOffset + 1, genericOrEndToken.charOffset)
+        .trim();
+
+    if (redirectedName.isEmpty) return null;
+
+    return redirectedName;
   }
 }
 
