@@ -1,3 +1,7 @@
+# 0.12.6
+
+- Fix Freezed generating code from constructors that do not rely on Freezed (https://github.com/rrousselGit/freezed/issues/323)
+
 # 0.12.5
 
 - Fixes a bug where comments on named parameters could break generation (https://github.com/rrousselGit/freezed/issues/317)
