@@ -140,6 +140,38 @@ abstract class NothingToDo {
 }
 
 @ShouldThrow(
+  'Marked ManualFactory with @freezed, but freezed has nothing to generate',
+)
+@freezed
+abstract class ManualFactory {
+  factory ManualFactory() => _Manual();
+}
+
+class _Manual implements ManualFactory {
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    return super.noSuchMethod(invocation);
+  }
+}
+
+@ShouldThrow(
+  'Marked ManualFactory2 with @freezed, but freezed has nothing to generate',
+)
+@freezed
+abstract class ManualFactory2 {
+  factory ManualFactory2({int a}) => _Manual2(a: a ??= 42);
+}
+
+class _Manual2 implements ManualFactory2 {
+  _Manual2({int a});
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    return super.noSuchMethod(invocation);
+  }
+}
+
+@ShouldThrow(
   'Classes decorated with @freezed cannot have mutable properties',
 )
 @freezed
