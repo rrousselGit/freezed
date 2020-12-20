@@ -614,7 +614,7 @@ In case you want to make your class generic, you do it like this:
 
 ```dart
 @freezed
-abstract class Example<T> with Example<T> {
+abstract class Example<T> with _$Example<T> {
   const factory Example.person(String name, int age) = Person<T>;
 
   @With.fromString('AdministrativeArea<T>')
