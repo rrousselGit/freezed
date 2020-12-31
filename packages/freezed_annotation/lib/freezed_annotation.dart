@@ -56,7 +56,7 @@ class Freezed {
   ///   print(Union.second().toJson()); // { 'type': 'second' }
   /// }
   /// ```
-  final String unionKey;
+  final String? unionKey;
 }
 
 /// An annotation for the `freezed` package.
@@ -89,7 +89,7 @@ class Assert {
   final String eval;
 
   /// An optional message to show if the assertion failed.
-  final String message;
+  final String? message;
 }
 
 class _Nullable {
@@ -187,8 +187,8 @@ class Implements {
 
   const Implements.fromString(this.stringType) : type = null;
 
-  final Type type;
-  final String stringType;
+  final Type? type;
+  final String? stringType;
 }
 
 /// Marks a union type to mixin the class [type] or [stringType].
@@ -231,6 +231,6 @@ class With {
 
   const With.fromString(this.stringType) : type = null;
 
-  final Type type;
-  final String stringType;
+  final Type? type;
+  final String? stringType;
 }
