@@ -1243,10 +1243,10 @@ The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed
 - Quickly generate a Freezed class by using `Ctrl+Shift+P` > `Generate Freezed class`.
 
 
-### Freezed extension for IntelliJ
-You can get the Intellij Live Templates for Freezed boiler plate code [here](https://github.com/Tinhorn/freezed_intellij_live_templates).
+### Freezed extension for IntelliJ/Android Studio
+You can get Live Templates for boiler plate code [here](https://github.com/Tinhorn/freezed_intellij_live_templates).
 
-For example:
+Example:
 
 - type __freezedClass__ and press <kbd>Tab</kbd> to generate a freezed class
   ```dart
