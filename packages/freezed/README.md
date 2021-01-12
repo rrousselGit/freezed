@@ -1242,6 +1242,24 @@ The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed
 - Use `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac) to quickly build using `build_runner`.
 - Quickly generate a Freezed class by using `Ctrl+Shift+P` > `Generate Freezed class`.
 
+
+### Freezed extension for IntelliJ
+You can get the Intellij Live Templates for Freezed boiler plate code [here](https://github.com/Tinhorn/freezed_intellij_live_templates).
+
+For example:
+
+- type __freezedClass__ and press <kbd>Tab</kbd> to generate a freezed class
+  ```dart
+  @freezed
+  abstract class Demo with _$Demo {
+  }
+  ```
+- type __freezedFromJson__ and press <kbd>Tab</kbd> to generate the fromJson method for json_serializable
+  ```dart
+  factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
+  ```
+
+
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
 [meta]: https://pub.dartlang.org/packages/meta
