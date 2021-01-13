@@ -498,14 +498,16 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     if (ast.endToken.stringValue != ';') return null;
 
     var equalToken = ast.endToken;
-    while (equalToken.stringValue != '=' &&
-        equalToken != null &&
-        equalToken.previous != equalToken) {
-      equalToken = equalToken.previous;
-    }
+    while (true) {
+      if (equalToken == null ||
+          equalToken.charOffset < constructor.nameOffset) {
+        return null;
+      }
+      if (equalToken.stringValue == '=') {
+        break;
+      }
 
-    if (equalToken.stringValue == null || equalToken.previous == equalToken) {
-      return null;
+      equalToken = equalToken.previous;
     }
 
     var genericOrEndToken = equalToken;
