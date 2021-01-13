@@ -1,5 +1,6 @@
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 
 import '../models.dart';
@@ -133,14 +134,19 @@ $parameters
 
   String get abstractCopyWithGetter {
     if (allProperties.isEmpty) return '';
+
     return _maybeOverride(
-      '$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;',
+      '''
+@JsonKey(ignore: true)
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;
+''',
     );
   }
 
   String get concreteCopyWithGetter {
     if (allProperties.isEmpty) return '';
     return '''
+@JsonKey(ignore: true)
 @override
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
 ''';

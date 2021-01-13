@@ -1,3 +1,7 @@
+# [Unreleased fix]
+
+- fixed a bug where `///` above a constructor could cause the generation to stop working (see also https://github.com/rrousselGit/freezed/issues/326)
+
 # 0.12.6
 
 - Fix Freezed generating code from constructors that do not rely on Freezed (https://github.com/rrousselGit/freezed/issues/323)
