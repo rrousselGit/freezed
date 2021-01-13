@@ -244,8 +244,8 @@ then it won't work.
 This is because by default, [Freezed] has no way of "extending" the class and
 instead "implements" it.
 
-To fix it, we need to give [Freezed] a way to use that `extends` keyword.\
-To do so, we have to define a single private constructor as such:
+To fix it, we need a subtle syntax change to allow [Freezed] to generate valid code.\
+To do so, we have to define a single private constructor and use `implements` instead of `with`:
 
 ```dart
 @freezed
