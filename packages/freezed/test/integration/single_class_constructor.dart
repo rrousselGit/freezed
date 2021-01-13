@@ -5,6 +5,15 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+// Regression test for https://github.com/rrousselGit/freezed/issues/326
+@freezed
+abstract class Doc326 with _$Doc326 {
+  /// Hello world
+  factory Doc326({
+    int named,
+  }) = _Doc326;
+}
+
 // Regression test for https://github.com/rrousselGit/freezed/issues/317
 @freezed
 abstract class Doc317 with _$Doc317 {
