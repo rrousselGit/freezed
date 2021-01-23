@@ -88,6 +88,7 @@ void main() {
 }
 '''), throwsCompileError);
       });
+
       test('calls default callback', () {
         final value = SwitchTest('a');
 
@@ -101,6 +102,7 @@ void main() {
         );
       });
     });
+
     group('first ctor', () {
       test("assert callbacks can't be null", () async {
         await expectLater(compile(r'''
@@ -158,6 +160,7 @@ void main() {
 }
 '''), throwsCompileError);
       });
+
       test('calls first callback', () {
         final value = SwitchTest.first('a', b: false, d: .42);
 
@@ -171,6 +174,7 @@ void main() {
         );
       });
     });
+
     group('second ctor', () {
       test("assert callbacks can't be null", () async {
         await expectLater(compile(r'''
@@ -228,6 +232,7 @@ void main() {
 }
 '''), throwsCompileError);
       });
+
       test('calls second callback', () {
         final value = SwitchTest.second('a', 21, .42);
 

@@ -35,6 +35,7 @@ void main() {
   PageList([page]);
 }
 '''), completes);
+
     await expectLater(compile(r'''
 import 'generics_refs.dart';
 
@@ -47,7 +48,10 @@ void main() {
   test('handles maps', () async {
     final page = const Page();
 
-    expect(PageMap({'foo': page}).pages, {'foo': page});
+    expect(
+      PageMap({'foo': page}).pages,
+      {'foo': page},
+    );
 
     await expectLater(compile(r'''
 import 'generics_refs.dart';
@@ -57,6 +61,7 @@ void main() {
   PageMap({'foo': page});
 }
 '''), completes);
+
     await expectLater(compile(r'''
 import 'generics_refs.dart';
 

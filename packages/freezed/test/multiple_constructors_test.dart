@@ -100,6 +100,7 @@ void main() {
   dynamic a = param.a;
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -108,6 +109,7 @@ void main() {
   dynamic b = param.b;
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -277,6 +279,7 @@ void main() {
   param.copyWith(c: .42);
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -324,6 +327,7 @@ void main() {
   param.a;
 }
 '''), completes);
+
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -332,6 +336,7 @@ void main() {
   param.b;
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -358,6 +363,7 @@ void main() {
   param.copyWith(a: '2');
 }
 '''), completes);
+
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
@@ -366,6 +372,7 @@ void main() {
   param.copyWith(b: 42);
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 

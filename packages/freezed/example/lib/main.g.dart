@@ -25,7 +25,7 @@ Map<String, dynamic> _$_$LoadingToJson(_$Loading instance) =>
 
 _$ErrorDetails _$_$ErrorDetailsFromJson(Map<String, dynamic> json) {
   return _$ErrorDetails(
-    json['message'] as String,
+    json['message'] as String?,
   );
 }
 

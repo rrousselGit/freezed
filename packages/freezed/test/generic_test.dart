@@ -14,10 +14,12 @@ Future<void> main() async {
       $Union<int>(42),
       Union<int>(42),
     );
+
     expect(
       $Union.loading<int>(),
       const Union<int>.loading(),
     );
+
     expect(
       $Union.error<int>('msg'),
       const Union<int>.error('msg'),
@@ -37,7 +39,7 @@ Future<void> main() async {
         .getErrors('/freezed/test/integration/generic.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
-  }, skip: true);
+  });
 
   test('is generic', () {
     Generic<Model<int>> value = Generic(Model(42));
@@ -75,12 +77,20 @@ Future<void> main() async {
   });
 
   test('toString', () {
-    expect('${MultipleConstructors<int, String>.first(42)}',
-        'MultipleConstructors<int, String>.first(a: 42)');
-    expect('${MultipleConstructors<int, String>.second('42')}',
-        'MultipleConstructors<int, String>.second(b: 42)');
-    expect('${MultipleConstructors<int, String>(false)}',
-        'MultipleConstructors<int, String>(flag: false)');
+    expect(
+      '${MultipleConstructors<int, String>.first(42)}',
+      'MultipleConstructors<int, String>.first(a: 42)',
+    );
+
+    expect(
+      '${MultipleConstructors<int, String>.second('42')}',
+      'MultipleConstructors<int, String>.second(b: 42)',
+    );
+
+    expect(
+      '${MultipleConstructors<int, String>(false)}',
+      'MultipleConstructors<int, String>(flag: false)',
+    );
   });
 
   test('copy returns generic ', () {
@@ -101,6 +111,7 @@ void main() {
   Generic<Model<int>>(Model(42));
 }
 '''), completes);
+
     await expectLater(compile(r'''
 import 'generic.dart';
 

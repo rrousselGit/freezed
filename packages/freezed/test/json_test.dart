@@ -241,6 +241,7 @@ void main() {
   Json.fromJson(<String, dynamic>{});
 }
 '''), completes);
+
     await expectLater(compile(r'''
 import 'json.dart';
 
@@ -248,6 +249,7 @@ void main() {
   NoFirst.fromJson(<String, dynamic>{});
 }
 '''), throwsCompileError);
+
     await expectLater(compile(r'''
 import 'json.dart';
 
@@ -255,6 +257,7 @@ void main() {
   NoDefault.fromJson(<String, dynamic>{});
 }
 '''), throwsCompileError);
+
     await expectLater(compile(r'''
 import 'json.dart';
 

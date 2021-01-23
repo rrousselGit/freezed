@@ -147,6 +147,7 @@ void main() {
   Union second = value.copyWith(shared: Assistant());
 }
 '''), completes);
+
         await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -155,6 +156,7 @@ void main() {
   Union second = value.copyWith(first: Assistant());
 }
 '''), throwsCompileError);
+
         await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -178,6 +180,7 @@ void main() {
   UnionFirst second = value.copyWith(shared: Assistant(), first: Assistant());
 }
 '''), completes);
+
         await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -186,6 +189,7 @@ void main() {
   UnionFirst second = value.copyWith(second: Assistant());
 }
 '''), throwsCompileError);
+
         await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -194,6 +198,7 @@ void main() {
   UnionSecond second = value.copyWith(shared: Assistant(), second: Assistant());
 }
 '''), completes);
+
         await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -238,6 +243,7 @@ void main() {
   UnionFirst second = value.copyWith.shared(age: 42);
 }
 '''), completes);
+
       await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -246,6 +252,7 @@ void main() {
   UnionFirst second = value.copyWith.first(age: 42);
 }
 '''), completes);
+
       await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -289,6 +296,7 @@ void main() {
   UnionSecond second = value.copyWith.shared(age: 42);
 }
 '''), completes);
+
       await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -297,6 +305,7 @@ void main() {
   UnionSecond second = value.copyWith.second(age: 42);
 }
 '''), completes);
+
       await expectLater(compile('''
 import 'deep_copy.dart';
 
@@ -315,18 +324,20 @@ void main() {
 import 'deep_copy.dart';
 
 void main() {
-  NoCommonProperty value;
+  final value = NoCommonProperty();
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
 void main() {
-  NoCommonProperty value;
+  final value = NoCommonProperty();
   var second = value.copyWith;
 }
 '''), throwsCompileError);
       });
+
       test('NoCommonProperty.assistant has type-safe copyWith', () async {
         await expectLater(compile(r'''
 import 'deep_copy.dart';
@@ -336,6 +347,7 @@ void main() {
   NoCommonPropertyAssistant copy = value.copyWith(assistant: Assistant());
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
@@ -345,19 +357,21 @@ void main() {
 }
 '''), throwsCompileError);
       });
+
       test('NoCommonProperty() has no copyWith', () async {
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
 void main() {
-  NoCommonPropertyEmpty value;
+  NoCommonPropertyEmpty value = NoCommonPropertyEmpty();
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
 void main() {
-  NoCommonPropertyEmpty value;
+  NoCommonPropertyEmpty value = NoCommonPropertyEmpty();
   var second = value.copyWith;
 }
 '''), throwsCompileError);
@@ -407,6 +421,7 @@ void main() {
   CompanySubclass second = company.copyWith(name: 'Larry');
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
@@ -425,6 +440,7 @@ void main() {
   CompanySubclass second = company.copyWith.director!(name: 'Larry');
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
@@ -434,6 +450,7 @@ void main() {
 }
 '''), throwsCompileError);
       });
+
       test('Company.copyWith.director.assistant', () async {
         await expectLater(compile(r'''
 import 'deep_copy.dart';
@@ -443,6 +460,7 @@ void main() {
   CompanySubclass second = company.copyWith.director!.assistant!(name: 'Larry');
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
@@ -453,6 +471,7 @@ void main() {
 '''), throwsCompileError);
       });
     });
+
     group('From interface, copyWith parameters are not typed as Object', () {
       test('Company.copyWith', () async {
         await expectLater(compile(r'''
@@ -463,6 +482,7 @@ void main() {
   Company second = company.copyWith(name: 'Larry');
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
@@ -472,6 +492,7 @@ void main() {
 }
 '''), throwsCompileError);
       });
+
       test('Company.copyWith.director', () async {
         await expectLater(compile(r'''
 import 'deep_copy.dart';
@@ -481,6 +502,7 @@ void main() {
   Company second = company.copyWith.director!(name: 'Larry');
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
@@ -490,6 +512,7 @@ void main() {
 }
 '''), throwsCompileError);
       });
+
       test('Company.copyWith.director.assistant', () async {
         await expectLater(compile(r'''
 import 'deep_copy.dart';
@@ -499,6 +522,7 @@ void main() {
   Company second = company.copyWith.director!.assistant!(name: 'Larry');
 }
 '''), completes);
+
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 

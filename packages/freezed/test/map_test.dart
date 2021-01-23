@@ -424,7 +424,7 @@ void main() {
   value.when((a) => a, second: (b) => b);
 }
 
-void redundant(@required String test) {
+void redundant(required String test) {
 }
 ''',
         },

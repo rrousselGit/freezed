@@ -229,7 +229,7 @@ void main() {
         '/freezed/test/integration/single_class_constructor.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
-  }, skip: true);
+  });
 
   test('toString includes the constructor name', () {
     expect('${SingleNamedCtor.named(42)}', 'SingleNamedCtor.named(a: 42)');
@@ -237,32 +237,38 @@ void main() {
 
   test('single-case union does have map', () async {
     expect(
-        SingleNamedCtor.named(42)
-            .map(named: (WhateverSingleNamedCtor value) => '${value.a}'),
-        '42');
+      SingleNamedCtor.named(42).map(
+        named: (WhateverSingleNamedCtor value) => '${value.a}',
+      ),
+      '42',
+    );
   });
 
   test('single-case union does have maybeMap', () async {
     expect(
-        SingleNamedCtor.named(42).maybeMap(
-          named: (WhateverSingleNamedCtor value) => '${value.a}',
-          orElse: () => throw Exception('orElse called'),
-        ),
-        '42');
+      SingleNamedCtor.named(42).maybeMap(
+        named: (WhateverSingleNamedCtor value) => '${value.a}',
+        orElse: () => throw Exception('orElse called'),
+      ),
+      '42',
+    );
   });
 
   test('single-case union does have when', () async {
     expect(
-        SingleNamedCtor.named(42).when(named: (int value) => '$value'), '42');
+      SingleNamedCtor.named(42).when(named: (int value) => '$value'),
+      '42',
+    );
   });
 
   test('single-case union does have maybeWhen', () async {
     expect(
-        SingleNamedCtor.named(42).maybeWhen(
-          named: (int value) => '$value',
-          orElse: () => throw Exception('orElse called'),
-        ),
-        '42');
+      SingleNamedCtor.named(42).maybeWhen(
+        named: (int value) => '$value',
+        orElse: () => throw Exception('orElse called'),
+      ),
+      '42',
+    );
   });
 
   test('can be created as const', () {
@@ -278,6 +284,7 @@ void main() {
   NoConstImpl();
 }
 '''), completes);
+
     await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -379,6 +386,7 @@ void main() {
   MyClass().copyWith(a: '42', b: 42);
 }
 '''), completes);
+
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -386,6 +394,7 @@ void main() {
   MyClass().copyWith(a: Future.value('42'));
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -410,6 +419,7 @@ void main() {
   WhateverIWant().copyWith(a: '42', b: 42);
 }
 '''), completes);
+
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -417,6 +427,7 @@ void main() {
   WhateverIWant().copyWith(a: Future.value('a'));
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
