@@ -1,8 +1,11 @@
+// @dart=2.9
+
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
+import 'common.dart';
 import 'integration/multiple_constructors.dart';
 
 void main() {
@@ -30,33 +33,62 @@ void main() {
     });
 
     group('default ctor', () {
-      test("assert callbacks can't be null", () {
-        final value = SwitchTest('a');
+      test("assert callbacks can't be null", () async {
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
 
-        expect(
-          () => value.map(
-            (a) {},
-            first: null,
-            second: (SwitchTest2 value) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.map(
-            null,
-            first: (SwitchTest1 value) {},
-            second: (SwitchTest2 value) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.map(
-            (a) {},
-            first: (SwitchTest1 value) {},
-            second: null,
-          ),
-          throwsA(isA<AssertionError>()),
-        );
+void main() {
+  final value = SwitchTest('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: (SwitchTest1 b) {},
+    second: (SwitchTest2 c) {},
+  );
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: null,
+    second: (SwitchTest2 value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest('a');
+
+  value.map(
+    null,
+    first: (SwitchTest1 value) {},
+    second: (SwitchTest2 value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: (SwitchTest1 value) {},
+    second: null,
+  );
+}
+'''), throwsCompileError);
       });
       test('calls default callback', () {
         final value = SwitchTest('a');
@@ -71,35 +103,66 @@ void main() {
         );
       });
     });
-    group('first ctor', () {
-      test("assert callbacks can't be null", () {
-        final value = SwitchTest.first('a');
 
-        expect(
-          () => value.map(
-            (a) {},
-            first: null,
-            second: (SwitchTest2 value) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.map(
-            null,
-            first: (SwitchTest1 value) {},
-            second: (SwitchTest2 value) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.map(
-            (a) {},
-            first: (SwitchTest1 value) {},
-            second: null,
-          ),
-          throwsA(isA<AssertionError>()),
-        );
+    group('first ctor', () {
+      test("assert callbacks can't be null", () async {
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.first('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: (SwitchTest1 b) {},
+    second: (SwitchTest2 c) {},
+  );
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.first('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: null,
+    second: (SwitchTest2 value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.first('a');
+
+  value.map(
+    null,
+    first: (SwitchTest1 value) {},
+    second: (SwitchTest2 value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.first('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: (SwitchTest1 value) {},
+    second: null,
+  );
+}
+'''), throwsCompileError);
       });
+
       test('calls first callback', () {
         final value = SwitchTest.first('a', b: false, d: .42);
 
@@ -114,33 +177,62 @@ void main() {
       });
     });
     group('second ctor', () {
-      test("assert callbacks can't be null", () {
-        final value = SwitchTest.second('a');
+      test("assert callbacks can't be null", () async {
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
 
-        expect(
-          () => value.map(
-            (a) {},
-            first: null,
-            second: (SwitchTest2 value) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.map(
-            null,
-            first: (SwitchTest1 value) {},
-            second: (SwitchTest2 value) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.map(
-            (a) {},
-            first: (SwitchTest1 value) {},
-            second: null,
-          ),
-          throwsA(isA<AssertionError>()),
-        );
+void main() {
+  final value = SwitchTest.second('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: (SwitchTest1 b) {},
+    second: (SwitchTest2 c) {},
+  );
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.second('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: null,
+    second: (SwitchTest2 value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.second('a');
+
+  value.map(
+    null,
+    first: (SwitchTest1 value) {},
+    second: (SwitchTest2 value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.second('a');
+
+  value.map(
+    (SwitchTest0 a) {},
+    first: (SwitchTest1 value) {},
+    second: null,
+  );
+}
+'''), throwsCompileError);
       });
       test('calls second callback', () {
         final value = SwitchTest.second('a', 21, .42);
@@ -167,7 +259,7 @@ void main() {
   final value = SwitchTest.first('a', b: false, d: .42);
 
   value.map(
-    (String a) => 42,
+    (a) => 42,
   );
 }
 ''',
@@ -187,8 +279,10 @@ void main() {
       var value = SwitchTest('a');
 
       expect(
-        value.maybeMap((value) => '${value.a} default',
-            orElse: () => throw Error()),
+        value.maybeMap(
+          (value) => '${value.a} default',
+          orElse: () => throw Error(),
+        ),
         'a default',
       );
 
@@ -215,35 +309,45 @@ void main() {
       );
     });
 
-    test('assert orElse is passed', () {
-      var value = SwitchTest('a');
+    test('assert orElse is passed', () async {
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
 
-      expect(
-        () => value.maybeMap((a) => '$a default', orElse: null),
-        throwsA(isA<AssertionError>()),
-      );
+void main() {
+  var value = SwitchTest('a');
 
-      value = SwitchTest.first('a', b: false, d: .42);
+  value.maybeMap(
+    (SwitchTest0 a) {},
+    orElse: () {},
+  );
+}
+'''), completes);
 
-      expect(
-        () => value.maybeMap(
-          null,
-          first: (SwitchTest1 value) => '${value.a} ${value.b} ${value.d}',
-          orElse: null,
-        ),
-        throwsA(isA<AssertionError>()),
-      );
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
 
-      value = SwitchTest.second('a', 21, 0.42);
+void main() {
+  var value = SwitchTest('a');
 
-      expect(
-        () => value.maybeMap(
-          null,
-          second: (SwitchTest2 value) => '${value.a} ${value.c} ${value.d}',
-          orElse: null,
-        ),
-        throwsA(isA<AssertionError>()),
-      );
+  value.maybeMap(
+    (SwitchTest0 a) => '$a default',
+    orElse: null,
+  );
+}
+'''), throwsCompileError);
+
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  var value = SwitchTest('a');
+
+  value.maybeMap(
+    (SwitchTest0 a) => '$a default',
+    orElse: null,
+  );
+}
+'''), throwsCompileError);
     });
 
     test('orElse is called', () {
@@ -304,41 +408,6 @@ void main() {
           await main.session.getErrors('/freezed/test/integration/main.dart');
 
       expect(errorResult.errors, isNotEmpty);
-    });
-
-    test('when is not marked @required', () async {
-      final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
-library main;
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'multiple_constructors.dart';
-
-void main() {
-  final value = RequiredParams(a: 'a');
-
-  value.when((a) => a, second: (b) => b);
-}
-
-void redundant(@required String test) {
-}
-''',
-        },
-        (r) => r.findLibraryByName('main'),
-      );
-
-      // first make sure that the redundant @required annotation
-      // actually produces a warning.
-      final mainErrorResult =
-          await main.session.getErrors('/freezed/test/integration/main.dart');
-      expect(mainErrorResult.errors, hasLength(1));
-      expect(mainErrorResult.errors.first.message, contains('Redundant'));
-
-      // Now make sure the warning is not produced in the generated files.
-      final errorResult = await main.session.getErrors(
-          '/freezed/test/integration/multiple_constructors.freezed.dart');
-
-      expect(errorResult.errors, isEmpty);
     });
   });
 }

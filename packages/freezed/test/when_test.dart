@@ -1,7 +1,10 @@
+// @dart=2.9
+
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
+import 'common.dart';
 import 'integration/multiple_constructors.dart';
 
 void main() {
@@ -28,34 +31,64 @@ void main() {
       );
     });
     group('default ctor', () {
-      test("assert callbacks can't be null", () {
-        final value = SwitchTest('a');
+      test("assert callbacks can't be null", () async {
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
 
-        expect(
-          () => value.when(
-            (a) {},
-            first: null,
-            second: (a, c, d) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.when(
-            null,
-            first: (a, b, d) {},
-            second: (a, c, d) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.when(
-            (a) {},
-            first: (a, b, d) {},
-            second: null,
-          ),
-          throwsA(isA<AssertionError>()),
-        );
+void main() {
+  final value = SwitchTest('a');
+
+  value.when(
+    (String a) {},
+    first: (String a, bool? b, double? d) {},
+    second: (String a, int? c, double? d) {},
+  );
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest('a');
+
+  value.when(
+    (String a) {},
+    first: null,
+    second: (String value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest('a');
+
+  value.when(
+    null,
+    first: (String value) {},
+    second: (String value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest('a');
+
+  value.when(
+    (String a) {},
+    first: (String value) {},
+    second: null,
+  );
+}
+'''), throwsCompileError);
       });
+
       test('calls default callback', () {
         final value = SwitchTest('a');
 
@@ -69,35 +102,65 @@ void main() {
         );
       });
     });
-    group('first ctor', () {
-      test("assert callbacks can't be null", () {
-        final value = SwitchTest.first('a');
 
-        expect(
-          () => value.when(
-            (a) {},
-            first: null,
-            second: (a, c, d) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.when(
-            null,
-            first: (a, b, d) {},
-            second: (a, c, d) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.when(
-            (a) {},
-            first: (a, b, d) {},
-            second: null,
-          ),
-          throwsA(isA<AssertionError>()),
-        );
+    group('first ctor', () {
+      test("assert callbacks can't be null", () async {
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.first('a');
+  value.when(
+    (String a) {},
+    first: (String a, bool? b, double? d) {},
+    second: (String a, int? c, double? d) {},
+  );
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.first('a');
+
+  value.when(
+    (String a) {},
+    first: null,
+    second: (String value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.first('a');
+
+  value.when(
+    null,
+    first: (String value) {},
+    second: (String value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.first('a');
+
+  value.when(
+    (String a) {},
+    first: (String value) {},
+    second: null,
+  );
+}
+'''), throwsCompileError);
       });
+
       test('calls first callback', () {
         final value = SwitchTest.first('a', b: false, d: .42);
 
@@ -111,35 +174,65 @@ void main() {
         );
       });
     });
-    group('second ctor', () {
-      test("assert callbacks can't be null", () {
-        final value = SwitchTest.second('a');
 
-        expect(
-          () => value.when(
-            (a) {},
-            first: null,
-            second: (a, c, d) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.when(
-            null,
-            first: (a, b, d) {},
-            second: (a, c, d) {},
-          ),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => value.when(
-            (a) {},
-            first: (a, b, d) {},
-            second: null,
-          ),
-          throwsA(isA<AssertionError>()),
-        );
+    group('second ctor', () {
+      test("assert callbacks can't be null", () async {
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.second('a');
+  value.when(
+    (String a) {},
+    first: (String a, bool? b, double? d) {},
+    second: (String a, int? c, double? d) {},
+  );
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.second('a');
+
+  value.when(
+    (String a) {},
+    first: null,
+    second: (String value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.second('a');
+
+  value.when(
+    null,
+    first: (String value) {},
+    second: (String value) {},
+  );
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final value = SwitchTest.second('a');
+
+  value.when(
+    (String a) {},
+    first: (String value) {},
+    second: null,
+  );
+}
+'''), throwsCompileError);
       });
+
       test('calls second callback', () {
         final value = SwitchTest.second('a', 21, .42);
 
@@ -185,50 +278,75 @@ void main() {
       var value = SwitchTest('a');
 
       expect(
-        value.maybeWhen((a) => '$a default', orElse: () => throw Error()),
+        value.maybeWhen(
+          (String a) => '$a default',
+          orElse: () => throw Error(),
+        ),
         'a default',
       );
 
       value = SwitchTest.first('a', b: false, d: .42);
 
       expect(
-        value.maybeWhen(null,
-            first: (a, b, d) => '$a $b $d', orElse: () => throw Error()),
+        value.maybeWhen(
+          null,
+          first: (a, b, d) => '$a $b $d',
+          orElse: () => throw Error(),
+        ),
         'a false 0.42',
       );
 
       value = SwitchTest.second('a', 21, 0.42);
 
       expect(
-        value.maybeWhen(null,
-            second: (a, c, d) => '$a $c $d', orElse: () => throw Error()),
+        value.maybeWhen(
+          null,
+          second: (a, c, d) => '$a $c $d',
+          orElse: () => throw Error(),
+        ),
         'a 21 0.42',
       );
     });
 
-    test('assert orElse is passed', () {
-      var value = SwitchTest('a');
+    test('assert orElse is passed', () async {
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
 
-      expect(
-        () => value.maybeWhen((a) => '$a default', orElse: null),
-        throwsA(isA<AssertionError>()),
-      );
+void main() {
+  var value = SwitchTest('a');
 
-      value = SwitchTest.first('a', b: false, d: .42);
+  value.maybeWhen(
+    (String a) {},
+    orElse: () {},
+  );
+}
+'''), completes);
 
-      expect(
-        () =>
-            value.maybeWhen(null, first: (a, b, d) => '$a $b $d', orElse: null),
-        throwsA(isA<AssertionError>()),
-      );
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
 
-      value = SwitchTest.second('a', 21, 0.42);
+void main() {
+  var value = SwitchTest('a');
 
-      expect(
-        () => value.maybeWhen(null,
-            second: (a, c, d) => '$a $c $d', orElse: null),
-        throwsA(isA<AssertionError>()),
-      );
+  value.maybeWhen(
+    (String a) => '$a default',
+    orElse: null,
+  );
+}
+'''), throwsCompileError);
+
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  var value = SwitchTest('a');
+
+  value.maybeWhen(
+    (String a) => '$a default',
+    orElse: null,
+  );
+}
+'''), throwsCompileError);
     });
 
     test('orElse is called', () {

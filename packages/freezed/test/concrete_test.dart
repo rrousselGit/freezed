@@ -1,3 +1,5 @@
+// @dart=2.9
+
 // TODO: debugFillProperties still works if base class is Diagnosticable
 
 import 'package:test/test.dart';

@@ -10,7 +10,7 @@ part 'single_class_constructor.freezed.dart';
 abstract class Doc326 with _$Doc326 {
   /// Hello world
   factory Doc326({
-    int named,
+    int? named,
   }) = _Doc326;
 }
 
@@ -19,7 +19,7 @@ abstract class Doc326 with _$Doc326 {
 abstract class Doc317 with _$Doc317 {
   factory Doc317({
     /// )
-    int named,
+    int? named,
   }) = _Doc317;
 }
 
@@ -32,28 +32,19 @@ abstract class Doc with _$Doc {
     int positional, {
 
     /// Single line named
-    int named,
+    int? named,
 
     // Simple
-    int simple,
+    int? simple,
   }) = _Doc;
-}
-
-// Regression test for https://github.com/rrousselGit/freezed/issues/219
-@freezed
-abstract class LateField with _$LateField {
-  factory LateField() = _LateField;
-
-  @late
-  Map<String, dynamic> get editableProps => <String, dynamic>{};
 }
 
 /// Regression test for https://github.com/rrousselGit/freezed/issues/213
 @freezed
 abstract class Product with _$Product {
   const factory Product({
-    String name,
-    Product parent,
+    String? name,
+    Product? parent,
   }) = _ProductDataClass;
 }
 
@@ -72,23 +63,23 @@ abstract class Private implements _$Private {
 
 @freezed
 abstract class MyClass with _$MyClass {
-  const factory MyClass({String a, int b}) = WhateverIWant;
+  const factory MyClass({String? a, int? b}) = WhateverIWant;
 }
 
 @freezed
 abstract class MixedParam with _$MixedParam {
-  const factory MixedParam(String a, {int b}) = WhateverMixedParam;
+  const factory MixedParam(String a, {int? b}) = WhateverMixedParam;
 }
 
 @freezed
 abstract class PositionalMixedParam with _$PositionalMixedParam {
-  const factory PositionalMixedParam(String a, [int b]) =
+  const factory PositionalMixedParam(String a, [int? b]) =
       WhateverPositionalMixedParam;
 }
 
 @freezed
 abstract class Required with _$Required {
-  const factory Required({@required String a}) = WhateverRequired;
+  const factory Required({required String? a}) = WhateverRequired;
 }
 
 @freezed
@@ -113,7 +104,7 @@ abstract class Generic<T> with _$Generic<T> {
 
 @freezed
 abstract class Example with _$Example {
-  const factory Example(String a, {int b}) = Example0;
+  const factory Example(String a, {int? b}) = Example0;
 
   factory Example.fixed() {
     return const Example('a', b: 42);
@@ -129,8 +120,8 @@ abstract class NoConst with _$NoConst {
 @freezed
 abstract class SecondState with _$SecondState {
   const factory SecondState({
-    String dateTime,
-    String uuid,
+    String? dateTime,
+    String? uuid,
   }) = _SecondState;
 }
 
@@ -139,7 +130,7 @@ abstract class SecondState with _$SecondState {
 abstract class Static with _$Static {
   const factory Static() = _Static;
 
-  static int staticVariable;
+  static int? staticVariable;
 
   static int get staticGetter => 0;
 
@@ -148,10 +139,10 @@ abstract class Static with _$Static {
 
 @freezed
 abstract class Late with _$Late {
+  Late._();
   factory Late(int value) = _Late;
 
-  @late
-  LateContainer get container => LateContainer(value);
+  late final container = LateContainer(value);
 }
 
 class LateContainer {
@@ -166,24 +157,34 @@ class LateContainer {
 }
 
 @freezed
+abstract class AllProperties with _$AllProperties {
+  AllProperties._();
+  factory AllProperties(int value) = _AllProperties;
+
+  int get a => 1;
+  late final b = 2;
+  final c = 3;
+}
+
+@freezed
 abstract class Late2 with _$Late2 {
+  Late2._();
   factory Late2(int Function() cb) = _Late2;
 
-  @late
-  int get first => cb();
+  late final int first = cb();
 }
 
 @freezed
 abstract class ComplexLate with _$ComplexLate {
+  ComplexLate._();
   factory ComplexLate(List<int> values) = _ComplexLate;
 
-  @late
-  List<int> get odd => values.where((value) {
-        if (value.isOdd)
-          return true;
-        else
-          return false;
-      }).toList();
+  late final List<int> odd = values.where((value) {
+    if (value.isOdd)
+      return true;
+    else
+      return false;
+  }).toList();
 }
 
 @freezed
@@ -229,7 +230,7 @@ abstract class BoolDefault with _$BoolDefault {
 
 @freezed
 abstract class NullDefault with _$NullDefault {
-  factory NullDefault([@Default(null) bool value]) = _NullDefault;
+  factory NullDefault([@Default(null) bool? value]) = _NullDefault;
 }
 
 @freezed

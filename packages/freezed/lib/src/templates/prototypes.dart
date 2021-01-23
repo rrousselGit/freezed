@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
@@ -36,25 +38,43 @@ extension FreezedElementAnnotation on ElementAnnotation {
 }
 
 String whenPrototype(List<ConstructorDetails> allConstructors) {
-  return _whenPrototype(allConstructors,
-      areCallbacksRequired: true, name: 'when');
+  return _whenPrototype(
+    allConstructors,
+    areCallbacksRequired: true,
+    name: 'when',
+  );
 }
 
 String maybeWhenPrototype(List<ConstructorDetails> allConstructors) {
-  return _whenPrototype(allConstructors,
-      areCallbacksRequired: false, name: 'maybeWhen');
+  return _whenPrototype(
+    allConstructors,
+    areCallbacksRequired: false,
+    name: 'maybeWhen',
+  );
 }
 
-String mapPrototype(List<ConstructorDetails> allConstructors,
-    GenericsParameterTemplate genericParameters) {
-  return _mapPrototype(allConstructors, genericParameters,
-      areCallbacksRequired: true, name: 'map');
+String mapPrototype(
+  List<ConstructorDetails> allConstructors,
+  GenericsParameterTemplate genericParameters,
+) {
+  return _mapPrototype(
+    allConstructors,
+    genericParameters,
+    areCallbacksRequired: true,
+    name: 'map',
+  );
 }
 
-String maybeMapPrototype(List<ConstructorDetails> allConstructors,
-    GenericsParameterTemplate genericParameters) {
-  return _mapPrototype(allConstructors, genericParameters,
-      areCallbacksRequired: false, name: 'maybeMap');
+String maybeMapPrototype(
+  List<ConstructorDetails> allConstructors,
+  GenericsParameterTemplate genericParameters,
+) {
+  return _mapPrototype(
+    allConstructors,
+    genericParameters,
+    areCallbacksRequired: false,
+    name: 'maybeMap',
+  );
 }
 
 String _mapPrototype(
@@ -74,7 +94,6 @@ String _mapPrototype(
           type: '${constructor.redirectedName}$genericParameters',
           isRequired: false,
           decorators: const [],
-          nullable: false,
           defaultValueSource: '',
           doc: '',
         ),
@@ -110,7 +129,7 @@ String _unionPrototype(
   @required ParametersTemplate Function(ConstructorDetails) ctor2parameters,
 }) {
   final buffer =
-      StringBuffer('@optionalTypeArgs TResult $name<TResult extends Object>(');
+      StringBuffer('@optionalTypeArgs TResult $name<TResult extends Object?>(');
 
   final parameters = <CallbackParameter>[];
   for (final constructor in allConstructors) {
@@ -118,9 +137,9 @@ String _unionPrototype(
       name: constructorNameToCallbackName(constructor.name),
       type: 'TResult',
       isRequired: !constructor.isDefault && areCallbacksRequired,
+      isNullable: !areCallbacksRequired,
       parameters: ctor2parameters(constructor),
       decorators: const [],
-      nullable: false,
       defaultValueSource: '',
       doc: '',
     );
@@ -138,7 +157,7 @@ String _unionPrototype(
     ..write(',');
 
   if (!areCallbacksRequired) {
-    buffer.write('@required TResult orElse(),');
+    buffer.write('required TResult orElse(),');
   }
   buffer.write('})');
   return buffer.toString();

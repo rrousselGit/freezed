@@ -19,7 +19,6 @@ jobs:
           - packages/freezed/example
         channel:
           - dev
-          - stable
 
     steps:
       - uses: actions/checkout@v2

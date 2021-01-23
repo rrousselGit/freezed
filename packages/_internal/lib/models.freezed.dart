@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
+// @dart=2.9
 part of 'models.dart';
 
 // **************************************************************************
@@ -18,11 +19,13 @@ class _$CloneablePropertyTearOff {
       {@required String name,
       @required String typeName,
       @required String type,
+      @required bool nullable,
       @required GenericsParameterTemplate genericParameters}) {
     return _CloneableProperty(
       name: name,
       typeName: typeName,
       type: type,
+      nullable: nullable,
       genericParameters: genericParameters,
     );
   }
@@ -37,8 +40,10 @@ mixin _$CloneableProperty {
   String get name;
   String get typeName;
   String get type;
+  bool get nullable;
   GenericsParameterTemplate get genericParameters;
 
+  @JsonKey(ignore: true)
   $CloneablePropertyCopyWith<CloneableProperty> get copyWith;
 }
 
@@ -51,6 +56,7 @@ abstract class $CloneablePropertyCopyWith<$Res> {
       {String name,
       String typeName,
       String type,
+      bool nullable,
       GenericsParameterTemplate genericParameters});
 }
 
@@ -68,12 +74,14 @@ class _$CloneablePropertyCopyWithImpl<$Res>
     Object name = freezed,
     Object typeName = freezed,
     Object type = freezed,
+    Object nullable = freezed,
     Object genericParameters = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed ? _value.name : name as String,
       typeName: typeName == freezed ? _value.typeName : typeName as String,
       type: type == freezed ? _value.type : type as String,
+      nullable: nullable == freezed ? _value.nullable : nullable as bool,
       genericParameters: genericParameters == freezed
           ? _value.genericParameters
           : genericParameters as GenericsParameterTemplate,
@@ -92,6 +100,7 @@ abstract class _$CloneablePropertyCopyWith<$Res>
       {String name,
       String typeName,
       String type,
+      bool nullable,
       GenericsParameterTemplate genericParameters});
 }
 
@@ -111,12 +120,14 @@ class __$CloneablePropertyCopyWithImpl<$Res>
     Object name = freezed,
     Object typeName = freezed,
     Object type = freezed,
+    Object nullable = freezed,
     Object genericParameters = freezed,
   }) {
     return _then(_CloneableProperty(
       name: name == freezed ? _value.name : name as String,
       typeName: typeName == freezed ? _value.typeName : typeName as String,
       type: type == freezed ? _value.type : type as String,
+      nullable: nullable == freezed ? _value.nullable : nullable as bool,
       genericParameters: genericParameters == freezed
           ? _value.genericParameters
           : genericParameters as GenericsParameterTemplate,
@@ -130,10 +141,12 @@ class _$_CloneableProperty implements _CloneableProperty {
       {@required this.name,
       @required this.typeName,
       @required this.type,
+      @required this.nullable,
       @required this.genericParameters})
       : assert(name != null),
         assert(typeName != null),
         assert(type != null),
+        assert(nullable != null),
         assert(genericParameters != null);
 
   @override
@@ -143,11 +156,13 @@ class _$_CloneableProperty implements _CloneableProperty {
   @override
   final String type;
   @override
+  final bool nullable;
+  @override
   final GenericsParameterTemplate genericParameters;
 
   @override
   String toString() {
-    return 'CloneableProperty(name: $name, typeName: $typeName, type: $type, genericParameters: $genericParameters)';
+    return 'CloneableProperty(name: $name, typeName: $typeName, type: $type, nullable: $nullable, genericParameters: $genericParameters)';
   }
 
   @override
@@ -161,6 +176,9 @@ class _$_CloneableProperty implements _CloneableProperty {
                     .equals(other.typeName, typeName)) &&
             (identical(other.type, type) ||
                 const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.nullable, nullable) ||
+                const DeepCollectionEquality()
+                    .equals(other.nullable, nullable)) &&
             (identical(other.genericParameters, genericParameters) ||
                 const DeepCollectionEquality()
                     .equals(other.genericParameters, genericParameters)));
@@ -172,8 +190,10 @@ class _$_CloneableProperty implements _CloneableProperty {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(typeName) ^
       const DeepCollectionEquality().hash(type) ^
+      const DeepCollectionEquality().hash(nullable) ^
       const DeepCollectionEquality().hash(genericParameters);
 
+  @JsonKey(ignore: true)
   @override
   _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith =>
       __$CloneablePropertyCopyWithImpl<_CloneableProperty>(this, _$identity);
@@ -184,6 +204,7 @@ abstract class _CloneableProperty implements CloneableProperty {
           {@required String name,
           @required String typeName,
           @required String type,
+          @required bool nullable,
           @required GenericsParameterTemplate genericParameters}) =
       _$_CloneableProperty;
 
@@ -194,8 +215,11 @@ abstract class _CloneableProperty implements CloneableProperty {
   @override
   String get type;
   @override
+  bool get nullable;
+  @override
   GenericsParameterTemplate get genericParameters;
   @override
+  @JsonKey(ignore: true)
   _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith;
 }
 
@@ -259,6 +283,7 @@ mixin _$ConstructorDetails {
   bool get canOverrideToString;
   List<AssertTemplate> get asserts;
 
+  @JsonKey(ignore: true)
   $ConstructorDetailsCopyWith<ConstructorDetails> get copyWith;
 }
 
@@ -569,6 +594,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       const DeepCollectionEquality().hash(canOverrideToString) ^
       const DeepCollectionEquality().hash(asserts);
 
+  @JsonKey(ignore: true)
   @override
   _$ConstructorDetailsCopyWith<_ConstructorDetails> get copyWith =>
       __$ConstructorDetailsCopyWithImpl<_ConstructorDetails>(this, _$identity);
@@ -621,6 +647,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   @override
   List<AssertTemplate> get asserts;
   @override
+  @JsonKey(ignore: true)
   _$ConstructorDetailsCopyWith<_ConstructorDetails> get copyWith;
 }
 
@@ -631,18 +658,18 @@ class _$DataTearOff {
 // ignore: unused_element
   _Data call(
       {@required String name,
-      @required List<LateGetter> lateGetters,
       @required bool needsJsonSerializable,
       @required String unionKey,
+      @required List<String> concretePropertiesName,
       @required List<ConstructorDetails> constructors,
       @required GenericsDefinitionTemplate genericsDefinitionTemplate,
       @required GenericsParameterTemplate genericsParameterTemplate,
       @required bool shouldUseExtends}) {
     return _Data(
       name: name,
-      lateGetters: lateGetters,
       needsJsonSerializable: needsJsonSerializable,
       unionKey: unionKey,
+      concretePropertiesName: concretePropertiesName,
       constructors: constructors,
       genericsDefinitionTemplate: genericsDefinitionTemplate,
       genericsParameterTemplate: genericsParameterTemplate,
@@ -658,14 +685,15 @@ const $Data = _$DataTearOff();
 /// @nodoc
 mixin _$Data {
   String get name;
-  List<LateGetter> get lateGetters;
   bool get needsJsonSerializable;
   String get unionKey;
+  List<String> get concretePropertiesName;
   List<ConstructorDetails> get constructors;
   GenericsDefinitionTemplate get genericsDefinitionTemplate;
   GenericsParameterTemplate get genericsParameterTemplate;
   bool get shouldUseExtends;
 
+  @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith;
 }
 
@@ -675,9 +703,9 @@ abstract class $DataCopyWith<$Res> {
       _$DataCopyWithImpl<$Res>;
   $Res call(
       {String name,
-      List<LateGetter> lateGetters,
       bool needsJsonSerializable,
       String unionKey,
+      List<String> concretePropertiesName,
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
@@ -695,9 +723,9 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
   @override
   $Res call({
     Object name = freezed,
-    Object lateGetters = freezed,
     Object needsJsonSerializable = freezed,
     Object unionKey = freezed,
+    Object concretePropertiesName = freezed,
     Object constructors = freezed,
     Object genericsDefinitionTemplate = freezed,
     Object genericsParameterTemplate = freezed,
@@ -705,13 +733,13 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       name: name == freezed ? _value.name : name as String,
-      lateGetters: lateGetters == freezed
-          ? _value.lateGetters
-          : lateGetters as List<LateGetter>,
       needsJsonSerializable: needsJsonSerializable == freezed
           ? _value.needsJsonSerializable
           : needsJsonSerializable as bool,
       unionKey: unionKey == freezed ? _value.unionKey : unionKey as String,
+      concretePropertiesName: concretePropertiesName == freezed
+          ? _value.concretePropertiesName
+          : concretePropertiesName as List<String>,
       constructors: constructors == freezed
           ? _value.constructors
           : constructors as List<ConstructorDetails>,
@@ -735,9 +763,9 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
   @override
   $Res call(
       {String name,
-      List<LateGetter> lateGetters,
       bool needsJsonSerializable,
       String unionKey,
+      List<String> concretePropertiesName,
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
@@ -756,9 +784,9 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
   @override
   $Res call({
     Object name = freezed,
-    Object lateGetters = freezed,
     Object needsJsonSerializable = freezed,
     Object unionKey = freezed,
+    Object concretePropertiesName = freezed,
     Object constructors = freezed,
     Object genericsDefinitionTemplate = freezed,
     Object genericsParameterTemplate = freezed,
@@ -766,13 +794,13 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
   }) {
     return _then(_Data(
       name: name == freezed ? _value.name : name as String,
-      lateGetters: lateGetters == freezed
-          ? _value.lateGetters
-          : lateGetters as List<LateGetter>,
       needsJsonSerializable: needsJsonSerializable == freezed
           ? _value.needsJsonSerializable
           : needsJsonSerializable as bool,
       unionKey: unionKey == freezed ? _value.unionKey : unionKey as String,
+      concretePropertiesName: concretePropertiesName == freezed
+          ? _value.concretePropertiesName
+          : concretePropertiesName as List<String>,
       constructors: constructors == freezed
           ? _value.constructors
           : constructors as List<ConstructorDetails>,
@@ -793,17 +821,17 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
 class _$_Data implements _Data {
   _$_Data(
       {@required this.name,
-      @required this.lateGetters,
       @required this.needsJsonSerializable,
       @required this.unionKey,
+      @required this.concretePropertiesName,
       @required this.constructors,
       @required this.genericsDefinitionTemplate,
       @required this.genericsParameterTemplate,
       @required this.shouldUseExtends})
       : assert(name != null),
-        assert(lateGetters != null),
         assert(needsJsonSerializable != null),
         assert(unionKey != null),
+        assert(concretePropertiesName != null),
         assert(constructors != null),
         assert(genericsDefinitionTemplate != null),
         assert(genericsParameterTemplate != null),
@@ -814,11 +842,11 @@ class _$_Data implements _Data {
   @override
   final String name;
   @override
-  final List<LateGetter> lateGetters;
-  @override
   final bool needsJsonSerializable;
   @override
   final String unionKey;
+  @override
+  final List<String> concretePropertiesName;
   @override
   final List<ConstructorDetails> constructors;
   @override
@@ -830,7 +858,7 @@ class _$_Data implements _Data {
 
   @override
   String toString() {
-    return 'Data(name: $name, lateGetters: $lateGetters, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
+    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
   }
 
   @override
@@ -839,15 +867,15 @@ class _$_Data implements _Data {
         (other is _Data &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.lateGetters, lateGetters) ||
-                const DeepCollectionEquality()
-                    .equals(other.lateGetters, lateGetters)) &&
             (identical(other.needsJsonSerializable, needsJsonSerializable) ||
                 const DeepCollectionEquality().equals(
                     other.needsJsonSerializable, needsJsonSerializable)) &&
             (identical(other.unionKey, unionKey) ||
                 const DeepCollectionEquality()
                     .equals(other.unionKey, unionKey)) &&
+            (identical(other.concretePropertiesName, concretePropertiesName) ||
+                const DeepCollectionEquality().equals(
+                    other.concretePropertiesName, concretePropertiesName)) &&
             (identical(other.constructors, constructors) ||
                 const DeepCollectionEquality()
                     .equals(other.constructors, constructors)) &&
@@ -870,14 +898,15 @@ class _$_Data implements _Data {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(lateGetters) ^
       const DeepCollectionEquality().hash(needsJsonSerializable) ^
       const DeepCollectionEquality().hash(unionKey) ^
+      const DeepCollectionEquality().hash(concretePropertiesName) ^
       const DeepCollectionEquality().hash(constructors) ^
       const DeepCollectionEquality().hash(genericsDefinitionTemplate) ^
       const DeepCollectionEquality().hash(genericsParameterTemplate) ^
       const DeepCollectionEquality().hash(shouldUseExtends);
 
+  @JsonKey(ignore: true)
   @override
   _$DataCopyWith<_Data> get copyWith =>
       __$DataCopyWithImpl<_Data>(this, _$identity);
@@ -886,9 +915,9 @@ class _$_Data implements _Data {
 abstract class _Data implements Data {
   factory _Data(
       {@required String name,
-      @required List<LateGetter> lateGetters,
       @required bool needsJsonSerializable,
       @required String unionKey,
+      @required List<String> concretePropertiesName,
       @required List<ConstructorDetails> constructors,
       @required GenericsDefinitionTemplate genericsDefinitionTemplate,
       @required GenericsParameterTemplate genericsParameterTemplate,
@@ -897,11 +926,11 @@ abstract class _Data implements Data {
   @override
   String get name;
   @override
-  List<LateGetter> get lateGetters;
-  @override
   bool get needsJsonSerializable;
   @override
   String get unionKey;
+  @override
+  List<String> get concretePropertiesName;
   @override
   List<ConstructorDetails> get constructors;
   @override
@@ -911,6 +940,7 @@ abstract class _Data implements Data {
   @override
   bool get shouldUseExtends;
   @override
+  @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith;
 }
 
@@ -936,6 +966,7 @@ mixin _$GlobalData {
   bool get hasJson;
   bool get hasDiagnostics;
 
+  @JsonKey(ignore: true)
   $GlobalDataCopyWith<GlobalData> get copyWith;
 }
 
@@ -1036,6 +1067,7 @@ class _$_GlobalData implements _GlobalData {
       const DeepCollectionEquality().hash(hasJson) ^
       const DeepCollectionEquality().hash(hasDiagnostics);
 
+  @JsonKey(ignore: true)
   @override
   _$GlobalDataCopyWith<_GlobalData> get copyWith =>
       __$GlobalDataCopyWithImpl<_GlobalData>(this, _$identity);
@@ -1050,5 +1082,6 @@ abstract class _GlobalData implements GlobalData {
   @override
   bool get hasDiagnostics;
   @override
+  @JsonKey(ignore: true)
   _$GlobalDataCopyWith<_GlobalData> get copyWith;
 }

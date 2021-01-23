@@ -14,7 +14,7 @@ class _$MyClassTearOff {
   const _$MyClassTearOff();
 
 // ignore: unused_element
-  _MyClass call({String a, int b}) {
+  _MyClass call({String? a, int? b}) {
     return _MyClass(
       a: a,
       b: b,
@@ -28,9 +28,10 @@ const $MyClass = _$MyClassTearOff();
 
 /// @nodoc
 mixin _$MyClass {
-  String get a;
-  int get b;
+  String? get a;
+  int? get b;
 
+  @JsonKey(ignore: true)
   $MyClassCopyWith<MyClass> get copyWith;
 }
 
@@ -38,7 +39,7 @@ mixin _$MyClass {
 abstract class $MyClassCopyWith<$Res> {
   factory $MyClassCopyWith(MyClass value, $Res Function(MyClass) then) =
       _$MyClassCopyWithImpl<$Res>;
-  $Res call({String a, int b});
+  $Res call({String? a, int? b});
 }
 
 /// @nodoc
@@ -51,12 +52,12 @@ class _$MyClassCopyWithImpl<$Res> implements $MyClassCopyWith<$Res> {
 
   @override
   $Res call({
-    Object a = freezed,
-    Object b = freezed,
+    Object? a = freezed,
+    Object? b = freezed,
   }) {
     return _then(_value.copyWith(
-      a: a == freezed ? _value.a : a as String,
-      b: b == freezed ? _value.b : b as int,
+      a: a == freezed ? _value.a : a as String?,
+      b: b == freezed ? _value.b : b as int?,
     ));
   }
 }
@@ -66,7 +67,7 @@ abstract class _$MyClassCopyWith<$Res> implements $MyClassCopyWith<$Res> {
   factory _$MyClassCopyWith(_MyClass value, $Res Function(_MyClass) then) =
       __$MyClassCopyWithImpl<$Res>;
   @override
-  $Res call({String a, int b});
+  $Res call({String? a, int? b});
 }
 
 /// @nodoc
@@ -80,12 +81,12 @@ class __$MyClassCopyWithImpl<$Res> extends _$MyClassCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object a = freezed,
-    Object b = freezed,
+    Object? a = freezed,
+    Object? b = freezed,
   }) {
     return _then(_MyClass(
-      a: a == freezed ? _value.a : a as String,
-      b: b == freezed ? _value.b : b as int,
+      a: a == freezed ? _value.a : a as String?,
+      b: b == freezed ? _value.b : b as int?,
     ));
   }
 }
@@ -95,9 +96,9 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   _$_MyClass({this.a, this.b});
 
   @override
-  final String a;
+  final String? a;
   @override
-  final int b;
+  final int? b;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -129,19 +130,21 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
       const DeepCollectionEquality().hash(a) ^
       const DeepCollectionEquality().hash(b);
 
+  @JsonKey(ignore: true)
   @override
   _$MyClassCopyWith<_MyClass> get copyWith =>
       __$MyClassCopyWithImpl<_MyClass>(this, _$identity);
 }
 
 abstract class _MyClass implements MyClass {
-  factory _MyClass({String a, int b}) = _$_MyClass;
+  factory _MyClass({String? a, int? b}) = _$_MyClass;
 
   @override
-  String get a;
+  String? get a;
   @override
-  int get b;
+  int? get b;
   @override
+  @JsonKey(ignore: true)
   _$MyClassCopyWith<_MyClass> get copyWith;
 }
 
@@ -178,7 +181,7 @@ class _$UnionTearOff {
   }
 
 // ignore: unused_element
-  ErrorDetails error([String message]) {
+  ErrorDetails error([String? message]) {
     return ErrorDetails(
       message,
     );
@@ -205,34 +208,34 @@ const $Union = _$UnionTearOff();
 /// @nodoc
 mixin _$Union {
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int value), {
-    @required TResult loading(),
-    @required TResult error(String message),
-    @required TResult complex(int a, String b),
+  TResult when<TResult extends Object?>(
+    TResult Function(int value) $default, {
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(int a, String b) complex,
   });
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int value), {
-    TResult loading(),
-    TResult error(String message),
-    TResult complex(int a, String b),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+    required TResult orElse(),
   });
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(Data value), {
-    @required TResult loading(Loading value),
-    @required TResult error(ErrorDetails value),
-    @required TResult complex(Complex value),
+  TResult map<TResult extends Object?>(
+    TResult Function(Data value) $default, {
+    required TResult Function(Loading value) loading,
+    required TResult Function(ErrorDetails value) error,
+    required TResult Function(Complex value) complex,
   });
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(Data value), {
-    TResult loading(Loading value),
-    TResult error(ErrorDetails value),
-    TResult complex(Complex value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+    required TResult orElse(),
   });
   Map<String, dynamic> toJson();
 }
@@ -270,7 +273,7 @@ class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object value = freezed,
+    Object? value = freezed,
   }) {
     return _then(Data(
       value == freezed ? _value.value : value as int,
@@ -282,7 +285,7 @@ class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 
 /// @nodoc
 class _$Data with DiagnosticableTreeMixin implements Data {
-  const _$Data(this.value) : assert(value != null);
+  const _$Data(this.value);
 
   factory _$Data.fromJson(Map<String, dynamic> json) => _$_$DataFromJson(json);
 
@@ -314,35 +317,31 @@ class _$Data with DiagnosticableTreeMixin implements Data {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
 
+  @JsonKey(ignore: true)
   @override
   $DataCopyWith<Data> get copyWith =>
       _$DataCopyWithImpl<Data>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int value), {
-    @required TResult loading(),
-    @required TResult error(String message),
-    @required TResult complex(int a, String b),
+  TResult when<TResult extends Object?>(
+    TResult Function(int value) $default, {
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(int a, String b) complex,
   }) {
-    assert($default != null);
-    assert(loading != null);
-    assert(error != null);
-    assert(complex != null);
     return $default(value);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int value), {
-    TResult loading(),
-    TResult error(String message),
-    TResult complex(int a, String b),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if ($default != null) {
       return $default(value);
     }
@@ -351,29 +350,24 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(Data value), {
-    @required TResult loading(Loading value),
-    @required TResult error(ErrorDetails value),
-    @required TResult complex(Complex value),
+  TResult map<TResult extends Object?>(
+    TResult Function(Data value) $default, {
+    required TResult Function(Loading value) loading,
+    required TResult Function(ErrorDetails value) error,
+    required TResult Function(Complex value) complex,
   }) {
-    assert($default != null);
-    assert(loading != null);
-    assert(error != null);
-    assert(complex != null);
     return $default(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(Data value), {
-    TResult loading(Loading value),
-    TResult error(ErrorDetails value),
-    TResult complex(Complex value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if ($default != null) {
       return $default(this);
     }
@@ -392,6 +386,7 @@ abstract class Data implements Union {
   factory Data.fromJson(Map<String, dynamic> json) = _$Data.fromJson;
 
   int get value;
+  @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith;
 }
 
@@ -441,29 +436,24 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int value), {
-    @required TResult loading(),
-    @required TResult error(String message),
-    @required TResult complex(int a, String b),
+  TResult when<TResult extends Object?>(
+    TResult Function(int value) $default, {
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(int a, String b) complex,
   }) {
-    assert($default != null);
-    assert(loading != null);
-    assert(error != null);
-    assert(complex != null);
     return loading();
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int value), {
-    TResult loading(),
-    TResult error(String message),
-    TResult complex(int a, String b),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (loading != null) {
       return loading();
     }
@@ -472,29 +462,24 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(Data value), {
-    @required TResult loading(Loading value),
-    @required TResult error(ErrorDetails value),
-    @required TResult complex(Complex value),
+  TResult map<TResult extends Object?>(
+    TResult Function(Data value) $default, {
+    required TResult Function(Loading value) loading,
+    required TResult Function(ErrorDetails value) error,
+    required TResult Function(Complex value) complex,
   }) {
-    assert($default != null);
-    assert(loading != null);
-    assert(error != null);
-    assert(complex != null);
     return loading(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(Data value), {
-    TResult loading(Loading value),
-    TResult error(ErrorDetails value),
-    TResult complex(Complex value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (loading != null) {
       return loading(this);
     }
@@ -518,7 +503,7 @@ abstract class $ErrorDetailsCopyWith<$Res> {
   factory $ErrorDetailsCopyWith(
           ErrorDetails value, $Res Function(ErrorDetails) then) =
       _$ErrorDetailsCopyWithImpl<$Res>;
-  $Res call({String message});
+  $Res call({String? message});
 }
 
 /// @nodoc
@@ -533,10 +518,10 @@ class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object message = freezed,
+    Object? message = freezed,
   }) {
     return _then(ErrorDetails(
-      message == freezed ? _value.message : message as String,
+      message == freezed ? _value.message : message as String?,
     ));
   }
 }
@@ -551,7 +536,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
       _$_$ErrorDetailsFromJson(json);
 
   @override
-  final String message;
+  final String? message;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -578,35 +563,31 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
 
+  @JsonKey(ignore: true)
   @override
   $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
       _$ErrorDetailsCopyWithImpl<ErrorDetails>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int value), {
-    @required TResult loading(),
-    @required TResult error(String message),
-    @required TResult complex(int a, String b),
+  TResult when<TResult extends Object?>(
+    TResult Function(int value) $default, {
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(int a, String b) complex,
   }) {
-    assert($default != null);
-    assert(loading != null);
-    assert(error != null);
-    assert(complex != null);
     return error(message);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int value), {
-    TResult loading(),
-    TResult error(String message),
-    TResult complex(int a, String b),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (error != null) {
       return error(message);
     }
@@ -615,29 +596,24 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(Data value), {
-    @required TResult loading(Loading value),
-    @required TResult error(ErrorDetails value),
-    @required TResult complex(Complex value),
+  TResult map<TResult extends Object?>(
+    TResult Function(Data value) $default, {
+    required TResult Function(Loading value) loading,
+    required TResult Function(ErrorDetails value) error,
+    required TResult Function(Complex value) complex,
   }) {
-    assert($default != null);
-    assert(loading != null);
-    assert(error != null);
-    assert(complex != null);
     return error(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(Data value), {
-    TResult loading(Loading value),
-    TResult error(ErrorDetails value),
-    TResult complex(Complex value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (error != null) {
       return error(this);
     }
@@ -651,12 +627,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 }
 
 abstract class ErrorDetails implements Union {
-  const factory ErrorDetails([String message]) = _$ErrorDetails;
+  const factory ErrorDetails([String? message]) = _$ErrorDetails;
 
   factory ErrorDetails.fromJson(Map<String, dynamic> json) =
       _$ErrorDetails.fromJson;
 
-  String get message;
+  String? get message;
+  @JsonKey(ignore: true)
   $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
 }
 
@@ -678,8 +655,8 @@ class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object a = freezed,
-    Object b = freezed,
+    Object? a = freezed,
+    Object? b = freezed,
   }) {
     return _then(Complex(
       a == freezed ? _value.a : a as int,
@@ -692,9 +669,7 @@ class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 
 /// @nodoc
 class _$Complex with DiagnosticableTreeMixin implements Complex {
-  const _$Complex(this.a, this.b)
-      : assert(a != null),
-        assert(b != null);
+  const _$Complex(this.a, this.b);
 
   factory _$Complex.fromJson(Map<String, dynamic> json) =>
       _$_$ComplexFromJson(json);
@@ -734,35 +709,31 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
       const DeepCollectionEquality().hash(a) ^
       const DeepCollectionEquality().hash(b);
 
+  @JsonKey(ignore: true)
   @override
   $ComplexCopyWith<Complex> get copyWith =>
       _$ComplexCopyWithImpl<Complex>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int value), {
-    @required TResult loading(),
-    @required TResult error(String message),
-    @required TResult complex(int a, String b),
+  TResult when<TResult extends Object?>(
+    TResult Function(int value) $default, {
+    required TResult Function() loading,
+    required TResult Function(String? message) error,
+    required TResult Function(int a, String b) complex,
   }) {
-    assert($default != null);
-    assert(loading != null);
-    assert(error != null);
-    assert(complex != null);
     return complex(a, b);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int value), {
-    TResult loading(),
-    TResult error(String message),
-    TResult complex(int a, String b),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (complex != null) {
       return complex(a, b);
     }
@@ -771,29 +742,24 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(Data value), {
-    @required TResult loading(Loading value),
-    @required TResult error(ErrorDetails value),
-    @required TResult complex(Complex value),
+  TResult map<TResult extends Object?>(
+    TResult Function(Data value) $default, {
+    required TResult Function(Loading value) loading,
+    required TResult Function(ErrorDetails value) error,
+    required TResult Function(Complex value) complex,
   }) {
-    assert($default != null);
-    assert(loading != null);
-    assert(error != null);
-    assert(complex != null);
     return complex(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(Data value), {
-    TResult loading(Loading value),
-    TResult error(ErrorDetails value),
-    TResult complex(Complex value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (complex != null) {
       return complex(this);
     }
@@ -813,6 +779,7 @@ abstract class Complex implements Union {
 
   int get a;
   String get b;
+  @JsonKey(ignore: true)
   $ComplexCopyWith<Complex> get copyWith;
 }
 
@@ -821,7 +788,7 @@ class _$SharedPropertyTearOff {
   const _$SharedPropertyTearOff();
 
 // ignore: unused_element
-  SharedProperty0 person({String name, int age}) {
+  SharedProperty0 person({String? name, int? age}) {
     return SharedProperty0(
       name: name,
       age: age,
@@ -829,7 +796,7 @@ class _$SharedPropertyTearOff {
   }
 
 // ignore: unused_element
-  SharedProperty1 city({String name, int population}) {
+  SharedProperty1 city({String? name, int? population}) {
     return SharedProperty1(
       name: name,
       population: population,
@@ -843,31 +810,32 @@ const $SharedProperty = _$SharedPropertyTearOff();
 
 /// @nodoc
 mixin _$SharedProperty {
-  String get name;
+  String? get name;
 
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult city(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? name, int? age) person,
+    required TResult Function(String? name, int? population) city,
   });
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult city(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? name, int? age)? person,
+    TResult Function(String? name, int? population)? city,
+    required TResult orElse(),
   });
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(SharedProperty0 value),
-    @required TResult city(SharedProperty1 value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(SharedProperty0 value) person,
+    required TResult Function(SharedProperty1 value) city,
   });
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(SharedProperty0 value),
-    TResult city(SharedProperty1 value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SharedProperty0 value)? person,
+    TResult Function(SharedProperty1 value)? city,
+    required TResult orElse(),
   });
 
+  @JsonKey(ignore: true)
   $SharedPropertyCopyWith<SharedProperty> get copyWith;
 }
 
@@ -876,7 +844,7 @@ abstract class $SharedPropertyCopyWith<$Res> {
   factory $SharedPropertyCopyWith(
           SharedProperty value, $Res Function(SharedProperty) then) =
       _$SharedPropertyCopyWithImpl<$Res>;
-  $Res call({String name});
+  $Res call({String? name});
 }
 
 /// @nodoc
@@ -890,10 +858,10 @@ class _$SharedPropertyCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
+    Object? name = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
+      name: name == freezed ? _value.name : name as String?,
     ));
   }
 }
@@ -905,7 +873,7 @@ abstract class $SharedProperty0CopyWith<$Res>
           SharedProperty0 value, $Res Function(SharedProperty0) then) =
       _$SharedProperty0CopyWithImpl<$Res>;
   @override
-  $Res call({String name, int age});
+  $Res call({String? name, int? age});
 }
 
 /// @nodoc
@@ -921,12 +889,12 @@ class _$SharedProperty0CopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object age = freezed,
+    Object? name = freezed,
+    Object? age = freezed,
   }) {
     return _then(SharedProperty0(
-      name: name == freezed ? _value.name : name as String,
-      age: age == freezed ? _value.age : age as int,
+      name: name == freezed ? _value.name : name as String?,
+      age: age == freezed ? _value.age : age as int?,
     ));
   }
 }
@@ -938,9 +906,9 @@ class _$SharedProperty0
   _$SharedProperty0({this.name, this.age});
 
   @override
-  final String name;
+  final String? name;
   @override
-  final int age;
+  final int? age;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -972,29 +940,27 @@ class _$SharedProperty0
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(age);
 
+  @JsonKey(ignore: true)
   @override
   $SharedProperty0CopyWith<SharedProperty0> get copyWith =>
       _$SharedProperty0CopyWithImpl<SharedProperty0>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult city(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? name, int? age) person,
+    required TResult Function(String? name, int? population) city,
   }) {
-    assert(person != null);
-    assert(city != null);
     return person(name, age);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult city(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? name, int? age)? person,
+    TResult Function(String? name, int? population)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (person != null) {
       return person(name, age);
     }
@@ -1003,23 +969,20 @@ class _$SharedProperty0
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(SharedProperty0 value),
-    @required TResult city(SharedProperty1 value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(SharedProperty0 value) person,
+    required TResult Function(SharedProperty1 value) city,
   }) {
-    assert(person != null);
-    assert(city != null);
     return person(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(SharedProperty0 value),
-    TResult city(SharedProperty1 value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SharedProperty0 value)? person,
+    TResult Function(SharedProperty1 value)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (person != null) {
       return person(this);
     }
@@ -1028,12 +991,13 @@ class _$SharedProperty0
 }
 
 abstract class SharedProperty0 implements SharedProperty {
-  factory SharedProperty0({String name, int age}) = _$SharedProperty0;
+  factory SharedProperty0({String? name, int? age}) = _$SharedProperty0;
 
   @override
-  String get name;
-  int get age;
+  String? get name;
+  int? get age;
   @override
+  @JsonKey(ignore: true)
   $SharedProperty0CopyWith<SharedProperty0> get copyWith;
 }
 
@@ -1044,7 +1008,7 @@ abstract class $SharedProperty1CopyWith<$Res>
           SharedProperty1 value, $Res Function(SharedProperty1) then) =
       _$SharedProperty1CopyWithImpl<$Res>;
   @override
-  $Res call({String name, int population});
+  $Res call({String? name, int? population});
 }
 
 /// @nodoc
@@ -1060,12 +1024,13 @@ class _$SharedProperty1CopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object population = freezed,
+    Object? name = freezed,
+    Object? population = freezed,
   }) {
     return _then(SharedProperty1(
-      name: name == freezed ? _value.name : name as String,
-      population: population == freezed ? _value.population : population as int,
+      name: name == freezed ? _value.name : name as String?,
+      population:
+          population == freezed ? _value.population : population as int?,
     ));
   }
 }
@@ -1077,9 +1042,9 @@ class _$SharedProperty1
   _$SharedProperty1({this.name, this.population});
 
   @override
-  final String name;
+  final String? name;
   @override
-  final int population;
+  final int? population;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -1112,29 +1077,27 @@ class _$SharedProperty1
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(population);
 
+  @JsonKey(ignore: true)
   @override
   $SharedProperty1CopyWith<SharedProperty1> get copyWith =>
       _$SharedProperty1CopyWithImpl<SharedProperty1>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult city(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? name, int? age) person,
+    required TResult Function(String? name, int? population) city,
   }) {
-    assert(person != null);
-    assert(city != null);
     return city(name, population);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult city(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? name, int? age)? person,
+    TResult Function(String? name, int? population)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (city != null) {
       return city(name, population);
     }
@@ -1143,23 +1106,20 @@ class _$SharedProperty1
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(SharedProperty0 value),
-    @required TResult city(SharedProperty1 value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(SharedProperty0 value) person,
+    required TResult Function(SharedProperty1 value) city,
   }) {
-    assert(person != null);
-    assert(city != null);
     return city(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(SharedProperty0 value),
-    TResult city(SharedProperty1 value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SharedProperty0 value)? person,
+    TResult Function(SharedProperty1 value)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (city != null) {
       return city(this);
     }
@@ -1168,11 +1128,12 @@ class _$SharedProperty1
 }
 
 abstract class SharedProperty1 implements SharedProperty {
-  factory SharedProperty1({String name, int population}) = _$SharedProperty1;
+  factory SharedProperty1({String? name, int? population}) = _$SharedProperty1;
 
   @override
-  String get name;
-  int get population;
+  String? get name;
+  int? get population;
   @override
+  @JsonKey(ignore: true)
   $SharedProperty1CopyWith<SharedProperty1> get copyWith;
 }

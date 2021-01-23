@@ -1,3 +1,5 @@
+// @dart=2.9
+
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
@@ -151,16 +153,12 @@ Future<void> main() async {
     expect(identical(complex.odd, complex.odd), isTrue);
   });
 
-  test('late', () {
-    final value = Late(42);
-
-    expect(identical(value.container, value.container), isTrue);
-    expect(value.container, isNotNull);
-    expect(value.container.value, 42);
+  test('toString shows final properties, late properties and getters', () {
+    final value = AllProperties(42);
 
     expect(
       value.toString(),
-      'Late(value: 42, container: Container(value: 42))',
+      'AllProperties(value: 42, b: 2, c: 3, a: 1)',
     );
   });
 
@@ -231,7 +229,7 @@ void main() {
         '/freezed/test/integration/single_class_constructor.freezed.dart');
 
     expect(errorResult.errors, isEmpty);
-  }, skip: true);
+  });
 
   test('toString includes the constructor name', () {
     expect('${SingleNamedCtor.named(42)}', 'SingleNamedCtor.named(a: 42)');
@@ -239,32 +237,38 @@ void main() {
 
   test('single-case union does have map', () async {
     expect(
-        SingleNamedCtor.named(42)
-            .map(named: (WhateverSingleNamedCtor value) => '${value.a}'),
-        '42');
+      SingleNamedCtor.named(42).map(
+        named: (WhateverSingleNamedCtor value) => '${value.a}',
+      ),
+      '42',
+    );
   });
 
   test('single-case union does have maybeMap', () async {
     expect(
-        SingleNamedCtor.named(42).maybeMap(
-          named: (WhateverSingleNamedCtor value) => '${value.a}',
-          orElse: () => throw Exception('orElse called'),
-        ),
-        '42');
+      SingleNamedCtor.named(42).maybeMap(
+        named: (WhateverSingleNamedCtor value) => '${value.a}',
+        orElse: () => throw Exception('orElse called'),
+      ),
+      '42',
+    );
   });
 
   test('single-case union does have when', () async {
     expect(
-        SingleNamedCtor.named(42).when(named: (int value) => '$value'), '42');
+      SingleNamedCtor.named(42).when(named: (int value) => '$value'),
+      '42',
+    );
   });
 
   test('single-case union does have maybeWhen', () async {
     expect(
-        SingleNamedCtor.named(42).maybeWhen(
-          named: (int value) => '$value',
-          orElse: () => throw Exception('orElse called'),
-        ),
-        '42');
+      SingleNamedCtor.named(42).maybeWhen(
+        named: (int value) => '$value',
+        orElse: () => throw Exception('orElse called'),
+      ),
+      '42',
+    );
   });
 
   test('can be created as const', () {
@@ -280,6 +284,7 @@ void main() {
   NoConstImpl();
 }
 '''), completes);
+
     await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -381,6 +386,7 @@ void main() {
   MyClass().copyWith(a: '42', b: 42);
 }
 '''), completes);
+
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -388,6 +394,7 @@ void main() {
   MyClass().copyWith(a: Future.value('42'));
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -412,6 +419,7 @@ void main() {
   WhateverIWant().copyWith(a: '42', b: 42);
 }
 '''), completes);
+
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -419,6 +427,7 @@ void main() {
   WhateverIWant().copyWith(a: Future.value('a'));
 }
 '''), throwsCompileError);
+
       await expectLater(compile(r'''
 import 'single_class_constructor.dart';
 
@@ -487,7 +496,7 @@ void main() {
 
     expect(
       errorResult.errors.map((e) => e.toString()),
-      anyElement(contains("The parameter 'a' is required")),
+      anyElement(contains("The named parameter 'a' is required")),
     );
   });
 

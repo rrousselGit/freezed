@@ -1,3 +1,5 @@
+// @dart=2.9
+
 // NOTE: this does not _directly_ uses Freezed.
 // To start the generator, first copy this file to /packages/_internal/models.dart
 // Then run the generator for _internal, and copy the generated sources here.
@@ -20,6 +22,7 @@ abstract class CloneableProperty with _$CloneableProperty {
     @required String name,
     @required String typeName,
     @required String type,
+    @required bool nullable,
     @required GenericsParameterTemplate genericParameters,
   }) = _CloneableProperty;
 }
@@ -57,9 +60,9 @@ abstract class Data with _$Data {
   @Assert('unionKey != null')
   factory Data({
     @required String name,
-    @required List<LateGetter> lateGetters,
     @required bool needsJsonSerializable,
     @required String unionKey,
+    @required List<String> concretePropertiesName,
     @required List<ConstructorDetails> constructors,
     @required GenericsDefinitionTemplate genericsDefinitionTemplate,
     @required GenericsParameterTemplate genericsParameterTemplate,
