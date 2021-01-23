@@ -9,7 +9,6 @@ import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/multiple_constructors.dart';
-import 'multiple_constructors_utils.dart';
 
 Future<void> main() async {
   final sources = await resolveSources(
@@ -82,12 +81,18 @@ Future<void> main() async {
       $NoCommonParam('a', b: 42),
       NoCommonParam('a', b: 42),
     );
-    expect($NoCommonParam.call.runtimeType, NoCommonParamDefaultTearOff);
+    expect(
+      $NoCommonParam.call.runtimeType.toString(),
+      '(String, {int? b}) => NoCommonParam0',
+    );
     expect(
       $NoCommonParam.named(42, 42),
       NoCommonParam.named(42, 42),
     );
-    expect($NoCommonParam.named.runtimeType, NoCommonParamNamedTearOff);
+    expect(
+      $NoCommonParam.named.runtimeType.toString(),
+      '(double, [Object?]) => NoCommonParam1',
+    );
   });
 
   group('NoSharedParam', () {

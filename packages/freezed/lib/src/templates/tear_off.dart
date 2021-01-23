@@ -37,7 +37,6 @@ ${tearOffs.join()}
 }
 
 /// @nodoc
-// ignore: unused_element
 const $outputName = _\$${name}TearOff();
 ''';
   }
@@ -68,7 +67,6 @@ const $outputName = _\$${name}TearOff();
       }
 
       yield '''
-// ignore: unused_element
 ${targetConstructor.redirectedName}$genericsParameter $ctorName$genericsDefinition(${targetConstructor.parameters.asExpanded(showDefaultValue: true)}) {
   return $prefix ${targetConstructor.redirectedName}$genericsParameter($parameters);
 }
@@ -77,7 +75,6 @@ ${targetConstructor.redirectedName}$genericsParameter $ctorName$genericsDefiniti
 
     if (serializable) {
       yield '''
-// ignore: unused_element
 $name$genericsParameter fromJson$genericsDefinition(Map<String, Object> json) {
   return $name$genericsParameter.fromJson(json);
 }

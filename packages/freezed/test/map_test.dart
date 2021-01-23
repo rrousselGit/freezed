@@ -409,40 +409,5 @@ void main() {
 
       expect(errorResult.errors, isNotEmpty);
     });
-
-    test('when is not marked @required', () async {
-      final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
-library main;
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'multiple_constructors.dart';
-
-void main() {
-  final value = RequiredParams(a: 'a');
-
-  value.when((a) => a, second: (b) => b);
-}
-
-void redundant(required String test) {
-}
-''',
-        },
-        (r) => r.findLibraryByName('main'),
-      );
-
-      // first make sure that the redundant @required annotation
-      // actually produces a warning.
-      final mainErrorResult =
-          await main.session.getErrors('/freezed/test/integration/main.dart');
-      expect(mainErrorResult.errors, hasLength(1));
-      expect(mainErrorResult.errors.first.message, contains('Redundant'));
-
-      // Now make sure the warning is not produced in the generated files.
-      final errorResult = await main.session.getErrors(
-          '/freezed/test/integration/multiple_constructors.freezed.dart');
-
-      expect(errorResult.errors, isEmpty);
-    });
   });
 }

@@ -63,7 +63,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.10.13"
+    version: "1.11.0"
   build_runner_core:
     dependency: transitive
     description:
@@ -158,17 +158,17 @@ packages:
   freezed:
     dependency: "direct dev"
     description:
-      name: freezed
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.12.7"
+      path: "../freezed"
+      relative: true
+    source: path
+    version: "0.13.0-nullsafety.0"
   freezed_annotation:
     dependency: "direct main"
     description:
-      name: freezed_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.12.0"
+      path: "../freezed_annotation"
+      relative: true
+    source: path
+    version: "0.13.0-nullsafety.0"
   glob:
     dependency: transitive
     description:
@@ -224,7 +224,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.1"
+    version: "4.0.0-nullsafety.0"
   logging:
     dependency: transitive
     description:
