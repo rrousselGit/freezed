@@ -113,15 +113,14 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     for (final constructor in element.constructors) {
       if (constructor.isFactory) {
         for (final parameter in constructor.parameters) {
-          if (parameter.isNamed &&
-              parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
+          if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
               parameter.isOptional &&
               parameter.defaultValue == null) {
             final ctorName =
                 constructor.isDefaultConstructor ? '' : '.${constructor.name}';
 
             throw InvalidGenerationSourceError(
-              'The parameter ${element.name}$ctorName(${parameter.name}: ) is non-nullable but is neither required nor marked with @Default',
+              'The parameter `${parameter.name}` from `${element.name}$ctorName` is non-nullable but is neither required nor marked with @Default',
               element: parameter,
             );
           }

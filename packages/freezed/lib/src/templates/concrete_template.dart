@@ -183,7 +183,9 @@ Map<String, dynamic> toJson() {
 
     final diagnostics = [
       for (final e in constructor.impliedProperties)
-        "..add(DiagnosticsProperty('${e.name}', ${e.name}))"
+        "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
+      for (final name in concretePropertiesName)
+        "..add(DiagnosticsProperty('$name', $name))"
     ].join();
 
     return '''

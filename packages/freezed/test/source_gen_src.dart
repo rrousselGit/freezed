@@ -27,7 +27,7 @@ class _Properties implements Properties {
 }
 
 @ShouldThrow(
-  'The parameter RequiredNamed.foo(a: ) is non-nullable but is neither required nor marked with @Default',
+  'The parameter `a` of `RequiredNamed.foo` is non-nullable but is neither required nor marked with @Default',
 )
 @freezed
 abstract class RequiredNamed {
@@ -39,7 +39,19 @@ class _RequiredNamed implements RequiredNamed {
 }
 
 @ShouldThrow(
-  'The parameter RequiredNamedDefault(a: ) is non-nullable but is neither required nor marked with @Default',
+  'The parameter `a` of `RequiredPositional` is non-nullable but is neither required nor marked with @Default',
+)
+@freezed
+abstract class RequiredPositional {
+  factory RequiredPositional([int a]) = _RequiredPositional;
+}
+
+class _RequiredPositional implements RequiredPositional {
+  _RequiredPositional([int? a]);
+}
+
+@ShouldThrow(
+  'The parameter `a` of `RequiredNamedDefault` is non-nullable but is neither required nor marked with @Default',
 )
 @freezed
 abstract class RequiredNamedDefault {
