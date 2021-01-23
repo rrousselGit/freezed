@@ -1,3 +1,7 @@
+# 0.13.0-nullsafety.0
+
+Migrated to null safety
+
 # 0.12.7
 
 - fixed a bug where `///` above a constructor could cause the generation to stop working (see also https://github.com/rrousselGit/freezed/issues/326)
