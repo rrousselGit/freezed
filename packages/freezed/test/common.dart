@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:analyzer/diagnostic/diagnostic.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:build_test/build_test.dart';

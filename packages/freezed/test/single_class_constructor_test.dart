@@ -1,3 +1,5 @@
+// @dart=2.9
+
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
@@ -151,16 +153,12 @@ Future<void> main() async {
     expect(identical(complex.odd, complex.odd), isTrue);
   });
 
-  test('late', () {
-    final value = Late(42);
-
-    expect(identical(value.container, value.container), isTrue);
-    expect(value.container, isNotNull);
-    expect(value.container.value, 42);
+  test('toString shows final properties, late properties and getters', () {
+    final value = AllProperties(42);
 
     expect(
       value.toString(),
-      'Late(value: 42, container: Container(value: 42))',
+      'AllProperties(value: 42, b: 2, c: 3, a: 1)',
     );
   });
 
@@ -487,7 +485,7 @@ void main() {
 
     expect(
       errorResult.errors.map((e) => e.toString()),
-      anyElement(contains("The parameter 'a' is required")),
+      anyElement(contains("The named parameter 'a' is required")),
     );
   });
 

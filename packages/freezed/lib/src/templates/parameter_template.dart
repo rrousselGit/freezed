@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:freezed/src/templates/prototypes.dart';
@@ -11,7 +13,7 @@ class GenericsDefinitionTemplate {
   factory GenericsDefinitionTemplate.fromGenericElement(
       List<TypeParameterElement> generics) {
     return GenericsDefinitionTemplate(
-      generics.map((e) => e.getDisplayString(withNullability: false)).toList(),
+      generics.map((e) => e.getDisplayString(withNullability: true)).toList(),
     );
   }
 
@@ -71,19 +73,17 @@ class ParametersTemplate {
           type: parseTypeSource(e),
           name: e.name,
           defaultValueSource: e.defaultValue,
-          isRequired: e.hasRequired,
+          isRequired: e.isRequiredNamed,
           decorators: parseDecorators(e.metadata),
-          nullable: e.isNullable,
           doc: await documentationOfParameter(e, buildStep),
         );
       }
       return Parameter(
         name: e.name,
         defaultValueSource: e.defaultValue,
-        isRequired: e.hasRequired,
+        isRequired: e.isRequiredNamed,
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
-        nullable: e.isNullable,
         doc: await documentationOfParameter(e, buildStep),
       );
     }
@@ -125,7 +125,6 @@ class ParametersTemplate {
               name: e.name,
               type: e.type,
               decorators: e.decorators,
-              nullable: e.nullable,
               defaultValueSource: e.defaultValueSource,
               doc: e.doc,
             ),
@@ -149,7 +148,6 @@ class ParametersTemplate {
               name: e.name,
               type: e.type,
               decorators: e.decorators,
-              nullable: e.nullable,
               defaultValueSource: e.defaultValueSource,
               showDefaultValue: showDefaultValue,
               doc: e.doc,
@@ -198,7 +196,6 @@ class ParametersTemplate {
                 type: e.type,
                 isRequired: e.isRequired,
                 decorators: e.decorators,
-                nullable: e.nullable,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
               ))
@@ -209,7 +206,6 @@ class ParametersTemplate {
                 type: e.type,
                 isRequired: e.isRequired,
                 decorators: e.decorators,
-                nullable: e.nullable,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
               ))
@@ -220,7 +216,6 @@ class ParametersTemplate {
                 type: e.type,
                 isRequired: e.isRequired,
                 decorators: e.decorators,
-                nullable: e.nullable,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
               ))
@@ -236,7 +231,6 @@ class Parameter {
     @required this.defaultValueSource,
     @required this.isRequired,
     @required this.decorators,
-    @required this.nullable,
     @required this.doc,
     this.showDefaultValue = false,
   });
@@ -245,7 +239,6 @@ class Parameter {
   final String name;
   final String defaultValueSource;
   final bool isRequired;
-  final bool nullable;
   final List<String> decorators;
   final bool showDefaultValue;
   final String doc;
@@ -265,7 +258,6 @@ class Parameter {
         name: name ?? this.name,
         defaultValueSource: defaultValueSource ?? this.defaultValueSource,
         isRequired: isRequired ?? this.isRequired,
-        nullable: nullable ?? this.nullable,
         decorators: decorators ?? this.decorators,
         showDefaultValue: showDefaultValue ?? this.showDefaultValue,
         doc: doc ?? this.doc,
@@ -277,7 +269,7 @@ class Parameter {
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
-    return isRequired ? '@required $res' : res;
+    return isRequired ? 'required $res' : res;
   }
 }
 
@@ -287,7 +279,6 @@ class LocalParameter extends Parameter {
     @required String type,
     @required String defaultValueSource,
     @required bool isRequired,
-    @required bool nullable,
     @required List<String> decorators,
     @required String doc,
   }) : super(
@@ -296,7 +287,6 @@ class LocalParameter extends Parameter {
           showDefaultValue: true,
           isRequired: isRequired,
           decorators: decorators,
-          nullable: nullable,
           defaultValueSource: defaultValueSource,
           doc: doc,
         );
@@ -307,7 +297,7 @@ class LocalParameter extends Parameter {
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
-    return isRequired ? '@required $res' : res;
+    return isRequired ? 'required $res' : res;
   }
 }
 
@@ -317,7 +307,7 @@ class CallbackParameter extends Parameter {
     @required String defaultValueSource,
     @required String type,
     @required bool isRequired,
-    @required bool nullable,
+    @required this.isNullable,
     @required List<String> decorators,
     @required this.parameters,
     @required String doc,
@@ -327,16 +317,24 @@ class CallbackParameter extends Parameter {
           showDefaultValue: false,
           isRequired: isRequired,
           decorators: decorators,
-          nullable: nullable,
           defaultValueSource: defaultValueSource,
           doc: doc,
         );
 
   final ParametersTemplate parameters;
+  final bool isNullable;
 
   @override
   String toString() {
-    var res = '${decorators.join()} $type $name($parameters)';
-    return isRequired ? '@required $res' : res;
+    var res = '${decorators.join()} $type Function($parameters)';
+
+    if (isRequired) {
+      res = 'required $res';
+    }
+    if (isNullable) {
+      res = '$res?';
+    }
+
+    return '$res  $name';
   }
 }

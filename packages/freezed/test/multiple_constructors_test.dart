@@ -1,3 +1,5 @@
+// @dart=2.9
+
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'dart:async';
 
@@ -7,16 +9,7 @@ import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/multiple_constructors.dart';
-import 'nullable_test.dart';
-
-typedef NoCommonParamDefaultTearOff = NoCommonParam0 Function(
-  String a, {
-  int b,
-});
-typedef NoCommonParamNamedTearOff = NoCommonParam1 Function(
-  double c, [
-  Object d,
-]);
+import 'multiple_constructors_utils.dart';
 
 Future<void> main() async {
   final sources = await resolveSources(
@@ -84,33 +77,6 @@ Future<void> main() async {
     ]);
   });
 
-  test('asserts', () {
-    expect(
-      () => Complex(''),
-      throwsA(
-        isA<AssertionError>()
-            .having((e) => '$e', 'toString', contains('"Hello"')),
-      ),
-    );
-    expect(
-      const Complex('a'),
-      isA<Complex0>().having((e) => e.a, 'a', 'a'),
-    );
-
-    expect(() => Complex.first('a', b: true), throwsAssertionError);
-    expect(
-      () => Complex.first('', b: false),
-      throwsA(
-        isA<AssertionError>()
-            .having((e) => '$e', 'toString', contains('b must be true')),
-      ),
-    );
-    expect(
-      const Complex.first('', b: true),
-      isA<Complex1>().having((e) => e.a, 'a', ''),
-    );
-  });
-
   test('tear off', () {
     expect(
       $NoCommonParam('a', b: 42),
@@ -123,6 +89,7 @@ Future<void> main() async {
     );
     expect($NoCommonParam.named.runtimeType, NoCommonParamNamedTearOff);
   });
+
   group('NoSharedParam', () {
     test("doesn't have public properties/methods", () async {
       await expectLater(compile(r'''
@@ -429,7 +396,7 @@ void main() {
           nestedListClass
               .getField('children')
               .type
-              .getDisplayString(withNullability: false),
+              .getDisplayString(withNullability: true),
           'List<LeafNestedListItem>');
     });
 
@@ -440,7 +407,7 @@ void main() {
           nestedListClass
               .getField('children')
               .type
-              .getDisplayString(withNullability: false),
+              .getDisplayString(withNullability: true),
           'List<InnerNestedListItem>');
 
       final nestedListItemClass = _getClassElement('InnerNestedListItem');
@@ -449,7 +416,7 @@ void main() {
           nestedListItemClass
               .getField('children')
               .type
-              .getDisplayString(withNullability: false),
+              .getDisplayString(withNullability: true),
           'List<LeafNestedListItem>');
     });
   });
@@ -461,7 +428,7 @@ void main() {
           nestedMapClass
               .getField('children')
               .type
-              .getDisplayString(withNullability: false),
+              .getDisplayString(withNullability: true),
           'Map<String, LeafNestedMapItem>');
     });
 
@@ -472,7 +439,7 @@ void main() {
           nestedMapClass
               .getField('children')
               .type
-              .getDisplayString(withNullability: false),
+              .getDisplayString(withNullability: true),
           'Map<String, InnerNestedMapItem>');
 
       final nestedMapItemClass = _getClassElement('InnerNestedMapItem');
@@ -481,7 +448,7 @@ void main() {
           nestedMapItemClass
               .getField('children')
               .type
-              .getDisplayString(withNullability: false),
+              .getDisplayString(withNullability: true),
           'Map<String, LeafNestedMapItem>');
     });
   });

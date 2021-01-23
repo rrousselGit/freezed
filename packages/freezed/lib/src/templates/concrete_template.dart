@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -18,7 +20,7 @@ class Concrete {
     @required this.hasDiagnosticable,
     @required this.shouldGenerateJson,
     @required this.commonProperties,
-    @required this.lateGetters,
+    @required this.concretePropertiesName,
     @required this.name,
     @required this.unionKey,
     @required this.copyWith,
@@ -30,9 +32,9 @@ class Concrete {
   final GenericsDefinitionTemplate genericsDefinition;
   final GenericsParameterTemplate genericsParameter;
   final List<Property> commonProperties;
+  final List<String> concretePropertiesName;
   final bool hasDiagnosticable;
   final bool shouldGenerateJson;
-  final List<LateGetter> lateGetters;
   final String name;
   final String unionKey;
   final CopyWith copyWith;
@@ -44,17 +46,6 @@ class Concrete {
 
   @override
   String toString() {
-    final asserts = _asserts;
-    final superConstructor = _superConstructor;
-
-    var trailing = '';
-    if (asserts.isNotEmpty || superConstructor.isNotEmpty) {
-      trailing = ': ${[
-        if (asserts.isNotEmpty) asserts,
-        if (superConstructor.isNotEmpty) superConstructor
-      ].join(',')}';
-    }
-
     return '''
 ${copyWith.interface}
 
@@ -64,13 +55,11 @@ ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()'
 ${constructor.decorators.join('\n')}
 /// @nodoc
 class $concreteName$genericsDefinition $_concreteSuper {
-  $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
+  $_isConst $concreteName(${constructor.parameters.asThis()})$_superConstructor;
 
   $_concreteFromJsonConstructor
 
 $_properties
-
-${lateGetters.join()}
 
 $_toStringMethod
 $_debugFillProperties
@@ -124,7 +113,7 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _superConstructor {
     if (!shouldUseExtends) return '';
-    return 'super._()';
+    return ': super._()';
   }
 
   String get _privateConcreteConstructor {
@@ -161,15 +150,6 @@ ${copyWith.abstractCopyWithGetter}
     }).join();
   }
 
-  String get _asserts {
-    return [
-      ...constructor.impliedProperties
-          .where((p) => !p.nullable)
-          .map((e) => 'assert(${e.name} != null)'),
-      ...constructor.asserts,
-    ].join(',');
-  }
-
   String get _isConst {
     return constructor.isConst ? 'const' : '';
   }
@@ -202,10 +182,8 @@ Map<String, dynamic> toJson() {
     if (!hasDiagnosticable) return '';
 
     final diagnostics = [
-      ...constructor.impliedProperties
-          .map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))"),
-      ...lateGetters
-          .map((e) => "..add(DiagnosticsProperty('${e.name}', ${e.name}))"),
+      for (final e in constructor.impliedProperties)
+        "..add(DiagnosticsProperty('${e.name}', ${e.name}))"
     ].join();
 
     return '''
@@ -225,7 +203,6 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     return '''
 @override
 ${maybeMapPrototype(allConstructors, genericsParameter)} {
-  assert(orElse != null);
   if (${constructor.callbackName} != null) {
     return ${constructor.callbackName}(this);
   }
@@ -236,15 +213,9 @@ ${maybeMapPrototype(allConstructors, genericsParameter)} {
   String get _map {
     if (!allConstructors.shouldGenerateUnions) return '';
 
-    final asserts = [
-      for (final ctor in allConstructors)
-        'assert(${ctor.callbackName} != null);'
-    ];
-
     return '''
 @override
 ${mapPrototype(allConstructors, genericsParameter)} {
-  ${asserts.join()}
   return ${constructor.callbackName}(this);
 }''';
   }
@@ -262,7 +233,6 @@ ${mapPrototype(allConstructors, genericsParameter)} {
     return '''
 @override
 ${maybeWhenPrototype(allConstructors)} {
-  assert(orElse != null);
   if (${constructor.callbackName} != null) {
     return ${constructor.callbackName}($callbackParameters);
   }
@@ -272,11 +242,6 @@ ${maybeWhenPrototype(allConstructors)} {
 
   String get _when {
     if (!allConstructors.shouldGenerateUnions) return '';
-
-    final asserts = [
-      for (final ctor in allConstructors)
-        'assert(${ctor.callbackName} != null);'
-    ];
 
     var callbackParameters = constructor.impliedProperties.map((e) {
       if (allConstructors.any((c) => c.callbackName == e.name)) {
@@ -288,7 +253,6 @@ ${maybeWhenPrototype(allConstructors)} {
     return '''
 @override
 ${whenPrototype(allConstructors)} {
-  ${asserts.join()}
   return ${constructor.callbackName}($callbackParameters);
 }''';
   }
@@ -311,12 +275,8 @@ ${whenPrototype(allConstructors)} {
         : '';
 
     final properties = [
-      ...constructor.impliedProperties.map((p) {
-        return '${p.name}: \$${p.name}';
-      }),
-      ...lateGetters.map((p) {
-        return '${p.name}: \$${p.name}';
-      })
+      for (final p in constructor.impliedProperties) '${p.name}: \$${p.name}',
+      for (final name in concretePropertiesName) '$name: \$$name',
     ];
 
     return '''
@@ -356,23 +316,6 @@ int get hashCode => runtimeType.hashCode $hashCodeImpl;
   }
 }
 
-extension on Element {
-  bool get hasNullable {
-    return TypeChecker.fromRuntime(nullable.runtimeType)
-        .hasAnnotationOf(this, throwOnUnresolved: false);
-  }
-}
-
-extension IsNullable on ParameterElement {
-  bool get isNullable {
-    return hasNullable || (_isOptional && defaultValue == null);
-  }
-
-  bool get _isOptional {
-    return isOptionalPositional || (isNamed && !hasRequired);
-  }
-}
-
 extension DefaultValue on ParameterElement {
   /// Returns the sources of the default value associated with a `@Default`,
   /// or `null` if no `@Default` are specified.
@@ -404,7 +347,7 @@ extension DefaultValue on ParameterElement {
 }
 
 String parseTypeSource(VariableElement element) {
-  var type = element.type?.getDisplayString(withNullability: false);
+  var type = element.type?.getDisplayString(withNullability: true);
 
   if ((type == null || type.contains('dynamic')) && element.nameOffset > 0) {
     final source =

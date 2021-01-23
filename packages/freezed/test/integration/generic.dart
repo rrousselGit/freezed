@@ -28,7 +28,7 @@ abstract class MultipleConstructors<A, B> with _$MultipleConstructors<A, B> {
 abstract class Union<T> with _$Union<T> {
   const factory Union(T value) = Data<T>;
   const factory Union.loading() = Loading<T>;
-  const factory Union.error([String message]) = ErrorDetails<T>;
+  const factory Union.error([String? message]) = ErrorDetails<T>;
 }
 
 @freezed
@@ -39,13 +39,13 @@ abstract class ComplexParameters<T> with _$ComplexParameters<T> {
 @freezed
 abstract class Inner<I> with _$Inner<I> {
   const factory Inner({
-    I data,
+    I? data,
   }) = _Inner<I>;
 }
 
 @freezed
 abstract class Outer with _$Outer {
   const factory Outer({
-    Inner<int> innerData,
+    Inner<int>? innerData,
   }) = _Outer;
 }

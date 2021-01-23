@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:meta/meta.dart';
@@ -12,7 +14,6 @@ class Property {
     @required String type,
     @required this.name,
     @required this.decorators,
-    @required this.nullable,
     @required this.defaultValueSource,
     @required this.hasJsonKey,
     @required this.doc,
@@ -36,7 +37,6 @@ class Property {
       doc: await documentationOfParameter(element, buildStep),
       type: parseTypeSource(element),
       decorators: parseDecorators(element.metadata),
-      nullable: element.isNullable,
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
     );
@@ -45,7 +45,6 @@ class Property {
   final String type;
   final String name;
   final List<String> decorators;
-  final bool nullable;
   final String defaultValueSource;
   final bool hasJsonKey;
   final String doc;
@@ -59,7 +58,6 @@ class Property {
         name: name,
         type: type,
         decorators: decorators,
-        nullable: nullable,
         doc: doc,
       );
 }
@@ -69,14 +67,12 @@ class Getter {
     @required String type,
     @required this.name,
     @required this.decorators,
-    @required this.nullable,
     @required this.doc,
   }) : type = type ?? 'dynamic';
 
   final String type;
   final String name;
   final List<String> decorators;
-  final bool nullable;
   final String doc;
 
   @override
@@ -88,36 +84,5 @@ class Getter {
 extension PropertiesAsGetters on List<Property> {
   List<Getter> asGetters() {
     return map((p) => p.getter).toList();
-  }
-}
-
-class LateGetter {
-  final String type;
-  final String name;
-  final List<String> decorators;
-  final String source;
-
-  LateGetter({
-    @required this.type,
-    @required this.name,
-    @required this.decorators,
-    @required this.source,
-  });
-
-  @override
-  String toString() {
-    return '''
-bool _did$name = false;
-${type ?? 'dynamic'} _$name;
-
-@override
-${decorators.join()}
-${type ?? 'dynamic'} get $name {
-  if (_did$name == false) {
-    _did$name = true;
-    _$name = $source;
-  }
-  return _$name;
-}''';
   }
 }

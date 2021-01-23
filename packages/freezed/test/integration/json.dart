@@ -3,37 +3,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'json.freezed.dart';
 part 'json.g.dart';
 
-// regression test for https://github.com/rrousselGit/freezed/issues/299
-@freezed
-abstract class Regression299 implements _$Regression299 {
-  const Regression299._();
-  const factory Regression299(String label) = _Regression299;
-
-  factory Regression299.fromJson(String val) {
-    return Regression299(val);
-  }
-
-  static const notification = Regression299('notification');
-  static const message = Regression299('message');
-  static const file = Regression299('file');
-
-  @override
-  String toString() => label;
-
-  static Regression299 stringToEnum(String val) {
-    if (val == notification.toString()) return notification;
-    if (val == message.toString()) return message;
-    if (val == file.toString()) return file;
-    return null;
-  }
-}
-
 // regression test for https://github.com/rrousselGit/freezed/issues/323
 @freezed
 abstract class Regression323 with _$Regression323 {
   const factory Regression323({
-    @required String id,
-    @required num amount,
+    required String id,
+    required num amount,
   }) = _Regression323;
 
   factory Regression323.fromJson(Map<String, dynamic> json) =>
@@ -143,16 +118,16 @@ abstract class Generic<T> with _$Generic<T> {
       _$GenericFromJson<T>(json);
 }
 
-class DataConverter<T> implements JsonConverter<T, Object> {
+class DataConverter<T> implements JsonConverter<T, Object?> {
   const DataConverter();
 
   @override
-  T fromJson(Object json) {
+  T fromJson(Object? json) {
     return json as T;
   }
 
   @override
-  Object toJson(T object) {
+  Object? toJson(T object) {
     return object;
   }
 }
@@ -167,9 +142,9 @@ abstract class DefaultValue with _$DefaultValue {
 
 @freezed
 abstract class DefaultValueJsonKey with _$DefaultValueJsonKey {
-  factory DefaultValueJsonKey(
-          [@Default(42) @JsonKey(defaultValue: 21) int value]) =
-      _DefaultValueJsonKey;
+  factory DefaultValueJsonKey([
+    @Default(42) @JsonKey(defaultValue: 21) int value,
+  ]) = _DefaultValueJsonKey;
 
   factory DefaultValueJsonKey.fromJson(Map<String, dynamic> json) =>
       _$DefaultValueJsonKeyFromJson(json);

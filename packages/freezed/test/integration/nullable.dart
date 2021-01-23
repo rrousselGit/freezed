@@ -9,13 +9,12 @@ abstract class RequiredPositional with _$RequiredPositional {
 
 @freezed
 abstract class NullableRequiredPositional with _$NullableRequiredPositional {
-  factory NullableRequiredPositional(@nullable int a) =
-      _NullableRequiredPositional;
+  factory NullableRequiredPositional(int? a) = _NullableRequiredPositional;
 }
 
 @freezed
 abstract class Positional with _$Positional {
-  factory Positional([int a]) = _Positional;
+  factory Positional([int? a]) = _Positional;
 }
 
 @freezed
@@ -25,7 +24,7 @@ abstract class DefaultPositional with _$DefaultPositional {
 
 @freezed
 abstract class Named with _$Named {
-  factory Named({int a}) = _Named;
+  factory Named({int? a}) = _Named;
 }
 
 @freezed
@@ -35,11 +34,10 @@ abstract class DefaultNamed with _$DefaultNamed {
 
 @freezed
 abstract class RequiredNamed with _$RequiredNamed {
-  factory RequiredNamed({@required int a}) = _RequiredNamed;
+  factory RequiredNamed({required int a}) = _RequiredNamed;
 }
 
 @freezed
 abstract class NullableRequiredNamed with _$NullableRequiredNamed {
-  factory NullableRequiredNamed({@nullable @required int a}) =
-      _NullableRequiredNamed;
+  factory NullableRequiredNamed({required int? a}) = _NullableRequiredNamed;
 }

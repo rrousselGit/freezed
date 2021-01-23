@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 

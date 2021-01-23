@@ -1,5 +1,8 @@
+// @dart=2.9
+
 import 'dart:async';
 
+import 'package:build/build.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen_test/source_gen_test.dart';

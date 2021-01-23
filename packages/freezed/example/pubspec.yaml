@@ -2,12 +2,12 @@ name: example
 description: A new Flutter project.
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0-0.0.dev <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  freezed_annotation: ">= 0.11.0"
+  freezed_annotation: ">=0.13.0-nullsafety.0"
 
 dev_dependencies:
   freezed:

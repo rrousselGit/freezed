@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_unused_constructor_parameters, unused_element
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,15 +9,16 @@ class Unrelated {}
 
 @ShouldThrow('@freezed can only be applied on classes. Failing element: foo')
 @freezed
-int foo;
+Object? foo;
 
 @ShouldThrow(
-    'Getters not decorated with @late requires a MyClass._() constructor')
+  'Getters require a MyClass._() constructor',
+)
 @freezed
 abstract class Properties {
-  int get regularProperty;
-
   factory Properties() = _Properties;
+
+  int get regularProperty;
 }
 
 class _Properties implements Properties {
@@ -25,12 +27,35 @@ class _Properties implements Properties {
 }
 
 @ShouldThrow(
-    'Getters not decorated with @late requires a MyClass._() constructor')
+  'The parameter RequiredNamed.foo(a: ) is non-nullable but is neither required nor marked with @Default',
+)
+@freezed
+abstract class RequiredNamed {
+  factory RequiredNamed.foo({int a}) = _RequiredNamed;
+}
+
+class _RequiredNamed implements RequiredNamed {
+  _RequiredNamed({int? a});
+}
+
+@ShouldThrow(
+  'The parameter RequiredNamedDefault(a: ) is non-nullable but is neither required nor marked with @Default',
+)
+@freezed
+abstract class RequiredNamedDefault {
+  factory RequiredNamedDefault({int a}) = _RequiredNamedDefault;
+}
+
+class _RequiredNamedDefault implements RequiredNamedDefault {
+  _RequiredNamedDefault({int? a});
+}
+
+@ShouldThrow('Getters require a MyClass._() constructor')
 @freezed
 abstract class Get {
-  int get regularProperty => 42;
-
   factory Get() = _Get;
+
+  int get regularProperty => 42;
 }
 
 class _Get implements Get {
@@ -38,50 +63,17 @@ class _Get implements Get {
   final int regularProperty = 0;
 }
 
-@ShouldThrow('@late cannot be used in combination with const constructors')
+@ShouldThrow('Final variables require a MyClass._() constructor')
 @freezed
-abstract class LateConst {
-  const factory LateConst() = _LateConst;
+abstract class Final {
+  factory Final() = _Final;
 
-  @late
-  String get name => '42';
+  final int regularProperty = 42;
 }
 
-class _LateConst implements LateConst {
-  const _LateConst();
-
+class _Final implements Final {
   @override
-  final String name = '';
-}
-
-@ShouldThrow('@late can only be used on getters with using =>')
-@freezed
-abstract class LateBody {
-  factory LateBody() = _LateBody;
-
-  @late
-  String get name {
-    return '42';
-  }
-}
-
-class _LateBody implements LateBody {
-  @override
-  final String name = '';
-}
-
-@ShouldThrow('@late can only be used on getters with using =>')
-@freezed
-abstract class LateAbstract {
-  factory LateAbstract() = _LateAbstract;
-
-  @late
-  String get name;
-}
-
-class _LateAbstract implements LateAbstract {
-  @override
-  final String name = '';
+  final int regularProperty = 0;
 }
 
 @ShouldThrow('@Default cannot be used on non-optional parameters')
@@ -159,11 +151,11 @@ class _Manual implements ManualFactory {
 )
 @freezed
 abstract class ManualFactory2 {
-  factory ManualFactory2({int a}) => _Manual2(a: a ??= 42);
+  factory ManualFactory2({int? a}) => _Manual2(a: a ??= 42);
 }
 
 class _Manual2 implements ManualFactory2 {
-  _Manual2({int a});
+  _Manual2({int? a});
 
   @override
   dynamic noSuchMethod(Invocation invocation) {
@@ -180,12 +172,12 @@ abstract class MutableProperty {
 
   factory MutableProperty() = _MutableProperty;
 
-  int a;
+  int? a;
 }
 
 class _MutableProperty implements MutableProperty {
   @override
-  int a;
+  int? a;
 }
 
 class Mixed1 implements Mixed {

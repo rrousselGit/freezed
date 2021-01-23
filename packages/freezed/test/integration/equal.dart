@@ -43,6 +43,11 @@ abstract class ObjectEqual with _$ObjectEqual {
 }
 
 @freezed
+abstract class NullableObjectEqual with _$NullableObjectEqual {
+  factory NullableObjectEqual(Object? value) = _NullableObjectEqual;
+}
+
+@freezed
 abstract class DynamicEqual with _$DynamicEqual {
   factory DynamicEqual(dynamic value) = _DynamicEqual;
 }
