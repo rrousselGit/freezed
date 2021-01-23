@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'time_slot.freezed.dart';
 
-
 /// This is class has been added to address the issue described in
 /// https://github.com/rrousselGit/freezed/issues/220
 @freezed
