@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:freezed/src/models.dart';
 import 'package:meta/meta.dart';
 import 'copy_with.dart';

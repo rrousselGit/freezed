@@ -14,7 +14,7 @@ class _$TimeSlotTearOff {
   const _$TimeSlotTearOff();
 
 // ignore: unused_element
-  _TimeSlot call({TimeOfDay start, TimeOfDay end}) {
+  _TimeSlot call({TimeOfDay? start, TimeOfDay? end}) {
     return _TimeSlot(
       start: start,
       end: end,
@@ -28,9 +28,10 @@ const $TimeSlot = _$TimeSlotTearOff();
 
 /// @nodoc
 mixin _$TimeSlot {
-  TimeOfDay get start;
-  TimeOfDay get end;
+  TimeOfDay? get start;
+  TimeOfDay? get end;
 
+  @JsonKey(ignore: true)
   $TimeSlotCopyWith<TimeSlot> get copyWith;
 }
 
@@ -38,7 +39,7 @@ mixin _$TimeSlot {
 abstract class $TimeSlotCopyWith<$Res> {
   factory $TimeSlotCopyWith(TimeSlot value, $Res Function(TimeSlot) then) =
       _$TimeSlotCopyWithImpl<$Res>;
-  $Res call({TimeOfDay start, TimeOfDay end});
+  $Res call({TimeOfDay? start, TimeOfDay? end});
 }
 
 /// @nodoc
@@ -51,12 +52,12 @@ class _$TimeSlotCopyWithImpl<$Res> implements $TimeSlotCopyWith<$Res> {
 
   @override
   $Res call({
-    Object start = freezed,
-    Object end = freezed,
+    Object? start = freezed,
+    Object? end = freezed,
   }) {
     return _then(_value.copyWith(
-      start: start == freezed ? _value.start : start as TimeOfDay,
-      end: end == freezed ? _value.end : end as TimeOfDay,
+      start: start == freezed ? _value.start : start as TimeOfDay?,
+      end: end == freezed ? _value.end : end as TimeOfDay?,
     ));
   }
 }
@@ -66,7 +67,7 @@ abstract class _$TimeSlotCopyWith<$Res> implements $TimeSlotCopyWith<$Res> {
   factory _$TimeSlotCopyWith(_TimeSlot value, $Res Function(_TimeSlot) then) =
       __$TimeSlotCopyWithImpl<$Res>;
   @override
-  $Res call({TimeOfDay start, TimeOfDay end});
+  $Res call({TimeOfDay? start, TimeOfDay? end});
 }
 
 /// @nodoc
@@ -80,12 +81,12 @@ class __$TimeSlotCopyWithImpl<$Res> extends _$TimeSlotCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object start = freezed,
-    Object end = freezed,
+    Object? start = freezed,
+    Object? end = freezed,
   }) {
     return _then(_TimeSlot(
-      start: start == freezed ? _value.start : start as TimeOfDay,
-      end: end == freezed ? _value.end : end as TimeOfDay,
+      start: start == freezed ? _value.start : start as TimeOfDay?,
+      end: end == freezed ? _value.end : end as TimeOfDay?,
     ));
   }
 }
@@ -95,9 +96,9 @@ class _$_TimeSlot implements _TimeSlot {
   _$_TimeSlot({this.start, this.end});
 
   @override
-  final TimeOfDay start;
+  final TimeOfDay? start;
   @override
-  final TimeOfDay end;
+  final TimeOfDay? end;
 
   @override
   String toString() {
@@ -120,18 +121,20 @@ class _$_TimeSlot implements _TimeSlot {
       const DeepCollectionEquality().hash(start) ^
       const DeepCollectionEquality().hash(end);
 
+  @JsonKey(ignore: true)
   @override
   _$TimeSlotCopyWith<_TimeSlot> get copyWith =>
       __$TimeSlotCopyWithImpl<_TimeSlot>(this, _$identity);
 }
 
 abstract class _TimeSlot implements TimeSlot {
-  factory _TimeSlot({TimeOfDay start, TimeOfDay end}) = _$_TimeSlot;
+  factory _TimeSlot({TimeOfDay? start, TimeOfDay? end}) = _$_TimeSlot;
 
   @override
-  TimeOfDay get start;
+  TimeOfDay? get start;
   @override
-  TimeOfDay get end;
+  TimeOfDay? get end;
   @override
+  @JsonKey(ignore: true)
   _$TimeSlotCopyWith<_TimeSlot> get copyWith;
 }

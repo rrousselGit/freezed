@@ -36,26 +36,26 @@ const $Example = _$ExampleTearOff();
 /// @nodoc
 mixin _$Example<T> {
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int a, String b), {
-    @required TResult named(T c),
+  TResult when<TResult extends Object?>(
+    TResult Function(int a, String b) $default, {
+    required TResult Function(T c) named,
   });
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int a, String b), {
-    TResult named(T c),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+    required TResult orElse(),
   });
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    @required TResult named(_Example2<T> value),
+  TResult map<TResult extends Object?>(
+    TResult Function(_Example<T> value) $default, {
+    required TResult Function(_Example2<T> value) named,
   });
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    TResult named(_Example2<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+    required TResult orElse(),
   });
 }
 
@@ -93,8 +93,8 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object a = freezed,
-    Object b = freezed,
+    Object? a = freezed,
+    Object? b = freezed,
   }) {
     return _then(_Example<T>(
       a == freezed ? _value.a : a as int,
@@ -104,27 +104,13 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
-class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
-  _$_Example(this.a, this.b)
-      : assert(a != null),
-        assert(b != null);
+class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
+  _$_Example(this.a, this.b) : super._();
 
   @override
   final int a;
   @override
   final String b;
-
-  bool _didtheAnswer = false;
-  int _theAnswer;
-
-  @override
-  int get theAnswer {
-    if (_didtheAnswer == false) {
-      _didtheAnswer = true;
-      _theAnswer = 42;
-    }
-    return _theAnswer;
-  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -157,29 +143,27 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
       const DeepCollectionEquality().hash(a) ^
       const DeepCollectionEquality().hash(b);
 
+  @JsonKey(ignore: true)
   @override
   _$ExampleCopyWith<T, _Example<T>> get copyWith =>
       __$ExampleCopyWithImpl<T, _Example<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int a, String b), {
-    @required TResult named(T c),
+  TResult when<TResult extends Object?>(
+    TResult Function(int a, String b) $default, {
+    required TResult Function(T c) named,
   }) {
-    assert($default != null);
-    assert(named != null);
     return $default(a, b);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int a, String b), {
-    TResult named(T c),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if ($default != null) {
       return $default(a, b);
     }
@@ -188,23 +172,20 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    @required TResult named(_Example2<T> value),
+  TResult map<TResult extends Object?>(
+    TResult Function(_Example<T> value) $default, {
+    required TResult Function(_Example2<T> value) named,
   }) {
-    assert($default != null);
-    assert(named != null);
     return $default(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    TResult named(_Example2<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if ($default != null) {
       return $default(this);
     }
@@ -212,11 +193,13 @@ class _$_Example<T> with DiagnosticableTreeMixin implements _Example<T> {
   }
 }
 
-abstract class _Example<T> implements Example<T> {
+abstract class _Example<T> extends Example<T> {
+  _Example._() : super._();
   factory _Example(int a, String b) = _$_Example<T>;
 
   int get a;
   String get b;
+  @JsonKey(ignore: true)
   _$ExampleCopyWith<T, _Example<T>> get copyWith;
 }
 
@@ -240,7 +223,7 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object c = freezed,
+    Object? c = freezed,
   }) {
     return _then(_Example2<T>(
       c == freezed ? _value.c : c as T,
@@ -249,23 +232,11 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
-class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
-  _$_Example2(this.c) : assert(c != null);
+class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
+  _$_Example2(this.c) : super._();
 
   @override
   final T c;
-
-  bool _didtheAnswer = false;
-  int _theAnswer;
-
-  @override
-  int get theAnswer {
-    if (_didtheAnswer == false) {
-      _didtheAnswer = true;
-      _theAnswer = 42;
-    }
-    return _theAnswer;
-  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -293,29 +264,27 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(c);
 
+  @JsonKey(ignore: true)
   @override
   _$Example2CopyWith<T, _Example2<T>> get copyWith =>
       __$Example2CopyWithImpl<T, _Example2<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int a, String b), {
-    @required TResult named(T c),
+  TResult when<TResult extends Object?>(
+    TResult Function(int a, String b) $default, {
+    required TResult Function(T c) named,
   }) {
-    assert($default != null);
-    assert(named != null);
     return named(c);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int a, String b), {
-    TResult named(T c),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (named != null) {
       return named(c);
     }
@@ -324,23 +293,20 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    @required TResult named(_Example2<T> value),
+  TResult map<TResult extends Object?>(
+    TResult Function(_Example<T> value) $default, {
+    required TResult Function(_Example2<T> value) named,
   }) {
-    assert($default != null);
-    assert(named != null);
     return named(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    TResult named(_Example2<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (named != null) {
       return named(this);
     }
@@ -348,10 +314,12 @@ class _$_Example2<T> with DiagnosticableTreeMixin implements _Example2<T> {
   }
 }
 
-abstract class _Example2<T> implements Example<T> {
+abstract class _Example2<T> extends Example<T> {
+  _Example2._() : super._();
   factory _Example2(T c) = _$_Example2<T>;
 
   T get c;
+  @JsonKey(ignore: true)
   _$Example2CopyWith<T, _Example2<T>> get copyWith;
 }
 

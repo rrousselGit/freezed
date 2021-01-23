@@ -1,3 +1,5 @@
+// @dart=2.9
+
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
@@ -239,6 +241,7 @@ void main() {
   Json.fromJson(<String, dynamic>{});
 }
 '''), completes);
+
     await expectLater(compile(r'''
 import 'json.dart';
 
@@ -246,6 +249,7 @@ void main() {
   NoFirst.fromJson(<String, dynamic>{});
 }
 '''), throwsCompileError);
+
     await expectLater(compile(r'''
 import 'json.dart';
 
@@ -253,6 +257,7 @@ void main() {
   NoDefault.fromJson(<String, dynamic>{});
 }
 '''), throwsCompileError);
+
     await expectLater(compile(r'''
 import 'json.dart';
 

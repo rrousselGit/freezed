@@ -36,26 +36,26 @@ const $Example = _$ExampleTearOff();
 /// @nodoc
 mixin _$Example<T> {
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int a, String b), {
-    @required TResult named(T c),
+  TResult when<TResult extends Object?>(
+    TResult Function(int a, String b) $default, {
+    required TResult Function(T c) named,
   });
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int a, String b), {
-    TResult named(T c),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+    required TResult orElse(),
   });
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    @required TResult named(_Example2<T> value),
+  TResult map<TResult extends Object?>(
+    TResult Function(_Example<T> value) $default, {
+    required TResult Function(_Example2<T> value) named,
   });
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    TResult named(_Example2<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+    required TResult orElse(),
   });
 }
 
@@ -93,8 +93,8 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object a = freezed,
-    Object b = freezed,
+    Object? a = freezed,
+    Object? b = freezed,
   }) {
     return _then(_Example<T>(
       a == freezed ? _value.a : a as int,
@@ -105,9 +105,7 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 
 /// @nodoc
 class _$_Example<T> implements _Example<T> {
-  _$_Example(this.a, this.b)
-      : assert(a != null),
-        assert(b != null);
+  _$_Example(this.a, this.b);
 
   @override
   final int a;
@@ -135,29 +133,27 @@ class _$_Example<T> implements _Example<T> {
       const DeepCollectionEquality().hash(a) ^
       const DeepCollectionEquality().hash(b);
 
+  @JsonKey(ignore: true)
   @override
   _$ExampleCopyWith<T, _Example<T>> get copyWith =>
       __$ExampleCopyWithImpl<T, _Example<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int a, String b), {
-    @required TResult named(T c),
+  TResult when<TResult extends Object?>(
+    TResult Function(int a, String b) $default, {
+    required TResult Function(T c) named,
   }) {
-    assert($default != null);
-    assert(named != null);
     return $default(a, b);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int a, String b), {
-    TResult named(T c),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if ($default != null) {
       return $default(a, b);
     }
@@ -166,23 +162,20 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    @required TResult named(_Example2<T> value),
+  TResult map<TResult extends Object?>(
+    TResult Function(_Example<T> value) $default, {
+    required TResult Function(_Example2<T> value) named,
   }) {
-    assert($default != null);
-    assert(named != null);
     return $default(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    TResult named(_Example2<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if ($default != null) {
       return $default(this);
     }
@@ -195,6 +188,7 @@ abstract class _Example<T> implements Example<T> {
 
   int get a;
   String get b;
+  @JsonKey(ignore: true)
   _$ExampleCopyWith<T, _Example<T>> get copyWith;
 }
 
@@ -218,7 +212,7 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object c = freezed,
+    Object? c = freezed,
   }) {
     return _then(_Example2<T>(
       c == freezed ? _value.c : c as T,
@@ -228,7 +222,7 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 
 /// @nodoc
 class _$_Example2<T> implements _Example2<T> {
-  _$_Example2(this.c) : assert(c != null);
+  _$_Example2(this.c);
 
   @override
   final T c;
@@ -250,29 +244,27 @@ class _$_Example2<T> implements _Example2<T> {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(c);
 
+  @JsonKey(ignore: true)
   @override
   _$Example2CopyWith<T, _Example2<T>> get copyWith =>
       __$Example2CopyWithImpl<T, _Example2<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>(
-    TResult $default(int a, String b), {
-    @required TResult named(T c),
+  TResult when<TResult extends Object?>(
+    TResult Function(int a, String b) $default, {
+    required TResult Function(T c) named,
   }) {
-    assert($default != null);
-    assert(named != null);
     return named(c);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>(
-    TResult $default(int a, String b), {
-    TResult named(T c),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (named != null) {
       return named(c);
     }
@@ -281,23 +273,20 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    @required TResult named(_Example2<T> value),
+  TResult map<TResult extends Object?>(
+    TResult Function(_Example<T> value) $default, {
+    required TResult Function(_Example2<T> value) named,
   }) {
-    assert($default != null);
-    assert(named != null);
     return named(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>(
-    TResult $default(_Example<T> value), {
-    TResult named(_Example2<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (named != null) {
       return named(this);
     }
@@ -309,6 +298,7 @@ abstract class _Example2<T> implements Example<T> {
   factory _Example2(T c) = _$_Example2<T>;
 
   T get c;
+  @JsonKey(ignore: true)
   _$Example2CopyWith<T, _Example2<T>> get copyWith;
 }
 
@@ -357,36 +347,37 @@ mixin _$SimpleImplements {
   String get name;
 
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult country(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name, int population) country,
   });
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult country(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+    required TResult orElse(),
   });
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(SimplePerson value),
-    @required TResult street(SimpleStreet value),
-    @required TResult city(SimpleCity value),
-    @required TResult country(SimpleCountry value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(SimplePerson value) person,
+    required TResult Function(SimpleStreet value) street,
+    required TResult Function(SimpleCity value) city,
+    required TResult Function(SimpleCountry value) country,
   });
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(SimplePerson value),
-    TResult street(SimpleStreet value),
-    TResult city(SimpleCity value),
-    TResult country(SimpleCountry value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+    required TResult orElse(),
   });
 
+  @JsonKey(ignore: true)
   $SimpleImplementsCopyWith<SimpleImplements> get copyWith;
 }
 
@@ -409,7 +400,7 @@ class _$SimpleImplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
+    Object? name = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed ? _value.name : name as String,
@@ -440,8 +431,8 @@ class _$SimplePersonCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object age = freezed,
+    Object? name = freezed,
+    Object? age = freezed,
   }) {
     return _then(SimplePerson(
       name == freezed ? _value.name : name as String,
@@ -452,9 +443,7 @@ class _$SimplePersonCopyWithImpl<$Res>
 
 /// @nodoc
 class _$SimplePerson implements SimplePerson {
-  const _$SimplePerson(this.name, this.age)
-      : assert(name != null),
-        assert(age != null);
+  const _$SimplePerson(this.name, this.age);
 
   @override
   final String name;
@@ -482,35 +471,31 @@ class _$SimplePerson implements SimplePerson {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(age);
 
+  @JsonKey(ignore: true)
   @override
   $SimplePersonCopyWith<SimplePerson> get copyWith =>
       _$SimplePersonCopyWithImpl<SimplePerson>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult country(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name, int population) country,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(country != null);
     return person(name, age);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult country(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (person != null) {
       return person(name, age);
     }
@@ -519,29 +504,24 @@ class _$SimplePerson implements SimplePerson {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(SimplePerson value),
-    @required TResult street(SimpleStreet value),
-    @required TResult city(SimpleCity value),
-    @required TResult country(SimpleCountry value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(SimplePerson value) person,
+    required TResult Function(SimpleStreet value) street,
+    required TResult Function(SimpleCity value) city,
+    required TResult Function(SimpleCountry value) country,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(country != null);
     return person(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(SimplePerson value),
-    TResult street(SimpleStreet value),
-    TResult city(SimpleCity value),
-    TResult country(SimpleCountry value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (person != null) {
       return person(this);
     }
@@ -556,6 +536,7 @@ abstract class SimplePerson implements SimpleImplements {
   String get name;
   int get age;
   @override
+  @JsonKey(ignore: true)
   $SimplePersonCopyWith<SimplePerson> get copyWith;
 }
 
@@ -582,7 +563,7 @@ class _$SimpleStreetCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
+    Object? name = freezed,
   }) {
     return _then(SimpleStreet(
       name == freezed ? _value.name : name as String,
@@ -594,7 +575,7 @@ class _$SimpleStreetCopyWithImpl<$Res>
 
 /// @nodoc
 class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
-  const _$SimpleStreet(this.name) : assert(name != null);
+  const _$SimpleStreet(this.name);
 
   @override
   final String name;
@@ -616,35 +597,31 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
 
+  @JsonKey(ignore: true)
   @override
   $SimpleStreetCopyWith<SimpleStreet> get copyWith =>
       _$SimpleStreetCopyWithImpl<SimpleStreet>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult country(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name, int population) country,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(country != null);
     return street(name);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult country(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (street != null) {
       return street(name);
     }
@@ -653,29 +630,24 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(SimplePerson value),
-    @required TResult street(SimpleStreet value),
-    @required TResult city(SimpleCity value),
-    @required TResult country(SimpleCountry value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(SimplePerson value) person,
+    required TResult Function(SimpleStreet value) street,
+    required TResult Function(SimpleCity value) city,
+    required TResult Function(SimpleCountry value) country,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(country != null);
     return street(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(SimplePerson value),
-    TResult street(SimpleStreet value),
-    TResult city(SimpleCity value),
-    TResult country(SimpleCountry value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (street != null) {
       return street(this);
     }
@@ -690,6 +662,7 @@ abstract class SimpleStreet
   @override
   String get name;
   @override
+  @JsonKey(ignore: true)
   $SimpleStreetCopyWith<SimpleStreet> get copyWith;
 }
 
@@ -715,8 +688,8 @@ class _$SimpleCityCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object population = freezed,
+    Object? name = freezed,
+    Object? population = freezed,
   }) {
     return _then(SimpleCity(
       name == freezed ? _value.name : name as String,
@@ -729,9 +702,7 @@ class _$SimpleCityCopyWithImpl<$Res>
 
 /// @nodoc
 class _$SimpleCity with House implements SimpleCity {
-  const _$SimpleCity(this.name, this.population)
-      : assert(name != null),
-        assert(population != null);
+  const _$SimpleCity(this.name, this.population);
 
   @override
   final String name;
@@ -760,35 +731,31 @@ class _$SimpleCity with House implements SimpleCity {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(population);
 
+  @JsonKey(ignore: true)
   @override
   $SimpleCityCopyWith<SimpleCity> get copyWith =>
       _$SimpleCityCopyWithImpl<SimpleCity>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult country(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name, int population) country,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(country != null);
     return city(name, population);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult country(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (city != null) {
       return city(name, population);
     }
@@ -797,29 +764,24 @@ class _$SimpleCity with House implements SimpleCity {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(SimplePerson value),
-    @required TResult street(SimpleStreet value),
-    @required TResult city(SimpleCity value),
-    @required TResult country(SimpleCountry value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(SimplePerson value) person,
+    required TResult Function(SimpleStreet value) street,
+    required TResult Function(SimpleCity value) city,
+    required TResult Function(SimpleCountry value) country,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(country != null);
     return city(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(SimplePerson value),
-    TResult street(SimpleStreet value),
-    TResult city(SimpleCity value),
-    TResult country(SimpleCountry value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (city != null) {
       return city(this);
     }
@@ -834,6 +796,7 @@ abstract class SimpleCity implements SimpleImplements, House {
   String get name;
   int get population;
   @override
+  @JsonKey(ignore: true)
   $SimpleCityCopyWith<SimpleCity> get copyWith;
 }
 
@@ -860,8 +823,8 @@ class _$SimpleCountryCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object population = freezed,
+    Object? name = freezed,
+    Object? population = freezed,
   }) {
     return _then(SimpleCountry(
       name == freezed ? _value.name : name as String,
@@ -875,9 +838,7 @@ class _$SimpleCountryCopyWithImpl<$Res>
 
 /// @nodoc
 class _$SimpleCountry with House implements SimpleCountry {
-  const _$SimpleCountry(this.name, this.population)
-      : assert(name != null),
-        assert(population != null);
+  const _$SimpleCountry(this.name, this.population);
 
   @override
   final String name;
@@ -906,35 +867,31 @@ class _$SimpleCountry with House implements SimpleCountry {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(population);
 
+  @JsonKey(ignore: true)
   @override
   $SimpleCountryCopyWith<SimpleCountry> get copyWith =>
       _$SimpleCountryCopyWithImpl<SimpleCountry>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult country(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name, int population) country,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(country != null);
     return country(name, population);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult country(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (country != null) {
       return country(name, population);
     }
@@ -943,29 +900,24 @@ class _$SimpleCountry with House implements SimpleCountry {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(SimplePerson value),
-    @required TResult street(SimpleStreet value),
-    @required TResult city(SimpleCity value),
-    @required TResult country(SimpleCountry value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(SimplePerson value) person,
+    required TResult Function(SimpleStreet value) street,
+    required TResult Function(SimpleCity value) city,
+    required TResult Function(SimpleCountry value) country,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(country != null);
     return country(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(SimplePerson value),
-    TResult street(SimpleStreet value),
-    TResult city(SimpleCity value),
-    TResult country(SimpleCountry value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (country != null) {
       return country(this);
     }
@@ -981,6 +933,7 @@ abstract class SimpleCountry
   String get name;
   int get population;
   @override
+  @JsonKey(ignore: true)
   $SimpleCountryCopyWith<SimpleCountry> get copyWith;
 }
 
@@ -1028,36 +981,37 @@ mixin _$CustomMethodImplements {
   String get name;
 
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult duplex(String name),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name) duplex,
   });
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult duplex(String name),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+    required TResult orElse(),
   });
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(PersonCustomMethod value),
-    @required TResult street(StreetCustomMethod value),
-    @required TResult city(CityCustomMethod value),
-    @required TResult duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PersonCustomMethod value) person,
+    required TResult Function(StreetCustomMethod value) street,
+    required TResult Function(CityCustomMethod value) city,
+    required TResult Function(DuplexCustomMethod value) duplex,
   });
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(PersonCustomMethod value),
-    TResult street(StreetCustomMethod value),
-    TResult city(CityCustomMethod value),
-    TResult duplex(DuplexCustomMethod value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+    required TResult orElse(),
   });
 
+  @JsonKey(ignore: true)
   $CustomMethodImplementsCopyWith<CustomMethodImplements> get copyWith;
 }
 
@@ -1080,7 +1034,7 @@ class _$CustomMethodImplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
+    Object? name = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed ? _value.name : name as String,
@@ -1111,8 +1065,8 @@ class _$PersonCustomMethodCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object age = freezed,
+    Object? name = freezed,
+    Object? age = freezed,
   }) {
     return _then(PersonCustomMethod(
       name == freezed ? _value.name : name as String,
@@ -1123,10 +1077,7 @@ class _$PersonCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 class _$PersonCustomMethod extends PersonCustomMethod {
-  const _$PersonCustomMethod(this.name, this.age)
-      : assert(name != null),
-        assert(age != null),
-        super._();
+  const _$PersonCustomMethod(this.name, this.age) : super._();
 
   @override
   final String name;
@@ -1154,35 +1105,31 @@ class _$PersonCustomMethod extends PersonCustomMethod {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(age);
 
+  @JsonKey(ignore: true)
   @override
   $PersonCustomMethodCopyWith<PersonCustomMethod> get copyWith =>
       _$PersonCustomMethodCopyWithImpl<PersonCustomMethod>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult duplex(String name),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name) duplex,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(duplex != null);
     return person(name, age);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult duplex(String name),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (person != null) {
       return person(name, age);
     }
@@ -1191,29 +1138,24 @@ class _$PersonCustomMethod extends PersonCustomMethod {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(PersonCustomMethod value),
-    @required TResult street(StreetCustomMethod value),
-    @required TResult city(CityCustomMethod value),
-    @required TResult duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PersonCustomMethod value) person,
+    required TResult Function(StreetCustomMethod value) street,
+    required TResult Function(CityCustomMethod value) city,
+    required TResult Function(DuplexCustomMethod value) duplex,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(duplex != null);
     return person(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(PersonCustomMethod value),
-    TResult street(StreetCustomMethod value),
-    TResult city(CityCustomMethod value),
-    TResult duplex(DuplexCustomMethod value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (person != null) {
       return person(this);
     }
@@ -1229,6 +1171,7 @@ abstract class PersonCustomMethod extends CustomMethodImplements {
   String get name;
   int get age;
   @override
+  @JsonKey(ignore: true)
   $PersonCustomMethodCopyWith<PersonCustomMethod> get copyWith;
 }
 
@@ -1255,7 +1198,7 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
+    Object? name = freezed,
   }) {
     return _then(StreetCustomMethod(
       name == freezed ? _value.name : name as String,
@@ -1269,9 +1212,7 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
 /// @nodoc
 class _$StreetCustomMethod extends StreetCustomMethod
     with Shop, AdministrativeArea<House> {
-  const _$StreetCustomMethod(this.name)
-      : assert(name != null),
-        super._();
+  const _$StreetCustomMethod(this.name) : super._();
 
   @override
   final String name;
@@ -1293,35 +1234,31 @@ class _$StreetCustomMethod extends StreetCustomMethod
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
 
+  @JsonKey(ignore: true)
   @override
   $StreetCustomMethodCopyWith<StreetCustomMethod> get copyWith =>
       _$StreetCustomMethodCopyWithImpl<StreetCustomMethod>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult duplex(String name),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name) duplex,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(duplex != null);
     return street(name);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult duplex(String name),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (street != null) {
       return street(name);
     }
@@ -1330,29 +1267,24 @@ class _$StreetCustomMethod extends StreetCustomMethod
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(PersonCustomMethod value),
-    @required TResult street(StreetCustomMethod value),
-    @required TResult city(CityCustomMethod value),
-    @required TResult duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PersonCustomMethod value) person,
+    required TResult Function(StreetCustomMethod value) street,
+    required TResult Function(CityCustomMethod value) city,
+    required TResult Function(DuplexCustomMethod value) duplex,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(duplex != null);
     return street(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(PersonCustomMethod value),
-    TResult street(StreetCustomMethod value),
-    TResult city(CityCustomMethod value),
-    TResult duplex(DuplexCustomMethod value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (street != null) {
       return street(this);
     }
@@ -1368,6 +1300,7 @@ abstract class StreetCustomMethod extends CustomMethodImplements
   @override
   String get name;
   @override
+  @JsonKey(ignore: true)
   $StreetCustomMethodCopyWith<StreetCustomMethod> get copyWith;
 }
 
@@ -1394,8 +1327,8 @@ class _$CityCustomMethodCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object population = freezed,
+    Object? name = freezed,
+    Object? population = freezed,
   }) {
     return _then(CityCustomMethod(
       name == freezed ? _value.name : name as String,
@@ -1409,10 +1342,7 @@ class _$CityCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 class _$CityCustomMethod extends CityCustomMethod with House {
-  const _$CityCustomMethod(this.name, this.population)
-      : assert(name != null),
-        assert(population != null),
-        super._();
+  const _$CityCustomMethod(this.name, this.population) : super._();
 
   @override
   final String name;
@@ -1441,35 +1371,31 @@ class _$CityCustomMethod extends CityCustomMethod with House {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(population);
 
+  @JsonKey(ignore: true)
   @override
   $CityCustomMethodCopyWith<CityCustomMethod> get copyWith =>
       _$CityCustomMethodCopyWithImpl<CityCustomMethod>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult duplex(String name),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name) duplex,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(duplex != null);
     return city(name, population);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult duplex(String name),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (city != null) {
       return city(name, population);
     }
@@ -1478,29 +1404,24 @@ class _$CityCustomMethod extends CityCustomMethod with House {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(PersonCustomMethod value),
-    @required TResult street(StreetCustomMethod value),
-    @required TResult city(CityCustomMethod value),
-    @required TResult duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PersonCustomMethod value) person,
+    required TResult Function(StreetCustomMethod value) street,
+    required TResult Function(CityCustomMethod value) city,
+    required TResult Function(DuplexCustomMethod value) duplex,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(duplex != null);
     return city(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(PersonCustomMethod value),
-    TResult street(StreetCustomMethod value),
-    TResult city(CityCustomMethod value),
-    TResult duplex(DuplexCustomMethod value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (city != null) {
       return city(this);
     }
@@ -1518,6 +1439,7 @@ abstract class CityCustomMethod extends CustomMethodImplements
   String get name;
   int get population;
   @override
+  @JsonKey(ignore: true)
   $CityCustomMethodCopyWith<CityCustomMethod> get copyWith;
 }
 
@@ -1544,7 +1466,7 @@ class _$DuplexCustomMethodCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
+    Object? name = freezed,
   }) {
     return _then(DuplexCustomMethod(
       name == freezed ? _value.name : name as String,
@@ -1557,9 +1479,7 @@ class _$DuplexCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 class _$DuplexCustomMethod extends DuplexCustomMethod {
-  const _$DuplexCustomMethod(this.name)
-      : assert(name != null),
-        super._();
+  const _$DuplexCustomMethod(this.name) : super._();
 
   @override
   final String name;
@@ -1581,35 +1501,31 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
 
+  @JsonKey(ignore: true)
   @override
   $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith =>
       _$DuplexCustomMethodCopyWithImpl<DuplexCustomMethod>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name),
-    @required TResult city(String name, int population),
-    @required TResult duplex(String name),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name) street,
+    required TResult Function(String name, int population) city,
+    required TResult Function(String name) duplex,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(duplex != null);
     return duplex(name);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name),
-    TResult city(String name, int population),
-    TResult duplex(String name),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (duplex != null) {
       return duplex(name);
     }
@@ -1618,29 +1534,24 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(PersonCustomMethod value),
-    @required TResult street(StreetCustomMethod value),
-    @required TResult city(CityCustomMethod value),
-    @required TResult duplex(DuplexCustomMethod value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PersonCustomMethod value) person,
+    required TResult Function(StreetCustomMethod value) street,
+    required TResult Function(CityCustomMethod value) city,
+    required TResult Function(DuplexCustomMethod value) duplex,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
-    assert(duplex != null);
     return duplex(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(PersonCustomMethod value),
-    TResult street(StreetCustomMethod value),
-    TResult city(CityCustomMethod value),
-    TResult duplex(DuplexCustomMethod value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (duplex != null) {
       return duplex(this);
     }
@@ -1656,6 +1567,7 @@ abstract class DuplexCustomMethod extends CustomMethodImplements
   @override
   String get name;
   @override
+  @JsonKey(ignore: true)
   $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith;
 }
 
@@ -1697,32 +1609,33 @@ mixin _$GenericImplements<T> {
   String get name;
 
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name, T value),
-    @required TResult city(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name, T value) street,
+    required TResult Function(String name, int population) city,
   });
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name, T value),
-    TResult city(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name, T value)? street,
+    TResult Function(String name, int population)? city,
+    required TResult orElse(),
   });
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(GenericPerson<T> value),
-    @required TResult street(GenericStreet<T> value),
-    @required TResult city(GenericCity<T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(GenericPerson<T> value) person,
+    required TResult Function(GenericStreet<T> value) street,
+    required TResult Function(GenericCity<T> value) city,
   });
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(GenericPerson<T> value),
-    TResult street(GenericStreet<T> value),
-    TResult city(GenericCity<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GenericPerson<T> value)? person,
+    TResult Function(GenericStreet<T> value)? street,
+    TResult Function(GenericCity<T> value)? city,
+    required TResult orElse(),
   });
 
+  @JsonKey(ignore: true)
   $GenericImplementsCopyWith<T, GenericImplements<T>> get copyWith;
 }
 
@@ -1745,7 +1658,7 @@ class _$GenericImplementsCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object name = freezed,
+    Object? name = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed ? _value.name : name as String,
@@ -1776,8 +1689,8 @@ class _$GenericPersonCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object age = freezed,
+    Object? name = freezed,
+    Object? age = freezed,
   }) {
     return _then(GenericPerson<T>(
       name == freezed ? _value.name : name as String,
@@ -1788,9 +1701,7 @@ class _$GenericPersonCopyWithImpl<T, $Res>
 
 /// @nodoc
 class _$GenericPerson<T> implements GenericPerson<T> {
-  const _$GenericPerson(this.name, this.age)
-      : assert(name != null),
-        assert(age != null);
+  const _$GenericPerson(this.name, this.age);
 
   @override
   final String name;
@@ -1818,32 +1729,29 @@ class _$GenericPerson<T> implements GenericPerson<T> {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(age);
 
+  @JsonKey(ignore: true)
   @override
   $GenericPersonCopyWith<T, GenericPerson<T>> get copyWith =>
       _$GenericPersonCopyWithImpl<T, GenericPerson<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name, T value),
-    @required TResult city(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name, T value) street,
+    required TResult Function(String name, int population) city,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
     return person(name, age);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name, T value),
-    TResult city(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name, T value)? street,
+    TResult Function(String name, int population)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (person != null) {
       return person(name, age);
     }
@@ -1852,26 +1760,22 @@ class _$GenericPerson<T> implements GenericPerson<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(GenericPerson<T> value),
-    @required TResult street(GenericStreet<T> value),
-    @required TResult city(GenericCity<T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(GenericPerson<T> value) person,
+    required TResult Function(GenericStreet<T> value) street,
+    required TResult Function(GenericCity<T> value) city,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
     return person(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(GenericPerson<T> value),
-    TResult street(GenericStreet<T> value),
-    TResult city(GenericCity<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GenericPerson<T> value)? person,
+    TResult Function(GenericStreet<T> value)? street,
+    TResult Function(GenericCity<T> value)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (person != null) {
       return person(this);
     }
@@ -1886,6 +1790,7 @@ abstract class GenericPerson<T> implements GenericImplements<T> {
   String get name;
   int get age;
   @override
+  @JsonKey(ignore: true)
   $GenericPersonCopyWith<T, GenericPerson<T>> get copyWith;
 }
 
@@ -1912,8 +1817,8 @@ class _$GenericStreetCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object value = freezed,
+    Object? name = freezed,
+    Object? value = freezed,
   }) {
     return _then(GenericStreet<T>(
       name == freezed ? _value.name : name as String,
@@ -1928,9 +1833,7 @@ class _$GenericStreetCopyWithImpl<T, $Res>
 class _$GenericStreet<T>
     with AdministrativeArea<T>
     implements GenericStreet<T> {
-  const _$GenericStreet(this.name, this.value)
-      : assert(name != null),
-        assert(value != null);
+  const _$GenericStreet(this.name, this.value);
 
   @override
   final String name;
@@ -1958,32 +1861,29 @@ class _$GenericStreet<T>
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(value);
 
+  @JsonKey(ignore: true)
   @override
   $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith =>
       _$GenericStreetCopyWithImpl<T, GenericStreet<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name, T value),
-    @required TResult city(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name, T value) street,
+    required TResult Function(String name, int population) city,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
     return street(name, value);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name, T value),
-    TResult city(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name, T value)? street,
+    TResult Function(String name, int population)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (street != null) {
       return street(name, value);
     }
@@ -1992,26 +1892,22 @@ class _$GenericStreet<T>
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(GenericPerson<T> value),
-    @required TResult street(GenericStreet<T> value),
-    @required TResult city(GenericCity<T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(GenericPerson<T> value) person,
+    required TResult Function(GenericStreet<T> value) street,
+    required TResult Function(GenericCity<T> value) city,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
     return street(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(GenericPerson<T> value),
-    TResult street(GenericStreet<T> value),
-    TResult city(GenericCity<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GenericPerson<T> value)? person,
+    TResult Function(GenericStreet<T> value)? street,
+    TResult Function(GenericCity<T> value)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (street != null) {
       return street(this);
     }
@@ -2027,6 +1923,7 @@ abstract class GenericStreet<T>
   String get name;
   T get value;
   @override
+  @JsonKey(ignore: true)
   $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith;
 }
 
@@ -2053,8 +1950,8 @@ class _$GenericCityCopyWithImpl<T, $Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object population = freezed,
+    Object? name = freezed,
+    Object? population = freezed,
   }) {
     return _then(GenericCity<T>(
       name == freezed ? _value.name : name as String,
@@ -2068,9 +1965,7 @@ class _$GenericCityCopyWithImpl<T, $Res>
 
 /// @nodoc
 class _$GenericCity<T> with House implements GenericCity<T> {
-  const _$GenericCity(this.name, this.population)
-      : assert(name != null),
-        assert(population != null);
+  const _$GenericCity(this.name, this.population);
 
   @override
   final String name;
@@ -2099,32 +1994,29 @@ class _$GenericCity<T> with House implements GenericCity<T> {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(population);
 
+  @JsonKey(ignore: true)
   @override
   $GenericCityCopyWith<T, GenericCity<T>> get copyWith =>
       _$GenericCityCopyWithImpl<T, GenericCity<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object>({
-    @required TResult person(String name, int age),
-    @required TResult street(String name, T value),
-    @required TResult city(String name, int population),
+  TResult when<TResult extends Object?>({
+    required TResult Function(String name, int age) person,
+    required TResult Function(String name, T value) street,
+    required TResult Function(String name, int population) city,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
     return city(name, population);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object>({
-    TResult person(String name, int age),
-    TResult street(String name, T value),
-    TResult city(String name, int population),
-    @required TResult orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name, T value)? street,
+    TResult Function(String name, int population)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (city != null) {
       return city(name, population);
     }
@@ -2133,26 +2025,22 @@ class _$GenericCity<T> with House implements GenericCity<T> {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object>({
-    @required TResult person(GenericPerson<T> value),
-    @required TResult street(GenericStreet<T> value),
-    @required TResult city(GenericCity<T> value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(GenericPerson<T> value) person,
+    required TResult Function(GenericStreet<T> value) street,
+    required TResult Function(GenericCity<T> value) city,
   }) {
-    assert(person != null);
-    assert(street != null);
-    assert(city != null);
     return city(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object>({
-    TResult person(GenericPerson<T> value),
-    TResult street(GenericStreet<T> value),
-    TResult city(GenericCity<T> value),
-    @required TResult orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GenericPerson<T> value)? person,
+    TResult Function(GenericStreet<T> value)? street,
+    TResult Function(GenericCity<T> value)? city,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (city != null) {
       return city(this);
     }
@@ -2168,5 +2056,6 @@ abstract class GenericCity<T>
   String get name;
   int get population;
   @override
+  @JsonKey(ignore: true)
   $GenericCityCopyWith<T, GenericCity<T>> get copyWith;
 }

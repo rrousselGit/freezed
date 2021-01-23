@@ -4,8 +4,8 @@ part 'multiple_constructors.freezed.dart';
 
 @freezed
 abstract class NoCommonParam with _$NoCommonParam {
-  const factory NoCommonParam(String a, {int b}) = NoCommonParam0;
-  const factory NoCommonParam.named(double c, [Object d]) = NoCommonParam1;
+  const factory NoCommonParam(String a, {int? b}) = NoCommonParam0;
+  const factory NoCommonParam.named(double c, [Object? d]) = NoCommonParam1;
 }
 
 @freezed
@@ -29,24 +29,24 @@ abstract class Complex with _$Complex {
     String a, {
 
     /// B
-    bool b,
-    double d,
+    bool? b,
+    double? d,
   }) = Complex1;
 
   const factory Complex.second(
     String a, [
 
     /// C
-    int c,
-    double d,
+    int? c,
+    double? d,
   ]) = Complex2;
 }
 
 @freezed
 abstract class SwitchTest with _$SwitchTest {
   const factory SwitchTest(String a) = SwitchTest0;
-  const factory SwitchTest.first(String a, {bool b, double d}) = SwitchTest1;
-  const factory SwitchTest.second(String a, [int c, double d]) = SwitchTest2;
+  const factory SwitchTest.first(String a, {bool? b, double? d}) = SwitchTest1;
+  const factory SwitchTest.second(String a, [int? c, double? d]) = SwitchTest2;
 }
 
 @freezed
@@ -69,8 +69,8 @@ abstract class Recursive with _$Recursive {
 
 @freezed
 abstract class RequiredParams with _$RequiredParams {
-  const factory RequiredParams({@required String a}) = RequiredParams0;
-  const factory RequiredParams.second({@required String a}) = RequiredParams1;
+  const factory RequiredParams({required String a}) = RequiredParams0;
+  const factory RequiredParams.second({required String a}) = RequiredParams1;
 }
 
 @freezed

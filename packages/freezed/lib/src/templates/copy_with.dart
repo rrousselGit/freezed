@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -68,7 +70,6 @@ ${_abstractDeepCopyMethods().join()}
               showDefaultValue: false,
               isRequired: false,
               defaultValueSource: '',
-              nullable: e.nullable,
               type: e.type,
               doc: e.doc,
             );
@@ -104,7 +105,9 @@ ${_deepCopyMethods().join()}
         leading = '@override ';
       }
 
-      yield '$leading${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name};';
+      final nullabilitySuffix = cloneableProperty.nullable ? '?' : '';
+
+      yield '$leading${_clonerInterfaceFor(cloneableProperty)}$nullabilitySuffix get ${cloneableProperty.name};';
     }
   }
 
@@ -175,7 +178,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   }) {
     String parameterToValue(Parameter p) {
       var ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name}';
-      if (p.type != 'Object' && p.type != null) {
+      if (p.type != 'Object?' && p.type != null) {
         ternary = '$ternary as ${p.type}';
       }
       return '$ternary,';
@@ -208,7 +211,7 @@ $constructorParameters
     @required String methodName,
   }) {
     final parameters = properties.map((p) {
-      return 'Object ${p.name} = freezed,';
+      return 'Object? ${p.name} = freezed,';
     }).join();
 
     return '\$Res $methodName({$parameters})';
@@ -243,13 +246,25 @@ ${_deepCopyMethods().join()}
           });
 
     for (final cloneableProperty in toGenerateProperties) {
-      yield '''
-@override
-${_clonerInterfaceFor(cloneableProperty)} get ${cloneableProperty.name} {
+      final earlyReturn = cloneableProperty.nullable
+          ? '''
   if (_value.${cloneableProperty.name} == null) {
     return null;
   }
-  return ${_clonerInterfaceFor(cloneableProperty)}(_value.${cloneableProperty.name}, (value) {
+'''
+          : '';
+
+      final nullabilitySuffix = cloneableProperty.nullable ? '!' : '';
+
+      final returnType = cloneableProperty.nullable
+          ? '${_clonerInterfaceFor(cloneableProperty)}?'
+          : '${_clonerInterfaceFor(cloneableProperty)}';
+
+      yield '''
+@override
+$returnType get ${cloneableProperty.name} {
+  $earlyReturn
+  return ${_clonerInterfaceFor(cloneableProperty)}(_value.${cloneableProperty.name}$nullabilitySuffix, (value) {
     return _then(_value.copyWith(${cloneableProperty.name}:  value));
   });
 }''';

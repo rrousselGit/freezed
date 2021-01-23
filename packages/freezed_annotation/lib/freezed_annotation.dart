@@ -56,7 +56,7 @@ class Freezed {
   ///   print(Union.second().toJson()); // { 'type': 'second' }
   /// }
   /// ```
-  final String unionKey;
+  final String? unionKey;
 }
 
 /// An annotation for the `freezed` package.
@@ -89,42 +89,8 @@ class Assert {
   final String eval;
 
   /// An optional message to show if the assertion failed.
-  final String message;
+  final String? message;
 }
-
-class _Nullable {
-  const _Nullable._();
-}
-
-/// Mark the generated property as nullable.
-///
-/// This disables the generation of `assert(property != null)` on both the
-/// constructor and clone methods for the decorated property.
-const nullable = _Nullable._();
-
-class _Late {
-  const _Late._();
-}
-
-/// Mark a getter as safe to cache.
-///
-/// Getters marked with `late` will be called **at most** once per instane of the
-/// object.\
-/// Only getters using the `=>` syntax are supported. Getters with `{}` are not.
-///
-/// This makes the getter behave similarly to the upcoming `late` keyword:
-///
-/// ```dart
-/// @late
-/// String get fullName => '$firstName $lastName';
-/// ```
-///
-/// is the equivalent to the upcoming:
-///
-/// ```dart
-/// late final fullName = '$firstName $lastName';
-/// ```
-const late = _Late._();
 
 /// Allows passing default values to a constructor:
 ///
@@ -144,7 +110,7 @@ const late = _Late._();
 class Default {
   const Default(this.defaultValue);
 
-  final Object defaultValue;
+  final Object? defaultValue;
 }
 
 /// Marks a union type to implement the interface [type] or [stringType].
@@ -187,8 +153,8 @@ class Implements {
 
   const Implements.fromString(this.stringType) : type = null;
 
-  final Type type;
-  final String stringType;
+  final Type? type;
+  final String? stringType;
 }
 
 /// Marks a union type to mixin the class [type] or [stringType].
@@ -231,6 +197,6 @@ class With {
 
   const With.fromString(this.stringType) : type = null;
 
-  final Type type;
-  final String stringType;
+  final Type? type;
+  final String? stringType;
 }

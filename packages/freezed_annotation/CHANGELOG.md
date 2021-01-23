@@ -1,3 +1,43 @@
+# 0.13.0-nullsafety.0
+
+- Migrated to null safety
+- removed `@nullable`.
+  Instead of:
+  ```dart
+  factory Example({@nullable int a}) = _Example;
+  ```
+  Do:
+  ```dart
+  factory Example({int? a}) = _Example;
+  ```
+- removed `@late`.
+  Instead of:
+  ```dart
+  abstract class Person with _$Person {
+    factory Person({
+      required String firstName,
+      required String lastName,
+    }) = _Person;
+
+    @late
+    String get fullName => '$firstName $lastName';
+  }
+  ```
+  Do:
+    ```dart
+  abstract class Person with _$Person {
+    Person._();
+    factory Person({
+      required String firstName,
+      required String lastName,
+    }) = _Person;
+
+    late final fullName = '$firstName $lastName';
+  }
+  ```
+
+
+
 # 0.12.0
 
 - Added `Assert` decorator to generate `assert(...)` statements on Freezed classes:
