@@ -1,3 +1,8 @@
+# 0.13.0-nullsafety.1
+
+- Fixed a bug causing properties with annotations to generate the annotations _before_
+  the `required keyword, leading to a compilation error (see #351).
+
 # 0.13.0-nullsafety.0
 
 Migrated to null safety
