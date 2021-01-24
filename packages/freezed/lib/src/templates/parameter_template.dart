@@ -265,11 +265,17 @@ class Parameter {
 
   @override
   String toString() {
-    var res = '${decorators.join()}  ${type ?? 'dynamic'} $name';
+    var res = ' ${type ?? 'dynamic'} $name';
+    if (isRequired) {
+      res = 'required $res';
+    }
+    if (decorators.isNotEmpty) {
+      res = '${decorators.join()} $res';
+    }
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
-    return isRequired ? 'required $res' : res;
+    return res;
   }
 }
 
@@ -293,11 +299,17 @@ class LocalParameter extends Parameter {
 
   @override
   String toString() {
-    var res = '${decorators.join()} this.$name';
+    var res = 'this.$name';
+    if (isRequired) {
+      res = 'required $res';
+    }
+    if (decorators.isNotEmpty) {
+      res = '${decorators.join()} $res';
+    }
     if (showDefaultValue && defaultValueSource != null) {
       res = '$res = $defaultValueSource';
     }
-    return isRequired ? 'required $res' : res;
+    return res;
   }
 }
 
@@ -326,10 +338,13 @@ class CallbackParameter extends Parameter {
 
   @override
   String toString() {
-    var res = '${decorators.join()} $type Function($parameters)';
+    var res = '$type Function($parameters)';
 
     if (isRequired) {
       res = 'required $res';
+    }
+    if (decorators.isNotEmpty) {
+      res = '${decorators.join()} $res';
     }
     if (isNullable) {
       res = '$res?';

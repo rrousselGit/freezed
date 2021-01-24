@@ -3,6 +3,17 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'json.freezed.dart';
 part 'json.g.dart';
 
+// regression test for https://github.com/rrousselGit/freezed/issues/351
+@freezed
+abstract class Regression351 with _$Regression351 {
+  factory Regression351({
+    @JsonKey(name: 'total_results') required int totalResults,
+  }) = _Regression351;
+
+  factory Regression351.fromJson(Map<String, dynamic> json) =>
+      _$Regression351FromJson(json);
+}
+
 // regression test for https://github.com/rrousselGit/freezed/issues/323
 @freezed
 abstract class Regression323 with _$Regression323 {
