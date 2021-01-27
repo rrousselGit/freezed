@@ -1222,7 +1222,7 @@ You can pass `@JsonSerializable` annotation by placing it over constructor e.g.:
 ```dart
 @freezed
 abstract class Example with _$Example {
-  @JsonSerializable(explicit_to_json: true)
+  @JsonSerializable(explicitToJson: true)
   factory Example(@JsonKey(name: 'my_property') SomeOtherClass myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
