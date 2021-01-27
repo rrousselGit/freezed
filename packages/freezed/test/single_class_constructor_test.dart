@@ -158,7 +158,7 @@ Future<void> main() async {
 
     expect(
       value.toString(),
-      'AllProperties(value: 42, b: 2, c: 3, a: 1)',
+      'AllProperties(value: 42)',
     );
   });
 

@@ -12,11 +12,11 @@ void main() {
     var value = diagnosticable.Example<int>(42, '21');
 
     expect(value, isA<DiagnosticableTree>());
-    expect(value.toString(), 'Example<int>(a: 42, b: 21, theAnswer: 42)');
+    expect(value.toString(), 'Example<int>(a: 42, b: 21)');
 
     value = diagnosticable.Example.named(42);
     expect(value, isA<DiagnosticableTree>());
-    expect(value.toString(), 'Example<int>.named(c: 42, theAnswer: 42)');
+    expect(value.toString(), 'Example<int>.named(c: 42)');
   });
 
   test('debugFillProperties', () {
@@ -36,9 +36,6 @@ void main() {
       isA<DiagnosticsProperty>()
           .having((d) => d.name, 'name', 'b')
           .having((d) => d.value, 'value', '21'),
-      isA<DiagnosticsProperty>()
-          .having((d) => d.name, 'name', 'theAnswer')
-          .having((d) => d.value, 'value', 42),
     ]);
   });
 

@@ -20,7 +20,6 @@ class Concrete {
     @required this.hasDiagnosticable,
     @required this.shouldGenerateJson,
     @required this.commonProperties,
-    @required this.concretePropertiesName,
     @required this.name,
     @required this.unionKey,
     @required this.copyWith,
@@ -32,7 +31,6 @@ class Concrete {
   final GenericsDefinitionTemplate genericsDefinition;
   final GenericsParameterTemplate genericsParameter;
   final List<Property> commonProperties;
-  final List<String> concretePropertiesName;
   final bool hasDiagnosticable;
   final bool shouldGenerateJson;
   final String name;
@@ -184,8 +182,6 @@ Map<String, dynamic> toJson() {
     final diagnostics = [
       for (final e in constructor.impliedProperties)
         "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
-      for (final name in concretePropertiesName)
-        "..add(DiagnosticsProperty('$name', $name))"
     ].join();
 
     return '''
@@ -278,7 +274,6 @@ ${whenPrototype(allConstructors)} {
 
     final properties = [
       for (final p in constructor.impliedProperties) '${p.name}: \$${p.name}',
-      for (final name in concretePropertiesName) '$name: \$$name',
     ];
 
     return '''
