@@ -423,7 +423,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         commonProperties: commonProperties,
         genericsDefinition: data.genericsDefinitionTemplate,
         genericsParameter: data.genericsParameterTemplate,
-        concretePropertiesName: data.concretePropertiesName,
         copyWith: CopyWith(
           clonedClassName: constructor.redirectedName,
           cloneableProperties: constructor.cloneableProperties,

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
 part of 'diagnosticable.dart';
 
@@ -13,7 +13,6 @@ T _$identity<T>(T value) => value;
 class _$ExampleTearOff {
   const _$ExampleTearOff();
 
-// ignore: unused_element
   _Example<T> call<T>(int a, String b) {
     return _Example<T>(
       a,
@@ -21,7 +20,6 @@ class _$ExampleTearOff {
     );
   }
 
-// ignore: unused_element
   _Example2<T> named<T>(T c) {
     return _Example2<T>(
       c,
@@ -30,7 +28,6 @@ class _$ExampleTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Example = _$ExampleTearOff();
 
 /// @nodoc
@@ -114,7 +111,7 @@ class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Example<$T>(a: $a, b: $b, theAnswer: $theAnswer)';
+    return 'Example<$T>(a: $a, b: $b)';
   }
 
   @override
@@ -123,8 +120,7 @@ class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'Example<$T>'))
       ..add(DiagnosticsProperty('a', a))
-      ..add(DiagnosticsProperty('b', b))
-      ..add(DiagnosticsProperty('theAnswer', theAnswer));
+      ..add(DiagnosticsProperty('b', b));
   }
 
   @override
@@ -240,7 +236,7 @@ class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Example<$T>.named(c: $c, theAnswer: $theAnswer)';
+    return 'Example<$T>.named(c: $c)';
   }
 
   @override
@@ -248,8 +244,7 @@ class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Example<$T>.named'))
-      ..add(DiagnosticsProperty('c', c))
-      ..add(DiagnosticsProperty('theAnswer', theAnswer));
+      ..add(DiagnosticsProperty('c', c));
   }
 
   @override
@@ -327,14 +322,12 @@ abstract class _Example2<T> extends Example<T> {
 class _$ConcreteExampleTearOff {
   const _$ConcreteExampleTearOff();
 
-// ignore: unused_element
   _ConcreteExample<T> call<T>() {
     return _ConcreteExample<T>();
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $ConcreteExample = _$ConcreteExampleTearOff();
 
 /// @nodoc

@@ -1,3 +1,7 @@
+# 0.13.0-nullsafety.2
+
+- Excluded getters and late variables from the generated `toString` as they could potentially cause a StackOverflow
+
 # 0.13.0-nullsafety.1
 
 - Fixed a bug causing properties with annotations to generate the annotations _before_

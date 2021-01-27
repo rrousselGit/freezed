@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
 part of 'main.dart';
 
@@ -13,7 +13,6 @@ T _$identity<T>(T value) => value;
 class _$MyClassTearOff {
   const _$MyClassTearOff();
 
-// ignore: unused_element
   _MyClass call({String? a, int? b}) {
     return _MyClass(
       a: a,
@@ -23,7 +22,6 @@ class _$MyClassTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $MyClass = _$MyClassTearOff();
 
 /// @nodoc
@@ -168,26 +166,22 @@ Union _$UnionFromJson(Map<String, dynamic> json) {
 class _$UnionTearOff {
   const _$UnionTearOff();
 
-// ignore: unused_element
   Data call(int value) {
     return Data(
       value,
     );
   }
 
-// ignore: unused_element
   Loading loading() {
     return const Loading();
   }
 
-// ignore: unused_element
   ErrorDetails error([String? message]) {
     return ErrorDetails(
       message,
     );
   }
 
-// ignore: unused_element
   Complex complex(int a, String b) {
     return Complex(
       a,
@@ -195,14 +189,12 @@ class _$UnionTearOff {
     );
   }
 
-// ignore: unused_element
   Union fromJson(Map<String, Object> json) {
     return Union.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Union = _$UnionTearOff();
 
 /// @nodoc
@@ -787,7 +779,6 @@ abstract class Complex implements Union {
 class _$SharedPropertyTearOff {
   const _$SharedPropertyTearOff();
 
-// ignore: unused_element
   SharedProperty0 person({String? name, int? age}) {
     return SharedProperty0(
       name: name,
@@ -795,7 +786,6 @@ class _$SharedPropertyTearOff {
     );
   }
 
-// ignore: unused_element
   SharedProperty1 city({String? name, int? population}) {
     return SharedProperty1(
       name: name,
@@ -805,7 +795,6 @@ class _$SharedPropertyTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $SharedProperty = _$SharedPropertyTearOff();
 
 /// @nodoc
