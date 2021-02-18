@@ -9,6 +9,16 @@ import '../utils.dart';
 import 'concrete_template.dart';
 import 'prototypes.dart';
 
+const privConstUsedErrorString =
+    'It seems like you constructed your class using MyClass._()'
+    ' or by manually adding another constructor. '
+    'The MyClass._() constructor is only meant to be used by freezed '
+    'and you are not supposed to need it nor use it.'
+    '\\nPlease check the documentation here for more informations: '
+    'https://github.com/rrousselGit/freezed#custom-getters-and-methods';
+
+const privConstUsedErrorVarName = '_privateConstructorUsedError';
+
 class Property {
   Property({
     @required String type,
@@ -77,7 +87,8 @@ class Getter {
 
   @override
   String toString() {
-    return '$doc${decorators.join()} $type get $name;';
+    return '$doc${decorators.join()} $type get $name => '
+        'throw $privConstUsedErrorVarName;';
   }
 }
 

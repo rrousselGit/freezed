@@ -1,11 +1,7 @@
 // ignore_for_file: avoid_unused_constructor_parameters, unused_element
+import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-@ShouldThrow('Marked Unrelated with @freezed, but the class is not abstract')
-@freezed
-class Unrelated {}
 
 @ShouldThrow('@freezed can only be applied on classes. Failing element: foo')
 @freezed

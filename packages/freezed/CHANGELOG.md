@@ -1,3 +1,7 @@
+# 0.14.0-nullsafety.0
+
+- Classes do not need to be declared as `abstract` anymore. Allows to use mixins and/or implement/extend other classes and have the IDE give meaningful feedback.
+
 # 0.13.0-nullsafety.2
 
 - Excluded getters and late variables from the generated `toString` as they could potentially cause a StackOverflow

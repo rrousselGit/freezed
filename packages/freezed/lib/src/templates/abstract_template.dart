@@ -2,6 +2,7 @@
 
 import 'package:freezed/src/models.dart';
 import 'package:meta/meta.dart';
+
 import 'copy_with.dart';
 import 'parameter_template.dart';
 import 'properties.dart';
@@ -16,6 +17,7 @@ class Abstract {
     @required this.shouldGenerateJson,
     @required this.allConstructors,
     @required this.copyWith,
+    @required this.shouldUseExtends,
   });
 
   final String name;
@@ -25,12 +27,15 @@ class Abstract {
   final List<ConstructorDetails> allConstructors;
   final bool shouldGenerateJson;
   final CopyWith copyWith;
+  final bool shouldUseExtends;
 
   @override
   String toString() {
     return '''
 /// @nodoc
-mixin _\$$name$genericsDefinition {
+abstract class _\$$name$genericsDefinition {
+$_constructor
+
 ${abstractProperties.join()}
 
 $_when
@@ -49,8 +54,13 @@ ${copyWith.commonContreteImpl(abstractProperties)}
 
   String get _toJson {
     if (!shouldGenerateJson) return '';
-
     return 'Map<String, dynamic> toJson();';
+  }
+
+  String get _constructor {
+    final constructor = allConstructors.privateConstructor;
+    if (constructor == null || !shouldUseExtends) return '';
+    return '${constructor.isConst ? 'const ' : ''}$name._();';
   }
 
   String get _when {
@@ -71,5 +81,12 @@ ${copyWith.commonContreteImpl(abstractProperties)}
   String get _maybeMap {
     if (!allConstructors.shouldGenerateUnions) return '';
     return '${maybeMapPrototype(allConstructors, genericsParameter)};';
+  }
+}
+
+extension on List<ConstructorDetails> {
+  ConstructorDetails get privateConstructor {
+    for (final c in this) if (c.name == '_') return c;
+    return null;
   }
 }

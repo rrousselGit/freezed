@@ -102,12 +102,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     @required bool shouldUseExtends,
   }) {
     // TODO: verify _$name is mixed-in
-    if (!element.isAbstract) {
-      throw InvalidGenerationSourceError(
-        'Marked ${element.name} with @freezed, but the class is not abstract',
-        element: element,
-      );
-    }
 
     // Invalid constructors check
     for (final constructor in element.constructors) {
@@ -362,7 +356,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
   @override
   Iterable<Object> generateForAll(GlobalData globalData) sync* {
-    yield r'T _$identity<T>(T value) => value;';
+    yield r'T _$identity<T>(T value) => value;'
+        '\n\nfinal $privConstUsedErrorVarName = UnsupportedError(\'$privConstUsedErrorString\');';
   }
 
   @override
@@ -409,6 +404,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       abstractProperties: commonProperties.asGetters(),
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
+      shouldUseExtends: data.shouldUseExtends,
     );
 
     for (final constructor in data.constructors) {
