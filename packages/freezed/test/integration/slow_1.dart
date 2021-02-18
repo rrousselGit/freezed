@@ -1,11 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import './slow_2.dart';
 import 'slow_3.dart';
 
 part 'slow_1.freezed.dart';
 
 @freezed
-abstract class Root with _$Root {
+class Root with _$Root {
   const factory Root.a(A a) = _A;
   const factory Root.b(B b) = _B;
   const factory Root.c(A a) = _C;

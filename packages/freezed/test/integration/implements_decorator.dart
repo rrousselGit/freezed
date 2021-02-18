@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 part 'implements_decorator.freezed.dart';
 
 @freezed
-abstract class SimpleImplements with _$SimpleImplements {
+class SimpleImplements with _$SimpleImplements {
   const factory SimpleImplements.person(String name, int age) = SimplePerson;
 
   @With.fromString('AdministrativeArea<House>')
@@ -20,7 +20,7 @@ abstract class SimpleImplements with _$SimpleImplements {
 }
 
 @freezed
-abstract class CustomMethodImplements implements _$CustomMethodImplements {
+class CustomMethodImplements with _$CustomMethodImplements {
   const CustomMethodImplements._();
 
   const factory CustomMethodImplements.person(String name, int age) =
@@ -40,7 +40,7 @@ abstract class CustomMethodImplements implements _$CustomMethodImplements {
 }
 
 @freezed
-abstract class GenericImplements<T> with _$GenericImplements<T> {
+class GenericImplements<T> with _$GenericImplements<T> {
   const factory GenericImplements.person(String name, int age) =
       GenericPerson<T>;
 

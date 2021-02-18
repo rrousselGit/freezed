@@ -404,7 +404,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       abstractProperties: commonProperties.asGetters(),
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
-      shouldUseExtends: data.shouldUseExtends,
     );
 
     for (final constructor in data.constructors) {

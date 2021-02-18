@@ -17,7 +17,6 @@ class Abstract {
     @required this.shouldGenerateJson,
     @required this.allConstructors,
     @required this.copyWith,
-    @required this.shouldUseExtends,
   });
 
   final String name;
@@ -27,14 +26,12 @@ class Abstract {
   final List<ConstructorDetails> allConstructors;
   final bool shouldGenerateJson;
   final CopyWith copyWith;
-  final bool shouldUseExtends;
 
   @override
   String toString() {
     return '''
 /// @nodoc
-abstract class _\$$name$genericsDefinition {
-$_constructor
+mixin _\$$name$genericsDefinition {
 
 ${abstractProperties.join()}
 
@@ -54,39 +51,26 @@ ${copyWith.commonContreteImpl(abstractProperties)}
 
   String get _toJson {
     if (!shouldGenerateJson) return '';
-    return 'Map<String, dynamic> toJson();';
-  }
-
-  String get _constructor {
-    final constructor = allConstructors.privateConstructor;
-    if (constructor == null || !shouldUseExtends) return '';
-    return '${constructor.isConst ? 'const ' : ''}$name._();';
+    return 'Map<String, dynamic> toJson() => throw $privConstUsedErrorVarName;';
   }
 
   String get _when {
     if (!allConstructors.shouldGenerateUnions) return '';
-    return '${whenPrototype(allConstructors)};';
+    return '${whenPrototype(allConstructors)} => throw $privConstUsedErrorVarName;';
   }
 
   String get _maybeWhen {
     if (!allConstructors.shouldGenerateUnions) return '';
-    return '${maybeWhenPrototype(allConstructors)};';
+    return '${maybeWhenPrototype(allConstructors)} => throw $privConstUsedErrorVarName;';
   }
 
   String get _map {
     if (!allConstructors.shouldGenerateUnions) return '';
-    return '${mapPrototype(allConstructors, genericsParameter)};';
+    return '${mapPrototype(allConstructors, genericsParameter)} => throw $privConstUsedErrorVarName;';
   }
 
   String get _maybeMap {
     if (!allConstructors.shouldGenerateUnions) return '';
-    return '${maybeMapPrototype(allConstructors, genericsParameter)};';
-  }
-}
-
-extension on List<ConstructorDetails> {
-  ConstructorDetails get privateConstructor {
-    for (final c in this) if (c.name == '_') return c;
-    return null;
+    return '${maybeMapPrototype(allConstructors, genericsParameter)} => throw $privConstUsedErrorVarName;';
   }
 }

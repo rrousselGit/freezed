@@ -5,7 +5,7 @@ part 'json.g.dart';
 
 // regression test for https://github.com/rrousselGit/freezed/issues/351
 @freezed
-abstract class Regression351 with _$Regression351 {
+class Regression351 with _$Regression351 {
   factory Regression351({
     @JsonKey(name: 'total_results') required int totalResults,
   }) = _Regression351;
@@ -16,7 +16,7 @@ abstract class Regression351 with _$Regression351 {
 
 // regression test for https://github.com/rrousselGit/freezed/issues/323
 @freezed
-abstract class Regression323 with _$Regression323 {
+class Regression323 with _$Regression323 {
   const factory Regression323({
     required String id,
     required num amount,
@@ -33,7 +33,7 @@ abstract class Regression323 with _$Regression323 {
 
 // regression test for https://github.com/rrousselGit/freezed/issues/280
 @freezed
-abstract class Regression280 with _$Regression280 {
+class Regression280 with _$Regression280 {
   const factory Regression280(String label) = _Regression280;
 
   factory Regression280.fromJson(Map<String, dynamic> val) {
@@ -42,7 +42,7 @@ abstract class Regression280 with _$Regression280 {
 }
 
 @freezed
-abstract class Regression280n2 with _$Regression280n2 {
+class Regression280n2 with _$Regression280n2 {
   const factory Regression280n2(String label) = _Regression280n2;
 
   factory Regression280n2.fromJson(String val) {
@@ -57,7 +57,7 @@ CustomJson _fromJson(Map<String, dynamic> json) {
 }
 
 @freezed
-abstract class CustomJson with _$CustomJson {
+class CustomJson with _$CustomJson {
   const factory CustomJson(String label) = _CustomJson;
 
   factory CustomJson.fromJson(Map<String, dynamic> json) => _fromJson(json);
@@ -91,14 +91,14 @@ abstract class CustomKey with _$CustomKey {
 }
 
 @freezed
-abstract class Single with _$Single {
+class Single with _$Single {
   const factory Single(int a) = _Single;
 
   factory Single.fromJson(Map<String, dynamic> json) => _$SingleFromJson(json);
 }
 
 @freezed
-abstract class Json with _$Json {
+class Json with _$Json {
   const factory Json() = JsonDefault;
   const factory Json.first(String a) = First;
   const factory Json.second(int b) = Second;
@@ -107,14 +107,14 @@ abstract class Json with _$Json {
 }
 
 @freezed
-abstract class NoJson with _$NoJson {
+class NoJson with _$NoJson {
   const factory NoJson() = NoDefault;
   const factory NoJson.first(String a) = NoFirst;
   const factory NoJson.second(int b) = NoSecond;
 }
 
 @freezed
-abstract class Decorator with _$Decorator {
+class Decorator with _$Decorator {
   factory Decorator(@JsonKey(name: 'what') String a) = _Decorator;
 
   factory Decorator.fromJson(Map<String, dynamic> json) =>
@@ -122,7 +122,7 @@ abstract class Decorator with _$Decorator {
 }
 
 @freezed
-abstract class Generic<T> with _$Generic<T> {
+class Generic<T> with _$Generic<T> {
   factory Generic(@DataConverter() T a) = _Generic<T>;
 
   factory Generic.fromJson(Map<String, dynamic> json) =>
@@ -144,7 +144,7 @@ class DataConverter<T> implements JsonConverter<T, Object?> {
 }
 
 @freezed
-abstract class DefaultValue with _$DefaultValue {
+class DefaultValue with _$DefaultValue {
   factory DefaultValue([@Default(42) int value]) = _DefaultValue;
 
   factory DefaultValue.fromJson(Map<String, dynamic> json) =>
@@ -152,7 +152,7 @@ abstract class DefaultValue with _$DefaultValue {
 }
 
 @freezed
-abstract class DefaultValueJsonKey with _$DefaultValueJsonKey {
+class DefaultValueJsonKey with _$DefaultValueJsonKey {
   factory DefaultValueJsonKey([
     @Default(42) @JsonKey(defaultValue: 21) int value,
   ]) = _DefaultValueJsonKey;
@@ -162,7 +162,7 @@ abstract class DefaultValueJsonKey with _$DefaultValueJsonKey {
 }
 
 @freezed
-abstract class ClassDecorator with _$ClassDecorator {
+class ClassDecorator with _$ClassDecorator {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ClassDecorator(String complexName) = ClassDecoratorDefault;
 
@@ -171,7 +171,7 @@ abstract class ClassDecorator with _$ClassDecorator {
 }
 
 @freezed
-abstract class DurationValue with _$DurationValue {
+class DurationValue with _$DurationValue {
   const factory DurationValue(Duration complexName) = DurationValueDefault;
 
   factory DurationValue.fromJson(Map<String, dynamic> json) =>
