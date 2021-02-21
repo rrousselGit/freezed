@@ -54,6 +54,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 - [The features](#the-features)
   - [The syntax](#the-syntax)
     - [Basics](#basics)
+    - [The abstract keyword](#the-abstract-keyword)
     - [Custom getters and methods](#custom-getters-and-methods)
     - [Asserts](#asserts)
     - [Non-nullable](#non-nullable)
