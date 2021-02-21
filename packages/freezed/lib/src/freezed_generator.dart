@@ -102,6 +102,12 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     @required bool shouldUseExtends,
   }) {
     // TODO: verify _$name is mixed-in
+    if (element.isAbstract) {
+      print(
+        'Declared @freezed ${element.name} class with abstract, but it is not need anymore.\n'
+        'Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#the-abstract-keyword',
+      );
+    }
 
     // Invalid constructors check
     for (final constructor in element.constructors) {
