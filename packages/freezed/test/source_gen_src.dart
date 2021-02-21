@@ -195,3 +195,12 @@ class Mixed1 implements Mixed {
 class Mixed0 implements Mixed {
   Mixed0(String a);
 }
+
+@freezed
+abstract class AstractClass {
+  const factory AstractClass() = _AstractClass;
+}
+
+class _AstractClass implements AstractClass {
+  const _AstractClass();
+}
