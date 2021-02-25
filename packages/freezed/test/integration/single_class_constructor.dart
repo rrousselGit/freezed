@@ -5,6 +5,14 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+@freezed
+class UnimplementedGetter with _$UnimplementedGetter {
+  factory UnimplementedGetter(int value) = _UnimplementedGetter;
+
+  @override
+  int get value;
+}
+
 // Regression test for https://github.com/rrousselGit/freezed/issues/326
 @freezed
 class Doc326 with _$Doc326 {

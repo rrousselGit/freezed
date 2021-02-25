@@ -64,7 +64,7 @@ class CustomJson with _$CustomJson {
 }
 
 @Freezed(unionKey: 'ty"\'pe')
-abstract class FancyCustomKey with _$FancyCustomKey {
+class FancyCustomKey with _$FancyCustomKey {
   const factory FancyCustomKey.first(int a) = _FancyCustomKeyFirst;
   const factory FancyCustomKey.second(int a) = _FancyCustomKeySecond;
 
@@ -73,7 +73,7 @@ abstract class FancyCustomKey with _$FancyCustomKey {
 }
 
 @Freezed(unionKey: r'$type')
-abstract class RawCustomKey with _$RawCustomKey {
+class RawCustomKey with _$RawCustomKey {
   const factory RawCustomKey.first(int a) = _RawCustomKeyFirst;
   const factory RawCustomKey.second(int a) = _RawCustomKeySecond;
 
@@ -82,7 +82,7 @@ abstract class RawCustomKey with _$RawCustomKey {
 }
 
 @Freezed(unionKey: 'type')
-abstract class CustomKey with _$CustomKey {
+class CustomKey with _$CustomKey {
   const factory CustomKey.first(int a) = _CustomKeyFirst;
   const factory CustomKey.second(int a) = _CustomKeySecond;
 

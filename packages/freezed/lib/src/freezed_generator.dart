@@ -103,9 +103,11 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   }) {
     // TODO: verify _$name is mixed-in
     if (element.isAbstract) {
-      print(
-        'Declared @freezed ${element.name} class with abstract, but it is not need anymore.\n'
-        'Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#the-abstract-keyword',
+      log.warning(
+        '''
+The class ${element.name} was declared as abstract, but it is not need anymore.
+Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#the-abstract-keyword
+''',
       );
     }
 
@@ -149,6 +151,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       // The field is a "Type get name => "
       if (!shouldUseExtends &&
           field.getter != null &&
+          !field.getter.isAbstract &&
           !field.getter.isSynthetic) {
         throw InvalidGenerationSourceError(
           'Getters require a MyClass._() constructor',

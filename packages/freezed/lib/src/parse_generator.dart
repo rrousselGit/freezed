@@ -13,43 +13,37 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     LibraryReader oldLibrary,
     BuildStep buildStep,
   ) async {
-    try {
-      var library = await buildStep.resolver.libraryFor(
-        await buildStep.resolver.assetIdForElement(oldLibrary.element),
-      );
+    var library = await buildStep.resolver.libraryFor(
+      await buildStep.resolver.assetIdForElement(oldLibrary.element),
+    );
 
-      final values = StringBuffer();
+    final values = StringBuffer();
 
-      final globalData = parseGlobalData(library);
+    final globalData = parseGlobalData(library);
 
-      var hasGeneratedGlobalCode = false;
+    var hasGeneratedGlobalCode = false;
 
-      for (var element
-          in library.topLevelElements.where(typeChecker.hasAnnotationOf)) {
-        if (!hasGeneratedGlobalCode) {
-          hasGeneratedGlobalCode = true;
-          for (final value
-              in generateForAll(globalData).map((e) => e.toString())) {
-            assert(value == null || (value.length == value.trim().length));
-            values.writeln(value);
-          }
-        }
-
-        final data = await parseElement(buildStep, globalData, element);
-        if (data == null) continue;
+    for (var element
+        in library.topLevelElements.where(typeChecker.hasAnnotationOf)) {
+      if (!hasGeneratedGlobalCode) {
+        hasGeneratedGlobalCode = true;
         for (final value
-            in generateForData(globalData, data).map((e) => e.toString())) {
+            in generateForAll(globalData).map((e) => e.toString())) {
           assert(value == null || (value.length == value.trim().length));
           values.writeln(value);
         }
       }
 
-      return values.toString();
-    } catch (err, stack) {
-      print('Error $err');
-      print(stack);
-      rethrow;
+      final data = await parseElement(buildStep, globalData, element);
+      if (data == null) continue;
+      for (final value
+          in generateForData(globalData, data).map((e) => e.toString())) {
+        assert(value == null || (value.length == value.trim().length));
+        values.writeln(value);
+      }
     }
+
+    return values.toString();
   }
 
   Iterable<Object> generateForAll(GlobalData globalData) sync* {}
