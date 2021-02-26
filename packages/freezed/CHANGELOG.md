@@ -13,7 +13,7 @@
 
   ```dart
   @freezed
-  abstract class Example with _$Example {
+  class Example with _$Example {
     factory Example(int value) = _Example;
   }
   ```
