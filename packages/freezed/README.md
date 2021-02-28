@@ -350,7 +350,7 @@ update your code to:
 abstract class Person with _$Person {
   const factory Person(
     String name, {
-    required int age,
+    @required int age,
     Gender? gender,
   }) = _Person;
 }
