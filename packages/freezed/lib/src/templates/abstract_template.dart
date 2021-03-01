@@ -2,6 +2,7 @@
 
 import 'package:freezed/src/models.dart';
 import 'package:meta/meta.dart';
+
 import 'copy_with.dart';
 import 'parameter_template.dart';
 import 'properties.dart';
@@ -31,6 +32,7 @@ class Abstract {
     return '''
 /// @nodoc
 mixin _\$$name$genericsDefinition {
+
 ${abstractProperties.join()}
 
 $_when
@@ -49,27 +51,26 @@ ${copyWith.commonContreteImpl(abstractProperties)}
 
   String get _toJson {
     if (!shouldGenerateJson) return '';
-
-    return 'Map<String, dynamic> toJson();';
+    return 'Map<String, dynamic> toJson() => throw $privConstUsedErrorVarName;';
   }
 
   String get _when {
     if (!allConstructors.shouldGenerateUnions) return '';
-    return '${whenPrototype(allConstructors)};';
+    return '${whenPrototype(allConstructors)} => throw $privConstUsedErrorVarName;';
   }
 
   String get _maybeWhen {
     if (!allConstructors.shouldGenerateUnions) return '';
-    return '${maybeWhenPrototype(allConstructors)};';
+    return '${maybeWhenPrototype(allConstructors)} => throw $privConstUsedErrorVarName;';
   }
 
   String get _map {
     if (!allConstructors.shouldGenerateUnions) return '';
-    return '${mapPrototype(allConstructors, genericsParameter)};';
+    return '${mapPrototype(allConstructors, genericsParameter)} => throw $privConstUsedErrorVarName;';
   }
 
   String get _maybeMap {
     if (!allConstructors.shouldGenerateUnions) return '';
-    return '${maybeMapPrototype(allConstructors, genericsParameter)};';
+    return '${maybeMapPrototype(allConstructors, genericsParameter)} => throw $privConstUsedErrorVarName;';
   }
 }

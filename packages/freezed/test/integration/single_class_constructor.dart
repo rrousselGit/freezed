@@ -5,9 +5,17 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+@freezed
+class UnimplementedGetter with _$UnimplementedGetter {
+  factory UnimplementedGetter(int value) = _UnimplementedGetter;
+
+  @override
+  int get value;
+}
+
 // Regression test for https://github.com/rrousselGit/freezed/issues/326
 @freezed
-abstract class Doc326 with _$Doc326 {
+class Doc326 with _$Doc326 {
   /// Hello world
   factory Doc326({
     int? named,
@@ -16,7 +24,7 @@ abstract class Doc326 with _$Doc326 {
 
 // Regression test for https://github.com/rrousselGit/freezed/issues/317
 @freezed
-abstract class Doc317 with _$Doc317 {
+class Doc317 with _$Doc317 {
   factory Doc317({
     /// )
     int? named,
@@ -24,7 +32,7 @@ abstract class Doc317 with _$Doc317 {
 }
 
 @freezed
-abstract class Doc with _$Doc {
+class Doc with _$Doc {
   factory Doc(
     /// Multi
     /// line
@@ -41,7 +49,7 @@ abstract class Doc with _$Doc {
 
 /// Regression test for https://github.com/rrousselGit/freezed/issues/213
 @freezed
-abstract class Product with _$Product {
+class Product with _$Product {
   const factory Product({
     String? name,
     Product? parent,
@@ -49,12 +57,12 @@ abstract class Product with _$Product {
 }
 
 @freezed
-abstract class Test with _$Test {
+class Test with _$Test {
   const factory Test.something(Completer completer) = TestSomething;
 }
 
 @freezed
-abstract class Private implements _$Private {
+class Private with _$Private {
   // This is the (private) Freezed constructor
   const factory Private._internal(
     Iterable<String> items,
@@ -62,48 +70,48 @@ abstract class Private implements _$Private {
 }
 
 @freezed
-abstract class MyClass with _$MyClass {
+class MyClass with _$MyClass {
   const factory MyClass({String? a, int? b}) = WhateverIWant;
 }
 
 @freezed
-abstract class MixedParam with _$MixedParam {
+class MixedParam with _$MixedParam {
   const factory MixedParam(String a, {int? b}) = WhateverMixedParam;
 }
 
 @freezed
-abstract class PositionalMixedParam with _$PositionalMixedParam {
+class PositionalMixedParam with _$PositionalMixedParam {
   const factory PositionalMixedParam(String a, [int? b]) =
       WhateverPositionalMixedParam;
 }
 
 @freezed
-abstract class Required with _$Required {
+class Required with _$Required {
   const factory Required({required String? a}) = WhateverRequired;
 }
 
 @freezed
-abstract class Empty with _$Empty {
+class Empty with _$Empty {
   const factory Empty() = WhateverEmpty;
 }
 
 @freezed
-abstract class Empty2 with _$Empty2 {
+class Empty2 with _$Empty2 {
   const factory Empty2() = WhateverEmpty2;
 }
 
 @freezed
-abstract class SingleNamedCtor with _$SingleNamedCtor {
+class SingleNamedCtor with _$SingleNamedCtor {
   const factory SingleNamedCtor.named(int a) = WhateverSingleNamedCtor;
 }
 
 @freezed
-abstract class Generic<T> with _$Generic<T> {
+class Generic<T> with _$Generic<T> {
   const factory Generic(T value) = A<T>;
 }
 
 @freezed
-abstract class Example with _$Example {
+class Example with _$Example {
   const factory Example(String a, {int? b}) = Example0;
 
   factory Example.fixed() {
@@ -112,13 +120,13 @@ abstract class Example with _$Example {
 }
 
 @freezed
-abstract class NoConst with _$NoConst {
+class NoConst with _$NoConst {
   factory NoConst() = NoConstImpl;
 }
 
 // Regression test for https://github.com/rrousselGit/freezed/issues/40
 @freezed
-abstract class SecondState with _$SecondState {
+class SecondState with _$SecondState {
   const factory SecondState({
     String? dateTime,
     String? uuid,
@@ -127,7 +135,7 @@ abstract class SecondState with _$SecondState {
 
 // Regression test for https://github.com/rrousselGit/freezed/issues/44
 @freezed
-abstract class Static with _$Static {
+class Static with _$Static {
   const factory Static() = _Static;
 
   static int? staticVariable;
@@ -138,7 +146,7 @@ abstract class Static with _$Static {
 }
 
 @freezed
-abstract class Late with _$Late {
+class Late with _$Late {
   Late._();
   factory Late(int value) = _Late;
 
@@ -157,7 +165,7 @@ class LateContainer {
 }
 
 @freezed
-abstract class AllProperties with _$AllProperties {
+class AllProperties with _$AllProperties {
   AllProperties._();
   factory AllProperties(int value) = _AllProperties;
 
@@ -167,7 +175,7 @@ abstract class AllProperties with _$AllProperties {
 }
 
 @freezed
-abstract class Late2 with _$Late2 {
+class Late2 with _$Late2 {
   Late2._();
   factory Late2(int Function() cb) = _Late2;
 
@@ -175,7 +183,7 @@ abstract class Late2 with _$Late2 {
 }
 
 @freezed
-abstract class ComplexLate with _$ComplexLate {
+class ComplexLate with _$ComplexLate {
   ComplexLate._();
   factory ComplexLate(List<int> values) = _ComplexLate;
 
@@ -188,60 +196,60 @@ abstract class ComplexLate with _$ComplexLate {
 }
 
 @freezed
-abstract class IntDefault with _$IntDefault {
+class IntDefault with _$IntDefault {
   factory IntDefault([@Default(42) int value]) = _IntDefault;
 }
 
 @freezed
-abstract class StringDefault with _$StringDefault {
+class StringDefault with _$StringDefault {
   factory StringDefault([@Default('42') String value]) = _StringDefault;
 }
 
 @freezed
-abstract class DoubleDefault with _$DoubleDefault {
+class DoubleDefault with _$DoubleDefault {
   factory DoubleDefault([@Default(42.0) double value]) = _DoubleDefault;
 }
 
 @freezed
-abstract class TypeDefault with _$TypeDefault {
+class TypeDefault with _$TypeDefault {
   factory TypeDefault([@Default(TypeDefault) Type value]) = _TypeDefault;
 }
 
 @freezed
-abstract class ListDefault with _$ListDefault {
+class ListDefault with _$ListDefault {
   factory ListDefault([@Default(<int>[42]) List<int> value]) = _ListDefault;
 }
 
 @freezed
-abstract class SetDefault with _$SetDefault {
+class SetDefault with _$SetDefault {
   factory SetDefault([@Default(<int>{42}) Set<int> value]) = _SetDefault;
 }
 
 @freezed
-abstract class MapDefault with _$MapDefault {
+class MapDefault with _$MapDefault {
   factory MapDefault([@Default(<int, int>{42: 42}) Map<int, int> value]) =
       _MapDefault;
 }
 
 @freezed
-abstract class BoolDefault with _$BoolDefault {
+class BoolDefault with _$BoolDefault {
   factory BoolDefault([@Default(false) bool value]) = _BoolDefault;
 }
 
 @freezed
-abstract class NullDefault with _$NullDefault {
+class NullDefault with _$NullDefault {
   factory NullDefault([@Default(null) bool? value]) = _NullDefault;
 }
 
 @freezed
-abstract class ExplicitConstDefault with _$ExplicitConstDefault {
+class ExplicitConstDefault with _$ExplicitConstDefault {
   factory ExplicitConstDefault(
       //ignore: unnecessary_const
       [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
 }
 
 @freezed
-abstract class StaticConstDefault with _$StaticConstDefault {
+class StaticConstDefault with _$StaticConstDefault {
   factory StaticConstDefault([@Default(Duration.zero) Duration value]) =
       _StaticConstDefault;
 }
@@ -249,6 +257,6 @@ abstract class StaticConstDefault with _$StaticConstDefault {
 enum _Enum { a }
 
 @freezed
-abstract class EnumDefault with _$EnumDefault {
+class EnumDefault with _$EnumDefault {
   factory EnumDefault([@Default(_Enum.a) _Enum value]) = _EnumDefault;
 }

@@ -54,6 +54,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 - [The features](#the-features)
   - [The syntax](#the-syntax)
     - [Basics](#basics)
+    - [The abstract keyword](#the-abstract-keyword)
     - [Custom getters and methods](#custom-getters-and-methods)
     - [Asserts](#asserts)
     - [Non-nullable](#non-nullable)
@@ -125,7 +126,7 @@ import 'package:flutter/foundation.dart';
 part 'main.freezed.dart';
 
 @freezed
-abstract class Union with _$Union {
+class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String message]) = ErrorDetails;
@@ -170,7 +171,7 @@ To do so, you will have to define a _factory constructor_ that takes these prope
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   factory Person({ String name, int age }) = _Person;
 }
 ```
@@ -190,7 +191,7 @@ All valid parameter syntaxes are supported. As such you could write:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   factory Person(String name, int age) = _Person;
 }
 
@@ -199,7 +200,7 @@ Person('Remi', 24)
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   const factory Person(String name, {int age}) = _Person;
 }
 
@@ -213,7 +214,7 @@ From example, you should write:
 
 ```dart
 @freezed
-abstract class Union<T> with _$Union<T> {
+class Union<T> with _$Union<T> {
   const factory Union(T value) = Data<T>;
   const factory Union.loading() = Loading<T>;
   const factory Union.error([String message]) = ErrorDetails<T>;
@@ -221,6 +222,39 @@ abstract class Union<T> with _$Union<T> {
 ```
 
 See [unions/Sealed classes](#unionssealed-classes) for more information.
+
+### The `abstract` keyword
+
+As you might have noticed, the abstract keyword is not needed anymore when declaring `freezed` classes.
+
+This allows you to easily use `mixin`s with the benefit of having your IDE telling you what to implement.
+
+We can now turn this:
+
+```dart
+@freezed
+abstract class MixedIn with Mixin implements _$MixedIn {
+  MixedIn._();
+  factory MixedIn() = _MixedIn;
+}
+
+mixin Mixin {
+  int method() => 42;
+}
+```
+into this:
+
+```dart
+@freezed
+class MixedIn with _$MixedIn, Mixin {
+  const MixedIn._();
+  factory MixedIn() = _MixedIn;
+}
+
+mixin Mixin {
+  int method() => 42;
+}
+```
 
 ### Custom getters and methods
 
@@ -230,7 +264,7 @@ But you will quickly notice that if you try to do:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   const factory Person(String name, {int age}) = _Person;
 
   void method() {
@@ -245,11 +279,11 @@ This is because by default, [Freezed] has no way of "extending" the class and
 instead "implements" it.
 
 To fix it, we need a subtle syntax change to allow [Freezed] to generate valid code.\
-To do so, we have to define a single private constructor and use `implements` instead of `with`:
+To do so, we have to define a single private constructor:
 
 ```dart
 @freezed
-abstract class Person implements _$Person { // uses implements instead of with
+class Person with _$Person {
   const Person._(); // Added constructor
   const factory Person(String name, {int age}) = _Person;
 
@@ -314,7 +348,7 @@ More concretely, if we define a `Person` class as such:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   const factory Person(
     String name, {
     @required int age,
@@ -347,7 +381,7 @@ update your code to:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   const factory Person(
     String name, {
     required int age,
@@ -367,7 +401,7 @@ we would write:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   const factory Person(
     String name, {
     @nullable @required int age,
@@ -487,7 +521,7 @@ Consider:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   const factory Person({
     String name,
     int age,
@@ -500,7 +534,7 @@ If you want to document `name`, you can do:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   const factory Person({
     /// The name of the user.
     ///
@@ -516,7 +550,7 @@ If you want to mark the property `gender` as `@deprecated`, then you can do:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   const factory Person({
     String name,
     int age,
@@ -553,7 +587,7 @@ As such, to deprecate `_Person`, you could do:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   @deprecated
   const factory Person({
     String name,
@@ -577,7 +611,7 @@ abstract class GeographicArea {
 }
 
 @freezed
-abstract class Example with _$Example {
+class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
 
   @Implements(GeographicArea)
@@ -597,7 +631,7 @@ abstract class Shop {}
 abstract class AdministrativeArea<T> {}
 
 @freezed
-abstract class Example with _$Example {
+class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
 
   @With.fromString('AdministrativeArea<House>')
@@ -614,7 +648,7 @@ In case you want to make your class generic, you do it like this:
 
 ```dart
 @freezed
-abstract class Example<T> with _$Example<T> {
+class Example<T> with _$Example<T> {
   const factory Example.person(String name, int age) = Person<T>;
 
   @With.fromString('AdministrativeArea<T>')
@@ -644,7 +678,7 @@ as you would expect:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   factory Person({ String name, int age }) = _Person;
 }
 
@@ -669,7 +703,7 @@ For example, if we take our previous `Person` class:
 
 ```dart
 @freezed
-abstract class Person with _$Person {
+class Person with _$Person {
   factory Person(String name, int age) = _Person;
 }
 ```
@@ -695,17 +729,17 @@ Consider the following classes:
 
 ```dart
 @freezed
-abstract class Company with _$Company {
+class Company with _$Company {
   factory Company({String name, Director director}) = _Company;
 }
 
 @freezed
-abstract class Director with _$Director {
+class Director with _$Director {
   factory Director({String name, Assistant assistant}) = _Director;
 }
 
 @freezed
-abstract class Assistant with _$Assistant {
+class Assistant with _$Assistant {
   factory Assistant({String name, int age}) = _Assistant;
 }
 ```
@@ -794,7 +828,7 @@ Defining a union/sealed class with [Freezed] is simple: write multiple construct
 
 ```dart
 @freezed
-abstract class Union with _$Union {
+class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String message]) = ErrorDetails;
@@ -813,7 +847,7 @@ For example, if you write:
 
 ```dart
 @freezed
-abstract class Example with _$Example {
+class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
   const factory Example.city(String name, int population) = City;
 }
@@ -873,7 +907,7 @@ For example, with:
 
 ```dart
 @freezed
-abstract class Union with _$Union {
+class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String message]) = ErrorDetails;
@@ -898,7 +932,7 @@ Whereas if we defined:
 
 ```dart
 @freezed
-abstract class Model with _$Model {
+class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 }
@@ -934,7 +968,7 @@ As such, using:
 
 ```dart
 @freezed
-abstract class Union with _$Union {
+class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String message]) = ErrorDetails;
@@ -979,7 +1013,7 @@ Consider this class:
 
 ```dart
 @freezed
-abstract class Model with _$Model {
+class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 }
@@ -1038,7 +1072,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'model.freezed.dart';
 
 @freezed
-abstract class Model with _$Model {
+class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 }
@@ -1058,7 +1092,7 @@ part 'model.freezed.dart';
 part 'model.g.dart';
 
 @freezed
-abstract class Model with _$Model {
+class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 
@@ -1078,7 +1112,7 @@ on its value. For example, given the following constructors:
 
 ```dart
 @freezed
-abstract class MyResponse with _$MyResponse {
+class MyResponse with _$MyResponse {
   const factory MyResponse(String a) = MyResponseData;
   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
   const factory MyResponse.error(String message) = MyResponseError;
@@ -1175,7 +1209,7 @@ To then apply your custom converter pass the decorator to a constructor paramete
 
 ```dart
 @freezed
-abstract class MyModel with _$MyModel {
+class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() MyResponse myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
@@ -1188,7 +1222,7 @@ You can also use a custom converter on a constructor parameter contained in a `L
 
 ```dart
 @freezed
-abstract class MyModel with _$MyModel {
+class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() List<MyResponse> myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
@@ -1208,7 +1242,7 @@ As such, you can write:
 
 ```dart
 @freezed
-abstract class Example with _$Example {
+class Example with _$Example {
   factory Example(@JsonKey(name: 'my_property') String myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
@@ -1221,7 +1255,7 @@ You can pass `@JsonSerializable` annotation by placing it over constructor e.g.:
 
 ```dart
 @freezed
-abstract class Example with _$Example {
+class Example with _$Example {
   @JsonSerializable(explicitToJson: true)
   factory Example(@JsonKey(name: 'my_property') SomeOtherClass myProperty) = _Example;
 

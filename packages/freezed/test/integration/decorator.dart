@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'decorator.freezed.dart';
 
 @freezed
-abstract class Decorator with _$Decorator {
+class Decorator with _$Decorator {
   factory Decorator({
     @deprecated @_WeirdDecorator('a', b: 0.42) String? a,
   }) = Decorator0;

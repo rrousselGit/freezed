@@ -102,10 +102,12 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     @required bool shouldUseExtends,
   }) {
     // TODO: verify _$name is mixed-in
-    if (!element.isAbstract) {
-      throw InvalidGenerationSourceError(
-        'Marked ${element.name} with @freezed, but the class is not abstract',
-        element: element,
+    if (element.isAbstract) {
+      log.warning(
+        '''
+The class ${element.name} was declared as abstract, but it is not need anymore.
+Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#the-abstract-keyword
+''',
       );
     }
 
@@ -149,6 +151,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       // The field is a "Type get name => "
       if (!shouldUseExtends &&
           field.getter != null &&
+          !field.getter.isAbstract &&
           !field.getter.isSynthetic) {
         throw InvalidGenerationSourceError(
           'Getters require a MyClass._() constructor',
@@ -363,6 +366,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   @override
   Iterable<Object> generateForAll(GlobalData globalData) sync* {
     yield r'T _$identity<T>(T value) => value;';
+    yield '\n\nfinal $privConstUsedErrorVarName = UnsupportedError(\'$privConstUsedErrorString\');\n';
   }
 
   @override

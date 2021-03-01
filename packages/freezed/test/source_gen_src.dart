@@ -1,11 +1,7 @@
 // ignore_for_file: avoid_unused_constructor_parameters, unused_element
+import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-@ShouldThrow('Marked Unrelated with @freezed, but the class is not abstract')
-@freezed
-class Unrelated {}
 
 @ShouldThrow('@freezed can only be applied on classes. Failing element: foo')
 @freezed
@@ -15,10 +11,10 @@ Object? foo;
   'Getters require a MyClass._() constructor',
 )
 @freezed
-abstract class Properties {
+class Properties {
   factory Properties() = _Properties;
 
-  int get regularProperty;
+  int get regularProperty => 42;
 }
 
 class _Properties implements Properties {
@@ -30,7 +26,7 @@ class _Properties implements Properties {
   'The parameter `a` of `RequiredNamed.foo` is non-nullable but is neither required nor marked with @Default',
 )
 @freezed
-abstract class RequiredNamed {
+class RequiredNamed {
   factory RequiredNamed.foo({int a}) = _RequiredNamed;
 }
 
@@ -42,7 +38,7 @@ class _RequiredNamed implements RequiredNamed {
   'The parameter `a` of `RequiredPositional` is non-nullable but is neither required nor marked with @Default',
 )
 @freezed
-abstract class RequiredPositional {
+class RequiredPositional {
   factory RequiredPositional([int a]) = _RequiredPositional;
 }
 
@@ -54,7 +50,7 @@ class _RequiredPositional implements RequiredPositional {
   'The parameter `a` of `RequiredNamedDefault` is non-nullable but is neither required nor marked with @Default',
 )
 @freezed
-abstract class RequiredNamedDefault {
+class RequiredNamedDefault {
   factory RequiredNamedDefault({int a}) = _RequiredNamedDefault;
 }
 
@@ -64,7 +60,7 @@ class _RequiredNamedDefault implements RequiredNamedDefault {
 
 @ShouldThrow('Getters require a MyClass._() constructor')
 @freezed
-abstract class Get {
+class Get {
   factory Get() = _Get;
 
   int get regularProperty => 42;
@@ -77,7 +73,7 @@ class _Get implements Get {
 
 @ShouldThrow('Final variables require a MyClass._() constructor')
 @freezed
-abstract class Final {
+class Final {
   factory Final() = _Final;
 
   final int regularProperty = 42;
@@ -90,7 +86,7 @@ class _Final implements Final {
 
 @ShouldThrow('@Default cannot be used on non-optional parameters')
 @freezed
-abstract class DefaultOnRequiredPositional {
+class DefaultOnRequiredPositional {
   factory DefaultOnRequiredPositional(
     @Default(42) int a,
   ) = _DefaultOnRequiredPositional;
@@ -102,7 +98,7 @@ class _DefaultOnRequiredPositional implements DefaultOnRequiredPositional {
 
 @ShouldThrow('A freezed union cannot have private constructors')
 @freezed
-abstract class Mixed {
+class Mixed {
   factory Mixed._internal(String a) = Mixed0;
   factory Mixed.named(String b) = Mixed1;
 }
@@ -112,7 +108,7 @@ abstract class Mixed {
   ', without parameters, and named MyClass._()',
 )
 @freezed
-abstract class MultipleConcreteConstructors {
+class MultipleConcreteConstructors {
   MultipleConcreteConstructors._();
   MultipleConcreteConstructors();
 }
@@ -122,7 +118,7 @@ abstract class MultipleConcreteConstructors {
   ', without parameters, and named MyClass._()',
 )
 @freezed
-abstract class SingleConcreteConstructorInvalidName {
+class SingleConcreteConstructorInvalidName {
   SingleConcreteConstructorInvalidName();
 }
 
@@ -131,7 +127,7 @@ abstract class SingleConcreteConstructorInvalidName {
   ', without parameters, and named MyClass._()',
 )
 @freezed
-abstract class ConcreteConstructorWithParameters {
+class ConcreteConstructorWithParameters {
   ConcreteConstructorWithParameters(int a);
 }
 
@@ -139,7 +135,7 @@ abstract class ConcreteConstructorWithParameters {
   'Marked NothingToDo with @freezed, but freezed has nothing to generate',
 )
 @freezed
-abstract class NothingToDo {
+class NothingToDo {
   NothingToDo._();
 }
 
@@ -147,7 +143,7 @@ abstract class NothingToDo {
   'Marked ManualFactory with @freezed, but freezed has nothing to generate',
 )
 @freezed
-abstract class ManualFactory {
+class ManualFactory {
   factory ManualFactory() => _Manual();
 }
 
@@ -162,7 +158,7 @@ class _Manual implements ManualFactory {
   'Marked ManualFactory2 with @freezed, but freezed has nothing to generate',
 )
 @freezed
-abstract class ManualFactory2 {
+class ManualFactory2 {
   factory ManualFactory2({int? a}) => _Manual2(a: a ??= 42);
 }
 
@@ -179,7 +175,7 @@ class _Manual2 implements ManualFactory2 {
   'Classes decorated with @freezed cannot have mutable properties',
 )
 @freezed
-abstract class MutableProperty {
+class MutableProperty {
   MutableProperty._();
 
   factory MutableProperty() = _MutableProperty;
@@ -198,4 +194,23 @@ class Mixed1 implements Mixed {
 
 class Mixed0 implements Mixed {
   Mixed0(String a);
+}
+
+@ShouldGenerate(
+  '',
+  contains: true,
+  expectedLogItems: [
+    '''
+The class AstractClass was declared as abstract, but it is not need anymore.
+Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#the-abstract-keyword
+''',
+  ],
+)
+@freezed
+abstract class AstractClass {
+  const factory AstractClass() = _AstractClass;
+}
+
+class _AstractClass implements AstractClass {
+  const _AstractClass();
 }

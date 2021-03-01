@@ -141,7 +141,7 @@ $parameters
     return _maybeOverride(
       '''
 @JsonKey(ignore: true)
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
 ''',
     );
   }
