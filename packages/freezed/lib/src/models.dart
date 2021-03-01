@@ -15,7 +15,7 @@ part 'models.freezed.dart';
 /// This allows Freezed to support deep copy of the object.
 /// This does include primitives like [int] and [List].
 @freezed
-abstract class CloneableProperty with _$CloneableProperty {
+class CloneableProperty with _$CloneableProperty {
   factory CloneableProperty({
     required String name,
     required String typeName,
@@ -29,7 +29,7 @@ abstract class CloneableProperty with _$CloneableProperty {
 ///
 /// This only includes constructors where Freezed needs to generate something.
 @freezed
-abstract class ConstructorDetails with _$ConstructorDetails {
+class ConstructorDetails with _$ConstructorDetails {
   factory ConstructorDetails({
     required String name,
     required String unionValue,
@@ -47,6 +47,7 @@ abstract class ConstructorDetails with _$ConstructorDetails {
     required List<String> decorators,
     required List<CloneableProperty> cloneableProperties,
     required List<AssertTemplate> asserts,
+    required bool hasGenericArgumentFactories,
   }) = _ConstructorDetails;
 
   ConstructorDetails._();
@@ -55,11 +56,12 @@ abstract class ConstructorDetails with _$ConstructorDetails {
 }
 
 @freezed
-abstract class Data with _$Data {
+class Data with _$Data {
   @Assert('constructors.isNotEmpty')
   factory Data({
     required String name,
     required bool needsJsonSerializable,
+    required bool hasGenericArgumentFactories,
     required String unionKey,
     required List<String> concretePropertiesName,
     required List<ConstructorDetails> constructors,

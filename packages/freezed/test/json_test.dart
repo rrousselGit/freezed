@@ -622,6 +622,132 @@ Future<void> main() async {
         Generic(42),
       );
     });
+
+    group('with argument factories', () {
+      test('fromJson', () {
+        expect(
+          GenericWithArgumentFactories<GenericValue>.fromJson(
+            <String, Object>{
+              'value': <String, dynamic>{'value': 24},
+              'value2': 'abc',
+            },
+            (json) => GenericValue.fromJson(json! as Map<String, dynamic>),
+          ),
+          GenericWithArgumentFactories<GenericValue>(GenericValue(24), 'abc'),
+        );
+      });
+
+      test('fromJson with default value for null json', () {
+        expect(
+          GenericWithArgumentFactories<GenericValue>.fromJson(
+            <String, Object>{
+              'value2': 'abc',
+            },
+            (json) => json is Map<String, dynamic>
+                ? GenericValue.fromJson(json)
+                : GenericValue(51),
+          ),
+          GenericWithArgumentFactories<GenericValue>(GenericValue(51), 'abc'),
+        );
+      });
+
+      test('toJson', () {
+        expect(
+          GenericWithArgumentFactories<GenericValue>(GenericValue(24), 'abc')
+              .toJson((value) => value.toJson()),
+          <String, Object>{
+            'value': <String, dynamic>{'value': 24},
+            'value2': 'abc',
+          },
+        );
+      });
+
+      test('tuple fromJson', () {
+        expect(
+          GenericTupleWithArgumentFactories<int, String>.fromJson(
+            <String, Object>{
+              'value1': 1,
+              'value2': 'value 2',
+              'value3': 'hola',
+            },
+            (json) => json! as int,
+            (json) => json! as String,
+          ),
+          GenericTupleWithArgumentFactories<int, String>(1, 'value 2', 'hola'),
+        );
+      });
+
+      test('tuple toJson', () {
+        expect(
+          GenericTupleWithArgumentFactories<int, String>(1, 'value 2', 'hola')
+              .toJson((value) => value, (value) => value),
+          <String, Object>{
+            'value1': 1,
+            'value2': 'value 2',
+            'value3': 'hola',
+          },
+        );
+      });
+
+      test('multi ctor default fromJson', () {
+        expect(
+          GenericMultiCtorWithArgumentFactories<int, String>.fromJson(
+            <String, Object>{
+              'runtimeType': 'default',
+              'first': 1,
+              'second': 'value 2',
+              'another': 'hola',
+            },
+            (json) => json! as int,
+            (json) => json! as String,
+          ),
+          GenericMultiCtorWithArgumentFactories<int, String>(
+              1, 'value 2', 'hola'),
+        );
+      });
+
+      test('multi ctor default toJson', () {
+        expect(
+          GenericMultiCtorWithArgumentFactories<int, String>(
+                  1, 'value 2', 'hola')
+              .toJson((value) => value, (value) => value),
+          <String, Object>{
+            'runtimeType': 'default',
+            'first': 1,
+            'second': 'value 2',
+            'another': 'hola',
+          },
+        );
+      });
+
+      test('multi ctor non-default fromJson', () {
+        expect(
+          GenericMultiCtorWithArgumentFactories<int, String>.fromJson(
+            <String, Object>{
+              'runtimeType': 'first',
+              'first': 1,
+              'another': 'hola',
+            },
+            (json) => json! as int,
+            (json) => json! as String,
+          ),
+          GenericMultiCtorWithArgumentFactories<int, String>.first(1, 'hola'),
+        );
+      });
+
+      test('multi ctor non-default toJson', () {
+        expect(
+          GenericMultiCtorWithArgumentFactories<int, String>.second(
+                  'xyz', 'hola')
+              .toJson((value) => value, (value) => value),
+          <String, Object>{
+            'runtimeType': 'second',
+            'second': 'xyz',
+            'another': 'hola',
+          },
+        );
+      });
+    });
   });
 
   test('single ctor + json can access properties/copyWith', () {

@@ -502,3 +502,87 @@ class EnumJson with _$EnumJson {
   factory EnumJson.fromJson(Map<String, dynamic> json) =>
       _$EnumJsonFromJson(json);
 }
+
+@freezed
+class GenericValue with _$GenericValue {
+  const factory GenericValue(int value) = _GenericValue;
+  factory GenericValue.fromJson(Map<String, dynamic> json) =>
+      _$GenericValueFromJson(json);
+}
+
+@freezed
+class GenericName with _$GenericName {
+  const factory GenericName(String name) = _GenericName;
+  factory GenericName.fromJson(Map<String, dynamic> json) =>
+      _$GenericNameFromJson(json);
+}
+
+@Freezed(genericArgumentFactories: true)
+class GenericAnnotationWithArgumentFactories<T>
+    with _$GenericAnnotationWithArgumentFactories<T> {
+  factory GenericAnnotationWithArgumentFactories(T value, String value2) =
+      _GenericAnnotationWithArgumentFactories<T>;
+
+  factory GenericAnnotationWithArgumentFactories.fromJson(
+          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+      _$GenericAnnotationWithArgumentFactoriesFromJson<T>(json, fromJsonT);
+}
+
+@freezed
+class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericWithArgumentFactories(T value, String value2) =
+      _GenericWithArgumentFactories<T>;
+
+  factory GenericWithArgumentFactories.fromJson(
+          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+      _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
+}
+
+@freezed
+class GenericTupleWithArgumentFactories<T, S>
+    with _$GenericTupleWithArgumentFactories<T, S> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericTupleWithArgumentFactories(T value1, S value2, String value3) =
+      _GenericTupleWithArgumentFactories<T, S>;
+
+  factory GenericTupleWithArgumentFactories.fromJson(
+          Map<String, dynamic> json,
+          T Function(Object? json) fromJsonT,
+          S Function(Object? json) fromJsonS) =>
+      _$GenericTupleWithArgumentFactoriesFromJson(json, fromJsonT, fromJsonS);
+}
+
+@freezed
+class GenericMultiCtorWithArgumentFactories<T, S>
+    with _$GenericMultiCtorWithArgumentFactories<T, S> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericMultiCtorWithArgumentFactories(
+          T first, S second, String another) =
+      _GenericMultiCtorWithArgumentFactories<T, S>;
+
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericMultiCtorWithArgumentFactories.first(T first, String another) =
+      _GenericMultiCtorWithArgumentFactoriesVal<T, S>;
+
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericMultiCtorWithArgumentFactories.second(
+          S second, String another) =
+      _GenericMultiCtorWithArgumentFactoriesSec<T, S>;
+
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericMultiCtorWithArgumentFactories.both(
+          T first, S second, String another) =
+      _GenericMultiCtorWithArgumentFactoriesBoth<T, S>;
+
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericMultiCtorWithArgumentFactories.none(String another) =
+      _GenericMultiCtorWithArgumentFactoriesNone<T, S>;
+
+  factory GenericMultiCtorWithArgumentFactories.fromJson(
+          Map<String, dynamic> json,
+          T Function(Object? json) fromJsonT,
+          S Function(Object? json) fromJsonS) =>
+      _$GenericMultiCtorWithArgumentFactoriesFromJson<T, S>(
+          json, fromJsonT, fromJsonS);
+}

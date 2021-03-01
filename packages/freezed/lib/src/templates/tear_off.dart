@@ -1,5 +1,6 @@
 import '../models.dart';
 import 'parameter_template.dart';
+import 'serialization_template.dart';
 
 class TearOff {
   TearOff({
@@ -8,6 +9,7 @@ class TearOff {
     required this.genericsParameter,
     required this.genericsDefinition,
     required this.allConstructors,
+    required this.serialization,
   });
 
   final String name;
@@ -15,6 +17,7 @@ class TearOff {
   final GenericsParameterTemplate genericsParameter;
   final GenericsDefinitionTemplate genericsDefinition;
   final List<ConstructorDetails> allConstructors;
+  final Serialization serialization;
 
   @override
   String toString() {
@@ -73,11 +76,7 @@ ${targetConstructor.redirectedName}$genericsParameter $ctorName$genericsDefiniti
     }
 
     if (serializable) {
-      yield '''
-$name$genericsParameter fromJson$genericsDefinition(Map<String, Object?> json) {
-  return $name$genericsParameter.fromJson(json);
-}
-''';
+      yield serialization.tearOffFromJson(name, genericsDefinition);
     }
   }
 }

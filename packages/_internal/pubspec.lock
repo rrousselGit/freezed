@@ -7,14 +7,14 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "30.0.0"
+    version: "34.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.0"
+    version: "3.2.0"
   args:
     dependency: transitive
     description:
@@ -35,7 +35,7 @@ packages:
       name: build
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.2.1"
   build_config:
     dependency: transitive
     description:
@@ -56,14 +56,14 @@ packages:
       name: build_resolvers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.6"
   build_runner:
     dependency: "direct dev"
     description:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.7"
   build_runner_core:
     dependency: transitive
     description:
@@ -140,7 +140,7 @@ packages:
       name: dart_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.2.1"
   file:
     dependency: transitive
     description:
@@ -161,14 +161,14 @@ packages:
       path: "../freezed"
       relative: true
     source: path
-    version: "1.0.2+1"
+    version: "1.1.1"
   freezed_annotation:
     dependency: "direct main"
     description:
       path: "../freezed_annotation"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.1.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -308,7 +308,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   source_span:
     dependency: transitive
     description:

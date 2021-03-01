@@ -87,6 +87,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
     - [Map/MaybeMap](#mapmaybemap)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
+    - [classes with generic argument factories](#classes-with-generic-argument-factories)
 - [Utilities](#utilities)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
@@ -1166,6 +1167,50 @@ class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() List<MyResponse> myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
+}
+```
+
+### classes with generic argument factories
+
+If you annotate your constructor(s) with `@JsonSerializable(genericArgumentFactories: true)`, [Freezed] will
+require a `fromJson` and `toJson` function for each generic type. For example, the following class requires an aditional `fromJsonT` and `toJsonT`:
+
+```dart
+@freezed
+class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericWithArgumentFactories(T value, String value2) =
+      _GenericWithArgumentFactories<T>;
+
+  factory GenericWithArgumentFactories.fromJson(
+          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+      _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
+}
+```
+
+Which can be used as follows:
+
+#### fromJson
+
+```dart
+GenericWithArgumentFactories<GenericValue>.fromJson(
+  <String, Object>{
+    'value': <String, dynamic>{'value': 24},
+    'value2': 'abc',
+  },
+  (json) => GenericValue.fromJson(json as Map<String, dynamic>),
+),
+```
+
+#### toJson
+
+```dart
+GenericWithArgumentFactories(GenericValue(24), 'abc')
+    .toJson((value) => value.toJson()),
+// Will generate
+<String, Object>{
+  'value': <String, dynamic>{'value': 24},
+  'value2': 'abc',
 }
 ```
 

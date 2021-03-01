@@ -13,6 +13,7 @@ class Freezed {
     this.fallbackUnion,
     this.maybeMap,
     this.maybeWhen,
+    this.genericArgumentFactories = false,
   });
 
   /// Determines what key should be used to de/serialize union types.
@@ -165,6 +166,9 @@ class Freezed {
   /// }
   /// ```
   final bool? maybeWhen;
+
+  /// Indicates that fromJson and toJson parameters should be generated for generic types
+  final bool genericArgumentFactories;
 }
 
 /// An annotation for the `freezed` package.
