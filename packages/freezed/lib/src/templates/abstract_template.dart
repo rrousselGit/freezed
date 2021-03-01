@@ -24,6 +24,11 @@ class Abstract {
   final bool shouldGenerateJson;
   final CopyWith copyWith;
 
+  bool get _hasGenericArgumentFactories =>
+      allConstructors.any((cons) => cons.decorators
+          .where((dec) => dec.startsWith('@JsonSerializable'))
+          .any((dec) => dec.contains('genericArgumentFactories: true')));
+
   @override
   String toString() {
     return '''
@@ -48,7 +53,13 @@ ${copyWith.commonContreteImpl(abstractProperties)}
 
   String get _toJson {
     if (!shouldGenerateJson) return '';
-    return 'Map<String, dynamic> toJson() => throw $privConstUsedErrorVarName;';
+    final genericToJsonArgs = _hasGenericArgumentFactories
+        ? genericsParameter.typeParameters.map((type) {
+            return 'Object Function($type value) toJson$type';
+          }).join(', ')
+        : '';
+
+    return 'Map<String, dynamic> toJson($genericToJsonArgs) => throw $privConstUsedErrorVarName;';
   }
 
   String get _when {

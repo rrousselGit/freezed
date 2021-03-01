@@ -218,3 +218,127 @@ class DurationValue with _$DurationValue {
   factory DurationValue.fromJson(Map<String, dynamic> json) =>
       _$DurationValueFromJson(json);
 }
+
+@freezed
+class GenericValue with _$GenericValue {
+  const factory GenericValue(String name) = _GenericValue;
+  factory GenericValue.fromJson(Map<String, dynamic> json) =>
+      _$GenericValueFromJson(json);
+}
+
+@freezed
+class GenericName with _$GenericName {
+  const factory GenericName(String name) = _GenericName;
+  factory GenericName.fromJson(Map<String, dynamic> json) =>
+      _$GenericNameFromJson(json);
+}
+
+@freezed
+class Generic2<T> with _$Generic2<T> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory Generic2(T value, String another) = _Generic2<T>;
+
+  factory Generic2.fromJson(
+          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+      _$Generic2FromJson<T>(json, fromJsonT);
+}
+
+@freezed
+class Generic3<T, S> with _$Generic3<T, S> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory Generic3(T value, S second, String another) = _Generic3<T, S>;
+
+  factory Generic3.fromJson(
+          Map<String, dynamic> json,
+          T Function(Object? json) fromJsonT,
+          S Function(Object? json) fromJsonS) =>
+      _$Generic3FromJson<T, S>(json, fromJsonT, fromJsonS);
+}
+
+@freezed
+class Generic4<T, S> with _$Generic4<T, S> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory Generic4(T value, S second, String another) = _Generic4<T, S>;
+
+  @JsonSerializable(genericArgumentFactories: true)
+  factory Generic4.val(T value, String another) = _Generic4Val<T, S>;
+
+  @JsonSerializable(genericArgumentFactories: true)
+  factory Generic4.sec(S second, String another) = _Generic4Sec<T, S>;
+
+  @JsonSerializable(genericArgumentFactories: true)
+  factory Generic4.both(T value, S second, String another) =
+      _Generic4Both<T, S>;
+
+  @JsonSerializable(genericArgumentFactories: true)
+  factory Generic4.none(String another) = _Generic4None<T, S>;
+
+  factory Generic4.fromJson(
+          Map<String, dynamic> json,
+          T Function(Object? json) fromJsonT,
+          S Function(Object? json) fromJsonS) =>
+      _$Generic4FromJson<T, S>(json, fromJsonT, fromJsonS);
+}
+
+@freezed
+class Generic5<T> with _$Generic5<T> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory Generic5({required T value, required String another}) = _Generic5<T>;
+
+  factory Generic5.fromJson(
+          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+      _$Generic5FromJson<T>(json, fromJsonT);
+}
+
+@freezed
+class GenericTuple<T, S> with _$GenericTuple<T, S> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericTuple(T value1, S value2, String value3) = _GenericTuple<T, S>;
+
+  factory GenericTuple.fromJson(
+          Map<String, dynamic> json,
+          T Function(Object? json) fromJsonT,
+          S Function(Object? json) fromJsonS) =>
+      _$GenericTupleFromJson(json, fromJsonT, fromJsonS);
+}
+
+void main() {
+  print(Generic2.fromJson(
+    <String, Object>{
+      'value': <String, String>{'name': 'hola'},
+      'another': 'world'
+    },
+    (json) => GenericValue.fromJson(json as Map<String, dynamic>),
+  ));
+
+  final gen3 = Generic3.fromJson(
+    <String, Object>{
+      'value': <String, String>{'name': 'hola'},
+      'second': <String, String>{'name': 'bonjour'},
+      'another': 'world',
+    },
+    (json) => GenericValue.fromJson(json as Map<String, dynamic>),
+    (json) => json is Map<String, dynamic>
+        ? GenericName.fromJson(json)
+        : const GenericName('default'),
+  );
+
+  print(gen3);
+
+  print(gen3.toJson((value) => value.toJson(), (value) => value.toJson()));
+
+  print(GenericTuple.fromJson(
+    <String, Object>{
+      'value1': 1,
+      'value2': 'Value 2',
+      'value3': 'Bonjour',
+    },
+    (json) => json as int,
+    (json) => json as String,
+  ));
+
+  print(GenericTuple(1, 'Value 2', 'Always string').toJson(
+    (value) => value,
+    (value) => value,
+  ));
+}

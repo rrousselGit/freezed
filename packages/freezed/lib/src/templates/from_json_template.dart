@@ -17,13 +17,30 @@ class FromJson {
   final GenericsParameterTemplate genericParameters;
   final GenericsDefinitionTemplate genericDefinitions;
 
+  bool get _hasGenericArgumentFactories =>
+      constructors.any((cons) => cons.decorators
+          .where((dec) => dec.startsWith('@JsonSerializable'))
+          .any((dec) => dec.contains('genericArgumentFactories: true')));
+
   @override
   String toString() {
     String content;
 
+    final genericArgs = _hasGenericArgumentFactories
+        ? genericParameters.typeParameters
+            .map((type) => ', $type Function(Object? json) fromJson$type')
+            .join()
+        : '';
+
+    final genericArgsNames = _hasGenericArgumentFactories
+        ? genericParameters.typeParameters
+            .map((type) => ', fromJson$type')
+            .join()
+        : '';
+
     if (constructors.length == 1) {
       content =
-          'return ${constructors.first.redirectedName}$genericParameters.fromJson(json);';
+          'return ${constructors.first.redirectedName}$genericParameters.fromJson(json$genericArgsNames);';
     } else {
       final cases = constructors.map((constructor) {
         final caseName = constructor.unionValue;
@@ -31,7 +48,7 @@ class FromJson {
 
         return '''
         case '$caseName':
-          return $concreteName$genericParameters.fromJson(json);
+          return $concreteName$genericParameters.fromJson(json$genericArgsNames);
         ''';
       }).join();
 
@@ -45,7 +62,7 @@ class FromJson {
     }
 
     return '''
-$name$genericParameters _\$${name}FromJson$genericDefinitions(Map<String, dynamic> json) {
+$name$genericParameters _\$${name}FromJson$genericDefinitions(Map<String, dynamic> json$genericArgs) {
 $content
 }
 ''';

@@ -16,6 +16,11 @@ class TearOff {
   final GenericsDefinitionTemplate genericsDefinition;
   final List<ConstructorDetails> allConstructors;
 
+  bool get _hasGenericArgumentFactories =>
+      allConstructors.any((cons) => cons.decorators
+          .where((dec) => dec.startsWith('@JsonSerializable'))
+          .any((dec) => dec.contains('genericArgumentFactories: true')));
+
   @override
   String toString() {
     String outputName;
@@ -71,9 +76,21 @@ ${targetConstructor.redirectedName}$genericsParameter $ctorName$genericsDefiniti
     }
 
     if (serializable) {
+      final genericArgs = _hasGenericArgumentFactories
+          ? genericsParameter.typeParameters.map((type) {
+              return ', $type Function(Object? json) fromJson$type';
+            }).join()
+          : '';
+
+      final genericArgsNames = _hasGenericArgumentFactories
+          ? genericsParameter.typeParameters
+              .map((type) => ', fromJson$type')
+              .join()
+          : '';
+
       yield '''
-$name$genericsParameter fromJson$genericsDefinition(Map<String, Object> json) {
-  return $name$genericsParameter.fromJson(json);
+$name$genericsParameter fromJson$genericsDefinition(Map<String, Object> json$genericArgs) {
+  return $name$genericsParameter.fromJson(json$genericArgsNames);
 }
 ''';
     }
