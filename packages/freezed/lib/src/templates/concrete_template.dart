@@ -73,8 +73,8 @@ $_toJson
 
 
 abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter$interfaces {
-  $_privateConcreteConstructor
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
+  $_privateConcreteConstructor
 
   $_redirectedFromJsonConstructor
 

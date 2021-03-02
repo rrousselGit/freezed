@@ -177,11 +177,14 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
     @required String returnType,
   }) {
     String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name}';
-      if (p.type != 'Object?' && p.type != null) {
-        ternary = '$ternary as ${p.type}';
+      final ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name}';
+      var cast = '';
+      if (p.type != 'Object?' && p.type != 'Object' && p.type != null) {
+        cast = '${p.type.contains('?') ? '' : '!'} as ${p.type}';
+      } else {
+        cast = '${p.type.contains('?') ? '' : '!'}';
       }
-      return '$ternary,';
+      return '$ternary$cast,';
     }
 
     final constructorParameters = StringBuffer()
