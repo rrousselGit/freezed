@@ -179,10 +179,11 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
     String parameterToValue(Parameter p) {
       final ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name}';
       var cast = '';
-      if (p.type != 'Object?' && p.type != 'Object' && p.type != null) {
-        cast = '${p.type.contains('?') ? '' : '!'} as ${p.type}';
-      } else {
-        cast = '${p.type.contains('?') ? '' : '!'}';
+      if (p.type != null) {
+        cast = p.type.contains('?') ? '' : '!';
+        if (p.type != 'Object?' && p.type != 'Object') {
+          cast += ' as ${p.type}';
+        }
       }
       return '$ternary$cast,';
     }
