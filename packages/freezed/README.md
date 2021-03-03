@@ -95,6 +95,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
     - [Map/MaybeMap](#mapmaybemap)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
+    - [classes with generic argument factories](#classes-with-generic-argument-factories)
 - [Utilities](#utilities)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
