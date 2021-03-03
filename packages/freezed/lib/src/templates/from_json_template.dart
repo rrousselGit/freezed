@@ -9,6 +9,7 @@ class FromJson {
     required this.constructors,
     required this.genericParameters,
     required this.genericDefinitions,
+    required this.hasGenericArgumentFactories,
   });
 
   final String name;
@@ -16,23 +17,19 @@ class FromJson {
   final List<ConstructorDetails> constructors;
   final GenericsParameterTemplate genericParameters;
   final GenericsDefinitionTemplate genericDefinitions;
-
-  bool get _hasGenericArgumentFactories =>
-      constructors.any((cons) => cons.decorators
-          .where((dec) => dec.startsWith('@JsonSerializable'))
-          .any((dec) => dec.contains('genericArgumentFactories: true')));
+  final bool hasGenericArgumentFactories;
 
   @override
   String toString() {
     String content;
 
-    final genericArgs = _hasGenericArgumentFactories
+    final genericArgs = hasGenericArgumentFactories
         ? genericParameters.typeParameters
             .map((type) => ', $type Function(Object? json) fromJson$type')
             .join()
         : '';
 
-    final genericArgsNames = _hasGenericArgumentFactories
+    final genericArgsNames = hasGenericArgumentFactories
         ? genericParameters.typeParameters
             .map((type) => ', fromJson$type')
             .join()

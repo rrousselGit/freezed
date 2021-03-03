@@ -63,10 +63,13 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       element,
     );
 
+    final hasGenericArgumentFactories = _hasGenericArgumentFactories(element);
+
     return Data(
       name: element.name,
       shouldUseExtends: shouldUseExtends,
       needsJsonSerializable: needsJsonSerializable,
+      hasGenericArgumentFactories: hasGenericArgumentFactories,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
       concretePropertiesName: [
@@ -192,6 +195,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     }
 
     return false;
+  }
+
+  bool _hasGenericArgumentFactories(ClassElement element) {
+    return element.constructors
+        .any((constructor) => constructor.hasGenericArgumentFactories);
   }
 
   List<Parameter> _commonParametersBetweenAllConstructors(
@@ -431,6 +439,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         constructors: data.constructors,
         genericParameters: data.genericsParameterTemplate,
         genericDefinitions: data.genericsDefinitionTemplate,
+        hasGenericArgumentFactories: data.hasGenericArgumentFactories,
       );
     }
 
@@ -440,6 +449,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       genericsParameter: data.genericsParameterTemplate,
       genericsDefinition: data.genericsDefinitionTemplate,
       allConstructors: data.constructors,
+      hasGenericArgumentFactories: data.hasGenericArgumentFactories,
     );
 
     final commonProperties = _commonProperties(data.constructors);
@@ -463,6 +473,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       abstractProperties: commonProperties.asGetters(),
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
+      hasGenericArgumentFactories: data.hasGenericArgumentFactories,
     );
 
     for (final constructor in data.constructors) {
@@ -485,6 +496,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           allProperties: constructor.impliedProperties,
           parent: commonCopyWith,
         ),
+        hasGenericArgumentFactories: data.hasGenericArgumentFactories,
       );
     }
   }
@@ -597,14 +609,14 @@ extension on Element {
     );
   }
 
-  /* TODO: Use this to check if class/constructor has genericArgumentFactories enabled
   bool get hasGenericArgumentFactories {
     if (!hasJsonSerializable) return false;
+
     final annotation =
         const TypeChecker.fromRuntime(JsonSerializable).firstAnnotationOf(this);
-    return annotation.getField('genericArgumentFactories').toBoolValue();
+    final value = annotation.getField('genericArgumentFactories').toBoolValue();
+    return value ?? false;
   }
-  */
 }
 
 extension on ConstructorElement {

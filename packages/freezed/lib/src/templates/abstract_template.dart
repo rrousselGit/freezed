@@ -14,6 +14,7 @@ class Abstract {
     required this.shouldGenerateJson,
     required this.allConstructors,
     required this.copyWith,
+    required this.hasGenericArgumentFactories,
   });
 
   final String name;
@@ -23,11 +24,7 @@ class Abstract {
   final List<ConstructorDetails> allConstructors;
   final bool shouldGenerateJson;
   final CopyWith copyWith;
-
-  bool get _hasGenericArgumentFactories =>
-      allConstructors.any((cons) => cons.decorators
-          .where((dec) => dec.startsWith('@JsonSerializable'))
-          .any((dec) => dec.contains('genericArgumentFactories: true')));
+  final bool hasGenericArgumentFactories;
 
   @override
   String toString() {
@@ -53,7 +50,7 @@ ${copyWith.commonContreteImpl(abstractProperties)}
 
   String get _toJson {
     if (!shouldGenerateJson) return '';
-    final genericToJsonArgs = _hasGenericArgumentFactories
+    final genericToJsonArgs = hasGenericArgumentFactories
         ? genericsParameter.typeParameters.map((type) {
             return 'Object Function($type value) toJson$type';
           }).join(', ')
