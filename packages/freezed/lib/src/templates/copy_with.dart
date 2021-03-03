@@ -171,15 +171,21 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
     return '@override $prototype $body';
   }
 
+  String _ignoreLints(String s,
+          [List<String> lints = const ['cast_nullable_to_non_nullable']]) =>
+      '''
+// ignore: ${lints.join(', ')}
+$s''';
+
   String _copyWithMethodBody({
     String accessor = '_value',
     @required ParametersTemplate parametersTemplate,
     @required String returnType,
   }) {
     String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name}';
+      var ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name} ';
       if (p.type != 'Object?' && p.type != null) {
-        ternary = '$ternary as ${p.type}';
+        ternary += _ignoreLints('as ${p.type}');
       }
       return '$ternary,';
     }
@@ -193,9 +199,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
       )
       ..writeAll(
         parametersTemplate.namedParameters.map<String>(
-          (p) {
-            return '${p.name}: ${parameterToValue(p)}';
-          },
+          (p) => '${p.name}: ${parameterToValue(p)}',
         ),
       );
 
