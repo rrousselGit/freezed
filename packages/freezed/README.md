@@ -1180,6 +1180,44 @@ class MyModel with _$MyModel {
 }
 ```
 
+### classes with generic argument factories
+
+If you annotate your constructor(s) with `@JsonSerializable(genericArgumentFactories: true)`, [Freezed] will
+require a `fromJson` and `toJson` function for each generic type. For example, the following class requires an aditional `fromJsonT` and `toJsonT`:
+
+```dart
+@freezed
+class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
+  @JsonSerializable(genericArgumentFactories: true)
+  factory GenericWithArgumentFactories(T value, String value2) =
+      _GenericWithArgumentFactories<T>;
+
+  factory GenericWithArgumentFactories.fromJson(
+          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+      _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
+}
+```
+
+Which can be used as follows:
+
+```dart
+GenericWithArgumentFactories.fromJson(
+  <String, Object>{
+    'value': <String, dynamic>{'value': 24},
+    'value2': 'abc',
+  },
+  (json) => GenericValue.fromJson(json as Map<String, dynamic>),
+),
+
+GenericWithArgumentFactories(GenericValue(24), 'abc')
+    .toJson((value) => value.toJson()),
+// Will generate
+<String, Object>{
+  'value': <String, dynamic>{'value': 24},
+  'value2': 'abc',
+}
+```
+
 **Note**:  
 In order to serialize nested lists of freezed objects, you are supposed to either
 specify a `@JsonSerializable(explicitToJson: true)` or change `explicit_to_json`
