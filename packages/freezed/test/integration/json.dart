@@ -221,7 +221,7 @@ class DurationValue with _$DurationValue {
 
 @freezed
 class GenericValue with _$GenericValue {
-  const factory GenericValue(String name) = _GenericValue;
+  const factory GenericValue(int value) = _GenericValue;
   factory GenericValue.fromJson(Map<String, dynamic> json) =>
       _$GenericValueFromJson(json);
 }
@@ -234,111 +234,60 @@ class GenericName with _$GenericName {
 }
 
 @freezed
-class Generic2<T> with _$Generic2<T> {
+class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
   @JsonSerializable(genericArgumentFactories: true)
-  factory Generic2(T value, String another) = _Generic2<T>;
+  factory GenericWithArgumentFactories(T value, String value2) =
+      _GenericWithArgumentFactories<T>;
 
-  factory Generic2.fromJson(
+  factory GenericWithArgumentFactories.fromJson(
           Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
-      _$Generic2FromJson<T>(json, fromJsonT);
+      _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
 }
 
 @freezed
-class Generic3<T, S> with _$Generic3<T, S> {
+class GenericTupleWithArgumentFactories<T, S>
+    with _$GenericTupleWithArgumentFactories<T, S> {
   @JsonSerializable(genericArgumentFactories: true)
-  factory Generic3(T value, S second, String another) = _Generic3<T, S>;
+  factory GenericTupleWithArgumentFactories(T value1, S value2, String value3) =
+      _GenericTupleWithArgumentFactories<T, S>;
 
-  factory Generic3.fromJson(
+  factory GenericTupleWithArgumentFactories.fromJson(
           Map<String, dynamic> json,
           T Function(Object? json) fromJsonT,
           S Function(Object? json) fromJsonS) =>
-      _$Generic3FromJson<T, S>(json, fromJsonT, fromJsonS);
+      _$GenericTupleWithArgumentFactoriesFromJson(json, fromJsonT, fromJsonS);
 }
 
 @freezed
-class Generic4<T, S> with _$Generic4<T, S> {
+class GenericMultiCtorWithArgumentFactories<T, S>
+    with _$GenericMultiCtorWithArgumentFactories<T, S> {
   @JsonSerializable(genericArgumentFactories: true)
-  factory Generic4(T value, S second, String another) = _Generic4<T, S>;
+  factory GenericMultiCtorWithArgumentFactories(
+          T first, S second, String another) =
+      _GenericMultiCtorWithArgumentFactories<T, S>;
 
   @JsonSerializable(genericArgumentFactories: true)
-  factory Generic4.val(T value, String another) = _Generic4Val<T, S>;
+  factory GenericMultiCtorWithArgumentFactories.first(T first, String another) =
+      _GenericMultiCtorWithArgumentFactoriesVal<T, S>;
 
   @JsonSerializable(genericArgumentFactories: true)
-  factory Generic4.sec(S second, String another) = _Generic4Sec<T, S>;
+  factory GenericMultiCtorWithArgumentFactories.second(
+          S second, String another) =
+      _GenericMultiCtorWithArgumentFactoriesSec<T, S>;
 
   @JsonSerializable(genericArgumentFactories: true)
-  factory Generic4.both(T value, S second, String another) =
-      _Generic4Both<T, S>;
+  factory GenericMultiCtorWithArgumentFactories.both(
+          T first, S second, String another) =
+      _GenericMultiCtorWithArgumentFactoriesBoth<T, S>;
 
   @JsonSerializable(genericArgumentFactories: true)
-  factory Generic4.none(String another) = _Generic4None<T, S>;
+  factory GenericMultiCtorWithArgumentFactories.none(String another) =
+      _GenericMultiCtorWithArgumentFactoriesNone<T, S>;
 
-  factory Generic4.fromJson(
+  factory GenericMultiCtorWithArgumentFactories.fromJson(
           Map<String, dynamic> json,
           T Function(Object? json) fromJsonT,
           S Function(Object? json) fromJsonS) =>
-      _$Generic4FromJson<T, S>(json, fromJsonT, fromJsonS);
-}
-
-@freezed
-class Generic5<T> with _$Generic5<T> {
-  @JsonSerializable(genericArgumentFactories: true)
-  factory Generic5({required T value, required String another}) = _Generic5<T>;
-
-  factory Generic5.fromJson(
-          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
-      _$Generic5FromJson<T>(json, fromJsonT);
-}
-
-@freezed
-class GenericTuple<T, S> with _$GenericTuple<T, S> {
-  @JsonSerializable(genericArgumentFactories: true)
-  factory GenericTuple(T value1, S value2, String value3) = _GenericTuple<T, S>;
-
-  factory GenericTuple.fromJson(
-          Map<String, dynamic> json,
-          T Function(Object? json) fromJsonT,
-          S Function(Object? json) fromJsonS) =>
-      _$GenericTupleFromJson(json, fromJsonT, fromJsonS);
-}
-
-void main() {
-  print(Generic2.fromJson(
-    <String, Object>{
-      'value': <String, String>{'name': 'hola'},
-      'another': 'world'
-    },
-    (json) => GenericValue.fromJson(json as Map<String, dynamic>),
-  ));
-
-  final gen3 = Generic3.fromJson(
-    <String, Object>{
-      'value': <String, String>{'name': 'hola'},
-      'second': <String, String>{'name': 'bonjour'},
-      'another': 'world',
-    },
-    (json) => GenericValue.fromJson(json as Map<String, dynamic>),
-    (json) => json is Map<String, dynamic>
-        ? GenericName.fromJson(json)
-        : const GenericName('default'),
-  );
-
-  print(gen3);
-
-  print(gen3.toJson((value) => value.toJson(), (value) => value.toJson()));
-
-  print(GenericTuple.fromJson(
-    <String, Object>{
-      'value1': 1,
-      'value2': 'Value 2',
-      'value3': 'Bonjour',
-    },
-    (json) => json as int,
-    (json) => json as String,
-  ));
-
-  print(GenericTuple(1, 'Value 2', 'Always string').toJson(
-    (value) => value,
-    (value) => value,
-  ));
+      _$GenericMultiCtorWithArgumentFactoriesFromJson<T, S>(
+          json, fromJsonT, fromJsonS);
 }
