@@ -1202,7 +1202,7 @@ class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
 Which can be used as follows:
 
 ```dart
-GenericWithArgumentFactories.fromJson(
+GenericWithArgumentFactories<GenericValue>.fromJson(
   <String, Object>{
     'value': <String, dynamic>{'value': 24},
     'value2': 'abc',
