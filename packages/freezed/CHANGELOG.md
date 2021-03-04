@@ -1,3 +1,7 @@
+# 0.14.0-nullsafety.1
+
+- Upgraded `analyzer` to support latest versions
+
 # 0.14.0-nullsafety.0
 
 - Freezed classes no-longer need to be abstract.  
