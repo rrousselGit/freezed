@@ -1,3 +1,45 @@
+# 0.14.0
+
+- Stable null-safety release
+- Upgraded `analyzer` to support latest versions
+- Freezed classes no-longer need to be abstract.  
+  Before:
+  ```dart
+  @freezed
+  abstract class Example with _$Example {
+    factory Example(int value) = _Example;
+  }
+  ```
+
+  after:
+
+  ```dart
+  @freezed
+  class Example with _$Example {
+    factory Example(int value) = _Example;
+  }
+  ```
+
+  This leads to better error messages when a Freezed class uses interfaces/mixins
+  but the class is missing a specific property.
+
+- It is now allowed to add unimplemented getter to Freezed classes.
+  This can be useful to guarantee that union-types all have a common property:
+
+  ```dart
+  @freezed
+  class Union with _$Union {
+    const factory Union.left(int value) = _Left;
+    const factory Union.right(int value) = _Left;
+
+    @override
+    int get value; // adding this forces all union cases to possess a `value` property
+  }
+  ```
+- Excluded getters and late variables from the generated `toString` as they could potentially cause a StackOverflow
+- Fixed a bug causing properties with annotations to generate the annotations _before_
+  the `required keyword, leading to a compilation error (see #351).
+
 # 0.14.0-nullsafety.1
 
 - Upgraded `analyzer` to support latest versions
