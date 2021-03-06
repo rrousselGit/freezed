@@ -3,6 +3,27 @@
 
 Welcome to [Freezed], yet another code generator for unions/pattern-matching/copy.
 
+# 0.14.0 and null-safety
+
+**Important note**:
+
+From 0.14.0 and onwards, Freezed does not support non-null-safe code.
+
+If you want to keep using Freezed but cannot migrate to null-safety yet, use the version 0.12.7 instead.  
+Note that this version is no-longer maintained (so bugs found there won't be fixed).
+
+For the documentation of the version 0.12.7, refer to https://pub.dev/packages/freezed/versions/0.12.7
+
+In the scenario where you are using the version 0.12.7, but one of your dependency is using 0.14.0 or above,
+you will have a version conflict on `freezed_annotation`.
+
+In that case, you can fix the error by adding the following to your `pubspec.yaml`:
+
+```yaml
+dependency_overrides:
+  freezed_annotation: ^0.12.7
+```
+
 # Motivation
 
 While there are many code-generators available to help you deal with immutable objects, they usually come with a trade-off.\
@@ -45,6 +66,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 
 # Index
 
+- [0.14.0 and null-safety](#0140-and-null-safety)
 - [Motivation](#motivation)
 - [Index](#index)
 - [How to use](#how-to-use)
@@ -54,10 +76,9 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 - [The features](#the-features)
   - [The syntax](#the-syntax)
     - [Basics](#basics)
-    - [The abstract keyword](#the-abstract-keyword)
+    - [The `abstract` keyword](#the-abstract-keyword)
     - [Custom getters and methods](#custom-getters-and-methods)
     - [Asserts](#asserts)
-    - [Non-nullable](#non-nullable)
     - [Default values](#default-values)
     - [Late](#late)
     - [Constructor tear-off](#constructor-tear-off)
@@ -74,6 +95,8 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
 - [Utilities](#utilities)
+    - [Freezed extension for VSCode](#freezed-extension-for-vscode)
+    - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
 
 # How to use
 
@@ -242,6 +265,7 @@ mixin Mixin {
   int method() => 42;
 }
 ```
+
 into this:
 
 ```dart
@@ -322,98 +346,6 @@ abstract class Person with _$Person {
     int age,
   }) = _Person;
 }
-```
-
-### Non-nullable
-
-[Freezed] is non-nullable ready and will promote null-safe code.\
-This is done by automatically adding `assert(my_property != null)` whenever
-non-nullable types would not compile.
-
-What this means is, using [Freezed] you have to explicitly tell when a property
-is nullable.
-
-**What [Freezed] considers to be non-nullable**:
-
-- non-optional parameters.
-- optional positional parameters using `@Default`.
-- named parameters decorated by `@required`
-
-**What [Freezed] considers to be nullable**:
-
-- optional parameters
-- parameters decorated with `@nullable`
-
-More concretely, if we define a `Person` class as such:
-
-```dart
-@freezed
-class Person with _$Person {
-  const factory Person(
-    String name, {
-    @required int age,
-    Gender gender,
-  }) = _Person;
-}
-```
-
-Then both `name` and `age` will be considered as **non-nullable**.\
-On the other hand, `gender` will be nullable.
-**nullable**.
-
-Which means you could write:
-
-```dart
-Person('Remi', age: 24);
-Person('Remi', age: 24, gender: Gender.male);
-Person('Remi', age: 24, gender: null);
-```
-
-On the other hand, writing the following will result in an exception:
-
-```dart
-Person(null) // name cannot be null
-Person('Remi') // age cannot be null
-```
-
-Then, when the time comes for to migrate to actual non-nullable types, you could
-update your code to:
-
-```dart
-@freezed
-class Person with _$Person {
-  const factory Person(
-    String name, {
-    required int age,
-    Gender? gender,
-  }) = _Person;
-}
-```
-
-**Forcing a variable to be nullable**:
-
-Sometimes, you may want to go against these rules and, for example, have a named
-required parameter that is nullable.
-
-To do so, you can decorate the desired property with `@nullable`.\
-For example, if we wanted to make `age` from our previous example nullable, then
-we would write:
-
-```dart
-@freezed
-class Person with _$Person {
-  const factory Person(
-    String name, {
-    @nullable @required int age,
-    Gender gender,
-  }) = _Person;
-}
-```
-
-This then allows us to write:
-
-```dart
-Person('Remi') // no longer throws an exception
 ```
 
 ### Default values
@@ -1276,23 +1208,22 @@ The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed
 - Use `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac) to quickly build using `build_runner`.
 - Quickly generate a Freezed class by using `Ctrl+Shift+P` > `Generate Freezed class`.
 
-
 ### Freezed extension for IntelliJ/Android Studio
+
 You can get Live Templates for boiler plate code [here](https://github.com/Tinhorn/freezed_intellij_live_templates).
 
 Example:
 
-- type __freezedClass__ and press <kbd>Tab</kbd> to generate a freezed class
+- type **freezedClass** and press <kbd>Tab</kbd> to generate a freezed class
   ```dart
   @freezed
   abstract class Demo with _$Demo {
   }
   ```
-- type __freezedFromJson__ and press <kbd>Tab</kbd> to generate the fromJson method for json_serializable
+- type **freezedFromJson** and press <kbd>Tab</kbd> to generate the fromJson method for json_serializable
   ```dart
   factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
   ```
-
 
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
