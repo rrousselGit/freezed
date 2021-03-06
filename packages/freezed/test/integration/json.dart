@@ -91,6 +91,17 @@ class CustomKey with _$CustomKey {
 }
 
 @freezed
+class CustomUnionValue with _$CustomUnionValue {
+  const factory CustomUnionValue.first(int a) = _CustomUnionValueFirst;
+
+  @FreezedUnionValue('SECOND')
+  const factory CustomUnionValue.second(int a) = _CustomUnionValueSecond;
+
+  factory CustomUnionValue.fromJson(Map<String, dynamic> json) =>
+      _$CustomUnionValueFromJson(json);
+}
+
+@freezed
 class Single with _$Single {
   const factory Single(int a) = _Single;
 

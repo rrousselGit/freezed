@@ -200,3 +200,9 @@ class With {
   final Type? type;
   final String? stringType;
 }
+
+class FreezedUnionValue {
+  const FreezedUnionValue(this.value);
+
+  final String value;
+}

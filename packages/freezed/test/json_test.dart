@@ -2,8 +2,8 @@
 
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:build_test/build_test.dart';
-import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
+import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/json.dart';
@@ -84,6 +84,38 @@ Future<void> main() async {
       expect(
         FancyCustomKey.first(42).toJson(),
         <String, dynamic>{'ty"\'pe': 'first', 'a': 42},
+      );
+    });
+  });
+
+  group('FreezedUnionValue', () {
+    test('fromJson', () {
+      expect(
+        CustomUnionValue.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
+        CustomUnionValue.first(42),
+      );
+
+      expect(
+        CustomUnionValue.fromJson(<String, dynamic>{
+          'runtimeType': 'SECOND',
+          'a': 21,
+        }),
+        CustomUnionValue.second(21),
+      );
+    });
+
+    test('toJson', () {
+      expect(
+        CustomUnionValue.first(42).toJson(),
+        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+      );
+
+      expect(
+        CustomUnionValue.second(21).toJson(),
+        <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
       );
     });
   });

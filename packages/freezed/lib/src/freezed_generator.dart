@@ -218,6 +218,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         ConstructorDetails(
           asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
+          unionValue: constructor.unionValue,
           canOverrideToString: _canOverrideToString(element),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
@@ -544,6 +545,16 @@ extension on Element {
       this,
       throwOnUnresolved: false,
     );
+  }
+}
+
+extension on ConstructorElement {
+  String get unionValue {
+    return const TypeChecker.fromRuntime(FreezedUnionValue)
+            .firstAnnotationOf(this, throwOnUnresolved: false)
+            ?.getField('value')
+            ?.toStringValue() ??
+        (isDefaultConstructor(this) ? 'default' : name);
   }
 }
 
