@@ -550,11 +550,12 @@ extension on Element {
 
 extension on ConstructorElement {
   String get unionValue {
-    return const TypeChecker.fromRuntime(FreezedUnionValue)
-            .firstAnnotationOf(this, throwOnUnresolved: false)
-            ?.getField('value')
-            ?.toStringValue() ??
-        (isDefaultConstructor(this) ? 'default' : name);
+    final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
+        .firstAnnotationOf(this, throwOnUnresolved: false);
+    if (annotation != null) {
+      return annotation.getField('value').toStringValue();
+    }
+    return isDefaultConstructor(this) ? 'default' : name;
   }
 }
 
