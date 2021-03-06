@@ -1145,7 +1145,7 @@ You can customize key and value with something different
 using `@Freezed` and `@FreezedUnionValue` decorators:
 
 ```dart
-@Freezed(unionKey: 'type')
+@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
 abstract class MyResponse with _$MyResponse {
   const factory MyResponse(String a) = MyResponseData;
   
@@ -1163,7 +1163,7 @@ which would update the previous json to:
 ```json
 [
   {
-    "type": "default",
+    "type": "Default",
     "a": "This JSON object will use constructor MyResponse()"
   },
   {
@@ -1172,7 +1172,7 @@ which would update the previous json to:
     "b": 42
   },
   {
-    "type": "error",
+    "type": "Error",
     "message": "This JSON object will use constructor MyResponse.error()"
   }
 ]
