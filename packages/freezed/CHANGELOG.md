@@ -1,3 +1,7 @@
+# 0.14.0+1
+
+- fix `sort_unnamed_constructors_first` and `cast_nullable_to_non_nullable` in the generated code (Thanks to @gaetschwartz #372)
+
 # 0.14.0
 
 - Stable null-safety release
