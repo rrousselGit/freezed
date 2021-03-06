@@ -92,7 +92,7 @@ Future<void> main() async {
     test('fromJson', () {
       expect(
         CustomUnionValue.fromJson(<String, dynamic>{
-          'runtimeType': 'first',
+          'runtimeType': 'First',
           'a': 42,
         }),
         CustomUnionValue.first(42),
@@ -110,7 +110,7 @@ Future<void> main() async {
     test('toJson', () {
       expect(
         CustomUnionValue.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+        <String, dynamic>{'runtimeType': 'First', 'a': 42},
       );
 
       expect(

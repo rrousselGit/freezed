@@ -9,12 +9,14 @@ class Freezed {
   /// {@template freezed_annotation.freezed}
   const Freezed({
     this.unionKey,
+    this.unionValueCase = FreezedUnionCase.none,
   });
 
   /// Determines what key should be used to de/serialize union types.
   ///
   /// Consider:
   ///
+  /// {@template freezed_annotation.freezed.example}
   /// ```dart
   /// @freezed
   /// abstract class Union with _$Union {
@@ -36,6 +38,7 @@ class Freezed {
   ///   print(Union.second().toJson()); // { 'runtimeType': 'second' }
   /// }
   /// ```
+  /// {@endtemplate}
   ///
   /// This variable allows customizing the key used ("runtimeType" by default).
   ///
@@ -57,6 +60,38 @@ class Freezed {
   /// }
   /// ```
   final String? unionKey;
+
+  /// Determines how the value used to de/serialize union types would be
+  /// renamed.
+  ///
+  /// Consider:
+  ///
+  /// {@macro freezed_annotation.freezed.example}
+  ///
+  /// This variable allows customizing the value used (constructor name by
+  /// default).
+  ///
+  /// For example, we could change our previous `Union` implementation to:
+  ///
+  /// ```dart
+  /// @Freezed(unionValueCase: FreezedUnionCase.pascal)
+  /// abstract class Union with _$Union {
+  ///   // ...
+  /// }
+  /// ```
+  ///
+  /// which changes how `fromJson`/`toJson` behaves:
+  ///
+  /// ```dart
+  /// void main() {
+  ///   print(Union.first().toJson()); // { 'runtimeType': 'First' }
+  ///   print(Union.second().toJson()); // { 'runtimeType': 'Second' }
+  /// }
+  /// ```
+  ///
+  /// You can also use [FreezedUnionValue] annotation to customize single
+  /// union case.
+  final FreezedUnionCase unionValueCase;
 }
 
 /// An annotation for the `freezed` package.
@@ -237,4 +272,19 @@ class FreezedUnionValue {
   const FreezedUnionValue(this.value);
 
   final String value;
+}
+
+/// Options for automatic union values renaming.
+enum FreezedUnionCase {
+  /// Use the name without changes.
+  none,
+
+  /// Encodes a constructor named `kebabCase` with a JSON value `kebab-case`.
+  kebab,
+
+  /// Encodes a constructor named `pascalCase` with a JSON value `PascalCase`.
+  pascal,
+
+  /// Encodes a constructor named `snakeCase` with a JSON value `snake_case`.
+  snake,
 }

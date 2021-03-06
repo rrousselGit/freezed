@@ -53,6 +53,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
       buildStep,
       element,
+      configs,
     );
 
     final needsJsonSerializable = await _needsJsonSerializable(
@@ -202,6 +203,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
     ClassElement element,
+    Freezed configs,
   ) async {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
@@ -218,7 +220,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         ConstructorDetails(
           asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
-          unionValue: constructor.unionValue,
+          unionValue: constructor.unionValue(configs.unionValueCase),
           canOverrideToString: _canOverrideToString(element),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
@@ -349,8 +351,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         configs['union_key']?.toString() ??
         'runtimeType';
 
+    final valueCase =
+        annotation.getField('unionValueCase').getField('index').toIntValue();
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
+      unionValueCase: FreezedUnionCase.values[valueCase],
     );
   }
 
@@ -549,13 +554,26 @@ extension on Element {
 }
 
 extension on ConstructorElement {
-  String get unionValue {
+  String unionValue(FreezedUnionCase unionCase) {
     final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
         .firstAnnotationOf(this, throwOnUnresolved: false);
     if (annotation != null) {
       return annotation.getField('value').toStringValue();
     }
-    return isDefaultConstructor(this) ? 'default' : name;
+
+    final constructorName = isDefaultConstructor(this) ? 'default' : name;
+    switch (unionCase) {
+      case FreezedUnionCase.none:
+        return constructorName;
+      case FreezedUnionCase.kebab:
+        return kebabCase(constructorName);
+      case FreezedUnionCase.pascal:
+        return pascalCase(constructorName);
+      case FreezedUnionCase.snake:
+        return snakeCase(constructorName);
+    }
+
+    throw ArgumentError('Unknown unionCase: $unionCase}');
   }
 }
 

@@ -90,7 +90,7 @@ class CustomKey with _$CustomKey {
       _$CustomKeyFromJson(json);
 }
 
-@freezed
+@Freezed(unionValueCase: FreezedUnionCase.pascal)
 class CustomUnionValue with _$CustomUnionValue {
   const factory CustomUnionValue.first(int a) = _CustomUnionValueFirst;
 
