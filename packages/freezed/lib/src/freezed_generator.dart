@@ -351,11 +351,20 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         configs['union_key']?.toString() ??
         'runtimeType';
 
-    final valueCase =
-        annotation.getField('unionValueCase').getField('index').toIntValue();
+    FreezedUnionCase unionValueCase;
+    final fromConfig = configs['union_value_case']?.toString();
+    if (fromConfig != null) {
+      unionValueCase = FreezedUnionCase.values.firstWhere((e) =>
+          e.toString().replaceFirst('FreezedUnionCase.', '') == fromConfig);
+    } else {
+      final enumIndex =
+          annotation.getField('unionValueCase').getField('index').toIntValue();
+      unionValueCase = FreezedUnionCase.values[enumIndex];
+    }
+
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
-      unionValueCase: FreezedUnionCase.values[valueCase],
+      unionValueCase: unionValueCase,
     );
   }
 
