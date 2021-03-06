@@ -201,6 +201,38 @@ class With {
   final String? stringType;
 }
 
+/// An annotation used to specify how a union type will be serialized.
+///
+/// By default, Freezed generates the value based on the name of the
+/// constructor. You can override this behavior by annotating constructor and
+/// providing custom value.
+///
+/// ```dart
+/// @freezed
+/// class MyResponse with _$MyResponse {
+///   const factory MyResponse(String a) = MyResponseData;
+///
+///   @FreezedUnionValue('SpecialCase')
+///   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+///
+///   factory MyResponse.fromJson(Map<String, dynamic> json) => _$MyResponseFromJson(json);
+/// }
+/// ```
+///
+/// The constructor will be chosen as follows:
+///
+/// ```json
+/// [
+///   {
+///     "runtimeType": "default",
+///     "a": "This JSON object will use constructor MyResponse()"
+///   },
+///   {
+///     "runtimeType": "SpecialCase",
+///     "a": "This JSON object will use constructor MyResponse.special()",
+///     "b": 42
+///   }
+/// ]
 class FreezedUnionValue {
   const FreezedUnionValue(this.value);
 

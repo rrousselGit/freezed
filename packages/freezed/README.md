@@ -1141,12 +1141,19 @@ Then [Freezed] will use each JSON object's `runtimeType` to choose the construct
 ]
 ```
 
-You can customize this key to replace `runtimeType` with something different
-using the `@Freezed` decorator:
+You can customize key and value with something different
+using `@Freezed` and `@FreezedUnionValue` decorators:
 
 ```dart
 @Freezed(unionKey: 'type')
 abstract class MyResponse with _$MyResponse {
+  const factory MyResponse(String a) = MyResponseData;
+  
+  @FreezedUnionValue('SpecialCase')
+  const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+  
+  const factory MyResponse.error(String message) = MyResponseError;
+
   // ...
 }
 ```
@@ -1160,7 +1167,7 @@ which would update the previous json to:
     "a": "This JSON object will use constructor MyResponse()"
   },
   {
-    "type": "special",
+    "type": "SpecialCase",
     "a": "This JSON object will use constructor MyResponse.special()",
     "b": 42
   },
