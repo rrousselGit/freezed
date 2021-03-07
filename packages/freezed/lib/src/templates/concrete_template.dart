@@ -162,26 +162,20 @@ ${copyWith.abstractCopyWithGetter}
     return constructor.isConst ? 'const' : '';
   }
 
+  String get _genericFromJsonArgs => hasGenericArgumentFactories
+      ? genericsParameter.typeParameters.map((type) {
+          return ', $type Function(Object? json) fromJson$type';
+        }).join()
+      : '';
+
   String get _redirectedFromJsonConstructor {
     if (!shouldGenerateJson) return '';
 
-    final genericArgs = hasGenericArgumentFactories
-        ? genericsParameter.typeParameters.map((type) {
-            return ', $type Function(Object? json) fromJson$type';
-          }).join()
-        : '';
-
-    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json$genericArgs) = $concreteName$genericsParameter.fromJson;';
+    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json$_genericFromJsonArgs) = $concreteName$genericsParameter.fromJson;';
   }
 
   String get _concreteFromJsonConstructor {
     if (!shouldGenerateJson) return '';
-
-    final genericArgs = hasGenericArgumentFactories
-        ? genericsParameter.typeParameters.map((type) {
-            return ', $type Function(Object? json) fromJson$type';
-          }).join()
-        : '';
 
     final genericArgsNames = hasGenericArgumentFactories
         ? genericsParameter.typeParameters
@@ -189,7 +183,7 @@ ${copyWith.abstractCopyWithGetter}
             .join()
         : '';
 
-    return 'factory $concreteName.fromJson(Map<String, dynamic> json$genericArgs) => _\$${concreteName}FromJson(json$genericArgsNames);';
+    return 'factory $concreteName.fromJson(Map<String, dynamic> json$_genericFromJsonArgs) => _\$${concreteName}FromJson(json$genericArgsNames);';
   }
 
   String get _toJson {
