@@ -580,9 +580,9 @@ extension on ConstructorElement {
         return pascalCase(constructorName);
       case FreezedUnionCase.snake:
         return snakeCase(constructorName);
+      default:
+        throw FallThroughError();
     }
-
-    throw ArgumentError('Unknown unionCase: $unionCase}');
   }
 }
 
