@@ -19,7 +19,7 @@ class Freezed {
   /// {@template freezed_annotation.freezed.example}
   /// ```dart
   /// @freezed
-  /// abstract class Union with _$Union {
+  /// class Union with _$Union {
   ///   factory Union.first() = _First;
   ///   factory Union.second() = _Second;
   ///
