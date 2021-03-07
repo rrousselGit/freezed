@@ -75,7 +75,7 @@ class Freezed {
   ///
   /// ```dart
   /// @Freezed(unionValueCase: FreezedUnionCase.pascal)
-  /// abstract class Union with _$Union {
+  /// class Union with _$Union {
   ///   // ...
   /// }
   /// ```
