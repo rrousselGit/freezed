@@ -21,7 +21,8 @@ In that case, you can fix the error by adding the following to your `pubspec.yam
 
 ```yaml
 dependency_overrides:
-  freezed_annotation: ^0.12.7
+  freezed: ^0.12.7
+  freezed_annotation: ^0.12.0
 ```
 
 # Motivation
