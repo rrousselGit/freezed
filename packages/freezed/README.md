@@ -377,7 +377,7 @@ a `@JsonKey(defaultValue: <something>)` for you.
 
 ### Late
 
-[Freezed] also contains early access to the upcoming `late` keyword.
+[Freezed] also supports the `late` keyword.
 
 If you are unfamiliar with that keyword, what `late` does is it allows variables
 to be lazily initialized.
@@ -398,8 +398,7 @@ late final model = Model();
 And with [Freezed], we could write:
 
 ```dart
-@late
-Model get model => Model();
+late final model = Model();
 ```
 
 ---
@@ -413,8 +412,7 @@ For example, you may write:
 abstract class Todos with _$Todos {
   factory Todos(List<Todo> todos) = _Todos;
 
-  @late
-  List<Todo> get completed => todos.where((t) => t.completed).toList();
+  late final completed = todos.where((t) => t.completed).toList();
 }
 ```
 
@@ -423,7 +421,7 @@ is more efficient.
 
 **NOTE**:
 
-Getters decorated with `@late` will also be visible on the generated `toString`.
+Getters decorated with `late` will also be visible on the generated `toString`.
 
 ### Constructor tear-off
 
