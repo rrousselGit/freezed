@@ -5,6 +5,17 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+// Regression test for https://github.com/rrousselGit/freezed/issues/3358
+@freezed
+abstract class Regression358 with _$Regression358 {
+  const factory Regression358({
+    required int number,
+  }) = _Regression358;
+
+  factory Regression358.withSpecificColor({int count = 2}) =>
+      Regression358(number: count);
+}
+
 @freezed
 class UnimplementedGetter with _$UnimplementedGetter {
   factory UnimplementedGetter(int value) = _UnimplementedGetter;

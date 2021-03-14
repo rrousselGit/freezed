@@ -1,6 +1,8 @@
 # 0.14.1
 
 - Fix `@Assert` no-longer working
+- Fixed an issue where a `factory` using the `=>` syntax (so not managed by Freezed)
+  with default values could break code-generation.
 
 # 0.14.0+1
 
