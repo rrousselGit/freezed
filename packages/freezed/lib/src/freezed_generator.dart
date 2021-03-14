@@ -609,9 +609,9 @@ extension on Element {
   }
 
   bool get hasGenericArgumentFactories {
-
     final annotation =
         const TypeChecker.fromRuntime(JsonSerializable).firstAnnotationOf(this);
+
     final value = annotation?.getField('genericArgumentFactories').toBoolValue();
     return value ?? false;
   }
