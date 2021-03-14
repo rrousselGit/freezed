@@ -48,7 +48,10 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
     final configs = _parseConfig(rawElement);
 
-    _assertValidUsage(element, shouldUseExtends: shouldUseExtends);
+    _assertValidClassUsage(element);
+    for (final field in element.fields) {
+      _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
+    }
 
     final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
       buildStep,
@@ -97,10 +100,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     ];
   }
 
-  void _assertValidUsage(
-    ClassElement element, {
-    @required bool shouldUseExtends,
-  }) {
+  void _assertValidClassUsage(ClassElement element) {
     // TODO: verify _$name is mixed-in
     if (element.isAbstract) {
       log.warning(
@@ -110,62 +110,71 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 ''',
       );
     }
+  }
 
-    // Invalid constructors check
-    for (final constructor in element.constructors) {
-      if (constructor.isFactory) {
-        for (final parameter in constructor.parameters) {
-          if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
-              parameter.isOptional &&
-              parameter.defaultValue == null) {
-            final ctorName =
-                constructor.isDefaultConstructor ? '' : '.${constructor.name}';
+  void _assertValidNormalConstructorUsage(
+    ConstructorElement constructor, {
+    @required String className,
+  }) {
+    if (!constructor.isFactory &&
+        (constructor.name != '_' || constructor.parameters.isNotEmpty)) {
+      throw InvalidGenerationSourceError(
+        'Classes decorated with @freezed can only have a single non-factory'
+        ', without parameters, and named MyClass._()',
+        element: constructor,
+      );
+    }
+  }
 
-            throw InvalidGenerationSourceError(
-              'The parameter `${parameter.name}` of `${element.name}$ctorName` is non-nullable but is neither required nor marked with @Default',
-              element: parameter,
-            );
-          }
-        }
-      } else {
-        if (constructor.name != '_' || constructor.parameters.isNotEmpty) {
-          throw InvalidGenerationSourceError(
-            'Classes decorated with @freezed can only have a single non-factory'
-            ', without parameters, and named MyClass._()',
-            element: element,
-          );
-        }
+  void _assertValidFreezedConstructorUsage(
+    ConstructorElement constructor, {
+    @required String className,
+  }) {
+    for (final parameter in constructor.parameters) {
+      if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
+          parameter.isOptional &&
+          parameter.defaultValue == null) {
+        final ctorName =
+            constructor.isDefaultConstructor ? '' : '.${constructor.name}';
+
+        throw InvalidGenerationSourceError(
+          'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
+          element: parameter,
+        );
       }
     }
+  }
 
-    for (final field in element.fields) {
-      if (field.isStatic) continue;
+  void _assertValidFieldUsage(
+    FieldElement field, {
+    @required bool shouldUseExtends,
+  }) {
+    if (field.isStatic) return;
 
-      if (field.setter != null) {
-        throw InvalidGenerationSourceError(
-          'Classes decorated with @freezed cannot have mutable properties',
-          element: element,
-        );
-      }
+    if (field.setter != null) {
+      throw InvalidGenerationSourceError(
+        'Classes decorated with @freezed cannot have mutable properties',
+        element: field,
+      );
+    }
 
-      // The field is a "Type get name => "
-      if (!shouldUseExtends &&
-          field.getter != null &&
-          !field.getter.isAbstract &&
-          !field.getter.isSynthetic) {
-        throw InvalidGenerationSourceError(
-          'Getters require a MyClass._() constructor',
-          element: element,
-        );
-      }
+    // The field is a "Type get name => "
+    if (!shouldUseExtends &&
+        field.getter != null &&
+        !field.getter.isAbstract &&
+        !field.getter.isSynthetic) {
+      throw InvalidGenerationSourceError(
+        'Getters require a MyClass._() constructor',
+        element: field,
+      );
+    }
 
-      // The field is a "final name = "
-      if (!shouldUseExtends && field.isFinal && field.hasInitializer) {
-        throw InvalidGenerationSourceError(
-          'Final variables require a MyClass._() constructor',
-          element: element,
-        );
-      }
+    // The field is a "final name = "
+    if (!shouldUseExtends && field.isFinal && field.hasInitializer) {
+      throw InvalidGenerationSourceError(
+        'Final variables require a MyClass._() constructor',
+        element: field,
+      );
     }
   }
 
@@ -206,13 +215,25 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
       if (!constructor.isFactory || constructor.name == 'fromJson') {
+        _assertValidNormalConstructorUsage(
+          constructor,
+          className: element.name,
+        );
         continue;
       }
 
       final redirectedName =
           await _getConstructorRedirectedName(constructor, buildStep);
 
-      if (redirectedName == null) continue;
+      if (redirectedName == null) {
+        _assertValidNormalConstructorUsage(
+          constructor,
+          className: element.name,
+        );
+        continue;
+      }
+
+      _assertValidFreezedConstructorUsage(constructor, className: element.name);
 
       result.add(
         ConstructorDetails(
@@ -500,6 +521,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           equalToken.charOffset < constructor.nameOffset) {
         return null;
       }
+      if (equalToken.stringValue == '=>') return null;
       if (equalToken.stringValue == '=') {
         break;
       }
