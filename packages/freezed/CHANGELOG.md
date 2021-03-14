@@ -1,4 +1,4 @@
-# 0.14.1
+# 0.14.0+2
 
 - Fix `@Assert` no-longer working
 - Fixed an issue where a `factory` using the `=>` syntax (so not managed by Freezed)
