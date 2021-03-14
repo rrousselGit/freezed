@@ -1,3 +1,8 @@
+# 0.14.0+3
+
+- Fix an issue where Freezed would not generate code properly if `freezed_annotation`
+  was indirectly imported (by importing a library that exports `freezed_annotation`) (Thanks to @ookami-kb)
+
 # 0.14.0+2
 
 - Fix `@Assert` no-longer working
@@ -14,6 +19,7 @@
 - Upgraded `analyzer` to support latest versions
 - Freezed classes no-longer need to be abstract.  
   Before:
+
   ```dart
   @freezed
   abstract class Example with _$Example {
@@ -46,6 +52,7 @@
     int get value; // adding this forces all union cases to possess a `value` property
   }
   ```
+
 - Excluded getters and late variables from the generated `toString` as they could potentially cause a StackOverflow
 - Fixed a bug causing properties with annotations to generate the annotations _before_
   the `required keyword, leading to a compilation error (see #351).
@@ -58,6 +65,7 @@
 
 - Freezed classes no-longer need to be abstract.  
   Before:
+
   ```dart
   @freezed
   abstract class Example with _$Example {
