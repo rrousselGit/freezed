@@ -609,11 +609,10 @@ extension on Element {
   }
 
   bool get hasGenericArgumentFactories {
-    if (!hasJsonSerializable) return false;
 
     final annotation =
         const TypeChecker.fromRuntime(JsonSerializable).firstAnnotationOf(this);
-    final value = annotation.getField('genericArgumentFactories').toBoolValue();
+    final value = annotation?.getField('genericArgumentFactories').toBoolValue();
     return value ?? false;
   }
 }
