@@ -52,12 +52,11 @@ class RecursiveImportLocator {
     }
 
     return library.exportedLibraries.any((export) {
-      return export.isRelevant(whereLibrary) &&
-          _doesExportRecursively(
-            library: export,
-            where: where,
-            whereLibrary: whereLibrary,
-          );
+      return _doesExportRecursively(
+        library: export,
+        where: where,
+        whereLibrary: whereLibrary,
+      );
     });
   }
 }
