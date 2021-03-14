@@ -1,4 +1,6 @@
-# 0.14.0+3
+# 0.14.1
+
+- Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more informations (Thanks to @ookami-kb)
 
 - Fix an issue where Freezed would not generate code properly if `freezed_annotation`
   was indirectly imported (by importing a library that exports `freezed_annotation`) (Thanks to @ookami-kb)
