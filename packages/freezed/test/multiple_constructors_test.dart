@@ -9,6 +9,7 @@ import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/multiple_constructors.dart';
+import 'nullable_test.dart';
 
 Future<void> main() async {
   final sources = await resolveSources(
@@ -74,6 +75,24 @@ Future<void> main() async {
           .having((e) => e.name, 'name', 'd')
           .having((e) => e.documentationComment, 'doc', null),
     ]);
+  });
+
+  test('assert', () {
+    Complex('a');
+    expect(
+      () => Complex(''),
+      throwsAssertionError,
+    );
+
+    Complex.first('', b: true);
+    expect(
+      () => Complex.first('a', b: true),
+      throwsAssertionError,
+    );
+    expect(
+      () => Complex.first('', b: false),
+      throwsAssertionError,
+    );
   });
 
   test('tear off', () {
