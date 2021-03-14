@@ -1072,12 +1072,19 @@ Then [Freezed] will use each JSON object's `runtimeType` to choose the construct
 ]
 ```
 
-You can customize this key to replace `runtimeType` with something different
-using the `@Freezed` decorator:
+You can customize key and value with something different
+using `@Freezed` and `@FreezedUnionValue` decorators:
 
 ```dart
-@Freezed(unionKey: 'type')
+@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
 abstract class MyResponse with _$MyResponse {
+  const factory MyResponse(String a) = MyResponseData;
+  
+  @FreezedUnionValue('SpecialCase')
+  const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+  
+  const factory MyResponse.error(String message) = MyResponseError;
+
   // ...
 }
 ```
@@ -1087,19 +1094,32 @@ which would update the previous json to:
 ```json
 [
   {
-    "type": "default",
+    "type": "Default",
     "a": "This JSON object will use constructor MyResponse()"
   },
   {
-    "type": "special",
+    "type": "SpecialCase",
     "a": "This JSON object will use constructor MyResponse.special()",
     "b": 42
   },
   {
-    "type": "error",
+    "type": "Error",
     "message": "This JSON object will use constructor MyResponse.error()"
   }
 ]
+```
+
+If you want to customize key and value for all the classes, you can specify it inside your
+`build.yaml` file, for example:
+
+```yaml
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          union_key: type
+          union_value_case: pascal
 ```
 
 If you don't control the JSON response, then you can implement a custom converter.

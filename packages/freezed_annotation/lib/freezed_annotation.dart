@@ -9,15 +9,17 @@ class Freezed {
   /// {@template freezed_annotation.freezed}
   const Freezed({
     this.unionKey,
+    this.unionValueCase = FreezedUnionCase.none,
   });
 
   /// Determines what key should be used to de/serialize union types.
   ///
   /// Consider:
   ///
+  /// {@template freezed_annotation.freezed.example}
   /// ```dart
   /// @freezed
-  /// abstract class Union with _$Union {
+  /// class Union with _$Union {
   ///   factory Union.first() = _First;
   ///   factory Union.second() = _Second;
   ///
@@ -36,6 +38,7 @@ class Freezed {
   ///   print(Union.second().toJson()); // { 'runtimeType': 'second' }
   /// }
   /// ```
+  /// {@endtemplate}
   ///
   /// This variable allows customizing the key used ("runtimeType" by default).
   ///
@@ -57,6 +60,38 @@ class Freezed {
   /// }
   /// ```
   final String? unionKey;
+
+  /// Determines how the value used to de/serialize union types would be
+  /// renamed.
+  ///
+  /// Consider:
+  ///
+  /// {@macro freezed_annotation.freezed.example}
+  ///
+  /// This variable allows customizing the value used (constructor name by
+  /// default).
+  ///
+  /// For example, we could change our previous `Union` implementation to:
+  ///
+  /// ```dart
+  /// @Freezed(unionValueCase: FreezedUnionCase.pascal)
+  /// class Union with _$Union {
+  ///   // ...
+  /// }
+  /// ```
+  ///
+  /// which changes how `fromJson`/`toJson` behaves:
+  ///
+  /// ```dart
+  /// void main() {
+  ///   print(Union.first().toJson()); // { 'runtimeType': 'First' }
+  ///   print(Union.second().toJson()); // { 'runtimeType': 'Second' }
+  /// }
+  /// ```
+  ///
+  /// You can also use [FreezedUnionValue] annotation to customize single
+  /// union case.
+  final FreezedUnionCase unionValueCase;
 }
 
 /// An annotation for the `freezed` package.
@@ -199,4 +234,57 @@ class With {
 
   final Type? type;
   final String? stringType;
+}
+
+/// An annotation used to specify how a union type will be serialized.
+///
+/// By default, Freezed generates the value based on the name of the
+/// constructor. You can override this behavior by annotating constructor and
+/// providing custom value.
+///
+/// ```dart
+/// @freezed
+/// class MyResponse with _$MyResponse {
+///   const factory MyResponse(String a) = MyResponseData;
+///
+///   @FreezedUnionValue('SpecialCase')
+///   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+///
+///   factory MyResponse.fromJson(Map<String, dynamic> json) => _$MyResponseFromJson(json);
+/// }
+/// ```
+///
+/// The constructor will be chosen as follows:
+///
+/// ```json
+/// [
+///   {
+///     "runtimeType": "default",
+///     "a": "This JSON object will use constructor MyResponse()"
+///   },
+///   {
+///     "runtimeType": "SpecialCase",
+///     "a": "This JSON object will use constructor MyResponse.special()",
+///     "b": 42
+///   }
+/// ]
+class FreezedUnionValue {
+  const FreezedUnionValue(this.value);
+
+  final String value;
+}
+
+/// Options for automatic union values renaming.
+enum FreezedUnionCase {
+  /// Use the name without changes.
+  none,
+
+  /// Encodes a constructor named `kebabCase` with a JSON value `kebab-case`.
+  kebab,
+
+  /// Encodes a constructor named `pascalCase` with a JSON value `PascalCase`.
+  pascal,
+
+  /// Encodes a constructor named `snakeCase` with a JSON value `snake_case`.
+  snake,
 }

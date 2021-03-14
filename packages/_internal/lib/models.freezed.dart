@@ -230,6 +230,7 @@ class _$ConstructorDetailsTearOff {
 // ignore: unused_element
   _ConstructorDetails call(
       {@required String name,
+      @required String unionValue,
       @required bool isConst,
       @required String redirectedName,
       @required ParametersTemplate parameters,
@@ -245,6 +246,7 @@ class _$ConstructorDetailsTearOff {
       @required List<AssertTemplate> asserts}) {
     return _ConstructorDetails(
       name: name,
+      unionValue: unionValue,
       isConst: isConst,
       redirectedName: redirectedName,
       parameters: parameters,
@@ -269,6 +271,7 @@ const $ConstructorDetails = _$ConstructorDetailsTearOff();
 /// @nodoc
 mixin _$ConstructorDetails {
   String get name;
+  String get unionValue;
   bool get isConst;
   String get redirectedName;
   ParametersTemplate get parameters;
@@ -294,6 +297,7 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       _$ConstructorDetailsCopyWithImpl<$Res>;
   $Res call(
       {String name,
+      String unionValue,
       bool isConst,
       String redirectedName,
       ParametersTemplate parameters,
@@ -321,6 +325,7 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
   @override
   $Res call({
     Object name = freezed,
+    Object unionValue = freezed,
     Object isConst = freezed,
     Object redirectedName = freezed,
     Object parameters = freezed,
@@ -337,6 +342,8 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
   }) {
     return _then(_value.copyWith(
       name: name == freezed ? _value.name : name as String,
+      unionValue:
+          unionValue == freezed ? _value.unionValue : unionValue as String,
       isConst: isConst == freezed ? _value.isConst : isConst as bool,
       redirectedName: redirectedName == freezed
           ? _value.redirectedName
@@ -382,6 +389,7 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
   @override
   $Res call(
       {String name,
+      String unionValue,
       bool isConst,
       String redirectedName,
       ParametersTemplate parameters,
@@ -411,6 +419,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
   @override
   $Res call({
     Object name = freezed,
+    Object unionValue = freezed,
     Object isConst = freezed,
     Object redirectedName = freezed,
     Object parameters = freezed,
@@ -427,6 +436,8 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
   }) {
     return _then(_ConstructorDetails(
       name: name == freezed ? _value.name : name as String,
+      unionValue:
+          unionValue == freezed ? _value.unionValue : unionValue as String,
       isConst: isConst == freezed ? _value.isConst : isConst as bool,
       redirectedName: redirectedName == freezed
           ? _value.redirectedName
@@ -467,6 +478,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
 class _$_ConstructorDetails extends _ConstructorDetails {
   _$_ConstructorDetails(
       {@required this.name,
+      @required this.unionValue,
       @required this.isConst,
       @required this.redirectedName,
       @required this.parameters,
@@ -481,6 +493,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       @required this.canOverrideToString,
       @required this.asserts})
       : assert(name != null),
+        assert(unionValue != null),
         assert(isConst != null),
         assert(redirectedName != null),
         assert(parameters != null),
@@ -498,6 +511,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
 
   @override
   final String name;
+  @override
+  final String unionValue;
   @override
   final bool isConst;
   @override
@@ -527,7 +542,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
 
   @override
   String toString() {
-    return 'ConstructorDetails(name: $name, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts)';
+    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts)';
   }
 
   @override
@@ -536,6 +551,9 @@ class _$_ConstructorDetails extends _ConstructorDetails {
         (other is _ConstructorDetails &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.unionValue, unionValue) ||
+                const DeepCollectionEquality()
+                    .equals(other.unionValue, unionValue)) &&
             (identical(other.isConst, isConst) ||
                 const DeepCollectionEquality()
                     .equals(other.isConst, isConst)) &&
@@ -580,6 +598,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(unionValue) ^
       const DeepCollectionEquality().hash(isConst) ^
       const DeepCollectionEquality().hash(redirectedName) ^
       const DeepCollectionEquality().hash(parameters) ^
@@ -604,6 +623,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   _ConstructorDetails._() : super._();
   factory _ConstructorDetails(
       {@required String name,
+      @required String unionValue,
       @required bool isConst,
       @required String redirectedName,
       @required ParametersTemplate parameters,
@@ -620,6 +640,8 @@ abstract class _ConstructorDetails extends ConstructorDetails {
 
   @override
   String get name;
+  @override
+  String get unionValue;
   @override
   bool get isConst;
   @override

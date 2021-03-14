@@ -34,6 +34,7 @@ abstract class CloneableProperty with _$CloneableProperty {
 abstract class ConstructorDetails with _$ConstructorDetails {
   factory ConstructorDetails({
     @required String name,
+    @required String unionValue,
     @required bool isConst,
     @required String redirectedName,
     @required ParametersTemplate parameters,

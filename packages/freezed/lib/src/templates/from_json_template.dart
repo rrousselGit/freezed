@@ -29,7 +29,7 @@ class FromJson {
           'return ${constructors.first.redirectedName}$genericParameters.fromJson(json);';
     } else {
       final cases = constructors.map((constructor) {
-        final caseName = constructor.isDefault ? 'default' : constructor.name;
+        final caseName = constructor.unionValue;
         final concreteName = constructor.redirectedName;
 
         return '''

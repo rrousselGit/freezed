@@ -56,6 +56,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
       buildStep,
       element,
+      configs,
     );
 
     final needsJsonSerializable = await _needsJsonSerializable(
@@ -211,6 +212,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
     ClassElement element,
+    Freezed configs,
   ) async {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
@@ -239,6 +241,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         ConstructorDetails(
           asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
+          unionValue: constructor.unionValue(configs.unionValueCase),
           canOverrideToString: _canOverrideToString(element),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
@@ -369,8 +372,34 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         configs['union_key']?.toString() ??
         'runtimeType';
 
+    FreezedUnionCase unionValueCase;
+    final fromConfig = configs['union_value_case']?.toString();
+    if (fromConfig != null) {
+      switch (fromConfig) {
+        case 'none':
+          unionValueCase = FreezedUnionCase.none;
+          break;
+        case 'kebab':
+          unionValueCase = FreezedUnionCase.kebab;
+          break;
+        case 'pascal':
+          unionValueCase = FreezedUnionCase.pascal;
+          break;
+        case 'snake':
+          unionValueCase = FreezedUnionCase.snake;
+          break;
+        default:
+          throw FallThroughError();
+      }
+    } else {
+      final enumIndex =
+          annotation.getField('unionValueCase').getField('index').toIntValue();
+      unionValueCase = FreezedUnionCase.values[enumIndex];
+    }
+
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
+      unionValueCase: unionValueCase,
     );
   }
 
@@ -566,6 +595,30 @@ extension on Element {
       this,
       throwOnUnresolved: false,
     );
+  }
+}
+
+extension on ConstructorElement {
+  String unionValue(FreezedUnionCase unionCase) {
+    final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
+        .firstAnnotationOf(this, throwOnUnresolved: false);
+    if (annotation != null) {
+      return annotation.getField('value').toStringValue();
+    }
+
+    final constructorName = isDefaultConstructor(this) ? 'default' : name;
+    switch (unionCase) {
+      case FreezedUnionCase.none:
+        return constructorName;
+      case FreezedUnionCase.kebab:
+        return kebabCase(constructorName);
+      case FreezedUnionCase.pascal:
+        return pascalCase(constructorName);
+      case FreezedUnionCase.snake:
+        return snakeCase(constructorName);
+      default:
+        throw FallThroughError();
+    }
   }
 }
 

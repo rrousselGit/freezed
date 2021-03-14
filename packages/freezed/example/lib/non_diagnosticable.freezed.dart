@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'non_diagnosticable.dart';
 
@@ -8,6 +8,9 @@ part of 'non_diagnosticable.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 class _$ExampleTearOff {
@@ -36,24 +39,28 @@ mixin _$Example<T> {
   TResult when<TResult extends Object?>(
     TResult Function(int a, String b) $default, {
     required TResult Function(T c) named,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int a, String b)? $default, {
     TResult Function(T c)? named,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_Example<T> value) $default, {
     required TResult Function(_Example2<T> value) named,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_Example<T> value)? $default, {
     TResult Function(_Example2<T> value)? named,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -183,10 +190,11 @@ class _$_Example<T> implements _Example<T> {
 abstract class _Example<T> implements Example<T> {
   factory _Example(int a, String b) = _$_Example<T>;
 
-  int get a;
-  String get b;
+  int get a => throw _privateConstructorUsedError;
+  String get b => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$ExampleCopyWith<T, _Example<T>> get copyWith;
+  _$ExampleCopyWith<T, _Example<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -294,9 +302,10 @@ class _$_Example2<T> implements _Example2<T> {
 abstract class _Example2<T> implements Example<T> {
   factory _Example2(T c) = _$_Example2<T>;
 
-  T get c;
+  T get c => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$Example2CopyWith<T, _Example2<T>> get copyWith;
+  _$Example2CopyWith<T, _Example2<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -336,7 +345,7 @@ const $SimpleImplements = _$SimpleImplementsTearOff();
 
 /// @nodoc
 mixin _$SimpleImplements {
-  String get name;
+  String get name => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -344,7 +353,8 @@ mixin _$SimpleImplements {
     required TResult Function(String name) street,
     required TResult Function(String name, int population) city,
     required TResult Function(String name, int population) country,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
@@ -352,14 +362,16 @@ mixin _$SimpleImplements {
     TResult Function(String name, int population)? city,
     TResult Function(String name, int population)? country,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SimplePerson value) person,
     required TResult Function(SimpleStreet value) street,
     required TResult Function(SimpleCity value) city,
     required TResult Function(SimpleCountry value) country,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SimplePerson value)? person,
@@ -367,10 +379,12 @@ mixin _$SimpleImplements {
     TResult Function(SimpleCity value)? city,
     TResult Function(SimpleCountry value)? country,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $SimpleImplementsCopyWith<SimpleImplements> get copyWith;
+  $SimpleImplementsCopyWith<SimpleImplements> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -525,11 +539,12 @@ abstract class SimplePerson implements SimpleImplements {
   const factory SimplePerson(String name, int age) = _$SimplePerson;
 
   @override
-  String get name;
-  int get age;
+  String get name => throw _privateConstructorUsedError;
+  int get age => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $SimplePersonCopyWith<SimplePerson> get copyWith;
+  $SimplePersonCopyWith<SimplePerson> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -652,10 +667,11 @@ abstract class SimpleStreet
   const factory SimpleStreet(String name) = _$SimpleStreet;
 
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $SimpleStreetCopyWith<SimpleStreet> get copyWith;
+  $SimpleStreetCopyWith<SimpleStreet> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -785,11 +801,12 @@ abstract class SimpleCity implements SimpleImplements, House {
   const factory SimpleCity(String name, int population) = _$SimpleCity;
 
   @override
-  String get name;
-  int get population;
+  String get name => throw _privateConstructorUsedError;
+  int get population => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $SimpleCityCopyWith<SimpleCity> get copyWith;
+  $SimpleCityCopyWith<SimpleCity> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -922,11 +939,12 @@ abstract class SimpleCountry
   const factory SimpleCountry(String name, int population) = _$SimpleCountry;
 
   @override
-  String get name;
-  int get population;
+  String get name => throw _privateConstructorUsedError;
+  int get population => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $SimpleCountryCopyWith<SimpleCountry> get copyWith;
+  $SimpleCountryCopyWith<SimpleCountry> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -965,7 +983,7 @@ const $CustomMethodImplements = _$CustomMethodImplementsTearOff();
 
 /// @nodoc
 mixin _$CustomMethodImplements {
-  String get name;
+  String get name => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -973,7 +991,8 @@ mixin _$CustomMethodImplements {
     required TResult Function(String name) street,
     required TResult Function(String name, int population) city,
     required TResult Function(String name) duplex,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
@@ -981,14 +1000,16 @@ mixin _$CustomMethodImplements {
     TResult Function(String name, int population)? city,
     TResult Function(String name)? duplex,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(PersonCustomMethod value) person,
     required TResult Function(StreetCustomMethod value) street,
     required TResult Function(CityCustomMethod value) city,
     required TResult Function(DuplexCustomMethod value) duplex,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PersonCustomMethod value)? person,
@@ -996,10 +1017,12 @@ mixin _$CustomMethodImplements {
     TResult Function(CityCustomMethod value)? city,
     TResult Function(DuplexCustomMethod value)? duplex,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $CustomMethodImplementsCopyWith<CustomMethodImplements> get copyWith;
+  $CustomMethodImplementsCopyWith<CustomMethodImplements> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1155,11 +1178,12 @@ abstract class PersonCustomMethod extends CustomMethodImplements {
   const factory PersonCustomMethod(String name, int age) = _$PersonCustomMethod;
 
   @override
-  String get name;
-  int get age;
+  String get name => throw _privateConstructorUsedError;
+  int get age => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $PersonCustomMethodCopyWith<PersonCustomMethod> get copyWith;
+  $PersonCustomMethodCopyWith<PersonCustomMethod> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1285,10 +1309,11 @@ abstract class StreetCustomMethod extends CustomMethodImplements
   const factory StreetCustomMethod(String name) = _$StreetCustomMethod;
 
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $StreetCustomMethodCopyWith<StreetCustomMethod> get copyWith;
+  $StreetCustomMethodCopyWith<StreetCustomMethod> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1423,11 +1448,12 @@ abstract class CityCustomMethod extends CustomMethodImplements
       _$CityCustomMethod;
 
   @override
-  String get name;
-  int get population;
+  String get name => throw _privateConstructorUsedError;
+  int get population => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $CityCustomMethodCopyWith<CityCustomMethod> get copyWith;
+  $CityCustomMethodCopyWith<CityCustomMethod> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1552,10 +1578,11 @@ abstract class DuplexCustomMethod extends CustomMethodImplements
   const factory DuplexCustomMethod(String name) = _$DuplexCustomMethod;
 
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith;
+  $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1589,37 +1616,42 @@ const $GenericImplements = _$GenericImplementsTearOff();
 
 /// @nodoc
 mixin _$GenericImplements<T> {
-  String get name;
+  String get name => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name, int age) person,
     required TResult Function(String name, T value) street,
     required TResult Function(String name, int population) city,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GenericPerson<T> value) person,
     required TResult Function(GenericStreet<T> value) street,
     required TResult Function(GenericCity<T> value) city,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
     TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $GenericImplementsCopyWith<T, GenericImplements<T>> get copyWith;
+  $GenericImplementsCopyWith<T, GenericImplements<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1770,11 +1802,12 @@ abstract class GenericPerson<T> implements GenericImplements<T> {
   const factory GenericPerson(String name, int age) = _$GenericPerson<T>;
 
   @override
-  String get name;
-  int get age;
+  String get name => throw _privateConstructorUsedError;
+  int get age => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $GenericPersonCopyWith<T, GenericPerson<T>> get copyWith;
+  $GenericPersonCopyWith<T, GenericPerson<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1903,11 +1936,12 @@ abstract class GenericStreet<T>
   const factory GenericStreet(String name, T value) = _$GenericStreet<T>;
 
   @override
-  String get name;
-  T get value;
+  String get name => throw _privateConstructorUsedError;
+  T get value => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith;
+  $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -2036,9 +2070,10 @@ abstract class GenericCity<T>
   const factory GenericCity(String name, int population) = _$GenericCity<T>;
 
   @override
-  String get name;
-  int get population;
+  String get name => throw _privateConstructorUsedError;
+  int get population => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $GenericCityCopyWith<T, GenericCity<T>> get copyWith;
+  $GenericCityCopyWith<T, GenericCity<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }

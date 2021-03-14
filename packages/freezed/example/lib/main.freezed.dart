@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'main.dart';
 
@@ -8,6 +8,9 @@ part of 'main.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 class _$MyClassTearOff {
@@ -26,11 +29,11 @@ const $MyClass = _$MyClassTearOff();
 
 /// @nodoc
 mixin _$MyClass {
-  String? get a;
-  int? get b;
+  String? get a => throw _privateConstructorUsedError;
+  int? get b => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $MyClassCopyWith<MyClass> get copyWith;
+  $MyClassCopyWith<MyClass> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -138,23 +141,24 @@ abstract class _MyClass implements MyClass {
   factory _MyClass({String? a, int? b}) = _$_MyClass;
 
   @override
-  String? get a;
+  String? get a => throw _privateConstructorUsedError;
   @override
-  int? get b;
+  int? get b => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$MyClassCopyWith<_MyClass> get copyWith;
+  _$MyClassCopyWith<_MyClass> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 Union _$UnionFromJson(Map<String, dynamic> json) {
   switch (json['custom-key'] as String) {
-    case 'default':
+    case 'Default':
       return Data.fromJson(json);
-    case 'loading':
+    case 'Loading':
       return Loading.fromJson(json);
-    case 'error':
+    case 'Error':
       return ErrorDetails.fromJson(json);
-    case 'complex':
+    case 'Complex':
       return Complex.fromJson(json);
 
     default:
@@ -205,7 +209,8 @@ mixin _$Union {
     required TResult Function() loading,
     required TResult Function(String? message) error,
     required TResult Function(int a, String b) complex,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int value)? $default, {
@@ -213,14 +218,16 @@ mixin _$Union {
     TResult Function(String? message)? error,
     TResult Function(int a, String b)? complex,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(Data value) $default, {
     required TResult Function(Loading value) loading,
     required TResult Function(ErrorDetails value) error,
     required TResult Function(Complex value) complex,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(Data value)? $default, {
@@ -228,8 +235,9 @@ mixin _$Union {
     TResult Function(ErrorDetails value)? error,
     TResult Function(Complex value)? complex,
     required TResult orElse(),
-  });
-  Map<String, dynamic> toJson();
+  }) =>
+      throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -368,7 +376,7 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$DataToJson(this)..['custom-key'] = 'default';
+    return _$_$DataToJson(this)..['custom-key'] = 'Default';
   }
 }
 
@@ -377,9 +385,9 @@ abstract class Data implements Union {
 
   factory Data.fromJson(Map<String, dynamic> json) = _$Data.fromJson;
 
-  int get value;
+  int get value => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DataCopyWith<Data> get copyWith;
+  $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -480,7 +488,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$LoadingToJson(this)..['custom-key'] = 'loading';
+    return _$_$LoadingToJson(this)..['custom-key'] = 'Loading';
   }
 }
 
@@ -614,7 +622,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$ErrorDetailsToJson(this)..['custom-key'] = 'error';
+    return _$_$ErrorDetailsToJson(this)..['custom-key'] = 'Error';
   }
 }
 
@@ -624,9 +632,10 @@ abstract class ErrorDetails implements Union {
   factory ErrorDetails.fromJson(Map<String, dynamic> json) =
       _$ErrorDetails.fromJson;
 
-  String? get message;
+  String? get message => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -760,7 +769,7 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$ComplexToJson(this)..['custom-key'] = 'complex';
+    return _$_$ComplexToJson(this)..['custom-key'] = 'Complex';
   }
 }
 
@@ -769,10 +778,10 @@ abstract class Complex implements Union {
 
   factory Complex.fromJson(Map<String, dynamic> json) = _$Complex.fromJson;
 
-  int get a;
-  String get b;
+  int get a => throw _privateConstructorUsedError;
+  String get b => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ComplexCopyWith<Complex> get copyWith;
+  $ComplexCopyWith<Complex> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -799,33 +808,38 @@ const $SharedProperty = _$SharedPropertyTearOff();
 
 /// @nodoc
 mixin _$SharedProperty {
-  String? get name;
+  String? get name => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String? name, int? age) person,
     required TResult Function(String? name, int? population) city,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? name, int? age)? person,
     TResult Function(String? name, int? population)? city,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SharedProperty0 value) person,
     required TResult Function(SharedProperty1 value) city,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SharedProperty0 value)? person,
     TResult Function(SharedProperty1 value)? city,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $SharedPropertyCopyWith<SharedProperty> get copyWith;
+  $SharedPropertyCopyWith<SharedProperty> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -983,11 +997,12 @@ abstract class SharedProperty0 implements SharedProperty {
   factory SharedProperty0({String? name, int? age}) = _$SharedProperty0;
 
   @override
-  String? get name;
-  int? get age;
+  String? get name => throw _privateConstructorUsedError;
+  int? get age => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $SharedProperty0CopyWith<SharedProperty0> get copyWith;
+  $SharedProperty0CopyWith<SharedProperty0> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1120,9 +1135,10 @@ abstract class SharedProperty1 implements SharedProperty {
   factory SharedProperty1({String? name, int? population}) = _$SharedProperty1;
 
   @override
-  String? get name;
-  int? get population;
+  String? get name => throw _privateConstructorUsedError;
+  int? get population => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $SharedProperty1CopyWith<SharedProperty1> get copyWith;
+  $SharedProperty1CopyWith<SharedProperty1> get copyWith =>
+      throw _privateConstructorUsedError;
 }

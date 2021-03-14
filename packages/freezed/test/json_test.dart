@@ -2,8 +2,8 @@
 
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:build_test/build_test.dart';
-import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
+import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/json.dart';
@@ -84,6 +84,130 @@ Future<void> main() async {
       expect(
         FancyCustomKey.first(42).toJson(),
         <String, dynamic>{'ty"\'pe': 'first', 'a': 42},
+      );
+    });
+  });
+
+  group('FreezedUnionValue', () {
+    test('fromJson', () {
+      expect(
+        CustomUnionValue.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
+        CustomUnionValue.first(42),
+      );
+
+      expect(
+        CustomUnionValue.fromJson(<String, dynamic>{
+          'runtimeType': 'SECOND',
+          'a': 21,
+        }),
+        CustomUnionValue.second(21),
+      );
+    });
+
+    test('toJson', () {
+      expect(
+        CustomUnionValue.first(42).toJson(),
+        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+      );
+
+      expect(
+        CustomUnionValue.second(21).toJson(),
+        <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
+      );
+    });
+  });
+
+  group('Freezed.unionValueCase', () {
+    test('FreezedUnionCase.pascal fromJson', () {
+      expect(
+        UnionValueCasePascal.fromJson(<String, dynamic>{
+          'runtimeType': 'First',
+          'a': 42,
+        }),
+        UnionValueCasePascal.first(42),
+      );
+
+      expect(
+        UnionValueCasePascal.fromJson(<String, dynamic>{
+          'runtimeType': 'SecondValue',
+          'a': 21,
+        }),
+        UnionValueCasePascal.secondValue(21),
+      );
+    });
+
+    test('FreezedUnionCase.pascal toJson', () {
+      expect(
+        UnionValueCasePascal.first(42).toJson(),
+        <String, dynamic>{'runtimeType': 'First', 'a': 42},
+      );
+
+      expect(
+        UnionValueCasePascal.secondValue(21).toJson(),
+        <String, dynamic>{'runtimeType': 'SecondValue', 'a': 21},
+      );
+    });
+
+    test('FreezedUnionCase.kebab fromJson', () {
+      expect(
+        UnionValueCaseKebab.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
+        UnionValueCaseKebab.first(42),
+      );
+
+      expect(
+        UnionValueCaseKebab.fromJson(<String, dynamic>{
+          'runtimeType': 'second-value',
+          'a': 21,
+        }),
+        UnionValueCaseKebab.secondValue(21),
+      );
+    });
+
+    test('FreezedUnionCase.kebab toJson', () {
+      expect(
+        UnionValueCaseKebab.first(42).toJson(),
+        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+      );
+
+      expect(
+        UnionValueCaseKebab.secondValue(21).toJson(),
+        <String, dynamic>{'runtimeType': 'second-value', 'a': 21},
+      );
+    });
+
+    test('FreezedUnionCase.snake fromJson', () {
+      expect(
+        UnionValueCaseSnake.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
+        UnionValueCaseSnake.first(42),
+      );
+
+      expect(
+        UnionValueCaseSnake.fromJson(<String, dynamic>{
+          'runtimeType': 'second_value',
+          'a': 21,
+        }),
+        UnionValueCaseSnake.secondValue(21),
+      );
+    });
+
+    test('FreezedUnionCase.snake toJson', () {
+      expect(
+        UnionValueCaseSnake.first(42).toJson(),
+        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+      );
+
+      expect(
+        UnionValueCaseSnake.secondValue(21).toJson(),
+        <String, dynamic>{'runtimeType': 'second_value', 'a': 21},
       );
     });
   });
