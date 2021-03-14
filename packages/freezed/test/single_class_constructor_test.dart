@@ -8,6 +8,7 @@ import 'package:matcher/matcher.dart';
 
 import 'common.dart';
 import 'integration/single_class_constructor.dart';
+import 'nullable_test.dart';
 
 class MyObject {
   final void Function() didEqual;
@@ -54,6 +55,19 @@ Future<void> main() async {
           .having((e) => e.name, 'name', 'simple')
           .having((e) => e.documentationComment, 'doc', null),
     ]);
+  });
+
+  test('Assertion', () {
+    Assertion(1, 2);
+
+    expect(
+      () => Assertion(-1, 1),
+      throwsAssertionError,
+    );
+    expect(
+      () => Assertion(1, -1),
+      throwsAssertionError,
+    );
   });
 
   test('tear off uses const ctor if possible', () {

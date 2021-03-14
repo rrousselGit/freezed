@@ -44,6 +44,17 @@ class Concrete {
 
   @override
   String toString() {
+    final asserts = constructor.asserts.join(',');
+    final superConstructor = _superConstructor;
+
+    var trailing = '';
+    if (asserts.isNotEmpty || superConstructor.isNotEmpty) {
+      trailing = ': ${[
+        if (asserts.isNotEmpty) asserts,
+        if (superConstructor.isNotEmpty) superConstructor
+      ].join(',')}';
+    }
+
     return '''
 ${copyWith.interface}
 
@@ -53,7 +64,7 @@ ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()'
 ${constructor.decorators.join('\n')}
 /// @nodoc
 class $concreteName$genericsDefinition $_concreteSuper {
-  $_isConst $concreteName(${constructor.parameters.asThis()})$_superConstructor;
+  $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
 
   $_concreteFromJsonConstructor
 
@@ -111,7 +122,7 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _superConstructor {
     if (!shouldUseExtends) return '';
-    return ': super._()';
+    return 'super._()';
   }
 
   String get _privateConcreteConstructor {

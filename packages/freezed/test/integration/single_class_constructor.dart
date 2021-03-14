@@ -13,6 +13,13 @@ class UnimplementedGetter with _$UnimplementedGetter {
   int get value;
 }
 
+@freezed
+class Assertion with _$Assertion {
+  @Assert('a > 0')
+  @Assert('b > a')
+  factory Assertion(int a, int b) = _Assertion;
+}
+
 // Regression test for https://github.com/rrousselGit/freezed/issues/326
 @freezed
 class Doc326 with _$Doc326 {
