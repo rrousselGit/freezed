@@ -7,7 +7,7 @@ part 'single_class_constructor.freezed.dart';
 
 // Regression test for https://github.com/rrousselGit/freezed/issues/3358
 @freezed
-abstract class Regression358 with _$Regression358 {
+class Regression358 with _$Regression358 {
   const factory Regression358({
     required int number,
   }) = _Regression358;

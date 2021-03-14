@@ -112,31 +112,34 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     }
   }
 
-  void _assertValidConstructorUsage(
+  void _assertValidNormalConstructorUsage(
     ConstructorElement constructor, {
     @required String className,
   }) {
-    // Invalid constructors check
-    if (constructor.isFactory) {
-      for (final parameter in constructor.parameters) {
-        if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
-            parameter.isOptional &&
-            parameter.defaultValue == null) {
-          final ctorName =
-              constructor.isDefaultConstructor ? '' : '.${constructor.name}';
+    if (!constructor.isFactory &&
+        (constructor.name != '_' || constructor.parameters.isNotEmpty)) {
+      throw InvalidGenerationSourceError(
+        'Classes decorated with @freezed can only have a single non-factory'
+        ', without parameters, and named MyClass._()',
+        element: constructor,
+      );
+    }
+  }
 
-          throw InvalidGenerationSourceError(
-            'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
-            element: parameter,
-          );
-        }
-      }
-    } else {
-      if (constructor.name != '_' || constructor.parameters.isNotEmpty) {
+  void _assertValidFreezedConstructorUsage(
+    ConstructorElement constructor, {
+    @required String className,
+  }) {
+    for (final parameter in constructor.parameters) {
+      if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
+          parameter.isOptional &&
+          parameter.defaultValue == null) {
+        final ctorName =
+            constructor.isDefaultConstructor ? '' : '.${constructor.name}';
+
         throw InvalidGenerationSourceError(
-          'Classes decorated with @freezed can only have a single non-factory'
-          ', without parameters, and named MyClass._()',
-          element: constructor,
+          'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
+          element: parameter,
         );
       }
     }
@@ -212,15 +215,25 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
       if (!constructor.isFactory || constructor.name == 'fromJson') {
+        _assertValidNormalConstructorUsage(
+          constructor,
+          className: element.name,
+        );
         continue;
       }
 
       final redirectedName =
           await _getConstructorRedirectedName(constructor, buildStep);
 
-      if (redirectedName == null) continue;
+      if (redirectedName == null) {
+        _assertValidNormalConstructorUsage(
+          constructor,
+          className: element.name,
+        );
+        continue;
+      }
 
-      _assertValidConstructorUsage(constructor, className: element.name);
+      _assertValidFreezedConstructorUsage(constructor, className: element.name);
 
       result.add(
         ConstructorDetails(
