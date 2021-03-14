@@ -1178,6 +1178,19 @@ which would update the previous json to:
 ]
 ```
 
+If you want to customize key and value for all the classes, you can specify it inside your
+`build.yaml` file, for example:
+
+```yaml
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          union_key: type
+          union_value_case: pascal
+```
+
 If you don't control the JSON response, then you can implement a custom converter.
 Your custom converter will need to implement its own logic for determining which
 constructor to use.

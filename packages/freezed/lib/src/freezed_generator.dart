@@ -354,8 +354,22 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     FreezedUnionCase unionValueCase;
     final fromConfig = configs['union_value_case']?.toString();
     if (fromConfig != null) {
-      unionValueCase = FreezedUnionCase.values.firstWhere((e) =>
-          e.toString().replaceFirst('FreezedUnionCase.', '') == fromConfig);
+      switch (fromConfig) {
+        case 'none':
+          unionValueCase = FreezedUnionCase.none;
+          break;
+        case 'kebab':
+          unionValueCase = FreezedUnionCase.kebab;
+          break;
+        case 'pascal':
+          unionValueCase = FreezedUnionCase.pascal;
+          break;
+        case 'snake':
+          unionValueCase = FreezedUnionCase.snake;
+          break;
+        default:
+          throw FallThroughError();
+      }
     } else {
       final enumIndex =
           annotation.getField('unionValueCase').getField('index').toIntValue();

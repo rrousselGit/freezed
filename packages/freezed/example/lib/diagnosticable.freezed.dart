@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'diagnosticable.dart';
 
@@ -8,6 +8,9 @@ part of 'diagnosticable.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 class _$ExampleTearOff {
@@ -36,24 +39,28 @@ mixin _$Example<T> {
   TResult when<TResult extends Object?>(
     TResult Function(int a, String b) $default, {
     required TResult Function(T c) named,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int a, String b)? $default, {
     TResult Function(T c)? named,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_Example<T> value) $default, {
     required TResult Function(_Example2<T> value) named,
-  });
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_Example<T> value)? $default, {
     TResult Function(_Example2<T> value)? named,
     required TResult orElse(),
-  });
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -193,10 +200,11 @@ abstract class _Example<T> extends Example<T> {
   _Example._() : super._();
   factory _Example(int a, String b) = _$_Example<T>;
 
-  int get a;
-  String get b;
+  int get a => throw _privateConstructorUsedError;
+  String get b => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$ExampleCopyWith<T, _Example<T>> get copyWith;
+  _$ExampleCopyWith<T, _Example<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -313,9 +321,10 @@ abstract class _Example2<T> extends Example<T> {
   _Example2._() : super._();
   factory _Example2(T c) = _$_Example2<T>;
 
-  T get c;
+  T get c => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$Example2CopyWith<T, _Example2<T>> get copyWith;
+  _$Example2CopyWith<T, _Example2<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
