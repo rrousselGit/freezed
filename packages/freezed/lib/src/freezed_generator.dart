@@ -19,7 +19,7 @@ import 'models.dart';
 import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
-import 'templates/from_json_template.dart';
+import 'templates/serialization_template.dart';
 
 @immutable
 class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
@@ -431,15 +431,18 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     GlobalData globalData,
     Data data,
   ) sync* {
+    final commonSerialization = Serialization(
+      name: data.name,
+      unionKey: data.unionKey,
+      genericParameters: data.genericsParameterTemplate,
+      genericDefinitions: data.genericsDefinitionTemplate,
+      shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
+      hasGenericArgumentFactories: data.hasGenericArgumentFactories,
+      allConstructors: data.constructors,
+    );
+
     if (globalData.hasJson && data.needsJsonSerializable) {
-      yield FromJson(
-        name: data.name,
-        unionKey: data.unionKey,
-        constructors: data.constructors,
-        genericParameters: data.genericsParameterTemplate,
-        genericDefinitions: data.genericsDefinitionTemplate,
-        hasGenericArgumentFactories: data.hasGenericArgumentFactories,
-      );
+      yield commonSerialization.fromJson;
     }
 
     yield TearOff(
@@ -448,7 +451,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       genericsParameter: data.genericsParameterTemplate,
       genericsDefinition: data.genericsDefinitionTemplate,
       allConstructors: data.constructors,
-      hasGenericArgumentFactories: data.hasGenericArgumentFactories,
+      serialization: commonSerialization,
     );
 
     final commonProperties = _commonProperties(data.constructors);
@@ -468,11 +471,10 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       name: data.name,
       genericsDefinition: data.genericsDefinitionTemplate,
       genericsParameter: data.genericsParameterTemplate,
-      shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
       abstractProperties: commonProperties.asGetters(),
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
-      hasGenericArgumentFactories: data.hasGenericArgumentFactories,
+      serialization: commonSerialization,
     );
 
     for (final constructor in data.constructors) {
@@ -495,7 +497,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           allProperties: constructor.impliedProperties,
           parent: commonCopyWith,
         ),
-        hasGenericArgumentFactories: data.hasGenericArgumentFactories,
+        serialization: commonSerialization,
       );
     }
   }
@@ -612,7 +614,8 @@ extension on Element {
     final annotation =
         const TypeChecker.fromRuntime(JsonSerializable).firstAnnotationOf(this);
 
-    final value = annotation?.getField('genericArgumentFactories').toBoolValue();
+    final value =
+        annotation?.getField('genericArgumentFactories')?.toBoolValue();
     return value ?? false;
   }
 }
