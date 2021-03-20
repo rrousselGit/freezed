@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:logging/logging.dart';
 
 abstract class ParserGenerator<GlobalData, Data, Annotation>
     extends GeneratorForAnnotation<Annotation> {
@@ -74,13 +73,9 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
         yield value.toString();
       }
     } catch (err, stack) {
-      log
-        ..log(
-          Level.SEVERE,
-          'did catch error when generating using source_gen_test:',
-        )
-        ..log(Level.SEVERE, err)
-        ..log(Level.SEVERE, stack);
+      print('did catch error when generating using source_gen_test:');
+      print(err);
+      print(stack);
       rethrow;
     }
   }
