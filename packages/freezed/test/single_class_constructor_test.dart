@@ -234,6 +234,30 @@ void main() {
 '''), throwsCompileError);
   });
 
+  test('regression 399', () async {
+    await expectLater(compile(r'''
+import 'regression399/a.dart';
+import 'regression399/b.dart';
+
+void main() {
+  Regression399A(
+    b: Regression399BImpl(),
+  );
+}
+'''), completes);
+
+    await expectLater(compile(r'''
+import 'regression399/a.dart';
+import 'regression399/b.dart';
+
+void main() {
+  Regression399A(
+    b: 42,
+  );
+}
+'''), throwsCompileError);
+  });
+
   test('does not have map', () async {
     await expectLater(compile(r'''
 import 'single_class_constructor.dart';

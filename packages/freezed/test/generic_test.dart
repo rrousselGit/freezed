@@ -26,6 +26,30 @@ Future<void> main() async {
     );
   });
 
+  test('regression 399', () async {
+    await expectLater(compile(r'''
+import 'regression399/a.dart';
+import 'regression399/b.dart';
+
+void main() {
+  GenericRegression399A<int>(
+    b: GenericRegression399BImpl(),
+  );
+}
+'''), completes);
+
+    await expectLater(compile(r'''
+import 'regression399/a.dart';
+import 'regression399/b.dart';
+
+void main() {
+  GenericRegression399A<int>(
+    b: 42,
+  );
+}
+'''), throwsCompileError);
+  });
+
   test('has no issue', () async {
     final main = await resolveSources(
       {
