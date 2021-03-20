@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:logging/logging.dart';
 
 abstract class ParserGenerator<GlobalData, Data, Annotation>
     extends GeneratorForAnnotation<Annotation> {
@@ -62,14 +63,25 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     ConstantReader annotation,
     BuildStep buildStep,
   ) async* {
-    // implemented for source_gen_test – otherwise unused
-    final globalData = parseGlobalData(element.library!);
-    final data = parseElement(buildStep, globalData, element);
+    try {
+      // implemented for source_gen_test – otherwise unused
+      final globalData = parseGlobalData(element.library!);
+      final data = parseElement(buildStep, globalData, element);
 
-    if (data == null) return;
+      if (data == null) return;
 
-    for (final value in generateForData(globalData, await data)) {
-      yield value.toString();
+      for (final value in generateForData(globalData, await data)) {
+        yield value.toString();
+      }
+    } catch (err, stack) {
+      log
+        ..log(
+          Level.SEVERE,
+          'did catch error when generating using source_gen_test:',
+        )
+        ..log(Level.SEVERE, err)
+        ..log(Level.SEVERE, stack);
+      rethrow;
     }
   }
 }
