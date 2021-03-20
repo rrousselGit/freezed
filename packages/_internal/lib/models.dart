@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'models.freezed.dart';
@@ -11,7 +9,7 @@ class GenericsDefinitionTemplate {}
 class ParametersTemplate {}
 
 class Property {
-  String name;
+  late String name;
 }
 
 class AssertTemplate {}
@@ -29,11 +27,11 @@ String constructorNameToCallbackName(String name) => name;
 @freezed
 abstract class CloneableProperty with _$CloneableProperty {
   factory CloneableProperty({
-    @required String name,
-    @required String typeName,
-    @required String type,
-    @required bool nullable,
-    @required GenericsParameterTemplate genericParameters,
+    required String name,
+    required String typeName,
+    required String type,
+    required bool nullable,
+    required GenericsParameterTemplate genericParameters,
   }) = _CloneableProperty;
 }
 
@@ -43,21 +41,21 @@ abstract class CloneableProperty with _$CloneableProperty {
 @freezed
 abstract class ConstructorDetails with _$ConstructorDetails {
   factory ConstructorDetails({
-    @required String name,
-    @required String unionValue,
-    @required bool isConst,
-    @required String redirectedName,
-    @required ParametersTemplate parameters,
-    @required List<Property> impliedProperties,
-    @required bool isDefault,
-    @required bool hasJsonSerializable,
-    @required String fullName,
-    @required List<String> withDecorators,
-    @required List<String> implementsDecorators,
-    @required List<String> decorators,
-    @required List<CloneableProperty> cloneableProperties,
-    @required bool canOverrideToString,
-    @required List<AssertTemplate> asserts,
+    required String name,
+    required String unionValue,
+    required bool isConst,
+    required String redirectedName,
+    required ParametersTemplate parameters,
+    required List<Property> impliedProperties,
+    required bool isDefault,
+    required bool hasJsonSerializable,
+    required String fullName,
+    required List<String> withDecorators,
+    required List<String> implementsDecorators,
+    required List<String> decorators,
+    required List<CloneableProperty> cloneableProperties,
+    required bool canOverrideToString,
+    required List<AssertTemplate> asserts,
   }) = _ConstructorDetails;
 
   ConstructorDetails._();
@@ -68,32 +66,29 @@ abstract class ConstructorDetails with _$ConstructorDetails {
 @freezed
 abstract class Data with _$Data {
   @Assert('constructors.isNotEmpty')
-  @Assert('unionKey != null')
   factory Data({
-    @required String name,
-    @required bool needsJsonSerializable,
-    @required String unionKey,
-    @required List<String> concretePropertiesName,
-    @required List<ConstructorDetails> constructors,
-    @required GenericsDefinitionTemplate genericsDefinitionTemplate,
-    @required GenericsParameterTemplate genericsParameterTemplate,
-    @required bool shouldUseExtends,
+    required String name,
+    required bool needsJsonSerializable,
+    required String unionKey,
+    required List<String> concretePropertiesName,
+    required List<ConstructorDetails> constructors,
+    required GenericsDefinitionTemplate genericsDefinitionTemplate,
+    required GenericsParameterTemplate genericsParameterTemplate,
+    required bool shouldUseExtends,
   }) = _Data;
 }
 
 @freezed
 abstract class GlobalData with _$GlobalData {
   factory GlobalData({
-    @required bool hasJson,
-    @required bool hasDiagnostics,
+    required bool hasJson,
+    required bool hasDiagnostics,
   }) = _GlobalData;
 }
 
 extension ShouldGenerateWhen on List<ConstructorDetails> {
   bool get shouldGenerateUnions {
     return where((element) =>
-        element.name != null &&
-        element.name.isNotEmpty &&
-        !element.name.startsWith('_')).isNotEmpty;
+        element.name.isNotEmpty && !element.name.startsWith('_')).isNotEmpty;
   }
 }

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
@@ -29,7 +27,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
         hasGeneratedGlobalCode = true;
         for (final value
             in generateForAll(globalData).map((e) => e.toString())) {
-          assert(value == null || (value.length == value.trim().length));
+          assert(value.length == value.trim().length);
           values.writeln(value);
         }
       }
@@ -38,7 +36,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
       if (data == null) continue;
       for (final value
           in generateForData(globalData, data).map((e) => e.toString())) {
-        assert(value == null || (value.length == value.trim().length));
+        assert(value.length == value.trim().length);
         values.writeln(value);
       }
     }
@@ -65,7 +63,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     BuildStep buildStep,
   ) async* {
     // implemented for source_gen_test – otherwise unused
-    final globalData = parseGlobalData(element.library);
+    final globalData = parseGlobalData(element.library!);
     final data = parseElement(buildStep, globalData, element);
 
     if (data == null) return;

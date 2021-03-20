@@ -1,8 +1,5 @@
-// @dart=2.9
-
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../models.dart';
@@ -19,21 +16,21 @@ extension FreezedElementAnnotation on ElementAnnotation {
   /// if the element is decorated with `@Default(value)`
   bool get isDefault {
     return const TypeChecker.fromRuntime(Default)
-        .isExactlyType(computeConstantValue().type);
+        .isExactlyType(computeConstantValue()!.type!);
   }
 
   /// if the element is decorated with `@With(Type)` or
   /// `@With.fromString('Type')`
   bool get isWith {
     return const TypeChecker.fromRuntime(With)
-        .isExactlyType(computeConstantValue().type);
+        .isExactlyType(computeConstantValue()!.type!);
   }
 
   /// if the element is decorated with `@Implements(Type)` or
   /// `@Implements.fromString('Type')`
   bool get isImplements {
     return const TypeChecker.fromRuntime(Implements)
-        .isExactlyType(computeConstantValue().type);
+        .isExactlyType(computeConstantValue()!.type!);
   }
 }
 
@@ -80,8 +77,8 @@ String maybeMapPrototype(
 String _mapPrototype(
   List<ConstructorDetails> allConstructors,
   GenericsParameterTemplate genericParameters, {
-  @required bool areCallbacksRequired,
-  @required String name,
+  required bool areCallbacksRequired,
+  required String name,
 }) {
   return _unionPrototype(
     allConstructors,
@@ -104,8 +101,8 @@ String _mapPrototype(
 
 String _whenPrototype(
   List<ConstructorDetails> allConstructors, {
-  @required bool areCallbacksRequired,
-  @required String name,
+  required bool areCallbacksRequired,
+  required String name,
 }) {
   return _unionPrototype(
     allConstructors,
@@ -124,9 +121,9 @@ String _whenPrototype(
 
 String _unionPrototype(
   List<ConstructorDetails> allConstructors, {
-  @required bool areCallbacksRequired,
-  @required String name,
-  @required ParametersTemplate Function(ConstructorDetails) ctor2parameters,
+  required bool areCallbacksRequired,
+  required String name,
+  required ParametersTemplate Function(ConstructorDetails) ctor2parameters,
 }) {
   final buffer =
       StringBuffer('@optionalTypeArgs TResult $name<TResult extends Object?>(');
@@ -164,11 +161,9 @@ String _unionPrototype(
 }
 
 bool isDefaultConstructor(ConstructorElement constructor) {
-  return constructor.name == null || constructor.name.isEmpty;
+  return constructor.name.isEmpty;
 }
 
 String constructorNameToCallbackName(String constructorName) {
-  return constructorName == null || constructorName.isEmpty
-      ? '\$default'
-      : constructorName;
+  return constructorName.isEmpty ? '\$default' : constructorName;
 }
