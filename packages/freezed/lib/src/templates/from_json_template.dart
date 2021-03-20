@@ -1,17 +1,14 @@
-// @dart=2.9
-
 import 'package:freezed/src/templates/parameter_template.dart';
-import 'package:meta/meta.dart';
 
 import '../models.dart';
 
 class FromJson {
   FromJson({
-    @required this.name,
-    @required this.unionKey,
-    @required this.constructors,
-    @required this.genericParameters,
-    @required this.genericDefinitions,
+    required this.name,
+    required this.unionKey,
+    required this.constructors,
+    required this.genericParameters,
+    required this.genericDefinitions,
   });
 
   final String name;

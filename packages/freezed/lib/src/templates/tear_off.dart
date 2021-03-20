@@ -1,16 +1,13 @@
-// @dart=2.9
-
-import 'package:meta/meta.dart';
 import '../models.dart';
 import 'parameter_template.dart';
 
 class TearOff {
   TearOff({
-    @required this.name,
-    @required this.serializable,
-    @required this.genericsParameter,
-    @required this.genericsDefinition,
-    @required this.allConstructors,
+    required this.name,
+    required this.serializable,
+    required this.genericsParameter,
+    required this.genericsDefinition,
+    required this.allConstructors,
   });
 
   final String name;
