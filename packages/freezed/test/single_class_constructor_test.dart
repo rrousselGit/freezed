@@ -26,15 +26,18 @@ class MyObject {
 }
 
 Future<void> main() async {
-  final singleClassLibrary = await resolveSources(
-    {
-      'freezed|test/integration/single_class_constructor.dart': useAssetReader,
-    },
-    (r) => r.libraries.firstWhere((e) {
-      return e.source.fullName ==
-          '/freezed/test/integration/single_class_constructor.dart';
-    }),
-  );
+  Future<LibraryElement> analyze() {
+    return resolveSources(
+      {
+        'freezed|test/integration/single_class_constructor.dart':
+            useAssetReader,
+      },
+      (r) => r.libraries.firstWhere((e) {
+        return e.source.fullName ==
+            '/freezed/test/integration/single_class_constructor.dart';
+      }),
+    );
+  }
 
   test('Regression358', () {
     expect(
@@ -48,6 +51,8 @@ Future<void> main() async {
   });
 
   test('documentation', () async {
+    final singleClassLibrary = await analyze();
+
     final doc = singleClassLibrary.topLevelElements
         .firstWhere((e) => e.name == 'Doc') as ClassElement;
 
@@ -250,6 +255,8 @@ void main() {
   });
 
   test('has no issue', () async {
+    final singleClassLibrary = await analyze();
+
     final errorResult = await singleClassLibrary.session.getErrors(
         '/freezed/test/integration/single_class_constructor.freezed.dart');
 
