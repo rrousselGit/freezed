@@ -360,10 +360,10 @@ String? parseTypeSource(VariableElement element) {
     if (element.type.element != null &&
         element.type.isDynamic &&
         element.type.element!.isSynthetic) {
-      final match = RegExp(r'(\w+)\s+$').firstMatch(source);
+      final match = RegExp(r'(\w+\??)\s+$').firstMatch(source);
       type = match?.group(1);
     } else if (element.type.element != null) {
-      final match = RegExp(r'(\w+<.+?>)\s+$').firstMatch(source);
+      final match = RegExp(r'(\w+<.+?>\??)\s+$').firstMatch(source);
       type = match?.group(1) ?? type;
     }
   }
