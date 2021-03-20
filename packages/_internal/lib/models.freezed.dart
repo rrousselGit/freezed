@@ -937,8 +937,7 @@ class _$_Data implements _Data {
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
       required this.shouldUseExtends})
-      : assert(constructors.isNotEmpty),
-        assert(unionKey != null);
+      : assert(constructors.isNotEmpty);
 
   @override
   final String name;
