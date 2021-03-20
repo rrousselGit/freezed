@@ -7,10 +7,8 @@ import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
 
 import 'common.dart';
-import 'integration/regression399/b.dart';
 import 'integration/single_class_constructor.dart';
 import 'nullable_test.dart';
-import 'integration/regression399/a.dart';
 
 class MyObject {
   final void Function() didEqual;
