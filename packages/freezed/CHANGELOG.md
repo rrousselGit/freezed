@@ -1,3 +1,8 @@
+# 0.14.1+1
+
+- Fixed issues with recursive Freezed classes that could cause the parameter type to be inferred as `dynamic` (see #399)
+- Updated `build` and other similar dependencies to latest
+
 # 0.14.1
 
 - Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more informations (Thanks to @ookami-kb)
