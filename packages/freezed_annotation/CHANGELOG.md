@@ -1,3 +1,48 @@
+# 0.14.1
+
+- Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more informations (Thanks to @ookami-kb)
+ 
+# 0.14.0
+
+- Stable null safety release
+- removed `@nullable`.
+  Instead of:
+  ```dart
+  factory Example({@nullable int a}) = _Example;
+  ```
+  Do:
+  ```dart
+  factory Example({int? a}) = _Example;
+  ```
+- removed `@late`.
+  Instead of:
+
+  ```dart
+  abstract class Person with _$Person {
+    factory Person({
+      required String firstName,
+      required String lastName,
+    }) = _Person;
+
+    @late
+    String get fullName => '$firstName $lastName';
+  }
+  ```
+
+  Do:
+
+  ```dart
+  abstract class Person with _$Person {
+  Person._();
+  factory Person({
+    required String firstName,
+    required String lastName,
+  }) = _Person;
+
+  late final fullName = '$firstName $lastName';
+  }
+  ```
+
 # 0.13.0-nullsafety.0
 
 - Migrated to null safety
@@ -12,6 +57,7 @@
   ```
 - removed `@late`.
   Instead of:
+
   ```dart
   abstract class Person with _$Person {
     factory Person({
@@ -23,20 +69,20 @@
     String get fullName => '$firstName $lastName';
   }
   ```
-  Do:
-    ```dart
-  abstract class Person with _$Person {
-    Person._();
-    factory Person({
-      required String firstName,
-      required String lastName,
-    }) = _Person;
 
-    late final fullName = '$firstName $lastName';
+  Do:
+
+  ```dart
+  abstract class Person with _$Person {
+  Person._();
+  factory Person({
+    required String firstName,
+    required String lastName,
+  }) = _Person;
+
+  late final fullName = '$firstName $lastName';
   }
   ```
-
-
 
 # 0.12.0
 

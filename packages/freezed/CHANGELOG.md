@@ -1,7 +1,78 @@
+# 0.14.1+1
+
+- Fixed issues with recursive Freezed classes that could cause the parameter type to be inferred as `dynamic` (see #399)
+- Updated `build` and other similar dependencies to latest
+
+# 0.14.1
+
+- Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more informations (Thanks to @ookami-kb)
+
+- Fix an issue where Freezed would not generate code properly if `freezed_annotation`
+  was indirectly imported (by importing a library that exports `freezed_annotation`) (Thanks to @ookami-kb)
+
+# 0.14.0+2
+
+- Fix `@Assert` no-longer working
+- Fixed an issue where a `factory` using the `=>` syntax (so not managed by Freezed)
+  with default values could break code-generation.
+
+# 0.14.0+1
+
+- fix `sort_unnamed_constructors_first` and `cast_nullable_to_non_nullable` in the generated code (Thanks to @gaetschwartz #372)
+
+# 0.14.0
+
+- Stable null-safety release
+- Upgraded `analyzer` to support latest versions
+- Freezed classes no-longer need to be abstract.  
+  Before:
+
+  ```dart
+  @freezed
+  abstract class Example with _$Example {
+    factory Example(int value) = _Example;
+  }
+  ```
+
+  after:
+
+  ```dart
+  @freezed
+  class Example with _$Example {
+    factory Example(int value) = _Example;
+  }
+  ```
+
+  This leads to better error messages when a Freezed class uses interfaces/mixins
+  but the class is missing a specific property.
+
+- It is now allowed to add unimplemented getter to Freezed classes.
+  This can be useful to guarantee that union-types all have a common property:
+
+  ```dart
+  @freezed
+  class Union with _$Union {
+    const factory Union.left(int value) = _Left;
+    const factory Union.right(int value) = _Left;
+
+    @override
+    int get value; // adding this forces all union cases to possess a `value` property
+  }
+  ```
+
+- Excluded getters and late variables from the generated `toString` as they could potentially cause a StackOverflow
+- Fixed a bug causing properties with annotations to generate the annotations _before_
+  the `required keyword, leading to a compilation error (see #351).
+
+# 0.14.0-nullsafety.1
+
+- Upgraded `analyzer` to support latest versions
+
 # 0.14.0-nullsafety.0
 
 - Freezed classes no-longer need to be abstract.  
   Before:
+
   ```dart
   @freezed
   abstract class Example with _$Example {

@@ -91,6 +91,47 @@ class CustomKey with _$CustomKey {
 }
 
 @freezed
+class CustomUnionValue with _$CustomUnionValue {
+  const factory CustomUnionValue.first(int a) = _CustomUnionValueFirst;
+
+  @FreezedUnionValue('SECOND')
+  const factory CustomUnionValue.second(int a) = _CustomUnionValueSecond;
+
+  factory CustomUnionValue.fromJson(Map<String, dynamic> json) =>
+      _$CustomUnionValueFromJson(json);
+}
+
+@Freezed(unionValueCase: FreezedUnionCase.pascal)
+class UnionValueCasePascal with _$UnionValueCasePascal {
+  const factory UnionValueCasePascal.first(int a) = _UnionValueCasePascalFirst;
+  const factory UnionValueCasePascal.secondValue(int a) =
+      _UnionValueCasePascalSecondValue;
+
+  factory UnionValueCasePascal.fromJson(Map<String, dynamic> json) =>
+      _$UnionValueCasePascalFromJson(json);
+}
+
+@Freezed(unionValueCase: FreezedUnionCase.kebab)
+class UnionValueCaseKebab with _$UnionValueCaseKebab {
+  const factory UnionValueCaseKebab.first(int a) = _UnionValueCaseKebabFirst;
+  const factory UnionValueCaseKebab.secondValue(int a) =
+      _UnionValueCaseKebabSecondValue;
+
+  factory UnionValueCaseKebab.fromJson(Map<String, dynamic> json) =>
+      _$UnionValueCaseKebabFromJson(json);
+}
+
+@Freezed(unionValueCase: FreezedUnionCase.snake)
+class UnionValueCaseSnake with _$UnionValueCaseSnake {
+  const factory UnionValueCaseSnake.first(int a) = _UnionValueCaseSnakeFirst;
+  const factory UnionValueCaseSnake.secondValue(int a) =
+      _UnionValueCaseSnakeSecondValue;
+
+  factory UnionValueCaseSnake.fromJson(Map<String, dynamic> json) =>
+      _$UnionValueCaseSnakeFromJson(json);
+}
+
+@freezed
 class Single with _$Single {
   const factory Single(int a) = _Single;
 

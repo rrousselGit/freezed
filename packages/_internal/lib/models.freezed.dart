@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
-// @dart=2.9
 part of 'models.dart';
 
 // **************************************************************************
@@ -10,17 +9,19 @@ part of 'models.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 /// @nodoc
 class _$CloneablePropertyTearOff {
   const _$CloneablePropertyTearOff();
 
-// ignore: unused_element
   _CloneableProperty call(
-      {@required String name,
-      @required String typeName,
-      @required String type,
-      @required bool nullable,
-      @required GenericsParameterTemplate genericParameters}) {
+      {required String name,
+      required String typeName,
+      required String type,
+      required bool nullable,
+      required GenericsParameterTemplate genericParameters}) {
     return _CloneableProperty(
       name: name,
       typeName: typeName,
@@ -32,19 +33,20 @@ class _$CloneablePropertyTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $CloneableProperty = _$CloneablePropertyTearOff();
 
 /// @nodoc
 mixin _$CloneableProperty {
-  String get name;
-  String get typeName;
-  String get type;
-  bool get nullable;
-  GenericsParameterTemplate get genericParameters;
+  String get name => throw _privateConstructorUsedError;
+  String get typeName => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
+  bool get nullable => throw _privateConstructorUsedError;
+  GenericsParameterTemplate get genericParameters =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $CloneablePropertyCopyWith<CloneableProperty> get copyWith;
+  $CloneablePropertyCopyWith<CloneableProperty> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -71,20 +73,33 @@ class _$CloneablePropertyCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object typeName = freezed,
-    Object type = freezed,
-    Object nullable = freezed,
-    Object genericParameters = freezed,
+    Object? name = freezed,
+    Object? typeName = freezed,
+    Object? type = freezed,
+    Object? nullable = freezed,
+    Object? genericParameters = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
-      typeName: typeName == freezed ? _value.typeName : typeName as String,
-      type: type == freezed ? _value.type : type as String,
-      nullable: nullable == freezed ? _value.nullable : nullable as bool,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      typeName: typeName == freezed
+          ? _value.typeName
+          : typeName // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      nullable: nullable == freezed
+          ? _value.nullable
+          : nullable // ignore: cast_nullable_to_non_nullable
+              as bool,
       genericParameters: genericParameters == freezed
           ? _value.genericParameters
-          : genericParameters as GenericsParameterTemplate,
+          : genericParameters // ignore: cast_nullable_to_non_nullable
+              as GenericsParameterTemplate,
     ));
   }
 }
@@ -117,20 +132,33 @@ class __$CloneablePropertyCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object typeName = freezed,
-    Object type = freezed,
-    Object nullable = freezed,
-    Object genericParameters = freezed,
+    Object? name = freezed,
+    Object? typeName = freezed,
+    Object? type = freezed,
+    Object? nullable = freezed,
+    Object? genericParameters = freezed,
   }) {
     return _then(_CloneableProperty(
-      name: name == freezed ? _value.name : name as String,
-      typeName: typeName == freezed ? _value.typeName : typeName as String,
-      type: type == freezed ? _value.type : type as String,
-      nullable: nullable == freezed ? _value.nullable : nullable as bool,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      typeName: typeName == freezed
+          ? _value.typeName
+          : typeName // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      nullable: nullable == freezed
+          ? _value.nullable
+          : nullable // ignore: cast_nullable_to_non_nullable
+              as bool,
       genericParameters: genericParameters == freezed
           ? _value.genericParameters
-          : genericParameters as GenericsParameterTemplate,
+          : genericParameters // ignore: cast_nullable_to_non_nullable
+              as GenericsParameterTemplate,
     ));
   }
 }
@@ -138,16 +166,11 @@ class __$CloneablePropertyCopyWithImpl<$Res>
 /// @nodoc
 class _$_CloneableProperty implements _CloneableProperty {
   _$_CloneableProperty(
-      {@required this.name,
-      @required this.typeName,
-      @required this.type,
-      @required this.nullable,
-      @required this.genericParameters})
-      : assert(name != null),
-        assert(typeName != null),
-        assert(type != null),
-        assert(nullable != null),
-        assert(genericParameters != null);
+      {required this.name,
+      required this.typeName,
+      required this.type,
+      required this.nullable,
+      required this.genericParameters});
 
   @override
   final String name;
@@ -201,50 +224,53 @@ class _$_CloneableProperty implements _CloneableProperty {
 
 abstract class _CloneableProperty implements CloneableProperty {
   factory _CloneableProperty(
-          {@required String name,
-          @required String typeName,
-          @required String type,
-          @required bool nullable,
-          @required GenericsParameterTemplate genericParameters}) =
+          {required String name,
+          required String typeName,
+          required String type,
+          required bool nullable,
+          required GenericsParameterTemplate genericParameters}) =
       _$_CloneableProperty;
 
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  String get typeName;
+  String get typeName => throw _privateConstructorUsedError;
   @override
-  String get type;
+  String get type => throw _privateConstructorUsedError;
   @override
-  bool get nullable;
+  bool get nullable => throw _privateConstructorUsedError;
   @override
-  GenericsParameterTemplate get genericParameters;
+  GenericsParameterTemplate get genericParameters =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith;
+  _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 class _$ConstructorDetailsTearOff {
   const _$ConstructorDetailsTearOff();
 
-// ignore: unused_element
   _ConstructorDetails call(
-      {@required String name,
-      @required bool isConst,
-      @required String redirectedName,
-      @required ParametersTemplate parameters,
-      @required List<Property> impliedProperties,
-      @required bool isDefault,
-      @required bool hasJsonSerializable,
-      @required String fullName,
-      @required List<String> withDecorators,
-      @required List<String> implementsDecorators,
-      @required List<String> decorators,
-      @required List<CloneableProperty> cloneableProperties,
-      @required bool canOverrideToString,
-      @required List<AssertTemplate> asserts}) {
+      {required String name,
+      required String unionValue,
+      required bool isConst,
+      required String redirectedName,
+      required ParametersTemplate parameters,
+      required List<Property> impliedProperties,
+      required bool isDefault,
+      required bool hasJsonSerializable,
+      required String fullName,
+      required List<String> withDecorators,
+      required List<String> implementsDecorators,
+      required List<String> decorators,
+      required List<CloneableProperty> cloneableProperties,
+      required bool canOverrideToString,
+      required List<AssertTemplate> asserts}) {
     return _ConstructorDetails(
       name: name,
+      unionValue: unionValue,
       isConst: isConst,
       redirectedName: redirectedName,
       parameters: parameters,
@@ -263,28 +289,30 @@ class _$ConstructorDetailsTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $ConstructorDetails = _$ConstructorDetailsTearOff();
 
 /// @nodoc
 mixin _$ConstructorDetails {
-  String get name;
-  bool get isConst;
-  String get redirectedName;
-  ParametersTemplate get parameters;
-  List<Property> get impliedProperties;
-  bool get isDefault;
-  bool get hasJsonSerializable;
-  String get fullName;
-  List<String> get withDecorators;
-  List<String> get implementsDecorators;
-  List<String> get decorators;
-  List<CloneableProperty> get cloneableProperties;
-  bool get canOverrideToString;
-  List<AssertTemplate> get asserts;
+  String get name => throw _privateConstructorUsedError;
+  String get unionValue => throw _privateConstructorUsedError;
+  bool get isConst => throw _privateConstructorUsedError;
+  String get redirectedName => throw _privateConstructorUsedError;
+  ParametersTemplate get parameters => throw _privateConstructorUsedError;
+  List<Property> get impliedProperties => throw _privateConstructorUsedError;
+  bool get isDefault => throw _privateConstructorUsedError;
+  bool get hasJsonSerializable => throw _privateConstructorUsedError;
+  String get fullName => throw _privateConstructorUsedError;
+  List<String> get withDecorators => throw _privateConstructorUsedError;
+  List<String> get implementsDecorators => throw _privateConstructorUsedError;
+  List<String> get decorators => throw _privateConstructorUsedError;
+  List<CloneableProperty> get cloneableProperties =>
+      throw _privateConstructorUsedError;
+  bool get canOverrideToString => throw _privateConstructorUsedError;
+  List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ConstructorDetailsCopyWith<ConstructorDetails> get copyWith;
+  $ConstructorDetailsCopyWith<ConstructorDetails> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -294,6 +322,7 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       _$ConstructorDetailsCopyWithImpl<$Res>;
   $Res call(
       {String name,
+      String unionValue,
       bool isConst,
       String redirectedName,
       ParametersTemplate parameters,
@@ -320,55 +349,83 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object isConst = freezed,
-    Object redirectedName = freezed,
-    Object parameters = freezed,
-    Object impliedProperties = freezed,
-    Object isDefault = freezed,
-    Object hasJsonSerializable = freezed,
-    Object fullName = freezed,
-    Object withDecorators = freezed,
-    Object implementsDecorators = freezed,
-    Object decorators = freezed,
-    Object cloneableProperties = freezed,
-    Object canOverrideToString = freezed,
-    Object asserts = freezed,
+    Object? name = freezed,
+    Object? unionValue = freezed,
+    Object? isConst = freezed,
+    Object? redirectedName = freezed,
+    Object? parameters = freezed,
+    Object? impliedProperties = freezed,
+    Object? isDefault = freezed,
+    Object? hasJsonSerializable = freezed,
+    Object? fullName = freezed,
+    Object? withDecorators = freezed,
+    Object? implementsDecorators = freezed,
+    Object? decorators = freezed,
+    Object? cloneableProperties = freezed,
+    Object? canOverrideToString = freezed,
+    Object? asserts = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
-      isConst: isConst == freezed ? _value.isConst : isConst as bool,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      unionValue: unionValue == freezed
+          ? _value.unionValue
+          : unionValue // ignore: cast_nullable_to_non_nullable
+              as String,
+      isConst: isConst == freezed
+          ? _value.isConst
+          : isConst // ignore: cast_nullable_to_non_nullable
+              as bool,
       redirectedName: redirectedName == freezed
           ? _value.redirectedName
-          : redirectedName as String,
+          : redirectedName // ignore: cast_nullable_to_non_nullable
+              as String,
       parameters: parameters == freezed
           ? _value.parameters
-          : parameters as ParametersTemplate,
+          : parameters // ignore: cast_nullable_to_non_nullable
+              as ParametersTemplate,
       impliedProperties: impliedProperties == freezed
           ? _value.impliedProperties
-          : impliedProperties as List<Property>,
-      isDefault: isDefault == freezed ? _value.isDefault : isDefault as bool,
+          : impliedProperties // ignore: cast_nullable_to_non_nullable
+              as List<Property>,
+      isDefault: isDefault == freezed
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
       hasJsonSerializable: hasJsonSerializable == freezed
           ? _value.hasJsonSerializable
-          : hasJsonSerializable as bool,
-      fullName: fullName == freezed ? _value.fullName : fullName as String,
+          : hasJsonSerializable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      fullName: fullName == freezed
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
       withDecorators: withDecorators == freezed
           ? _value.withDecorators
-          : withDecorators as List<String>,
+          : withDecorators // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       implementsDecorators: implementsDecorators == freezed
           ? _value.implementsDecorators
-          : implementsDecorators as List<String>,
+          : implementsDecorators // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       decorators: decorators == freezed
           ? _value.decorators
-          : decorators as List<String>,
+          : decorators // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       cloneableProperties: cloneableProperties == freezed
           ? _value.cloneableProperties
-          : cloneableProperties as List<CloneableProperty>,
+          : cloneableProperties // ignore: cast_nullable_to_non_nullable
+              as List<CloneableProperty>,
       canOverrideToString: canOverrideToString == freezed
           ? _value.canOverrideToString
-          : canOverrideToString as bool,
-      asserts:
-          asserts == freezed ? _value.asserts : asserts as List<AssertTemplate>,
+          : canOverrideToString // ignore: cast_nullable_to_non_nullable
+              as bool,
+      asserts: asserts == freezed
+          ? _value.asserts
+          : asserts // ignore: cast_nullable_to_non_nullable
+              as List<AssertTemplate>,
     ));
   }
 }
@@ -382,6 +439,7 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
   @override
   $Res call(
       {String name,
+      String unionValue,
       bool isConst,
       String redirectedName,
       ParametersTemplate parameters,
@@ -410,55 +468,83 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object isConst = freezed,
-    Object redirectedName = freezed,
-    Object parameters = freezed,
-    Object impliedProperties = freezed,
-    Object isDefault = freezed,
-    Object hasJsonSerializable = freezed,
-    Object fullName = freezed,
-    Object withDecorators = freezed,
-    Object implementsDecorators = freezed,
-    Object decorators = freezed,
-    Object cloneableProperties = freezed,
-    Object canOverrideToString = freezed,
-    Object asserts = freezed,
+    Object? name = freezed,
+    Object? unionValue = freezed,
+    Object? isConst = freezed,
+    Object? redirectedName = freezed,
+    Object? parameters = freezed,
+    Object? impliedProperties = freezed,
+    Object? isDefault = freezed,
+    Object? hasJsonSerializable = freezed,
+    Object? fullName = freezed,
+    Object? withDecorators = freezed,
+    Object? implementsDecorators = freezed,
+    Object? decorators = freezed,
+    Object? cloneableProperties = freezed,
+    Object? canOverrideToString = freezed,
+    Object? asserts = freezed,
   }) {
     return _then(_ConstructorDetails(
-      name: name == freezed ? _value.name : name as String,
-      isConst: isConst == freezed ? _value.isConst : isConst as bool,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      unionValue: unionValue == freezed
+          ? _value.unionValue
+          : unionValue // ignore: cast_nullable_to_non_nullable
+              as String,
+      isConst: isConst == freezed
+          ? _value.isConst
+          : isConst // ignore: cast_nullable_to_non_nullable
+              as bool,
       redirectedName: redirectedName == freezed
           ? _value.redirectedName
-          : redirectedName as String,
+          : redirectedName // ignore: cast_nullable_to_non_nullable
+              as String,
       parameters: parameters == freezed
           ? _value.parameters
-          : parameters as ParametersTemplate,
+          : parameters // ignore: cast_nullable_to_non_nullable
+              as ParametersTemplate,
       impliedProperties: impliedProperties == freezed
           ? _value.impliedProperties
-          : impliedProperties as List<Property>,
-      isDefault: isDefault == freezed ? _value.isDefault : isDefault as bool,
+          : impliedProperties // ignore: cast_nullable_to_non_nullable
+              as List<Property>,
+      isDefault: isDefault == freezed
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
       hasJsonSerializable: hasJsonSerializable == freezed
           ? _value.hasJsonSerializable
-          : hasJsonSerializable as bool,
-      fullName: fullName == freezed ? _value.fullName : fullName as String,
+          : hasJsonSerializable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      fullName: fullName == freezed
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
       withDecorators: withDecorators == freezed
           ? _value.withDecorators
-          : withDecorators as List<String>,
+          : withDecorators // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       implementsDecorators: implementsDecorators == freezed
           ? _value.implementsDecorators
-          : implementsDecorators as List<String>,
+          : implementsDecorators // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       decorators: decorators == freezed
           ? _value.decorators
-          : decorators as List<String>,
+          : decorators // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       cloneableProperties: cloneableProperties == freezed
           ? _value.cloneableProperties
-          : cloneableProperties as List<CloneableProperty>,
+          : cloneableProperties // ignore: cast_nullable_to_non_nullable
+              as List<CloneableProperty>,
       canOverrideToString: canOverrideToString == freezed
           ? _value.canOverrideToString
-          : canOverrideToString as bool,
-      asserts:
-          asserts == freezed ? _value.asserts : asserts as List<AssertTemplate>,
+          : canOverrideToString // ignore: cast_nullable_to_non_nullable
+              as bool,
+      asserts: asserts == freezed
+          ? _value.asserts
+          : asserts // ignore: cast_nullable_to_non_nullable
+              as List<AssertTemplate>,
     ));
   }
 }
@@ -466,38 +552,27 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
 /// @nodoc
 class _$_ConstructorDetails extends _ConstructorDetails {
   _$_ConstructorDetails(
-      {@required this.name,
-      @required this.isConst,
-      @required this.redirectedName,
-      @required this.parameters,
-      @required this.impliedProperties,
-      @required this.isDefault,
-      @required this.hasJsonSerializable,
-      @required this.fullName,
-      @required this.withDecorators,
-      @required this.implementsDecorators,
-      @required this.decorators,
-      @required this.cloneableProperties,
-      @required this.canOverrideToString,
-      @required this.asserts})
-      : assert(name != null),
-        assert(isConst != null),
-        assert(redirectedName != null),
-        assert(parameters != null),
-        assert(impliedProperties != null),
-        assert(isDefault != null),
-        assert(hasJsonSerializable != null),
-        assert(fullName != null),
-        assert(withDecorators != null),
-        assert(implementsDecorators != null),
-        assert(decorators != null),
-        assert(cloneableProperties != null),
-        assert(canOverrideToString != null),
-        assert(asserts != null),
-        super._();
+      {required this.name,
+      required this.unionValue,
+      required this.isConst,
+      required this.redirectedName,
+      required this.parameters,
+      required this.impliedProperties,
+      required this.isDefault,
+      required this.hasJsonSerializable,
+      required this.fullName,
+      required this.withDecorators,
+      required this.implementsDecorators,
+      required this.decorators,
+      required this.cloneableProperties,
+      required this.canOverrideToString,
+      required this.asserts})
+      : super._();
 
   @override
   final String name;
+  @override
+  final String unionValue;
   @override
   final bool isConst;
   @override
@@ -527,7 +602,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
 
   @override
   String toString() {
-    return 'ConstructorDetails(name: $name, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts)';
+    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts)';
   }
 
   @override
@@ -536,6 +611,9 @@ class _$_ConstructorDetails extends _ConstructorDetails {
         (other is _ConstructorDetails &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.unionValue, unionValue) ||
+                const DeepCollectionEquality()
+                    .equals(other.unionValue, unionValue)) &&
             (identical(other.isConst, isConst) ||
                 const DeepCollectionEquality()
                     .equals(other.isConst, isConst)) &&
@@ -580,6 +658,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(unionValue) ^
       const DeepCollectionEquality().hash(isConst) ^
       const DeepCollectionEquality().hash(redirectedName) ^
       const DeepCollectionEquality().hash(parameters) ^
@@ -601,70 +680,74 @@ class _$_ConstructorDetails extends _ConstructorDetails {
 }
 
 abstract class _ConstructorDetails extends ConstructorDetails {
-  _ConstructorDetails._() : super._();
   factory _ConstructorDetails(
-      {@required String name,
-      @required bool isConst,
-      @required String redirectedName,
-      @required ParametersTemplate parameters,
-      @required List<Property> impliedProperties,
-      @required bool isDefault,
-      @required bool hasJsonSerializable,
-      @required String fullName,
-      @required List<String> withDecorators,
-      @required List<String> implementsDecorators,
-      @required List<String> decorators,
-      @required List<CloneableProperty> cloneableProperties,
-      @required bool canOverrideToString,
-      @required List<AssertTemplate> asserts}) = _$_ConstructorDetails;
+      {required String name,
+      required String unionValue,
+      required bool isConst,
+      required String redirectedName,
+      required ParametersTemplate parameters,
+      required List<Property> impliedProperties,
+      required bool isDefault,
+      required bool hasJsonSerializable,
+      required String fullName,
+      required List<String> withDecorators,
+      required List<String> implementsDecorators,
+      required List<String> decorators,
+      required List<CloneableProperty> cloneableProperties,
+      required bool canOverrideToString,
+      required List<AssertTemplate> asserts}) = _$_ConstructorDetails;
+  _ConstructorDetails._() : super._();
 
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  bool get isConst;
+  String get unionValue => throw _privateConstructorUsedError;
   @override
-  String get redirectedName;
+  bool get isConst => throw _privateConstructorUsedError;
   @override
-  ParametersTemplate get parameters;
+  String get redirectedName => throw _privateConstructorUsedError;
   @override
-  List<Property> get impliedProperties;
+  ParametersTemplate get parameters => throw _privateConstructorUsedError;
   @override
-  bool get isDefault;
+  List<Property> get impliedProperties => throw _privateConstructorUsedError;
   @override
-  bool get hasJsonSerializable;
+  bool get isDefault => throw _privateConstructorUsedError;
   @override
-  String get fullName;
+  bool get hasJsonSerializable => throw _privateConstructorUsedError;
   @override
-  List<String> get withDecorators;
+  String get fullName => throw _privateConstructorUsedError;
   @override
-  List<String> get implementsDecorators;
+  List<String> get withDecorators => throw _privateConstructorUsedError;
   @override
-  List<String> get decorators;
+  List<String> get implementsDecorators => throw _privateConstructorUsedError;
   @override
-  List<CloneableProperty> get cloneableProperties;
+  List<String> get decorators => throw _privateConstructorUsedError;
   @override
-  bool get canOverrideToString;
+  List<CloneableProperty> get cloneableProperties =>
+      throw _privateConstructorUsedError;
   @override
-  List<AssertTemplate> get asserts;
+  bool get canOverrideToString => throw _privateConstructorUsedError;
+  @override
+  List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ConstructorDetailsCopyWith<_ConstructorDetails> get copyWith;
+  _$ConstructorDetailsCopyWith<_ConstructorDetails> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 class _$DataTearOff {
   const _$DataTearOff();
 
-// ignore: unused_element
   _Data call(
-      {@required String name,
-      @required bool needsJsonSerializable,
-      @required String unionKey,
-      @required List<String> concretePropertiesName,
-      @required List<ConstructorDetails> constructors,
-      @required GenericsDefinitionTemplate genericsDefinitionTemplate,
-      @required GenericsParameterTemplate genericsParameterTemplate,
-      @required bool shouldUseExtends}) {
+      {required String name,
+      required bool needsJsonSerializable,
+      required String unionKey,
+      required List<String> concretePropertiesName,
+      required List<ConstructorDetails> constructors,
+      required GenericsDefinitionTemplate genericsDefinitionTemplate,
+      required GenericsParameterTemplate genericsParameterTemplate,
+      required bool shouldUseExtends}) {
     return _Data(
       name: name,
       needsJsonSerializable: needsJsonSerializable,
@@ -679,22 +762,24 @@ class _$DataTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Data = _$DataTearOff();
 
 /// @nodoc
 mixin _$Data {
-  String get name;
-  bool get needsJsonSerializable;
-  String get unionKey;
-  List<String> get concretePropertiesName;
-  List<ConstructorDetails> get constructors;
-  GenericsDefinitionTemplate get genericsDefinitionTemplate;
-  GenericsParameterTemplate get genericsParameterTemplate;
-  bool get shouldUseExtends;
+  String get name => throw _privateConstructorUsedError;
+  bool get needsJsonSerializable => throw _privateConstructorUsedError;
+  String get unionKey => throw _privateConstructorUsedError;
+  List<String> get concretePropertiesName => throw _privateConstructorUsedError;
+  List<ConstructorDetails> get constructors =>
+      throw _privateConstructorUsedError;
+  GenericsDefinitionTemplate get genericsDefinitionTemplate =>
+      throw _privateConstructorUsedError;
+  GenericsParameterTemplate get genericsParameterTemplate =>
+      throw _privateConstructorUsedError;
+  bool get shouldUseExtends => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $DataCopyWith<Data> get copyWith;
+  $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -722,36 +807,48 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
 
   @override
   $Res call({
-    Object name = freezed,
-    Object needsJsonSerializable = freezed,
-    Object unionKey = freezed,
-    Object concretePropertiesName = freezed,
-    Object constructors = freezed,
-    Object genericsDefinitionTemplate = freezed,
-    Object genericsParameterTemplate = freezed,
-    Object shouldUseExtends = freezed,
+    Object? name = freezed,
+    Object? needsJsonSerializable = freezed,
+    Object? unionKey = freezed,
+    Object? concretePropertiesName = freezed,
+    Object? constructors = freezed,
+    Object? genericsDefinitionTemplate = freezed,
+    Object? genericsParameterTemplate = freezed,
+    Object? shouldUseExtends = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
       needsJsonSerializable: needsJsonSerializable == freezed
           ? _value.needsJsonSerializable
-          : needsJsonSerializable as bool,
-      unionKey: unionKey == freezed ? _value.unionKey : unionKey as String,
+          : needsJsonSerializable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      unionKey: unionKey == freezed
+          ? _value.unionKey
+          : unionKey // ignore: cast_nullable_to_non_nullable
+              as String,
       concretePropertiesName: concretePropertiesName == freezed
           ? _value.concretePropertiesName
-          : concretePropertiesName as List<String>,
+          : concretePropertiesName // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       constructors: constructors == freezed
           ? _value.constructors
-          : constructors as List<ConstructorDetails>,
+          : constructors // ignore: cast_nullable_to_non_nullable
+              as List<ConstructorDetails>,
       genericsDefinitionTemplate: genericsDefinitionTemplate == freezed
           ? _value.genericsDefinitionTemplate
-          : genericsDefinitionTemplate as GenericsDefinitionTemplate,
+          : genericsDefinitionTemplate // ignore: cast_nullable_to_non_nullable
+              as GenericsDefinitionTemplate,
       genericsParameterTemplate: genericsParameterTemplate == freezed
           ? _value.genericsParameterTemplate
-          : genericsParameterTemplate as GenericsParameterTemplate,
+          : genericsParameterTemplate // ignore: cast_nullable_to_non_nullable
+              as GenericsParameterTemplate,
       shouldUseExtends: shouldUseExtends == freezed
           ? _value.shouldUseExtends
-          : shouldUseExtends as bool,
+          : shouldUseExtends // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -783,36 +880,48 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object name = freezed,
-    Object needsJsonSerializable = freezed,
-    Object unionKey = freezed,
-    Object concretePropertiesName = freezed,
-    Object constructors = freezed,
-    Object genericsDefinitionTemplate = freezed,
-    Object genericsParameterTemplate = freezed,
-    Object shouldUseExtends = freezed,
+    Object? name = freezed,
+    Object? needsJsonSerializable = freezed,
+    Object? unionKey = freezed,
+    Object? concretePropertiesName = freezed,
+    Object? constructors = freezed,
+    Object? genericsDefinitionTemplate = freezed,
+    Object? genericsParameterTemplate = freezed,
+    Object? shouldUseExtends = freezed,
   }) {
     return _then(_Data(
-      name: name == freezed ? _value.name : name as String,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
       needsJsonSerializable: needsJsonSerializable == freezed
           ? _value.needsJsonSerializable
-          : needsJsonSerializable as bool,
-      unionKey: unionKey == freezed ? _value.unionKey : unionKey as String,
+          : needsJsonSerializable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      unionKey: unionKey == freezed
+          ? _value.unionKey
+          : unionKey // ignore: cast_nullable_to_non_nullable
+              as String,
       concretePropertiesName: concretePropertiesName == freezed
           ? _value.concretePropertiesName
-          : concretePropertiesName as List<String>,
+          : concretePropertiesName // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       constructors: constructors == freezed
           ? _value.constructors
-          : constructors as List<ConstructorDetails>,
+          : constructors // ignore: cast_nullable_to_non_nullable
+              as List<ConstructorDetails>,
       genericsDefinitionTemplate: genericsDefinitionTemplate == freezed
           ? _value.genericsDefinitionTemplate
-          : genericsDefinitionTemplate as GenericsDefinitionTemplate,
+          : genericsDefinitionTemplate // ignore: cast_nullable_to_non_nullable
+              as GenericsDefinitionTemplate,
       genericsParameterTemplate: genericsParameterTemplate == freezed
           ? _value.genericsParameterTemplate
-          : genericsParameterTemplate as GenericsParameterTemplate,
+          : genericsParameterTemplate // ignore: cast_nullable_to_non_nullable
+              as GenericsParameterTemplate,
       shouldUseExtends: shouldUseExtends == freezed
           ? _value.shouldUseExtends
-          : shouldUseExtends as bool,
+          : shouldUseExtends // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -820,24 +929,15 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
 /// @nodoc
 class _$_Data implements _Data {
   _$_Data(
-      {@required this.name,
-      @required this.needsJsonSerializable,
-      @required this.unionKey,
-      @required this.concretePropertiesName,
-      @required this.constructors,
-      @required this.genericsDefinitionTemplate,
-      @required this.genericsParameterTemplate,
-      @required this.shouldUseExtends})
-      : assert(name != null),
-        assert(needsJsonSerializable != null),
-        assert(unionKey != null),
-        assert(concretePropertiesName != null),
-        assert(constructors != null),
-        assert(genericsDefinitionTemplate != null),
-        assert(genericsParameterTemplate != null),
-        assert(shouldUseExtends != null),
-        assert(constructors.isNotEmpty),
-        assert(unionKey != null);
+      {required this.name,
+      required this.needsJsonSerializable,
+      required this.unionKey,
+      required this.concretePropertiesName,
+      required this.constructors,
+      required this.genericsDefinitionTemplate,
+      required this.genericsParameterTemplate,
+      required this.shouldUseExtends})
+      : assert(constructors.isNotEmpty);
 
   @override
   final String name;
@@ -914,42 +1014,44 @@ class _$_Data implements _Data {
 
 abstract class _Data implements Data {
   factory _Data(
-      {@required String name,
-      @required bool needsJsonSerializable,
-      @required String unionKey,
-      @required List<String> concretePropertiesName,
-      @required List<ConstructorDetails> constructors,
-      @required GenericsDefinitionTemplate genericsDefinitionTemplate,
-      @required GenericsParameterTemplate genericsParameterTemplate,
-      @required bool shouldUseExtends}) = _$_Data;
+      {required String name,
+      required bool needsJsonSerializable,
+      required String unionKey,
+      required List<String> concretePropertiesName,
+      required List<ConstructorDetails> constructors,
+      required GenericsDefinitionTemplate genericsDefinitionTemplate,
+      required GenericsParameterTemplate genericsParameterTemplate,
+      required bool shouldUseExtends}) = _$_Data;
 
   @override
-  String get name;
+  String get name => throw _privateConstructorUsedError;
   @override
-  bool get needsJsonSerializable;
+  bool get needsJsonSerializable => throw _privateConstructorUsedError;
   @override
-  String get unionKey;
+  String get unionKey => throw _privateConstructorUsedError;
   @override
-  List<String> get concretePropertiesName;
+  List<String> get concretePropertiesName => throw _privateConstructorUsedError;
   @override
-  List<ConstructorDetails> get constructors;
+  List<ConstructorDetails> get constructors =>
+      throw _privateConstructorUsedError;
   @override
-  GenericsDefinitionTemplate get genericsDefinitionTemplate;
+  GenericsDefinitionTemplate get genericsDefinitionTemplate =>
+      throw _privateConstructorUsedError;
   @override
-  GenericsParameterTemplate get genericsParameterTemplate;
+  GenericsParameterTemplate get genericsParameterTemplate =>
+      throw _privateConstructorUsedError;
   @override
-  bool get shouldUseExtends;
+  bool get shouldUseExtends => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DataCopyWith<_Data> get copyWith;
+  _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 class _$GlobalDataTearOff {
   const _$GlobalDataTearOff();
 
-// ignore: unused_element
-  _GlobalData call({@required bool hasJson, @required bool hasDiagnostics}) {
+  _GlobalData call({required bool hasJson, required bool hasDiagnostics}) {
     return _GlobalData(
       hasJson: hasJson,
       hasDiagnostics: hasDiagnostics,
@@ -958,16 +1060,16 @@ class _$GlobalDataTearOff {
 }
 
 /// @nodoc
-// ignore: unused_element
 const $GlobalData = _$GlobalDataTearOff();
 
 /// @nodoc
 mixin _$GlobalData {
-  bool get hasJson;
-  bool get hasDiagnostics;
+  bool get hasJson => throw _privateConstructorUsedError;
+  bool get hasDiagnostics => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $GlobalDataCopyWith<GlobalData> get copyWith;
+  $GlobalDataCopyWith<GlobalData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -988,14 +1090,18 @@ class _$GlobalDataCopyWithImpl<$Res> implements $GlobalDataCopyWith<$Res> {
 
   @override
   $Res call({
-    Object hasJson = freezed,
-    Object hasDiagnostics = freezed,
+    Object? hasJson = freezed,
+    Object? hasDiagnostics = freezed,
   }) {
     return _then(_value.copyWith(
-      hasJson: hasJson == freezed ? _value.hasJson : hasJson as bool,
+      hasJson: hasJson == freezed
+          ? _value.hasJson
+          : hasJson // ignore: cast_nullable_to_non_nullable
+              as bool,
       hasDiagnostics: hasDiagnostics == freezed
           ? _value.hasDiagnostics
-          : hasDiagnostics as bool,
+          : hasDiagnostics // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -1021,23 +1127,25 @@ class __$GlobalDataCopyWithImpl<$Res> extends _$GlobalDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object hasJson = freezed,
-    Object hasDiagnostics = freezed,
+    Object? hasJson = freezed,
+    Object? hasDiagnostics = freezed,
   }) {
     return _then(_GlobalData(
-      hasJson: hasJson == freezed ? _value.hasJson : hasJson as bool,
+      hasJson: hasJson == freezed
+          ? _value.hasJson
+          : hasJson // ignore: cast_nullable_to_non_nullable
+              as bool,
       hasDiagnostics: hasDiagnostics == freezed
           ? _value.hasDiagnostics
-          : hasDiagnostics as bool,
+          : hasDiagnostics // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
 class _$_GlobalData implements _GlobalData {
-  _$_GlobalData({@required this.hasJson, @required this.hasDiagnostics})
-      : assert(hasJson != null),
-        assert(hasDiagnostics != null);
+  _$_GlobalData({required this.hasJson, required this.hasDiagnostics});
 
   @override
   final bool hasJson;
@@ -1074,14 +1182,15 @@ class _$_GlobalData implements _GlobalData {
 }
 
 abstract class _GlobalData implements GlobalData {
-  factory _GlobalData({@required bool hasJson, @required bool hasDiagnostics}) =
+  factory _GlobalData({required bool hasJson, required bool hasDiagnostics}) =
       _$_GlobalData;
 
   @override
-  bool get hasJson;
+  bool get hasJson => throw _privateConstructorUsedError;
   @override
-  bool get hasDiagnostics;
+  bool get hasDiagnostics => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$GlobalDataCopyWith<_GlobalData> get copyWith;
+  _$GlobalDataCopyWith<_GlobalData> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -1,19 +1,15 @@
-// @dart=2.9
-
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:meta/meta.dart';
 
 import '../models.dart';
 
 class CopyWith {
   CopyWith({
-    @required this.clonedClassName,
-    @required this.genericsDefinition,
-    @required this.genericsParameter,
-    @required this.allProperties,
-    @required this.cloneableProperties,
+    required this.clonedClassName,
+    required this.genericsDefinition,
+    required this.genericsParameter,
+    required this.allProperties,
+    required this.cloneableProperties,
     this.parent,
   });
 
@@ -29,11 +25,11 @@ class CopyWith {
   final GenericsParameterTemplate genericsParameter;
   final List<Property> allProperties;
   final List<CloneableProperty> cloneableProperties;
-  final CopyWith parent;
+  final CopyWith? parent;
 
   String get interface {
     var implements = _hasSuperClass
-        ? 'implements ${parent._abstractClassName}${genericsParameter.append('\$Res')}'
+        ? 'implements ${parent!._abstractClassName}${genericsParameter.append('\$Res')}'
         : '';
     return '''
 /// @nodoc
@@ -46,7 +42,7 @@ ${_abstractDeepCopyMethods().join()}
   }
 
   bool get _hasSuperClass {
-    return parent != null && parent.allProperties.isNotEmpty;
+    return parent != null && parent!.allProperties.isNotEmpty;
   }
 
   String commonContreteImpl(
@@ -100,7 +96,7 @@ ${_deepCopyMethods().join()}
     for (final cloneableProperty in cloneableProperties) {
       var leading = '';
       if (_hasSuperClass &&
-          parent.cloneableProperties
+          parent!.cloneableProperties
               .any((c) => c.name == cloneableProperty.name)) {
         leading = '@override ';
       }
@@ -121,8 +117,8 @@ ${_deepCopyMethods().join()}
   }
 
   String _copyWithProtypeFor({
-    @required String methodName,
-    @required List<Property> properties,
+    required String methodName,
+    required List<Property> properties,
   }) {
     final parameters = properties.map((p) {
       return '${p.decorators.join()} ${p.type} ${p.name}';
@@ -171,15 +167,21 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
     return '@override $prototype $body';
   }
 
+  String _ignoreLints(String s,
+          [List<String> lints = const ['cast_nullable_to_non_nullable']]) =>
+      '''
+// ignore: ${lints.join(', ')}
+$s''';
+
   String _copyWithMethodBody({
     String accessor = '_value',
-    @required ParametersTemplate parametersTemplate,
-    @required String returnType,
+    required ParametersTemplate parametersTemplate,
+    required String returnType,
   }) {
     String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name}';
+      var ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name} ';
       if (p.type != 'Object?' && p.type != null) {
-        ternary = '$ternary as ${p.type}';
+        ternary += _ignoreLints('as ${p.type}');
       }
       return '$ternary,';
     }
@@ -193,9 +195,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
       )
       ..writeAll(
         parametersTemplate.namedParameters.map<String>(
-          (p) {
-            return '${p.name}: ${parameterToValue(p)}';
-          },
+          (p) => '${p.name}: ${parameterToValue(p)}',
         ),
       );
 
@@ -207,8 +207,8 @@ $constructorParameters
   }
 
   String _concreteCopyWithPrototype({
-    @required List<Property> properties,
-    @required String methodName,
+    required List<Property> properties,
+    required String methodName,
   }) {
     final parameters = properties.map((p) {
       return 'Object? ${p.name} = freezed,';
@@ -224,7 +224,7 @@ $constructorParameters
   String concreteImpl(ParametersTemplate parametersTemplate) {
     return '''
 /// @nodoc
-class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent._implClassName}${genericsParameter.append('\$Res')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
+class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._implClassName}${genericsParameter.append('\$Res')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
   $_implClassName($clonedClassName$genericsParameter _value, \$Res Function($clonedClassName$genericsParameter) _then)
       : super(_value, (v) => _then(v as $clonedClassName$genericsParameter));
 
@@ -241,7 +241,7 @@ ${_deepCopyMethods().join()}
     final toGenerateProperties = parent == null
         ? cloneableProperties
         : cloneableProperties.where((property) {
-            return !parent.cloneableProperties
+            return !parent!.cloneableProperties
                 .any((p) => p.name == property.name);
           });
 

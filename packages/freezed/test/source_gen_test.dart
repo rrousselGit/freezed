@@ -11,5 +11,6 @@ Future<void> main() async {
       await initializeLibraryReaderForDirectory('test', 'source_gen_src.dart');
 
   initializeBuildLogTracking();
+
   testAnnotatedElements<Freezed>(reader, FreezedGenerator({}));
 }

@@ -8,6 +8,7 @@ import 'package:matcher/matcher.dart';
 
 import 'common.dart';
 import 'integration/single_class_constructor.dart';
+import 'nullable_test.dart';
 
 class MyObject {
   final void Function() didEqual;
@@ -25,17 +26,33 @@ class MyObject {
 }
 
 Future<void> main() async {
-  final singleClassLibrary = await resolveSources(
-    {
-      'freezed|test/integration/single_class_constructor.dart': useAssetReader,
-    },
-    (r) => r.libraries.firstWhere((e) {
-      return e.source.fullName ==
-          '/freezed/test/integration/single_class_constructor.dart';
-    }),
-  );
+  Future<LibraryElement> analyze() {
+    return resolveSources(
+      {
+        'freezed|test/integration/single_class_constructor.dart':
+            useAssetReader,
+      },
+      (r) => r.libraries.firstWhere((e) {
+        return e.source.fullName ==
+            '/freezed/test/integration/single_class_constructor.dart';
+      }),
+    );
+  }
+
+  test('Regression358', () {
+    expect(
+      Regression358.withSpecificColor(),
+      Regression358(number: 2),
+    );
+    expect(
+      Regression358.withSpecificColor(count: 42),
+      Regression358(number: 42),
+    );
+  });
 
   test('documentation', () async {
+    final singleClassLibrary = await analyze();
+
     final doc = singleClassLibrary.topLevelElements
         .firstWhere((e) => e.name == 'Doc') as ClassElement;
 
@@ -54,6 +71,19 @@ Future<void> main() async {
           .having((e) => e.name, 'name', 'simple')
           .having((e) => e.documentationComment, 'doc', null),
     ]);
+  });
+
+  test('Assertion', () {
+    Assertion(1, 2);
+
+    expect(
+      () => Assertion(-1, 1),
+      throwsAssertionError,
+    );
+    expect(
+      () => Assertion(1, -1),
+      throwsAssertionError,
+    );
   });
 
   test('tear off uses const ctor if possible', () {
@@ -204,6 +234,30 @@ void main() {
 '''), throwsCompileError);
   });
 
+  test('regression 399', () async {
+    await expectLater(compile(r'''
+import 'regression399/a.dart';
+import 'regression399/b.dart';
+
+void main() {
+  Regression399A(
+    b: Regression399BImpl(),
+  );
+}
+'''), completes);
+
+    await expectLater(compile(r'''
+import 'regression399/a.dart';
+import 'regression399/b.dart';
+
+void main() {
+  Regression399A(
+    b: 42,
+  );
+}
+'''), throwsCompileError);
+  });
+
   test('does not have map', () async {
     await expectLater(compile(r'''
 import 'single_class_constructor.dart';
@@ -225,6 +279,8 @@ void main() {
   });
 
   test('has no issue', () async {
+    final singleClassLibrary = await analyze();
+
     final errorResult = await singleClassLibrary.session.getErrors(
         '/freezed/test/integration/single_class_constructor.freezed.dart');
 

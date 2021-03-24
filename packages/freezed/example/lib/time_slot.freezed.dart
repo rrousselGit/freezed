@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'time_slot.dart';
 
@@ -8,6 +8,9 @@ part of 'time_slot.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 class _$TimeSlotTearOff {
@@ -26,11 +29,12 @@ const $TimeSlot = _$TimeSlotTearOff();
 
 /// @nodoc
 mixin _$TimeSlot {
-  TimeOfDay? get start;
-  TimeOfDay? get end;
+  TimeOfDay? get start => throw _privateConstructorUsedError;
+  TimeOfDay? get end => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TimeSlotCopyWith<TimeSlot> get copyWith;
+  $TimeSlotCopyWith<TimeSlot> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -129,10 +133,11 @@ abstract class _TimeSlot implements TimeSlot {
   factory _TimeSlot({TimeOfDay? start, TimeOfDay? end}) = _$_TimeSlot;
 
   @override
-  TimeOfDay? get start;
+  TimeOfDay? get start => throw _privateConstructorUsedError;
   @override
-  TimeOfDay? get end;
+  TimeOfDay? get end => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$TimeSlotCopyWith<_TimeSlot> get copyWith;
+  _$TimeSlotCopyWith<_TimeSlot> get copyWith =>
+      throw _privateConstructorUsedError;
 }

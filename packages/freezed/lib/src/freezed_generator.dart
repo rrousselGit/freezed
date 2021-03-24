@@ -1,5 +1,4 @@
-// @dart=2.9
-
+import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -26,33 +25,36 @@ import 'templates/from_json_template.dart';
 class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   FreezedGenerator(this.configs);
 
-  final Map<String, Object> configs;
+  final Map<String, Object?> configs;
 
   @override
   Future<Data> parseElement(
     BuildStep buildStep,
     GlobalData globalData,
-    Element rawElement,
+    Element element,
   ) async {
-    if (rawElement is! ClassElement) {
+    if (element is! ClassElement) {
       throw InvalidGenerationSourceError(
-        '@freezed can only be applied on classes. Failing element: ${rawElement.name}',
-        element: rawElement,
+        '@freezed can only be applied on classes. Failing element: ${element.name}',
+        element: element,
       );
     }
-    final element = rawElement as ClassElement;
 
     final shouldUseExtends = element.constructors.any((ctor) {
       return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
     });
 
-    final configs = _parseConfig(rawElement);
+    final configs = _parseConfig(element);
 
-    _assertValidUsage(element, shouldUseExtends: shouldUseExtends);
+    _assertValidClassUsage(element);
+    for (final field in element.fields) {
+      _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
+    }
 
     final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
       buildStep,
       element,
+      configs,
     );
 
     final needsJsonSerializable = await _needsJsonSerializable(
@@ -65,7 +67,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       name: element.name,
       shouldUseExtends: shouldUseExtends,
       needsJsonSerializable: needsJsonSerializable,
-      unionKey: configs.unionKey,
+      unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
       concretePropertiesName: [
         for (final p in element.fields)
@@ -97,10 +99,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     ];
   }
 
-  void _assertValidUsage(
-    ClassElement element, {
-    @required bool shouldUseExtends,
-  }) {
+  void _assertValidClassUsage(ClassElement element) {
     // TODO: verify _$name is mixed-in
     if (element.isAbstract) {
       log.warning(
@@ -110,62 +109,71 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 ''',
       );
     }
+  }
 
-    // Invalid constructors check
-    for (final constructor in element.constructors) {
-      if (constructor.isFactory) {
-        for (final parameter in constructor.parameters) {
-          if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
-              parameter.isOptional &&
-              parameter.defaultValue == null) {
-            final ctorName =
-                constructor.isDefaultConstructor ? '' : '.${constructor.name}';
+  void _assertValidNormalConstructorUsage(
+    ConstructorElement constructor, {
+    required String className,
+  }) {
+    if (!constructor.isFactory &&
+        (constructor.name != '_' || constructor.parameters.isNotEmpty)) {
+      throw InvalidGenerationSourceError(
+        'Classes decorated with @freezed can only have a single non-factory'
+        ', without parameters, and named MyClass._()',
+        element: constructor,
+      );
+    }
+  }
 
-            throw InvalidGenerationSourceError(
-              'The parameter `${parameter.name}` of `${element.name}$ctorName` is non-nullable but is neither required nor marked with @Default',
-              element: parameter,
-            );
-          }
-        }
-      } else {
-        if (constructor.name != '_' || constructor.parameters.isNotEmpty) {
-          throw InvalidGenerationSourceError(
-            'Classes decorated with @freezed can only have a single non-factory'
-            ', without parameters, and named MyClass._()',
-            element: element,
-          );
-        }
+  void _assertValidFreezedConstructorUsage(
+    ConstructorElement constructor, {
+    required String className,
+  }) {
+    for (final parameter in constructor.parameters) {
+      if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
+          parameter.isOptional &&
+          parameter.defaultValue == null) {
+        final ctorName =
+            constructor.isDefaultConstructor ? '' : '.${constructor.name}';
+
+        throw InvalidGenerationSourceError(
+          'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
+          element: parameter,
+        );
       }
     }
+  }
 
-    for (final field in element.fields) {
-      if (field.isStatic) continue;
+  void _assertValidFieldUsage(
+    FieldElement field, {
+    required bool shouldUseExtends,
+  }) {
+    if (field.isStatic) return;
 
-      if (field.setter != null) {
-        throw InvalidGenerationSourceError(
-          'Classes decorated with @freezed cannot have mutable properties',
-          element: element,
-        );
-      }
+    if (field.setter != null) {
+      throw InvalidGenerationSourceError(
+        'Classes decorated with @freezed cannot have mutable properties',
+        element: field,
+      );
+    }
 
-      // The field is a "Type get name => "
-      if (!shouldUseExtends &&
-          field.getter != null &&
-          !field.getter.isAbstract &&
-          !field.getter.isSynthetic) {
-        throw InvalidGenerationSourceError(
-          'Getters require a MyClass._() constructor',
-          element: element,
-        );
-      }
+    // The field is a "Type get name => "
+    if (!shouldUseExtends &&
+        field.getter != null &&
+        !field.getter!.isAbstract &&
+        !field.getter!.isSynthetic) {
+      throw InvalidGenerationSourceError(
+        'Getters require a MyClass._() constructor',
+        element: field,
+      );
+    }
 
-      // The field is a "final name = "
-      if (!shouldUseExtends && field.isFinal && field.hasInitializer) {
-        throw InvalidGenerationSourceError(
-          'Final variables require a MyClass._() constructor',
-          element: element,
-        );
-      }
+    // The field is a "final name = "
+    if (!shouldUseExtends && field.isFinal && field.hasInitializer) {
+      throw InvalidGenerationSourceError(
+        'Final variables require a MyClass._() constructor',
+        element: field,
+      );
     }
   }
 
@@ -202,22 +210,36 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
     ClassElement element,
+    Freezed configs,
   ) async {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
       if (!constructor.isFactory || constructor.name == 'fromJson') {
+        _assertValidNormalConstructorUsage(
+          constructor,
+          className: element.name,
+        );
         continue;
       }
 
       final redirectedName =
           await _getConstructorRedirectedName(constructor, buildStep);
 
-      if (redirectedName == null) continue;
+      if (redirectedName == null) {
+        _assertValidNormalConstructorUsage(
+          constructor,
+          className: element.name,
+        );
+        continue;
+      }
+
+      _assertValidFreezedConstructorUsage(constructor, className: element.name);
 
       result.add(
         ConstructorDetails(
           asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
+          unionValue: constructor.unionValue(configs.unionValueCase),
           canOverrideToString: _canOverrideToString(element),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
@@ -268,13 +290,13 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   Iterable<String> _withDecorationTypes(ConstructorElement constructor) sync* {
     for (final metadata in constructor.metadata) {
       if (!metadata.isWith) continue;
-      final object = metadata.computeConstantValue();
-      var type = object.getField('type');
+      final object = metadata.computeConstantValue()!;
+      var type = object.getField('type')!;
       if (type.isNull) {
-        type = object.getField('stringType');
-        yield type.toStringValue();
+        type = object.getField('stringType')!;
+        yield type.toStringValue()!;
       } else {
-        yield type.toTypeValue().getDisplayString(withNullability: false);
+        yield type.toTypeValue()!.getDisplayString(withNullability: false);
       }
     }
   }
@@ -284,13 +306,13 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   ) sync* {
     for (final metadata in constructor.metadata) {
       if (!metadata.isImplements) continue;
-      final object = metadata.computeConstantValue();
-      var type = object.getField('type');
+      final object = metadata.computeConstantValue()!;
+      var type = object.getField('type')!;
       if (type.isNull) {
-        type = object.getField('stringType');
-        yield type.toStringValue();
+        type = object.getField('stringType')!;
+        yield type.toStringValue()!;
       } else {
-        yield type.toTypeValue().getDisplayString(withNullability: false);
+        yield type.toTypeValue()!.getDisplayString(withNullability: false);
       }
     }
   }
@@ -303,20 +325,20 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     for (final parameter in constructor.parameters) {
       final type = parseTypeSource(parameter);
 
-      final parameterTypeElement = parameter?.type?.element;
+      final parameterTypeElement = parameter.type.element;
       if (parameterTypeElement == null) continue;
       if (parameterTypeElement is! ClassElement) continue;
 
-      final classElement = parameterTypeElement as ClassElement;
+      final classElement = parameterTypeElement;
 
       if (!typeChecker.hasAnnotationOf(classElement)) continue;
 
       yield CloneableProperty(
         name: parameter.name,
-        type: type,
+        type: type!,
         nullable:
             parameter.type.nullabilitySuffix == NullabilitySuffix.question,
-        typeName: parameter.type.element.name,
+        typeName: parameter.type.element!.name!,
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType)
               .typeArguments
@@ -342,14 +364,41 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
   Freezed _parseConfig(Element element) {
     final annotation = const TypeChecker.fromRuntime(Freezed)
-        .firstAnnotationOf(element, throwOnUnresolved: false);
+        .firstAnnotationOf(element, throwOnUnresolved: false)!;
 
     final rawUnionKey = annotation.getField('unionKey')?.toStringValue() ??
         configs['union_key']?.toString() ??
         'runtimeType';
 
+    FreezedUnionCase unionValueCase;
+    final fromConfig = configs['union_value_case']?.toString();
+    switch (fromConfig) {
+      case 'none':
+        unionValueCase = FreezedUnionCase.none;
+        break;
+      case 'kebab':
+        unionValueCase = FreezedUnionCase.kebab;
+        break;
+      case 'pascal':
+        unionValueCase = FreezedUnionCase.pascal;
+        break;
+      case 'snake':
+        unionValueCase = FreezedUnionCase.snake;
+        break;
+      case null:
+        final enumIndex = annotation
+            .getField('unionValueCase')!
+            .getField('index')!
+            .toIntValue()!;
+        unionValueCase = FreezedUnionCase.values[enumIndex];
+        break;
+      default:
+        throw FallThroughError();
+    }
+
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
+      unionValueCase: unionValueCase,
     );
   }
 
@@ -357,8 +406,8 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     for (final meta
         in const TypeChecker.fromRuntime(Assert).annotationsOf(constructor)) {
       yield AssertTemplate(
-        eval: meta.getField('eval').toStringValue(),
-        message: meta.getField('message').toStringValue(),
+        eval: meta.getField('eval')!.toStringValue(),
+        message: meta.getField('message')!.toStringValue(),
       );
     }
   }
@@ -448,7 +497,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   }
 
   bool _canOverrideToString(ClassElement element) {
-    MethodElement userDefinedToString;
+    MethodElement? userDefinedToString;
     for (final type in [
       element,
       ...element.allSupertypes
@@ -474,7 +523,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       generics = '<$generics>';
     }
 
-    return constructor.name == null || constructor.name.isEmpty
+    return constructor.name.isEmpty
         ? '${element.name}$generics'
         : '${element.name}$generics.${constructor.name}';
   }
@@ -486,7 +535,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   /// ```
   ///
   /// returns `_Redirection`;
-  Future<String> _getConstructorRedirectedName(
+  Future<String?> _getConstructorRedirectedName(
     ConstructorElement constructor,
     BuildStep buildStep,
   ) async {
@@ -494,12 +543,13 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
     if (ast.endToken.stringValue != ';') return null;
 
-    var equalToken = ast.endToken;
+    Token? equalToken = ast.endToken;
     while (true) {
       if (equalToken == null ||
           equalToken.charOffset < constructor.nameOffset) {
         return null;
       }
+      if (equalToken.stringValue == '=>') return null;
       if (equalToken.stringValue == '=') {
         break;
       }
@@ -510,7 +560,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     var genericOrEndToken = equalToken;
     while (genericOrEndToken.stringValue != '<' &&
         genericOrEndToken.stringValue != ';') {
-      genericOrEndToken = genericOrEndToken.next;
+      genericOrEndToken = genericOrEndToken.next!;
     }
 
     final source = constructor.source.contents.data;
@@ -547,7 +597,31 @@ extension on Element {
   }
 }
 
-String parseLateGetterSource(String source) {
+extension on ConstructorElement {
+  String unionValue(FreezedUnionCase unionCase) {
+    final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
+        .firstAnnotationOf(this, throwOnUnresolved: false);
+    if (annotation != null) {
+      return annotation.getField('value')!.toStringValue()!;
+    }
+
+    final constructorName = isDefaultConstructor(this) ? 'default' : name;
+    switch (unionCase) {
+      case FreezedUnionCase.none:
+        return constructorName;
+      case FreezedUnionCase.kebab:
+        return kebabCase(constructorName);
+      case FreezedUnionCase.pascal:
+        return pascalCase(constructorName);
+      case FreezedUnionCase.snake:
+        return snakeCase(constructorName);
+      default:
+        throw FallThroughError();
+    }
+  }
+}
+
+String? parseLateGetterSource(String source) {
   var parenthesis = 0;
 
   for (var i = 0; i < source.length; i++) {

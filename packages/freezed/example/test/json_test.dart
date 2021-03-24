@@ -8,28 +8,28 @@ void main() {
     expect(
       const Union(42).toJson(),
       <String, dynamic>{
-        'custom-key': 'default',
+        'custom-key': 'Default',
         'value': 42,
       },
     );
 
     expect(
       const Union.loading().toJson(),
-      <String, dynamic>{'custom-key': 'loading'},
+      <String, dynamic>{'custom-key': 'Loading'},
     );
   });
 
   test('Union fromJson', () {
     expect(
       Union.fromJson(<String, dynamic>{
-        'custom-key': 'default',
+        'custom-key': 'Default',
         'value': 42,
       }),
       const Union(42),
     );
 
     expect(
-      Union.fromJson(<String, dynamic>{'custom-key': 'loading'}),
+      Union.fromJson(<String, dynamic>{'custom-key': 'Loading'}),
       const Union.loading(),
     );
   });

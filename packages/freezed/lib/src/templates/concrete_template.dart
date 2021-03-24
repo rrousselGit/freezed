@@ -1,10 +1,7 @@
-// @dart=2.9
-
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'copy_with.dart';
@@ -13,17 +10,17 @@ import 'prototypes.dart';
 
 class Concrete {
   Concrete({
-    @required this.constructor,
-    @required this.genericsDefinition,
-    @required this.genericsParameter,
-    @required this.allConstructors,
-    @required this.hasDiagnosticable,
-    @required this.shouldGenerateJson,
-    @required this.commonProperties,
-    @required this.name,
-    @required this.unionKey,
-    @required this.copyWith,
-    @required this.shouldUseExtends,
+    required this.constructor,
+    required this.genericsDefinition,
+    required this.genericsParameter,
+    required this.allConstructors,
+    required this.hasDiagnosticable,
+    required this.shouldGenerateJson,
+    required this.commonProperties,
+    required this.name,
+    required this.unionKey,
+    required this.copyWith,
+    required this.shouldUseExtends,
   });
 
   final ConstructorDetails constructor;
@@ -44,6 +41,17 @@ class Concrete {
 
   @override
   String toString() {
+    final asserts = constructor.asserts.join(',');
+    final superConstructor = _superConstructor;
+
+    var trailing = '';
+    if (asserts.isNotEmpty || superConstructor.isNotEmpty) {
+      trailing = ': ${[
+        if (asserts.isNotEmpty) asserts,
+        if (superConstructor.isNotEmpty) superConstructor
+      ].join(',')}';
+    }
+
     return '''
 ${copyWith.interface}
 
@@ -53,7 +61,7 @@ ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()'
 ${constructor.decorators.join('\n')}
 /// @nodoc
 class $concreteName$genericsDefinition $_concreteSuper {
-  $_isConst $concreteName(${constructor.parameters.asThis()})$_superConstructor;
+  $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
 
   $_concreteFromJsonConstructor
 
@@ -73,8 +81,8 @@ $_toJson
 
 
 abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter$interfaces {
-  $_privateConcreteConstructor
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
+  $_privateConcreteConstructor
 
   $_redirectedFromJsonConstructor
 
@@ -111,7 +119,7 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _superConstructor {
     if (!shouldUseExtends) return '';
-    return ': super._()';
+    return 'super._()';
   }
 
   String get _privateConcreteConstructor {
@@ -220,7 +228,7 @@ ${copyWith.abstractCopyWithGetter}
     if (!shouldGenerateJson) return '';
 
     final addRuntimeType = allConstructors.length > 1
-        ? "..['$unionKey'] = '${constructor.isDefault ? 'default' : constructor.name}'"
+        ? "..['$unionKey'] = '${constructor.unionValue}'"
         : '';
 
     return '''
@@ -370,12 +378,12 @@ int get hashCode => runtimeType.hashCode $hashCodeImpl;
 extension DefaultValue on ParameterElement {
   /// Returns the sources of the default value associated with a `@Default`,
   /// or `null` if no `@Default` are specified.
-  String get defaultValue {
+  String? get defaultValue {
     const matcher = TypeChecker.fromRuntime(Default);
 
     for (final meta in metadata) {
-      final obj = meta.computeConstantValue();
-      if (matcher.isExactlyType(obj.type)) {
+      final obj = meta.computeConstantValue()!;
+      if (matcher.isExactlyType(obj.type!)) {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
@@ -400,12 +408,12 @@ extension DefaultValue on ParameterElement {
 extension JsonKeyAnnotation on ParameterElement {
   /// Returns the `@JsonKey` annotation,
   /// or `null` if no `@JsonKey` are specified.
-  String get jsonKeyAnnotation {
+  String? get jsonKeyAnnotation {
     const matcher = TypeChecker.fromRuntime(JsonKey);
 
     for (final meta in metadata) {
-      final obj = meta.computeConstantValue();
-      if (matcher.isExactlyType(obj.type)) {
+      final obj = meta.computeConstantValue()!;
+      if (matcher.isExactlyType(obj.type!)) {
         final source = meta.toSource();
         return source;
       }
@@ -414,19 +422,19 @@ extension JsonKeyAnnotation on ParameterElement {
   }
 }
 
-String parseTypeSource(VariableElement element) {
-  var type = element.type?.getDisplayString(withNullability: true);
+String? parseTypeSource(VariableElement element) {
+  String? type = element.type.getDisplayString(withNullability: true);
 
-  if ((type == null || type.contains('dynamic')) && element.nameOffset > 0) {
+  if (type.contains('dynamic') && element.nameOffset > 0) {
     final source =
-        element.source.contents.data.substring(0, element.nameOffset);
-    if (element.type?.element != null &&
+        element.source!.contents.data.substring(0, element.nameOffset);
+    if (element.type.element != null &&
         element.type.isDynamic &&
-        element.type.element.isSynthetic) {
-      final match = RegExp(r'(\w+)\s+$').firstMatch(source);
+        element.type.element!.isSynthetic) {
+      final match = RegExp(r'(\w+\??)\s+$').firstMatch(source);
       type = match?.group(1);
-    } else if (element.type?.element != null) {
-      final match = RegExp(r'(\w+<.+?>)\s+$').firstMatch(source);
+    } else if (element.type.element != null) {
+      final match = RegExp(r'(\w+<.+?>\??)\s+$').firstMatch(source);
       type = match?.group(1) ?? type;
     }
   }

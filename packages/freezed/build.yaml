@@ -9,6 +9,7 @@ targets:
             - example
           include:
             - test/integration/*
+            - test/integration/**/*
 
 builders:
   freezed:

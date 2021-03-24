@@ -23,7 +23,7 @@ class Complex with _$Complex {
   ) = Complex0;
 
   @Assert("a == ''")
-  @Assert('b', 'b must be true')
+  @Assert('b == true', 'b must be true')
   const factory Complex.first(
     /// World
     String a, {

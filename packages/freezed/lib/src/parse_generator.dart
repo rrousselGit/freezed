@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
@@ -29,7 +27,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
         hasGeneratedGlobalCode = true;
         for (final value
             in generateForAll(globalData).map((e) => e.toString())) {
-          assert(value == null || (value.length == value.trim().length));
+          assert(value.length == value.trim().length);
           values.writeln(value);
         }
       }
@@ -38,7 +36,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
       if (data == null) continue;
       for (final value
           in generateForData(globalData, data).map((e) => e.toString())) {
-        assert(value == null || (value.length == value.trim().length));
+        assert(value.length == value.trim().length);
         values.writeln(value);
       }
     }
@@ -64,14 +62,21 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     ConstantReader annotation,
     BuildStep buildStep,
   ) async* {
-    // implemented for source_gen_test – otherwise unused
-    final globalData = parseGlobalData(element.library);
-    final data = parseElement(buildStep, globalData, element);
+    try {
+      // implemented for source_gen_test – otherwise unused
+      final globalData = parseGlobalData(element.library!);
+      final data = parseElement(buildStep, globalData, element);
 
-    if (data == null) return;
+      if (data == null) return;
 
-    for (final value in generateForData(globalData, await data)) {
-      yield value.toString();
+      for (final value in generateForData(globalData, await data)) {
+        yield value.toString();
+      }
+    } catch (err, stack) {
+      print('did catch error when generating using source_gen_test:');
+      print(err);
+      print(stack);
+      rethrow;
     }
   }
 }

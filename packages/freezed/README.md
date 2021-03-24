@@ -3,6 +3,28 @@
 
 Welcome to [Freezed], yet another code generator for unions/pattern-matching/copy.
 
+# 0.14.0 and null-safety
+
+**Important note**:
+
+From 0.14.0 and onwards, Freezed does not support non-null-safe code.
+
+If you want to keep using Freezed but cannot migrate to null-safety yet, use the version 0.12.7 instead.  
+Note that this version is no-longer maintained (so bugs found there won't be fixed).
+
+For the documentation of the version 0.12.7, refer to https://pub.dev/packages/freezed/versions/0.12.7
+
+In the scenario where you are using the version 0.12.7, but one of your dependency is using 0.14.0 or above,
+you will have a version conflict on `freezed_annotation`.
+
+In that case, you can fix the error by adding the following to your `pubspec.yaml`:
+
+```yaml
+dependency_overrides:
+  freezed: ^0.12.7
+  freezed_annotation: ^0.12.0
+```
+
 # Motivation
 
 While there are many code-generators available to help you deal with immutable objects, they usually come with a trade-off.\
@@ -45,6 +67,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 
 # Index
 
+- [0.14.0 and null-safety](#0140-and-null-safety)
 - [Motivation](#motivation)
 - [Index](#index)
 - [How to use](#how-to-use)
@@ -54,10 +77,9 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 - [The features](#the-features)
   - [The syntax](#the-syntax)
     - [Basics](#basics)
-    - [The abstract keyword](#the-abstract-keyword)
+    - [The `abstract` keyword](#the-abstract-keyword)
     - [Custom getters and methods](#custom-getters-and-methods)
     - [Asserts](#asserts)
-    - [Non-nullable](#non-nullable)
     - [Default values](#default-values)
     - [Late](#late)
     - [Constructor tear-off](#constructor-tear-off)
@@ -74,6 +96,8 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
 - [Utilities](#utilities)
+    - [Freezed extension for VSCode](#freezed-extension-for-vscode)
+    - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
 
 # How to use
 
@@ -242,6 +266,7 @@ mixin Mixin {
   int method() => 42;
 }
 ```
+
 into this:
 
 ```dart
@@ -324,98 +349,6 @@ abstract class Person with _$Person {
 }
 ```
 
-### Non-nullable
-
-[Freezed] is non-nullable ready and will promote null-safe code.\
-This is done by automatically adding `assert(my_property != null)` whenever
-non-nullable types would not compile.
-
-What this means is, using [Freezed] you have to explicitly tell when a property
-is nullable.
-
-**What [Freezed] considers to be non-nullable**:
-
-- non-optional parameters.
-- optional positional parameters using `@Default`.
-- named parameters decorated by `@required`
-
-**What [Freezed] considers to be nullable**:
-
-- optional parameters
-- parameters decorated with `@nullable`
-
-More concretely, if we define a `Person` class as such:
-
-```dart
-@freezed
-class Person with _$Person {
-  const factory Person(
-    String name, {
-    @required int age,
-    Gender gender,
-  }) = _Person;
-}
-```
-
-Then both `name` and `age` will be considered as **non-nullable**.\
-On the other hand, `gender` will be nullable.
-**nullable**.
-
-Which means you could write:
-
-```dart
-Person('Remi', age: 24);
-Person('Remi', age: 24, gender: Gender.male);
-Person('Remi', age: 24, gender: null);
-```
-
-On the other hand, writing the following will result in an exception:
-
-```dart
-Person(null) // name cannot be null
-Person('Remi') // age cannot be null
-```
-
-Then, when the time comes for to migrate to actual non-nullable types, you could
-update your code to:
-
-```dart
-@freezed
-class Person with _$Person {
-  const factory Person(
-    String name, {
-    required int age,
-    Gender? gender,
-  }) = _Person;
-}
-```
-
-**Forcing a variable to be nullable**:
-
-Sometimes, you may want to go against these rules and, for example, have a named
-required parameter that is nullable.
-
-To do so, you can decorate the desired property with `@nullable`.\
-For example, if we wanted to make `age` from our previous example nullable, then
-we would write:
-
-```dart
-@freezed
-class Person with _$Person {
-  const factory Person(
-    String name, {
-    @nullable @required int age,
-    Gender gender,
-  }) = _Person;
-}
-```
-
-This then allows us to write:
-
-```dart
-Person('Remi') // no longer throws an exception
-```
-
 ### Default values
 
 Unfortunately, Dart does not allow constructors with the syntax used by [Freezed]
@@ -444,7 +377,7 @@ a `@JsonKey(defaultValue: <something>)` for you.
 
 ### Late
 
-[Freezed] also contains early access to the upcoming `late` keyword.
+[Freezed] also supports the `late` keyword.
 
 If you are unfamiliar with that keyword, what `late` does is it allows variables
 to be lazily initialized.
@@ -465,8 +398,7 @@ late final model = Model();
 And with [Freezed], we could write:
 
 ```dart
-@late
-Model get model => Model();
+late final model = Model();
 ```
 
 ---
@@ -480,8 +412,7 @@ For example, you may write:
 abstract class Todos with _$Todos {
   factory Todos(List<Todo> todos) = _Todos;
 
-  @late
-  List<Todo> get completed => todos.where((t) => t.completed).toList();
+  late final completed = todos.where((t) => t.completed).toList();
 }
 ```
 
@@ -490,7 +421,7 @@ is more efficient.
 
 **NOTE**:
 
-Getters decorated with `@late` will also be visible on the generated `toString`.
+Getters decorated with `late` will also be visible on the generated `toString`.
 
 ### Constructor tear-off
 
@@ -1141,12 +1072,19 @@ Then [Freezed] will use each JSON object's `runtimeType` to choose the construct
 ]
 ```
 
-You can customize this key to replace `runtimeType` with something different
-using the `@Freezed` decorator:
+You can customize key and value with something different
+using `@Freezed` and `@FreezedUnionValue` decorators:
 
 ```dart
-@Freezed(unionKey: 'type')
+@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
 abstract class MyResponse with _$MyResponse {
+  const factory MyResponse(String a) = MyResponseData;
+  
+  @FreezedUnionValue('SpecialCase')
+  const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+  
+  const factory MyResponse.error(String message) = MyResponseError;
+
   // ...
 }
 ```
@@ -1156,19 +1094,32 @@ which would update the previous json to:
 ```json
 [
   {
-    "type": "default",
+    "type": "Default",
     "a": "This JSON object will use constructor MyResponse()"
   },
   {
-    "type": "special",
+    "type": "SpecialCase",
     "a": "This JSON object will use constructor MyResponse.special()",
     "b": 42
   },
   {
-    "type": "error",
+    "type": "Error",
     "message": "This JSON object will use constructor MyResponse.error()"
   }
 ]
+```
+
+If you want to customize key and value for all the classes, you can specify it inside your
+`build.yaml` file, for example:
+
+```yaml
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          union_key: type
+          union_value_case: pascal
 ```
 
 If you don't control the JSON response, then you can implement a custom converter.
@@ -1276,23 +1227,22 @@ The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed
 - Use `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac) to quickly build using `build_runner`.
 - Quickly generate a Freezed class by using `Ctrl+Shift+P` > `Generate Freezed class`.
 
-
 ### Freezed extension for IntelliJ/Android Studio
+
 You can get Live Templates for boiler plate code [here](https://github.com/Tinhorn/freezed_intellij_live_templates).
 
 Example:
 
-- type __freezedClass__ and press <kbd>Tab</kbd> to generate a freezed class
+- type **freezedClass** and press <kbd>Tab</kbd> to generate a freezed class
   ```dart
   @freezed
   abstract class Demo with _$Demo {
   }
   ```
-- type __freezedFromJson__ and press <kbd>Tab</kbd> to generate the fromJson method for json_serializable
+- type **freezedFromJson** and press <kbd>Tab</kbd> to generate the fromJson method for json_serializable
   ```dart
   factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
   ```
-
 
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
