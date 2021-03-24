@@ -173,8 +173,8 @@ ${copyWith.abstractCopyWithGetter}
   }
 
   bool _isParamPresentInAnnotation({
-    @required String annotation = '',
-    @required String param = '',
+    required String annotation,
+    required String param,
   }) {
     if (annotation.isEmpty || param.isEmpty) return false;
 
@@ -191,10 +191,10 @@ ${copyWith.abstractCopyWithGetter}
   }
 
   String _updateAnnotation({
-    @required String str = '',
-    @required String annotationName = '',
-    @required String paramName = '',
-    @required String paramValue = '',
+    required String str,
+    required String annotationName,
+    required String paramName,
+    required String paramValue,
   }) {
     if (str.isEmpty || annotationName.isEmpty || paramName.isEmpty) {
       return '';
