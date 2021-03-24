@@ -155,14 +155,14 @@ ${copyWith.abstractCopyWithGetter}
         } else {
           //add default value in json annotation if missing
           if (!_isParamPresentInAnnotation(
-            annotation: p.jsonKeyAnnotation,
+            annotation: p.jsonKeyAnnotation!,
             param: 'defaultValue',
           )) {
             pString = _updateAnnotation(
               str: pString,
               annotationName: 'JsonKey',
               paramName: 'defaultValue',
-              paramValue: p.defaultValueSource,
+              paramValue: p.defaultValueSource!,
             );
           }
         }
@@ -173,10 +173,10 @@ ${copyWith.abstractCopyWithGetter}
   }
 
   bool _isParamPresentInAnnotation({
-    @required String? annotation,
-    @required String? param,
+    @required String annotation = '',
+    @required String param = '',
   }) {
-    if ((annotation?.isEmpty ?? true) || (param?.isEmpty ?? true)) return false;
+    if (annotation.isEmpty || param.isEmpty) return false;
 
     final quotesPattern = "('''|\"\"\"|['\"])[\\s\\S]*?(?<!\\\\)\\1";
     final paramPattern = '.*$param\\s*:.*';
@@ -185,16 +185,16 @@ ${copyWith.abstractCopyWithGetter}
     final paramExp = RegExp(paramPattern, multiLine: true);
 
     final filteredAnnotation =
-        annotation?.replaceAllMapped(quotesExp, (_) => '') ?? '';
+        annotation.replaceAllMapped(quotesExp, (_) => '');
 
     return paramExp.hasMatch(filteredAnnotation);
   }
 
   String _updateAnnotation({
-    String str = '',
-    String annotationName = '',
-    String paramName = '',
-    String paramValue = '',
+    @required String str = '',
+    @required String annotationName = '',
+    @required String paramName = '',
+    @required String paramValue = '',
   }) {
     if (str.isEmpty || annotationName.isEmpty || paramName.isEmpty) {
       return '';
