@@ -56,8 +56,8 @@ class Property {
   final bool hasJsonKey;
   final String doc;
 
-  String _jsonKeyAnnotation;
-  String get jsonKeyAnnotation => _jsonKeyAnnotation;
+  String? _jsonKeyAnnotation;
+  String? get jsonKeyAnnotation => _jsonKeyAnnotation;
 
   @override
   String toString() {
