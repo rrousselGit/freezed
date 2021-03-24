@@ -170,7 +170,7 @@ ${copyWith.abstractCopyWithGetter}
   }) {
     if (annotation?.isEmpty ?? true) return false;
 
-    final quotesPattern = "('''|\"\"\"|['\"]).*?\\1";
+    final quotesPattern = "('''|\"\"\"|['\"])[\\s\\S]*?(?<!\\\\)\\1";
     final paramPattern = '.*$param\\s*:.*';
 
     final quotesExp = RegExp(quotesPattern, multiLine: true);
@@ -190,7 +190,7 @@ ${copyWith.abstractCopyWithGetter}
   }) {
     if (str?.isEmpty ?? true) return '';
 
-    final quotesPattern = "('''|\"\"\"|['\"]).*?\\1";
+    final quotesPattern = "('''|\"\"\"|['\"])[\\s\\S]*?(?<!\\\\)\\1";
     final annotationPattern = '@$annotationName\\(';
 
     final quotesExp = RegExp(quotesPattern, multiLine: true);
