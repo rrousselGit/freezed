@@ -63,7 +63,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       element,
     );
 
-    final hasGenericArgumentFactories = _hasGenericArgumentFactories(element);
+    final hasGenericArgumentFactories = configs.genericArgumentFactories ||
+        _hasGenericArgumentFactories(element);
 
     return Data(
       name: element.name,
@@ -404,9 +405,13 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         throw FallThroughError();
     }
 
+    final genericArgumentFactories =
+        annotation.getField('genericArgumentFactories')?.toBoolValue() ?? false;
+
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
       unionValueCase: unionValueCase,
+      genericArgumentFactories: genericArgumentFactories,
     );
   }
 
@@ -440,6 +445,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       hasGenericArgumentFactories: data.hasGenericArgumentFactories,
       allConstructors: data.constructors,
     );
+
+    if ('ApiResponse' == data.name) {
+      print('!!! ==> ${globalData.hasJson} !!!');
+      print('!!! ==> ${data.needsJsonSerializable} !!!');
+    }
 
     if (globalData.hasJson && data.needsJsonSerializable) {
       yield commonSerialization.fromJson;
