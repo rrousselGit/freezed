@@ -37,7 +37,7 @@ Current generators have two approaches:
 - a `copyWith`, usually implemented using `??`:
 
   ```dart
-  MyClass copyWith({ int a, String b }) {
+  MyClass copyWith({ int? a, String? b }) {
       return MyClass(a: a ?? this.a, b: b ?? this.b);
   }
   ```
@@ -153,7 +153,7 @@ part 'main.freezed.dart';
 class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
-  const factory Union.error([String message]) = ErrorDetails;
+  const factory Union.error([String? message]) = ErrorDetails;
 }
 ```
 
@@ -196,7 +196,7 @@ To do so, you will have to define a _factory constructor_ that takes these prope
 ```dart
 @freezed
 class Person with _$Person {
-  factory Person({ String name, int age }) = _Person;
+  factory Person({ String? name, int? age }) = _Person;
 }
 ```
 
@@ -225,7 +225,7 @@ Person('Remi', 24)
 ```dart
 @freezed
 class Person with _$Person {
-  const factory Person(String name, {int age}) = _Person;
+  const factory Person(String name, {int? age}) = _Person;
 }
 
 Person('Remi', age: 24)
@@ -241,7 +241,7 @@ From example, you should write:
 class Union<T> with _$Union<T> {
   const factory Union(T value) = Data<T>;
   const factory Union.loading() = Loading<T>;
-  const factory Union.error([String message]) = ErrorDetails<T>;
+  const factory Union.error([String? message]) = ErrorDetails<T>;
 }
 ```
 
@@ -290,7 +290,7 @@ But you will quickly notice that if you try to do:
 ```dart
 @freezed
 class Person with _$Person {
-  const factory Person(String name, {int age}) = _Person;
+  const factory Person(String name, {int? age}) = _Person;
 
   void method() {
     print('hello world');
@@ -310,7 +310,7 @@ To do so, we have to define a single private constructor:
 @freezed
 class Person with _$Person {
   const Person._(); // Added constructor
-  const factory Person(String name, {int age}) = _Person;
+  const factory Person(String name, {int? age}) = _Person;
 
   void method() {
     print('hello world');
@@ -326,8 +326,8 @@ construtor:
 ```dart
 class Person {
   Person({
-    String name,
-    int age,
+    String? name,
+    int? age,
   })  : assert(name.isNotEmpty, 'name cannot be empty'),
         assert(age >= 0);
 
@@ -343,8 +343,8 @@ abstract class Person with _$Person {
   @Assert('name.isNotEmpty', 'name cannot be empty')
   @Assert('age >= 0')
   factory Person({
-    String name,
-    int age,
+    String? name,
+    int? age,
   }) = _Person;
 }
 ```
@@ -454,9 +454,9 @@ Consider:
 @freezed
 class Person with _$Person {
   const factory Person({
-    String name,
-    int age,
-    Gender gender,
+    String? name,
+    int? age,
+    Gender? gender,
   }) = _Person;
 }
 ```
@@ -470,9 +470,9 @@ class Person with _$Person {
     /// The name of the user.
     ///
     /// Must not be null
-    String name,
-    int age,
-    Gender gender,
+    String? name,
+    int? age,
+    Gender? gender,
   }) = _Person;
 }
 ```
@@ -483,9 +483,9 @@ If you want to mark the property `gender` as `@deprecated`, then you can do:
 @freezed
 class Person with _$Person {
   const factory Person({
-    String name,
-    int age,
-    @deprecated Gender gender,
+    String? name,
+    int? age,
+    @deprecated Gender? gender,
   }) = _Person;
 }
 ```
@@ -521,9 +521,9 @@ As such, to deprecate `_Person`, you could do:
 class Person with _$Person {
   @deprecated
   const factory Person({
-    String name,
-    int age,
-    Gender gender,
+    String? name,
+    int? age,
+    Gender? gender,
   }) = _Person;
 }
 ```
@@ -610,7 +610,7 @@ as you would expect:
 ```dart
 @freezed
 class Person with _$Person {
-  factory Person({ String name, int age }) = _Person;
+  factory Person({ String? name, int? age }) = _Person;
 }
 
 
@@ -661,17 +661,17 @@ Consider the following classes:
 ```dart
 @freezed
 class Company with _$Company {
-  factory Company({String name, Director director}) = _Company;
+  factory Company({String? name, Director? director}) = _Company;
 }
 
 @freezed
 class Director with _$Director {
-  factory Director({String name, Assistant assistant}) = _Director;
+  factory Director({String? name, Assistant? assistant}) = _Director;
 }
 
 @freezed
 class Assistant with _$Assistant {
-  factory Assistant({String name, int age}) = _Assistant;
+  factory Assistant({String? name, int? age}) = _Assistant;
 }
 ```
 
@@ -745,7 +745,7 @@ example will result in a null exception.
 To fix it, we can use the `?.` operator and write:
 
 ```dart
-Company newCompany = company.copyWith.director?.assistant(name: 'John');
+Company? newCompany = company.copyWith.director?.assistant(name: 'John');
 ```
 
 ## Unions/Sealed classes
@@ -762,7 +762,7 @@ Defining a union/sealed class with [Freezed] is simple: write multiple construct
 class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
-  const factory Union.error([String message]) = ErrorDetails;
+  const factory Union.error([String? message]) = ErrorDetails;
 }
 ```
 
@@ -841,7 +841,7 @@ For example, with:
 class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
-  const factory Union.error([String message]) = ErrorDetails;
+  const factory Union.error([String? message]) = ErrorDetails;
 }
 ```
 
@@ -854,7 +854,7 @@ print(
   union.when(
     (int value) => 'Data $data',
     loading: () => 'loading',
-    error: (String message) => 'Error: $message',
+    error: (String? message) => 'Error: $message',
   ),
 ); // Data 42
 ```

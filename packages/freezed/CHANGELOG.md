@@ -1,3 +1,7 @@
+# 0.14.1+2
+
+Fixed examples in the README
+
 # 0.14.1+1
 
 - Fixed issues with recursive Freezed classes that could cause the parameter type to be inferred as `dynamic` (see #399)
