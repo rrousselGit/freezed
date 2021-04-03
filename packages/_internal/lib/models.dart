@@ -56,6 +56,7 @@ abstract class ConstructorDetails with _$ConstructorDetails {
     required List<CloneableProperty> cloneableProperties,
     required bool canOverrideToString,
     required List<AssertTemplate> asserts,
+    required bool hasGenericArgumentFactories,
   }) = _ConstructorDetails;
 
   ConstructorDetails._();
