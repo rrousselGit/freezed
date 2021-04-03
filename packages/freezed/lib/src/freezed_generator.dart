@@ -66,6 +66,13 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     final hasGenericArgumentFactories = configs.genericArgumentFactories ||
         _hasGenericArgumentFactories(element);
 
+    if (hasGenericArgumentFactories) {
+      _assertValidGenericArgumentFactoriesUsage(
+        element: element,
+        constructors: constructorsNeedsGeneration,
+      );
+    }
+
     return Data(
       name: element.name,
       shouldUseExtends: shouldUseExtends,
@@ -143,6 +150,28 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         throw InvalidGenerationSourceError(
           'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
           element: parameter,
+        );
+      }
+    }
+  }
+
+  void _assertValidGenericArgumentFactoriesUsage({
+    required ClassElement element,
+    required List<ConstructorDetails> constructors,
+  }) {
+    final ctorsWithoutAnnotation = constructors
+        .where((ctor) => !ctor.hasGenericArgumentFactories)
+        .toList();
+
+    if (_hasGenericArgumentFactories(element)) {
+      if (ctorsWithoutAnnotation.isNotEmpty) {
+        final ctorNames =
+            ctorsWithoutAnnotation.map((ctor) => ctor.name).join(', ');
+
+        throw InvalidGenerationSourceError(
+          'All constructors of class ${element.name} should be annotated with '
+          '`@JsonSerializable(genericArgumentFactories: true)`, '
+          'but these constructors are not annotated: $ctorNames.',
         );
       }
     }
@@ -265,6 +294,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
               _implementsDecorationTypes(constructor).toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
           hasJsonSerializable: constructor.hasJsonSerializable,
+          hasGenericArgumentFactories: constructor.hasGenericArgumentFactories,
           cloneableProperties: await _cloneableProperties(
             buildStep,
             element,
