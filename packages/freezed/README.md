@@ -1035,6 +1035,9 @@ That's it!\
 With these changes, [Freezed] will automatically ask [json_serializable] to generate all the necessary
 `fromJson`/`toJson`.
 
+**Note**:  
+Freezed will only generate a fromJson if the factory is using `=>`.
+
 ### fromJSON - classes with multiple constructors
 
 For classes with multiple constructors, [Freezed] will check the JSON response
