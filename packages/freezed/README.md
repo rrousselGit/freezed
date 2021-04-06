@@ -1033,7 +1033,10 @@ class Model with _$Model {
 
 That's it!\
 With these changes, [Freezed] will automatically ask [json_serializable] to generate all the necessary
-`fromJson`/`toJson`. This will only work if use the `=>` syntax for `fromJson`!
+`fromJson`/`toJson`.
+
+**Note**:  
+Freezed will only generate a fromJson if the factory is using `=>`.
 
 ### fromJSON - classes with multiple constructors
 
