@@ -410,6 +410,8 @@ For example, you may write:
 
 ```dart
 abstract class Todos with _$Todos {
+  // Required for adding a custom field.
+  Todos._();
   factory Todos(List<Todo> todos) = _Todos;
 
   late final completed = todos.where((t) => t.completed).toList();
