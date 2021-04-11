@@ -19,7 +19,3 @@ dependency_overrides:
     path: ../../freezed
   freezed_annotation:
     path: ../../freezed_annotation
-  json_serializable:
-    path: ../../../../../json_serializable.dart/json_serializable
-  json_annotation:
-    path: ../../../../../json_serializable.dart/json_annotation
