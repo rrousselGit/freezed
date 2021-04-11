@@ -95,7 +95,11 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
     - [Map/MaybeMap](#mapmaybemap)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
-    - [classes with generic argument factories](#classes-with-generic-argument-factories)
+    - [Customizing the serialization of union-types](#customizing-the-serialization-of-union-types)
+    - [Deserializing generic classes](#deserializing-generic-classes)
+    - [Using JsonConverter from json_serializable](#using-jsonconverter-from-json_serializable)
+    - [Using `@JsonKey` from json_serializable](#using-jsonkey-from-json_serializable)
+    - [Using `@JsonSerializable` from json_serializable](#using-jsonserializable-from-json_serializable)
 - [Utilities](#utilities)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
@@ -1076,6 +1080,8 @@ Then [Freezed] will use each JSON object's `runtimeType` to choose the construct
 ]
 ```
 
+### Customizing the serialization of union-types
+
 You can customize key and value with something different
 using `@Freezed` and `@FreezedUnionValue` decorators:
 
@@ -1083,10 +1089,10 @@ using `@Freezed` and `@FreezedUnionValue` decorators:
 @Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
 abstract class MyResponse with _$MyResponse {
   const factory MyResponse(String a) = MyResponseData;
-  
+
   @FreezedUnionValue('SpecialCase')
   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
-  
+
   const factory MyResponse.error(String message) = MyResponseError;
 
   // ...
@@ -1125,6 +1131,75 @@ targets:
           union_key: type
           union_value_case: pascal
 ```
+
+### Deserializing generic classes
+
+Freezed supports deserializing generic classes by relying on
+[json_serializable]'s `genericArgumentFactories` option.
+
+This slightly changes the syntax for `fromJson`/`toJson` to include extra
+parameters that helps with the serialization/deserialization
+
+```dart
+@Freezed(genericArgumentFactories: true)
+class Either<First, Second> with _$Either<First, Second> {
+  factory Either.first(First value) = _EitherFirst;
+  factory Either.second(Second value) = _EitherSecond;
+
+  factory Either.fromJson(
+    Map<String, Object?> json,
+    // fromJson must include one function per generic type.
+    // This function takes an Object and should convert the object into a valid value.
+    First Function(Object?) first,
+    Second Function(Object?) second,
+  ) => _$EitherFromJson(json, first, second);
+}
+```
+
+It then allows using `Either` like so:
+
+```dart
+// deserializing
+Either<int, String> intEither = Either<int, String>.fromJson(
+  json,
+  (Object? value) => int.parse(value),
+  (Object? value) => value.toString(),
+);
+
+// serializing
+Map<String, Object?> serializedEither = intEither.toJson(
+  (int value) => value,
+  (String value) => value,
+);
+```
+
+One benefit of this syntax is, our `Either` class can now be used in other serializable classes:
+
+```dart
+@freezed
+class Another with _$Another {
+  /// `Either` can be used by other Freezed classes with a fromJson/toJson.
+  factory Another(Either<int, String> value) = _Another;
+
+  factory Another.fromJson(Map<String, Object?> json) => _$AnotherFromJson(json, first, second);
+}
+```
+
+If you want to make **all** generic Freezed classes use this syntax, you can
+configure it inside the `build.yaml` configuration file:
+
+```yaml
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          generic_argument_factories: true
+```
+
+This allows using `@freezed` instead of `@Freezed(genericArgumentFactories: true)`.
+
+### Using JsonConverter from json_serializable
 
 If you don't control the JSON response, then you can implement a custom converter.
 Your custom converter will need to implement its own logic for determining which
@@ -1184,56 +1259,7 @@ class MyModel with _$MyModel {
 }
 ```
 
-### classes with generic argument factories
-
-If you annotate your constructor(s) with `@JsonSerializable(genericArgumentFactories: true)`, [Freezed] will
-require a `fromJson` and `toJson` function for each generic type. For example, the following class requires an aditional `fromJsonT` and `toJsonT`:
-
-```dart
-@freezed
-class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
-  @JsonSerializable(genericArgumentFactories: true)
-  factory GenericWithArgumentFactories(T value, String value2) =
-      _GenericWithArgumentFactories<T>;
-
-  factory GenericWithArgumentFactories.fromJson(
-          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
-      _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
-}
-```
-
-Which can be used as follows:
-
-#### fromJson
-
-```dart
-GenericWithArgumentFactories<GenericValue>.fromJson(
-  <String, Object>{
-    'value': <String, dynamic>{'value': 24},
-    'value2': 'abc',
-  },
-  (json) => GenericValue.fromJson(json as Map<String, dynamic>),
-),
-```
-
-#### toJson
-
-```dart
-GenericWithArgumentFactories(GenericValue(24), 'abc')
-    .toJson((value) => value.toJson()),
-// Will generate
-<String, Object>{
-  'value': <String, dynamic>{'value': 24},
-  'value2': 'abc',
-}
-```
-
-**Note**:  
-In order to serialize nested lists of freezed objects, you are supposed to either
-specify a `@JsonSerializable(explicitToJson: true)` or change `explicit_to_json`
-inside your `build.yaml` file ([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)).
-
-**What about `@JsonKey` annotation?**
+### Using `@JsonKey` from json_serializable
 
 All decorators passed to a constructor parameter are "copy-pasted" to the generated
 property too.\
@@ -1248,7 +1274,7 @@ class Example with _$Example {
 }
 ```
 
-**What about `@JsonSerializable` annotation?**
+### Using `@JsonSerializable` from json_serializable
 
 You can pass `@JsonSerializable` annotation by placing it over constructor e.g.:
 

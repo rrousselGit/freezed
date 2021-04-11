@@ -47,6 +47,18 @@ class Serialization {
     return 'Map<String, dynamic> toJson($_genericToJsonArgs) => throw $privConstUsedErrorVarName;';
   }
 
+  String jsonAnnotationForConstructor(
+    ConstructorDetails constructor,
+    GenericsDefinitionTemplate genericsDefinition,
+  ) {
+    if (!shouldGenerateJson || constructor.hasJsonSerializable) return '';
+
+    return hasGenericArgumentFactories &&
+            genericDefinitions.typeParameters.isNotEmpty
+        ? '@JsonSerializable(genericArgumentFactories: true)'
+        : '@JsonSerializable()';
+  }
+
   String concreteFromJsonRedirectedConstructor(
     String concreteName,
     String redirectNamme,

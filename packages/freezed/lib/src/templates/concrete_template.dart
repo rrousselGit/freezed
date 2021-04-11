@@ -60,7 +60,7 @@ ${copyWith.interface}
 
 ${copyWith.concreteImpl(constructor.parameters)}
 
-${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
+${serialization.jsonAnnotationForConstructor(constructor, genericsDefinition)}
 ${constructor.decorators.join('\n')}
 /// @nodoc
 class $concreteName$genericsDefinition $_concreteSuper {

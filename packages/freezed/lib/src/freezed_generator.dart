@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/token.dart';
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -20,6 +21,19 @@ import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
 import 'templates/serialization_template.dart';
+
+@immutable
+class FreezedConfigs {
+  FreezedConfigs({
+    required this.genericArgumentFactories,
+    required this.unionKey,
+    required this.unionValueCase,
+  });
+
+  final bool genericArgumentFactories;
+  final String unionKey;
+  final FreezedUnionCase unionValueCase;
+}
 
 @immutable
 class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
@@ -64,7 +78,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     );
 
     final hasGenericArgumentFactories = configs.genericArgumentFactories ||
-        _hasGenericArgumentFactories(element);
+        constructorsNeedsGeneration
+            .any((ctor) => ctor.hasGenericArgumentFactories);
 
     if (hasGenericArgumentFactories) {
       _assertValidGenericArgumentFactoriesUsage(
@@ -78,7 +93,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       shouldUseExtends: shouldUseExtends,
       needsJsonSerializable: needsJsonSerializable,
       hasGenericArgumentFactories: hasGenericArgumentFactories,
-      unionKey: configs.unionKey!,
+      unionKey: configs.unionKey,
       constructors: constructorsNeedsGeneration,
       concretePropertiesName: [
         for (final p in element.fields)
@@ -159,21 +174,19 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     required ClassElement element,
     required List<ConstructorDetails> constructors,
   }) {
-    final ctorsWithoutAnnotation = constructors
-        .where((ctor) => !ctor.hasGenericArgumentFactories)
-        .toList();
+    final hasAtLeastOneConstructorWithGenericArgumentFactory =
+        constructors.any((ctor) => ctor.hasGenericArgumentFactories);
 
-    if (_hasGenericArgumentFactories(element)) {
-      if (ctorsWithoutAnnotation.isNotEmpty) {
-        final ctorNames =
-            ctorsWithoutAnnotation.map((ctor) => ctor.name).join(', ');
+    final firstConstructorWithoutAnnotation = constructors
+        .firstWhereOrNull((ctor) => !ctor.hasGenericArgumentFactories);
 
-        throw InvalidGenerationSourceError(
-          'All constructors of class ${element.name} should be annotated with '
-          '`@JsonSerializable(genericArgumentFactories: true)`, '
-          'but these constructors are not annotated: $ctorNames.',
-        );
-      }
+    if (hasAtLeastOneConstructorWithGenericArgumentFactory &&
+        firstConstructorWithoutAnnotation != null) {
+      throw InvalidGenerationSourceError(
+        'All constructors of class ${element.name} should be annotated with '
+        '`@JsonSerializable(genericArgumentFactories: true)`, '
+        'but ${firstConstructorWithoutAnnotation.fullName} is not annotated.',
+      );
     }
   }
 
@@ -227,11 +240,6 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     return false;
   }
 
-  bool _hasGenericArgumentFactories(ClassElement element) {
-    return element.constructors
-        .any((constructor) => constructor.hasGenericArgumentFactories);
-  }
-
   List<Parameter> _commonParametersBetweenAllConstructors(
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) {
@@ -248,7 +256,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
     ClassElement element,
-    Freezed configs,
+    FreezedConfigs configs,
   ) async {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
@@ -401,48 +409,90 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     }
   }
 
-  Freezed _parseConfig(Element element) {
+  FreezedConfigs _parseConfig(Element element) {
     final annotation = const TypeChecker.fromRuntime(Freezed)
         .firstAnnotationOf(element, throwOnUnresolved: false)!;
 
-    final rawUnionKey = annotation.getField('unionKey')?.toStringValue() ??
-        configs['union_key']?.toString() ??
-        'runtimeType';
+    return FreezedConfigs(
+      unionKey: _parseString(
+            annotation,
+            configKey: 'union_key',
+            annotationKey: 'unionKey',
+          )?.replaceAll("'", r"\'").replaceAll(r'$', r'\$') ??
+          'runtimeType',
+      unionValueCase: _parseUnionCase(annotation),
+      genericArgumentFactories: _parseBool(
+            annotation,
+            configKey: 'generic_argument_factories',
+            annotationKey: 'genericArgumentFactories',
+          ) ??
+          false,
+    );
+  }
 
-    FreezedUnionCase unionValueCase;
-    final fromConfig = configs['union_value_case']?.toString();
-    switch (fromConfig) {
-      case 'none':
-        unionValueCase = FreezedUnionCase.none;
-        break;
-      case 'kebab':
-        unionValueCase = FreezedUnionCase.kebab;
-        break;
-      case 'pascal':
-        unionValueCase = FreezedUnionCase.pascal;
-        break;
-      case 'snake':
-        unionValueCase = FreezedUnionCase.snake;
-        break;
-      case null:
-        final enumIndex = annotation
-            .getField('unionValueCase')!
-            .getField('index')!
-            .toIntValue()!;
-        unionValueCase = FreezedUnionCase.values[enumIndex];
-        break;
-      default:
-        throw FallThroughError();
+  FreezedUnionCase _parseUnionCase(DartObject annotation) {
+    FreezedUnionCase? parseFromAnnotation() {
+      final enumIndex = annotation
+          .getField('unionValueCase')
+          ?.getField('index')
+          ?.toIntValue();
+      if (enumIndex == null) return null;
+
+      return FreezedUnionCase.values[enumIndex];
     }
 
-    final genericArgumentFactories =
-        annotation.getField('genericArgumentFactories')?.toBoolValue() ?? false;
+    FreezedUnionCase? parseFromConfigs() {
+      final configsUnionValue = configs['union_value_case']?.toString();
+      switch (configsUnionValue) {
+        case 'none':
+          return FreezedUnionCase.none;
+        case 'kebab':
+          return FreezedUnionCase.kebab;
+        case 'pascal':
+          return FreezedUnionCase.pascal;
+        case 'snake':
+          return FreezedUnionCase.snake;
+        case null:
+          return null;
+        default:
+          throw FallThroughError();
+      }
+    }
 
-    return Freezed(
-      unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
-      unionValueCase: unionValueCase,
-      genericArgumentFactories: genericArgumentFactories,
-    );
+    return parseFromAnnotation() ?? parseFromConfigs() ?? FreezedUnionCase.none;
+  }
+
+  bool? _parseBool(
+    DartObject annotation, {
+    required String configKey,
+    required String annotationKey,
+  }) {
+    bool? parseFromAnnotation() {
+      return annotation.getField(annotationKey)?.toBoolValue();
+    }
+
+    bool? parseFromConfigs() {
+      final configsUnionValue = configs[configKey]?.toString();
+      // ignore: avoid_returning_null
+      if (configsUnionValue == null) return null;
+      return configsUnionValue.toLowerCase() == 'true';
+    }
+
+    return parseFromAnnotation() ?? parseFromConfigs();
+  }
+
+  String? _parseString(
+    DartObject annotation, {
+    required String configKey,
+    required String annotationKey,
+  }) {
+    String? parseFromAnnotation() {
+      return annotation.getField(annotationKey)?.toStringValue();
+    }
+
+    String? parseFromConfigs() => configs[configKey]?.toString();
+
+    return parseFromAnnotation() ?? parseFromConfigs();
   }
 
   Iterable<AssertTemplate> _parseAsserts(ConstructorElement constructor) sync* {
