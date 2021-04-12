@@ -181,8 +181,8 @@ ${copyWith.abstractCopyWithGetter}
     final quotesPattern = "('''|\"\"\"|['\"])[\\s\\S]*?(?<!\\\\)\\1";
     final paramPattern = '.*$param\\s*:.*';
 
-    final quotesExp = RegExp(quotesPattern, multiLine: true);
-    final paramExp = RegExp(paramPattern, multiLine: true);
+    final quotesExp = RegExp(quotesPattern);
+    final paramExp = RegExp(paramPattern);
 
     final filteredAnnotation =
         annotation.replaceAllMapped(quotesExp, (_) => '');
@@ -203,8 +203,8 @@ ${copyWith.abstractCopyWithGetter}
     final quotesPattern = "('''|\"\"\"|['\"])[\\s\\S]*?(?<!\\\\)\\1";
     final annotationPattern = '@$annotationName\\(';
 
-    final quotesExp = RegExp(quotesPattern, multiLine: true);
-    final annotationExp = RegExp(annotationPattern, multiLine: true);
+    final quotesExp = RegExp(quotesPattern);
+    final annotationExp = RegExp(annotationPattern);
 
     return str.splitMapJoin(quotesExp, onNonMatch: (nm) {
       return nm.replaceFirstMapped(
