@@ -267,7 +267,8 @@ class _$ConstructorDetailsTearOff {
       required List<String> decorators,
       required List<CloneableProperty> cloneableProperties,
       required bool canOverrideToString,
-      required List<AssertTemplate> asserts}) {
+      required List<AssertTemplate> asserts,
+      required bool hasGenericArgumentFactories}) {
     return _ConstructorDetails(
       name: name,
       unionValue: unionValue,
@@ -284,6 +285,7 @@ class _$ConstructorDetailsTearOff {
       cloneableProperties: cloneableProperties,
       canOverrideToString: canOverrideToString,
       asserts: asserts,
+      hasGenericArgumentFactories: hasGenericArgumentFactories,
     );
   }
 }
@@ -309,6 +311,7 @@ mixin _$ConstructorDetails {
       throw _privateConstructorUsedError;
   bool get canOverrideToString => throw _privateConstructorUsedError;
   List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
+  bool get hasGenericArgumentFactories => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ConstructorDetailsCopyWith<ConstructorDetails> get copyWith =>
@@ -335,7 +338,8 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       List<String> decorators,
       List<CloneableProperty> cloneableProperties,
       bool canOverrideToString,
-      List<AssertTemplate> asserts});
+      List<AssertTemplate> asserts,
+      bool hasGenericArgumentFactories});
 }
 
 /// @nodoc
@@ -364,6 +368,7 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
     Object? cloneableProperties = freezed,
     Object? canOverrideToString = freezed,
     Object? asserts = freezed,
+    Object? hasGenericArgumentFactories = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -426,6 +431,10 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.asserts
           : asserts // ignore: cast_nullable_to_non_nullable
               as List<AssertTemplate>,
+      hasGenericArgumentFactories: hasGenericArgumentFactories == freezed
+          ? _value.hasGenericArgumentFactories
+          : hasGenericArgumentFactories // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -452,7 +461,8 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
       List<String> decorators,
       List<CloneableProperty> cloneableProperties,
       bool canOverrideToString,
-      List<AssertTemplate> asserts});
+      List<AssertTemplate> asserts,
+      bool hasGenericArgumentFactories});
 }
 
 /// @nodoc
@@ -483,6 +493,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
     Object? cloneableProperties = freezed,
     Object? canOverrideToString = freezed,
     Object? asserts = freezed,
+    Object? hasGenericArgumentFactories = freezed,
   }) {
     return _then(_ConstructorDetails(
       name: name == freezed
@@ -545,6 +556,10 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.asserts
           : asserts // ignore: cast_nullable_to_non_nullable
               as List<AssertTemplate>,
+      hasGenericArgumentFactories: hasGenericArgumentFactories == freezed
+          ? _value.hasGenericArgumentFactories
+          : hasGenericArgumentFactories // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -566,7 +581,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       required this.decorators,
       required this.cloneableProperties,
       required this.canOverrideToString,
-      required this.asserts})
+      required this.asserts,
+      required this.hasGenericArgumentFactories})
       : super._();
 
   @override
@@ -599,10 +615,12 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final bool canOverrideToString;
   @override
   final List<AssertTemplate> asserts;
+  @override
+  final bool hasGenericArgumentFactories;
 
   @override
   String toString() {
-    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts)';
+    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts, hasGenericArgumentFactories: $hasGenericArgumentFactories)';
   }
 
   @override
@@ -651,7 +669,13 @@ class _$_ConstructorDetails extends _ConstructorDetails {
                 const DeepCollectionEquality()
                     .equals(other.canOverrideToString, canOverrideToString)) &&
             (identical(other.asserts, asserts) ||
-                const DeepCollectionEquality().equals(other.asserts, asserts)));
+                const DeepCollectionEquality()
+                    .equals(other.asserts, asserts)) &&
+            (identical(other.hasGenericArgumentFactories,
+                    hasGenericArgumentFactories) ||
+                const DeepCollectionEquality().equals(
+                    other.hasGenericArgumentFactories,
+                    hasGenericArgumentFactories)));
   }
 
   @override
@@ -671,7 +695,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       const DeepCollectionEquality().hash(decorators) ^
       const DeepCollectionEquality().hash(cloneableProperties) ^
       const DeepCollectionEquality().hash(canOverrideToString) ^
-      const DeepCollectionEquality().hash(asserts);
+      const DeepCollectionEquality().hash(asserts) ^
+      const DeepCollectionEquality().hash(hasGenericArgumentFactories);
 
   @JsonKey(ignore: true)
   @override
@@ -695,7 +720,8 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       required List<String> decorators,
       required List<CloneableProperty> cloneableProperties,
       required bool canOverrideToString,
-      required List<AssertTemplate> asserts}) = _$_ConstructorDetails;
+      required List<AssertTemplate> asserts,
+      required bool hasGenericArgumentFactories}) = _$_ConstructorDetails;
   _ConstructorDetails._() : super._();
 
   @override
@@ -730,6 +756,8 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   @override
   List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
   @override
+  bool get hasGenericArgumentFactories => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
   _$ConstructorDetailsCopyWith<_ConstructorDetails> get copyWith =>
       throw _privateConstructorUsedError;
@@ -742,6 +770,7 @@ class _$DataTearOff {
   _Data call(
       {required String name,
       required bool needsJsonSerializable,
+      required bool hasGenericArgumentFactories,
       required String unionKey,
       required List<String> concretePropertiesName,
       required List<ConstructorDetails> constructors,
@@ -751,6 +780,7 @@ class _$DataTearOff {
     return _Data(
       name: name,
       needsJsonSerializable: needsJsonSerializable,
+      hasGenericArgumentFactories: hasGenericArgumentFactories,
       unionKey: unionKey,
       concretePropertiesName: concretePropertiesName,
       constructors: constructors,
@@ -768,6 +798,7 @@ const $Data = _$DataTearOff();
 mixin _$Data {
   String get name => throw _privateConstructorUsedError;
   bool get needsJsonSerializable => throw _privateConstructorUsedError;
+  bool get hasGenericArgumentFactories => throw _privateConstructorUsedError;
   String get unionKey => throw _privateConstructorUsedError;
   List<String> get concretePropertiesName => throw _privateConstructorUsedError;
   List<ConstructorDetails> get constructors =>
@@ -789,6 +820,7 @@ abstract class $DataCopyWith<$Res> {
   $Res call(
       {String name,
       bool needsJsonSerializable,
+      bool hasGenericArgumentFactories,
       String unionKey,
       List<String> concretePropertiesName,
       List<ConstructorDetails> constructors,
@@ -809,6 +841,7 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
   $Res call({
     Object? name = freezed,
     Object? needsJsonSerializable = freezed,
+    Object? hasGenericArgumentFactories = freezed,
     Object? unionKey = freezed,
     Object? concretePropertiesName = freezed,
     Object? constructors = freezed,
@@ -824,6 +857,10 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
       needsJsonSerializable: needsJsonSerializable == freezed
           ? _value.needsJsonSerializable
           : needsJsonSerializable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasGenericArgumentFactories: hasGenericArgumentFactories == freezed
+          ? _value.hasGenericArgumentFactories
+          : hasGenericArgumentFactories // ignore: cast_nullable_to_non_nullable
               as bool,
       unionKey: unionKey == freezed
           ? _value.unionKey
@@ -861,6 +898,7 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
   $Res call(
       {String name,
       bool needsJsonSerializable,
+      bool hasGenericArgumentFactories,
       String unionKey,
       List<String> concretePropertiesName,
       List<ConstructorDetails> constructors,
@@ -882,6 +920,7 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
   $Res call({
     Object? name = freezed,
     Object? needsJsonSerializable = freezed,
+    Object? hasGenericArgumentFactories = freezed,
     Object? unionKey = freezed,
     Object? concretePropertiesName = freezed,
     Object? constructors = freezed,
@@ -897,6 +936,10 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
       needsJsonSerializable: needsJsonSerializable == freezed
           ? _value.needsJsonSerializable
           : needsJsonSerializable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasGenericArgumentFactories: hasGenericArgumentFactories == freezed
+          ? _value.hasGenericArgumentFactories
+          : hasGenericArgumentFactories // ignore: cast_nullable_to_non_nullable
               as bool,
       unionKey: unionKey == freezed
           ? _value.unionKey
@@ -931,6 +974,7 @@ class _$_Data implements _Data {
   _$_Data(
       {required this.name,
       required this.needsJsonSerializable,
+      required this.hasGenericArgumentFactories,
       required this.unionKey,
       required this.concretePropertiesName,
       required this.constructors,
@@ -943,6 +987,8 @@ class _$_Data implements _Data {
   final String name;
   @override
   final bool needsJsonSerializable;
+  @override
+  final bool hasGenericArgumentFactories;
   @override
   final String unionKey;
   @override
@@ -958,7 +1004,7 @@ class _$_Data implements _Data {
 
   @override
   String toString() {
-    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
+    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, hasGenericArgumentFactories: $hasGenericArgumentFactories, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
   }
 
   @override
@@ -970,6 +1016,11 @@ class _$_Data implements _Data {
             (identical(other.needsJsonSerializable, needsJsonSerializable) ||
                 const DeepCollectionEquality().equals(
                     other.needsJsonSerializable, needsJsonSerializable)) &&
+            (identical(other.hasGenericArgumentFactories,
+                    hasGenericArgumentFactories) ||
+                const DeepCollectionEquality().equals(
+                    other.hasGenericArgumentFactories,
+                    hasGenericArgumentFactories)) &&
             (identical(other.unionKey, unionKey) ||
                 const DeepCollectionEquality()
                     .equals(other.unionKey, unionKey)) &&
@@ -999,6 +1050,7 @@ class _$_Data implements _Data {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(needsJsonSerializable) ^
+      const DeepCollectionEquality().hash(hasGenericArgumentFactories) ^
       const DeepCollectionEquality().hash(unionKey) ^
       const DeepCollectionEquality().hash(concretePropertiesName) ^
       const DeepCollectionEquality().hash(constructors) ^
@@ -1016,6 +1068,7 @@ abstract class _Data implements Data {
   factory _Data(
       {required String name,
       required bool needsJsonSerializable,
+      required bool hasGenericArgumentFactories,
       required String unionKey,
       required List<String> concretePropertiesName,
       required List<ConstructorDetails> constructors,
@@ -1027,6 +1080,8 @@ abstract class _Data implements Data {
   String get name => throw _privateConstructorUsedError;
   @override
   bool get needsJsonSerializable => throw _privateConstructorUsedError;
+  @override
+  bool get hasGenericArgumentFactories => throw _privateConstructorUsedError;
   @override
   String get unionKey => throw _privateConstructorUsedError;
   @override

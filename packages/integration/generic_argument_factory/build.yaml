@@ -1,0 +1,8 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          union_key: type
+          union_value_case: pascal
+          generic_argument_factories: true

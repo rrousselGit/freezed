@@ -9,7 +9,8 @@ class Freezed {
   /// {@template freezed_annotation.freezed}
   const Freezed({
     this.unionKey,
-    this.unionValueCase = FreezedUnionCase.none,
+    this.unionValueCase,
+    this.genericArgumentFactories,
   });
 
   /// Determines what key should be used to de/serialize union types.
@@ -91,7 +92,10 @@ class Freezed {
   ///
   /// You can also use [FreezedUnionValue] annotation to customize single
   /// union case.
-  final FreezedUnionCase unionValueCase;
+  final FreezedUnionCase? unionValueCase;
+
+  /// Indicates that fromJson and toJson parameters should be generated for generic types
+  final bool? genericArgumentFactories;
 }
 
 /// An annotation for the `freezed` package.

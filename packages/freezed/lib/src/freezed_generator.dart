@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/token.dart';
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -19,7 +20,20 @@ import 'models.dart';
 import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
-import 'templates/from_json_template.dart';
+import 'templates/serialization_template.dart';
+
+@immutable
+class FreezedConfigs {
+  FreezedConfigs({
+    required this.genericArgumentFactories,
+    required this.unionKey,
+    required this.unionValueCase,
+  });
+
+  final bool genericArgumentFactories;
+  final String unionKey;
+  final FreezedUnionCase unionValueCase;
+}
 
 @immutable
 class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
@@ -63,11 +77,23 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       element,
     );
 
+    final hasGenericArgumentFactories = configs.genericArgumentFactories ||
+        constructorsNeedsGeneration
+            .any((ctor) => ctor.hasGenericArgumentFactories);
+
+    if (hasGenericArgumentFactories) {
+      _assertValidGenericArgumentFactoriesUsage(
+        element: element,
+        constructors: constructorsNeedsGeneration,
+      );
+    }
+
     return Data(
       name: element.name,
       shouldUseExtends: shouldUseExtends,
       needsJsonSerializable: needsJsonSerializable,
-      unionKey: configs.unionKey!,
+      hasGenericArgumentFactories: hasGenericArgumentFactories,
+      unionKey: configs.unionKey,
       constructors: constructorsNeedsGeneration,
       concretePropertiesName: [
         for (final p in element.fields)
@@ -144,6 +170,26 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     }
   }
 
+  void _assertValidGenericArgumentFactoriesUsage({
+    required ClassElement element,
+    required List<ConstructorDetails> constructors,
+  }) {
+    final hasAtLeastOneConstructorWithGenericArgumentFactory =
+        constructors.any((ctor) => ctor.hasGenericArgumentFactories);
+
+    final firstConstructorWithoutAnnotation = constructors
+        .firstWhereOrNull((ctor) => !ctor.hasGenericArgumentFactories);
+
+    if (hasAtLeastOneConstructorWithGenericArgumentFactory &&
+        firstConstructorWithoutAnnotation != null) {
+      throw InvalidGenerationSourceError(
+        'All constructors of class ${element.name} should be annotated with '
+        '`@JsonSerializable(genericArgumentFactories: true)`, '
+        'but ${firstConstructorWithoutAnnotation.fullName} is not annotated.',
+      );
+    }
+  }
+
   void _assertValidFieldUsage(
     FieldElement field, {
     required bool shouldUseExtends,
@@ -210,7 +256,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
     ClassElement element,
-    Freezed configs,
+    FreezedConfigs configs,
   ) async {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
@@ -256,6 +302,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
               _implementsDecorationTypes(constructor).toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
           hasJsonSerializable: constructor.hasJsonSerializable,
+          hasGenericArgumentFactories: constructor.hasGenericArgumentFactories,
           cloneableProperties: await _cloneableProperties(
             buildStep,
             element,
@@ -362,44 +409,90 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     }
   }
 
-  Freezed _parseConfig(Element element) {
+  FreezedConfigs _parseConfig(Element element) {
     final annotation = const TypeChecker.fromRuntime(Freezed)
         .firstAnnotationOf(element, throwOnUnresolved: false)!;
 
-    final rawUnionKey = annotation.getField('unionKey')?.toStringValue() ??
-        configs['union_key']?.toString() ??
-        'runtimeType';
+    return FreezedConfigs(
+      unionKey: _parseString(
+            annotation,
+            configKey: 'union_key',
+            annotationKey: 'unionKey',
+          )?.replaceAll("'", r"\'").replaceAll(r'$', r'\$') ??
+          'runtimeType',
+      unionValueCase: _parseUnionCase(annotation),
+      genericArgumentFactories: _parseBool(
+            annotation,
+            configKey: 'generic_argument_factories',
+            annotationKey: 'genericArgumentFactories',
+          ) ??
+          false,
+    );
+  }
 
-    FreezedUnionCase unionValueCase;
-    final fromConfig = configs['union_value_case']?.toString();
-    switch (fromConfig) {
-      case 'none':
-        unionValueCase = FreezedUnionCase.none;
-        break;
-      case 'kebab':
-        unionValueCase = FreezedUnionCase.kebab;
-        break;
-      case 'pascal':
-        unionValueCase = FreezedUnionCase.pascal;
-        break;
-      case 'snake':
-        unionValueCase = FreezedUnionCase.snake;
-        break;
-      case null:
-        final enumIndex = annotation
-            .getField('unionValueCase')!
-            .getField('index')!
-            .toIntValue()!;
-        unionValueCase = FreezedUnionCase.values[enumIndex];
-        break;
-      default:
-        throw FallThroughError();
+  FreezedUnionCase _parseUnionCase(DartObject annotation) {
+    FreezedUnionCase? parseFromAnnotation() {
+      final enumIndex = annotation
+          .getField('unionValueCase')
+          ?.getField('index')
+          ?.toIntValue();
+      if (enumIndex == null) return null;
+
+      return FreezedUnionCase.values[enumIndex];
     }
 
-    return Freezed(
-      unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
-      unionValueCase: unionValueCase,
-    );
+    FreezedUnionCase? parseFromConfigs() {
+      final configsUnionValue = configs['union_value_case']?.toString();
+      switch (configsUnionValue) {
+        case 'none':
+          return FreezedUnionCase.none;
+        case 'kebab':
+          return FreezedUnionCase.kebab;
+        case 'pascal':
+          return FreezedUnionCase.pascal;
+        case 'snake':
+          return FreezedUnionCase.snake;
+        case null:
+          return null;
+        default:
+          throw FallThroughError();
+      }
+    }
+
+    return parseFromAnnotation() ?? parseFromConfigs() ?? FreezedUnionCase.none;
+  }
+
+  bool? _parseBool(
+    DartObject annotation, {
+    required String configKey,
+    required String annotationKey,
+  }) {
+    bool? parseFromAnnotation() {
+      return annotation.getField(annotationKey)?.toBoolValue();
+    }
+
+    bool? parseFromConfigs() {
+      final configsUnionValue = configs[configKey]?.toString();
+      // ignore: avoid_returning_null
+      if (configsUnionValue == null) return null;
+      return configsUnionValue.toLowerCase() == 'true';
+    }
+
+    return parseFromAnnotation() ?? parseFromConfigs();
+  }
+
+  String? _parseString(
+    DartObject annotation, {
+    required String configKey,
+    required String annotationKey,
+  }) {
+    String? parseFromAnnotation() {
+      return annotation.getField(annotationKey)?.toStringValue();
+    }
+
+    String? parseFromConfigs() => configs[configKey]?.toString();
+
+    return parseFromAnnotation() ?? parseFromConfigs();
   }
 
   Iterable<AssertTemplate> _parseAsserts(ConstructorElement constructor) sync* {
@@ -423,14 +516,23 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     GlobalData globalData,
     Data data,
   ) sync* {
+    final commonSerialization = Serialization(
+      name: data.name,
+      unionKey: data.unionKey,
+      genericParameters: data.genericsParameterTemplate,
+      genericDefinitions: data.genericsDefinitionTemplate,
+      shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
+      hasGenericArgumentFactories: data.hasGenericArgumentFactories,
+      allConstructors: data.constructors,
+    );
+
+    if ('ApiResponse' == data.name) {
+      print('!!! ==> ${globalData.hasJson} !!!');
+      print('!!! ==> ${data.needsJsonSerializable} !!!');
+    }
+
     if (globalData.hasJson && data.needsJsonSerializable) {
-      yield FromJson(
-        name: data.name,
-        unionKey: data.unionKey,
-        constructors: data.constructors,
-        genericParameters: data.genericsParameterTemplate,
-        genericDefinitions: data.genericsDefinitionTemplate,
-      );
+      yield commonSerialization.fromJson;
     }
 
     yield TearOff(
@@ -439,6 +541,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       genericsParameter: data.genericsParameterTemplate,
       genericsDefinition: data.genericsDefinitionTemplate,
       allConstructors: data.constructors,
+      serialization: commonSerialization,
     );
 
     final commonProperties = _commonProperties(data.constructors);
@@ -458,10 +561,10 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       name: data.name,
       genericsDefinition: data.genericsDefinitionTemplate,
       genericsParameter: data.genericsParameterTemplate,
-      shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
       abstractProperties: commonProperties.asGetters(),
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
+      serialization: commonSerialization,
     );
 
     for (final constructor in data.constructors) {
@@ -484,6 +587,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           allProperties: constructor.impliedProperties,
           parent: commonCopyWith,
         ),
+        serialization: commonSerialization,
       );
     }
   }
@@ -594,6 +698,15 @@ extension on Element {
       this,
       throwOnUnresolved: false,
     );
+  }
+
+  bool get hasGenericArgumentFactories {
+    final annotation =
+        const TypeChecker.fromRuntime(JsonSerializable).firstAnnotationOf(this);
+
+    final value =
+        annotation?.getField('genericArgumentFactories')?.toBoolValue();
+    return value ?? false;
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
+import 'package:freezed/src/templates/serialization_template.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -21,6 +22,7 @@ class Concrete {
     required this.unionKey,
     required this.copyWith,
     required this.shouldUseExtends,
+    required this.serialization,
   });
 
   final ConstructorDetails constructor;
@@ -34,6 +36,7 @@ class Concrete {
   final String unionKey;
   final CopyWith copyWith;
   final bool shouldUseExtends;
+  final Serialization serialization;
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
@@ -57,13 +60,13 @@ ${copyWith.interface}
 
 ${copyWith.concreteImpl(constructor.parameters)}
 
-${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
+${serialization.jsonAnnotationForConstructor(constructor, genericsDefinition)}
 ${constructor.decorators.join('\n')}
 /// @nodoc
 class $concreteName$genericsDefinition $_concreteSuper {
   $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
 
-  $_concreteFromJsonConstructor
+  ${serialization.concreteFromJsonConstructor(concreteName)}
 
 $_properties
 
@@ -76,7 +79,7 @@ $_when
 $_maybeWhen
 $_map
 $_maybeMap
-$_toJson
+${serialization.concreteToJson(constructor, concreteName)}
 }
 
 
@@ -84,7 +87,7 @@ abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
   $_privateConcreteConstructor
 
-  $_redirectedFromJsonConstructor
+  ${serialization.concreteFromJsonRedirectedConstructor(concreteName, constructor.redirectedName)}
 
 $_abstractProperties
 ${copyWith.abstractCopyWithGetter}
@@ -158,30 +161,6 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _isConst {
     return constructor.isConst ? 'const' : '';
-  }
-
-  String get _redirectedFromJsonConstructor {
-    if (!shouldGenerateJson) return '';
-    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName$genericsParameter.fromJson;';
-  }
-
-  String get _concreteFromJsonConstructor {
-    if (!shouldGenerateJson) return '';
-    return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${concreteName}FromJson(json);';
-  }
-
-  String get _toJson {
-    if (!shouldGenerateJson) return '';
-
-    final addRuntimeType = allConstructors.length > 1
-        ? "..['$unionKey'] = '${constructor.unionValue}'"
-        : '';
-
-    return '''
-@override
-Map<String, dynamic> toJson() {
-  return _\$${concreteName}ToJson(this)$addRuntimeType;
-}''';
   }
 
   String get _debugFillProperties {

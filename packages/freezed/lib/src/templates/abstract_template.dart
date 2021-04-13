@@ -1,4 +1,5 @@
 import 'package:freezed/src/models.dart';
+import 'package:freezed/src/templates/serialization_template.dart';
 
 import 'copy_with.dart';
 import 'parameter_template.dart';
@@ -11,9 +12,9 @@ class Abstract {
     required this.genericsParameter,
     required this.genericsDefinition,
     required this.abstractProperties,
-    required this.shouldGenerateJson,
     required this.allConstructors,
     required this.copyWith,
+    required this.serialization,
   });
 
   final String name;
@@ -21,8 +22,8 @@ class Abstract {
   final GenericsParameterTemplate genericsParameter;
   final GenericsDefinitionTemplate genericsDefinition;
   final List<ConstructorDetails> allConstructors;
-  final bool shouldGenerateJson;
   final CopyWith copyWith;
+  final Serialization serialization;
 
   @override
   String toString() {
@@ -36,7 +37,7 @@ $_when
 $_maybeWhen
 $_map
 $_maybeMap
-$_toJson
+${serialization.abstractToJson}
 ${copyWith.abstractCopyWithGetter}
 }
 
@@ -44,11 +45,6 @@ ${copyWith.interface}
 
 ${copyWith.commonContreteImpl(abstractProperties)}
 ''';
-  }
-
-  String get _toJson {
-    if (!shouldGenerateJson) return '';
-    return 'Map<String, dynamic> toJson() => throw $privConstUsedErrorVarName;';
   }
 
   String get _when {

@@ -56,6 +56,7 @@ abstract class ConstructorDetails with _$ConstructorDetails {
     required List<CloneableProperty> cloneableProperties,
     required bool canOverrideToString,
     required List<AssertTemplate> asserts,
+    required bool hasGenericArgumentFactories,
   }) = _ConstructorDetails;
 
   ConstructorDetails._();
@@ -69,6 +70,7 @@ abstract class Data with _$Data {
   factory Data({
     required String name,
     required bool needsJsonSerializable,
+    required bool hasGenericArgumentFactories,
     required String unionKey,
     required List<String> concretePropertiesName,
     required List<ConstructorDetails> constructors,
