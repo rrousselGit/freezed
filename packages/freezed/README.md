@@ -1033,6 +1033,13 @@ class Model with _$Model {
 }
 ```
 
+Don't forget to add `json_serializable` to your `pubspec.yaml`:
+
+```yaml
+dev_dependencies:
+  json_serializable:
+```
+
 That's it!\
 With these changes, [Freezed] will automatically ask [json_serializable] to generate all the necessary
 `fromJson`/`toJson`.
