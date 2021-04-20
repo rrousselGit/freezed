@@ -371,8 +371,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         configs['union_key']?.toString() ??
         'runtimeType';
 
-    final fallbackUnion = annotation.getField('fallbackUnion')?.toStringValue() ??
-        configs['fallback_union']?.toString();
+    final fallbackUnion =
+        annotation.getField('fallbackUnion')?.toStringValue() ??
+            configs['fallback_union']?.toString();
 
     FreezedUnionCase unionValueCase;
     final fromConfig = configs['union_value_case']?.toString();

@@ -7,11 +7,10 @@ export 'package:meta/meta.dart';
 /// {@endtemplate}
 class Freezed {
   /// {@template freezed_annotation.freezed}
-  const Freezed({
-    this.unionKey,
-    this.unionValueCase = FreezedUnionCase.none,
-    this.fallbackUnion
-  });
+  const Freezed(
+      {this.unionKey,
+      this.unionValueCase = FreezedUnionCase.none,
+      this.fallbackUnion});
 
   /// Determines what key should be used to de/serialize union types.
   ///
@@ -99,7 +98,7 @@ class Freezed {
   ///
   /// By default, Freezed generates code that will throw FallThroughError when type
   /// is not matched through constructor name or using [FreezedUnionValue].
-  /// You can override this behavior by providing it's name or 'default' to use 
+  /// You can override this behavior by providing it's name or `default` to use
   /// default constructor
   ///
   /// ```dart

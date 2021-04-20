@@ -115,7 +115,8 @@ class UnionFallback with _$UnionFallback {
 class UnionDefaultFallback with _$UnionDefaultFallback {
   const factory UnionDefaultFallback(int a) = _UnionDefaultFallback;
   const factory UnionDefaultFallback.first(int a) = _UnionDefaultFallbackFirst;
-  const factory UnionDefaultFallback.second(int a) = _UnionDefaultFallbackSecond;
+  const factory UnionDefaultFallback.second(int a) =
+      _UnionDefaultFallbackSecond;
 
   factory UnionDefaultFallback.fromJson(Map<String, dynamic> json) =>
       _$UnionDefaultFallbackFromJson(json);
