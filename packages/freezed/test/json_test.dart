@@ -120,6 +120,46 @@ Future<void> main() async {
     });
   });
 
+  group('FreezedUnionFallback', () {
+    test('fromJson', () {
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
+        UnionFallback.first(42),
+      );
+
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'second',
+          'a': 21,
+        }),
+        UnionFallback.second(21),
+      );
+
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'third',
+          'a': 10,
+        }),
+        UnionFallback.fallback(10),
+      );
+    });
+
+    test('toJson', () {
+      expect(
+        CustomUnionValue.first(42).toJson(),
+        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+      );
+
+      expect(
+        CustomUnionValue.second(21).toJson(),
+        <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
+      );
+    });
+  });
+
   group('Freezed.unionValueCase', () {
     test('FreezedUnionCase.pascal fromJson', () {
       expect(

@@ -274,6 +274,38 @@ class FreezedUnionValue {
   final String value;
 }
 
+/// An annotation used to specify fallback constructor used when union type is not matched
+///
+/// By default, Freezed generates code that will throw FallThroughError when type
+/// is not matched through constructor name or using [FreezedUnionValue].
+/// You can override this behavior by annotating constructor and using it as a fallback one
+///
+/// ```dart
+/// @freezed
+/// class MyResponse with _$MyResponse {
+///   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+///
+///   @FreezedUnionFallback()
+///   const factory MyResponse.fallback(String a, int b) = MyResponseFallback;
+///
+///   factory MyResponse.fromJson(Map<String, dynamic> json) => _$MyResponseFromJson(json);
+/// }
+/// ```
+///
+/// The constructor will be chosen as follows:
+///
+/// ```json
+/// [
+///   {
+///     "runtimeType": "default",
+///     "a": "This JSON object will use constructor MyResponse()"
+///   },
+///   {
+///     "runtimeType": "SpecialCase",
+///     "a": "This JSON object will use constructor MyResponse.special()",
+///     "b": 42
+///   }
+/// ]
 class FreezedUnionFallback {
   const FreezedUnionFallback();
 }
