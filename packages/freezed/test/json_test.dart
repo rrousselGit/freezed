@@ -145,18 +145,13 @@ Future<void> main() async {
         }),
         UnionFallback.fallback(10),
       );
-    });
-
-    test('toJson', () {
-      expect(
-        CustomUnionValue.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
-      );
 
       expect(
-        CustomUnionValue.second(21).toJson(),
-        <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
-      );
+          () => CustomUnionValue.fromJson(<String, dynamic>{
+                'runtimeType': 'third',
+                'a': 10,
+              }),
+          throwsA(const TypeMatcher<FallThroughError>()));
     });
   });
 

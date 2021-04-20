@@ -297,12 +297,13 @@ class FreezedUnionValue {
 /// ```json
 /// [
 ///   {
-///     "runtimeType": "default",
-///     "a": "This JSON object will use constructor MyResponse()"
+///     "runtimeType": "special",
+///     "a": "This JSON object will use constructor MyResponse.special()"
+///     "b": 42
 ///   },
 ///   {
-///     "runtimeType": "SpecialCase",
-///     "a": "This JSON object will use constructor MyResponse.special()",
+///     "runtimeType": "surprise",
+///     "a": "This JSON object will use constructor MyResponse.fallback()",
 ///     "b": 42
 ///   }
 /// ]
