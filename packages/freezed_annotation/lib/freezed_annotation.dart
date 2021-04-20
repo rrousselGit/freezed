@@ -274,6 +274,10 @@ class FreezedUnionValue {
   final String value;
 }
 
+class FreezedUnionFallback {
+  const FreezedUnionFallback();
+}
+
 /// Options for automatic union values renaming.
 enum FreezedUnionCase {
   /// Use the name without changes.

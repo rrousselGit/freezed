@@ -255,6 +255,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           implementsDecorators:
               _implementsDecorationTypes(constructor).toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
+          isFallback: constructor.isUnionFallback,
           hasJsonSerializable: constructor.hasJsonSerializable,
           cloneableProperties: await _cloneableProperties(
             buildStep,
@@ -598,6 +599,13 @@ extension on Element {
 }
 
 extension on ConstructorElement {
+  bool get isUnionFallback {
+    return const TypeChecker.fromRuntime(FreezedUnionFallback).hasAnnotationOf(
+      this,
+      throwOnUnresolved: false,
+    );
+  }
+
   String unionValue(FreezedUnionCase unionCase) {
     final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
         .firstAnnotationOf(this, throwOnUnresolved: false);

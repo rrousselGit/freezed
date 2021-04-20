@@ -25,7 +25,9 @@ class FromJson {
       content =
           'return ${constructors.first.redirectedName}$genericParameters.fromJson(json);';
     } else {
-      final cases = constructors.map((constructor) {
+      final cases = constructors
+          .where((element) => !element.isFallback)
+          .map((constructor) {
         final caseName = constructor.unionValue;
         final concreteName = constructor.redirectedName;
 
@@ -35,11 +37,19 @@ class FromJson {
         ''';
       }).join();
 
+      var defaultCase = 'throw FallThroughError();';
+      if (constructors.any((element) => element.isFallback)) {
+        final fallbackConstructor =
+            constructors.singleWhere((element) => element.isFallback);
+        defaultCase =
+            'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(json);';
+      }
+
       content = '''
         switch (json['$unionKey'] as String) {
           $cases
           default:
-            throw FallThroughError();
+            $defaultCase
         }
       ''';
     }
