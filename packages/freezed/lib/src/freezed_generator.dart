@@ -255,7 +255,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           implementsDecorators:
               _implementsDecorationTypes(constructor).toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
-          isFallback: constructor.isUnionFallbackConstructor,
+          isFallback: constructor.isFallbackUnion(configs.fallbackUnion),
           hasJsonSerializable: constructor.hasJsonSerializable,
           cloneableProperties: await _cloneableProperties(
             buildStep,
@@ -371,6 +371,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         configs['union_key']?.toString() ??
         'runtimeType';
 
+    final fallbackUnion = annotation.getField('fallbackUnion')?.toStringValue() ??
+        configs['fallback_union']?.toString();
+
     FreezedUnionCase unionValueCase;
     final fromConfig = configs['union_value_case']?.toString();
     switch (fromConfig) {
@@ -399,6 +402,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
+      fallbackUnion: fallbackUnion,
       unionValueCase: unionValueCase,
     );
   }
@@ -599,11 +603,9 @@ extension on Element {
 }
 
 extension on ConstructorElement {
-  bool get isUnionFallbackConstructor {
-    return const TypeChecker.fromRuntime(FreezedUnionFallback).hasAnnotationOf(
-      this,
-      throwOnUnresolved: false,
-    );
+  bool isFallbackUnion(String? fallbackConstructorName) {
+    final constructorName = isDefaultConstructor(this) ? 'default' : name;
+    return constructorName == fallbackConstructorName;
   }
 
   String unionValue(FreezedUnionCase unionCase) {

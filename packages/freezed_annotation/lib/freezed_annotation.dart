@@ -10,6 +10,7 @@ class Freezed {
   const Freezed({
     this.unionKey,
     this.unionValueCase = FreezedUnionCase.none,
+    this.fallbackUnion
   });
 
   /// Determines what key should be used to de/serialize union types.
@@ -92,6 +93,41 @@ class Freezed {
   /// You can also use [FreezedUnionValue] annotation to customize single
   /// union case.
   final FreezedUnionCase unionValueCase;
+
+  /// Determines which constructor should be used when there is no matching one
+  /// through constructor name or using [FreezedUnionValue]
+  ///
+  /// By default, Freezed generates code that will throw FallThroughError when type
+  /// is not matched through constructor name or using [FreezedUnionValue].
+  /// You can override this behavior by providing it's name or 'default' to use 
+  /// default constructor
+  ///
+  /// ```dart
+  /// @Freezed(fallbackUnion: 'fallback')
+  /// class MyResponse with _$MyResponse {
+  ///   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+  ///   const factory MyResponse.fallback(String a, int b) = MyResponseFallback;
+  ///
+  ///   factory MyResponse.fromJson(Map<String, dynamic> json) => _$MyResponseFromJson(json);
+  /// }
+  /// ```
+  ///
+  /// The constructor will be chosen as follows:
+  ///
+  /// ```json
+  /// [
+  ///   {
+  ///     "runtimeType": "special",
+  ///     "a": "This JSON object will use constructor MyResponse.special()"
+  ///     "b": 42
+  ///   },
+  ///   {
+  ///     "runtimeType": "surprise",
+  ///     "a": "This JSON object will use constructor MyResponse.fallback()",
+  ///     "b": 42
+  ///   }
+  /// ]
+  final String? fallbackUnion;
 }
 
 /// An annotation for the `freezed` package.
@@ -272,43 +308,6 @@ class FreezedUnionValue {
   const FreezedUnionValue(this.value);
 
   final String value;
-}
-
-/// An annotation used to specify fallback constructor used when union type is not matched
-///
-/// By default, Freezed generates code that will throw FallThroughError when type
-/// is not matched through constructor name or using [FreezedUnionValue].
-/// You can override this behavior by annotating constructor and using it as a fallback one
-///
-/// ```dart
-/// @freezed
-/// class MyResponse with _$MyResponse {
-///   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
-///
-///   @FreezedUnionFallback()
-///   const factory MyResponse.fallback(String a, int b) = MyResponseFallback;
-///
-///   factory MyResponse.fromJson(Map<String, dynamic> json) => _$MyResponseFromJson(json);
-/// }
-/// ```
-///
-/// The constructor will be chosen as follows:
-///
-/// ```json
-/// [
-///   {
-///     "runtimeType": "special",
-///     "a": "This JSON object will use constructor MyResponse.special()"
-///     "b": 42
-///   },
-///   {
-///     "runtimeType": "surprise",
-///     "a": "This JSON object will use constructor MyResponse.fallback()",
-///     "b": 42
-///   }
-/// ]
-class FreezedUnionFallback {
-  const FreezedUnionFallback();
 }
 
 /// Options for automatic union values renaming.

@@ -155,6 +155,26 @@ Future<void> main() async {
     });
   });
 
+  group('FreezedUnionFallback default', () {
+    test('fromJson', () {
+      expect(
+        UnionDefaultFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
+        UnionDefaultFallback.first(42),
+      );
+
+      expect(
+        UnionDefaultFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'third',
+          'a': 10,
+        }),
+        UnionDefaultFallback(10),
+      );
+    });
+  });
+
   group('Freezed.unionValueCase', () {
     test('FreezedUnionCase.pascal fromJson', () {
       expect(
