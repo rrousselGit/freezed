@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'main.freezed.dart';
-part 'main.g.dart';
 
 @freezed
-abstract class MyClass with _$MyClass {
+class MyClass with _$MyClass {
   factory MyClass({String? a, int? b}) = _MyClass;
 }
 
 @freezed
-abstract class Union with _$Union {
+class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String? message]) = ErrorDetails;
@@ -21,7 +20,7 @@ abstract class Union with _$Union {
 }
 
 @freezed
-abstract class SharedProperty with _$SharedProperty {
+class SharedProperty with _$SharedProperty {
   factory SharedProperty.person({
     String? name,
     int? age,
