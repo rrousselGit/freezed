@@ -62,21 +62,14 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     ConstantReader annotation,
     BuildStep buildStep,
   ) async* {
-    try {
-      // implemented for source_gen_test – otherwise unused
-      final globalData = parseGlobalData(element.library!);
-      final data = parseElement(buildStep, globalData, element);
+    // implemented for source_gen_test – otherwise unused
+    final globalData = parseGlobalData(element.library!);
+    final data = parseElement(buildStep, globalData, element);
 
-      if (data == null) return;
+    if (data == null) return;
 
-      for (final value in generateForData(globalData, await data)) {
-        yield value.toString();
-      }
-    } catch (err, stack) {
-      print('did catch error when generating using source_gen_test:');
-      print(err);
-      print(stack);
-      rethrow;
+    for (final value in generateForData(globalData, await data)) {
+      yield value.toString();
     }
   }
 }
