@@ -1,5 +1,6 @@
 // @dart=2.9
 
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -17,7 +18,8 @@ void main() {
     );
 
     final errorResult = await main.session
-        .getErrors('/freezed/test/integration/generics_refs.freezed.dart');
+            .getErrors2('/freezed/test/integration/generics_refs.freezed.dart')
+        as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });

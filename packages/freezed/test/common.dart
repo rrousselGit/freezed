@@ -1,5 +1,6 @@
 // @dart=2.9
 
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/diagnostic/diagnostic.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:build_test/build_test.dart';
@@ -17,8 +18,8 @@ $src
     ''',
   }, (r) => r.findLibraryByName('main'));
 
-  final errorResult =
-      await main.session.getErrors('/freezed/test/integration/main.dart');
+  final errorResult = await main.session
+      .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
   final criticalErrors = errorResult.errors
       .where((element) => element.severity == Severity.error)
       .toList();

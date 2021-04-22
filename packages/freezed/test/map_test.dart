@@ -2,6 +2,7 @@
 
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -267,8 +268,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult =
-          await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult = await main.session
+          .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -381,8 +382,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult =
-          await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult = await main.session
+          .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isEmpty);
     });
@@ -404,8 +405,8 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult =
-          await main.session.getErrors('/freezed/test/integration/main.dart');
+      final errorResult = await main.session
+          .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
     });
