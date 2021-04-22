@@ -106,6 +106,7 @@ class __$TimeSlotCopyWithImpl<$Res> extends _$TimeSlotCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_TimeSlot implements _TimeSlot {
   _$_TimeSlot({this.start, this.end});
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'main.freezed.dart';
+part 'main.g.dart';
 
 @freezed
 class MyClass with _$MyClass {

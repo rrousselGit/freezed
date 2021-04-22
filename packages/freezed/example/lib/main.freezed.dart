@@ -105,6 +105,7 @@ class __$MyClassCopyWithImpl<$Res> extends _$MyClassCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   _$_MyClass({this.a, this.b});
 
@@ -296,9 +297,8 @@ class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$Data with DiagnosticableTreeMixin implements Data {
   const _$Data(this.value);
 
@@ -421,9 +421,8 @@ class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   Loading get _value => super._value as Loading;
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
@@ -544,9 +543,8 @@ class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   const _$ErrorDetails([this.message]);
 
@@ -690,9 +688,8 @@ class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$Complex with DiagnosticableTreeMixin implements Complex {
   const _$Complex(this.a, this.b);
 
@@ -936,6 +933,7 @@ class _$SharedProperty0CopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$SharedProperty0
     with DiagnosticableTreeMixin
     implements SharedProperty0 {
@@ -1078,6 +1076,7 @@ class _$SharedProperty1CopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$SharedProperty1
     with DiagnosticableTreeMixin
     implements SharedProperty1 {

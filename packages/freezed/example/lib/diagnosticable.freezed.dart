@@ -114,6 +114,7 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
+
 class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
   _$_Example(this.a, this.b) : super._();
 
@@ -245,6 +246,7 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
+
 class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
   _$_Example2(this.c) : super._();
 
@@ -388,6 +390,7 @@ class __$ConcreteExampleCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
+
 class _$_ConcreteExample<T> extends _ConcreteExample<T>
     with DiagnosticableTreeMixin {
   _$_ConcreteExample() : super._();

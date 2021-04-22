@@ -114,6 +114,7 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
+
 class _$_Example<T> implements _Example<T> {
   _$_Example(this.a, this.b);
 
@@ -235,6 +236,7 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
+
 class _$_Example2<T> implements _Example2<T> {
   _$_Example2(this.c);
 
@@ -466,6 +468,7 @@ class _$SimplePersonCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$SimplePerson implements SimplePerson {
   const _$SimplePerson(this.name, this.age);
 
@@ -599,9 +602,9 @@ class _$SimpleStreetCopyWithImpl<$Res>
   }
 }
 
-@With.fromString('AdministrativeArea<House>')
-
 /// @nodoc
+
+@With.fromString('AdministrativeArea<House>')
 class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   const _$SimpleStreet(this.name);
 
@@ -733,9 +736,9 @@ class _$SimpleCityCopyWithImpl<$Res>
   }
 }
 
-@With(House)
-
 /// @nodoc
+
+@With(House)
 class _$SimpleCity with House implements SimpleCity {
   const _$SimpleCity(this.name, this.population);
 
@@ -875,10 +878,10 @@ class _$SimpleCountryCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
+
 @With(House)
 @Implements(GeographicArea)
-
-/// @nodoc
 class _$SimpleCountry with House implements SimpleCountry {
   const _$SimpleCountry(this.name, this.population);
 
@@ -1128,6 +1131,7 @@ class _$PersonCustomMethodCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$PersonCustomMethod extends PersonCustomMethod {
   const _$PersonCustomMethod(this.name, this.age) : super._();
 
@@ -1262,10 +1266,10 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
+
 @With(Shop)
 @With.fromString('AdministrativeArea<House>')
-
-/// @nodoc
 class _$StreetCustomMethod extends StreetCustomMethod
     with Shop, AdministrativeArea<House> {
   const _$StreetCustomMethod(this.name) : super._();
@@ -1400,10 +1404,10 @@ class _$CityCustomMethodCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
+
 @With(House)
 @Implements(GeographicArea)
-
-/// @nodoc
 class _$CityCustomMethod extends CityCustomMethod with House {
   const _$CityCustomMethod(this.name, this.population) : super._();
 
@@ -1541,10 +1545,10 @@ class _$DuplexCustomMethodCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
+
 @Implements(Shop)
 @Implements(GeographicArea)
-
-/// @nodoc
 class _$DuplexCustomMethod extends DuplexCustomMethod {
   const _$DuplexCustomMethod(this.name) : super._();
 
@@ -1778,6 +1782,7 @@ class _$GenericPersonCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
+
 class _$GenericPerson<T> implements GenericPerson<T> {
   const _$GenericPerson(this.name, this.age);
 
@@ -1912,9 +1917,9 @@ class _$GenericStreetCopyWithImpl<T, $Res>
   }
 }
 
-@With.fromString('AdministrativeArea<T>')
-
 /// @nodoc
+
+@With.fromString('AdministrativeArea<T>')
 class _$GenericStreet<T>
     with AdministrativeArea<T>
     implements GenericStreet<T> {
@@ -2052,10 +2057,10 @@ class _$GenericCityCopyWithImpl<T, $Res>
   }
 }
 
+/// @nodoc
+
 @With(House)
 @Implements(GeographicArea)
-
-/// @nodoc
 class _$GenericCity<T> with House implements GenericCity<T> {
   const _$GenericCity(this.name, this.population);
 
