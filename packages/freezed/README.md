@@ -728,7 +728,7 @@ company = company.copyWith.director.assistant(name: 'John', age: 42);
 
 **Null consideration**
 
-Some objects may can also be `null`. For example, using our `Company` class,
+Some objects may also be `null`. For example, using our `Company` class,
 then `Director` may be `null`.
 
 As such, writing:
