@@ -81,7 +81,6 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
     - [Custom getters and methods](#custom-getters-and-methods)
     - [Asserts](#asserts)
     - [Default values](#default-values)
-    - [Late](#late)
     - [Constructor tear-off](#constructor-tear-off)
     - [Decorators and comments](#decorators-and-comments)
     - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
@@ -374,56 +373,6 @@ abstract class Example with _$Example {
 **NOTE**:\
 If you are using serialization/deserialization, this will automatically add
 a `@JsonKey(defaultValue: <something>)` for you.
-
-### Late
-
-[Freezed] also supports the `late` keyword.
-
-If you are unfamiliar with that keyword, what `late` does is it allows variables
-to be lazily initialized.
-
-You may be familiar with such syntax:
-
-```dart
-Model _model;
-Model get model => _model ?? _model = Model();
-```
-
-With Dart's `late` keyword, we could instead write:
-
-```dart
-late final model = Model();
-```
-
-And with [Freezed], we could write:
-
-```dart
-late final model = Model();
-```
-
----
-
-Since [Freezed] relies on immutable classes only, then this may be very helpful
-for computed properties.
-
-For example, you may write:
-
-```dart
-class Todos with _$Todos {
-  // Required for adding a custom field.
-  Todos._();
-  factory Todos(List<Todo> todos) = _Todos;
-
-  late final completed = todos.where((t) => t.completed).toList();
-}
-```
-
-As opposed to a normal getter, this will _cache_ the result of `completed`, which
-is more efficient.
-
-**NOTE**:
-
-Getters decorated with `late` will also be visible on the generated `toString`.
 
 ### Constructor tear-off
 
