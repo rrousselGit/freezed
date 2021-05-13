@@ -42,6 +42,7 @@ class FromJson {
         final fallbackConstructor =
             constructors.singleWhere((element) => element.isFallback);
         defaultCase =
+  // TODO(rrousselGit): update logic once https://github.com/rrousselGit/freezed/pull/370 lands
             'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(json);';
       }
 
