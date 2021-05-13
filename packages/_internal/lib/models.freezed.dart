@@ -260,6 +260,7 @@ class _$ConstructorDetailsTearOff {
       required ParametersTemplate parameters,
       required List<Property> impliedProperties,
       required bool isDefault,
+      required bool isFallback,
       required bool hasJsonSerializable,
       required String fullName,
       required List<String> withDecorators,
@@ -276,6 +277,7 @@ class _$ConstructorDetailsTearOff {
       parameters: parameters,
       impliedProperties: impliedProperties,
       isDefault: isDefault,
+      isFallback: isFallback,
       hasJsonSerializable: hasJsonSerializable,
       fullName: fullName,
       withDecorators: withDecorators,
@@ -300,6 +302,7 @@ mixin _$ConstructorDetails {
   ParametersTemplate get parameters => throw _privateConstructorUsedError;
   List<Property> get impliedProperties => throw _privateConstructorUsedError;
   bool get isDefault => throw _privateConstructorUsedError;
+  bool get isFallback => throw _privateConstructorUsedError;
   bool get hasJsonSerializable => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
   List<String> get withDecorators => throw _privateConstructorUsedError;
@@ -328,6 +331,7 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       ParametersTemplate parameters,
       List<Property> impliedProperties,
       bool isDefault,
+      bool isFallback,
       bool hasJsonSerializable,
       String fullName,
       List<String> withDecorators,
@@ -356,6 +360,7 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
     Object? parameters = freezed,
     Object? impliedProperties = freezed,
     Object? isDefault = freezed,
+    Object? isFallback = freezed,
     Object? hasJsonSerializable = freezed,
     Object? fullName = freezed,
     Object? withDecorators = freezed,
@@ -393,6 +398,10 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
       isDefault: isDefault == freezed
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isFallback: isFallback == freezed
+          ? _value.isFallback
+          : isFallback // ignore: cast_nullable_to_non_nullable
               as bool,
       hasJsonSerializable: hasJsonSerializable == freezed
           ? _value.hasJsonSerializable
@@ -445,6 +454,7 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
       ParametersTemplate parameters,
       List<Property> impliedProperties,
       bool isDefault,
+      bool isFallback,
       bool hasJsonSerializable,
       String fullName,
       List<String> withDecorators,
@@ -475,6 +485,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
     Object? parameters = freezed,
     Object? impliedProperties = freezed,
     Object? isDefault = freezed,
+    Object? isFallback = freezed,
     Object? hasJsonSerializable = freezed,
     Object? fullName = freezed,
     Object? withDecorators = freezed,
@@ -512,6 +523,10 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
       isDefault: isDefault == freezed
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isFallback: isFallback == freezed
+          ? _value.isFallback
+          : isFallback // ignore: cast_nullable_to_non_nullable
               as bool,
       hasJsonSerializable: hasJsonSerializable == freezed
           ? _value.hasJsonSerializable
@@ -559,6 +574,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       required this.parameters,
       required this.impliedProperties,
       required this.isDefault,
+      required this.isFallback,
       required this.hasJsonSerializable,
       required this.fullName,
       required this.withDecorators,
@@ -584,6 +600,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   @override
   final bool isDefault;
   @override
+  final bool isFallback;
+  @override
   final bool hasJsonSerializable;
   @override
   final String fullName;
@@ -602,7 +620,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
 
   @override
   String toString() {
-    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts)';
+    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts)';
   }
 
   @override
@@ -629,6 +647,9 @@ class _$_ConstructorDetails extends _ConstructorDetails {
             (identical(other.isDefault, isDefault) ||
                 const DeepCollectionEquality()
                     .equals(other.isDefault, isDefault)) &&
+            (identical(other.isFallback, isFallback) ||
+                const DeepCollectionEquality()
+                    .equals(other.isFallback, isFallback)) &&
             (identical(other.hasJsonSerializable, hasJsonSerializable) ||
                 const DeepCollectionEquality()
                     .equals(other.hasJsonSerializable, hasJsonSerializable)) &&
@@ -664,6 +685,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       const DeepCollectionEquality().hash(parameters) ^
       const DeepCollectionEquality().hash(impliedProperties) ^
       const DeepCollectionEquality().hash(isDefault) ^
+      const DeepCollectionEquality().hash(isFallback) ^
       const DeepCollectionEquality().hash(hasJsonSerializable) ^
       const DeepCollectionEquality().hash(fullName) ^
       const DeepCollectionEquality().hash(withDecorators) ^
@@ -688,6 +710,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       required ParametersTemplate parameters,
       required List<Property> impliedProperties,
       required bool isDefault,
+      required bool isFallback,
       required bool hasJsonSerializable,
       required String fullName,
       required List<String> withDecorators,
@@ -712,6 +735,8 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   List<Property> get impliedProperties => throw _privateConstructorUsedError;
   @override
   bool get isDefault => throw _privateConstructorUsedError;
+  @override
+  bool get isFallback => throw _privateConstructorUsedError;
   @override
   bool get hasJsonSerializable => throw _privateConstructorUsedError;
   @override

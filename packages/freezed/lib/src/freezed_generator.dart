@@ -255,6 +255,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           implementsDecorators:
               _implementsDecorationTypes(constructor).toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
+          isFallback: constructor.isFallbackUnion(configs.fallbackUnion),
           hasJsonSerializable: constructor.hasJsonSerializable,
           cloneableProperties: await _cloneableProperties(
             buildStep,
@@ -280,6 +281,13 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     if (result.length > 1 && result.any((c) => c.name.startsWith('_'))) {
       throw InvalidGenerationSourceError(
         'A freezed union cannot have private constructors',
+        element: element,
+      );
+    }
+
+    if (configs.fallbackUnion != null && result.none((c) => c.isFallback)) {
+      throw InvalidGenerationSourceError(
+        'Fallback union was specified but no ${configs.fallbackUnion} constructor exists.',
         element: element,
       );
     }
@@ -370,6 +378,8 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         configs['union_key']?.toString() ??
         'runtimeType';
 
+    final fallbackUnion = annotation.getField('fallbackUnion')?.toStringValue();
+
     FreezedUnionCase unionValueCase;
     final fromConfig = configs['union_value_case']?.toString();
     switch (fromConfig) {
@@ -398,6 +408,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
+      fallbackUnion: fallbackUnion,
       unionValueCase: unionValueCase,
     );
   }
@@ -598,6 +609,11 @@ extension on Element {
 }
 
 extension on ConstructorElement {
+  bool isFallbackUnion(String? fallbackConstructorName) {
+    final constructorName = isDefaultConstructor(this) ? 'default' : name;
+    return constructorName == fallbackConstructorName;
+  }
+
   String unionValue(FreezedUnionCase unionCase) {
     final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
         .firstAnnotationOf(this, throwOnUnresolved: false);

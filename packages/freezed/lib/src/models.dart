@@ -38,6 +38,7 @@ abstract class ConstructorDetails with _$ConstructorDetails {
     required ParametersTemplate parameters,
     required List<Property> impliedProperties,
     required bool isDefault,
+    required bool isFallback,
     required bool hasJsonSerializable,
     required String fullName,
     required List<String> withDecorators,
