@@ -7,10 +7,11 @@ export 'package:meta/meta.dart';
 /// {@endtemplate}
 class Freezed {
   /// {@template freezed_annotation.freezed}
-  const Freezed(
-      {this.unionKey,
-      this.unionValueCase = FreezedUnionCase.none,
-      this.fallbackUnion});
+  const Freezed({
+    this.unionKey,
+    this.unionValueCase = FreezedUnionCase.none,
+    this.fallbackUnion,
+  });
 
   /// Determines what key should be used to de/serialize union types.
   ///
