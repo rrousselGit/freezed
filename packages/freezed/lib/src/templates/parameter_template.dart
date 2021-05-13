@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
+import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/utils.dart';
 
 class GenericsDefinitionTemplate {

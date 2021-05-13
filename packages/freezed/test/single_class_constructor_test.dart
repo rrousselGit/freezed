@@ -4,8 +4,8 @@
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
-import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
+import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/single_class_constructor.dart';

@@ -1,5 +1,5 @@
-import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:collection/collection.dart';
+import 'package:freezed/src/templates/parameter_template.dart';
 
 import '../models.dart';
 
