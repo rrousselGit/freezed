@@ -1,6 +1,7 @@
 // @dart=2.9
 
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
@@ -60,7 +61,8 @@ void main() {
     );
 
     final errorResult = await main.session
-        .getErrors('/freezed/test/integration/generic.freezed.dart');
+            .getErrors2('/freezed/test/integration/generic.freezed.dart')
+        as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });

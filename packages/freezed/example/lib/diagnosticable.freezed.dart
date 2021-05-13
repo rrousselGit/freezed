@@ -101,13 +101,20 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
     Object? b = freezed,
   }) {
     return _then(_Example<T>(
-      a == freezed ? _value.a : a as int,
-      b == freezed ? _value.b : b as String,
+      a == freezed
+          ? _value.a
+          : a // ignore: cast_nullable_to_non_nullable
+              as int,
+      b == freezed
+          ? _value.b
+          : b // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
   _$_Example(this.a, this.b) : super._();
 
@@ -197,8 +204,8 @@ class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
 }
 
 abstract class _Example<T> extends Example<T> {
-  _Example._() : super._();
   factory _Example(int a, String b) = _$_Example<T>;
+  _Example._() : super._();
 
   int get a => throw _privateConstructorUsedError;
   String get b => throw _privateConstructorUsedError;
@@ -230,12 +237,16 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
     Object? c = freezed,
   }) {
     return _then(_Example2<T>(
-      c == freezed ? _value.c : c as T,
+      c == freezed
+          ? _value.c
+          : c // ignore: cast_nullable_to_non_nullable
+              as T,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
   _$_Example2(this.c) : super._();
 
@@ -318,8 +329,8 @@ class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
 }
 
 abstract class _Example2<T> extends Example<T> {
-  _Example2._() : super._();
   factory _Example2(T c) = _$_Example2<T>;
+  _Example2._() : super._();
 
   T get c => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -379,6 +390,7 @@ class __$ConcreteExampleCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
+
 class _$_ConcreteExample<T> extends _ConcreteExample<T>
     with DiagnosticableTreeMixin {
   _$_ConcreteExample() : super._();
@@ -404,6 +416,6 @@ class _$_ConcreteExample<T> extends _ConcreteExample<T>
 }
 
 abstract class _ConcreteExample<T> extends ConcreteExample<T> {
-  _ConcreteExample._() : super._();
   factory _ConcreteExample() = _$_ConcreteExample<T>;
+  _ConcreteExample._() : super._();
 }

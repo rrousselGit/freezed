@@ -57,8 +57,14 @@ class _$MyClassCopyWithImpl<$Res> implements $MyClassCopyWith<$Res> {
     Object? b = freezed,
   }) {
     return _then(_value.copyWith(
-      a: a == freezed ? _value.a : a as String?,
-      b: b == freezed ? _value.b : b as int?,
+      a: a == freezed
+          ? _value.a
+          : a // ignore: cast_nullable_to_non_nullable
+              as String?,
+      b: b == freezed
+          ? _value.b
+          : b // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -86,13 +92,20 @@ class __$MyClassCopyWithImpl<$Res> extends _$MyClassCopyWithImpl<$Res>
     Object? b = freezed,
   }) {
     return _then(_MyClass(
-      a: a == freezed ? _value.a : a as String?,
-      b: b == freezed ? _value.b : b as int?,
+      a: a == freezed
+          ? _value.a
+          : a // ignore: cast_nullable_to_non_nullable
+              as String?,
+      b: b == freezed
+          ? _value.b
+          : b // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   _$_MyClass({this.a, this.b});
 
@@ -276,14 +289,16 @@ class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
     Object? value = freezed,
   }) {
     return _then(Data(
-      value == freezed ? _value.value : value as int,
+      value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$Data with DiagnosticableTreeMixin implements Data {
   const _$Data(this.value);
 
@@ -406,9 +421,8 @@ class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
   Loading get _value => super._value as Loading;
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
@@ -521,14 +535,16 @@ class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
     Object? message = freezed,
   }) {
     return _then(ErrorDetails(
-      message == freezed ? _value.message : message as String?,
+      message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   const _$ErrorDetails([this.message]);
 
@@ -660,15 +676,20 @@ class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
     Object? b = freezed,
   }) {
     return _then(Complex(
-      a == freezed ? _value.a : a as int,
-      b == freezed ? _value.b : b as String,
+      a == freezed
+          ? _value.a
+          : a // ignore: cast_nullable_to_non_nullable
+              as int,
+      b == freezed
+          ? _value.b
+          : b // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$Complex with DiagnosticableTreeMixin implements Complex {
   const _$Complex(this.a, this.b);
 
@@ -864,7 +885,10 @@ class _$SharedPropertyCopyWithImpl<$Res>
     Object? name = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -896,13 +920,20 @@ class _$SharedProperty0CopyWithImpl<$Res>
     Object? age = freezed,
   }) {
     return _then(SharedProperty0(
-      name: name == freezed ? _value.name : name as String?,
-      age: age == freezed ? _value.age : age as int?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      age: age == freezed
+          ? _value.age
+          : age // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
 
 /// @nodoc
+
 class _$SharedProperty0
     with DiagnosticableTreeMixin
     implements SharedProperty0 {
@@ -1032,14 +1063,20 @@ class _$SharedProperty1CopyWithImpl<$Res>
     Object? population = freezed,
   }) {
     return _then(SharedProperty1(
-      name: name == freezed ? _value.name : name as String?,
-      population:
-          population == freezed ? _value.population : population as int?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      population: population == freezed
+          ? _value.population
+          : population // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
 
 /// @nodoc
+
 class _$SharedProperty1
     with DiagnosticableTreeMixin
     implements SharedProperty1 {

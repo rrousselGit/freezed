@@ -6,7 +6,7 @@ part 'time_slot.freezed.dart';
 /// This is class has been added to address the issue described in
 /// https://github.com/rrousselGit/freezed/issues/220
 @freezed
-abstract class TimeSlot with _$TimeSlot {
+class TimeSlot with _$TimeSlot {
   factory TimeSlot({
     TimeOfDay? start,
     TimeOfDay? end,

@@ -58,8 +58,14 @@ class _$TimeSlotCopyWithImpl<$Res> implements $TimeSlotCopyWith<$Res> {
     Object? end = freezed,
   }) {
     return _then(_value.copyWith(
-      start: start == freezed ? _value.start : start as TimeOfDay?,
-      end: end == freezed ? _value.end : end as TimeOfDay?,
+      start: start == freezed
+          ? _value.start
+          : start // ignore: cast_nullable_to_non_nullable
+              as TimeOfDay?,
+      end: end == freezed
+          ? _value.end
+          : end // ignore: cast_nullable_to_non_nullable
+              as TimeOfDay?,
     ));
   }
 }
@@ -87,13 +93,20 @@ class __$TimeSlotCopyWithImpl<$Res> extends _$TimeSlotCopyWithImpl<$Res>
     Object? end = freezed,
   }) {
     return _then(_TimeSlot(
-      start: start == freezed ? _value.start : start as TimeOfDay?,
-      end: end == freezed ? _value.end : end as TimeOfDay?,
+      start: start == freezed
+          ? _value.start
+          : start // ignore: cast_nullable_to_non_nullable
+              as TimeOfDay?,
+      end: end == freezed
+          ? _value.end
+          : end // ignore: cast_nullable_to_non_nullable
+              as TimeOfDay?,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_TimeSlot implements _TimeSlot {
   _$_TimeSlot({this.start, this.end});
 

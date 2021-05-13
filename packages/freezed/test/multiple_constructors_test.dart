@@ -3,6 +3,7 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'dart:async';
 
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
@@ -153,8 +154,9 @@ void main() {
             element.source.toString().contains('multiple_constructors')),
       );
 
-      final errorResult = await main.session.getErrors(
-          '/freezed/test/integration/multiple_constructors.freezed.dart');
+      final errorResult = await main.session.getErrors2(
+              '/freezed/test/integration/multiple_constructors.freezed.dart')
+          as ErrorsResult;
 
       expect(errorResult.errors, isEmpty);
     });

@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'diagnosticable.freezed.dart';
 
 @freezed
-abstract class Example<T> with _$Example<T> {
+class Example<T> with _$Example<T> {
   Example._();
   factory Example(int a, String b) = _Example<T>;
   factory Example.named(T c) = _Example2<T>;
@@ -13,7 +13,7 @@ abstract class Example<T> with _$Example<T> {
 }
 
 @freezed
-abstract class ConcreteExample<T> with _$ConcreteExample<T> {
+class ConcreteExample<T> with _$ConcreteExample<T> {
   ConcreteExample._();
   factory ConcreteExample() = _ConcreteExample<T>;
 }

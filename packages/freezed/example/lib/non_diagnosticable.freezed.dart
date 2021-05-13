@@ -101,13 +101,20 @@ class __$ExampleCopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
     Object? b = freezed,
   }) {
     return _then(_Example<T>(
-      a == freezed ? _value.a : a as int,
-      b == freezed ? _value.b : b as String,
+      a == freezed
+          ? _value.a
+          : a // ignore: cast_nullable_to_non_nullable
+              as int,
+      b == freezed
+          ? _value.b
+          : b // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_Example<T> implements _Example<T> {
   _$_Example(this.a, this.b);
 
@@ -220,12 +227,16 @@ class __$Example2CopyWithImpl<T, $Res> extends _$ExampleCopyWithImpl<T, $Res>
     Object? c = freezed,
   }) {
     return _then(_Example2<T>(
-      c == freezed ? _value.c : c as T,
+      c == freezed
+          ? _value.c
+          : c // ignore: cast_nullable_to_non_nullable
+              as T,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_Example2<T> implements _Example2<T> {
   _$_Example2(this.c);
 
@@ -409,7 +420,10 @@ class _$SimpleImplementsCopyWithImpl<$Res>
     Object? name = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -441,13 +455,20 @@ class _$SimplePersonCopyWithImpl<$Res>
     Object? age = freezed,
   }) {
     return _then(SimplePerson(
-      name == freezed ? _value.name : name as String,
-      age == freezed ? _value.age : age as int,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      age == freezed
+          ? _value.age
+          : age // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
+
 class _$SimplePerson implements SimplePerson {
   const _$SimplePerson(this.name, this.age);
 
@@ -573,14 +594,17 @@ class _$SimpleStreetCopyWithImpl<$Res>
     Object? name = freezed,
   }) {
     return _then(SimpleStreet(
-      name == freezed ? _value.name : name as String,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
-@With.fromString('AdministrativeArea<House>')
-
 /// @nodoc
+
+@With.fromString('AdministrativeArea<House>')
 class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   const _$SimpleStreet(this.name);
 
@@ -700,15 +724,21 @@ class _$SimpleCityCopyWithImpl<$Res>
     Object? population = freezed,
   }) {
     return _then(SimpleCity(
-      name == freezed ? _value.name : name as String,
-      population == freezed ? _value.population : population as int,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      population == freezed
+          ? _value.population
+          : population // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
-@With(House)
-
 /// @nodoc
+
+@With(House)
 class _$SimpleCity with House implements SimpleCity {
   const _$SimpleCity(this.name, this.population);
 
@@ -836,16 +866,22 @@ class _$SimpleCountryCopyWithImpl<$Res>
     Object? population = freezed,
   }) {
     return _then(SimpleCountry(
-      name == freezed ? _value.name : name as String,
-      population == freezed ? _value.population : population as int,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      population == freezed
+          ? _value.population
+          : population // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
+/// @nodoc
+
 @With(House)
 @Implements(GeographicArea)
-
-/// @nodoc
 class _$SimpleCountry with House implements SimpleCountry {
   const _$SimpleCountry(this.name, this.population);
 
@@ -1047,7 +1083,10 @@ class _$CustomMethodImplementsCopyWithImpl<$Res>
     Object? name = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -1079,13 +1118,20 @@ class _$PersonCustomMethodCopyWithImpl<$Res>
     Object? age = freezed,
   }) {
     return _then(PersonCustomMethod(
-      name == freezed ? _value.name : name as String,
-      age == freezed ? _value.age : age as int,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      age == freezed
+          ? _value.age
+          : age // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
+
 class _$PersonCustomMethod extends PersonCustomMethod {
   const _$PersonCustomMethod(this.name, this.age) : super._();
 
@@ -1174,8 +1220,8 @@ class _$PersonCustomMethod extends PersonCustomMethod {
 }
 
 abstract class PersonCustomMethod extends CustomMethodImplements {
-  const PersonCustomMethod._() : super._();
   const factory PersonCustomMethod(String name, int age) = _$PersonCustomMethod;
+  const PersonCustomMethod._() : super._();
 
   @override
   String get name => throw _privateConstructorUsedError;
@@ -1212,15 +1258,18 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
     Object? name = freezed,
   }) {
     return _then(StreetCustomMethod(
-      name == freezed ? _value.name : name as String,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
+/// @nodoc
+
 @With(Shop)
 @With.fromString('AdministrativeArea<House>')
-
-/// @nodoc
 class _$StreetCustomMethod extends StreetCustomMethod
     with Shop, AdministrativeArea<House> {
   const _$StreetCustomMethod(this.name) : super._();
@@ -1305,8 +1354,8 @@ class _$StreetCustomMethod extends StreetCustomMethod
 
 abstract class StreetCustomMethod extends CustomMethodImplements
     implements Shop, AdministrativeArea<House> {
-  const StreetCustomMethod._() : super._();
   const factory StreetCustomMethod(String name) = _$StreetCustomMethod;
+  const StreetCustomMethod._() : super._();
 
   @override
   String get name => throw _privateConstructorUsedError;
@@ -1343,16 +1392,22 @@ class _$CityCustomMethodCopyWithImpl<$Res>
     Object? population = freezed,
   }) {
     return _then(CityCustomMethod(
-      name == freezed ? _value.name : name as String,
-      population == freezed ? _value.population : population as int,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      population == freezed
+          ? _value.population
+          : population // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
+/// @nodoc
+
 @With(House)
 @Implements(GeographicArea)
-
-/// @nodoc
 class _$CityCustomMethod extends CityCustomMethod with House {
   const _$CityCustomMethod(this.name, this.population) : super._();
 
@@ -1443,9 +1498,9 @@ class _$CityCustomMethod extends CityCustomMethod with House {
 
 abstract class CityCustomMethod extends CustomMethodImplements
     implements GeographicArea, House {
-  const CityCustomMethod._() : super._();
   const factory CityCustomMethod(String name, int population) =
       _$CityCustomMethod;
+  const CityCustomMethod._() : super._();
 
   @override
   String get name => throw _privateConstructorUsedError;
@@ -1482,15 +1537,18 @@ class _$DuplexCustomMethodCopyWithImpl<$Res>
     Object? name = freezed,
   }) {
     return _then(DuplexCustomMethod(
-      name == freezed ? _value.name : name as String,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
+/// @nodoc
+
 @Implements(Shop)
 @Implements(GeographicArea)
-
-/// @nodoc
 class _$DuplexCustomMethod extends DuplexCustomMethod {
   const _$DuplexCustomMethod(this.name) : super._();
 
@@ -1574,8 +1632,8 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
 
 abstract class DuplexCustomMethod extends CustomMethodImplements
     implements Shop, GeographicArea {
-  const DuplexCustomMethod._() : super._();
   const factory DuplexCustomMethod(String name) = _$DuplexCustomMethod;
+  const DuplexCustomMethod._() : super._();
 
   @override
   String get name => throw _privateConstructorUsedError;
@@ -1676,7 +1734,10 @@ class _$GenericImplementsCopyWithImpl<T, $Res>
     Object? name = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed ? _value.name : name as String,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -1708,13 +1769,20 @@ class _$GenericPersonCopyWithImpl<T, $Res>
     Object? age = freezed,
   }) {
     return _then(GenericPerson<T>(
-      name == freezed ? _value.name : name as String,
-      age == freezed ? _value.age : age as int,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      age == freezed
+          ? _value.age
+          : age // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
+
 class _$GenericPerson<T> implements GenericPerson<T> {
   const _$GenericPerson(this.name, this.age);
 
@@ -1837,15 +1905,21 @@ class _$GenericStreetCopyWithImpl<T, $Res>
     Object? value = freezed,
   }) {
     return _then(GenericStreet<T>(
-      name == freezed ? _value.name : name as String,
-      value == freezed ? _value.value : value as T,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as T,
     ));
   }
 }
 
-@With.fromString('AdministrativeArea<T>')
-
 /// @nodoc
+
+@With.fromString('AdministrativeArea<T>')
 class _$GenericStreet<T>
     with AdministrativeArea<T>
     implements GenericStreet<T> {
@@ -1971,16 +2045,22 @@ class _$GenericCityCopyWithImpl<T, $Res>
     Object? population = freezed,
   }) {
     return _then(GenericCity<T>(
-      name == freezed ? _value.name : name as String,
-      population == freezed ? _value.population : population as int,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      population == freezed
+          ? _value.population
+          : population // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
+/// @nodoc
+
 @With(House)
 @Implements(GeographicArea)
-
-/// @nodoc
 class _$GenericCity<T> with House implements GenericCity<T> {
   const _$GenericCity(this.name, this.population);
 
