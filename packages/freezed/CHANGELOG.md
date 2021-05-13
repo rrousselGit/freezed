@@ -1,3 +1,7 @@
+# 0.14.2
+
+- Added the ability to specify a fallback constructor when deserializing unions (thanks to @Brazol)
+
 # 0.14.1+3
 
 Upgrade dependencies

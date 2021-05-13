@@ -1,3 +1,7 @@
+# 0.14.2
+
+- Added the ability to specify a fallback constructor when deserializing unions (thanks to @Brazol)
+
 # 0.14.1
 
 - Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more informations (Thanks to @ookami-kb)
