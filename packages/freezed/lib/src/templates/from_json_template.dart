@@ -1,4 +1,5 @@
 import 'package:freezed/src/templates/parameter_template.dart';
+import 'package:collection/collection.dart';
 
 import '../models.dart';
 
@@ -25,7 +26,9 @@ class FromJson {
       content =
           'return ${constructors.first.redirectedName}$genericParameters.fromJson(json);';
     } else {
-      final cases = constructors.map((constructor) {
+      final cases = constructors
+          .where((element) => !element.isFallback)
+          .map((constructor) {
         final caseName = constructor.unionValue;
         final concreteName = constructor.redirectedName;
 
@@ -35,11 +38,20 @@ class FromJson {
         ''';
       }).join();
 
+      // TODO(rrousselGit): update logic once https://github.com/rrousselGit/freezed/pull/370 lands
+      var defaultCase = 'throw FallThroughError();';
+      final fallbackConstructor =
+          constructors.singleWhereOrNull((element) => element.isFallback);
+      if (fallbackConstructor != null) {
+        defaultCase =
+            'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(json);';
+      }
+
       content = '''
         switch (json['$unionKey'] as String) {
           $cases
           default:
-            throw FallThroughError();
+            $defaultCase
         }
       ''';
     }

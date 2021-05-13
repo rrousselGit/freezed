@@ -101,6 +101,27 @@ class CustomUnionValue with _$CustomUnionValue {
       _$CustomUnionValueFromJson(json);
 }
 
+@Freezed(fallbackUnion: 'fallback')
+class UnionFallback with _$UnionFallback {
+  const factory UnionFallback.first(int a) = _UnionFallbackFirst;
+  const factory UnionFallback.second(int a) = _UnionFallbackSecond;
+  const factory UnionFallback.fallback(int a) = _UnionFallbackFallback;
+
+  factory UnionFallback.fromJson(Map<String, dynamic> json) =>
+      _$UnionFallbackFromJson(json);
+}
+
+@Freezed(fallbackUnion: 'default')
+class UnionDefaultFallback with _$UnionDefaultFallback {
+  const factory UnionDefaultFallback(int a) = _UnionDefaultFallback;
+  const factory UnionDefaultFallback.first(int a) = _UnionDefaultFallbackFirst;
+  const factory UnionDefaultFallback.second(int a) =
+      _UnionDefaultFallbackSecond;
+
+  factory UnionDefaultFallback.fromJson(Map<String, dynamic> json) =>
+      _$UnionDefaultFallbackFromJson(json);
+}
+
 @Freezed(unionValueCase: FreezedUnionCase.pascal)
 class UnionValueCasePascal with _$UnionValueCasePascal {
   const factory UnionValueCasePascal.first(int a) = _UnionValueCasePascalFirst;

@@ -121,6 +121,75 @@ Future<void> main() async {
     });
   });
 
+  group('FreezedUnionFallback', () {
+    test('fromJson', () {
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
+        UnionFallback.first(42),
+      );
+
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'second',
+          'a': 21,
+        }),
+        UnionFallback.second(21),
+      );
+
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'third',
+          'a': 10,
+        }),
+        UnionFallback.fallback(10),
+      );
+
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{
+          'a': 55,
+        }),
+        UnionFallback.fallback(55),
+      );
+
+      expect(
+          () => CustomUnionValue.fromJson(<String, dynamic>{
+                'runtimeType': 'third',
+                'a': 10,
+              }),
+          throwsA(const TypeMatcher<FallThroughError>()));
+    });
+  });
+
+  group('FreezedUnionFallback default', () {
+    test('fromJson', () {
+      expect(
+        UnionDefaultFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
+        UnionDefaultFallback.first(42),
+      );
+
+      expect(
+        UnionDefaultFallback.fromJson(<String, dynamic>{
+          'runtimeType': 'third',
+          'a': 10,
+        }),
+        UnionDefaultFallback(10),
+      );
+
+      expect(
+        UnionDefaultFallback.fromJson(<String, dynamic>{
+          'a': 55,
+        }),
+        UnionDefaultFallback(55),
+      );
+    });
+  });
+
   group('Freezed.unionValueCase', () {
     test('FreezedUnionCase.pascal fromJson', () {
       expect(
