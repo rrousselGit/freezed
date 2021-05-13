@@ -285,6 +285,13 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       );
     }
 
+    if (configs.fallbackUnion != null && result.none((c) => c.isFallback)) {
+      throw InvalidGenerationSourceError(
+        'Fallback union was specified but no ${configs.fallbackUnion} constructor exists.',
+        element: element,
+      );
+    }
+
     return result;
   }
 
@@ -371,9 +378,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         configs['union_key']?.toString() ??
         'runtimeType';
 
-    final fallbackUnion =
-        annotation.getField('fallbackUnion')?.toStringValue() ??
-            configs['fallback_union']?.toString();
+    final fallbackUnion = annotation.getField('fallbackUnion')?.toStringValue();
 
     FreezedUnionCase unionValueCase;
     final fromConfig = configs['union_value_case']?.toString();

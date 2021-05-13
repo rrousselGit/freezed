@@ -1,4 +1,5 @@
 import 'package:freezed/src/templates/parameter_template.dart';
+import 'package:collection/collection.dart';
 
 import '../models.dart';
 
@@ -37,12 +38,12 @@ class FromJson {
         ''';
       }).join();
 
+      // TODO(rrousselGit): update logic once https://github.com/rrousselGit/freezed/pull/370 lands
       var defaultCase = 'throw FallThroughError();';
-      if (constructors.any((element) => element.isFallback)) {
-        final fallbackConstructor =
-            constructors.singleWhere((element) => element.isFallback);
+      final fallbackConstructor =
+          constructors.singleWhereOrNull((element) => element.isFallback);
+      if (fallbackConstructor != null) {
         defaultCase =
-  // TODO(rrousselGit): update logic once https://github.com/rrousselGit/freezed/pull/370 lands
             'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(json);';
       }
 

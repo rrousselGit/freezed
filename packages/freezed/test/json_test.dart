@@ -148,6 +148,13 @@ Future<void> main() async {
       );
 
       expect(
+        UnionFallback.fromJson(<String, dynamic>{
+          'a': 55,
+        }),
+        UnionFallback.fallback(55),
+      );
+
+      expect(
           () => CustomUnionValue.fromJson(<String, dynamic>{
                 'runtimeType': 'third',
                 'a': 10,
@@ -172,6 +179,13 @@ Future<void> main() async {
           'a': 10,
         }),
         UnionDefaultFallback(10),
+      );
+
+      expect(
+        UnionDefaultFallback.fromJson(<String, dynamic>{
+          'a': 55,
+        }),
+        UnionDefaultFallback(55),
       );
     });
   });

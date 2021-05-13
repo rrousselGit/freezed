@@ -154,6 +154,21 @@ class _Manual implements ManualFactory {
   }
 }
 
+@ShouldThrow('Fallback union was specified but no fallback constructor exists.')
+@Freezed(fallbackUnion: 'fallback')
+class FallbackUnionMissing {
+  factory FallbackUnionMissing.first() = _First;
+  factory FallbackUnionMissing.second() = _Second;
+}
+
+class _First implements FallbackUnionMissing {
+  _First();
+}
+
+class _Second implements FallbackUnionMissing {
+  _Second();
+}
+
 @ShouldThrow(
   'Marked ManualFactory2 with @freezed, but freezed has nothing to generate',
 )
