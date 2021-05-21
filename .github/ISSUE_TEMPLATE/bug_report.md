@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: There is a problem in how provider behaves
+about: There is a problem in how Freezed behaves
 title: ""
 labels: bug, needs triage
 ---
