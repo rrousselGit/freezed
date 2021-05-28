@@ -10,6 +10,9 @@ targets:
           include:
             - test/integration/*
             - test/integration/**/*
+      json_serializable:
+        options:
+          disallow_unrecognized_keys: true
 
 builders:
   freezed:

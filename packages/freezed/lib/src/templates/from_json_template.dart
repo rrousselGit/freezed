@@ -48,7 +48,9 @@ class FromJson {
       }
 
       content = '''
-        switch (json['$unionKey'] as String) {
+        final type = (json.remove('$unionKey')) as String;
+
+        switch (type) {
           $cases
           default:
             $defaultCase
