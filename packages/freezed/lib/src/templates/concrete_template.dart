@@ -349,6 +349,10 @@ extension DefaultValue on ParameterElement {
   bool get hasJsonKey {
     return const TypeChecker.fromRuntime(JsonKey).hasAnnotationOf(this);
   }
+
+  bool get hasJsonConverter {
+    return const TypeChecker.fromRuntime(JsonConverter).hasAnnotationOf(this);
+  }
 }
 
 String? parseTypeSource(VariableElement element) {
