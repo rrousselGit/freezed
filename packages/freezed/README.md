@@ -123,7 +123,14 @@ This installs three packages:
 
 ## Run the generator
 
-Like most code-generators, [Freezed] will need you to both import the annotation ([meta])
+To run the code generator you have two possibilities:
+
+- If your package depends on Flutter:
+  - `flutter pub run build_runner build`
+- If your package _does not_ depend on Flutter:
+  - `dart pub run build_runner build`
+
+Note that like most code-generators, [Freezed] will need you to both import the annotation ([meta])
 and use the `part` keyword on the top of your files.
 
 As such, a file that wants to use [Freezed] will start with:
@@ -156,10 +163,6 @@ class Union with _$Union {
 }
 ```
 
-From there, to run the code generator, you have two possibilities:
-
-- `flutter pub run build_runner build`, if your package depends on Flutter
-- `pub run build_runner build` otherwise
 
 ## Ignore lint warnings on generated files
 
