@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
-// Regression test for https://github.com/rrousselGit/freezed/issues/3358
+// Regression test for https://github.com/rrousselGit/freezed/issues/358
 @freezed
 class Regression358 with _$Regression358 {
   const factory Regression358({
