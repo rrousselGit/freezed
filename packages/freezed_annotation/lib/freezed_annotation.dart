@@ -127,6 +127,7 @@ class Freezed {
   ///     "b": 42
   ///   }
   /// ]
+  /// ```
   final String? fallbackUnion;
 }
 
@@ -304,6 +305,7 @@ class With {
 ///     "b": 42
 ///   }
 /// ]
+/// ```
 class FreezedUnionValue {
   const FreezedUnionValue(this.value);
 
