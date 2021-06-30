@@ -1073,6 +1073,31 @@ which would update the previous json to:
 ]
 ```
 
+An enum can also be used as a union value, optionally using the `JsonValue`
+annotation to override the value string:
+
+```dart
+enum MyResponseType {
+  @JsonValue('Default') defaultResponse,
+  @JsonValue('SpecialCase') specialCase,
+  @JsonValue('Error') error,
+}
+
+@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
+abstract class MyResponse with _$MyResponse {
+  @FreezedUnionValue(MyResponseType.defaultResponse)
+  const factory MyResponse(String a) = MyResponseData;
+
+  @FreezedUnionValue(MyResponseType.specialCase)
+  const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+
+  @FreezedUnionValue(MyResponseType.error)
+  const factory MyResponse.error(String message) = MyResponseError;
+
+  // ...
+}
+```
+
 If you want to customize key and value for all the classes, you can specify it inside your
 `build.yaml` file, for example:
 
