@@ -127,6 +127,7 @@ class Freezed {
   ///     "b": 42
   ///   }
   /// ]
+  /// ```
   final String? fallbackUnion;
 }
 
@@ -304,6 +305,7 @@ class With {
 ///     "b": 42
 ///   }
 /// ]
+///```
 ///
 /// An enum can also be used as a union value, optionally using the [JsonValue]
 /// annotation to override the value string:
