@@ -3,6 +3,7 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:matcher/matcher.dart';
 import 'package:test/test.dart';
 
@@ -154,12 +155,19 @@ Future<void> main() async {
         UnionFallback.fallback(55),
       );
 
-      expect(
-          () => CustomUnionValue.fromJson(<String, dynamic>{
-                'runtimeType': 'third',
-                'a': 10,
-              }),
-          throwsA(const TypeMatcher<FallThroughError>()));
+      final invalidUnionTypeValueJson = <String, dynamic>{
+        'runtimeType': 'third',
+        'a': 10,
+      };
+      expect(() => CustomUnionValue.fromJson(invalidUnionTypeValueJson),
+          throwsA(isA<CheckedFromJsonException>()));
+      try {
+        CustomUnionValue.fromJson(invalidUnionTypeValueJson);
+      } on CheckedFromJsonException catch (e) {
+        expect(e.key, 'runtimeType');
+        expect(e.map, invalidUnionTypeValueJson);
+        expect(e.className, 'CustomUnionValue');
+      }
     });
   });
 
@@ -393,14 +401,24 @@ Future<void> main() async {
   });
 
   test('throws if runtimeType matches nothing', () {
-    expect(
-      () => Json.fromJson(<String, dynamic>{}),
-      throwsA(isA<FallThroughError>()),
-    );
-    expect(
-      () => Json.fromJson(<String, dynamic>{'runtimeType': 'unknown'}),
-      throwsA(isA<FallThroughError>()),
-    );
+    Map<String, dynamic> json;
+
+    void check() {
+      expect(
+          () => Json.fromJson(json), throwsA(isA<CheckedFromJsonException>()));
+      try {
+        Json.fromJson(json);
+      } on CheckedFromJsonException catch (e) {
+        expect(e.key, 'runtimeType');
+        expect(e.map, json);
+        expect(e.className, 'Json');
+      }
+    }
+
+    json = <String, dynamic>{};
+    check();
+    json = <String, dynamic>{'runtimeType': 'unknown'};
+    check();
   });
 
   test('fromJson', () {
