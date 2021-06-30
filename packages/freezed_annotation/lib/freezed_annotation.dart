@@ -304,10 +304,31 @@ class With {
 ///     "b": 42
 ///   }
 /// ]
+///
+/// An enum can also be used as a union value, optionally using the [JsonValue]
+/// annotation to override the value string:
+///
+/// ```dart
+/// enum MyResponseType { defaultResponse, @JsonValue('SpecialCase') specialCase }
+///
+/// @freezed
+/// class MyResponse with _$MyResponse {
+///   @FreezedUnionValue(MyResponseType.default)
+///   const factory MyResponse(String a) = MyResponseData;
+///
+///   @FreezedUnionValue(MyResponseType.specialCase)
+///   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
+///
+///   factory MyResponse.fromJson(Map<String, dynamic> json) => _$MyResponseFromJson(json);
+/// }
+/// ```
 class FreezedUnionValue {
   const FreezedUnionValue(this.value);
 
-  final String value;
+  /// The value to use to identify the union type.
+  ///
+  /// This must be either a [String] or enum.
+  final Object value;
 }
 
 /// Options for automatic union values renaming.
