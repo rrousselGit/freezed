@@ -106,6 +106,22 @@ Future<void> main() async {
         }),
         CustomUnionValue.second(21),
       );
+
+      expect(
+        CustomUnionValue.fromJson(<String, dynamic>{
+          'runtimeType': 'third',
+          'a': 10,
+        }),
+        CustomUnionValue.third(10),
+      );
+
+      expect(
+        CustomUnionValue.fromJson(<String, dynamic>{
+          'runtimeType': 'FOURTH',
+          'a': 5,
+        }),
+        CustomUnionValue.fourth(5),
+      );
     });
 
     test('toJson', () {
@@ -117,6 +133,16 @@ Future<void> main() async {
       expect(
         CustomUnionValue.second(21).toJson(),
         <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
+      );
+
+      expect(
+        CustomUnionValue.third(10).toJson(),
+        <String, dynamic>{'runtimeType': 'third', 'a': 10},
+      );
+
+      expect(
+        CustomUnionValue.fourth(5).toJson(),
+        <String, dynamic>{'runtimeType': 'FOURTH', 'a': 5},
       );
     });
   });
@@ -156,7 +182,7 @@ Future<void> main() async {
 
       expect(
           () => CustomUnionValue.fromJson(<String, dynamic>{
-                'runtimeType': 'third',
+                'runtimeType': 'fifth',
                 'a': 10,
               }),
           throwsA(const TypeMatcher<FallThroughError>()));
