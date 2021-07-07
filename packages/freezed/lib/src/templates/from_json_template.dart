@@ -34,7 +34,7 @@ class FromJson {
 
         return '''
         case '$caseName':
-          return $concreteName$genericParameters.fromJson(json);
+          return $concreteName$genericParameters.fromJson(_json);
         ''';
       }).join();
 
@@ -48,7 +48,10 @@ class FromJson {
       }
 
       content = '''
-        switch (json['$unionKey'] as String) {
+        final _json = <String, dynamic>{...json};
+        final type = _json.remove('$unionKey') as String;
+
+        switch (type) {
           $cases
           default:
             $defaultCase

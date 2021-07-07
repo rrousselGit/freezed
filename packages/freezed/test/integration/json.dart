@@ -152,6 +152,140 @@ class UnionValueCaseSnake with _$UnionValueCaseSnake {
       _$UnionValueCaseSnakeFromJson(json);
 }
 
+@Freezed(unionKey: 'ty"\'pe')
+class UnrecognizedKeysFancyCustomKey with _$UnrecognizedKeysFancyCustomKey {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysFancyCustomKey.first(int a) =
+      _UnrecognizedKeysFancyCustomKeyFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysFancyCustomKey.second(int a) =
+      _UnrecognizedKeysFancyCustomKeySecond;
+
+  factory UnrecognizedKeysFancyCustomKey.fromJson(Map<String, dynamic> json) =>
+      _$UnrecognizedKeysFancyCustomKeyFromJson(json);
+}
+
+@Freezed(unionKey: r'$type')
+class UnrecognizedKeysRawCustomKey with _$UnrecognizedKeysRawCustomKey {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysRawCustomKey.first(int a) =
+      _UnrecognizedKeysRawCustomKeyFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysRawCustomKey.second(int a) =
+      _UnrecognizedKeysRawCustomKeySecond;
+
+  factory UnrecognizedKeysRawCustomKey.fromJson(Map<String, dynamic> json) =>
+      _$UnrecognizedKeysRawCustomKeyFromJson(json);
+}
+
+@Freezed(unionKey: 'type')
+class UnrecognizedKeysCustomKey with _$UnrecognizedKeysCustomKey {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysCustomKey.first(int a) =
+      _UnrecognizedKeysCustomKeyFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysCustomKey.second(int a) =
+      _UnrecognizedKeysCustomKeySecond;
+
+  factory UnrecognizedKeysCustomKey.fromJson(Map<String, dynamic> json) =>
+      _$UnrecognizedKeysCustomKeyFromJson(json);
+}
+
+@freezed
+class UnrecognizedKeysCustomUnionValue with _$UnrecognizedKeysCustomUnionValue {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysCustomUnionValue.first(int a) =
+      _UnrecognizedKeysCustomUnionValueFirst;
+
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  @FreezedUnionValue('SECOND')
+  const factory UnrecognizedKeysCustomUnionValue.second(int a) =
+      UnrecognizedKeys_CustomUnionValueSecond;
+
+  factory UnrecognizedKeysCustomUnionValue.fromJson(
+          Map<String, dynamic> json) =>
+      _$UnrecognizedKeysCustomUnionValueFromJson(json);
+}
+
+@Freezed(fallbackUnion: 'fallback')
+class UnrecognizedKeysUnionFallback with _$UnrecognizedKeysUnionFallback {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionFallback.first(int a) =
+      _UnrecognizedKeysUnionFallbackFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionFallback.second(int a) =
+      _UnrecognizedKeysUnionFallbackSecond;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionFallback.fallback(int a) =
+      _UnrecognizedKeysUnionFallbackFallback;
+
+  factory UnrecognizedKeysUnionFallback.fromJson(Map<String, dynamic> json) =>
+      _$UnrecognizedKeysUnionFallbackFromJson(json);
+}
+
+@Freezed(fallbackUnion: 'default')
+class UnrecognizedKeysUnionDefaultFallback
+    with _$UnrecognizedKeysUnionDefaultFallback {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionDefaultFallback(int a) =
+      _UnrecognizedKeysUnionDefaultFallback;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionDefaultFallback.first(int a) =
+      _UnrecognizedKeysUnionDefaultFallbackFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionDefaultFallback.second(int a) =
+      _UnrecognizedKeysUnionDefaultFallbackSecond;
+
+  factory UnrecognizedKeysUnionDefaultFallback.fromJson(
+          Map<String, dynamic> json) =>
+      _$UnrecognizedKeysUnionDefaultFallbackFromJson(json);
+}
+
+@Freezed(unionValueCase: FreezedUnionCase.pascal)
+class UnrecognizedKeysUnionValueCasePascal
+    with _$UnrecognizedKeysUnionValueCasePascal {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionValueCasePascal.first(int a) =
+      _UnrecognizedKeysUnionValueCasePascalFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionValueCasePascal.secondValue(int a) =
+      _UnrecognizedKeysUnionValueCasePascalSecondValue;
+
+  factory UnrecognizedKeysUnionValueCasePascal.fromJson(
+          Map<String, dynamic> json) =>
+      _$UnrecognizedKeysUnionValueCasePascalFromJson(json);
+}
+
+@Freezed(unionValueCase: FreezedUnionCase.kebab)
+class UnrecognizedKeysUnionValueCaseKebab
+    with _$UnrecognizedKeysUnionValueCaseKebab {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionValueCaseKebab.first(int a) =
+      _UnrecognizedKeysUnionValueCaseKebabFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionValueCaseKebab.secondValue(int a) =
+      _UnrecognizedKeysUnionValueCaseKebabSecondValue;
+
+  factory UnrecognizedKeysUnionValueCaseKebab.fromJson(
+          Map<String, dynamic> json) =>
+      _$UnrecognizedKeysUnionValueCaseKebabFromJson(json);
+}
+
+@Freezed(unionValueCase: FreezedUnionCase.snake)
+class UnrecognizedKeysUnionValueCaseSnake
+    with _$UnrecognizedKeysUnionValueCaseSnake {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionValueCaseSnake.first(int a) =
+      _UnrecognizedKeysUnionValueCaseSnakeFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionValueCaseSnake.secondValue(int a) =
+      _UnrecognizedKeysUnionValueCaseSnakeSecondValue;
+
+  factory UnrecognizedKeysUnionValueCaseSnake.fromJson(
+          Map<String, dynamic> json) =>
+      _$UnrecognizedKeysUnionValueCaseSnakeFromJson(json);
+}
+
 @freezed
 class Single with _$Single {
   const factory Single(int a) = _Single;

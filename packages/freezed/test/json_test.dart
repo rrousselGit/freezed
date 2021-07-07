@@ -282,6 +282,201 @@ Future<void> main() async {
     });
   });
 
+  group('JsonSerializable.disallowUnrecognizedKeys', () {
+    group('FreezedUnionValue', () {
+      test('fromJson', () {
+        expect(
+          UnrecognizedKeysCustomUnionValue.fromJson(<String, dynamic>{
+            'runtimeType': 'first',
+            'a': 42,
+          }),
+          UnrecognizedKeysCustomUnionValue.first(42),
+        );
+
+        expect(
+          UnrecognizedKeysCustomUnionValue.fromJson(<String, dynamic>{
+            'runtimeType': 'SECOND',
+            'a': 21,
+          }),
+          UnrecognizedKeysCustomUnionValue.second(21),
+        );
+      });
+
+      test('toJson', () {
+        expect(
+          UnrecognizedKeysCustomUnionValue.first(42).toJson(),
+          <String, dynamic>{'runtimeType': 'first', 'a': 42},
+        );
+
+        expect(
+          UnrecognizedKeysCustomUnionValue.second(21).toJson(),
+          <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
+        );
+      });
+    });
+
+    group('FreezedUnionFallback', () {
+      test('fromJson', () {
+        expect(
+          UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{
+            'runtimeType': 'first',
+            'a': 42,
+          }),
+          UnrecognizedKeysUnionFallback.first(42),
+        );
+
+        expect(
+          UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{
+            'runtimeType': 'second',
+            'a': 21,
+          }),
+          UnrecognizedKeysUnionFallback.second(21),
+        );
+
+        expect(
+          UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{
+            'runtimeType': 'third',
+            'a': 10,
+          }),
+          UnrecognizedKeysUnionFallback.fallback(10),
+        );
+
+        expect(
+          UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{
+            'a': 55,
+          }),
+          UnrecognizedKeysUnionFallback.fallback(55),
+        );
+
+        expect(
+            () => UnrecognizedKeysCustomUnionValue.fromJson(<String, dynamic>{
+                  'runtimeType': 'third',
+                  'a': 10,
+                }),
+            throwsA(const TypeMatcher<FallThroughError>()));
+      });
+    });
+
+    group('FreezedUnionFallback default', () {
+      test('fromJson', () {
+        expect(
+          UnrecognizedKeysUnionDefaultFallback.fromJson(<String, dynamic>{
+            'runtimeType': 'first',
+            'a': 42,
+          }),
+          UnrecognizedKeysUnionDefaultFallback.first(42),
+        );
+
+        expect(
+          UnrecognizedKeysUnionDefaultFallback.fromJson(<String, dynamic>{
+            'runtimeType': 'third',
+            'a': 10,
+          }),
+          UnrecognizedKeysUnionDefaultFallback(10),
+        );
+
+        expect(
+          UnrecognizedKeysUnionDefaultFallback.fromJson(<String, dynamic>{
+            'a': 55,
+          }),
+          UnrecognizedKeysUnionDefaultFallback(55),
+        );
+      });
+    });
+
+    group('Freezed.unionValueCase', () {
+      test('FreezedUnionCase.pascal fromJson', () {
+        expect(
+          UnrecognizedKeysUnionValueCasePascal.fromJson(<String, dynamic>{
+            'runtimeType': 'First',
+            'a': 42,
+          }),
+          UnrecognizedKeysUnionValueCasePascal.first(42),
+        );
+
+        expect(
+          UnrecognizedKeysUnionValueCasePascal.fromJson(<String, dynamic>{
+            'runtimeType': 'SecondValue',
+            'a': 21,
+          }),
+          UnrecognizedKeysUnionValueCasePascal.secondValue(21),
+        );
+      });
+
+      test('FreezedUnionCase.pascal toJson', () {
+        expect(
+          UnrecognizedKeysUnionValueCasePascal.first(42).toJson(),
+          <String, dynamic>{'runtimeType': 'First', 'a': 42},
+        );
+
+        expect(
+          UnrecognizedKeysUnionValueCasePascal.secondValue(21).toJson(),
+          <String, dynamic>{'runtimeType': 'SecondValue', 'a': 21},
+        );
+      });
+
+      test('FreezedUnionCase.kebab fromJson', () {
+        expect(
+          UnrecognizedKeysUnionValueCaseKebab.fromJson(<String, dynamic>{
+            'runtimeType': 'first',
+            'a': 42,
+          }),
+          UnrecognizedKeysUnionValueCaseKebab.first(42),
+        );
+
+        expect(
+          UnrecognizedKeysUnionValueCaseKebab.fromJson(<String, dynamic>{
+            'runtimeType': 'second-value',
+            'a': 21,
+          }),
+          UnrecognizedKeysUnionValueCaseKebab.secondValue(21),
+        );
+      });
+
+      test('FreezedUnionCase.kebab toJson', () {
+        expect(
+          UnrecognizedKeysUnionValueCaseKebab.first(42).toJson(),
+          <String, dynamic>{'runtimeType': 'first', 'a': 42},
+        );
+
+        expect(
+          UnrecognizedKeysUnionValueCaseKebab.secondValue(21).toJson(),
+          <String, dynamic>{'runtimeType': 'second-value', 'a': 21},
+        );
+      });
+
+      test('FreezedUnionCase.snake fromJson', () {
+        expect(
+          UnrecognizedKeysUnionValueCaseSnake.fromJson(<String, dynamic>{
+            'runtimeType': 'first',
+            'a': 42,
+          }),
+          UnrecognizedKeysUnionValueCaseSnake.first(42),
+        );
+
+        expect(
+          UnrecognizedKeysUnionValueCaseSnake.fromJson(<String, dynamic>{
+            'runtimeType': 'second_value',
+            'a': 21,
+          }),
+          UnrecognizedKeysUnionValueCaseSnake.secondValue(21),
+        );
+      });
+
+      test('FreezedUnionCase.snake toJson', () {
+        expect(
+          UnrecognizedKeysUnionValueCaseSnake.first(42).toJson(),
+          <String, dynamic>{'runtimeType': 'first', 'a': 42},
+        );
+
+        expect(
+          UnrecognizedKeysUnionValueCaseSnake.secondValue(21).toJson(),
+          <String, dynamic>{'runtimeType': 'second_value', 'a': 21},
+        );
+      });
+    });
+  });
+
   test('class decorators are applied on the generated class', () {
     expect(
       ClassDecorator('Complex name').toJson(),
