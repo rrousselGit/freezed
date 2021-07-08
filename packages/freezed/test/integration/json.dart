@@ -90,12 +90,25 @@ class CustomKey with _$CustomKey {
       _$CustomKeyFromJson(json);
 }
 
+enum CustomUnionValues {
+  third,
+
+  @JsonValue('FOURTH')
+  fourth,
+}
+
 @freezed
 class CustomUnionValue with _$CustomUnionValue {
   const factory CustomUnionValue.first(int a) = _CustomUnionValueFirst;
 
   @FreezedUnionValue('SECOND')
   const factory CustomUnionValue.second(int a) = _CustomUnionValueSecond;
+
+  @FreezedUnionValue(CustomUnionValues.third)
+  const factory CustomUnionValue.third(int a) = _CustomUnionValueThird;
+
+  @FreezedUnionValue(CustomUnionValues.fourth)
+  const factory CustomUnionValue.fourth(int a) = _CustomUnionValueFourth;
 
   factory CustomUnionValue.fromJson(Map<String, dynamic> json) =>
       _$CustomUnionValueFromJson(json);

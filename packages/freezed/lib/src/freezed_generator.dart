@@ -618,7 +618,55 @@ extension on ConstructorElement {
     final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
         .firstAnnotationOf(this, throwOnUnresolved: false);
     if (annotation != null) {
-      return annotation.getField('value')!.toStringValue()!;
+      final valueField = annotation.getField('value')!;
+
+      // If a [String] is being used as a value, just use it literally.
+      final stringValue = valueField.toStringValue();
+      if (stringValue != null) return stringValue;
+
+      // Otherwise, confirm that the value is an enum.
+      final enumElement = valueField.type?.element;
+      if (enumElement == null ||
+          enumElement is! ClassElement ||
+          !enumElement.isEnum) {
+        throw InvalidGenerationSourceError(
+          'The union value of the "${enclosingElement.displayName}.$displayName" '
+          'constructor is not a valid type; it must be a String or enum!',
+        );
+      }
+
+      // Locate the value's field element in the enum element.
+      // Skip the synthetic fields to save time.
+      final enumValueElement = enumElement.fields.singleWhere((fieldElement) =>
+          !fieldElement.isSynthetic &&
+          fieldElement.computeConstantValue() == valueField);
+
+      // Use the enum's JSON value, calculated in the same way as
+      // json_serializable.
+      final enumValueAnnotation = const TypeChecker.fromRuntime(JsonValue)
+          .firstAnnotationOf(enumValueElement);
+
+      // If the enum value declaration has no [JsonValue] annotation, use its
+      // name as json_serializable does.
+      final defaultValue = enumValueElement.name;
+      if (enumValueAnnotation == null) return defaultValue;
+
+      // If the JsonValue value is a String, use it literally.
+      // If it's an integer, convert it to a String.
+      // It it's `null`, act as if it's not annotated by using the default
+      // name-based value.
+      // If the type is unrecognised, throw an exception.
+      // TODO: json_serializable uses integer values literally instead of converting them to [String]s. Do we need to implement this behaviour?
+      final reader = ConstantReader(enumValueAnnotation);
+      final valueReader = reader.read('value');
+      if (valueReader.isString) return valueReader.stringValue;
+      if (valueReader.isInt) return valueReader.intValue.toString();
+      if (valueReader.isNull) return defaultValue;
+      throw InvalidGenerationSourceError(
+        'The `JsonValue` annotation on the enum union value used for the '
+        '"${enclosingElement.displayName}.$displayName" constructor does not '
+        'have a value type of String, int, or null.',
+      );
     }
 
     final constructorName = isDefaultConstructor(this) ? 'default' : name;
