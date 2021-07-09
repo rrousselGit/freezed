@@ -148,12 +148,68 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _properties {
     return constructor.impliedProperties.map((p) {
-      var res = '@override $p';
-      if (p.defaultValueSource != null && !p.hasJsonKey) {
-        res = '@JsonKey(defaultValue: ${p.defaultValueSource}) $res';
+      var pString = '$p';
+      if (p.defaultValueSource != null) {
+        if (!p.hasJsonKey) {
+          pString = '@JsonKey(defaultValue: ${p.defaultValueSource}) $p';
+        } else {
+          //add default value in json annotation if missing
+          if (!_isParamPresentInAnnotation(
+            annotation: p.jsonKeyAnnotation!,
+            param: 'defaultValue',
+          )) {
+            pString = _updateAnnotation(
+              str: pString,
+              annotationName: 'JsonKey',
+              paramName: 'defaultValue',
+              paramValue: p.defaultValueSource!,
+            );
+          }
+        }
       }
+      var res = '@override $pString';
       return res;
     }).join();
+  }
+
+  bool _isParamPresentInAnnotation({
+    required String annotation,
+    required String param,
+  }) {
+    if (annotation.isEmpty || param.isEmpty) return false;
+
+    final quotesPattern = "('''|\"\"\"|['\"])[\\s\\S]*?(?<!\\\\)\\1";
+    final paramPattern = '.*$param\\s*:.*';
+
+    final quotesExp = RegExp(quotesPattern);
+    final paramExp = RegExp(paramPattern);
+
+    final filteredAnnotation =
+        annotation.replaceAllMapped(quotesExp, (_) => '');
+
+    return paramExp.hasMatch(filteredAnnotation);
+  }
+
+  String _updateAnnotation({
+    required String str,
+    required String annotationName,
+    required String paramName,
+    required String paramValue,
+  }) {
+    if (str.isEmpty || annotationName.isEmpty || paramName.isEmpty) {
+      return '';
+    }
+
+    final quotesPattern = "('''|\"\"\"|['\"])[\\s\\S]*?(?<!\\\\)\\1";
+    final annotationPattern = '@$annotationName\\(';
+
+    final quotesExp = RegExp(quotesPattern);
+    final annotationExp = RegExp(annotationPattern);
+
+    return str.splitMapJoin(quotesExp, onNonMatch: (nm) {
+      return nm.replaceFirstMapped(
+          annotationExp, (m) => '@$annotationName($paramName: $paramValue, ');
+    });
   }
 
   String get _isConst {
@@ -348,6 +404,23 @@ extension DefaultValue on ParameterElement {
 
   bool get hasJsonKey {
     return const TypeChecker.fromRuntime(JsonKey).hasAnnotationOf(this);
+  }
+}
+
+extension JsonKeyAnnotation on ParameterElement {
+  /// Returns the `@JsonKey` annotation,
+  /// or `null` if no `@JsonKey` are specified.
+  String? get jsonKeyAnnotation {
+    const matcher = TypeChecker.fromRuntime(JsonKey);
+
+    for (final meta in metadata) {
+      final obj = meta.computeConstantValue()!;
+      if (matcher.isExactlyType(obj.type!)) {
+        final source = meta.toSource();
+        return source;
+      }
+    }
+    return null;
   }
 }
 

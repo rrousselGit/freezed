@@ -37,6 +37,7 @@ class Property {
         element: element,
       );
     }
+    final jsonKey = element.hasJsonKey ? element.jsonKeyAnnotation : null;
 
     return Property(
       name: element.name,
@@ -45,7 +46,7 @@ class Property {
       decorators: parseDecorators(element.metadata),
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
-    );
+    ).._jsonKeyAnnotation = jsonKey;
   }
 
   final String type;
@@ -54,6 +55,9 @@ class Property {
   final String? defaultValueSource;
   final bool hasJsonKey;
   final String doc;
+
+  String? _jsonKeyAnnotation;
+  String? get jsonKeyAnnotation => _jsonKeyAnnotation;
 
   @override
   String toString() {
