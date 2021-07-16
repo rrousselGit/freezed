@@ -142,7 +142,9 @@ String _unionPrototype(
     );
 
     if (constructor.isDefault) {
-      buffer..write(template)..write(',');
+      buffer
+        ..write(template)
+        ..write(',');
     } else {
       parameters.add(template);
     }
