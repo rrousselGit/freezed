@@ -6,42 +6,35 @@ part of 'main.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$Data _$_$DataFromJson(Map<String, dynamic> json) {
-  return _$Data(
-    json['value'] as int,
-  );
-}
+_$Data _$$DataFromJson(Map<String, dynamic> json) => _$Data(
+      json['value'] as int,
+    );
 
-Map<String, dynamic> _$_$DataToJson(_$Data instance) => <String, dynamic>{
+Map<String, dynamic> _$$DataToJson(_$Data instance) => <String, dynamic>{
       'value': instance.value,
     };
 
-_$Loading _$_$LoadingFromJson(Map<String, dynamic> json) {
-  return _$Loading();
-}
+_$Loading _$$LoadingFromJson(Map<String, dynamic> json) => _$Loading();
 
-Map<String, dynamic> _$_$LoadingToJson(_$Loading instance) =>
+Map<String, dynamic> _$$LoadingToJson(_$Loading instance) =>
     <String, dynamic>{};
 
-_$ErrorDetails _$_$ErrorDetailsFromJson(Map<String, dynamic> json) {
-  return _$ErrorDetails(
-    json['message'] as String?,
-  );
-}
+_$ErrorDetails _$$ErrorDetailsFromJson(Map<String, dynamic> json) =>
+    _$ErrorDetails(
+      json['message'] as String?,
+    );
 
-Map<String, dynamic> _$_$ErrorDetailsToJson(_$ErrorDetails instance) =>
+Map<String, dynamic> _$$ErrorDetailsToJson(_$ErrorDetails instance) =>
     <String, dynamic>{
       'message': instance.message,
     };
 
-_$Complex _$_$ComplexFromJson(Map<String, dynamic> json) {
-  return _$Complex(
-    json['a'] as int,
-    json['b'] as String,
-  );
-}
+_$Complex _$$ComplexFromJson(Map<String, dynamic> json) => _$Complex(
+      json['a'] as int,
+      json['b'] as String,
+    );
 
-Map<String, dynamic> _$_$ComplexToJson(_$Complex instance) => <String, dynamic>{
+Map<String, dynamic> _$$ComplexToJson(_$Complex instance) => <String, dynamic>{
       'a': instance.a,
       'b': instance.b,
     };
