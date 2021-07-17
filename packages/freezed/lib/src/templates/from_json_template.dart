@@ -39,7 +39,8 @@ class FromJson {
       }).join();
 
       // TODO(rrousselGit): update logic once https://github.com/rrousselGit/freezed/pull/370 lands
-      var defaultCase = 'throw FallThroughError();';
+      var defaultCase =
+          'throw CheckedFromJsonException(json, \'$unionKey\', \'$name\', \'Invalid union type "\${json[\'$unionKey\']}"!\');';
       final fallbackConstructor =
           constructors.singleWhereOrNull((element) => element.isFallback);
       if (fallbackConstructor != null) {

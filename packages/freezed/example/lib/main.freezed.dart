@@ -175,7 +175,8 @@ Union _$UnionFromJson(Map<String, dynamic> json) {
       return Complex.fromJson(json);
 
     default:
-      throw FallThroughError();
+      throw CheckedFromJsonException(json, 'custom-key', 'Union',
+          'Invalid union type "${json['custom-key']}"!');
   }
 }
 
