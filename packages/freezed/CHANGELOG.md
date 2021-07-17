@@ -1,4 +1,4 @@
-# [Unreleased]
+# 0.14.3
 
 - Upgraded to support json_serializable 5.0.0
 - `fromJson` now throws `CheckedFromJsonException` if it fails to deserialize an object.
