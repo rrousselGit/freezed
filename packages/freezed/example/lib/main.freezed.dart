@@ -302,7 +302,7 @@ class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 class _$Data with DiagnosticableTreeMixin implements Data {
   const _$Data(this.value);
 
-  factory _$Data.fromJson(Map<String, dynamic> json) => _$_$DataFromJson(json);
+  factory _$Data.fromJson(Map<String, dynamic> json) => _$$DataFromJson(json);
 
   @override
   final int value;
@@ -391,7 +391,7 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$DataToJson(this)..['custom-key'] = 'Default';
+    return _$$DataToJson(this)..['custom-key'] = 'Default';
   }
 }
 
@@ -427,7 +427,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
   factory _$Loading.fromJson(Map<String, dynamic> json) =>
-      _$_$LoadingFromJson(json);
+      _$$LoadingFromJson(json);
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -502,7 +502,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$LoadingToJson(this)..['custom-key'] = 'Loading';
+    return _$$LoadingToJson(this)..['custom-key'] = 'Loading';
   }
 }
 
@@ -549,7 +549,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   const _$ErrorDetails([this.message]);
 
   factory _$ErrorDetails.fromJson(Map<String, dynamic> json) =>
-      _$_$ErrorDetailsFromJson(json);
+      _$$ErrorDetailsFromJson(json);
 
   @override
   final String? message;
@@ -638,7 +638,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$ErrorDetailsToJson(this)..['custom-key'] = 'Error';
+    return _$$ErrorDetailsToJson(this)..['custom-key'] = 'Error';
   }
 }
 
@@ -694,7 +694,7 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
   const _$Complex(this.a, this.b);
 
   factory _$Complex.fromJson(Map<String, dynamic> json) =>
-      _$_$ComplexFromJson(json);
+      _$$ComplexFromJson(json);
 
   @override
   final int a;
@@ -790,7 +790,7 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$ComplexToJson(this)..['custom-key'] = 'Complex';
+    return _$$ComplexToJson(this)..['custom-key'] = 'Complex';
   }
 }
 

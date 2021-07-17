@@ -39,6 +39,10 @@ class Concrete {
     return '_\$${constructor.redirectedName}';
   }
 
+  String get nonPrivateConcreteName {
+    return '\$${constructor.redirectedName}';
+  }
+
   @override
   String toString() {
     final asserts = constructor.asserts.join(',');
@@ -167,7 +171,7 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _concreteFromJsonConstructor {
     if (!shouldGenerateJson) return '';
-    return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${concreteName}FromJson(json);';
+    return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${nonPrivateConcreteName}FromJson(json);';
   }
 
   String get _toJson {
@@ -180,7 +184,7 @@ ${copyWith.abstractCopyWithGetter}
     return '''
 @override
 Map<String, dynamic> toJson() {
-  return _\$${concreteName}ToJson(this)$addRuntimeType;
+  return _\$${nonPrivateConcreteName}ToJson(this)$addRuntimeType;
 }''';
   }
 

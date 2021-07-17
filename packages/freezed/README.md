@@ -72,6 +72,7 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 - [Index](#index)
 - [How to use](#how-to-use)
   - [Install](#install)
+    - [Disabling invalid_annotation_target warning and warning in generates files.](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
   - [Run the generator](#run-the-generator)
   - [Ignore lint warnings on generated files](#ignore-lint-warnings-on-generated-files)
 - [The features](#the-features)
@@ -120,6 +121,28 @@ This installs three packages:
 - [build_runner](https://pub.dev/packages/build_runner), the tool to run code-generators
 - [freezed], the code generator
 - [freezed_annotation](https://pub.dev/packages/freezed_annotation), a package containing annotations for [freezed].
+
+
+### Disabling invalid_annotation_target warning and warning in generates files.
+
+If you plan on using [Frezed] in combination with `json_serializable`, recent
+versions of `json_serializable` and `meta` may require you to disable the
+`invalid_annotation_target` warning.
+
+Similarly, you may want to disable warnings that happen in `.freezed.dart`, if any.
+
+To do that, you can add the following to an `analysis_options.yaml`
+at the root of your project:
+
+```yaml
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    invalid_annotation_target: ignore
+```
+
 
 ## Run the generator
 

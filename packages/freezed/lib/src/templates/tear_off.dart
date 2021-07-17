@@ -46,7 +46,9 @@ const $outputName = _\$${name}TearOff();
       final parameters = StringBuffer();
       for (final positional
           in targetConstructor.parameters.allPositionalParameters) {
-        parameters..write(positional.name)..write(',');
+        parameters
+          ..write(positional.name)
+          ..write(',');
       }
       for (final named in targetConstructor.parameters.namedParameters) {
         parameters
