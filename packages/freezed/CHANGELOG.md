@@ -1,3 +1,7 @@
+# [Unreleased]
+
+Upgraded to support json_serializable 5.0.0
+
 # 0.14.2
 
 - Added the ability to specify a fallback constructor when deserializing unions (thanks to @Brazol)
