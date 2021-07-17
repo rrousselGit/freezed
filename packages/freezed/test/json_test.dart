@@ -164,7 +164,7 @@ Future<void> main() async {
         throwsA(
           isA<CheckedFromJsonException>()
               .having((e) => e.key, 'key', 'runtimeType')
-              .having((e) => e.map, 'map', 'invalidUnionTypeValueJson')
+              .having((e) => e.map, 'map', invalidUnionTypeValueJson)
               .having((e) => e.className, 'className', 'CustomUnionValue'),
         ),
       );
