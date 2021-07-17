@@ -11,7 +11,7 @@ class Regression409 with _$Regression409 {
   }) = _Regression409;
 
   factory Regression409.fromJson(Map<String, dynamic> json) =>
-      _$Regression351FromJson(json);
+      _$Regression409FromJson(json);
 }
 
 // regression test for https://github.com/rrousselGit/freezed/issues/351
