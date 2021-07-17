@@ -159,15 +159,15 @@ Future<void> main() async {
         'runtimeType': 'third',
         'a': 10,
       };
-      expect(() => CustomUnionValue.fromJson(invalidUnionTypeValueJson),
-          throwsA(isA<CheckedFromJsonException>()));
-      try {
-        CustomUnionValue.fromJson(invalidUnionTypeValueJson);
-      } on CheckedFromJsonException catch (e) {
-        expect(e.key, 'runtimeType');
-        expect(e.map, invalidUnionTypeValueJson);
-        expect(e.className, 'CustomUnionValue');
-      }
+      expect(
+        () => CustomUnionValue.fromJson(invalidUnionTypeValueJson),
+        throwsA(
+          isA<CheckedFromJsonException>()
+              .having((e) => e.key, 'key', 'runtimeType')
+              .having((e) => e.map, 'map', 'invalidUnionTypeValueJson')
+              .having((e) => e.className, 'className', 'CustomUnionValue'),
+        ),
+      );
     });
   });
 
@@ -401,24 +401,27 @@ Future<void> main() async {
   });
 
   test('throws if runtimeType matches nothing', () {
-    Map<String, dynamic> json;
+    const emptyJson = <String, dynamic>{};
+    expect(
+      () => Json.fromJson(emptyJson),
+      throwsA(
+        isA<CheckedFromJsonException>()
+            .having((e) => e.key, 'key', 'runtimeType')
+            .having((e) => e.map, 'map', emptyJson)
+            .having((e) => e.className, 'className', 'Json'),
+      ),
+    );
 
-    void check() {
-      expect(
-          () => Json.fromJson(json), throwsA(isA<CheckedFromJsonException>()));
-      try {
-        Json.fromJson(json);
-      } on CheckedFromJsonException catch (e) {
-        expect(e.key, 'runtimeType');
-        expect(e.map, json);
-        expect(e.className, 'Json');
-      }
-    }
-
-    json = <String, dynamic>{};
-    check();
-    json = <String, dynamic>{'runtimeType': 'unknown'};
-    check();
+    const unknownTypeJson = <String, dynamic>{'runtimeType': 'unknown'};
+    expect(
+      () => Json.fromJson(unknownTypeJson),
+      throwsA(
+        isA<CheckedFromJsonException>()
+            .having((e) => e.key, 'key', 'runtimeType')
+            .having((e) => e.map, 'map', unknownTypeJson)
+            .having((e) => e.className, 'className', 'Json'),
+      ),
+    );
   });
 
   test('fromJson', () {
