@@ -132,7 +132,8 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     for (final parameter in constructor.parameters) {
       if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
           parameter.isOptional &&
-          parameter.defaultValue == null) {
+          parameter.defaultValue == null &&
+          !parameter.type.isDynamic) {
         final ctorName =
             constructor.isDefaultConstructor ? '' : '.${constructor.name}';
 

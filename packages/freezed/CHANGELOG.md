@@ -1,3 +1,9 @@
+# 0.14.3
+
+- Upgraded to support json_serializable 5.0.0
+- `fromJson` now throws `CheckedFromJsonException` if it fails to deserialize an object.
+- fixed an issue where optional dynamic keys were not allowed.
+
 # 0.14.2
 
 - Added the ability to specify a fallback constructor when deserializing unions (thanks to @Brazol)
