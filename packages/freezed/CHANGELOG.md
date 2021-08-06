@@ -1,4 +1,4 @@
-[Unreleased]
+# 0.14.4
 
 - Now supports types coming from `import '...' as alias;`
 - generated .freezed.dart are now excluded from code coverage reports.
