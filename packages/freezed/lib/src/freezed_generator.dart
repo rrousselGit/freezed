@@ -518,13 +518,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     ]) {
       for (final method in type.methods) {
         if (method.name == 'toString') {
-          print('has toString ${element.name}');
           return true;
         }
       }
     }
 
-    print('no toString ${element.name}');
     return false;
   }
 
