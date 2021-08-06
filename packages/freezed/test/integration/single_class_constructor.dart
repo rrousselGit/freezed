@@ -9,7 +9,7 @@ abstract class DataEvent {}
 
 // Regression test for https://github.com/rrousselGit/freezed/issues/131
 @freezed
-abstract class Regression131 extends DataEvent with _$Regression131 {
+class Regression131 extends DataEvent with _$Regression131 {
   factory Regression131(String versionName) = _Regression131;
 }
 
