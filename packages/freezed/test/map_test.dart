@@ -10,7 +10,7 @@ import 'common.dart';
 import 'integration/multiple_constructors.dart';
 
 void main() {
-  group('when', () {
+  group('map', () {
     test('works with no default ctr', () {
       var value = NoDefault.first('a');
 
@@ -275,7 +275,7 @@ void main() {
     });
   });
 
-  group('maybeWhen', () {
+  group('maybeMap', () {
     test('returns callback result if has callback', () {
       var value = SwitchTest('a');
 
@@ -409,6 +409,25 @@ void main() {
           .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
+    });
+  });
+
+  group('mapOrNull', () {
+    test('has all parameters as optional', () {
+      expect(NoDefault.first('a').mapOrNull(), null);
+      expect(NoDefault.second('a').mapOrNull(), null);
+    });
+
+    test('calls callback on matching constructor', () {
+      expect(
+        NoDefault.first('a').mapOrNull(first: (v) => v),
+        NoDefault.first('a'),
+      );
+
+      expect(
+        NoDefault.second('a').mapOrNull(second: (v) => v),
+        NoDefault.second('a'),
+      );
     });
   });
 }

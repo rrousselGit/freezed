@@ -80,8 +80,10 @@ $_operatorEqualMethod
 $_hashCodeMethod
 ${copyWith.concreteCopyWithGetter}
 $_when
+$_whenOrNull
 $_maybeWhen
 $_map
+$_mapOrNull
 $_maybeMap
 $_toJson
 }
@@ -233,6 +235,16 @@ ${mapPrototype(allConstructors, genericsParameter)} {
 }''';
   }
 
+  String get _mapOrNull {
+    if (!allConstructors.shouldGenerateUnions) return '';
+
+    return '''
+@override
+${mapOrNullPrototype(allConstructors, genericsParameter)} {
+  return ${constructor.callbackName}?.call(this);
+}''';
+  }
+
   String get _maybeWhen {
     if (!allConstructors.shouldGenerateUnions) return '';
 
@@ -267,6 +279,23 @@ ${maybeWhenPrototype(allConstructors)} {
 @override
 ${whenPrototype(allConstructors)} {
   return ${constructor.callbackName}($callbackParameters);
+}''';
+  }
+
+  String get _whenOrNull {
+    if (!allConstructors.shouldGenerateUnions) return '';
+
+    var callbackParameters = constructor.impliedProperties.map((e) {
+      if (allConstructors.any((c) => c.callbackName == e.name)) {
+        return 'this.${e.name}';
+      }
+      return e.name;
+    }).join(',');
+
+    return '''
+@override
+${whenOrNullPrototype(allConstructors)} {
+  return ${constructor.callbackName}?.call($callbackParameters);
 }''';
   }
 
