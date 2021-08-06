@@ -1,3 +1,7 @@
+[Unreleased]
+
+- generated .freezed.dart are now excluded from code coverage reports.
+
 # 0.14.3
 
 - Upgraded to support json_serializable 5.0.0
