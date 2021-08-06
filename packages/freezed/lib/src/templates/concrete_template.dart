@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -373,5 +374,10 @@ String? parseTypeSource(VariableElement element) {
       type = match?.group(1) ?? type;
     }
   }
-  return type;
+
+  return resolveFullTypeStringFrom(
+    element.library!,
+    element.type,
+    withNullability: true,
+  );
 }
