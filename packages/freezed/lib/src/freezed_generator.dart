@@ -10,6 +10,7 @@ import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/tear_off.dart';
 import 'package:freezed/src/tools/recursive_import_locator.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:freezed/src/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
@@ -305,7 +306,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         type = object.getField('stringType')!;
         yield type.toStringValue()!;
       } else {
-        yield type.toTypeValue()!.getDisplayString(withNullability: false);
+        yield resolveFullTypeStringFrom(
+          constructor.library,
+          type.toTypeValue()!,
+          withNullability: false,
+        );
       }
     }
   }
@@ -321,7 +326,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         type = object.getField('stringType')!;
         yield type.toStringValue()!;
       } else {
-        yield type.toTypeValue()!.getDisplayString(withNullability: false);
+        yield resolveFullTypeStringFrom(
+          constructor.library,
+          type.toTypeValue()!,
+          withNullability: false,
+        );
       }
     }
   }
