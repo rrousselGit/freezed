@@ -66,6 +66,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     return Data(
       name: element.name,
       shouldUseExtends: shouldUseExtends,
+      hasCustomToString: _hasCustomToString(element),
       needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
@@ -241,7 +242,6 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
           unionValue: constructor.unionValue(configs.unionValueCase),
-          canOverrideToString: _canOverrideToString(element),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
           impliedProperties: [
@@ -479,6 +479,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     for (final constructor in data.constructors) {
       yield Concrete(
         name: data.name,
+        hasCustomToString: data.hasCustomToString,
         unionKey: data.unionKey,
         shouldUseExtends: data.shouldUseExtends,
         hasDiagnosticable: globalData.hasDiagnostics,
@@ -508,8 +509,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     );
   }
 
-  bool _canOverrideToString(ClassElement element) {
-    MethodElement? userDefinedToString;
+  bool _hasCustomToString(ClassElement element) {
     for (final type in [
       element,
       ...element.allSupertypes
@@ -518,13 +518,14 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     ]) {
       for (final method in type.methods) {
         if (method.name == 'toString') {
-          userDefinedToString = method;
-          break;
+          print('has toString ${element.name}');
+          return true;
         }
       }
     }
 
-    return userDefinedToString == null;
+    print('no toString ${element.name}');
+    return false;
   }
 
   String _fullName(ClassElement element, ConstructorElement constructor) {

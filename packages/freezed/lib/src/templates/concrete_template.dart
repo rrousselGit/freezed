@@ -15,6 +15,7 @@ class Concrete {
     required this.genericsParameter,
     required this.allConstructors,
     required this.hasDiagnosticable,
+    required this.hasCustomToString,
     required this.shouldGenerateJson,
     required this.commonProperties,
     required this.name,
@@ -29,6 +30,7 @@ class Concrete {
   final GenericsParameterTemplate genericsParameter;
   final List<Property> commonProperties;
   final bool hasDiagnosticable;
+  final bool hasCustomToString;
   final bool shouldGenerateJson;
   final String name;
   final String unionKey;
@@ -138,7 +140,7 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _concreteSuper {
     final mixins = [
-      if (hasDiagnosticable) 'DiagnosticableTreeMixin',
+      if (hasDiagnosticable && !hasCustomToString) 'DiagnosticableTreeMixin',
       ...constructor.withDecorators,
     ];
     final mixinsStr = mixins.isEmpty ? '' : ' with ${mixins.join(',')}';
@@ -189,7 +191,7 @@ Map<String, dynamic> toJson() {
   }
 
   String get _debugFillProperties {
-    if (!hasDiagnosticable) return '';
+    if (!hasDiagnosticable || hasCustomToString) return '';
 
     final diagnostics = [
       for (final e in constructor.impliedProperties)
@@ -278,7 +280,7 @@ ${whenPrototype(allConstructors)} {
   }
 
   String get _toStringMethod {
-    if (!constructor.canOverrideToString) return '';
+    if (hasCustomToString) return '';
 
     final parameters = hasDiagnosticable
         ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'

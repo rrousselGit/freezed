@@ -8,6 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('overriding toString works', () {
+    // regression test for https://github.com/rrousselGit/freezed/issues/221
+
+    expect(
+      diagnosticable.ToString().toString(),
+      'MyToString()',
+    );
+  });
+
   test('use Diagnosticable instead of toString if possible', () {
     var value = diagnosticable.Example<int>(42, '21');
 

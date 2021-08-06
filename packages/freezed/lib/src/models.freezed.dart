@@ -164,6 +164,7 @@ class __$CloneablePropertyCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_CloneableProperty implements _CloneableProperty {
   _$_CloneableProperty(
       {required this.name,
@@ -267,7 +268,6 @@ class _$ConstructorDetailsTearOff {
       required List<String> implementsDecorators,
       required List<String> decorators,
       required List<CloneableProperty> cloneableProperties,
-      required bool canOverrideToString,
       required List<AssertTemplate> asserts}) {
     return _ConstructorDetails(
       name: name,
@@ -284,7 +284,6 @@ class _$ConstructorDetailsTearOff {
       implementsDecorators: implementsDecorators,
       decorators: decorators,
       cloneableProperties: cloneableProperties,
-      canOverrideToString: canOverrideToString,
       asserts: asserts,
     );
   }
@@ -310,7 +309,6 @@ mixin _$ConstructorDetails {
   List<String> get decorators => throw _privateConstructorUsedError;
   List<CloneableProperty> get cloneableProperties =>
       throw _privateConstructorUsedError;
-  bool get canOverrideToString => throw _privateConstructorUsedError;
   List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -338,7 +336,6 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       List<String> implementsDecorators,
       List<String> decorators,
       List<CloneableProperty> cloneableProperties,
-      bool canOverrideToString,
       List<AssertTemplate> asserts});
 }
 
@@ -367,7 +364,6 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
     Object? implementsDecorators = freezed,
     Object? decorators = freezed,
     Object? cloneableProperties = freezed,
-    Object? canOverrideToString = freezed,
     Object? asserts = freezed,
   }) {
     return _then(_value.copyWith(
@@ -427,10 +423,6 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.cloneableProperties
           : cloneableProperties // ignore: cast_nullable_to_non_nullable
               as List<CloneableProperty>,
-      canOverrideToString: canOverrideToString == freezed
-          ? _value.canOverrideToString
-          : canOverrideToString // ignore: cast_nullable_to_non_nullable
-              as bool,
       asserts: asserts == freezed
           ? _value.asserts
           : asserts // ignore: cast_nullable_to_non_nullable
@@ -461,7 +453,6 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
       List<String> implementsDecorators,
       List<String> decorators,
       List<CloneableProperty> cloneableProperties,
-      bool canOverrideToString,
       List<AssertTemplate> asserts});
 }
 
@@ -492,7 +483,6 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
     Object? implementsDecorators = freezed,
     Object? decorators = freezed,
     Object? cloneableProperties = freezed,
-    Object? canOverrideToString = freezed,
     Object? asserts = freezed,
   }) {
     return _then(_ConstructorDetails(
@@ -552,10 +542,6 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.cloneableProperties
           : cloneableProperties // ignore: cast_nullable_to_non_nullable
               as List<CloneableProperty>,
-      canOverrideToString: canOverrideToString == freezed
-          ? _value.canOverrideToString
-          : canOverrideToString // ignore: cast_nullable_to_non_nullable
-              as bool,
       asserts: asserts == freezed
           ? _value.asserts
           : asserts // ignore: cast_nullable_to_non_nullable
@@ -565,6 +551,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_ConstructorDetails extends _ConstructorDetails {
   _$_ConstructorDetails(
       {required this.name,
@@ -581,7 +568,6 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       required this.implementsDecorators,
       required this.decorators,
       required this.cloneableProperties,
-      required this.canOverrideToString,
       required this.asserts})
       : super._();
 
@@ -614,13 +600,11 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   @override
   final List<CloneableProperty> cloneableProperties;
   @override
-  final bool canOverrideToString;
-  @override
   final List<AssertTemplate> asserts;
 
   @override
   String toString() {
-    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, canOverrideToString: $canOverrideToString, asserts: $asserts)';
+    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, asserts: $asserts)';
   }
 
   @override
@@ -668,9 +652,6 @@ class _$_ConstructorDetails extends _ConstructorDetails {
             (identical(other.cloneableProperties, cloneableProperties) ||
                 const DeepCollectionEquality()
                     .equals(other.cloneableProperties, cloneableProperties)) &&
-            (identical(other.canOverrideToString, canOverrideToString) ||
-                const DeepCollectionEquality()
-                    .equals(other.canOverrideToString, canOverrideToString)) &&
             (identical(other.asserts, asserts) ||
                 const DeepCollectionEquality().equals(other.asserts, asserts)));
   }
@@ -692,7 +673,6 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       const DeepCollectionEquality().hash(implementsDecorators) ^
       const DeepCollectionEquality().hash(decorators) ^
       const DeepCollectionEquality().hash(cloneableProperties) ^
-      const DeepCollectionEquality().hash(canOverrideToString) ^
       const DeepCollectionEquality().hash(asserts);
 
   @JsonKey(ignore: true)
@@ -717,7 +697,6 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       required List<String> implementsDecorators,
       required List<String> decorators,
       required List<CloneableProperty> cloneableProperties,
-      required bool canOverrideToString,
       required List<AssertTemplate> asserts}) = _$_ConstructorDetails;
   _ConstructorDetails._() : super._();
 
@@ -751,8 +730,6 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   List<CloneableProperty> get cloneableProperties =>
       throw _privateConstructorUsedError;
   @override
-  bool get canOverrideToString => throw _privateConstructorUsedError;
-  @override
   List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
@@ -772,7 +749,8 @@ class _$DataTearOff {
       required List<ConstructorDetails> constructors,
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
-      required bool shouldUseExtends}) {
+      required bool shouldUseExtends,
+      required bool hasCustomToString}) {
     return _Data(
       name: name,
       needsJsonSerializable: needsJsonSerializable,
@@ -782,6 +760,7 @@ class _$DataTearOff {
       genericsDefinitionTemplate: genericsDefinitionTemplate,
       genericsParameterTemplate: genericsParameterTemplate,
       shouldUseExtends: shouldUseExtends,
+      hasCustomToString: hasCustomToString,
     );
   }
 }
@@ -802,6 +781,7 @@ mixin _$Data {
   GenericsParameterTemplate get genericsParameterTemplate =>
       throw _privateConstructorUsedError;
   bool get shouldUseExtends => throw _privateConstructorUsedError;
+  bool get hasCustomToString => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
@@ -819,7 +799,8 @@ abstract class $DataCopyWith<$Res> {
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
-      bool shouldUseExtends});
+      bool shouldUseExtends,
+      bool hasCustomToString});
 }
 
 /// @nodoc
@@ -840,6 +821,7 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
     Object? genericsDefinitionTemplate = freezed,
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
+    Object? hasCustomToString = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -874,6 +856,10 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
           ? _value.shouldUseExtends
           : shouldUseExtends // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasCustomToString: hasCustomToString == freezed
+          ? _value.hasCustomToString
+          : hasCustomToString // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -891,7 +877,8 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
-      bool shouldUseExtends});
+      bool shouldUseExtends,
+      bool hasCustomToString});
 }
 
 /// @nodoc
@@ -913,6 +900,7 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
     Object? genericsDefinitionTemplate = freezed,
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
+    Object? hasCustomToString = freezed,
   }) {
     return _then(_Data(
       name: name == freezed
@@ -947,11 +935,16 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
           ? _value.shouldUseExtends
           : shouldUseExtends // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasCustomToString: hasCustomToString == freezed
+          ? _value.hasCustomToString
+          : hasCustomToString // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_Data implements _Data {
   _$_Data(
       {required this.name,
@@ -961,7 +954,8 @@ class _$_Data implements _Data {
       required this.constructors,
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
-      required this.shouldUseExtends})
+      required this.shouldUseExtends,
+      required this.hasCustomToString})
       : assert(constructors.isNotEmpty);
 
   @override
@@ -980,10 +974,12 @@ class _$_Data implements _Data {
   final GenericsParameterTemplate genericsParameterTemplate;
   @override
   final bool shouldUseExtends;
+  @override
+  final bool hasCustomToString;
 
   @override
   String toString() {
-    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
+    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString)';
   }
 
   @override
@@ -1016,7 +1012,10 @@ class _$_Data implements _Data {
                     genericsParameterTemplate)) &&
             (identical(other.shouldUseExtends, shouldUseExtends) ||
                 const DeepCollectionEquality()
-                    .equals(other.shouldUseExtends, shouldUseExtends)));
+                    .equals(other.shouldUseExtends, shouldUseExtends)) &&
+            (identical(other.hasCustomToString, hasCustomToString) ||
+                const DeepCollectionEquality()
+                    .equals(other.hasCustomToString, hasCustomToString)));
   }
 
   @override
@@ -1029,7 +1028,8 @@ class _$_Data implements _Data {
       const DeepCollectionEquality().hash(constructors) ^
       const DeepCollectionEquality().hash(genericsDefinitionTemplate) ^
       const DeepCollectionEquality().hash(genericsParameterTemplate) ^
-      const DeepCollectionEquality().hash(shouldUseExtends);
+      const DeepCollectionEquality().hash(shouldUseExtends) ^
+      const DeepCollectionEquality().hash(hasCustomToString);
 
   @JsonKey(ignore: true)
   @override
@@ -1046,7 +1046,8 @@ abstract class _Data implements Data {
       required List<ConstructorDetails> constructors,
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
-      required bool shouldUseExtends}) = _$_Data;
+      required bool shouldUseExtends,
+      required bool hasCustomToString}) = _$_Data;
 
   @override
   String get name => throw _privateConstructorUsedError;
@@ -1067,6 +1068,8 @@ abstract class _Data implements Data {
       throw _privateConstructorUsedError;
   @override
   bool get shouldUseExtends => throw _privateConstructorUsedError;
+  @override
+  bool get hasCustomToString => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;
@@ -1169,6 +1172,7 @@ class __$GlobalDataCopyWithImpl<$Res> extends _$GlobalDataCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_GlobalData implements _GlobalData {
   _$_GlobalData({required this.hasJson, required this.hasDiagnostics});
 
