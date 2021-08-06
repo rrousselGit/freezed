@@ -368,10 +368,10 @@ String? parseTypeSource(VariableElement element) {
         element.type.isDynamic &&
         element.type.element!.isSynthetic) {
       final match = RegExp(r'(\w+\??)\s+$').firstMatch(source);
-      type = match?.group(1);
+      return match?.group(1);
     } else if (element.type.element != null) {
       final match = RegExp(r'(\w+<.+?>\??)\s+$').firstMatch(source);
-      type = match?.group(1) ?? type;
+      return match?.group(1) ?? type;
     }
   }
 
