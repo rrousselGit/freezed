@@ -3,6 +3,8 @@
 - Now supports types coming from `import '...' as alias;`
 - generated .freezed.dart are now excluded from code coverage reports.
 - if `toString` is overriden, Freezed no-longer applies `Diagnosticable` which would break the `toString` (fixes #221)
+- Add `union.whenOrNull` and `union.mapOrNull`, similar to `maybeWhen` and `maybeMap`
+  but instead of an `orElse` they return `null`.
 
 # 0.14.3
 
