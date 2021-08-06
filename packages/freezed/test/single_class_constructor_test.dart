@@ -40,6 +40,13 @@ Future<void> main() async {
     );
   }
 
+  test('Regression 131', () {
+    expect(
+      Regression131('foo').toString(),
+      'Regression131(versionName: foo)',
+    );
+  });
+
   test('Regression358', () {
     expect(
       Regression358.withSpecificColor(),
