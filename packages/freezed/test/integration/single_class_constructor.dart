@@ -5,7 +5,15 @@ import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
-// Regression test for https://github.com/rrousselGit/freezed/issues/3358
+abstract class DataEvent {}
+
+// Regression test for https://github.com/rrousselGit/freezed/issues/131
+@freezed
+class Regression131 extends DataEvent with _$Regression131 {
+  factory Regression131(String versionName) = _Regression131;
+}
+
+// Regression test for https://github.com/rrousselGit/freezed/issues/358
 @freezed
 class Regression358 with _$Regression358 {
   const factory Regression358({

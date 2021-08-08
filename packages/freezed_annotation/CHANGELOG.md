@@ -1,3 +1,7 @@
+# 0.14.3
+
+Upgraded to support last json_annotation version
+
 # 0.14.2
 
 - Added the ability to specify a fallback constructor when deserializing unions (thanks to @Brazol)

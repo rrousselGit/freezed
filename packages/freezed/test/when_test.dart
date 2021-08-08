@@ -410,4 +410,23 @@ void main() {
       expect(errorResult.errors, isNotEmpty);
     });
   });
+
+  group('whenOrNull', () {
+    test('has all parameters as optional', () {
+      expect(NoDefault.first('a').whenOrNull(), null);
+      expect(NoDefault.second('a').whenOrNull(), null);
+    });
+
+    test('calls callback on matching constructor', () {
+      expect(
+        NoDefault.first('a').whenOrNull(first: (v) => v),
+        'a',
+      );
+
+      expect(
+        NoDefault.second('a').whenOrNull(second: (v) => v),
+        'a',
+      );
+    });
+  });
 }

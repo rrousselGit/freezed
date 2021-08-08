@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'diagnosticable.dart';
 
@@ -418,4 +419,69 @@ class _$_ConcreteExample<T> extends _ConcreteExample<T>
 abstract class _ConcreteExample<T> extends ConcreteExample<T> {
   factory _ConcreteExample() = _$_ConcreteExample<T>;
   _ConcreteExample._() : super._();
+}
+
+/// @nodoc
+class _$ToStringTearOff {
+  const _$ToStringTearOff();
+
+  _ToString call() {
+    return _ToString();
+  }
+}
+
+/// @nodoc
+const $ToString = _$ToStringTearOff();
+
+/// @nodoc
+mixin _$ToString {}
+
+/// @nodoc
+abstract class $ToStringCopyWith<$Res> {
+  factory $ToStringCopyWith(ToString value, $Res Function(ToString) then) =
+      _$ToStringCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$ToStringCopyWithImpl<$Res> implements $ToStringCopyWith<$Res> {
+  _$ToStringCopyWithImpl(this._value, this._then);
+
+  final ToString _value;
+  // ignore: unused_field
+  final $Res Function(ToString) _then;
+}
+
+/// @nodoc
+abstract class _$ToStringCopyWith<$Res> {
+  factory _$ToStringCopyWith(_ToString value, $Res Function(_ToString) then) =
+      __$ToStringCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$ToStringCopyWithImpl<$Res> extends _$ToStringCopyWithImpl<$Res>
+    implements _$ToStringCopyWith<$Res> {
+  __$ToStringCopyWithImpl(_ToString _value, $Res Function(_ToString) _then)
+      : super(_value, (v) => _then(v as _ToString));
+
+  @override
+  _ToString get _value => super._value as _ToString;
+}
+
+/// @nodoc
+
+class _$_ToString extends _ToString {
+  _$_ToString() : super._();
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _ToString);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class _ToString extends ToString {
+  factory _ToString() = _$_ToString;
+  _ToString._() : super._();
 }

@@ -5,6 +5,9 @@ analyzer:
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
+  errors:
+    invalid_annotation_target: ignore
+
 linter:
   rules:
     # - public_member_api_docs

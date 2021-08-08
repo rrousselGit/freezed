@@ -17,3 +17,14 @@ class ConcreteExample<T> with _$ConcreteExample<T> {
   ConcreteExample._();
   factory ConcreteExample() = _ConcreteExample<T>;
 }
+
+@freezed
+class ToString with _$ToString {
+  ToString._();
+  factory ToString() = _ToString;
+
+  @override
+  String toString() {
+    return 'MyToString()';
+  }
+}

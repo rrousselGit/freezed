@@ -1,3 +1,17 @@
+# 0.14.4
+
+- Now supports types coming from `import '...' as alias;`
+- generated .freezed.dart are now excluded from code coverage reports.
+- if `toString` is overriden, Freezed no-longer applies `Diagnosticable` which would break the `toString` (fixes #221)
+- Add `union.whenOrNull` and `union.mapOrNull`, similar to `maybeWhen` and `maybeMap`
+  but instead of an `orElse` they return `null`.
+
+# 0.14.3
+
+- Upgraded to support json_serializable 5.0.0
+- `fromJson` now throws `CheckedFromJsonException` if it fails to deserialize an object.
+- fixed an issue where optional dynamic keys were not allowed.
+
 # 0.14.2
 
 - Added the ability to specify a fallback constructor when deserializing unions (thanks to @Brazol)

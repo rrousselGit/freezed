@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -15,6 +16,7 @@ class Concrete {
     required this.genericsParameter,
     required this.allConstructors,
     required this.hasDiagnosticable,
+    required this.hasCustomToString,
     required this.shouldGenerateJson,
     required this.commonProperties,
     required this.name,
@@ -29,6 +31,7 @@ class Concrete {
   final GenericsParameterTemplate genericsParameter;
   final List<Property> commonProperties;
   final bool hasDiagnosticable;
+  final bool hasCustomToString;
   final bool shouldGenerateJson;
   final String name;
   final String unionKey;
@@ -37,6 +40,10 @@ class Concrete {
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
+  }
+
+  String get nonPrivateConcreteName {
+    return '\$${constructor.redirectedName}';
   }
 
   @override
@@ -73,8 +80,10 @@ $_operatorEqualMethod
 $_hashCodeMethod
 ${copyWith.concreteCopyWithGetter}
 $_when
+$_whenOrNull
 $_maybeWhen
 $_map
+$_mapOrNull
 $_maybeMap
 $_toJson
 }
@@ -134,7 +143,7 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _concreteSuper {
     final mixins = [
-      if (hasDiagnosticable) 'DiagnosticableTreeMixin',
+      if (hasDiagnosticable && !hasCustomToString) 'DiagnosticableTreeMixin',
       ...constructor.withDecorators,
     ];
     final mixinsStr = mixins.isEmpty ? '' : ' with ${mixins.join(',')}';
@@ -167,7 +176,7 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _concreteFromJsonConstructor {
     if (!shouldGenerateJson) return '';
-    return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${concreteName}FromJson(json);';
+    return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${nonPrivateConcreteName}FromJson(json);';
   }
 
   String get _toJson {
@@ -180,12 +189,12 @@ ${copyWith.abstractCopyWithGetter}
     return '''
 @override
 Map<String, dynamic> toJson() {
-  return _\$${concreteName}ToJson(this)$addRuntimeType;
+  return _\$${nonPrivateConcreteName}ToJson(this)$addRuntimeType;
 }''';
   }
 
   String get _debugFillProperties {
-    if (!hasDiagnosticable) return '';
+    if (!hasDiagnosticable || hasCustomToString) return '';
 
     final diagnostics = [
       for (final e in constructor.impliedProperties)
@@ -226,6 +235,16 @@ ${mapPrototype(allConstructors, genericsParameter)} {
 }''';
   }
 
+  String get _mapOrNull {
+    if (!allConstructors.shouldGenerateUnions) return '';
+
+    return '''
+@override
+${mapOrNullPrototype(allConstructors, genericsParameter)} {
+  return ${constructor.callbackName}?.call(this);
+}''';
+  }
+
   String get _maybeWhen {
     if (!allConstructors.shouldGenerateUnions) return '';
 
@@ -263,6 +282,23 @@ ${whenPrototype(allConstructors)} {
 }''';
   }
 
+  String get _whenOrNull {
+    if (!allConstructors.shouldGenerateUnions) return '';
+
+    var callbackParameters = constructor.impliedProperties.map((e) {
+      if (allConstructors.any((c) => c.callbackName == e.name)) {
+        return 'this.${e.name}';
+      }
+      return e.name;
+    }).join(',');
+
+    return '''
+@override
+${whenOrNullPrototype(allConstructors)} {
+  return ${constructor.callbackName}?.call($callbackParameters);
+}''';
+  }
+
   String get _abstractProperties {
     return constructor.impliedProperties.map((p) {
       if (commonProperties.any((element) => element.name == p.name)) {
@@ -274,7 +310,7 @@ ${whenPrototype(allConstructors)} {
   }
 
   String get _toStringMethod {
-    if (!constructor.canOverrideToString) return '';
+    if (hasCustomToString) return '';
 
     final parameters = hasDiagnosticable
         ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
@@ -361,11 +397,16 @@ String? parseTypeSource(VariableElement element) {
         element.type.isDynamic &&
         element.type.element!.isSynthetic) {
       final match = RegExp(r'(\w+\??)\s+$').firstMatch(source);
-      type = match?.group(1);
+      return match?.group(1);
     } else if (element.type.element != null) {
       final match = RegExp(r'(\w+<.+?>\??)\s+$').firstMatch(source);
-      type = match?.group(1) ?? type;
+      return match?.group(1) ?? type;
     }
   }
-  return type;
+
+  return resolveFullTypeStringFrom(
+    element.library!,
+    element.type,
+    withNullability: true,
+  );
 }

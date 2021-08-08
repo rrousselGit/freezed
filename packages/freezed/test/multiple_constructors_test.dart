@@ -169,11 +169,48 @@ void main() {
       );
     });
 
+    test('whenOrNull works on unnamed constructors', () {
+      expect(
+        RequiredParams(a: 'a').whenOrNull((a) => 21, second: (_) => 42),
+        21,
+      );
+      expect(
+        RequiredParams.second(a: 'a').whenOrNull(
+          (a) => 21,
+          second: (_) => 42,
+        ),
+        42,
+      );
+
+      expect(
+        RequiredParams(a: 'a').whenOrNull(null, second: (_) => 42),
+        null,
+      );
+      expect(
+        RequiredParams.second(a: 'a').whenOrNull((a) => 21),
+        null,
+      );
+    });
+
     test('map works on unnamed constructors', () {
       expect(RequiredParams(a: 'a').map((a) => 21, second: (_) => 42), 21);
       expect(
         RequiredParams.second(a: 'a').map((a) => 21, second: (_) => 42),
         42,
+      );
+    });
+
+    test('mapOrNull works on unnamed constructors', () {
+      expect(RequiredParams(a: 'a').mapOrNull((a) => 21), 21);
+      expect(
+        RequiredParams.second(a: 'a').mapOrNull((a) => 21, second: (_) => 42),
+        42,
+      );
+
+      expect(RequiredParams(a: 'a').mapOrNull(null), null);
+      expect(
+        RequiredParams.second(a: 'a').mapOrNull(null),
+        null,
       );
     });
 
@@ -219,6 +256,20 @@ void main() {
       await expectLater(res, completion(42));
     });
 
+    test('mapOrNull can use FutureOr', () async {
+      var res = NoDefault.first('a').mapOrNull<FutureOr<int>>(
+        first: (a) => 21,
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').mapOrNull<FutureOr<int>>(
+        second: (b) => Future.value(42),
+      );
+
+      await expectLater(res, completion(42));
+    });
+
     test('map can use FutureOr', () async {
       var res = NoDefault.first('a').map<FutureOr<int>>(
         first: (a) => 21,
@@ -246,6 +297,20 @@ void main() {
       res = NoDefault.second('a').maybeWhen<FutureOr<int>>(
         second: (b) => Future.value(42),
         orElse: () => 21,
+      );
+
+      await expectLater(res, completion(42));
+    });
+
+    test('whenOrNull can use FutureOr', () async {
+      var res = NoDefault.first('a').whenOrNull<FutureOr<int>>(
+        first: (a) => 21,
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').whenOrNull<FutureOr<int>>(
+        second: (b) => Future.value(42),
       );
 
       await expectLater(res, completion(42));

@@ -10,6 +10,7 @@ import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/templates/tear_off.dart';
 import 'package:freezed/src/tools/recursive_import_locator.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:freezed/src/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
@@ -66,6 +67,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     return Data(
       name: element.name,
       shouldUseExtends: shouldUseExtends,
+      hasCustomToString: _hasCustomToString(element),
       needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
@@ -132,7 +134,8 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     for (final parameter in constructor.parameters) {
       if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
           parameter.isOptional &&
-          parameter.defaultValue == null) {
+          parameter.defaultValue == null &&
+          !parameter.type.isDynamic) {
         final ctorName =
             constructor.isDefaultConstructor ? '' : '.${constructor.name}';
 
@@ -240,7 +243,6 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
           unionValue: constructor.unionValue(configs.unionValueCase),
-          canOverrideToString: _canOverrideToString(element),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
           impliedProperties: [
@@ -304,7 +306,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         type = object.getField('stringType')!;
         yield type.toStringValue()!;
       } else {
-        yield type.toTypeValue()!.getDisplayString(withNullability: false);
+        yield resolveFullTypeStringFrom(
+          constructor.library,
+          type.toTypeValue()!,
+          withNullability: false,
+        );
       }
     }
   }
@@ -320,7 +326,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         type = object.getField('stringType')!;
         yield type.toStringValue()!;
       } else {
-        yield type.toTypeValue()!.getDisplayString(withNullability: false);
+        yield resolveFullTypeStringFrom(
+          constructor.library,
+          type.toTypeValue()!,
+          withNullability: false,
+        );
       }
     }
   }
@@ -478,6 +488,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     for (final constructor in data.constructors) {
       yield Concrete(
         name: data.name,
+        hasCustomToString: data.hasCustomToString,
         unionKey: data.unionKey,
         shouldUseExtends: data.shouldUseExtends,
         hasDiagnosticable: globalData.hasDiagnostics,
@@ -507,8 +518,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     );
   }
 
-  bool _canOverrideToString(ClassElement element) {
-    MethodElement? userDefinedToString;
+  bool _hasCustomToString(ClassElement element) {
     for (final type in [
       element,
       ...element.allSupertypes
@@ -517,13 +527,12 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     ]) {
       for (final method in type.methods) {
         if (method.name == 'toString') {
-          userDefinedToString = method;
-          break;
+          return true;
         }
       }
     }
 
-    return userDefinedToString == null;
+    return false;
   }
 
   String _fullName(ClassElement element, ConstructorElement constructor) {

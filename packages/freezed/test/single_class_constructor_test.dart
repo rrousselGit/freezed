@@ -8,6 +8,7 @@ import 'package:matcher/matcher.dart';
 import 'package:test/test.dart';
 
 import 'common.dart';
+import 'integration/alias.dart';
 import 'integration/single_class_constructor.dart';
 import 'nullable_test.dart';
 
@@ -39,6 +40,17 @@ Future<void> main() async {
       }),
     );
   }
+
+  test('Alias', () {
+    expect(Alias(), Alias());
+  });
+
+  test('Regression 131', () {
+    expect(
+      Regression131('foo').toString(),
+      'Regression131(versionName: foo)',
+    );
+  });
 
   test('Regression358', () {
     expect(

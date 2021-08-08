@@ -7,7 +7,7 @@ class EmptyExtends extends Empty with _$EmptyExtends {
   factory EmptyExtends(int value) = _EmptyExtends;
 }
 
-abstract class Empty {
+class Empty {
   const Empty();
 }
 

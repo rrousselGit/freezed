@@ -55,7 +55,6 @@ abstract class ConstructorDetails with _$ConstructorDetails {
     required List<String> implementsDecorators,
     required List<String> decorators,
     required List<CloneableProperty> cloneableProperties,
-    required bool canOverrideToString,
     required List<AssertTemplate> asserts,
   }) = _ConstructorDetails;
 
@@ -76,6 +75,7 @@ abstract class Data with _$Data {
     required GenericsDefinitionTemplate genericsDefinitionTemplate,
     required GenericsParameterTemplate genericsParameterTemplate,
     required bool shouldUseExtends,
+    required bool hasCustomToString,
   }) = _Data;
 }
 

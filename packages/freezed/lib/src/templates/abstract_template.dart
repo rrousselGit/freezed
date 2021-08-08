@@ -33,8 +33,10 @@ mixin _\$$name$genericsDefinition {
 ${abstractProperties.join()}
 
 $_when
+$_whenOrNull
 $_maybeWhen
 $_map
+$_mapOrNull
 $_maybeMap
 $_toJson
 ${copyWith.abstractCopyWithGetter}
@@ -56,6 +58,11 @@ ${copyWith.commonContreteImpl(abstractProperties)}
     return '${whenPrototype(allConstructors)} => throw $privConstUsedErrorVarName;';
   }
 
+  String get _whenOrNull {
+    if (!allConstructors.shouldGenerateUnions) return '';
+    return '${whenOrNullPrototype(allConstructors)} => throw $privConstUsedErrorVarName;';
+  }
+
   String get _maybeWhen {
     if (!allConstructors.shouldGenerateUnions) return '';
     return '${maybeWhenPrototype(allConstructors)} => throw $privConstUsedErrorVarName;';
@@ -64,6 +71,11 @@ ${copyWith.commonContreteImpl(abstractProperties)}
   String get _map {
     if (!allConstructors.shouldGenerateUnions) return '';
     return '${mapPrototype(allConstructors, genericsParameter)} => throw $privConstUsedErrorVarName;';
+  }
+
+  String get _mapOrNull {
+    if (!allConstructors.shouldGenerateUnions) return '';
+    return '${mapOrNullPrototype(allConstructors, genericsParameter)} => throw $privConstUsedErrorVarName;';
   }
 
   String get _maybeMap {

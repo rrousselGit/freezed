@@ -38,7 +38,17 @@ String whenPrototype(List<ConstructorDetails> allConstructors) {
   return _whenPrototype(
     allConstructors,
     areCallbacksRequired: true,
+    isReturnTypeNullable: false,
     name: 'when',
+  );
+}
+
+String whenOrNullPrototype(List<ConstructorDetails> allConstructors) {
+  return _whenPrototype(
+    allConstructors,
+    areCallbacksRequired: false,
+    isReturnTypeNullable: true,
+    name: 'whenOrNull',
   );
 }
 
@@ -46,6 +56,7 @@ String maybeWhenPrototype(List<ConstructorDetails> allConstructors) {
   return _whenPrototype(
     allConstructors,
     areCallbacksRequired: false,
+    isReturnTypeNullable: false,
     name: 'maybeWhen',
   );
 }
@@ -58,7 +69,21 @@ String mapPrototype(
     allConstructors,
     genericParameters,
     areCallbacksRequired: true,
+    isReturnTypeNullable: false,
     name: 'map',
+  );
+}
+
+String mapOrNullPrototype(
+  List<ConstructorDetails> allConstructors,
+  GenericsParameterTemplate genericParameters,
+) {
+  return _mapPrototype(
+    allConstructors,
+    genericParameters,
+    areCallbacksRequired: false,
+    isReturnTypeNullable: true,
+    name: 'mapOrNull',
   );
 }
 
@@ -70,6 +95,7 @@ String maybeMapPrototype(
     allConstructors,
     genericParameters,
     areCallbacksRequired: false,
+    isReturnTypeNullable: false,
     name: 'maybeMap',
   );
 }
@@ -78,11 +104,13 @@ String _mapPrototype(
   List<ConstructorDetails> allConstructors,
   GenericsParameterTemplate genericParameters, {
   required bool areCallbacksRequired,
+  required bool isReturnTypeNullable,
   required String name,
 }) {
   return _unionPrototype(
     allConstructors,
     areCallbacksRequired: areCallbacksRequired,
+    isReturnTypeNullable: isReturnTypeNullable,
     name: name,
     ctor2parameters: (constructor) {
       return ParametersTemplate([
@@ -102,11 +130,13 @@ String _mapPrototype(
 String _whenPrototype(
   List<ConstructorDetails> allConstructors, {
   required bool areCallbacksRequired,
+  required bool isReturnTypeNullable,
   required String name,
 }) {
   return _unionPrototype(
     allConstructors,
     areCallbacksRequired: areCallbacksRequired,
+    isReturnTypeNullable: isReturnTypeNullable,
     name: name,
     ctor2parameters: (constructor) {
       return ParametersTemplate([
@@ -122,11 +152,14 @@ String _whenPrototype(
 String _unionPrototype(
   List<ConstructorDetails> allConstructors, {
   required bool areCallbacksRequired,
+  required bool isReturnTypeNullable,
   required String name,
   required ParametersTemplate Function(ConstructorDetails) ctor2parameters,
 }) {
-  final buffer =
-      StringBuffer('@optionalTypeArgs TResult $name<TResult extends Object?>(');
+  final returnType = isReturnTypeNullable ? 'TResult?' : 'TResult';
+
+  final buffer = StringBuffer(
+      '@optionalTypeArgs $returnType $name<TResult extends Object?>(');
 
   final parameters = <CallbackParameter>[];
   for (final constructor in allConstructors) {
@@ -142,7 +175,9 @@ String _unionPrototype(
     );
 
     if (constructor.isDefault) {
-      buffer..write(template)..write(',');
+      buffer
+        ..write(template)
+        ..write(',');
     } else {
       parameters.add(template);
     }
@@ -153,7 +188,7 @@ String _unionPrototype(
     ..writeAll(parameters, ',')
     ..write(',');
 
-  if (!areCallbacksRequired) {
+  if (!areCallbacksRequired && !isReturnTypeNullable) {
     buffer.write('required TResult orElse(),');
   }
   buffer.write('})');

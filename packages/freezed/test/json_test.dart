@@ -3,6 +3,7 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:matcher/matcher.dart';
 import 'package:test/test.dart';
 
@@ -154,12 +155,19 @@ Future<void> main() async {
         UnionFallback.fallback(55),
       );
 
+      final invalidUnionTypeValueJson = <String, dynamic>{
+        'runtimeType': 'third',
+        'a': 10,
+      };
       expect(
-          () => CustomUnionValue.fromJson(<String, dynamic>{
-                'runtimeType': 'third',
-                'a': 10,
-              }),
-          throwsA(const TypeMatcher<FallThroughError>()));
+        () => CustomUnionValue.fromJson(invalidUnionTypeValueJson),
+        throwsA(
+          isA<CheckedFromJsonException>()
+              .having((e) => e.key, 'key', 'runtimeType')
+              .having((e) => e.map, 'map', invalidUnionTypeValueJson)
+              .having((e) => e.className, 'className', 'CustomUnionValue'),
+        ),
+      );
     });
   });
 
@@ -588,13 +596,26 @@ Future<void> main() async {
   });
 
   test('throws if runtimeType matches nothing', () {
+    const emptyJson = <String, dynamic>{};
     expect(
-      () => Json.fromJson(<String, dynamic>{}),
-      throwsA(isA<FallThroughError>()),
+      () => Json.fromJson(emptyJson),
+      throwsA(
+        isA<CheckedFromJsonException>()
+            .having((e) => e.key, 'key', 'runtimeType')
+            .having((e) => e.map, 'map', emptyJson)
+            .having((e) => e.className, 'className', 'Json'),
+      ),
     );
+
+    const unknownTypeJson = <String, dynamic>{'runtimeType': 'unknown'};
     expect(
-      () => Json.fromJson(<String, dynamic>{'runtimeType': 'unknown'}),
-      throwsA(isA<FallThroughError>()),
+      () => Json.fromJson(unknownTypeJson),
+      throwsA(
+        isA<CheckedFromJsonException>()
+            .having((e) => e.key, 'key', 'runtimeType')
+            .having((e) => e.map, 'map', unknownTypeJson)
+            .having((e) => e.className, 'className', 'Json'),
+      ),
     );
   });
 
