@@ -182,14 +182,14 @@ ${copyWith.abstractCopyWithGetter}
   String get _toJson {
     if (!shouldGenerateJson) return '';
 
-    final addRuntimeType = allConstructors.length > 1
+    final addType = allConstructors.length > 1
         ? "..['$unionKey'] = '${constructor.unionValue}'"
         : '';
 
     return '''
 @override
 Map<String, dynamic> toJson() {
-  return _\$${nonPrivateConcreteName}ToJson(this)$addRuntimeType;
+  return _\$${nonPrivateConcreteName}ToJson(this)$addType;
 }''';
   }
 

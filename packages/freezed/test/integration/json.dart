@@ -163,6 +163,50 @@ class UnionValueCaseSnake with _$UnionValueCaseSnake {
       _$UnionValueCaseSnakeFromJson(json);
 }
 
+@Freezed(unionKey: 'runtimeType')
+class RuntimeTypeKey with _$RuntimeTypeKey {
+  const factory RuntimeTypeKey.first(int a) = _RuntimeTypeKeyFirst;
+  const factory RuntimeTypeKey.second(int a) = _RuntimeTypeKeySecond;
+
+  factory RuntimeTypeKey.fromJson(Map<String, dynamic> json) =>
+      _$RuntimeTypeKeyFromJson(json);
+}
+
+@Freezed(unionKey: r'$runtimeType')
+class RawRuntimeTypeKey with _$RawRuntimeTypeKey {
+  const factory RawRuntimeTypeKey.first(int a) = _RawRuntimeTypeKeyFirst;
+  const factory RawRuntimeTypeKey.second(int a) = _RawRuntimeTypeKeySecond;
+
+  factory RawRuntimeTypeKey.fromJson(Map<String, dynamic> json) =>
+      _$RawRuntimeTypeKeyFromJson(json);
+}
+
+@Freezed(unionKey: 'runtimeType')
+class RuntimeTypeUnrecognizedKeys with _$RuntimeTypeUnrecognizedKeys {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory RuntimeTypeUnrecognizedKeys.first(int a) =
+      _RuntimeTypeUnrecognizedKeysFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory RuntimeTypeUnrecognizedKeys.second(int a) =
+      _RuntimeTypeUnrecognizedKeysSecond;
+
+  factory RuntimeTypeUnrecognizedKeys.fromJson(Map<String, dynamic> json) =>
+      _$RuntimeTypeUnrecognizedKeysFromJson(json);
+}
+
+@Freezed(unionKey: r'$runtimeType')
+class RuntimeTypeRawCustomKey with _$RuntimeTypeRawCustomKey {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory RuntimeTypeRawCustomKey.first(int a) =
+      _RuntimeTypeRawCustomKeyFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory RuntimeTypeRawCustomKey.second(int a) =
+      _RuntimeTypeRawCustomKeySecond;
+
+  factory RuntimeTypeRawCustomKey.fromJson(Map<String, dynamic> json) =>
+      _$RuntimeTypeRawCustomKeyFromJson(json);
+}
+
 @Freezed(unionKey: 'ty"\'pe')
 class UnrecognizedKeysFancyCustomKey with _$UnrecognizedKeysFancyCustomKey {
   @JsonSerializable(disallowUnrecognizedKeys: true)

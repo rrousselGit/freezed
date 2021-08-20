@@ -94,7 +94,7 @@ Future<void> main() async {
     test('fromJson', () {
       expect(
         CustomUnionValue.fromJson(<String, dynamic>{
-          'runtimeType': 'first',
+          'type': 'first',
           'a': 42,
         }),
         CustomUnionValue.first(42),
@@ -102,7 +102,7 @@ Future<void> main() async {
 
       expect(
         CustomUnionValue.fromJson(<String, dynamic>{
-          'runtimeType': 'SECOND',
+          'type': 'SECOND',
           'a': 21,
         }),
         CustomUnionValue.second(21),
@@ -112,12 +112,35 @@ Future<void> main() async {
     test('toJson', () {
       expect(
         CustomUnionValue.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+        <String, dynamic>{'type': 'first', 'a': 42},
       );
 
       expect(
         CustomUnionValue.second(21).toJson(),
-        <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
+        <String, dynamic>{'type': 'SECOND', 'a': 21},
+      );
+    });
+  });
+
+  // TODO(Nolence): Test changing the type name
+  group("Works with older 'runtimeType' union key", () {
+    test('runtimeType', () {
+      expect(
+        RuntimeTypeKey.fromJson(
+            <String, dynamic>{'runtimeType': 'first', 'a': 42}),
+        RuntimeTypeKey.first(42),
+      );
+
+      expect(
+        RuntimeTypeKey.fromJson(
+            <String, dynamic>{'runtimeType': 'second', 'a': 21}),
+        RuntimeTypeKey.second(21),
+      );
+
+      expect(
+        RawRuntimeTypeKey.fromJson(
+            <String, dynamic>{'\$runtimeType': 'first', 'a': 42}),
+        RawRuntimeTypeKey.first(42),
       );
     });
   });
@@ -126,7 +149,7 @@ Future<void> main() async {
     test('fromJson', () {
       expect(
         UnionFallback.fromJson(<String, dynamic>{
-          'runtimeType': 'first',
+          'type': 'first',
           'a': 42,
         }),
         UnionFallback.first(42),
@@ -134,7 +157,7 @@ Future<void> main() async {
 
       expect(
         UnionFallback.fromJson(<String, dynamic>{
-          'runtimeType': 'second',
+          'type': 'second',
           'a': 21,
         }),
         UnionFallback.second(21),
@@ -142,7 +165,7 @@ Future<void> main() async {
 
       expect(
         UnionFallback.fromJson(<String, dynamic>{
-          'runtimeType': 'third',
+          'type': 'third',
           'a': 10,
         }),
         UnionFallback.fallback(10),
@@ -156,14 +179,14 @@ Future<void> main() async {
       );
 
       final invalidUnionTypeValueJson = <String, dynamic>{
-        'runtimeType': 'third',
+        'type': 'third',
         'a': 10,
       };
       expect(
         () => CustomUnionValue.fromJson(invalidUnionTypeValueJson),
         throwsA(
           isA<CheckedFromJsonException>()
-              .having((e) => e.key, 'key', 'runtimeType')
+              .having((e) => e.key, 'key', 'type')
               .having((e) => e.map, 'map', invalidUnionTypeValueJson)
               .having((e) => e.className, 'className', 'CustomUnionValue'),
         ),
@@ -175,7 +198,7 @@ Future<void> main() async {
     test('fromJson', () {
       expect(
         UnionDefaultFallback.fromJson(<String, dynamic>{
-          'runtimeType': 'first',
+          'type': 'first',
           'a': 42,
         }),
         UnionDefaultFallback.first(42),
@@ -183,7 +206,7 @@ Future<void> main() async {
 
       expect(
         UnionDefaultFallback.fromJson(<String, dynamic>{
-          'runtimeType': 'third',
+          'type': 'third',
           'a': 10,
         }),
         UnionDefaultFallback(10),
@@ -202,7 +225,7 @@ Future<void> main() async {
     test('FreezedUnionCase.pascal fromJson', () {
       expect(
         UnionValueCasePascal.fromJson(<String, dynamic>{
-          'runtimeType': 'First',
+          'type': 'First',
           'a': 42,
         }),
         UnionValueCasePascal.first(42),
@@ -210,7 +233,7 @@ Future<void> main() async {
 
       expect(
         UnionValueCasePascal.fromJson(<String, dynamic>{
-          'runtimeType': 'SecondValue',
+          'type': 'SecondValue',
           'a': 21,
         }),
         UnionValueCasePascal.secondValue(21),
@@ -220,19 +243,19 @@ Future<void> main() async {
     test('FreezedUnionCase.pascal toJson', () {
       expect(
         UnionValueCasePascal.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'First', 'a': 42},
+        <String, dynamic>{'type': 'First', 'a': 42},
       );
 
       expect(
         UnionValueCasePascal.secondValue(21).toJson(),
-        <String, dynamic>{'runtimeType': 'SecondValue', 'a': 21},
+        <String, dynamic>{'type': 'SecondValue', 'a': 21},
       );
     });
 
     test('FreezedUnionCase.kebab fromJson', () {
       expect(
         UnionValueCaseKebab.fromJson(<String, dynamic>{
-          'runtimeType': 'first',
+          'type': 'first',
           'a': 42,
         }),
         UnionValueCaseKebab.first(42),
@@ -240,7 +263,7 @@ Future<void> main() async {
 
       expect(
         UnionValueCaseKebab.fromJson(<String, dynamic>{
-          'runtimeType': 'second-value',
+          'type': 'second-value',
           'a': 21,
         }),
         UnionValueCaseKebab.secondValue(21),
@@ -250,19 +273,19 @@ Future<void> main() async {
     test('FreezedUnionCase.kebab toJson', () {
       expect(
         UnionValueCaseKebab.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+        <String, dynamic>{'type': 'first', 'a': 42},
       );
 
       expect(
         UnionValueCaseKebab.secondValue(21).toJson(),
-        <String, dynamic>{'runtimeType': 'second-value', 'a': 21},
+        <String, dynamic>{'type': 'second-value', 'a': 21},
       );
     });
 
     test('FreezedUnionCase.snake fromJson', () {
       expect(
         UnionValueCaseSnake.fromJson(<String, dynamic>{
-          'runtimeType': 'first',
+          'type': 'first',
           'a': 42,
         }),
         UnionValueCaseSnake.first(42),
@@ -270,7 +293,7 @@ Future<void> main() async {
 
       expect(
         UnionValueCaseSnake.fromJson(<String, dynamic>{
-          'runtimeType': 'second_value',
+          'type': 'second_value',
           'a': 21,
         }),
         UnionValueCaseSnake.secondValue(21),
@@ -280,12 +303,12 @@ Future<void> main() async {
     test('FreezedUnionCase.snake toJson', () {
       expect(
         UnionValueCaseSnake.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+        <String, dynamic>{'type': 'first', 'a': 42},
       );
 
       expect(
         UnionValueCaseSnake.secondValue(21).toJson(),
-        <String, dynamic>{'runtimeType': 'second_value', 'a': 21},
+        <String, dynamic>{'type': 'second_value', 'a': 21},
       );
     });
   });
@@ -295,7 +318,7 @@ Future<void> main() async {
       test('fromJson', () {
         expect(
           UnrecognizedKeysCustomUnionValue.fromJson(<String, dynamic>{
-            'runtimeType': 'first',
+            'type': 'first',
             'a': 42,
           }),
           UnrecognizedKeysCustomUnionValue.first(42),
@@ -303,7 +326,7 @@ Future<void> main() async {
 
         expect(
           UnrecognizedKeysCustomUnionValue.fromJson(<String, dynamic>{
-            'runtimeType': 'SECOND',
+            'type': 'SECOND',
             'a': 21,
           }),
           UnrecognizedKeysCustomUnionValue.second(21),
@@ -313,12 +336,12 @@ Future<void> main() async {
       test('toJson', () {
         expect(
           UnrecognizedKeysCustomUnionValue.first(42).toJson(),
-          <String, dynamic>{'runtimeType': 'first', 'a': 42},
+          <String, dynamic>{'type': 'first', 'a': 42},
         );
 
         expect(
           UnrecognizedKeysCustomUnionValue.second(21).toJson(),
-          <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
+          <String, dynamic>{'type': 'SECOND', 'a': 21},
         );
       });
     });
@@ -327,7 +350,7 @@ Future<void> main() async {
       test('fromJson', () {
         expect(
           UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{
-            'runtimeType': 'first',
+            'type': 'first',
             'a': 42,
           }),
           UnrecognizedKeysUnionFallback.first(42),
@@ -335,7 +358,7 @@ Future<void> main() async {
 
         expect(
           UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{
-            'runtimeType': 'second',
+            'type': 'second',
             'a': 21,
           }),
           UnrecognizedKeysUnionFallback.second(21),
@@ -343,7 +366,7 @@ Future<void> main() async {
 
         expect(
           UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{
-            'runtimeType': 'third',
+            'type': 'third',
             'a': 10,
           }),
           UnrecognizedKeysUnionFallback.fallback(10),
@@ -358,10 +381,10 @@ Future<void> main() async {
 
         expect(
             () => UnrecognizedKeysCustomUnionValue.fromJson(<String, dynamic>{
-                  'runtimeType': 'third',
+                  'type': 'third',
                   'a': 10,
                 }),
-            throwsA(const TypeMatcher<FallThroughError>()));
+            throwsA(const TypeMatcher<CheckedFromJsonException>()));
       });
     });
 
@@ -369,7 +392,7 @@ Future<void> main() async {
       test('fromJson', () {
         expect(
           UnrecognizedKeysUnionDefaultFallback.fromJson(<String, dynamic>{
-            'runtimeType': 'first',
+            'type': 'first',
             'a': 42,
           }),
           UnrecognizedKeysUnionDefaultFallback.first(42),
@@ -377,7 +400,7 @@ Future<void> main() async {
 
         expect(
           UnrecognizedKeysUnionDefaultFallback.fromJson(<String, dynamic>{
-            'runtimeType': 'third',
+            'type': 'third',
             'a': 10,
           }),
           UnrecognizedKeysUnionDefaultFallback(10),
@@ -396,7 +419,7 @@ Future<void> main() async {
       test('FreezedUnionCase.pascal fromJson', () {
         expect(
           UnrecognizedKeysUnionValueCasePascal.fromJson(<String, dynamic>{
-            'runtimeType': 'First',
+            'type': 'First',
             'a': 42,
           }),
           UnrecognizedKeysUnionValueCasePascal.first(42),
@@ -404,7 +427,7 @@ Future<void> main() async {
 
         expect(
           UnrecognizedKeysUnionValueCasePascal.fromJson(<String, dynamic>{
-            'runtimeType': 'SecondValue',
+            'type': 'SecondValue',
             'a': 21,
           }),
           UnrecognizedKeysUnionValueCasePascal.secondValue(21),
@@ -414,19 +437,19 @@ Future<void> main() async {
       test('FreezedUnionCase.pascal toJson', () {
         expect(
           UnrecognizedKeysUnionValueCasePascal.first(42).toJson(),
-          <String, dynamic>{'runtimeType': 'First', 'a': 42},
+          <String, dynamic>{'type': 'First', 'a': 42},
         );
 
         expect(
           UnrecognizedKeysUnionValueCasePascal.secondValue(21).toJson(),
-          <String, dynamic>{'runtimeType': 'SecondValue', 'a': 21},
+          <String, dynamic>{'type': 'SecondValue', 'a': 21},
         );
       });
 
       test('FreezedUnionCase.kebab fromJson', () {
         expect(
           UnrecognizedKeysUnionValueCaseKebab.fromJson(<String, dynamic>{
-            'runtimeType': 'first',
+            'type': 'first',
             'a': 42,
           }),
           UnrecognizedKeysUnionValueCaseKebab.first(42),
@@ -434,7 +457,7 @@ Future<void> main() async {
 
         expect(
           UnrecognizedKeysUnionValueCaseKebab.fromJson(<String, dynamic>{
-            'runtimeType': 'second-value',
+            'type': 'second-value',
             'a': 21,
           }),
           UnrecognizedKeysUnionValueCaseKebab.secondValue(21),
@@ -444,19 +467,19 @@ Future<void> main() async {
       test('FreezedUnionCase.kebab toJson', () {
         expect(
           UnrecognizedKeysUnionValueCaseKebab.first(42).toJson(),
-          <String, dynamic>{'runtimeType': 'first', 'a': 42},
+          <String, dynamic>{'type': 'first', 'a': 42},
         );
 
         expect(
           UnrecognizedKeysUnionValueCaseKebab.secondValue(21).toJson(),
-          <String, dynamic>{'runtimeType': 'second-value', 'a': 21},
+          <String, dynamic>{'type': 'second-value', 'a': 21},
         );
       });
 
       test('FreezedUnionCase.snake fromJson', () {
         expect(
           UnrecognizedKeysUnionValueCaseSnake.fromJson(<String, dynamic>{
-            'runtimeType': 'first',
+            'type': 'first',
             'a': 42,
           }),
           UnrecognizedKeysUnionValueCaseSnake.first(42),
@@ -464,7 +487,7 @@ Future<void> main() async {
 
         expect(
           UnrecognizedKeysUnionValueCaseSnake.fromJson(<String, dynamic>{
-            'runtimeType': 'second_value',
+            'type': 'second_value',
             'a': 21,
           }),
           UnrecognizedKeysUnionValueCaseSnake.secondValue(21),
@@ -474,12 +497,12 @@ Future<void> main() async {
       test('FreezedUnionCase.snake toJson', () {
         expect(
           UnrecognizedKeysUnionValueCaseSnake.first(42).toJson(),
-          <String, dynamic>{'runtimeType': 'first', 'a': 42},
+          <String, dynamic>{'type': 'first', 'a': 42},
         );
 
         expect(
           UnrecognizedKeysUnionValueCaseSnake.secondValue(21).toJson(),
-          <String, dynamic>{'runtimeType': 'second_value', 'a': 21},
+          <String, dynamic>{'type': 'second_value', 'a': 21},
         );
       });
     });
@@ -546,7 +569,7 @@ Future<void> main() async {
     expect(errorResult.errors, isEmpty);
   }, skip: true);
 
-  test("single constructor fromJson doesn't require runtimeType", () {
+  test("single constructor fromJson doesn't require type", () {
     expect(
       Single.fromJson(<String, dynamic>{
         'a': 42,
@@ -555,7 +578,7 @@ Future<void> main() async {
     );
   });
 
-  test("single constructor toJson doesn't add runtimeType", () {
+  test("single constructor toJson doesn't add type", () {
     expect(
       Single(42).toJson(),
       {
@@ -573,7 +596,7 @@ Future<void> main() async {
       expect(
         Json().toJson(),
         {
-          'runtimeType': 'default',
+          'type': 'default',
         },
       );
 
@@ -581,7 +604,7 @@ Future<void> main() async {
         Json.first('42').toJson(),
         {
           'a': '42',
-          'runtimeType': 'first',
+          'type': 'first',
         },
       );
 
@@ -589,30 +612,30 @@ Future<void> main() async {
         Json.second(42).toJson(),
         {
           'b': 42,
-          'runtimeType': 'second',
+          'type': 'second',
         },
       );
     });
   });
 
-  test('throws if runtimeType matches nothing', () {
+  test('throws if type matches nothing', () {
     const emptyJson = <String, dynamic>{};
     expect(
       () => Json.fromJson(emptyJson),
       throwsA(
         isA<CheckedFromJsonException>()
-            .having((e) => e.key, 'key', 'runtimeType')
+            .having((e) => e.key, 'key', 'type')
             .having((e) => e.map, 'map', emptyJson)
             .having((e) => e.className, 'className', 'Json'),
       ),
     );
 
-    const unknownTypeJson = <String, dynamic>{'runtimeType': 'unknown'};
+    const unknownTypeJson = <String, dynamic>{'type': 'unknown'};
     expect(
       () => Json.fromJson(unknownTypeJson),
       throwsA(
         isA<CheckedFromJsonException>()
-            .having((e) => e.key, 'key', 'runtimeType')
+            .having((e) => e.key, 'key', 'type')
             .having((e) => e.map, 'map', unknownTypeJson)
             .having((e) => e.className, 'className', 'Json'),
       ),
@@ -622,14 +645,14 @@ Future<void> main() async {
   test('fromJson', () {
     expect(
       Json.fromJson(<String, dynamic>{
-        'runtimeType': 'default',
+        'type': 'default',
       }),
       Json(),
     );
 
     expect(
       Json.fromJson(<String, dynamic>{
-        'runtimeType': 'first',
+        'type': 'first',
         'a': '42',
       }),
       Json.first('42'),
@@ -637,7 +660,7 @@ Future<void> main() async {
 
     expect(
       Json.fromJson(<String, dynamic>{
-        'runtimeType': 'second',
+        'type': 'second',
         'b': 42,
       }),
       Json.second(42),

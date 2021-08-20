@@ -45,7 +45,7 @@ class FromJson {
           constructors.singleWhereOrNull((element) => element.isFallback);
       if (fallbackConstructor != null) {
         defaultCase =
-            'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(json);';
+            'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(_json);';
       }
 
       content = '''

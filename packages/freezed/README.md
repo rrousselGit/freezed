@@ -1025,7 +1025,7 @@ Freezed will only generate a fromJson if the factory is using `=>`.
 ### fromJSON - classes with multiple constructors
 
 For classes with multiple constructors, [Freezed] will check the JSON response
-for a string element called `runtimeType` and choose the constructor to use based
+for a string element called `type` and choose the constructor to use based
 on its value. For example, given the following constructors:
 
 ```dart
@@ -1039,7 +1039,7 @@ class MyResponse with _$MyResponse {
 }
 ```
 
-Then [Freezed] will use each JSON object's `runtimeType` to choose the constructor as follows:
+Then [Freezed] will use each JSON object's `type` to choose the constructor as follows:
 
 ```json
 [
