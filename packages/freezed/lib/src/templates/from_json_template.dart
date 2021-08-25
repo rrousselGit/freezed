@@ -50,7 +50,7 @@ class FromJson {
 
       content = '''
         final _json = <String, dynamic>{...json};
-        final type = _json.remove('$unionKey') as String;
+        final type = _json.remove('$unionKey') as String?;
 
         switch (type) {
           $cases

@@ -146,6 +146,19 @@ Future<void> main() async {
   });
 
   group('FreezedUnionFallback', () {
+    test(
+        'when fallback is non-null, if fromJson receives null as value, fallbacks to default',
+        () {
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{'type': null, 'a': 42}),
+        UnionFallback.fallback(42),
+      );
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{'a': 42}),
+        UnionFallback.fallback(42),
+      );
+    });
+
     test('fromJson', () {
       expect(
         UnionFallback.fromJson(<String, dynamic>{

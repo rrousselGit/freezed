@@ -1,3 +1,9 @@
+# 0.14.5
+
+- fixed a bug when using alias imports, potentially using the prefix on every variables.
+- When `@Freezed(fallback: '...')` is specified and using `fromJson`, now
+  support cases where the JSON does not contain the "key".
+
 # 0.14.4
 
 - Now supports types coming from `import '...' as alias;`

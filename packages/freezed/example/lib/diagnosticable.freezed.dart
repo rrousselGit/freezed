@@ -43,6 +43,12 @@ mixin _$Example<T> {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int a, String b)? $default, {
     TResult Function(T c)? named,
@@ -53,6 +59,12 @@ mixin _$Example<T> {
   TResult map<TResult extends Object?>(
     TResult Function(_Example<T> value) $default, {
     required TResult Function(_Example2<T> value) named,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -170,6 +182,15 @@ class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+  }) {
+    return $default?.call(a, b);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int a, String b)? $default, {
     TResult Function(T c)? named,
@@ -188,6 +209,15 @@ class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
     required TResult Function(_Example2<T> value) named,
   }) {
     return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+  }) {
+    return $default?.call(this);
   }
 
   @override
@@ -295,6 +325,15 @@ class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+  }) {
+    return named?.call(c);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int a, String b)? $default, {
     TResult Function(T c)? named,
@@ -313,6 +352,15 @@ class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
     required TResult Function(_Example2<T> value) named,
   }) {
     return named(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+  }) {
+    return named?.call(this);
   }
 
   @override

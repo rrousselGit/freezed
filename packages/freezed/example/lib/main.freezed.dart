@@ -227,6 +227,14 @@ mixin _$Union {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int value)? $default, {
     TResult Function()? loading,
@@ -241,6 +249,14 @@ mixin _$Union {
     required TResult Function(Loading value) loading,
     required TResult Function(ErrorDetails value) error,
     required TResult Function(Complex value) complex,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -352,6 +368,17 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+  }) {
+    return $default?.call(value);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int value)? $default, {
     TResult Function()? loading,
@@ -374,6 +401,17 @@ class _$Data with DiagnosticableTreeMixin implements Data {
     required TResult Function(Complex value) complex,
   }) {
     return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+  }) {
+    return $default?.call(this);
   }
 
   @override
@@ -463,6 +501,17 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+  }) {
+    return loading?.call();
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int value)? $default, {
     TResult Function()? loading,
@@ -485,6 +534,17 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     required TResult Function(Complex value) complex,
   }) {
     return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+  }) {
+    return loading?.call(this);
   }
 
   @override
@@ -599,6 +659,17 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+  }) {
+    return error?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int value)? $default, {
     TResult Function()? loading,
@@ -621,6 +692,17 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     required TResult Function(Complex value) complex,
   }) {
     return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+  }) {
+    return error?.call(this);
   }
 
   @override
@@ -751,6 +833,17 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int value)? $default, {
+    TResult Function()? loading,
+    TResult Function(String? message)? error,
+    TResult Function(int a, String b)? complex,
+  }) {
+    return complex?.call(a, b);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int value)? $default, {
     TResult Function()? loading,
@@ -773,6 +866,17 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
     required TResult Function(Complex value) complex,
   }) {
     return complex(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(Data value)? $default, {
+    TResult Function(Loading value)? loading,
+    TResult Function(ErrorDetails value)? error,
+    TResult Function(Complex value)? complex,
+  }) {
+    return complex?.call(this);
   }
 
   @override
@@ -840,6 +944,12 @@ mixin _$SharedProperty {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String? name, int? age)? person,
+    TResult Function(String? name, int? population)? city,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? name, int? age)? person,
     TResult Function(String? name, int? population)? city,
@@ -850,6 +960,12 @@ mixin _$SharedProperty {
   TResult map<TResult extends Object?>({
     required TResult Function(SharedProperty0 value) person,
     required TResult Function(SharedProperty1 value) city,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SharedProperty0 value)? person,
+    TResult Function(SharedProperty1 value)? city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -992,6 +1108,15 @@ class _$SharedProperty0
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String? name, int? age)? person,
+    TResult Function(String? name, int? population)? city,
+  }) {
+    return person?.call(name, age);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? name, int? age)? person,
     TResult Function(String? name, int? population)? city,
@@ -1010,6 +1135,15 @@ class _$SharedProperty0
     required TResult Function(SharedProperty1 value) city,
   }) {
     return person(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SharedProperty0 value)? person,
+    TResult Function(SharedProperty1 value)? city,
+  }) {
+    return person?.call(this);
   }
 
   @override
@@ -1136,6 +1270,15 @@ class _$SharedProperty1
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String? name, int? age)? person,
+    TResult Function(String? name, int? population)? city,
+  }) {
+    return city?.call(name, population);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? name, int? age)? person,
     TResult Function(String? name, int? population)? city,
@@ -1154,6 +1297,15 @@ class _$SharedProperty1
     required TResult Function(SharedProperty1 value) city,
   }) {
     return city(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SharedProperty0 value)? person,
+    TResult Function(SharedProperty1 value)? city,
+  }) {
+    return city?.call(this);
   }
 
   @override

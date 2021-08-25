@@ -43,6 +43,12 @@ mixin _$Example<T> {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int a, String b)? $default, {
     TResult Function(T c)? named,
@@ -53,6 +59,12 @@ mixin _$Example<T> {
   TResult map<TResult extends Object?>(
     TResult Function(_Example<T> value) $default, {
     required TResult Function(_Example2<T> value) named,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -161,6 +173,15 @@ class _$_Example<T> implements _Example<T> {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+  }) {
+    return $default?.call(a, b);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int a, String b)? $default, {
     TResult Function(T c)? named,
@@ -179,6 +200,15 @@ class _$_Example<T> implements _Example<T> {
     required TResult Function(_Example2<T> value) named,
   }) {
     return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+  }) {
+    return $default?.call(this);
   }
 
   @override
@@ -277,6 +307,15 @@ class _$_Example2<T> implements _Example2<T> {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult Function(int a, String b)? $default, {
+    TResult Function(T c)? named,
+  }) {
+    return named?.call(c);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int a, String b)? $default, {
     TResult Function(T c)? named,
@@ -295,6 +334,15 @@ class _$_Example2<T> implements _Example2<T> {
     required TResult Function(_Example2<T> value) named,
   }) {
     return named(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult Function(_Example<T> value)? $default, {
+    TResult Function(_Example2<T> value)? named,
+  }) {
+    return named?.call(this);
   }
 
   @override
@@ -368,6 +416,14 @@ mixin _$SimpleImplements {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -382,6 +438,14 @@ mixin _$SimpleImplements {
     required TResult Function(SimpleStreet value) street,
     required TResult Function(SimpleCity value) city,
     required TResult Function(SimpleCountry value) country,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -517,6 +581,17 @@ class _$SimplePerson implements SimplePerson {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+  }) {
+    return person?.call(name, age);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -539,6 +614,17 @@ class _$SimplePerson implements SimplePerson {
     required TResult Function(SimpleCountry value) country,
   }) {
     return person(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+  }) {
+    return person?.call(this);
   }
 
   @override
@@ -647,6 +733,17 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+  }) {
+    return street?.call(name);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -669,6 +766,17 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
     required TResult Function(SimpleCountry value) country,
   }) {
     return street(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+  }) {
+    return street?.call(this);
   }
 
   @override
@@ -788,6 +896,17 @@ class _$SimpleCity with House implements SimpleCity {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+  }) {
+    return city?.call(name, population);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -810,6 +929,17 @@ class _$SimpleCity with House implements SimpleCity {
     required TResult Function(SimpleCountry value) country,
   }) {
     return city(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+  }) {
+    return city?.call(this);
   }
 
   @override
@@ -931,6 +1061,17 @@ class _$SimpleCountry with House implements SimpleCountry {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name, int population)? country,
+  }) {
+    return country?.call(name, population);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -953,6 +1094,17 @@ class _$SimpleCountry with House implements SimpleCountry {
     required TResult Function(SimpleCountry value) country,
   }) {
     return country(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SimplePerson value)? person,
+    TResult Function(SimpleStreet value)? street,
+    TResult Function(SimpleCity value)? city,
+    TResult Function(SimpleCountry value)? country,
+  }) {
+    return country?.call(this);
   }
 
   @override
@@ -1031,6 +1183,14 @@ mixin _$CustomMethodImplements {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -1045,6 +1205,14 @@ mixin _$CustomMethodImplements {
     required TResult Function(StreetCustomMethod value) street,
     required TResult Function(CityCustomMethod value) city,
     required TResult Function(DuplexCustomMethod value) duplex,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1180,6 +1348,17 @@ class _$PersonCustomMethod extends PersonCustomMethod {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+  }) {
+    return person?.call(name, age);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -1202,6 +1381,17 @@ class _$PersonCustomMethod extends PersonCustomMethod {
     required TResult Function(DuplexCustomMethod value) duplex,
   }) {
     return person(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+  }) {
+    return person?.call(this);
   }
 
   @override
@@ -1313,6 +1503,17 @@ class _$StreetCustomMethod extends StreetCustomMethod
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+  }) {
+    return street?.call(name);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -1335,6 +1536,17 @@ class _$StreetCustomMethod extends StreetCustomMethod
     required TResult Function(DuplexCustomMethod value) duplex,
   }) {
     return street(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+  }) {
+    return street?.call(this);
   }
 
   @override
@@ -1457,6 +1669,17 @@ class _$CityCustomMethod extends CityCustomMethod with House {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+  }) {
+    return city?.call(name, population);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -1479,6 +1702,17 @@ class _$CityCustomMethod extends CityCustomMethod with House {
     required TResult Function(DuplexCustomMethod value) duplex,
   }) {
     return city(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+  }) {
+    return city?.call(this);
   }
 
   @override
@@ -1591,6 +1825,17 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name)? street,
+    TResult Function(String name, int population)? city,
+    TResult Function(String name)? duplex,
+  }) {
+    return duplex?.call(name);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name)? street,
@@ -1613,6 +1858,17 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
     required TResult Function(DuplexCustomMethod value) duplex,
   }) {
     return duplex(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(PersonCustomMethod value)? person,
+    TResult Function(StreetCustomMethod value)? street,
+    TResult Function(CityCustomMethod value)? city,
+    TResult Function(DuplexCustomMethod value)? duplex,
+  }) {
+    return duplex?.call(this);
   }
 
   @override
@@ -1685,6 +1941,13 @@ mixin _$GenericImplements<T> {
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name, T value)? street,
+    TResult Function(String name, int population)? city,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name, T value)? street,
@@ -1697,6 +1960,13 @@ mixin _$GenericImplements<T> {
     required TResult Function(GenericPerson<T> value) person,
     required TResult Function(GenericStreet<T> value) street,
     required TResult Function(GenericCity<T> value) city,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(GenericPerson<T> value)? person,
+    TResult Function(GenericStreet<T> value)? street,
+    TResult Function(GenericCity<T> value)? city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1830,6 +2100,16 @@ class _$GenericPerson<T> implements GenericPerson<T> {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name, T value)? street,
+    TResult Function(String name, int population)? city,
+  }) {
+    return person?.call(name, age);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name, T value)? street,
@@ -1850,6 +2130,16 @@ class _$GenericPerson<T> implements GenericPerson<T> {
     required TResult Function(GenericCity<T> value) city,
   }) {
     return person(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(GenericPerson<T> value)? person,
+    TResult Function(GenericStreet<T> value)? street,
+    TResult Function(GenericCity<T> value)? city,
+  }) {
+    return person?.call(this);
   }
 
   @override
@@ -1969,6 +2259,16 @@ class _$GenericStreet<T>
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name, T value)? street,
+    TResult Function(String name, int population)? city,
+  }) {
+    return street?.call(name, value);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name, T value)? street,
@@ -1989,6 +2289,16 @@ class _$GenericStreet<T>
     required TResult Function(GenericCity<T> value) city,
   }) {
     return street(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(GenericPerson<T> value)? person,
+    TResult Function(GenericStreet<T> value)? street,
+    TResult Function(GenericCity<T> value)? city,
+  }) {
+    return street?.call(this);
   }
 
   @override
@@ -2109,6 +2419,16 @@ class _$GenericCity<T> with House implements GenericCity<T> {
 
   @override
   @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String name, int age)? person,
+    TResult Function(String name, T value)? street,
+    TResult Function(String name, int population)? city,
+  }) {
+    return city?.call(name, population);
+  }
+
+  @override
+  @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
     TResult Function(String name, T value)? street,
@@ -2129,6 +2449,16 @@ class _$GenericCity<T> with House implements GenericCity<T> {
     required TResult Function(GenericCity<T> value) city,
   }) {
     return city(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(GenericPerson<T> value)? person,
+    TResult Function(GenericStreet<T> value)? street,
+    TResult Function(GenericCity<T> value)? city,
+  }) {
+    return city?.call(this);
   }
 
   @override
