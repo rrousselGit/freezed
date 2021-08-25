@@ -1,3 +1,8 @@
+# 0.15.0
+
+- In the case of multiple factories, `runtimeType` was renamed to `type`.
+- The union key is no longer passed `json_serializable` when deserializing avoid the case of being an `unrecognized_key` in some cases.
+
 # 0.14.5
 
 - fixed a bug when using alias imports, potentially using the prefix on every variables.

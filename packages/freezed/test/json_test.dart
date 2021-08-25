@@ -122,9 +122,8 @@ Future<void> main() async {
     });
   });
 
-  // TODO(Nolence): Test changing the type name
   group("Works with older 'runtimeType' union key", () {
-    test('runtimeType', () {
+    test('fromJson', () {
       expect(
         RuntimeTypeKey.fromJson(
             <String, dynamic>{'runtimeType': 'first', 'a': 42}),
@@ -141,6 +140,34 @@ Future<void> main() async {
         RawRuntimeTypeKey.fromJson(
             <String, dynamic>{'\$runtimeType': 'first', 'a': 42}),
         RawRuntimeTypeKey.first(42),
+      );
+
+      expect(
+        FancyRuntimeTypeKey.fromJson(
+            <String, dynamic>{'run"\'timeType': 'first', 'a': 42}),
+        FancyRuntimeTypeKey.first(42),
+      );
+    });
+
+    test('toJson', () {
+      expect(
+        RuntimeTypeKey.first(42).toJson(),
+        <String, dynamic>{'runtimeType': 'first', 'a': 42},
+      );
+
+      expect(
+        RuntimeTypeKey.second(21).toJson(),
+        <String, dynamic>{'runtimeType': 'second', 'a': 21},
+      );
+
+      expect(
+        RawRuntimeTypeKey.first(42).toJson(),
+        <String, dynamic>{'\$runtimeType': 'first', 'a': 42},
+      );
+
+      expect(
+        FancyRuntimeTypeKey.first(42).toJson(),
+        <String, dynamic>{'run"\'timeType': 'first', 'a': 42},
       );
     });
   });

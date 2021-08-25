@@ -181,6 +181,15 @@ class RawRuntimeTypeKey with _$RawRuntimeTypeKey {
       _$RawRuntimeTypeKeyFromJson(json);
 }
 
+@Freezed(unionKey: 'run"\'timeType')
+class FancyRuntimeTypeKey with _$FancyRuntimeTypeKey {
+  const factory FancyRuntimeTypeKey.first(int a) = _FancyRuntimeTypeKeyFirst;
+  const factory FancyRuntimeTypeKey.second(int a) = _FancyRuntimeTypeKeySecond;
+
+  factory FancyRuntimeTypeKey.fromJson(Map<String, dynamic> json) =>
+      _$FancyRuntimeTypeKeyFromJson(json);
+}
+
 @Freezed(unionKey: 'runtimeType')
 class RuntimeTypeUnrecognizedKeys with _$RuntimeTypeUnrecognizedKeys {
   @JsonSerializable(disallowUnrecognizedKeys: true)

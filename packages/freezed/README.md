@@ -1044,19 +1044,34 @@ Then [Freezed] will use each JSON object's `type` to choose the constructor as f
 ```json
 [
   {
-    "runtimeType": "default",
+    "type": "default",
     "a": "This JSON object will use constructor MyResponse()"
   },
   {
-    "runtimeType": "special",
+    "type": "special",
     "a": "This JSON object will use constructor MyResponse.special()",
     "b": 42
   },
   {
-    "runtimeType": "error",
+    "type": "error",
     "message": "This JSON object will use constructor MyResponse.error()"
   }
 ]
+```
+
+**Note**:
+
+In `0.15.0`, `runtimeType` was renamed `type`. If your database already contains objects with the union type of `runtimeType`, proper deserialization will fail unless you add to your models the older version of the unionKey `runtimeType`:
+
+```dart
+@Freezed(unionKey: 'runtimeType')
+class Model with _$Model {
+  const factory Model.first(int a) = _ModelFirst;
+  const factory Model.second(int a) = _ModelSecond;
+
+  factory Model.fromJson(Map<String, dynamic> json) =>
+      _$ModelFromJson(json);
+}
 ```
 
 You can customize key and value with something different
