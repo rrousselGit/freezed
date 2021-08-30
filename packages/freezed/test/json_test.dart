@@ -359,7 +359,7 @@ Future<void> main() async {
 
   test('has no issue', () async {
     var errorResult = await jsonFile.session
-            .getErrors2('/freezed/test/integration/json.freezed.dart')
+            .getErrors('/freezed/test/integration/json.freezed.dart')
         as ErrorsResult;
     expect(errorResult.errors, isEmpty);
   }, skip: true);
