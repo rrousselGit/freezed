@@ -23,6 +23,7 @@ class Concrete {
     required this.unionKey,
     required this.copyWith,
     required this.shouldUseExtends,
+    required this.shouldGenerateFromJsonMethod,
   });
 
   final ConstructorDetails constructor;
@@ -37,6 +38,7 @@ class Concrete {
   final String unionKey;
   final CopyWith copyWith;
   final bool shouldUseExtends;
+  final bool shouldGenerateFromJsonMethod;
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
@@ -170,12 +172,12 @@ ${copyWith.abstractCopyWithGetter}
   }
 
   String get _redirectedFromJsonConstructor {
-    if (!shouldGenerateJson) return '';
+    if (!shouldGenerateJson || !shouldGenerateFromJsonMethod) return '';
     return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName$genericsParameter.fromJson;';
   }
 
   String get _concreteFromJsonConstructor {
-    if (!shouldGenerateJson) return '';
+    if (!shouldGenerateJson || !shouldGenerateFromJsonMethod) return '';
     return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${nonPrivateConcreteName}FromJson(json);';
   }
 

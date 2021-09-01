@@ -79,7 +79,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           GenericsDefinitionTemplate.fromGenericElement(element.typeParameters),
       genericsParameterTemplate:
           GenericsParameterTemplate.fromGenericElement(element.typeParameters),
-    );
+      shouldGenerateFromJsonMethod: _shouldGenerateFromJsonMethod(element));
   }
 
   List<Property> _commonProperties(
@@ -195,6 +195,12 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     }
 
     return false;
+  }
+
+  bool _shouldGenerateFromJsonMethod(
+    ClassElement element,
+  ) {
+    return element.constructors.every((constructor) => constructor.generateFromJsonMethod);
   }
 
   List<Parameter> _commonParametersBetweenAllConstructors(
@@ -444,7 +450,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     GlobalData globalData,
     Data data,
   ) sync* {
-    if (globalData.hasJson && data.needsJsonSerializable) {
+    if (globalData.hasJson &&
+      data.needsJsonSerializable &&
+      data.shouldGenerateFromJsonMethod) {
       yield FromJson(
         name: data.name,
         unionKey: data.unionKey,
@@ -506,7 +514,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           allProperties: constructor.impliedProperties,
           parent: commonCopyWith,
         ),
-      );
+        shouldGenerateFromJsonMethod: data.shouldGenerateFromJsonMethod);
     }
   }
 
@@ -614,6 +622,15 @@ extension on Element {
       this,
       throwOnUnresolved: false,
     );
+  }
+
+  bool get generateFromJsonMethod {
+    return hasJsonSerializable ? (const TypeChecker.fromRuntime(JsonSerializable)
+                .annotationsOf(this, throwOnUnresolved: false)
+                .first
+                .getField('createFactory')
+                ?.toBoolValue() ??  true)
+                : true;
   }
 }
 

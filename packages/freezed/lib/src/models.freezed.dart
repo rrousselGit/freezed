@@ -750,7 +750,8 @@ class _$DataTearOff {
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
       required bool shouldUseExtends,
-      required bool hasCustomToString}) {
+      required bool hasCustomToString,
+      required bool shouldGenerateFromJsonMethod}) {
     return _Data(
       name: name,
       needsJsonSerializable: needsJsonSerializable,
@@ -761,7 +762,7 @@ class _$DataTearOff {
       genericsParameterTemplate: genericsParameterTemplate,
       shouldUseExtends: shouldUseExtends,
       hasCustomToString: hasCustomToString,
-    );
+      shouldGenerateFromJsonMethod: shouldGenerateFromJsonMethod);
   }
 }
 
@@ -782,7 +783,7 @@ mixin _$Data {
       throw _privateConstructorUsedError;
   bool get shouldUseExtends => throw _privateConstructorUsedError;
   bool get hasCustomToString => throw _privateConstructorUsedError;
-
+  bool get shouldGenerateFromJsonMethod => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
@@ -800,7 +801,8 @@ abstract class $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool hasCustomToString});
+      bool hasCustomToString,
+      bool shouldGenerateFromJsonMethod});
 }
 
 /// @nodoc
@@ -822,6 +824,7 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
     Object? hasCustomToString = freezed,
+    Object? shouldGenerateFromJsonMethod = freezed
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -860,6 +863,10 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
           ? _value.hasCustomToString
           : hasCustomToString // ignore: cast_nullable_to_non_nullable
               as bool,
+      shouldGenerateFromJsonMethod: shouldGenerateFromJsonMethod == freezed
+          ? _value.shouldGenerateFromJsonMethod
+          : shouldGenerateFromJsonMethod // ignore: cast_nullable_to_non_nullable
+              as bool
     ));
   }
 }
@@ -878,7 +885,8 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool hasCustomToString});
+      bool hasCustomToString,
+      bool shouldGenerateFromJsonMethod});
 }
 
 /// @nodoc
@@ -901,6 +909,7 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
     Object? hasCustomToString = freezed,
+    Object? shouldGenerateFromJsonMethod = freezed,
   }) {
     return _then(_Data(
       name: name == freezed
@@ -939,7 +948,10 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
           ? _value.hasCustomToString
           : hasCustomToString // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+      shouldGenerateFromJsonMethod: shouldGenerateFromJsonMethod == freezed
+          ? _value.shouldGenerateFromJsonMethod
+          : shouldGenerateFromJsonMethod // ignore: cast_nullable_to_non_nullable
+              as bool));
   }
 }
 
@@ -955,7 +967,8 @@ class _$_Data implements _Data {
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
       required this.shouldUseExtends,
-      required this.hasCustomToString})
+      required this.hasCustomToString,
+      required this.shouldGenerateFromJsonMethod})
       : assert(constructors.isNotEmpty);
 
   @override
@@ -976,10 +989,12 @@ class _$_Data implements _Data {
   final bool shouldUseExtends;
   @override
   final bool hasCustomToString;
+  @override
+  final bool shouldGenerateFromJsonMethod;
 
   @override
   String toString() {
-    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString)';
+    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString, shouldGenerateFromJsonMethod: $shouldGenerateFromJsonMethod)';
   }
 
   @override
@@ -1015,7 +1030,11 @@ class _$_Data implements _Data {
                     .equals(other.shouldUseExtends, shouldUseExtends)) &&
             (identical(other.hasCustomToString, hasCustomToString) ||
                 const DeepCollectionEquality()
-                    .equals(other.hasCustomToString, hasCustomToString)));
+                    .equals(other.hasCustomToString, hasCustomToString)) &&
+            (identical(other.shouldGenerateFromJsonMethod, shouldGenerateFromJsonMethod) ||
+                const DeepCollectionEquality()
+                    .equals(other.shouldGenerateFromJsonMethod, shouldGenerateFromJsonMethod))
+                    );
   }
 
   @override
@@ -1029,7 +1048,8 @@ class _$_Data implements _Data {
       const DeepCollectionEquality().hash(genericsDefinitionTemplate) ^
       const DeepCollectionEquality().hash(genericsParameterTemplate) ^
       const DeepCollectionEquality().hash(shouldUseExtends) ^
-      const DeepCollectionEquality().hash(hasCustomToString);
+      const DeepCollectionEquality().hash(hasCustomToString)^
+      const DeepCollectionEquality().hash(shouldGenerateFromJsonMethod);
 
   @JsonKey(ignore: true)
   @override
@@ -1047,7 +1067,8 @@ abstract class _Data implements Data {
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
       required bool shouldUseExtends,
-      required bool hasCustomToString}) = _$_Data;
+      required bool hasCustomToString,
+      required bool shouldGenerateFromJsonMethod}) = _$_Data;
 
   @override
   String get name => throw _privateConstructorUsedError;
@@ -1070,6 +1091,8 @@ abstract class _Data implements Data {
   bool get shouldUseExtends => throw _privateConstructorUsedError;
   @override
   bool get hasCustomToString => throw _privateConstructorUsedError;
+  @override
+  bool get shouldGenerateFromJsonMethod => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;
