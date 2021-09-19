@@ -126,7 +126,7 @@ This installs three packages:
 
 ### Disabling invalid_annotation_target warning and warning in generates files.
 
-If you plan on using [Frezed] in combination with `json_serializable`, recent
+If you plan on using [Freezed] in combination with `json_serializable`, recent
 versions of `json_serializable` and `meta` may require you to disable the
 `invalid_annotation_target` warning.
 
