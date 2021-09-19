@@ -1,5 +1,6 @@
 ![Build](https://github.com/rrousselGit/freezed/workflows/Build/badge.svg)
 [![pub package](https://img.shields.io/pub/v/freezed.svg)](https://pub.dartlang.org/packages/freezed)
+<a href="https://discord.gg/Bbumvej"><img src="https://img.shields.io/discord/765557403865186374.svg?logo=discord&color=blue" alt="Discord"></a>
 
 Welcome to [Freezed], yet another code generator for unions/pattern-matching/copy.
 
