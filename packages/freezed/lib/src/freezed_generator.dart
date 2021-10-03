@@ -544,7 +544,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           .map((e) => e.element)
           .where((e) => !e.isDartCoreObject)
     ]) {
-      for (final method in type.methods) {
+      for (final method in type.methods.where((e) => e.isOperator)) {
         if (method.name == '==') {
           return true;
         }
