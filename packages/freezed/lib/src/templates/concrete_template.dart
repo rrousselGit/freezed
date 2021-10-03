@@ -331,7 +331,7 @@ String toString($parameters) {
   }
 
   String get _operatorEqualMethod {
-     if (hasCustomToEquals) return '';
+    if (hasCustomToEquals) return '';
 
     final properties = constructor.impliedProperties.map((p) {
       final name = p.name == 'other' ? 'this.other' : p.name;
@@ -350,6 +350,8 @@ bool operator ==(dynamic other) {
   }
 
   String get _hashCodeMethod {
+    if (hasCustomToEquals) return '';
+
     var hashCodeImpl = constructor.impliedProperties.map((p) {
       return '^ const DeepCollectionEquality().hash(${p.name})';
     }).join();
