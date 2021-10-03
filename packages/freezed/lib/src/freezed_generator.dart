@@ -68,6 +68,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       name: element.name,
       shouldUseExtends: shouldUseExtends,
       hasCustomToString: _hasCustomToString(element),
+      hasCustomEquals: _hasCustomEquals(element),
       needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
@@ -489,6 +490,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       yield Concrete(
         name: data.name,
         hasCustomToString: data.hasCustomToString,
+        hasCustomToEquals: data.hasCustomEquals,
         unionKey: data.unionKey,
         shouldUseExtends: data.shouldUseExtends,
         hasDiagnosticable: globalData.hasDiagnostics,
@@ -532,6 +534,22 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       }
     }
 
+    return false;
+  }
+
+  bool _hasCustomEquals(ClassElement element) {
+    for (final type in [
+      element,
+      ...element.allSupertypes
+          .map((e) => e.element)
+          .where((e) => !e.isDartCoreObject)
+    ]) {
+      for (final method in type.methods) {
+        if (method.name == '==') {
+          return true;
+        }
+      }
+    }
     return false;
   }
 

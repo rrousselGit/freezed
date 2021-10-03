@@ -17,6 +17,7 @@ class Concrete {
     required this.allConstructors,
     required this.hasDiagnosticable,
     required this.hasCustomToString,
+    required this.hasCustomToEquals,
     required this.shouldGenerateJson,
     required this.commonProperties,
     required this.name,
@@ -32,6 +33,7 @@ class Concrete {
   final List<Property> commonProperties;
   final bool hasDiagnosticable;
   final bool hasCustomToString;
+  final bool hasCustomToEquals;
   final bool shouldGenerateJson;
   final String name;
   final String unionKey;
@@ -329,6 +331,8 @@ String toString($parameters) {
   }
 
   String get _operatorEqualMethod {
+     if (hasCustomToEquals) return '';
+
     final properties = constructor.impliedProperties.map((p) {
       final name = p.name == 'other' ? 'this.other' : p.name;
       return '(identical(other.${p.name}, $name) || const DeepCollectionEquality().equals(other.${p.name}, $name))';
