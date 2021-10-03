@@ -120,12 +120,6 @@ class _$_Equals implements _Equals {
     return 'Equals(name: $name, age: $age)';
   }
 
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(age);
-
   @JsonKey(ignore: true)
   @override
   _$EqualsCopyWith<_Equals> get copyWith =>

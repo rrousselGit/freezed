@@ -9,4 +9,6 @@ class Equals with _$Equals {
   @override
   bool operator ==(Object o) => o is Equals && o.name == name;
 
+  @override
+  int get hashCode => name.hashCode;
 }
