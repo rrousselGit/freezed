@@ -144,18 +144,14 @@ class _$_Example<T> implements _Example<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Example<T> &&
-            (identical(other.a, a) ||
-                const DeepCollectionEquality().equals(other.a, a)) &&
-            (identical(other.b, b) ||
-                const DeepCollectionEquality().equals(other.b, b)));
+        (other.runtimeType == runtimeType &&
+            other is _Example<T> &&
+            (identical(other.a, a) || other.a == a) &&
+            (identical(other.b, b) || other.b == b));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(a) ^
-      const DeepCollectionEquality().hash(b);
+  int get hashCode => Object.hash(runtimeType, a, b);
 
   @JsonKey(ignore: true)
   @override
@@ -282,14 +278,14 @@ class _$_Example2<T> implements _Example2<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Example2<T> &&
-            (identical(other.c, c) ||
-                const DeepCollectionEquality().equals(other.c, c)));
+        (other.runtimeType == runtimeType &&
+            other is _Example2<T> &&
+            const DeepCollectionEquality().equals(other.c, c));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(c);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(c));
 
   @JsonKey(ignore: true)
   @override
@@ -550,18 +546,14 @@ class _$SimplePerson implements SimplePerson {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SimplePerson &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.age, age) ||
-                const DeepCollectionEquality().equals(other.age, age)));
+        (other.runtimeType == runtimeType &&
+            other is SimplePerson &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.age, age) || other.age == age));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(age);
+  int get hashCode => Object.hash(runtimeType, name, age);
 
   @JsonKey(ignore: true)
   @override
@@ -706,14 +698,13 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SimpleStreet &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is SimpleStreet &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(runtimeType, name);
 
   @JsonKey(ignore: true)
   @override
@@ -864,19 +855,15 @@ class _$SimpleCity with House implements SimpleCity {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SimpleCity &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is SimpleCity &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override
@@ -1029,19 +1016,15 @@ class _$SimpleCountry with House implements SimpleCountry {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SimpleCountry &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is SimpleCountry &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override
@@ -1317,18 +1300,14 @@ class _$PersonCustomMethod extends PersonCustomMethod {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is PersonCustomMethod &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.age, age) ||
-                const DeepCollectionEquality().equals(other.age, age)));
+        (other.runtimeType == runtimeType &&
+            other is PersonCustomMethod &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.age, age) || other.age == age));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(age);
+  int get hashCode => Object.hash(runtimeType, name, age);
 
   @JsonKey(ignore: true)
   @override
@@ -1476,14 +1455,13 @@ class _$StreetCustomMethod extends StreetCustomMethod
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is StreetCustomMethod &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is StreetCustomMethod &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(runtimeType, name);
 
   @JsonKey(ignore: true)
   @override
@@ -1637,19 +1615,15 @@ class _$CityCustomMethod extends CityCustomMethod with House {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is CityCustomMethod &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is CityCustomMethod &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override
@@ -1798,14 +1772,13 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is DuplexCustomMethod &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is DuplexCustomMethod &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(runtimeType, name);
 
   @JsonKey(ignore: true)
   @override
@@ -2070,18 +2043,14 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is GenericPerson<T> &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.age, age) ||
-                const DeepCollectionEquality().equals(other.age, age)));
+        (other.runtimeType == runtimeType &&
+            other is GenericPerson<T> &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.age, age) || other.age == age));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(age);
+  int get hashCode => Object.hash(runtimeType, name, age);
 
   @JsonKey(ignore: true)
   @override
@@ -2229,18 +2198,15 @@ class _$GenericStreet<T>
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is GenericStreet<T> &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is GenericStreet<T> &&
+            (identical(other.name, name) || other.name == name) &&
+            const DeepCollectionEquality().equals(other.value, value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(
+      runtimeType, name, const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override
@@ -2388,19 +2354,15 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is GenericCity<T> &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is GenericCity<T> &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override

@@ -144,6 +144,15 @@ void main() {
         [1]
       ]),
     );
+
+    expect(
+      GenericObject<Object>(42),
+      isNot(GenericObject<num>(42)),
+    );
+    expect(
+      GenericObject<num>(42),
+      isNot(GenericObject<Object>(42)),
+    );
   });
 
   test('GenericIterable', () {

@@ -95,6 +95,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           doc: commonParameter.doc,
           type: commonParameter.type,
           defaultValueSource: commonParameter.defaultValueSource,
+          isPossiblyDartCollection: commonParameter.isPossiblyDartCollection,
           // TODO: support hasJsonKey
           hasJsonKey: false,
         ),

@@ -1,6 +1,8 @@
 # [Unreleased]
 
 - Fixed an issue with fromJson tear-offs not allowing `Object?` as map value. (#520)
+- Optimized the generated implementation of `hashCode` and `==`
+- Fixed an issue when `MyClass<Object>()` and `MyClass<int>()` could be considered equal
 
 # 0.14.5
 
