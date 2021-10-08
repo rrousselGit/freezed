@@ -151,9 +151,9 @@ abstract class _MyClass implements MyClass {
   factory _MyClass({String? a, int? b}) = _$_MyClass;
 
   @override
-  String? get a => throw _privateConstructorUsedError;
+  String? get a;
   @override
-  int? get b => throw _privateConstructorUsedError;
+  int? get b;
   @override
   @JsonKey(ignore: true)
   _$MyClassCopyWith<_MyClass> get copyWith =>
@@ -435,7 +435,7 @@ abstract class Data implements Union {
 
   factory Data.fromJson(Map<String, dynamic> json) = _$Data.fromJson;
 
-  int get value => throw _privateConstructorUsedError;
+  int get value;
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
@@ -727,7 +727,7 @@ abstract class ErrorDetails implements Union {
   factory ErrorDetails.fromJson(Map<String, dynamic> json) =
       _$ErrorDetails.fromJson;
 
-  String? get message => throw _privateConstructorUsedError;
+  String? get message;
   @JsonKey(ignore: true)
   $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
       throw _privateConstructorUsedError;
@@ -896,8 +896,8 @@ abstract class Complex implements Union {
 
   factory Complex.fromJson(Map<String, dynamic> json) = _$Complex.fromJson;
 
-  int get a => throw _privateConstructorUsedError;
-  String get b => throw _privateConstructorUsedError;
+  int get a;
+  String get b;
   @JsonKey(ignore: true)
   $ComplexCopyWith<Complex> get copyWith => throw _privateConstructorUsedError;
 }
@@ -1151,8 +1151,8 @@ abstract class SharedProperty0 implements SharedProperty {
   factory SharedProperty0({String? name, int? age}) = _$SharedProperty0;
 
   @override
-  String? get name => throw _privateConstructorUsedError;
-  int? get age => throw _privateConstructorUsedError;
+  String? get name;
+  int? get age;
   @override
   @JsonKey(ignore: true)
   $SharedProperty0CopyWith<SharedProperty0> get copyWith =>
@@ -1309,8 +1309,8 @@ abstract class SharedProperty1 implements SharedProperty {
   factory SharedProperty1({String? name, int? population}) = _$SharedProperty1;
 
   @override
-  String? get name => throw _privateConstructorUsedError;
-  int? get population => throw _privateConstructorUsedError;
+  String? get name;
+  int? get population;
   @override
   @JsonKey(ignore: true)
   $SharedProperty1CopyWith<SharedProperty1> get copyWith =>

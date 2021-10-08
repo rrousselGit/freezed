@@ -143,9 +143,9 @@ abstract class _TimeSlot implements TimeSlot {
   factory _TimeSlot({TimeOfDay? start, TimeOfDay? end}) = _$_TimeSlot;
 
   @override
-  TimeOfDay? get start => throw _privateConstructorUsedError;
+  TimeOfDay? get start;
   @override
-  TimeOfDay? get end => throw _privateConstructorUsedError;
+  TimeOfDay? get end;
   @override
   @JsonKey(ignore: true)
   _$TimeSlotCopyWith<_TimeSlot> get copyWith =>

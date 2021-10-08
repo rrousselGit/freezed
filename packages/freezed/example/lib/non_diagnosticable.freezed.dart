@@ -224,8 +224,8 @@ class _$_Example<T> implements _Example<T> {
 abstract class _Example<T> implements Example<T> {
   factory _Example(int a, String b) = _$_Example<T>;
 
-  int get a => throw _privateConstructorUsedError;
-  String get b => throw _privateConstructorUsedError;
+  int get a;
+  String get b;
   @JsonKey(ignore: true)
   _$ExampleCopyWith<T, _Example<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -358,7 +358,7 @@ class _$_Example2<T> implements _Example2<T> {
 abstract class _Example2<T> implements Example<T> {
   factory _Example2(T c) = _$_Example2<T>;
 
-  T get c => throw _privateConstructorUsedError;
+  T get c;
   @JsonKey(ignore: true)
   _$Example2CopyWith<T, _Example2<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -639,8 +639,8 @@ abstract class SimplePerson implements SimpleImplements {
   const factory SimplePerson(String name, int age) = _$SimplePerson;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
+  String get name;
+  int get age;
   @override
   @JsonKey(ignore: true)
   $SimplePersonCopyWith<SimplePerson> get copyWith =>
@@ -791,7 +791,7 @@ abstract class SimpleStreet
   const factory SimpleStreet(String name) = _$SimpleStreet;
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   $SimpleStreetCopyWith<SimpleStreet> get copyWith =>
@@ -949,8 +949,8 @@ abstract class SimpleCity implements SimpleImplements, House {
   const factory SimpleCity(String name, int population) = _$SimpleCity;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get population => throw _privateConstructorUsedError;
+  String get name;
+  int get population;
   @override
   @JsonKey(ignore: true)
   $SimpleCityCopyWith<SimpleCity> get copyWith =>
@@ -1111,8 +1111,8 @@ abstract class SimpleCountry
   const factory SimpleCountry(String name, int population) = _$SimpleCountry;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get population => throw _privateConstructorUsedError;
+  String get name;
+  int get population;
   @override
   @JsonKey(ignore: true)
   $SimpleCountryCopyWith<SimpleCountry> get copyWith =>
@@ -1394,8 +1394,8 @@ abstract class PersonCustomMethod extends CustomMethodImplements {
   const PersonCustomMethod._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
+  String get name;
+  int get age;
   @override
   @JsonKey(ignore: true)
   $PersonCustomMethodCopyWith<PersonCustomMethod> get copyWith =>
@@ -1549,7 +1549,7 @@ abstract class StreetCustomMethod extends CustomMethodImplements
   const StreetCustomMethod._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   $StreetCustomMethodCopyWith<StreetCustomMethod> get copyWith =>
@@ -1712,8 +1712,8 @@ abstract class CityCustomMethod extends CustomMethodImplements
   const CityCustomMethod._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get population => throw _privateConstructorUsedError;
+  String get name;
+  int get population;
   @override
   @JsonKey(ignore: true)
   $CityCustomMethodCopyWith<CityCustomMethod> get copyWith =>
@@ -1866,7 +1866,7 @@ abstract class DuplexCustomMethod extends CustomMethodImplements
   const DuplexCustomMethod._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith =>
@@ -2130,8 +2130,8 @@ abstract class GenericPerson<T> implements GenericImplements<T> {
   const factory GenericPerson(String name, int age) = _$GenericPerson<T>;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
+  String get name;
+  int get age;
   @override
   @JsonKey(ignore: true)
   $GenericPersonCopyWith<T, GenericPerson<T>> get copyWith =>
@@ -2287,8 +2287,8 @@ abstract class GenericStreet<T>
   const factory GenericStreet(String name, T value) = _$GenericStreet<T>;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  T get value => throw _privateConstructorUsedError;
+  String get name;
+  T get value;
   @override
   @JsonKey(ignore: true)
   $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith =>
@@ -2443,8 +2443,8 @@ abstract class GenericCity<T>
   const factory GenericCity(String name, int population) = _$GenericCity<T>;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get population => throw _privateConstructorUsedError;
+  String get name;
+  int get population;
   @override
   @JsonKey(ignore: true)
   $GenericCityCopyWith<T, GenericCity<T>> get copyWith =>

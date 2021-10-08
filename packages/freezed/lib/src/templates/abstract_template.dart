@@ -30,7 +30,7 @@ class Abstract {
 /// @nodoc
 mixin _\$$name$genericsDefinition {
 
-${abstractProperties.join()}
+${abstractProperties.map((e) => e.toString(throwUnimplementError: true)).join()}
 
 $_when
 $_whenOrNull

@@ -89,9 +89,14 @@ class Getter {
   final bool isPossiblyDartCollection;
 
   @override
-  String toString() {
-    return '$doc${decorators.join()} $type get $name => '
-        'throw $privConstUsedErrorVarName;';
+  String toString({
+    bool throwUnimplementError = false,
+  }) {
+    if (throwUnimplementError) {
+      return '$doc${decorators.join()} $type get $name => '
+          'throw $privConstUsedErrorVarName;';
+    }
+    return '$doc${decorators.join()} $type get $name;';
   }
 }
 

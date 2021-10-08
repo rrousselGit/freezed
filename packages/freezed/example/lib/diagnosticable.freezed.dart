@@ -234,8 +234,8 @@ abstract class _Example<T> extends Example<T> {
   factory _Example(int a, String b) = _$_Example<T>;
   _Example._() : super._();
 
-  int get a => throw _privateConstructorUsedError;
-  String get b => throw _privateConstructorUsedError;
+  int get a;
+  String get b;
   @JsonKey(ignore: true)
   _$ExampleCopyWith<T, _Example<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -377,7 +377,7 @@ abstract class _Example2<T> extends Example<T> {
   factory _Example2(T c) = _$_Example2<T>;
   _Example2._() : super._();
 
-  T get c => throw _privateConstructorUsedError;
+  T get c;
   @JsonKey(ignore: true)
   _$Example2CopyWith<T, _Example2<T>> get copyWith =>
       throw _privateConstructorUsedError;
