@@ -16,7 +16,7 @@ $src
     ''',
   }, (r) => r.findLibraryByName('main'));
 
-  final errorResult = await main.session
+  final errorResult = await main!.session
       .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
   final criticalErrors = errorResult.errors
       .where((element) => element.severity == Severity.error)
