@@ -52,17 +52,6 @@ Future<void> main() async {
     );
   });
 
-  test('Regression358', () {
-    expect(
-      Regression358.withSpecificColor(),
-      Regression358(number: 2),
-    );
-    expect(
-      Regression358.withSpecificColor(count: 42),
-      Regression358(number: 42),
-    );
-  });
-
   test('documentation', () async {
     final singleClassLibrary = await analyze();
 

@@ -8,6 +8,17 @@ class NoCommonParam with _$NoCommonParam {
   const factory NoCommonParam.named(double c, [Object? d]) = NoCommonParam1;
 }
 
+// Regression test for https://github.com/rrousselGit/freezed/issues/358
+@freezed
+class Regression358 with _$Regression358 {
+  const factory Regression358({
+    required int number,
+  }) = _Regression358;
+
+  factory Regression358.withSpecificColor({int count = 2}) =>
+      Regression358(number: count);
+}
+
 @freezed
 class SharedParam with _$SharedParam {
   const factory SharedParam(String a, int b) = SharedParam0;

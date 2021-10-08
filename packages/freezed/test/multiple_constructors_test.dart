@@ -33,6 +33,17 @@ Future<void> main() async {
     expect(recursiveClass.getField('value').type.isDynamic, isFalse);
   });
 
+  test('Regression358', () {
+    expect(
+      Regression358.withSpecificColor(),
+      Regression358(number: 2),
+    );
+    expect(
+      Regression358.withSpecificColor(count: 42),
+      Regression358(number: 42),
+    );
+  });
+
   test('doc', () {
     final complex = _getClassElement('Complex');
     final complex0 = _getClassElement('Complex0');

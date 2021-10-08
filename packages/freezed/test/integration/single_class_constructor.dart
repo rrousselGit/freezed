@@ -13,17 +13,6 @@ class Regression131 extends DataEvent with _$Regression131 {
   factory Regression131(String versionName) = _Regression131;
 }
 
-// Regression test for https://github.com/rrousselGit/freezed/issues/358
-@freezed
-class Regression358 with _$Regression358 {
-  const factory Regression358({
-    required int number,
-  }) = _Regression358;
-
-  factory Regression358.withSpecificColor({int count = 2}) =>
-      Regression358(number: count);
-}
-
 @freezed
 class UnimplementedGetter with _$UnimplementedGetter {
   factory UnimplementedGetter(int value) = _UnimplementedGetter;
