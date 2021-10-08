@@ -154,7 +154,7 @@ void main() {
             element.source.toString().contains('multiple_constructors')),
       );
 
-      final errorResult = await main.session.getErrors2(
+      final errorResult = await main.session.getErrors(
               '/freezed/test/integration/multiple_constructors.freezed.dart')
           as ErrorsResult;
 
