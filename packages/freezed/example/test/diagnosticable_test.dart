@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:example/diagnosticable.dart' as diagnosticable;
 import 'package:example/non_diagnosticable.dart' as non_diagnosticable;
 import 'package:example/time_slot.dart';

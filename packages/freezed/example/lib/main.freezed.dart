@@ -165,15 +165,18 @@ abstract class _MyClass implements MyClass {
 }
 
 Union _$UnionFromJson(Map<String, dynamic> json) {
-  switch (json['custom-key'] as String) {
+  final _json = <String, dynamic>{...json};
+  final type = _json.remove('custom-key') as String?;
+
+  switch (type) {
     case 'Default':
-      return Data.fromJson(json);
+      return Data.fromJson(_json);
     case 'Loading':
-      return Loading.fromJson(json);
+      return Loading.fromJson(_json);
     case 'Error':
-      return ErrorDetails.fromJson(json);
+      return ErrorDetails.fromJson(_json);
     case 'Complex':
-      return Complex.fromJson(json);
+      return Complex.fromJson(_json);
 
     default:
       throw CheckedFromJsonException(json, 'custom-key', 'Union',
@@ -208,7 +211,7 @@ class _$UnionTearOff {
     );
   }
 
-  Union fromJson(Map<String, Object> json) {
+  Union fromJson(Map<String, Object?> json) {
     return Union.fromJson(json);
   }
 }
