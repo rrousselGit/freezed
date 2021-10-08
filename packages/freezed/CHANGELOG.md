@@ -1,4 +1,19 @@
-# [Unreleased]
+# 0.15.0
+
+- **Breaking** Changed the syntax for `@With` and `@Implements` to use a generic annotation.
+  Before:
+
+  ```dart
+  @With(MyClass)
+  @With.fromString('Generic<int>')
+  ```
+
+  After:
+
+  ```dart
+  @With<MyClass>()
+  @With<Generic<int>>()
+  ```
 
 - Fixed an issue with fromJson tear-offs not allowing `Object?` as map value. (#520)
 - Optimized the generated implementation of `hashCode` and `==`
