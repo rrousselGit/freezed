@@ -222,8 +222,9 @@ Future<void> main() async {
   test('== uses identical first', () {
     var didEqual = false;
     final obj = MyObject(() => didEqual = true);
+    final list = [obj];
 
-    expect(Generic(obj), Generic(obj));
+    expect(Generic(list), Generic(list));
     expect(didEqual, isFalse);
   });
 
