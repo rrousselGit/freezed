@@ -6,8 +6,8 @@ part 'alias.freezed.dart';
 
 @freezed
 class Alias with _$Alias {
-  @With(concrete.Mixin)
-  @Implements(concrete.Empty)
+  @With<concrete.Mixin>()
+  @Implements<concrete.Empty>()
   factory Alias([
     @Default(concrete.Empty()) concrete.Empty value,
     int? a,
