@@ -1,3 +1,7 @@
+# [Unreleased]
+
+- Fixed an issue with fromJson tear-offs not allowing `Object?` as map value. (#520)
+
 # 0.14.5
 
 - fixed a bug when using alias imports, potentially using the prefix on every variables.
