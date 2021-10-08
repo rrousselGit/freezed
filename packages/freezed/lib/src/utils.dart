@@ -30,7 +30,7 @@ Future<AstNode> tryGetAstNodeForElement(
 
   while (true) {
     try {
-      final result = library.session.getParsedLibraryByElement2(library)
+      final result = library.session.getParsedLibraryByElement(library)
           as ParsedLibraryResult?;
 
       return result!.getElementDeclaration(element)!.node;

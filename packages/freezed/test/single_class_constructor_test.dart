@@ -294,7 +294,7 @@ void main() {
   test('has no issue', () async {
     final singleClassLibrary = await analyze();
 
-    final errorResult = await singleClassLibrary.session.getErrors2(
+    final errorResult = await singleClassLibrary.session.getErrors(
             '/freezed/test/integration/single_class_constructor.freezed.dart')
         as ErrorsResult;
 
@@ -562,7 +562,7 @@ void main() {
     }, (r) => r.findLibraryByName('main'));
 
     final errorResult = await main.session
-        .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
+        .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
     expect(
       errorResult.errors.map((e) => e.toString()),
