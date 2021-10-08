@@ -683,7 +683,7 @@ class _$SimpleStreetCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With.fromString('AdministrativeArea<House>')
+@With<AdministrativeArea<House>>()
 class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   const _$SimpleStreet(this.name);
 
@@ -838,7 +838,7 @@ class _$SimpleCityCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(House)
+@With<House>()
 class _$SimpleCity with House implements SimpleCity {
   const _$SimpleCity(this.name, this.population);
 
@@ -998,8 +998,8 @@ class _$SimpleCountryCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(House)
-@Implements(GeographicArea)
+@With<House>()
+@Implements<GeographicArea>()
 class _$SimpleCountry with House implements SimpleCountry {
   const _$SimpleCountry(this.name, this.population);
 
@@ -1438,8 +1438,8 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(Shop)
-@With.fromString('AdministrativeArea<House>')
+@With<Shop>()
+@With<AdministrativeArea<House>>()
 class _$StreetCustomMethod extends StreetCustomMethod
     with Shop, AdministrativeArea<House> {
   const _$StreetCustomMethod(this.name) : super._();
@@ -1597,8 +1597,8 @@ class _$CityCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(House)
-@Implements(GeographicArea)
+@With<House>()
+@Implements<GeographicArea>()
 class _$CityCustomMethod extends CityCustomMethod with House {
   const _$CityCustomMethod(this.name, this.population) : super._();
 
@@ -1756,8 +1756,8 @@ class _$DuplexCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 
-@Implements(Shop)
-@Implements(GeographicArea)
+@Implements<Shop>()
+@Implements<GeographicArea>()
 class _$DuplexCustomMethod extends DuplexCustomMethod {
   const _$DuplexCustomMethod(this.name) : super._();
 
@@ -1884,13 +1884,6 @@ class _$GenericImplementsTearOff {
     );
   }
 
-  GenericStreet<T> street<T>(String name, T value) {
-    return GenericStreet<T>(
-      name,
-      value,
-    );
-  }
-
   GenericCity<T> city<T>(String name, int population) {
     return GenericCity<T>(
       name,
@@ -1909,21 +1902,18 @@ mixin _$GenericImplements<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name, int age) person,
-    required TResult Function(String name, T value) street,
     required TResult Function(String name, int population) city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
     required TResult orElse(),
   }) =>
@@ -1931,21 +1921,18 @@ mixin _$GenericImplements<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GenericPerson<T> value) person,
-    required TResult Function(GenericStreet<T> value) street,
     required TResult Function(GenericCity<T> value) city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
     required TResult orElse(),
   }) =>
@@ -2061,7 +2048,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name, int age) person,
-    required TResult Function(String name, T value) street,
     required TResult Function(String name, int population) city,
   }) {
     return person(name, age);
@@ -2071,7 +2057,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
   }) {
     return person?.call(name, age);
@@ -2081,7 +2066,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
     required TResult orElse(),
   }) {
@@ -2095,7 +2079,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GenericPerson<T> value) person,
-    required TResult Function(GenericStreet<T> value) street,
     required TResult Function(GenericCity<T> value) city,
   }) {
     return person(this);
@@ -2105,7 +2088,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
   }) {
     return person?.call(this);
@@ -2115,7 +2097,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
     required TResult orElse(),
   }) {
@@ -2135,163 +2116,6 @@ abstract class GenericPerson<T> implements GenericImplements<T> {
   @override
   @JsonKey(ignore: true)
   $GenericPersonCopyWith<T, GenericPerson<T>> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $GenericStreetCopyWith<T, $Res>
-    implements $GenericImplementsCopyWith<T, $Res> {
-  factory $GenericStreetCopyWith(
-          GenericStreet<T> value, $Res Function(GenericStreet<T>) then) =
-      _$GenericStreetCopyWithImpl<T, $Res>;
-  @override
-  $Res call({String name, T value});
-}
-
-/// @nodoc
-class _$GenericStreetCopyWithImpl<T, $Res>
-    extends _$GenericImplementsCopyWithImpl<T, $Res>
-    implements $GenericStreetCopyWith<T, $Res> {
-  _$GenericStreetCopyWithImpl(
-      GenericStreet<T> _value, $Res Function(GenericStreet<T>) _then)
-      : super(_value, (v) => _then(v as GenericStreet<T>));
-
-  @override
-  GenericStreet<T> get _value => super._value as GenericStreet<T>;
-
-  @override
-  $Res call({
-    Object? name = freezed,
-    Object? value = freezed,
-  }) {
-    return _then(GenericStreet<T>(
-      name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      value == freezed
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as T,
-    ));
-  }
-}
-
-/// @nodoc
-
-@With.fromString('AdministrativeArea<T>')
-class _$GenericStreet<T>
-    with AdministrativeArea<T>
-    implements GenericStreet<T> {
-  const _$GenericStreet(this.name, this.value);
-
-  @override
-  final String name;
-  @override
-  final T value;
-
-  @override
-  String toString() {
-    return 'GenericImplements<$T>.street(name: $name, value: $value)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is GenericStreet<T> &&
-            (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality().equals(other.value, value));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, name, const DeepCollectionEquality().hash(value));
-
-  @JsonKey(ignore: true)
-  @override
-  $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith =>
-      _$GenericStreetCopyWithImpl<T, GenericStreet<T>>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String name, int age) person,
-    required TResult Function(String name, T value) street,
-    required TResult Function(String name, int population) city,
-  }) {
-    return street(name, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
-    TResult Function(String name, int population)? city,
-  }) {
-    return street?.call(name, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
-    TResult Function(String name, int population)? city,
-    required TResult orElse(),
-  }) {
-    if (street != null) {
-      return street(name, value);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GenericPerson<T> value) person,
-    required TResult Function(GenericStreet<T> value) street,
-    required TResult Function(GenericCity<T> value) city,
-  }) {
-    return street(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
-    TResult Function(GenericCity<T> value)? city,
-  }) {
-    return street?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
-    TResult Function(GenericCity<T> value)? city,
-    required TResult orElse(),
-  }) {
-    if (street != null) {
-      return street(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GenericStreet<T>
-    implements GenericImplements<T>, AdministrativeArea<T> {
-  const factory GenericStreet(String name, T value) = _$GenericStreet<T>;
-
-  @override
-  String get name;
-  T get value;
-  @override
-  @JsonKey(ignore: true)
-  $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2336,8 +2160,8 @@ class _$GenericCityCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-@With(House)
-@Implements(GeographicArea)
+@With<House>()
+@Implements<GeographicArea>()
 class _$GenericCity<T> with House implements GenericCity<T> {
   const _$GenericCity(this.name, this.population);
 
@@ -2373,7 +2197,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name, int age) person,
-    required TResult Function(String name, T value) street,
     required TResult Function(String name, int population) city,
   }) {
     return city(name, population);
@@ -2383,7 +2206,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
   }) {
     return city?.call(name, population);
@@ -2393,7 +2215,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
     required TResult orElse(),
   }) {
@@ -2407,7 +2228,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GenericPerson<T> value) person,
-    required TResult Function(GenericStreet<T> value) street,
     required TResult Function(GenericCity<T> value) city,
   }) {
     return city(this);
@@ -2417,7 +2237,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
   }) {
     return city?.call(this);
@@ -2427,7 +2246,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
     required TResult orElse(),
   }) {

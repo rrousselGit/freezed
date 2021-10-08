@@ -1,3 +1,20 @@
+# 0.15.0
+
+- **Breaking** Changed the syntax for `@With` and `@Implements` to use a generic annotation.
+  Before:
+
+  ```dart
+  @With(MyClass)
+  @With.fromString('Generic<int>')
+  ```
+
+  After:
+
+  ```dart
+  @With<MyClass>()
+  @With<Generic<int>>()
+  ```
+
 # 0.14.3
 
 Upgraded to support last json_annotation version
@@ -9,7 +26,7 @@ Upgraded to support last json_annotation version
 # 0.14.1
 
 - Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more informations (Thanks to @ookami-kb)
- 
+
 # 0.14.0
 
 - Stable null safety release

@@ -523,7 +523,7 @@ abstract class GeographicArea {
 class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
 
-  @Implements(GeographicArea)
+  @Implements<GeographicArea>()
   const factory Example.city(String name, int population) = City;
 }
 ```
@@ -543,29 +543,13 @@ abstract class AdministrativeArea<T> {}
 class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
 
-  @With.fromString('AdministrativeArea<House>')
+  @With<AdministrativeArea<House>>()
   const factory Example.street(String name) = Street;
 
-  @With(House)
-  @Implements(Shop)
-  @Implements(GeographicArea)
+  @With<House>()
+  @Implements<Shop>()
+  @Implements<GeographicArea>()
   const factory Example.city(String name, int population) = City;
-}
-```
-
-In case you want to make your class generic, you do it like this:
-
-```dart
-@freezed
-class Example<T> with _$Example<T> {
-  const factory Example.person(String name, int age) = Person<T>;
-
-  @With.fromString('AdministrativeArea<T>')
-  const factory Example.street(String name, T value) = Street<T>;
-
-  @With(House)
-  @Implements(GeographicArea)
-  const factory Example.city(String name, int population) = City<T>;
 }
 ```
 
