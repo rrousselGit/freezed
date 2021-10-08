@@ -269,7 +269,7 @@ void main() {
       );
 
       final errorResult = await main.session
-          .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
+          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -383,7 +383,7 @@ void main() {
       );
 
       final errorResult = await main.session
-          .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
+          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isEmpty);
     });
@@ -406,7 +406,7 @@ void main() {
       );
 
       final errorResult = await main.session
-          .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
+          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
     });

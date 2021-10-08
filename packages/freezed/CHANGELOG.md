@@ -1,7 +1,8 @@
-# 0.15.0
+# [Unreleased]
 
-- In the case of multiple factories, `runtimeType` was renamed to `type`.
+- **Breaking** For union types, the key `runtimeType` was renamed to `type`.
 - The union key is no longer passed `json_serializable` when deserializing avoid the case of being an `unrecognized_key` in some cases.
+- Fixed an issue with fromJson tear-offs not allowing `Object?` as map value. (#520)
 
 # 0.14.5
 

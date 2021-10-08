@@ -74,7 +74,7 @@ ${targetConstructor.redirectedName}$genericsParameter $ctorName$genericsDefiniti
 
     if (serializable) {
       yield '''
-$name$genericsParameter fromJson$genericsDefinition(Map<String, Object> json) {
+$name$genericsParameter fromJson$genericsDefinition(Map<String, Object?> json) {
   return $name$genericsParameter.fromJson(json);
 }
 ''';
