@@ -1,6 +1,31 @@
 # [Unreleased]
 
 - **Breaking** For union types, the key `runtimeType` was renamed to `type`.
+
+  To migrate, you can either update your `build.yaml` as followed:
+
+  ```yaml
+  targets:
+    $default:
+      builders:
+        freezed:
+          options:
+            union_key: runtimeType
+  ```
+
+  or individually specify a custom `unionKey` for a specific Freezed class as followed:
+
+  ```dart
+  @Freezed(unionKey: 'runtimeType')
+  class Model with _$Model {
+    const factory Model.first(int a) = _ModelFirst;
+    const factory Model.second(int a) = _ModelSecond;
+
+    factory Model.fromJson(Map<String, dynamic> json) =>
+        _$ModelFromJson(json);
+  }
+  ```
+
 - The union key is no longer passed `json_serializable` when deserializing avoid the case of being an `unrecognized_key` in some cases.
 - Fixed an issue with fromJson tear-offs not allowing `Object?` as map value. (#520)
 

@@ -97,8 +97,8 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
 - [Utilities](#utilities)
-    - [Freezed extension for VSCode](#freezed-extension-for-vscode)
-    - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
+  - [Freezed extension for VSCode](#freezed-extension-for-vscode)
+  - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
 
 # How to use
 
@@ -123,7 +123,6 @@ This installs three packages:
 - [freezed], the code generator
 - [freezed_annotation](https://pub.dev/packages/freezed_annotation), a package containing annotations for [freezed].
 
-
 ### Disabling invalid_annotation_target warning and warning in generates files.
 
 If you plan on using [Freezed] in combination with `json_serializable`, recent
@@ -143,7 +142,6 @@ analyzer:
   errors:
     invalid_annotation_target: ignore
 ```
-
 
 ## Run the generator
 
@@ -186,7 +184,6 @@ class Union with _$Union {
   const factory Union.error([String? message]) = ErrorDetails;
 }
 ```
-
 
 ## Ignore lint warnings on generated files
 
@@ -1060,33 +1057,19 @@ Then [Freezed] will use each JSON object's `type` to choose the constructor as f
 ]
 ```
 
-**Note**:
-
-In `0.15.0`, `runtimeType` was renamed `type`. If your database already contains objects with the union type of `runtimeType`, proper deserialization will fail unless you add to your models the older version of the unionKey `runtimeType`:
-
-```dart
-@Freezed(unionKey: 'runtimeType')
-class Model with _$Model {
-  const factory Model.first(int a) = _ModelFirst;
-  const factory Model.second(int a) = _ModelSecond;
-
-  factory Model.fromJson(Map<String, dynamic> json) =>
-      _$ModelFromJson(json);
-}
-```
-
 You can customize key and value with something different
 using `@Freezed` and `@FreezedUnionValue` decorators:
 
 ```dart
-@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
+@Freezed(unionKey: 'runtimeType', unionValueCase: FreezedUnionCase.pascal)
 abstract class MyResponse with _$MyResponse {
   const factory MyResponse(String a) = MyResponseData;
-  
+
+  const factory MyResponse.someError(String message) = MyResponseError;
+
   @FreezedUnionValue('SpecialCase')
   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
-  
-  const factory MyResponse.error(String message) = MyResponseError;
+
 
   // ...
 }
@@ -1097,16 +1080,16 @@ which would update the previous json to:
 ```json
 [
   {
-    "type": "Default",
+    "runtimeType": "Default",
     "a": "This JSON object will use constructor MyResponse()"
   },
   {
-    "type": "SpecialCase",
+    "runtimeType": "SpecialCase",
     "a": "This JSON object will use constructor MyResponse.special()",
     "b": 42
   },
   {
-    "type": "Error",
+    "runtimeType": "Error",
     "message": "This JSON object will use constructor MyResponse.error()"
   }
 ]
