@@ -17,7 +17,7 @@ class Union with _$Union {
   const factory Union.error([String? message]) = ErrorDetails;
   const factory Union.complex(int a, String b) = Complex;
 
-  factory Union.fromJson(Map<String, Object> json) => _$UnionFromJson(json);
+  factory Union.fromJson(Map<String, Object?> json) => _$UnionFromJson(json);
 }
 
 @freezed

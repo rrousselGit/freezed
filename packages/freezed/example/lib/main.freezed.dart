@@ -165,7 +165,7 @@ abstract class _MyClass implements MyClass {
 }
 
 Union _$UnionFromJson(Map<String, dynamic> json) {
-  switch (json['custom-key'] as String) {
+  switch (json['custom-key'] as String?) {
     case 'Default':
       return Data.fromJson(json);
     case 'Loading':
@@ -208,7 +208,7 @@ class _$UnionTearOff {
     );
   }
 
-  Union fromJson(Map<String, Object> json) {
+  Union fromJson(Map<String, Object?> json) {
     return Union.fromJson(json);
   }
 }
