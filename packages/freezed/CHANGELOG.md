@@ -1,3 +1,8 @@
+# 0.15.0+1
+
+Fixed the generated `hashCode` not compiling for objects with a large number
+of properties. (#531)
+
 # 0.15.0
 
 - **Breaking** Changed the syntax for `@With` and `@Implements` to use a generic annotation.
