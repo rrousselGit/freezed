@@ -366,6 +366,12 @@ bool operator ==(dynamic other) {
 int get hashCode => ${hashedProperties.first}.hashCode;
 ''';
     }
+    if (hashedProperties.length >= 20) {
+      return '''
+@override
+int get hashCode => Object.hashAll([${hashedProperties.join(',')}]);
+''';
+    }
 
     return '''
 @override
