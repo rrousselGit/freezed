@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
@@ -40,7 +38,7 @@ void main() {
     );
 
     expect(
-      person.copyWith.appointment.creator(name: 'Steve'),
+      person.copyWith.appointment!.creator!(name: 'Steve'),
       Person(
         name: 'Adam',
         age: 36,
@@ -58,8 +56,9 @@ void main() {
     );
 
     expect(
-      person.copyWith.appointment.creator
-          .appointment(title: 'Some New Appointment'),
+      person.copyWith.appointment!.creator!.appointment!(
+        title: 'Some New Appointment',
+      ),
       Person(
         name: 'Adam',
         age: 36,

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'dart:async';
 
@@ -30,7 +28,7 @@ Future<void> main() async {
   test('recursive class does not generate dynamic', () async {
     final recursiveClass = _getClassElement('_RecursiveNext');
 
-    expect(recursiveClass.getField('value').type.isDynamic, isFalse);
+    expect(recursiveClass.getField('value')!.type.isDynamic, isFalse);
   });
 
   test('Regression358', () {
@@ -346,7 +344,7 @@ void main() {
     test('redirected constructors do have public properties', () {
       final ctor0 = NoCommonParam0('a', b: 42);
       String a = ctor0.a;
-      int b = ctor0.b;
+      int? b = ctor0.b;
       expect(a, 'a');
       expect(b, 42);
 
@@ -354,7 +352,7 @@ void main() {
       ctor1 = NoCommonParam1(.42, const Object());
 
       double c = ctor1.c;
-      Object d = ctor1.d;
+      Object? d = ctor1.d;
       expect(c, .42);
       expect(d, const Object());
     });
@@ -503,7 +501,7 @@ void main() {
 
       expect(
           nestedListClass
-              .getField('children')
+              .getField('children')!
               .type
               .getDisplayString(withNullability: true),
           'List<LeafNestedListItem>');
@@ -514,7 +512,7 @@ void main() {
 
       expect(
           nestedListClass
-              .getField('children')
+              .getField('children')!
               .type
               .getDisplayString(withNullability: true),
           'List<InnerNestedListItem>');
@@ -523,7 +521,7 @@ void main() {
 
       expect(
           nestedListItemClass
-              .getField('children')
+              .getField('children')!
               .type
               .getDisplayString(withNullability: true),
           'List<LeafNestedListItem>');
@@ -535,7 +533,7 @@ void main() {
 
       expect(
           nestedMapClass
-              .getField('children')
+              .getField('children')!
               .type
               .getDisplayString(withNullability: true),
           'Map<String, LeafNestedMapItem>');
@@ -546,7 +544,7 @@ void main() {
 
       expect(
           nestedMapClass
-              .getField('children')
+              .getField('children')!
               .type
               .getDisplayString(withNullability: true),
           'Map<String, InnerNestedMapItem>');
@@ -555,7 +553,7 @@ void main() {
 
       expect(
           nestedMapItemClass
-              .getField('children')
+              .getField('children')!
               .type
               .getDisplayString(withNullability: true),
           'Map<String, LeafNestedMapItem>');

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
@@ -19,7 +17,7 @@ class MyObject {
 
   @override
   bool operator ==(Object other) {
-    didEqual?.call();
+    didEqual();
     return other.runtimeType == runtimeType;
   }
 
@@ -96,7 +94,7 @@ Future<void> main() async {
     final value = Product(name: 'foo', parent: Product(name: 'bar'));
 
     expect(
-      value.copyWith.parent(name: 'baz'),
+      value.copyWith.parent!(name: 'baz'),
       Product(name: 'foo', parent: Product(name: 'baz')),
     );
 
@@ -109,7 +107,7 @@ Future<void> main() async {
     );
 
     expect(
-      value2.copyWith.parent.parent(name: 'quaz'),
+      value2.copyWith.parent!.parent!(name: 'quaz'),
       Product(
         name: 'foo',
         parent: Product(
@@ -551,7 +549,7 @@ void main() {
     ''',
     }, (r) => r.findLibraryByName('main'));
 
-    final errorResult = await main.session
+    final errorResult = await main!.session
         .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
     expect(
