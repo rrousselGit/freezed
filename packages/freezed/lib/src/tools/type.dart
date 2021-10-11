@@ -10,11 +10,12 @@ import 'imports.dart';
 /// this is usually type.element, except if it is a typedef then it is
 /// type.alias.element
 Element _getElementForType(DartType type) {
-  if(type.element != null) {
+  if (type.element != null) {
     return type.element!;
   }
   return type.alias!.element;
 }
+
 /// Renders a type based on its string + potential import alias
 String resolveFullTypeStringFrom(
   LibraryElement originLibrary,
@@ -49,7 +50,7 @@ String resolveFullTypeStringFrom(
   // Instead of 'SomeTypedef'
   if (type is FunctionType && type.alias?.element != null) {
     displayType = type.alias!.element.name;
-    if(type.nullabilitySuffix == NullabilitySuffix.question) {
+    if (type.nullabilitySuffix == NullabilitySuffix.question) {
       displayType += '?';
     }
   }
