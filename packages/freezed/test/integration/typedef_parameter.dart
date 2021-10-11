@@ -8,5 +8,6 @@ typedef MyTypedef = Function(String);
 @freezed
 class ClassWithTypedef with _$ClassWithTypedef {
   ClassWithTypedef._();
-  factory ClassWithTypedef(MyTypedef myTypedef, ExternalTypedef externalTypedef) = _ClassWithTypedef;
+  factory ClassWithTypedef(
+      MyTypedef myTypedef, ExternalTypedef externalTypedef) = _ClassWithTypedef;
 }

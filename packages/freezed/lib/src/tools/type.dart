@@ -38,7 +38,7 @@ String resolveFullTypeStringFrom(
   // 'dynamic Function(String)'
   //
   // Instead of 'SomeTypedef'
-  if(type is FunctionType && type.alias?.element != null)  {
+  if (type is FunctionType && type.alias?.element != null) {
     displayType = type.alias!.element.name;
   }
 

@@ -8,13 +8,13 @@ void main() {
       {
         'freezed|test/integration/typedef_parameter.dart': useAssetReader,
       },
-          (r) => r.libraries.firstWhere(
-              (element) => element.source.toString().contains('typedef_parameter')),
+      (r) => r.libraries.firstWhere(
+          (element) => element.source.toString().contains('typedef_parameter')),
     );
 
-    final errorResult = await main.session
-        .getErrors('/freezed/test/integration/typedef_parameter_test.freezed.dart')
-    as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+            '/freezed/test/integration/typedef_parameter_test.freezed.dart')
+        as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
