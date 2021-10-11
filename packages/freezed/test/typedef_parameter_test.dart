@@ -26,13 +26,16 @@ void main() {
       {
         'freezed|test/integration/typedef_parameter.dart': useAssetReader,
       },
-          (r) => r.libraries.firstWhere(
-              (element) => element.source.toString().contains('typedef_parameter')),
+      (r) => r.libraries.firstWhere(
+          (element) => element.source.toString().contains('typedef_parameter')),
     );
 
-    var freezedClass = main.topLevelElements.whereType<ClassElement>().firstWhere((element) => element.name == '_ClassWithTypedef');
+    var freezedClass = main.topLevelElements
+        .whereType<ClassElement>()
+        .firstWhere((element) => element.name == '_ClassWithTypedef');
 
-    var constructor = freezedClass.constructors.firstWhere((element) => element.name == '');
+    var constructor =
+        freezedClass.constructors.firstWhere((element) => element.name == '');
 
     var firstTypedefType = constructor.parameters.first.type;
     expect(firstTypedefType, isA<FunctionType>());
@@ -41,6 +44,5 @@ void main() {
     var secondTypedefType = constructor.parameters[1].type;
     expect(secondTypedefType, isA<FunctionType>());
     expect(secondTypedefType.alias!.element.name, equals('ExternalTypedef'));
-
   });
 }
