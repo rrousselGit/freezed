@@ -6,10 +6,10 @@ void main() {
   test('has no issue', () async {
     final main = await resolveSources(
       {
-        'freezed|test/integration/deep_copy.dart': useAssetReader,
+        'freezed|test/integration/typedef_parameter.dart': useAssetReader,
       },
           (r) => r.libraries.firstWhere(
-              (element) => element.source.toString().contains('deep_copy')),
+              (element) => element.source.toString().contains('typedef_parameter')),
     );
 
     final errorResult = await main.session
