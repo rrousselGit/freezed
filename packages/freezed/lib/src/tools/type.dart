@@ -24,9 +24,27 @@ String resolveFullTypeStringFrom(
     },
   );
 
-  if (owner != null) {
-    return '${owner.name}.${type.getDisplayString(withNullability: withNullability)}';
+  String? displayType = type.getDisplayString(withNullability: withNullability);
+
+  // The parameter is a typedef in the form of
+  // SomeTypedef typedef
+  //
+  // In this case the analyzer would expand that typedef using getDisplayString
+  // For example for:
+  //
+  // typedef SomeTypedef = Function(String);
+  //
+  // it would generate:
+  // 'dynamic Function(String)'
+  //
+  // Instead of 'SomeTypedef'
+  if(type is FunctionType && type.alias?.element != null)  {
+    displayType = type.alias!.element.name;
   }
 
-  return type.getDisplayString(withNullability: withNullability);
+  if (owner != null) {
+    return '${owner.name}.$displayType';
+  }
+
+  return displayType;
 }
