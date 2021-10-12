@@ -33,3 +33,28 @@ class CustomEqualsWithUnion with _$CustomEqualsWithUnion {
   @override
   int get hashCode => name.hashCode;
 }
+
+
+mixin MyClass {
+  @override
+  bool operator ==(Object o) => false;
+
+  @override
+  int get hashCode => super.hashCode;
+}
+
+@freezed
+class EqualsWithUnionMixin with _$EqualsWithUnionMixin {
+  EqualsWithUnionMixin._();
+
+  @With(MyClass)
+  factory EqualsWithUnionMixin.first(int a) = UnionMixinFirst;
+
+  factory EqualsWithUnionMixin.second(String b) = UnionMixinSecond;
+
+  @override
+  bool operator ==(Object o) => true;
+
+  @override
+  int get hashCode => super.hashCode;
+}

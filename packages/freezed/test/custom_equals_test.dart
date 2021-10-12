@@ -13,4 +13,20 @@ void main() {
     );
   });
 
+  test('custom equals with mixin and union', () {
+    expect(
+      EqualsWithUnionMixin.first(1) != EqualsWithUnionMixin.second('2'),
+      isTrue,
+    );
+
+     expect(
+      EqualsWithUnionMixin.first(1) == EqualsWithUnionMixin.first(1),
+      isFalse,
+    );
+
+      expect(
+      EqualsWithUnionMixin.second('1') == EqualsWithUnionMixin.second('2'),
+      isTrue,
+    );
+  });
 }
