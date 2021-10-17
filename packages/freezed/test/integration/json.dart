@@ -133,6 +133,16 @@ class UnionDefaultFallback with _$UnionDefaultFallback {
       _$UnionDefaultFallbackFromJson(json);
 }
 
+@Freezed(unionKey: 'key', fallbackUnion: 'default')
+class UnionKeyDefaultFallback with _$UnionKeyDefaultFallback {
+  const factory UnionKeyDefaultFallback(String key) = _UnionKeyDefaultFallback;
+  const factory UnionKeyDefaultFallback.first(String key) =
+      _UnionKeyDefaultFallbackFirst;
+
+  factory UnionKeyDefaultFallback.fromJson(Map<String, dynamic> json) =>
+      _$UnionKeyDefaultFallbackFromJson(json);
+}
+
 @Freezed(unionValueCase: FreezedUnionCase.pascal)
 class UnionValueCasePascal with _$UnionValueCasePascal {
   const factory UnionValueCasePascal.first(int a) = _UnionValueCasePascalFirst;
