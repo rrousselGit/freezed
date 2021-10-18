@@ -181,20 +181,19 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _toJson {
     if (!shouldGenerateJson) return '';
-    var content = 'return _\$${nonPrivateConcreteName}ToJson(this);';
+    var content = '_\$${nonPrivateConcreteName}ToJson(this)';
 
     if (allConstructors.length > 1) {
-      content = '''
-return {
+      content = '''{
   '$unionKey': '${constructor.unionValue}',
-  ..._\$${nonPrivateConcreteName}ToJson(this),
-};
+  ...$content,
+}
 ''';
     }
     return '''
 @override
 Map<String, dynamic> toJson() {
-  $content
+  return $content;
 }''';
   }
 
