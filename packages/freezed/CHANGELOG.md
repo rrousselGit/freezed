@@ -23,6 +23,7 @@ of properties. (#531)
 - Fixed an issue with fromJson tear-offs not allowing `Object?` as map value. (#520)
 - Optimized the generated implementation of `hashCode` and `==`
 - Fixed an issue when `MyClass<Object>()` and `MyClass<int>()` could be considered equal
+- Require Dart SDK >=2.14.0.
 
 # 0.14.5
 
