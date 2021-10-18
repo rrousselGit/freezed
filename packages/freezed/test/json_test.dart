@@ -214,6 +214,7 @@ Future<void> main() async {
       final first = UnionKeyDefaultFallback.fromJson(<String, dynamic>{
         'key': 'first',
       });
+
       expect(
         first,
         UnionKeyDefaultFallback.first('first'),
@@ -223,10 +224,12 @@ Future<void> main() async {
         first.toJson()['key'],
       );
     });
+
     test('fallback', () {
       final fallback = UnionKeyDefaultFallback.fromJson(<String, dynamic>{
         'key': 'fallback',
       });
+
       expect(
         fallback,
         UnionKeyDefaultFallback('fallback'),
