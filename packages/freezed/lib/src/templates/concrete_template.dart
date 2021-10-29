@@ -206,7 +206,7 @@ Map<String, dynamic> toJson() {
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   super.debugFillProperties(properties);
   properties
-    ..add(DiagnosticsProperty('type', '${constructor.fullName}'))
+    ..add(DiagnosticsProperty('type', '${constructor.fullName.replaceAll(r'$', r'\$')}'))
     $diagnostics;
 }
 ''';
@@ -323,7 +323,7 @@ ${whenOrNullPrototype(allConstructors)} {
     return '''
 @override
 String toString($parameters) {
-  return '${constructor.fullName}(${properties.join(', ')})';
+  return '${constructor.fullName.replaceAll(r'$', r'\$')}(${properties.join(', ')})';
 }
 ''';
   }
