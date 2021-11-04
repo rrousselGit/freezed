@@ -460,6 +460,29 @@ Future<void> main() async {
     );
   });
 
+  test('enum helpers', () {
+    expect(standAloneEnumValues, ['expected', 'special-result', 'unknown']);
+  });
+
+  test('unknown as null for enum', () {
+    expect(
+      () => EnumJson.fromJson(<String, dynamic>{}).status,
+      throwsA(isA<MissingRequiredKeysException>()),
+    );
+    expect(
+      () => EnumJson.fromJson(<String, dynamic>{'status': null}).status,
+      throwsA(isA<DisallowedNullValueException>()),
+    );
+    expect(
+      EnumJson.fromJson(<String, dynamic>{'status': 'gamma'}).status,
+      Enum.gamma,
+    );
+    expect(
+      EnumJson.fromJson(<String, dynamic>{'status': 'unknown'}).status,
+      isNull,
+    );
+  });
+
   test('if no fromJson exists, no constructors are made', () async {
     await expectLater(compile(r'''
 import 'json.dart';
