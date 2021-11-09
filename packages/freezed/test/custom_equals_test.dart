@@ -19,13 +19,30 @@ void main() {
       isTrue,
     );
 
-     expect(
+    expect(
       EqualsWithUnionMixin.first(1) == EqualsWithUnionMixin.first(1),
       isFalse,
     );
 
-      expect(
+    expect(
       EqualsWithUnionMixin.second('1') == EqualsWithUnionMixin.second('2'),
+      isTrue,
+    );
+  });
+
+  test('custom equals with base class and union', () {
+    expect(
+      EqualsWithUnionExtends.first(1) != EqualsWithUnionExtends.second('2'),
+      isTrue,
+    );
+
+    expect(
+      EqualsWithUnionExtends.first(1) == EqualsWithUnionExtends.first(1),
+      isFalse,
+    );
+
+    expect(
+      EqualsWithUnionExtends.second('1') == EqualsWithUnionExtends.second('2'),
       isTrue,
     );
   });
