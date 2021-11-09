@@ -4,7 +4,7 @@ part 'equals.freezed.dart';
 
 @freezed
 class Equals with _$Equals {
-  factory Equals({ String? name, int? age }) = _Equals;
+  factory Equals({String? name, int? age}) = _Equals;
 
   @override
   bool operator ==(Object o) => o is Equals && o.name == name;
