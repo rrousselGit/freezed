@@ -144,18 +144,14 @@ class _$_Example<T> implements _Example<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Example<T> &&
-            (identical(other.a, a) ||
-                const DeepCollectionEquality().equals(other.a, a)) &&
-            (identical(other.b, b) ||
-                const DeepCollectionEquality().equals(other.b, b)));
+        (other.runtimeType == runtimeType &&
+            other is _Example<T> &&
+            (identical(other.a, a) || other.a == a) &&
+            (identical(other.b, b) || other.b == b));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(a) ^
-      const DeepCollectionEquality().hash(b);
+  int get hashCode => Object.hash(runtimeType, a, b);
 
   @JsonKey(ignore: true)
   @override
@@ -228,8 +224,8 @@ class _$_Example<T> implements _Example<T> {
 abstract class _Example<T> implements Example<T> {
   factory _Example(int a, String b) = _$_Example<T>;
 
-  int get a => throw _privateConstructorUsedError;
-  String get b => throw _privateConstructorUsedError;
+  int get a;
+  String get b;
   @JsonKey(ignore: true)
   _$ExampleCopyWith<T, _Example<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -282,14 +278,14 @@ class _$_Example2<T> implements _Example2<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Example2<T> &&
-            (identical(other.c, c) ||
-                const DeepCollectionEquality().equals(other.c, c)));
+        (other.runtimeType == runtimeType &&
+            other is _Example2<T> &&
+            const DeepCollectionEquality().equals(other.c, c));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(c);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(c));
 
   @JsonKey(ignore: true)
   @override
@@ -362,7 +358,7 @@ class _$_Example2<T> implements _Example2<T> {
 abstract class _Example2<T> implements Example<T> {
   factory _Example2(T c) = _$_Example2<T>;
 
-  T get c => throw _privateConstructorUsedError;
+  T get c;
   @JsonKey(ignore: true)
   _$Example2CopyWith<T, _Example2<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -550,18 +546,14 @@ class _$SimplePerson implements SimplePerson {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SimplePerson &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.age, age) ||
-                const DeepCollectionEquality().equals(other.age, age)));
+        (other.runtimeType == runtimeType &&
+            other is SimplePerson &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.age, age) || other.age == age));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(age);
+  int get hashCode => Object.hash(runtimeType, name, age);
 
   @JsonKey(ignore: true)
   @override
@@ -647,8 +639,8 @@ abstract class SimplePerson implements SimpleImplements {
   const factory SimplePerson(String name, int age) = _$SimplePerson;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
+  String get name;
+  int get age;
   @override
   @JsonKey(ignore: true)
   $SimplePersonCopyWith<SimplePerson> get copyWith =>
@@ -691,7 +683,7 @@ class _$SimpleStreetCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With.fromString('AdministrativeArea<House>')
+@With<AdministrativeArea<House>>()
 class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   const _$SimpleStreet(this.name);
 
@@ -706,14 +698,13 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SimpleStreet &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is SimpleStreet &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(runtimeType, name);
 
   @JsonKey(ignore: true)
   @override
@@ -800,7 +791,7 @@ abstract class SimpleStreet
   const factory SimpleStreet(String name) = _$SimpleStreet;
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   $SimpleStreetCopyWith<SimpleStreet> get copyWith =>
@@ -847,7 +838,7 @@ class _$SimpleCityCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(House)
+@With<House>()
 class _$SimpleCity with House implements SimpleCity {
   const _$SimpleCity(this.name, this.population);
 
@@ -864,19 +855,15 @@ class _$SimpleCity with House implements SimpleCity {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SimpleCity &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is SimpleCity &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override
@@ -962,8 +949,8 @@ abstract class SimpleCity implements SimpleImplements, House {
   const factory SimpleCity(String name, int population) = _$SimpleCity;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get population => throw _privateConstructorUsedError;
+  String get name;
+  int get population;
   @override
   @JsonKey(ignore: true)
   $SimpleCityCopyWith<SimpleCity> get copyWith =>
@@ -1011,8 +998,8 @@ class _$SimpleCountryCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(House)
-@Implements(GeographicArea)
+@With<House>()
+@Implements<GeographicArea>()
 class _$SimpleCountry with House implements SimpleCountry {
   const _$SimpleCountry(this.name, this.population);
 
@@ -1029,19 +1016,15 @@ class _$SimpleCountry with House implements SimpleCountry {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SimpleCountry &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is SimpleCountry &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override
@@ -1128,8 +1111,8 @@ abstract class SimpleCountry
   const factory SimpleCountry(String name, int population) = _$SimpleCountry;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get population => throw _privateConstructorUsedError;
+  String get name;
+  int get population;
   @override
   @JsonKey(ignore: true)
   $SimpleCountryCopyWith<SimpleCountry> get copyWith =>
@@ -1317,18 +1300,14 @@ class _$PersonCustomMethod extends PersonCustomMethod {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is PersonCustomMethod &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.age, age) ||
-                const DeepCollectionEquality().equals(other.age, age)));
+        (other.runtimeType == runtimeType &&
+            other is PersonCustomMethod &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.age, age) || other.age == age));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(age);
+  int get hashCode => Object.hash(runtimeType, name, age);
 
   @JsonKey(ignore: true)
   @override
@@ -1415,8 +1394,8 @@ abstract class PersonCustomMethod extends CustomMethodImplements {
   const PersonCustomMethod._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
+  String get name;
+  int get age;
   @override
   @JsonKey(ignore: true)
   $PersonCustomMethodCopyWith<PersonCustomMethod> get copyWith =>
@@ -1459,8 +1438,8 @@ class _$StreetCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(Shop)
-@With.fromString('AdministrativeArea<House>')
+@With<Shop>()
+@With<AdministrativeArea<House>>()
 class _$StreetCustomMethod extends StreetCustomMethod
     with Shop, AdministrativeArea<House> {
   const _$StreetCustomMethod(this.name) : super._();
@@ -1476,14 +1455,13 @@ class _$StreetCustomMethod extends StreetCustomMethod
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is StreetCustomMethod &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is StreetCustomMethod &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(runtimeType, name);
 
   @JsonKey(ignore: true)
   @override
@@ -1571,7 +1549,7 @@ abstract class StreetCustomMethod extends CustomMethodImplements
   const StreetCustomMethod._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   $StreetCustomMethodCopyWith<StreetCustomMethod> get copyWith =>
@@ -1619,8 +1597,8 @@ class _$CityCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(House)
-@Implements(GeographicArea)
+@With<House>()
+@Implements<GeographicArea>()
 class _$CityCustomMethod extends CityCustomMethod with House {
   const _$CityCustomMethod(this.name, this.population) : super._();
 
@@ -1637,19 +1615,15 @@ class _$CityCustomMethod extends CityCustomMethod with House {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is CityCustomMethod &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is CityCustomMethod &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override
@@ -1738,8 +1712,8 @@ abstract class CityCustomMethod extends CustomMethodImplements
   const CityCustomMethod._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get population => throw _privateConstructorUsedError;
+  String get name;
+  int get population;
   @override
   @JsonKey(ignore: true)
   $CityCustomMethodCopyWith<CityCustomMethod> get copyWith =>
@@ -1782,8 +1756,8 @@ class _$DuplexCustomMethodCopyWithImpl<$Res>
 
 /// @nodoc
 
-@Implements(Shop)
-@Implements(GeographicArea)
+@Implements<Shop>()
+@Implements<GeographicArea>()
 class _$DuplexCustomMethod extends DuplexCustomMethod {
   const _$DuplexCustomMethod(this.name) : super._();
 
@@ -1798,14 +1772,13 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is DuplexCustomMethod &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is DuplexCustomMethod &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(runtimeType, name);
 
   @JsonKey(ignore: true)
   @override
@@ -1893,7 +1866,7 @@ abstract class DuplexCustomMethod extends CustomMethodImplements
   const DuplexCustomMethod._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   $DuplexCustomMethodCopyWith<DuplexCustomMethod> get copyWith =>
@@ -1908,13 +1881,6 @@ class _$GenericImplementsTearOff {
     return GenericPerson<T>(
       name,
       age,
-    );
-  }
-
-  GenericStreet<T> street<T>(String name, T value) {
-    return GenericStreet<T>(
-      name,
-      value,
     );
   }
 
@@ -1936,21 +1902,18 @@ mixin _$GenericImplements<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name, int age) person,
-    required TResult Function(String name, T value) street,
     required TResult Function(String name, int population) city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
     required TResult orElse(),
   }) =>
@@ -1958,21 +1921,18 @@ mixin _$GenericImplements<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GenericPerson<T> value) person,
-    required TResult Function(GenericStreet<T> value) street,
     required TResult Function(GenericCity<T> value) city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
     required TResult orElse(),
   }) =>
@@ -2070,18 +2030,14 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is GenericPerson<T> &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.age, age) ||
-                const DeepCollectionEquality().equals(other.age, age)));
+        (other.runtimeType == runtimeType &&
+            other is GenericPerson<T> &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.age, age) || other.age == age));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(age);
+  int get hashCode => Object.hash(runtimeType, name, age);
 
   @JsonKey(ignore: true)
   @override
@@ -2092,7 +2048,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name, int age) person,
-    required TResult Function(String name, T value) street,
     required TResult Function(String name, int population) city,
   }) {
     return person(name, age);
@@ -2102,7 +2057,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
   }) {
     return person?.call(name, age);
@@ -2112,7 +2066,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
     required TResult orElse(),
   }) {
@@ -2126,7 +2079,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GenericPerson<T> value) person,
-    required TResult Function(GenericStreet<T> value) street,
     required TResult Function(GenericCity<T> value) city,
   }) {
     return person(this);
@@ -2136,7 +2088,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
   }) {
     return person?.call(this);
@@ -2146,7 +2097,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
     required TResult orElse(),
   }) {
@@ -2161,171 +2111,11 @@ abstract class GenericPerson<T> implements GenericImplements<T> {
   const factory GenericPerson(String name, int age) = _$GenericPerson<T>;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
+  String get name;
+  int get age;
   @override
   @JsonKey(ignore: true)
   $GenericPersonCopyWith<T, GenericPerson<T>> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $GenericStreetCopyWith<T, $Res>
-    implements $GenericImplementsCopyWith<T, $Res> {
-  factory $GenericStreetCopyWith(
-          GenericStreet<T> value, $Res Function(GenericStreet<T>) then) =
-      _$GenericStreetCopyWithImpl<T, $Res>;
-  @override
-  $Res call({String name, T value});
-}
-
-/// @nodoc
-class _$GenericStreetCopyWithImpl<T, $Res>
-    extends _$GenericImplementsCopyWithImpl<T, $Res>
-    implements $GenericStreetCopyWith<T, $Res> {
-  _$GenericStreetCopyWithImpl(
-      GenericStreet<T> _value, $Res Function(GenericStreet<T>) _then)
-      : super(_value, (v) => _then(v as GenericStreet<T>));
-
-  @override
-  GenericStreet<T> get _value => super._value as GenericStreet<T>;
-
-  @override
-  $Res call({
-    Object? name = freezed,
-    Object? value = freezed,
-  }) {
-    return _then(GenericStreet<T>(
-      name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      value == freezed
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as T,
-    ));
-  }
-}
-
-/// @nodoc
-
-@With.fromString('AdministrativeArea<T>')
-class _$GenericStreet<T>
-    with AdministrativeArea<T>
-    implements GenericStreet<T> {
-  const _$GenericStreet(this.name, this.value);
-
-  @override
-  final String name;
-  @override
-  final T value;
-
-  @override
-  String toString() {
-    return 'GenericImplements<$T>.street(name: $name, value: $value)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is GenericStreet<T> &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(value);
-
-  @JsonKey(ignore: true)
-  @override
-  $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith =>
-      _$GenericStreetCopyWithImpl<T, GenericStreet<T>>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String name, int age) person,
-    required TResult Function(String name, T value) street,
-    required TResult Function(String name, int population) city,
-  }) {
-    return street(name, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
-    TResult Function(String name, int population)? city,
-  }) {
-    return street?.call(name, value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
-    TResult Function(String name, int population)? city,
-    required TResult orElse(),
-  }) {
-    if (street != null) {
-      return street(name, value);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GenericPerson<T> value) person,
-    required TResult Function(GenericStreet<T> value) street,
-    required TResult Function(GenericCity<T> value) city,
-  }) {
-    return street(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
-    TResult Function(GenericCity<T> value)? city,
-  }) {
-    return street?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
-    TResult Function(GenericCity<T> value)? city,
-    required TResult orElse(),
-  }) {
-    if (street != null) {
-      return street(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GenericStreet<T>
-    implements GenericImplements<T>, AdministrativeArea<T> {
-  const factory GenericStreet(String name, T value) = _$GenericStreet<T>;
-
-  @override
-  String get name => throw _privateConstructorUsedError;
-  T get value => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  $GenericStreetCopyWith<T, GenericStreet<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2370,8 +2160,8 @@ class _$GenericCityCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-@With(House)
-@Implements(GeographicArea)
+@With<House>()
+@Implements<GeographicArea>()
 class _$GenericCity<T> with House implements GenericCity<T> {
   const _$GenericCity(this.name, this.population);
 
@@ -2388,19 +2178,15 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is GenericCity<T> &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is GenericCity<T> &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override
@@ -2411,7 +2197,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String name, int age) person,
-    required TResult Function(String name, T value) street,
     required TResult Function(String name, int population) city,
   }) {
     return city(name, population);
@@ -2421,7 +2206,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
   }) {
     return city?.call(name, population);
@@ -2431,7 +2215,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String name, int age)? person,
-    TResult Function(String name, T value)? street,
     TResult Function(String name, int population)? city,
     required TResult orElse(),
   }) {
@@ -2445,7 +2228,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GenericPerson<T> value) person,
-    required TResult Function(GenericStreet<T> value) street,
     required TResult Function(GenericCity<T> value) city,
   }) {
     return city(this);
@@ -2455,7 +2237,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
   }) {
     return city?.call(this);
@@ -2465,7 +2246,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericStreet<T> value)? street,
     TResult Function(GenericCity<T> value)? city,
     required TResult orElse(),
   }) {
@@ -2481,8 +2261,8 @@ abstract class GenericCity<T>
   const factory GenericCity(String name, int population) = _$GenericCity<T>;
 
   @override
-  String get name => throw _privateConstructorUsedError;
-  int get population => throw _privateConstructorUsedError;
+  String get name;
+  int get population;
   @override
   @JsonKey(ignore: true)
   $GenericCityCopyWith<T, GenericCity<T>> get copyWith =>

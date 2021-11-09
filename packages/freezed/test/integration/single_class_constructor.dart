@@ -1,27 +1,51 @@
 import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 
 abstract class DataEvent {}
 
+@freezed
+class Large with _$Large {
+  factory Large({
+    @Default(0) int? a0,
+    @Default(1) int? a1,
+    @Default(2) int? a2,
+    @Default(3) int? a3,
+    @Default(4) int? a4,
+    @Default(5) int? a5,
+    @Default(6) int? a6,
+    @Default(7) int? a7,
+    @Default(8) int? a8,
+    @Default(9) int? a9,
+    @Default(10) int? a10,
+    @Default(11) int? a11,
+    @Default(12) int? a12,
+    @Default(13) int? a13,
+    @Default(14) int? a14,
+    @Default(15) int? a15,
+    @Default(16) int? a16,
+    @Default(17) int? a17,
+    @Default(18) int? a18,
+    @Default(19) int? a19,
+    @Default(20) int? a20,
+    @Default(21) int? a21,
+    @Default(22) int? a22,
+    @Default(23) int? a23,
+    @Default(24) int? a24,
+    @Default(25) int? a25,
+    @Default(26) int? a26,
+    @Default(27) int? a27,
+    @Default(28) int? a28,
+    @Default(29) int? a29,
+  }) = _Large;
+}
+
 // Regression test for https://github.com/rrousselGit/freezed/issues/131
 @freezed
 class Regression131 extends DataEvent with _$Regression131 {
   factory Regression131(String versionName) = _Regression131;
-}
-
-// Regression test for https://github.com/rrousselGit/freezed/issues/358
-@freezed
-class Regression358 with _$Regression358 {
-  const factory Regression358({
-    required int number,
-  }) = _Regression358;
-
-  factory Regression358.withSpecificColor({int count = 2}) =>
-      Regression358(number: count);
 }
 
 @freezed
@@ -203,9 +227,9 @@ class AllProperties with _$AllProperties {
 @freezed
 class Late2 with _$Late2 {
   Late2._();
-  factory Late2(int Function() cb) = _Late2;
+  factory Late2(int? Function() cb) = _Late2;
 
-  late final int first = cb();
+  late final int? first = cb();
 }
 
 @freezed

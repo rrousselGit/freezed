@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -23,6 +24,7 @@ class Property {
     required this.defaultValueSource,
     required this.hasJsonKey,
     required this.doc,
+    required this.isPossiblyDartCollection,
   }) : type = type ?? 'dynamic';
 
   static Future<Property> fromParameter(
@@ -45,6 +47,7 @@ class Property {
       decorators: parseDecorators(element.metadata),
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
+      isPossiblyDartCollection: element.type.isPossiblyDartCollection,
     );
   }
 
@@ -54,6 +57,7 @@ class Property {
   final String? defaultValueSource;
   final bool hasJsonKey;
   final String doc;
+  final bool isPossiblyDartCollection;
 
   @override
   String toString() {
@@ -65,6 +69,7 @@ class Property {
         type: type,
         decorators: decorators,
         doc: doc,
+        isPossiblyDartCollection: isPossiblyDartCollection,
       );
 }
 
@@ -74,22 +79,44 @@ class Getter {
     required this.name,
     required this.decorators,
     required this.doc,
+    required this.isPossiblyDartCollection,
   }) : type = type ?? 'dynamic';
 
   final String type;
   final String name;
   final List<String> decorators;
   final String doc;
+  final bool isPossiblyDartCollection;
 
   @override
-  String toString() {
-    return '$doc${decorators.join()} $type get $name => '
-        'throw $privConstUsedErrorVarName;';
+  String toString({
+    bool throwUnimplementError = false,
+  }) {
+    if (throwUnimplementError) {
+      return '$doc${decorators.join()} $type get $name => '
+          'throw $privConstUsedErrorVarName;';
+    }
+    return '$doc${decorators.join()} $type get $name;';
   }
 }
 
 extension PropertiesAsGetters on List<Property> {
   List<Getter> asGetters() {
     return map((p) => p.getter).toList();
+  }
+}
+
+extension IsDartCollection on DartType {
+  /// Whether this type can potentially contain a [List], [Map], [Set] or [Iterable].
+  ///
+  /// This includes types such as [dynamic], [Object] and generics
+  bool get isPossiblyDartCollection {
+    return isDartCoreMap ||
+        isDartCoreIterable ||
+        isDartCoreSet ||
+        isDartCoreList ||
+        isDynamic ||
+        isDartCoreObject ||
+        this is TypeParameterType;
   }
 }

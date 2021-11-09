@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'models.dart';
 
@@ -192,30 +193,21 @@ class _$_CloneableProperty implements _CloneableProperty {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CloneableProperty &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is _CloneableProperty &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.typeName, typeName) ||
-                const DeepCollectionEquality()
-                    .equals(other.typeName, typeName)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
+                other.typeName == typeName) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.nullable, nullable) ||
-                const DeepCollectionEquality()
-                    .equals(other.nullable, nullable)) &&
+                other.nullable == nullable) &&
             (identical(other.genericParameters, genericParameters) ||
-                const DeepCollectionEquality()
-                    .equals(other.genericParameters, genericParameters)));
+                other.genericParameters == genericParameters));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(typeName) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(nullable) ^
-      const DeepCollectionEquality().hash(genericParameters);
+  int get hashCode => Object.hash(
+      runtimeType, name, typeName, type, nullable, genericParameters);
 
   @JsonKey(ignore: true)
   @override
@@ -233,16 +225,15 @@ abstract class _CloneableProperty implements CloneableProperty {
       _$_CloneableProperty;
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get typeName => throw _privateConstructorUsedError;
+  String get typeName;
   @override
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
-  bool get nullable => throw _privateConstructorUsedError;
+  bool get nullable;
   @override
-  GenericsParameterTemplate get genericParameters =>
-      throw _privateConstructorUsedError;
+  GenericsParameterTemplate get genericParameters;
   @override
   @JsonKey(ignore: true)
   _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith =>
@@ -264,6 +255,7 @@ class _$ConstructorDetailsTearOff {
       required bool isFallback,
       required bool hasJsonSerializable,
       required String fullName,
+      required String escapedName,
       required List<String> withDecorators,
       required List<String> implementsDecorators,
       required List<String> decorators,
@@ -280,6 +272,7 @@ class _$ConstructorDetailsTearOff {
       isFallback: isFallback,
       hasJsonSerializable: hasJsonSerializable,
       fullName: fullName,
+      escapedName: escapedName,
       withDecorators: withDecorators,
       implementsDecorators: implementsDecorators,
       decorators: decorators,
@@ -304,6 +297,7 @@ mixin _$ConstructorDetails {
   bool get isFallback => throw _privateConstructorUsedError;
   bool get hasJsonSerializable => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
+  String get escapedName => throw _privateConstructorUsedError;
   List<String> get withDecorators => throw _privateConstructorUsedError;
   List<String> get implementsDecorators => throw _privateConstructorUsedError;
   List<String> get decorators => throw _privateConstructorUsedError;
@@ -332,6 +326,7 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       bool isFallback,
       bool hasJsonSerializable,
       String fullName,
+      String escapedName,
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
@@ -360,6 +355,7 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
     Object? isFallback = freezed,
     Object? hasJsonSerializable = freezed,
     Object? fullName = freezed,
+    Object? escapedName = freezed,
     Object? withDecorators = freezed,
     Object? implementsDecorators = freezed,
     Object? decorators = freezed,
@@ -407,6 +403,10 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
+      escapedName: escapedName == freezed
+          ? _value.escapedName
+          : escapedName // ignore: cast_nullable_to_non_nullable
+              as String,
       withDecorators: withDecorators == freezed
           ? _value.withDecorators
           : withDecorators // ignore: cast_nullable_to_non_nullable
@@ -449,6 +449,7 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
       bool isFallback,
       bool hasJsonSerializable,
       String fullName,
+      String escapedName,
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
@@ -479,6 +480,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
     Object? isFallback = freezed,
     Object? hasJsonSerializable = freezed,
     Object? fullName = freezed,
+    Object? escapedName = freezed,
     Object? withDecorators = freezed,
     Object? implementsDecorators = freezed,
     Object? decorators = freezed,
@@ -526,6 +528,10 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
+      escapedName: escapedName == freezed
+          ? _value.escapedName
+          : escapedName // ignore: cast_nullable_to_non_nullable
+              as String,
       withDecorators: withDecorators == freezed
           ? _value.withDecorators
           : withDecorators // ignore: cast_nullable_to_non_nullable
@@ -564,6 +570,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       required this.isFallback,
       required this.hasJsonSerializable,
       required this.fullName,
+      required this.escapedName,
       required this.withDecorators,
       required this.implementsDecorators,
       required this.decorators,
@@ -592,6 +599,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   @override
   final String fullName;
   @override
+  final String escapedName;
+  @override
   final List<String> withDecorators;
   @override
   final List<String> implementsDecorators;
@@ -604,76 +613,64 @@ class _$_ConstructorDetails extends _ConstructorDetails {
 
   @override
   String toString() {
-    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, asserts: $asserts)';
+    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, escapedName: $escapedName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, asserts: $asserts)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ConstructorDetails &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is _ConstructorDetails &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.unionValue, unionValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.unionValue, unionValue)) &&
-            (identical(other.isConst, isConst) ||
-                const DeepCollectionEquality()
-                    .equals(other.isConst, isConst)) &&
+                other.unionValue == unionValue) &&
+            (identical(other.isConst, isConst) || other.isConst == isConst) &&
             (identical(other.redirectedName, redirectedName) ||
-                const DeepCollectionEquality()
-                    .equals(other.redirectedName, redirectedName)) &&
+                other.redirectedName == redirectedName) &&
             (identical(other.parameters, parameters) ||
-                const DeepCollectionEquality()
-                    .equals(other.parameters, parameters)) &&
-            (identical(other.impliedProperties, impliedProperties) ||
-                const DeepCollectionEquality()
-                    .equals(other.impliedProperties, impliedProperties)) &&
+                other.parameters == parameters) &&
+            const DeepCollectionEquality()
+                .equals(other.impliedProperties, impliedProperties) &&
             (identical(other.isDefault, isDefault) ||
-                const DeepCollectionEquality()
-                    .equals(other.isDefault, isDefault)) &&
+                other.isDefault == isDefault) &&
             (identical(other.isFallback, isFallback) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFallback, isFallback)) &&
+                other.isFallback == isFallback) &&
             (identical(other.hasJsonSerializable, hasJsonSerializable) ||
-                const DeepCollectionEquality()
-                    .equals(other.hasJsonSerializable, hasJsonSerializable)) &&
+                other.hasJsonSerializable == hasJsonSerializable) &&
             (identical(other.fullName, fullName) ||
-                const DeepCollectionEquality()
-                    .equals(other.fullName, fullName)) &&
-            (identical(other.withDecorators, withDecorators) ||
-                const DeepCollectionEquality()
-                    .equals(other.withDecorators, withDecorators)) &&
-            (identical(other.implementsDecorators, implementsDecorators) ||
-                const DeepCollectionEquality().equals(
-                    other.implementsDecorators, implementsDecorators)) &&
-            (identical(other.decorators, decorators) ||
-                const DeepCollectionEquality()
-                    .equals(other.decorators, decorators)) &&
-            (identical(other.cloneableProperties, cloneableProperties) ||
-                const DeepCollectionEquality()
-                    .equals(other.cloneableProperties, cloneableProperties)) &&
-            (identical(other.asserts, asserts) ||
-                const DeepCollectionEquality().equals(other.asserts, asserts)));
+                other.fullName == fullName) &&
+            (identical(other.escapedName, escapedName) ||
+                other.escapedName == escapedName) &&
+            const DeepCollectionEquality()
+                .equals(other.withDecorators, withDecorators) &&
+            const DeepCollectionEquality()
+                .equals(other.implementsDecorators, implementsDecorators) &&
+            const DeepCollectionEquality()
+                .equals(other.decorators, decorators) &&
+            const DeepCollectionEquality()
+                .equals(other.cloneableProperties, cloneableProperties) &&
+            const DeepCollectionEquality().equals(other.asserts, asserts));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(unionValue) ^
-      const DeepCollectionEquality().hash(isConst) ^
-      const DeepCollectionEquality().hash(redirectedName) ^
-      const DeepCollectionEquality().hash(parameters) ^
-      const DeepCollectionEquality().hash(impliedProperties) ^
-      const DeepCollectionEquality().hash(isDefault) ^
-      const DeepCollectionEquality().hash(isFallback) ^
-      const DeepCollectionEquality().hash(hasJsonSerializable) ^
-      const DeepCollectionEquality().hash(fullName) ^
-      const DeepCollectionEquality().hash(withDecorators) ^
-      const DeepCollectionEquality().hash(implementsDecorators) ^
-      const DeepCollectionEquality().hash(decorators) ^
-      const DeepCollectionEquality().hash(cloneableProperties) ^
-      const DeepCollectionEquality().hash(asserts);
+  int get hashCode => Object.hash(
+      runtimeType,
+      name,
+      unionValue,
+      isConst,
+      redirectedName,
+      parameters,
+      const DeepCollectionEquality().hash(impliedProperties),
+      isDefault,
+      isFallback,
+      hasJsonSerializable,
+      fullName,
+      escapedName,
+      const DeepCollectionEquality().hash(withDecorators),
+      const DeepCollectionEquality().hash(implementsDecorators),
+      const DeepCollectionEquality().hash(decorators),
+      const DeepCollectionEquality().hash(cloneableProperties),
+      const DeepCollectionEquality().hash(asserts));
 
   @JsonKey(ignore: true)
   @override
@@ -693,6 +690,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       required bool isFallback,
       required bool hasJsonSerializable,
       required String fullName,
+      required String escapedName,
       required List<String> withDecorators,
       required List<String> implementsDecorators,
       required List<String> decorators,
@@ -701,36 +699,37 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   _ConstructorDetails._() : super._();
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get unionValue => throw _privateConstructorUsedError;
+  String get unionValue;
   @override
-  bool get isConst => throw _privateConstructorUsedError;
+  bool get isConst;
   @override
-  String get redirectedName => throw _privateConstructorUsedError;
+  String get redirectedName;
   @override
-  ParametersTemplate get parameters => throw _privateConstructorUsedError;
+  ParametersTemplate get parameters;
   @override
-  List<Property> get impliedProperties => throw _privateConstructorUsedError;
+  List<Property> get impliedProperties;
   @override
-  bool get isDefault => throw _privateConstructorUsedError;
+  bool get isDefault;
   @override
-  bool get isFallback => throw _privateConstructorUsedError;
+  bool get isFallback;
   @override
-  bool get hasJsonSerializable => throw _privateConstructorUsedError;
+  bool get hasJsonSerializable;
   @override
-  String get fullName => throw _privateConstructorUsedError;
+  String get fullName;
   @override
-  List<String> get withDecorators => throw _privateConstructorUsedError;
+  String get escapedName;
   @override
-  List<String> get implementsDecorators => throw _privateConstructorUsedError;
+  List<String> get withDecorators;
   @override
-  List<String> get decorators => throw _privateConstructorUsedError;
+  List<String> get implementsDecorators;
   @override
-  List<CloneableProperty> get cloneableProperties =>
-      throw _privateConstructorUsedError;
+  List<String> get decorators;
   @override
-  List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
+  List<CloneableProperty> get cloneableProperties;
+  @override
+  List<AssertTemplate> get asserts;
   @override
   @JsonKey(ignore: true)
   _$ConstructorDetailsCopyWith<_ConstructorDetails> get copyWith =>
@@ -750,7 +749,8 @@ class _$DataTearOff {
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
       required bool shouldUseExtends,
-      required bool hasCustomToString}) {
+      required bool hasCustomToString,
+      required bool hasCustomEquals}) {
     return _Data(
       name: name,
       needsJsonSerializable: needsJsonSerializable,
@@ -761,6 +761,7 @@ class _$DataTearOff {
       genericsParameterTemplate: genericsParameterTemplate,
       shouldUseExtends: shouldUseExtends,
       hasCustomToString: hasCustomToString,
+      hasCustomEquals: hasCustomEquals,
     );
   }
 }
@@ -782,6 +783,7 @@ mixin _$Data {
       throw _privateConstructorUsedError;
   bool get shouldUseExtends => throw _privateConstructorUsedError;
   bool get hasCustomToString => throw _privateConstructorUsedError;
+  bool get hasCustomEquals => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
@@ -800,7 +802,8 @@ abstract class $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool hasCustomToString});
+      bool hasCustomToString,
+      bool hasCustomEquals});
 }
 
 /// @nodoc
@@ -822,6 +825,7 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
     Object? hasCustomToString = freezed,
+    Object? hasCustomEquals = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -860,6 +864,10 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
           ? _value.hasCustomToString
           : hasCustomToString // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasCustomEquals: hasCustomEquals == freezed
+          ? _value.hasCustomEquals
+          : hasCustomEquals // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -878,7 +886,8 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool hasCustomToString});
+      bool hasCustomToString,
+      bool hasCustomEquals});
 }
 
 /// @nodoc
@@ -901,6 +910,7 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
     Object? hasCustomToString = freezed,
+    Object? hasCustomEquals = freezed,
   }) {
     return _then(_Data(
       name: name == freezed
@@ -939,6 +949,10 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
           ? _value.hasCustomToString
           : hasCustomToString // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasCustomEquals: hasCustomEquals == freezed
+          ? _value.hasCustomEquals
+          : hasCustomEquals // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -955,7 +969,8 @@ class _$_Data implements _Data {
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
       required this.shouldUseExtends,
-      required this.hasCustomToString})
+      required this.hasCustomToString,
+      required this.hasCustomEquals})
       : assert(constructors.isNotEmpty);
 
   @override
@@ -976,60 +991,56 @@ class _$_Data implements _Data {
   final bool shouldUseExtends;
   @override
   final bool hasCustomToString;
+  @override
+  final bool hasCustomEquals;
 
   @override
   String toString() {
-    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString)';
+    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString, hasCustomEquals: $hasCustomEquals)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Data &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Data &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.needsJsonSerializable, needsJsonSerializable) ||
-                const DeepCollectionEquality().equals(
-                    other.needsJsonSerializable, needsJsonSerializable)) &&
+                other.needsJsonSerializable == needsJsonSerializable) &&
             (identical(other.unionKey, unionKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.unionKey, unionKey)) &&
-            (identical(other.concretePropertiesName, concretePropertiesName) ||
-                const DeepCollectionEquality().equals(
-                    other.concretePropertiesName, concretePropertiesName)) &&
-            (identical(other.constructors, constructors) ||
-                const DeepCollectionEquality()
-                    .equals(other.constructors, constructors)) &&
+                other.unionKey == unionKey) &&
+            const DeepCollectionEquality()
+                .equals(other.concretePropertiesName, concretePropertiesName) &&
+            const DeepCollectionEquality()
+                .equals(other.constructors, constructors) &&
             (identical(other.genericsDefinitionTemplate,
                     genericsDefinitionTemplate) ||
-                const DeepCollectionEquality().equals(
-                    other.genericsDefinitionTemplate,
-                    genericsDefinitionTemplate)) &&
+                other.genericsDefinitionTemplate ==
+                    genericsDefinitionTemplate) &&
             (identical(other.genericsParameterTemplate,
                     genericsParameterTemplate) ||
-                const DeepCollectionEquality().equals(
-                    other.genericsParameterTemplate,
-                    genericsParameterTemplate)) &&
+                other.genericsParameterTemplate == genericsParameterTemplate) &&
             (identical(other.shouldUseExtends, shouldUseExtends) ||
-                const DeepCollectionEquality()
-                    .equals(other.shouldUseExtends, shouldUseExtends)) &&
+                other.shouldUseExtends == shouldUseExtends) &&
             (identical(other.hasCustomToString, hasCustomToString) ||
-                const DeepCollectionEquality()
-                    .equals(other.hasCustomToString, hasCustomToString)));
+                other.hasCustomToString == hasCustomToString) &&
+            (identical(other.hasCustomEquals, hasCustomEquals) ||
+                other.hasCustomEquals == hasCustomEquals));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(needsJsonSerializable) ^
-      const DeepCollectionEquality().hash(unionKey) ^
-      const DeepCollectionEquality().hash(concretePropertiesName) ^
-      const DeepCollectionEquality().hash(constructors) ^
-      const DeepCollectionEquality().hash(genericsDefinitionTemplate) ^
-      const DeepCollectionEquality().hash(genericsParameterTemplate) ^
-      const DeepCollectionEquality().hash(shouldUseExtends) ^
-      const DeepCollectionEquality().hash(hasCustomToString);
+  int get hashCode => Object.hash(
+      runtimeType,
+      name,
+      needsJsonSerializable,
+      unionKey,
+      const DeepCollectionEquality().hash(concretePropertiesName),
+      const DeepCollectionEquality().hash(constructors),
+      genericsDefinitionTemplate,
+      genericsParameterTemplate,
+      shouldUseExtends,
+      hasCustomToString,
+      hasCustomEquals);
 
   @JsonKey(ignore: true)
   @override
@@ -1047,29 +1058,29 @@ abstract class _Data implements Data {
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
       required bool shouldUseExtends,
-      required bool hasCustomToString}) = _$_Data;
+      required bool hasCustomToString,
+      required bool hasCustomEquals}) = _$_Data;
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  bool get needsJsonSerializable => throw _privateConstructorUsedError;
+  bool get needsJsonSerializable;
   @override
-  String get unionKey => throw _privateConstructorUsedError;
+  String get unionKey;
   @override
-  List<String> get concretePropertiesName => throw _privateConstructorUsedError;
+  List<String> get concretePropertiesName;
   @override
-  List<ConstructorDetails> get constructors =>
-      throw _privateConstructorUsedError;
+  List<ConstructorDetails> get constructors;
   @override
-  GenericsDefinitionTemplate get genericsDefinitionTemplate =>
-      throw _privateConstructorUsedError;
+  GenericsDefinitionTemplate get genericsDefinitionTemplate;
   @override
-  GenericsParameterTemplate get genericsParameterTemplate =>
-      throw _privateConstructorUsedError;
+  GenericsParameterTemplate get genericsParameterTemplate;
   @override
-  bool get shouldUseExtends => throw _privateConstructorUsedError;
+  bool get shouldUseExtends;
   @override
-  bool get hasCustomToString => throw _privateConstructorUsedError;
+  bool get hasCustomToString;
+  @override
+  bool get hasCustomEquals;
   @override
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;
@@ -1189,20 +1200,15 @@ class _$_GlobalData implements _GlobalData {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _GlobalData &&
-            (identical(other.hasJson, hasJson) ||
-                const DeepCollectionEquality()
-                    .equals(other.hasJson, hasJson)) &&
+        (other.runtimeType == runtimeType &&
+            other is _GlobalData &&
+            (identical(other.hasJson, hasJson) || other.hasJson == hasJson) &&
             (identical(other.hasDiagnostics, hasDiagnostics) ||
-                const DeepCollectionEquality()
-                    .equals(other.hasDiagnostics, hasDiagnostics)));
+                other.hasDiagnostics == hasDiagnostics));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(hasJson) ^
-      const DeepCollectionEquality().hash(hasDiagnostics);
+  int get hashCode => Object.hash(runtimeType, hasJson, hasDiagnostics);
 
   @JsonKey(ignore: true)
   @override
@@ -1215,9 +1221,9 @@ abstract class _GlobalData implements GlobalData {
       _$_GlobalData;
 
   @override
-  bool get hasJson => throw _privateConstructorUsedError;
+  bool get hasJson;
   @override
-  bool get hasDiagnostics => throw _privateConstructorUsedError;
+  bool get hasDiagnostics;
   @override
   @JsonKey(ignore: true)
   _$GlobalDataCopyWith<_GlobalData> get copyWith =>

@@ -17,6 +17,7 @@ class Concrete {
     required this.allConstructors,
     required this.hasDiagnosticable,
     required this.hasCustomToString,
+    required this.hasCustomToEquals,
     required this.shouldGenerateJson,
     required this.commonProperties,
     required this.name,
@@ -32,6 +33,7 @@ class Concrete {
   final List<Property> commonProperties;
   final bool hasDiagnosticable;
   final bool hasCustomToString;
+  final bool hasCustomToEquals;
   final bool shouldGenerateJson;
   final String name;
   final String unionKey;
@@ -181,15 +183,24 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _toJson {
     if (!shouldGenerateJson) return '';
+    var content = '_\$${nonPrivateConcreteName}ToJson(this)';
 
     final addType = allConstructors.length > 1
         ? "..['$unionKey'] = '${constructor.unionValue}'"
         : '';
 
+    if (allConstructors.length > 1) {
+      content = '''{
+  '$unionKey': '${constructor.unionValue}',
+  ...$content,
+}
+''';
+    }
+
     return '''
 @override
 Map<String, dynamic> toJson() {
-  return _\$${nonPrivateConcreteName}ToJson(this)$addType;
+  return $content;
 }''';
   }
 
@@ -206,7 +217,7 @@ Map<String, dynamic> toJson() {
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   super.debugFillProperties(properties);
   properties
-    ..add(DiagnosticsProperty('type', '${constructor.fullName}'))
+    ..add(DiagnosticsProperty('type', '${constructor.escapedName}'))
     $diagnostics;
 }
 ''';
@@ -323,36 +334,63 @@ ${whenOrNullPrototype(allConstructors)} {
     return '''
 @override
 String toString($parameters) {
-  return '${constructor.fullName}(${properties.join(', ')})';
+  return '${constructor.escapedName}(${properties.join(', ')})';
 }
 ''';
   }
 
   String get _operatorEqualMethod {
-    final properties = constructor.impliedProperties.map((p) {
-      final name = p.name == 'other' ? 'this.other' : p.name;
-      return '(identical(other.${p.name}, $name) || const DeepCollectionEquality().equals(other.${p.name}, $name))';
-    });
+    if (hasCustomToEquals) return '';
+
+    final comparisons = [
+      'other.runtimeType == runtimeType',
+      'other is ${constructor.redirectedName}$genericsParameter',
+      ...constructor.impliedProperties.map((p) {
+        final name = p.name == 'other' ? 'this.other' : p.name;
+        if (p.isPossiblyDartCollection) {
+          // no need to check `identical` as `DeepCollectionEquality` already does it
+          return 'const DeepCollectionEquality().equals(other.${p.name}, $name)';
+        }
+        return '(identical(other.${p.name}, $name) || other.${p.name} == $name)';
+      }),
+    ];
 
     return '''
 @override
 bool operator ==(dynamic other) {
-  return identical(this, other) || (other is ${[
-      '${constructor.redirectedName}$genericsParameter',
-      ...properties
-    ].join('&&')});
+  return identical(this, other) || (${comparisons.join('&&')});
 }
 ''';
   }
 
   String get _hashCodeMethod {
-    var hashCodeImpl = constructor.impliedProperties.map((p) {
-      return '^ const DeepCollectionEquality().hash(${p.name})';
-    }).join();
+    if (hasCustomToEquals) return '';
+
+    final hashedProperties = [
+      'runtimeType',
+      for (final property in constructor.impliedProperties)
+        if (property.isPossiblyDartCollection)
+          'const DeepCollectionEquality().hash(${property.name})'
+        else
+          property.name,
+    ];
+
+    if (hashedProperties.length == 1) {
+      return '''
+@override
+int get hashCode => ${hashedProperties.first}.hashCode;
+''';
+    }
+    if (hashedProperties.length >= 20) {
+      return '''
+@override
+int get hashCode => Object.hashAll([${hashedProperties.join(',')}]);
+''';
+    }
 
     return '''
 @override
-int get hashCode => runtimeType.hashCode $hashCodeImpl;
+int get hashCode => Object.hash(${hashedProperties.join(',')});
 ''';
   }
 }

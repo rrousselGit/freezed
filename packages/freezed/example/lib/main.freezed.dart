@@ -132,18 +132,14 @@ class _$_MyClass with DiagnosticableTreeMixin implements _MyClass {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MyClass &&
-            (identical(other.a, a) ||
-                const DeepCollectionEquality().equals(other.a, a)) &&
-            (identical(other.b, b) ||
-                const DeepCollectionEquality().equals(other.b, b)));
+        (other.runtimeType == runtimeType &&
+            other is _MyClass &&
+            (identical(other.a, a) || other.a == a) &&
+            (identical(other.b, b) || other.b == b));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(a) ^
-      const DeepCollectionEquality().hash(b);
+  int get hashCode => Object.hash(runtimeType, a, b);
 
   @JsonKey(ignore: true)
   @override
@@ -155,9 +151,9 @@ abstract class _MyClass implements MyClass {
   factory _MyClass({String? a, int? b}) = _$_MyClass;
 
   @override
-  String? get a => throw _privateConstructorUsedError;
+  String? get a;
   @override
-  int? get b => throw _privateConstructorUsedError;
+  int? get b;
   @override
   @JsonKey(ignore: true)
   _$MyClassCopyWith<_MyClass> get copyWith =>
@@ -344,14 +340,13 @@ class _$Data with DiagnosticableTreeMixin implements Data {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is Data &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is Data &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -434,7 +429,10 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DataToJson(this)..['custom-key'] = 'Default';
+    return {
+      'custom-key': 'Default',
+      ..._$$DataToJson(this),
+    };
   }
 }
 
@@ -443,7 +441,7 @@ abstract class Data implements Union {
 
   factory Data.fromJson(Map<String, dynamic> json) = _$Data.fromJson;
 
-  int get value => throw _privateConstructorUsedError;
+  int get value;
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
@@ -485,7 +483,8 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is Loading);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is Loading);
   }
 
   @override
@@ -567,7 +566,10 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$LoadingToJson(this)..['custom-key'] = 'Loading';
+    return {
+      'custom-key': 'Loading',
+      ..._$$LoadingToJson(this),
+    };
   }
 }
 
@@ -635,14 +637,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is ErrorDetails &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality().equals(other.message, message)));
+        (other.runtimeType == runtimeType &&
+            other is ErrorDetails &&
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
+  int get hashCode => Object.hash(runtimeType, message);
 
   @JsonKey(ignore: true)
   @override
@@ -725,7 +726,10 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ErrorDetailsToJson(this)..['custom-key'] = 'Error';
+    return {
+      'custom-key': 'Error',
+      ..._$$ErrorDetailsToJson(this),
+    };
   }
 }
 
@@ -735,7 +739,7 @@ abstract class ErrorDetails implements Union {
   factory ErrorDetails.fromJson(Map<String, dynamic> json) =
       _$ErrorDetails.fromJson;
 
-  String? get message => throw _privateConstructorUsedError;
+  String? get message;
   @JsonKey(ignore: true)
   $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
       throw _privateConstructorUsedError;
@@ -805,18 +809,14 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is Complex &&
-            (identical(other.a, a) ||
-                const DeepCollectionEquality().equals(other.a, a)) &&
-            (identical(other.b, b) ||
-                const DeepCollectionEquality().equals(other.b, b)));
+        (other.runtimeType == runtimeType &&
+            other is Complex &&
+            (identical(other.a, a) || other.a == a) &&
+            (identical(other.b, b) || other.b == b));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(a) ^
-      const DeepCollectionEquality().hash(b);
+  int get hashCode => Object.hash(runtimeType, a, b);
 
   @JsonKey(ignore: true)
   @override
@@ -899,7 +899,10 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ComplexToJson(this)..['custom-key'] = 'Complex';
+    return {
+      'custom-key': 'Complex',
+      ..._$$ComplexToJson(this),
+    };
   }
 }
 
@@ -908,8 +911,8 @@ abstract class Complex implements Union {
 
   factory Complex.fromJson(Map<String, dynamic> json) = _$Complex.fromJson;
 
-  int get a => throw _privateConstructorUsedError;
-  String get b => throw _privateConstructorUsedError;
+  int get a;
+  String get b;
   @JsonKey(ignore: true)
   $ComplexCopyWith<Complex> get copyWith => throw _privateConstructorUsedError;
 }
@@ -1082,18 +1085,14 @@ class _$SharedProperty0
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SharedProperty0 &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.age, age) ||
-                const DeepCollectionEquality().equals(other.age, age)));
+        (other.runtimeType == runtimeType &&
+            other is SharedProperty0 &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.age, age) || other.age == age));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(age);
+  int get hashCode => Object.hash(runtimeType, name, age);
 
   @JsonKey(ignore: true)
   @override
@@ -1167,8 +1166,8 @@ abstract class SharedProperty0 implements SharedProperty {
   factory SharedProperty0({String? name, int? age}) = _$SharedProperty0;
 
   @override
-  String? get name => throw _privateConstructorUsedError;
-  int? get age => throw _privateConstructorUsedError;
+  String? get name;
+  int? get age;
   @override
   @JsonKey(ignore: true)
   $SharedProperty0CopyWith<SharedProperty0> get copyWith =>
@@ -1243,19 +1242,15 @@ class _$SharedProperty1
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SharedProperty1 &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is SharedProperty1 &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.population, population) ||
-                const DeepCollectionEquality()
-                    .equals(other.population, population)));
+                other.population == population));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(population);
+  int get hashCode => Object.hash(runtimeType, name, population);
 
   @JsonKey(ignore: true)
   @override
@@ -1329,8 +1324,8 @@ abstract class SharedProperty1 implements SharedProperty {
   factory SharedProperty1({String? name, int? population}) = _$SharedProperty1;
 
   @override
-  String? get name => throw _privateConstructorUsedError;
-  int? get population => throw _privateConstructorUsedError;
+  String? get name;
+  int? get population;
   @override
   @JsonKey(ignore: true)
   $SharedProperty1CopyWith<SharedProperty1> get copyWith =>

@@ -153,18 +153,14 @@ class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Example<T> &&
-            (identical(other.a, a) ||
-                const DeepCollectionEquality().equals(other.a, a)) &&
-            (identical(other.b, b) ||
-                const DeepCollectionEquality().equals(other.b, b)));
+        (other.runtimeType == runtimeType &&
+            other is _Example<T> &&
+            (identical(other.a, a) || other.a == a) &&
+            (identical(other.b, b) || other.b == b));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(a) ^
-      const DeepCollectionEquality().hash(b);
+  int get hashCode => Object.hash(runtimeType, a, b);
 
   @JsonKey(ignore: true)
   @override
@@ -238,8 +234,8 @@ abstract class _Example<T> extends Example<T> {
   factory _Example(int a, String b) = _$_Example<T>;
   _Example._() : super._();
 
-  int get a => throw _privateConstructorUsedError;
-  String get b => throw _privateConstructorUsedError;
+  int get a;
+  String get b;
   @JsonKey(ignore: true)
   _$ExampleCopyWith<T, _Example<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -300,14 +296,14 @@ class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Example2<T> &&
-            (identical(other.c, c) ||
-                const DeepCollectionEquality().equals(other.c, c)));
+        (other.runtimeType == runtimeType &&
+            other is _Example2<T> &&
+            const DeepCollectionEquality().equals(other.c, c));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(c);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(c));
 
   @JsonKey(ignore: true)
   @override
@@ -381,7 +377,7 @@ abstract class _Example2<T> extends Example<T> {
   factory _Example2(T c) = _$_Example2<T>;
   _Example2._() : super._();
 
-  T get c => throw _privateConstructorUsedError;
+  T get c;
   @JsonKey(ignore: true)
   _$Example2CopyWith<T, _Example2<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -457,7 +453,8 @@ class _$_ConcreteExample<T> extends _ConcreteExample<T>
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _ConcreteExample<T>);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _ConcreteExample<T>);
   }
 
   @override
@@ -522,7 +519,8 @@ class _$_ToString extends _ToString {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _ToString);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _ToString);
   }
 
   @override

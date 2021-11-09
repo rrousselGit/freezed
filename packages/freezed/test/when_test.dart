@@ -1,5 +1,3 @@
-// @dart=2.9
-
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
@@ -96,8 +94,8 @@ void main() {
         expect(
           value.when(
             (String a) => '$a 42',
-            first: (String a, bool b, double d) => throw Error(),
-            second: (String a, int c, double d) => throw Error(),
+            first: (String a, bool? b, double? d) => throw Error(),
+            second: (String a, int? c, double? d) => throw Error(),
           ),
           'a 42',
         );
@@ -168,8 +166,8 @@ void main() {
         expect(
           value.when(
             (String a) => throw Error(),
-            first: (String a, bool b, double d) => '$a $b $d',
-            second: (String a, int c, double d) => throw Error(),
+            first: (String a, bool? b, double? d) => '$a $b $d',
+            second: (String a, int? c, double? d) => throw Error(),
           ),
           'a false 0.42',
         );
@@ -240,8 +238,8 @@ void main() {
         expect(
           value.when(
             (String a) => throw Error(),
-            first: (String a, bool b, double d) => throw Error(),
-            second: (String a, int c, double d) => '$a $c $d',
+            first: (String a, bool? b, double? d) => throw Error(),
+            second: (String a, int? c, double? d) => '$a $c $d',
           ),
           'a 21 0.42',
         );
@@ -267,7 +265,7 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session
+      final errorResult = await main!.session
           .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
@@ -381,7 +379,7 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session
+      final errorResult = await main!.session
           .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isEmpty);
@@ -404,7 +402,7 @@ void main() {
         (r) => r.findLibraryByName('main'),
       );
 
-      final errorResult = await main.session
+      final errorResult = await main!.session
           .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);

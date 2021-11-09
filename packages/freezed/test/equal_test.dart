@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:test/test.dart';
 
 import 'integration/equal.dart';
@@ -143,6 +141,15 @@ void main() {
       GenericObject([
         [1]
       ]),
+    );
+
+    expect(
+      GenericObject<Object>(42),
+      isNot(GenericObject<num>(42)),
+    );
+    expect(
+      GenericObject<num>(42),
+      isNot(GenericObject<Object>(42)),
     );
   });
 

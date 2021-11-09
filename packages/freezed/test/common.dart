@@ -2,7 +2,6 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/diagnostic/diagnostic.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:build_test/build_test.dart';
-import 'package:matcher/matcher.dart';
 import 'package:test/test.dart';
 
 final throwsCompileError = throwsA(isA<CompileError>());

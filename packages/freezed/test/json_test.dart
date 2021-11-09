@@ -2,7 +2,6 @@
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:matcher/matcher.dart';
 import 'package:test/test.dart';
 
 import 'common.dart';
@@ -255,6 +254,38 @@ Future<void> main() async {
           'a': 55,
         }),
         UnionDefaultFallback(55),
+      );
+    });
+  });
+
+  group('FreezedUnionKeyFallback default', () {
+    test('concrete', () {
+      final first = UnionKeyDefaultFallback.fromJson(<String, dynamic>{
+        'key': 'first',
+      });
+
+      expect(
+        first,
+        UnionKeyDefaultFallback.first('first'),
+      );
+      expect(
+        first.key,
+        first.toJson()['key'],
+      );
+    });
+
+    test('fallback', () {
+      final fallback = UnionKeyDefaultFallback.fromJson(<String, dynamic>{
+        'key': 'fallback',
+      });
+
+      expect(
+        fallback,
+        UnionKeyDefaultFallback('fallback'),
+      );
+      expect(
+        fallback.key,
+        fallback.toJson()['key'],
       );
     });
   });
@@ -702,6 +733,29 @@ Future<void> main() async {
         'b': 42,
       }),
       Json.second(42),
+    );
+  });
+
+  test('enum helpers', () {
+    expect(standAloneEnumValues, ['expected', 'special-result', 'unknown']);
+  });
+
+  test('unknown as null for enum', () {
+    expect(
+      () => EnumJson.fromJson(<String, dynamic>{}).status,
+      throwsA(isA<MissingRequiredKeysException>()),
+    );
+    expect(
+      () => EnumJson.fromJson(<String, dynamic>{'status': null}).status,
+      throwsA(isA<DisallowedNullValueException>()),
+    );
+    expect(
+      EnumJson.fromJson(<String, dynamic>{'status': 'gamma'}).status,
+      Enum.gamma,
+    );
+    expect(
+      EnumJson.fromJson(<String, dynamic>{'status': 'unknown'}).status,
+      isNull,
     );
   });
 
