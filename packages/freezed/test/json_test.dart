@@ -209,6 +209,38 @@ Future<void> main() async {
     });
   });
 
+  group('FreezedUnionKeyFallback default', () {
+    test('concrete', () {
+      final first = UnionKeyDefaultFallback.fromJson(<String, dynamic>{
+        'key': 'first',
+      });
+
+      expect(
+        first,
+        UnionKeyDefaultFallback.first('first'),
+      );
+      expect(
+        first.key,
+        first.toJson()['key'],
+      );
+    });
+
+    test('fallback', () {
+      final fallback = UnionKeyDefaultFallback.fromJson(<String, dynamic>{
+        'key': 'fallback',
+      });
+
+      expect(
+        fallback,
+        UnionKeyDefaultFallback('fallback'),
+      );
+      expect(
+        fallback.key,
+        fallback.toJson()['key'],
+      );
+    });
+  });
+
   group('Freezed.unionValueCase', () {
     test('FreezedUnionCase.pascal fromJson', () {
       expect(
