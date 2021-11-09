@@ -2,6 +2,7 @@
 
 - Updated dependencies
 - Increased minimum Dart SDK required to 2.14.0
+- Fixed an issue where classes with a $ in their name could cause Freezed to fail (Thanks to @comigor #542)
 
 # 0.15.0+1
 
