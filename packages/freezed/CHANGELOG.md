@@ -1,4 +1,4 @@
-# [Unreleased]
+# 0.15.1
 
 - The union key is no longer passed `json_serializable` when deserializing avoid the case of being an `unrecognized_key` in some cases.
 - Updated dependencies
