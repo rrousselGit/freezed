@@ -53,6 +53,6 @@ void main() {
 
     var d = constructor.parameters[3].type;
     expect(d, isA<FunctionType>());
-    expect(d.alias!.element.name, equals('ExternalTypedef'));
+    expect(d.alias!.element.name, equals('ExternalTypedefTwo'));
   });
 }

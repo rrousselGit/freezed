@@ -13,6 +13,6 @@ class ClassWithTypedef with _$ClassWithTypedef {
     MyTypedef myTypedef,
     MyTypedef? maybeTypedef,
     ExternalTypedef externalTypedef,
-    two.ExternalTypedef externalTypedefTwo,
+    two.ExternalTypedefTwo externalTypedefTwo,
   ) = _ClassWithTypedef;
 }

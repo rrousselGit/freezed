@@ -1,1 +1,1 @@
-typedef ExternalTypedef = Function(String);
+typedef ExternalTypedefTwo = void Function(String);
