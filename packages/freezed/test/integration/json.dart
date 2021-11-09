@@ -250,3 +250,35 @@ class DurationValue with _$DurationValue {
   factory DurationValue.fromJson(Map<String, dynamic> json) =>
       _$DurationValueFromJson(json);
 }
+
+@JsonEnum(alwaysCreate: true, fieldRename: FieldRename.kebab)
+enum StandAloneEnum {
+  expected,
+  specialResult,
+  @JsonValue('unknown')
+  unknownResult,
+}
+
+Iterable<String> get standAloneEnumValues => _$StandAloneEnumEnumMap.values;
+
+@JsonEnum()
+enum Enum {
+  alpha,
+  beta,
+  gamma,
+}
+
+@freezed
+class EnumJson with _$EnumJson {
+  factory EnumJson({
+    @JsonKey(
+      disallowNullValue: true,
+      required: true,
+      unknownEnumValue: JsonKey.nullForUndefinedEnumValue,
+    )
+        Enum? status,
+  }) = _EnumJson;
+
+  factory EnumJson.fromJson(Map<String, dynamic> json) =>
+      _$EnumJsonFromJson(json);
+}
