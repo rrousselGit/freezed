@@ -28,41 +28,31 @@ dependency_overrides:
 
 # Motivation
 
-While there are many code-generators available to help you deal with immutable objects, they usually come with a trade-off.\
-Either they have a simple syntax but lack features, or they have very advanced
-features but with complex syntax.
+If you are familiar with other programming languages, you may have heard about
+concepts such as data-classes or pattern matching.  
+These features are excellent at making your codebase more robust and readable.  
+Sadly, Dart currently does not support those features.
 
-A typical example would be a "clone" method.\
-Current generators have two approaches:
+Freezed is designed as a language patch, relying on code-generation to implement
+those missing features.
 
-- a `copyWith`, usually implemented using `??`:
+Using Freezed, we will get:
 
-  ```dart
-  MyClass copyWith({ int? a, String? b }) {
-      return MyClass(a: a ?? this.a, b: b ?? this.b);
-  }
-  ```
+- a simple and concise syntax for defining models, where we don't need to
+  define both a constructor and a property.  
+  Instead, we only need to define the constructor, removing unnecessary duplication.
 
-  The syntax is very simple to use, but doesn't support some use-cases: nullable values.\
-  We cannot use such `copyWith` to assign `null` to a property like so:
+- a `copyWith` method, for cloning objects with different values.  
+  _Note_: As opposed to many alternatives, when using Freezed, that `copyWith`
+  method correctly supports assigning `null` to a value.
 
-  ```dart
-  person.copyWith(location: null)
-  ```
+- union-types/pattern matching, for making impossible states impossible.
+  See also [#unionssealed-classes].
 
-* a builder method combined with a temporary mutable object, usually used this way:
+- an automatic serialization/deserialization of your objects (including union types).
 
-  ```dart
-  person.rebuild((person) {
-    return person
-      ..b = person;
-  })
-  ```
-
-  The benefits of this approach are that it _does_ support nullable values.\
-  On the other hand, the syntax is not very readable and fun to use.
-
-**Say hello to [Freezed]~**, with support for advanced use-cases _without_ compromising on the syntax.
+- a default `==`/`toString` implementation which respectively compares/shows
+  all properties of the object.
 
 See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/freezed/example/lib/main.dart) or [the index](#index) for a preview on what's available
 
@@ -123,7 +113,6 @@ This installs three packages:
 - [freezed], the code generator
 - [freezed_annotation](https://pub.dev/packages/freezed_annotation), a package containing annotations for [freezed].
 
-
 ### Disabling invalid_annotation_target warning and warning in generates files.
 
 If you plan on using [Freezed] in combination with `json_serializable`, recent
@@ -143,7 +132,6 @@ analyzer:
   errors:
     invalid_annotation_target: ignore
 ```
-
 
 ## Run the generator
 
@@ -186,7 +174,6 @@ class Union with _$Union {
   const factory Union.error([String? message]) = ErrorDetails;
 }
 ```
-
 
 ## Ignore lint warnings on generated files
 
@@ -1051,10 +1038,10 @@ using `@Freezed` and `@FreezedUnionValue` decorators:
 @Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
 abstract class MyResponse with _$MyResponse {
   const factory MyResponse(String a) = MyResponseData;
-  
+
   @FreezedUnionValue('SpecialCase')
   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
-  
+
   const factory MyResponse.error(String message) = MyResponseError;
 
   // ...
