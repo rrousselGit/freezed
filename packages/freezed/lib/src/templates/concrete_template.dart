@@ -109,20 +109,25 @@ ${copyWith.abstractCopyWithGetter}
     var parameters = constructor.parameters.asThis();
 
     if (_hasTypeProperty) {
+      final typeProperty = Parameter(
+        type: 'String?',
+        name: '\$type',
+        defaultValueSource: null,
+        isRequired: false,
+        decorators: [],
+        doc: '',
+        isPossiblyDartCollection: false,
+      );
+
       parameters = ParametersTemplate(
         parameters.requiredPositionalParameters,
-        optionalPositionalParameters: parameters.optionalPositionalParameters,
+        optionalPositionalParameters: [
+          ...parameters.optionalPositionalParameters,
+          if (parameters.optionalPositionalParameters.isNotEmpty) typeProperty,
+        ],
         namedParameters: [
           ...parameters.namedParameters,
-          Parameter(
-            type: 'String?',
-            name: '\$type',
-            defaultValueSource: null,
-            isRequired: false,
-            decorators: [],
-            doc: '',
-            isPossiblyDartCollection: false,
-          ),
+          if (parameters.optionalPositionalParameters.isEmpty) typeProperty,
         ],
       );
     }

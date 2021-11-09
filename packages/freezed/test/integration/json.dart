@@ -83,6 +83,15 @@ class FancyCustomKey with _$FancyCustomKey {
       _$FancyCustomKeyFromJson(json);
 }
 
+@Freezed()
+class PositonalOptional with _$PositonalOptional {
+  const factory PositonalOptional.first([int? a]) = _PositonalOptionalFirst;
+  const factory PositonalOptional.second([int? a]) = _PositonalOptionalSecond;
+
+  factory PositonalOptional.fromJson(Map<String, dynamic> json) =>
+      _$PositonalOptionalFromJson(json);
+}
+
 @Freezed(unionKey: r'$type')
 class RawCustomKey with _$RawCustomKey {
   const factory RawCustomKey.first(int a) = _RawCustomKeyFirst;
