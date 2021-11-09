@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
@@ -16,11 +14,11 @@ void main() {
     );
 
     var errorResult = await main.session
-            .getErrors2('/freezed/test/integration/decorator.freezed.dart')
+            .getErrors('/freezed/test/integration/decorator.freezed.dart')
         as ErrorsResult;
     expect(errorResult.errors, isEmpty);
     errorResult = await main.session
-        .getErrors2('/freezed/test/integration/decorator.dart') as ErrorsResult;
+        .getErrors('/freezed/test/integration/decorator.dart') as ErrorsResult;
   });
 
   test('warns if try to use deprecated property', () async {
@@ -52,7 +50,7 @@ void main() {
     );
 
     var errorResult = await main.session
-        .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
+        .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
     expect(
         errorResult.errors.map((e) => e.errorCode.name),
         anyOf([

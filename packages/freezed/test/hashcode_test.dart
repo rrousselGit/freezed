@@ -1,10 +1,13 @@
-// @dart=2.9
-
 import 'package:test/test.dart';
 
 import 'integration/equal.dart';
+import 'integration/single_class_constructor.dart' show Large;
 
 void main() {
+  test('supports classes with large number of properties', () {
+    Large().hashCode;
+  });
+
   test('Simple', () {
     expect(
       Simple(42).hashCode,

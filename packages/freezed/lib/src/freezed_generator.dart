@@ -96,6 +96,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           doc: commonParameter.doc,
           type: commonParameter.type,
           defaultValueSource: commonParameter.defaultValueSource,
+          isPossiblyDartCollection: commonParameter.isPossiblyDartCollection,
           // TODO: support hasJsonKey
           hasJsonKey: false,
         ),
@@ -246,6 +247,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           unionValue: constructor.unionValue(configs.unionValueCase),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
+          escapedName: _escapedName(element, constructor),
           impliedProperties: [
             for (final parameter in constructor.parameters)
               await Property.fromParameter(parameter, buildStep),
@@ -302,17 +304,12 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     for (final metadata in constructor.metadata) {
       if (!metadata.isWith) continue;
       final object = metadata.computeConstantValue()!;
-      var type = object.getField('type')!;
-      if (type.isNull) {
-        type = object.getField('stringType')!;
-        yield type.toStringValue()!;
-      } else {
-        yield resolveFullTypeStringFrom(
-          constructor.library,
-          type.toTypeValue()!,
-          withNullability: false,
-        );
-      }
+
+      yield resolveFullTypeStringFrom(
+        constructor.library,
+        (object.type! as InterfaceType).typeArguments.single,
+        withNullability: false,
+      );
     }
   }
 
@@ -322,17 +319,12 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     for (final metadata in constructor.metadata) {
       if (!metadata.isImplements) continue;
       final object = metadata.computeConstantValue()!;
-      var type = object.getField('type')!;
-      if (type.isNull) {
-        type = object.getField('stringType')!;
-        yield type.toStringValue()!;
-      } else {
-        yield resolveFullTypeStringFrom(
-          constructor.library,
-          type.toTypeValue()!,
-          withNullability: false,
-        );
-      }
+
+      yield resolveFullTypeStringFrom(
+        constructor.library,
+        (object.type! as InterfaceType).typeArguments.single,
+        withNullability: false,
+      );
     }
   }
 
@@ -564,6 +556,21 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     return constructor.name.isEmpty
         ? '${element.name}$generics'
         : '${element.name}$generics.${constructor.name}';
+  }
+
+  String _escapedName(ClassElement element, ConstructorElement constructor) {
+    var generics = element.typeParameters.map((e) {
+      return '\$${e.name}';
+    }).join(', ');
+    if (generics.isNotEmpty) {
+      generics = '<$generics>';
+    }
+
+    final escapedElementName = element.name.replaceAll(r'$', r'\$');
+
+    return constructor.name.isEmpty
+        ? '$escapedElementName$generics'
+        : '$escapedElementName$generics.${constructor.name}';
   }
 
   /// For:

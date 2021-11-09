@@ -1,5 +1,3 @@
-// @dart=2.9
-
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
@@ -21,7 +19,7 @@ void main() {
     );
 
     final errorResult = await main.session
-            .getErrors2('/freezed/test/integration/deep_copy.freezed.dart')
+            .getErrors('/freezed/test/integration/deep_copy.freezed.dart')
         as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
@@ -37,7 +35,7 @@ void main() {
     );
 
     final errorResult = await main.session
-            .getErrors2('/freezed/test/integration/deep_copy2.freezed.dart')
+            .getErrors('/freezed/test/integration/deep_copy2.freezed.dart')
         as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
@@ -47,12 +45,12 @@ void main() {
     Company company = Company(director: null, name: 'Google');
 
     expect(
-      () => company.copyWith.director.assistant(name: 'John'),
-      throwsNoSuchMethodError,
+      () => company.copyWith.director!.assistant!(name: 'John'),
+      throwsA(isA<TypeError>()),
     );
 
     expect(
-      company.copyWith.director?.assistant(name: 'John'),
+      company.copyWith.director?.assistant!(name: 'John'),
       null,
     );
 
@@ -62,12 +60,12 @@ void main() {
     );
 
     expect(
-      company.copyWith.director.assistant?.call(name: 'John'),
+      company.copyWith.director!.assistant?.call(name: 'John'),
       isNull,
     );
     expect(
-      () => company.copyWith.director.assistant(name: 'John'),
-      throwsNoSuchMethodError,
+      () => company.copyWith.director!.assistant!(name: 'John'),
+      throwsA(isA<TypeError>()),
     );
   });
 
@@ -355,7 +353,7 @@ void main() {
 import 'deep_copy.dart';
 
 void main() {
-  final value = NoCommonProperty.assistant(Assistant());  
+  final value = NoCommonProperty.assistant!(Assistant());  
   NoCommonPropertyAssistant copy = value.copyWith(assistant: Assistant());
 }
 '''), throwsCompileError);
@@ -454,7 +452,7 @@ void main() {
 '''), throwsCompileError);
       });
 
-      test('Company.copyWith.director.assistant', () async {
+      test('Company.copyWith.director!.assistant', () async {
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
@@ -516,7 +514,7 @@ void main() {
 '''), throwsCompileError);
       });
 
-      test('Company.copyWith.director.assistant', () async {
+      test('Company.copyWith.director!.assistant', () async {
         await expectLater(compile(r'''
 import 'deep_copy.dart';
 
@@ -552,19 +550,19 @@ void main() {
       );
 
       expect(
-        company.copyWith.director(name: 'Sundar Pichai'),
+        company.copyWith.director!(name: 'Sundar Pichai'),
         Company(
           name: 'Google',
           director: Director(
             name: 'Sundar Pichai',
-            assistant: company.director.assistant,
+            assistant: company.director!.assistant,
           ),
         ),
       );
 
       expect(
-        company.copyWith
-            .director(assistant: Assistant(name: 'John Doe', age: 21)),
+        company.copyWith.director!(
+            assistant: Assistant(name: 'John Doe', age: 21)),
         Company(
           name: 'Google',
           director: Director(
@@ -575,7 +573,7 @@ void main() {
       );
 
       expect(
-        company.copyWith.director.assistant(name: 'John Doe'),
+        company.copyWith.director!.assistant!(name: 'John Doe'),
         Company(
           name: 'Google',
           director: Director(

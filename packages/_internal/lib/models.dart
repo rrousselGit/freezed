@@ -25,7 +25,7 @@ String constructorNameToCallbackName(String name) => name;
 /// This allows Freezed to support deep copy of the object.
 /// This does include primitives like [int] and [List].
 @freezed
-abstract class CloneableProperty with _$CloneableProperty {
+class CloneableProperty with _$CloneableProperty {
   factory CloneableProperty({
     required String name,
     required String typeName,
@@ -39,7 +39,7 @@ abstract class CloneableProperty with _$CloneableProperty {
 ///
 /// This only includes constructors where Freezed needs to generate something.
 @freezed
-abstract class ConstructorDetails with _$ConstructorDetails {
+class ConstructorDetails with _$ConstructorDetails {
   factory ConstructorDetails({
     required String name,
     required String unionValue,
@@ -64,7 +64,7 @@ abstract class ConstructorDetails with _$ConstructorDetails {
 }
 
 @freezed
-abstract class Data with _$Data {
+class Data with _$Data {
   @Assert('constructors.isNotEmpty')
   factory Data({
     required String name,
@@ -81,7 +81,7 @@ abstract class Data with _$Data {
 }
 
 @freezed
-abstract class GlobalData with _$GlobalData {
+class GlobalData with _$GlobalData {
   factory GlobalData({
     required bool hasJson,
     required bool hasDiagnostics,

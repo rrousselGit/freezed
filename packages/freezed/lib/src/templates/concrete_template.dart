@@ -208,7 +208,7 @@ Map<String, dynamic> toJson() {
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   super.debugFillProperties(properties);
   properties
-    ..add(DiagnosticsProperty('type', '${constructor.fullName}'))
+    ..add(DiagnosticsProperty('type', '${constructor.escapedName}'))
     $diagnostics;
 }
 ''';
@@ -325,7 +325,7 @@ ${whenOrNullPrototype(allConstructors)} {
     return '''
 @override
 String toString($parameters) {
-  return '${constructor.fullName}(${properties.join(', ')})';
+  return '${constructor.escapedName}(${properties.join(', ')})';
 }
 ''';
   }
@@ -333,18 +333,23 @@ String toString($parameters) {
   String get _operatorEqualMethod {
     if (hasCustomToEquals) return '';
 
-    final properties = constructor.impliedProperties.map((p) {
-      final name = p.name == 'other' ? 'this.other' : p.name;
-      return '(identical(other.${p.name}, $name) || const DeepCollectionEquality().equals(other.${p.name}, $name))';
-    });
+    final comparisons = [
+      'other.runtimeType == runtimeType',
+      'other is ${constructor.redirectedName}$genericsParameter',
+      ...constructor.impliedProperties.map((p) {
+        final name = p.name == 'other' ? 'this.other' : p.name;
+        if (p.isPossiblyDartCollection) {
+          // no need to check `identical` as `DeepCollectionEquality` already does it
+          return 'const DeepCollectionEquality().equals(other.${p.name}, $name)';
+        }
+        return '(identical(other.${p.name}, $name) || other.${p.name} == $name)';
+      }),
+    ];
 
     return '''
 @override
 bool operator ==(dynamic other) {
-  return identical(this, other) || (other is ${[
-      '${constructor.redirectedName}$genericsParameter',
-      ...properties
-    ].join('&&')});
+  return identical(this, other) || (${comparisons.join('&&')});
 }
 ''';
   }
@@ -352,13 +357,31 @@ bool operator ==(dynamic other) {
   String get _hashCodeMethod {
     if (hasCustomToEquals) return '';
 
-    var hashCodeImpl = constructor.impliedProperties.map((p) {
-      return '^ const DeepCollectionEquality().hash(${p.name})';
-    }).join();
+    final hashedProperties = [
+      'runtimeType',
+      for (final property in constructor.impliedProperties)
+        if (property.isPossiblyDartCollection)
+          'const DeepCollectionEquality().hash(${property.name})'
+        else
+          property.name,
+    ];
+
+    if (hashedProperties.length == 1) {
+      return '''
+@override
+int get hashCode => ${hashedProperties.first}.hashCode;
+''';
+    }
+    if (hashedProperties.length >= 20) {
+      return '''
+@override
+int get hashCode => Object.hashAll([${hashedProperties.join(',')}]);
+''';
+    }
 
     return '''
 @override
-int get hashCode => runtimeType.hashCode $hashCodeImpl;
+int get hashCode => Object.hash(${hashedProperties.join(',')});
 ''';
   }
 }

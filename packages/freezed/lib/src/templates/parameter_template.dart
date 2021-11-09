@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
+import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/utils.dart';
 
@@ -73,6 +74,7 @@ class ParametersTemplate {
           isRequired: e.isRequiredNamed,
           decorators: parseDecorators(e.metadata),
           doc: await documentationOfParameter(e, buildStep),
+          isPossiblyDartCollection: e.type.isPossiblyDartCollection,
         );
       }
       return Parameter(
@@ -82,6 +84,7 @@ class ParametersTemplate {
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
         doc: await documentationOfParameter(e, buildStep),
+        isPossiblyDartCollection: e.type.isPossiblyDartCollection,
       );
     }
 
@@ -124,6 +127,7 @@ class ParametersTemplate {
               decorators: e.decorators,
               defaultValueSource: e.defaultValueSource,
               doc: e.doc,
+              isPossiblyDartCollection: e.isPossiblyDartCollection,
             ),
           )
           .toList();
@@ -148,6 +152,7 @@ class ParametersTemplate {
               defaultValueSource: e.defaultValueSource,
               showDefaultValue: showDefaultValue,
               doc: e.doc,
+              isPossiblyDartCollection: e.isPossiblyDartCollection,
             ),
           )
           .toList();
@@ -195,6 +200,7 @@ class ParametersTemplate {
                 decorators: e.decorators,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
+                isPossiblyDartCollection: e.isPossiblyDartCollection,
               ))
           .toList(),
       namedParameters: namedParameters
@@ -205,6 +211,7 @@ class ParametersTemplate {
                 decorators: e.decorators,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
+                isPossiblyDartCollection: e.isPossiblyDartCollection,
               ))
           .toList(),
       optionalPositionalParameters: optionalPositionalParameters
@@ -215,6 +222,7 @@ class ParametersTemplate {
                 decorators: e.decorators,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
+                isPossiblyDartCollection: e.isPossiblyDartCollection,
               ))
           .toList(),
     );
@@ -229,6 +237,7 @@ class Parameter {
     required this.isRequired,
     required this.decorators,
     required this.doc,
+    required this.isPossiblyDartCollection,
     this.showDefaultValue = false,
   });
 
@@ -238,6 +247,7 @@ class Parameter {
   final bool isRequired;
   final List<String> decorators;
   final bool showDefaultValue;
+  final bool isPossiblyDartCollection;
   final String doc;
 
   Parameter copyWith({
@@ -248,6 +258,7 @@ class Parameter {
     bool? nullable,
     List<String>? decorators,
     bool? showDefaultValue,
+    bool? isPossiblyDartCollection,
     String? doc,
   }) =>
       Parameter(
@@ -258,6 +269,8 @@ class Parameter {
         decorators: decorators ?? this.decorators,
         showDefaultValue: showDefaultValue ?? this.showDefaultValue,
         doc: doc ?? this.doc,
+        isPossiblyDartCollection:
+            isPossiblyDartCollection ?? this.isPossiblyDartCollection,
       );
 
   @override
@@ -284,6 +297,7 @@ class LocalParameter extends Parameter {
     required bool isRequired,
     required List<String> decorators,
     required String doc,
+    required bool isPossiblyDartCollection,
   }) : super(
           name: name,
           type: type,
@@ -292,6 +306,7 @@ class LocalParameter extends Parameter {
           decorators: decorators,
           defaultValueSource: defaultValueSource,
           doc: doc,
+          isPossiblyDartCollection: isPossiblyDartCollection,
         );
 
   @override
@@ -320,6 +335,7 @@ class CallbackParameter extends Parameter {
     required List<String> decorators,
     required this.parameters,
     required String doc,
+    required bool isPossiblyDartCollection,
   }) : super(
           name: name,
           type: type,
@@ -328,6 +344,7 @@ class CallbackParameter extends Parameter {
           decorators: decorators,
           defaultValueSource: defaultValueSource,
           doc: doc,
+          isPossiblyDartCollection: isPossiblyDartCollection,
         );
 
   final ParametersTemplate parameters;

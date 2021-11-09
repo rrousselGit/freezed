@@ -124,18 +124,14 @@ class _$_TimeSlot implements _TimeSlot {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TimeSlot &&
-            (identical(other.start, start) ||
-                const DeepCollectionEquality().equals(other.start, start)) &&
-            (identical(other.end, end) ||
-                const DeepCollectionEquality().equals(other.end, end)));
+        (other.runtimeType == runtimeType &&
+            other is _TimeSlot &&
+            (identical(other.start, start) || other.start == start) &&
+            (identical(other.end, end) || other.end == end));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(start) ^
-      const DeepCollectionEquality().hash(end);
+  int get hashCode => Object.hash(runtimeType, start, end);
 
   @JsonKey(ignore: true)
   @override
@@ -147,9 +143,9 @@ abstract class _TimeSlot implements TimeSlot {
   factory _TimeSlot({TimeOfDay? start, TimeOfDay? end}) = _$_TimeSlot;
 
   @override
-  TimeOfDay? get start => throw _privateConstructorUsedError;
+  TimeOfDay? get start;
   @override
-  TimeOfDay? get end => throw _privateConstructorUsedError;
+  TimeOfDay? get end;
   @override
   @JsonKey(ignore: true)
   _$TimeSlotCopyWith<_TimeSlot> get copyWith =>

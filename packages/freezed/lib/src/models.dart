@@ -41,6 +41,7 @@ abstract class ConstructorDetails with _$ConstructorDetails {
     required bool isFallback,
     required bool hasJsonSerializable,
     required String fullName,
+    required String escapedName,
     required List<String> withDecorators,
     required List<String> implementsDecorators,
     required List<String> decorators,

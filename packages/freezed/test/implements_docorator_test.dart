@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:test/test.dart';
 
 import 'integration/implements_decorator.dart';
@@ -22,8 +20,10 @@ void main() {
 
       object = const SimpleImplements.country('Morning', 140000);
       expect(object, isA<House>());
-      expect(object,
-          isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'));
+      expect(
+        object,
+        isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'),
+      );
     });
   });
   group('CustomMethod', () {
@@ -41,8 +41,10 @@ void main() {
     test('mixedWithAndImplements', () {
       const object = CustomMethodImplements.city('Morning', 140000);
       expect(object, isA<House>());
-      expect(object,
-          isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'));
+      expect(
+        object,
+        isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'),
+      );
     });
 
     test(
@@ -58,23 +60,13 @@ void main() {
       expect(area.name, 'name');
     });
   });
-  group('Generic type', () {
-    test('fromString', () {
-      expect(
-        const GenericImplements<int>.street('Sarah', 5),
-        isA<AdministrativeArea<int>>(),
-      );
-      expect(
-        const GenericImplements<String>.street('Sarah', '5'),
-        isA<AdministrativeArea<String>>(),
-      );
-    });
 
-    test('fromType', () {
-      const object = GenericImplements<int>.city('Morning', 140000);
-      expect(object, isA<House>());
-      expect(object,
-          isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'));
-    });
+  test('Generic type', () {
+    const object = GenericImplements<int>.city('Morning', 140000);
+    expect(object, isA<House>());
+    expect(
+      object,
+      isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'),
+    );
   });
 }

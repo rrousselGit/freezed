@@ -1,5 +1,3 @@
-// @dart=2.9
-
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
@@ -19,7 +17,7 @@ class MyObject {
 
   @override
   bool operator ==(Object other) {
-    didEqual?.call();
+    didEqual();
     return other.runtimeType == runtimeType;
   }
 
@@ -49,17 +47,6 @@ Future<void> main() async {
     expect(
       Regression131('foo').toString(),
       'Regression131(versionName: foo)',
-    );
-  });
-
-  test('Regression358', () {
-    expect(
-      Regression358.withSpecificColor(),
-      Regression358(number: 2),
-    );
-    expect(
-      Regression358.withSpecificColor(count: 42),
-      Regression358(number: 42),
     );
   });
 
@@ -107,7 +94,7 @@ Future<void> main() async {
     final value = Product(name: 'foo', parent: Product(name: 'bar'));
 
     expect(
-      value.copyWith.parent(name: 'baz'),
+      value.copyWith.parent!(name: 'baz'),
       Product(name: 'foo', parent: Product(name: 'baz')),
     );
 
@@ -120,7 +107,7 @@ Future<void> main() async {
     );
 
     expect(
-      value2.copyWith.parent.parent(name: 'quaz'),
+      value2.copyWith.parent!.parent!(name: 'quaz'),
       Product(
         name: 'foo',
         parent: Product(
@@ -222,8 +209,9 @@ Future<void> main() async {
   test('== uses identical first', () {
     var didEqual = false;
     final obj = MyObject(() => didEqual = true);
+    final list = [obj];
 
-    expect(Generic(obj), Generic(obj));
+    expect(Generic(list), Generic(list));
     expect(didEqual, isFalse);
   });
 
@@ -294,7 +282,7 @@ void main() {
   test('has no issue', () async {
     final singleClassLibrary = await analyze();
 
-    final errorResult = await singleClassLibrary.session.getErrors2(
+    final errorResult = await singleClassLibrary.session.getErrors(
             '/freezed/test/integration/single_class_constructor.freezed.dart')
         as ErrorsResult;
 
@@ -561,8 +549,8 @@ void main() {
     ''',
     }, (r) => r.findLibraryByName('main'));
 
-    final errorResult = await main.session
-        .getErrors2('/freezed/test/integration/main.dart') as ErrorsResult;
+    final errorResult = await main!.session
+        .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
     expect(
       errorResult.errors.map((e) => e.toString()),
