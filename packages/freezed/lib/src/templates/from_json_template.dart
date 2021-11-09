@@ -34,7 +34,7 @@ class FromJson {
 
         return '''
         case '$caseName':
-          return $concreteName$genericParameters.fromJson(_json);
+          return $concreteName$genericParameters.fromJson(json);
         ''';
       }).join();
 
@@ -45,14 +45,11 @@ class FromJson {
           constructors.singleWhereOrNull((element) => element.isFallback);
       if (fallbackConstructor != null) {
         defaultCase =
-            'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(_json);';
+            'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(json);';
       }
 
       content = '''
-        final _json = <String, dynamic>{...json};
-        final type = _json.remove('$unionKey') as String?;
-
-        switch (type) {
+        switch (json['$unionKey']) {
           $cases
           default:
             $defaultCase

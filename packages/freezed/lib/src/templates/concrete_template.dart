@@ -48,19 +48,12 @@ class Concrete {
     return '\$${constructor.redirectedName}';
   }
 
+  late final bool _hasTypeProperty = shouldGenerateJson &&
+      allConstructors.length > 1 &&
+      constructor.impliedProperties.every((e) => e.name != unionKey);
+
   @override
   String toString() {
-    final asserts = constructor.asserts.join(',');
-    final superConstructor = _superConstructor;
-
-    var trailing = '';
-    if (asserts.isNotEmpty || superConstructor.isNotEmpty) {
-      trailing = ': ${[
-        if (asserts.isNotEmpty) asserts,
-        if (superConstructor.isNotEmpty) superConstructor
-      ].join(',')}';
-    }
-
     return '''
 ${copyWith.interface}
 
@@ -70,7 +63,7 @@ ${copyWith.concreteImpl(constructor.parameters)}
 ${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
 ${constructor.decorators.join('\n')}
 class $concreteName$genericsDefinition $_concreteSuper {
-  $_isConst $concreteName(${constructor.parameters.asThis()})$trailing;
+  $_concreteConstructor
 
   $_concreteFromJsonConstructor
 
@@ -101,6 +94,45 @@ $_abstractProperties
 ${copyWith.abstractCopyWithGetter}
 }
 ''';
+  }
+
+  String get _concreteConstructor {
+    final superConstructor = _superConstructor;
+
+    final trailingStrings = <String>[
+      if (constructor.asserts.isNotEmpty)
+        ...constructor.asserts.map((a) => a.toString()),
+      if (superConstructor.isNotEmpty) superConstructor,
+      if (_hasTypeProperty) "\$type = \$type ?? '${constructor.unionValue}'",
+    ];
+
+    var parameters = constructor.parameters.asThis();
+
+    if (_hasTypeProperty) {
+      parameters = ParametersTemplate(
+        parameters.requiredPositionalParameters,
+        optionalPositionalParameters: parameters.optionalPositionalParameters,
+        namedParameters: [
+          ...parameters.namedParameters,
+          Parameter(
+            type: 'String?',
+            name: '\$type',
+            defaultValueSource: null,
+            isRequired: false,
+            decorators: [],
+            doc: '',
+            isPossiblyDartCollection: false,
+          ),
+        ],
+      );
+    }
+
+    var trailing = '';
+    if (trailingStrings.isNotEmpty) {
+      trailing = ': ${trailingStrings.join(',')}';
+    }
+
+    return '$_isConst $concreteName($parameters)$trailing;';
   }
 
   String get interfaces {
@@ -158,13 +190,24 @@ ${copyWith.abstractCopyWithGetter}
   }
 
   String get _properties {
-    return constructor.impliedProperties.map((p) {
+    final classProperties = constructor.impliedProperties.map((p) {
       var res = '@override $p';
       if (p.defaultValueSource != null && !p.hasJsonKey) {
         res = '@JsonKey(defaultValue: ${p.defaultValueSource}) $res';
       }
       return res;
-    }).join();
+    });
+
+    if (_hasTypeProperty) {
+      return '''
+${classProperties.join('\n')}
+
+@JsonKey(name: '$unionKey')
+final String \$type;
+''';
+    }
+
+    return classProperties.join('\n');
   }
 
   String get _isConst {
@@ -183,24 +226,11 @@ ${copyWith.abstractCopyWithGetter}
 
   String get _toJson {
     if (!shouldGenerateJson) return '';
-    var content = '_\$${nonPrivateConcreteName}ToJson(this)';
-
-    final addType = allConstructors.length > 1
-        ? "..['$unionKey'] = '${constructor.unionValue}'"
-        : '';
-
-    if (allConstructors.length > 1) {
-      content = '''{
-  '$unionKey': '${constructor.unionValue}',
-  ...$content,
-}
-''';
-    }
 
     return '''
 @override
 Map<String, dynamic> toJson() {
-  return $content;
+  return _\$${nonPrivateConcreteName}ToJson(this);
 }''';
   }
 
