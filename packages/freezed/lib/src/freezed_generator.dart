@@ -246,6 +246,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           unionValue: constructor.unionValue(configs.unionValueCase),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
+          escapedName: _escapedName(element, constructor),
           impliedProperties: [
             for (final parameter in constructor.parameters)
               await Property.fromParameter(parameter, buildStep),
@@ -537,6 +538,21 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     return constructor.name.isEmpty
         ? '${element.name}$generics'
         : '${element.name}$generics.${constructor.name}';
+  }
+
+  String _escapedName(ClassElement element, ConstructorElement constructor) {
+    var generics = element.typeParameters.map((e) {
+      return '\$${e.name}';
+    }).join(', ');
+    if (generics.isNotEmpty) {
+      generics = '<$generics>';
+    }
+
+    final escapedElementName = element.name.replaceAll(r'$', r'\$');
+
+    return constructor.name.isEmpty
+        ? '$escapedElementName$generics'
+        : '$escapedElementName$generics.${constructor.name}';
   }
 
   /// For:

@@ -264,6 +264,7 @@ class _$ConstructorDetailsTearOff {
       required bool isFallback,
       required bool hasJsonSerializable,
       required String fullName,
+      required String escapedName,
       required List<String> withDecorators,
       required List<String> implementsDecorators,
       required List<String> decorators,
@@ -280,6 +281,7 @@ class _$ConstructorDetailsTearOff {
       isFallback: isFallback,
       hasJsonSerializable: hasJsonSerializable,
       fullName: fullName,
+      escapedName: escapedName,
       withDecorators: withDecorators,
       implementsDecorators: implementsDecorators,
       decorators: decorators,
@@ -304,6 +306,7 @@ mixin _$ConstructorDetails {
   bool get isFallback => throw _privateConstructorUsedError;
   bool get hasJsonSerializable => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
+  String get escapedName => throw _privateConstructorUsedError;
   List<String> get withDecorators => throw _privateConstructorUsedError;
   List<String> get implementsDecorators => throw _privateConstructorUsedError;
   List<String> get decorators => throw _privateConstructorUsedError;
@@ -479,6 +482,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
     Object? isFallback = freezed,
     Object? hasJsonSerializable = freezed,
     Object? fullName = freezed,
+    Object? escapedName = freezed,
     Object? withDecorators = freezed,
     Object? implementsDecorators = freezed,
     Object? decorators = freezed,
@@ -526,6 +530,10 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
+      escapedName: escapedName == freezed
+          ? _value.escapedName
+          : escapedName // ignore: cast_nullable_to_non_nullable
+              as String,
       withDecorators: withDecorators == freezed
           ? _value.withDecorators
           : withDecorators // ignore: cast_nullable_to_non_nullable
@@ -564,6 +572,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       required this.isFallback,
       required this.hasJsonSerializable,
       required this.fullName,
+      required this.escapedName,
       required this.withDecorators,
       required this.implementsDecorators,
       required this.decorators,
@@ -591,6 +600,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final bool hasJsonSerializable;
   @override
   final String fullName;
+  @override
+  final String escapedName;
   @override
   final List<String> withDecorators;
   @override
@@ -693,6 +704,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       required bool isFallback,
       required bool hasJsonSerializable,
       required String fullName,
+      required String escapedName,
       required List<String> withDecorators,
       required List<String> implementsDecorators,
       required List<String> decorators,
