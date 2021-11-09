@@ -51,6 +51,7 @@ class ConstructorDetails with _$ConstructorDetails {
     required bool isFallback,
     required bool hasJsonSerializable,
     required String fullName,
+    required String escapedName,
     required List<String> withDecorators,
     required List<String> implementsDecorators,
     required List<String> decorators,
@@ -76,11 +77,12 @@ class Data with _$Data {
     required GenericsParameterTemplate genericsParameterTemplate,
     required bool shouldUseExtends,
     required bool hasCustomToString,
+    required bool hasCustomEquals,
   }) = _Data;
 }
 
 @freezed
-class GlobalData with _$GlobalData {
+abstract class GlobalData with _$GlobalData {
   factory GlobalData({
     required bool hasJson,
     required bool hasDiagnostics,

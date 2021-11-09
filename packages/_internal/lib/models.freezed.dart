@@ -255,6 +255,7 @@ class _$ConstructorDetailsTearOff {
       required bool isFallback,
       required bool hasJsonSerializable,
       required String fullName,
+      required String escapedName,
       required List<String> withDecorators,
       required List<String> implementsDecorators,
       required List<String> decorators,
@@ -271,6 +272,7 @@ class _$ConstructorDetailsTearOff {
       isFallback: isFallback,
       hasJsonSerializable: hasJsonSerializable,
       fullName: fullName,
+      escapedName: escapedName,
       withDecorators: withDecorators,
       implementsDecorators: implementsDecorators,
       decorators: decorators,
@@ -295,6 +297,7 @@ mixin _$ConstructorDetails {
   bool get isFallback => throw _privateConstructorUsedError;
   bool get hasJsonSerializable => throw _privateConstructorUsedError;
   String get fullName => throw _privateConstructorUsedError;
+  String get escapedName => throw _privateConstructorUsedError;
   List<String> get withDecorators => throw _privateConstructorUsedError;
   List<String> get implementsDecorators => throw _privateConstructorUsedError;
   List<String> get decorators => throw _privateConstructorUsedError;
@@ -323,6 +326,7 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       bool isFallback,
       bool hasJsonSerializable,
       String fullName,
+      String escapedName,
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
@@ -351,6 +355,7 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
     Object? isFallback = freezed,
     Object? hasJsonSerializable = freezed,
     Object? fullName = freezed,
+    Object? escapedName = freezed,
     Object? withDecorators = freezed,
     Object? implementsDecorators = freezed,
     Object? decorators = freezed,
@@ -398,6 +403,10 @@ class _$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
+      escapedName: escapedName == freezed
+          ? _value.escapedName
+          : escapedName // ignore: cast_nullable_to_non_nullable
+              as String,
       withDecorators: withDecorators == freezed
           ? _value.withDecorators
           : withDecorators // ignore: cast_nullable_to_non_nullable
@@ -440,6 +449,7 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
       bool isFallback,
       bool hasJsonSerializable,
       String fullName,
+      String escapedName,
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
@@ -470,6 +480,7 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
     Object? isFallback = freezed,
     Object? hasJsonSerializable = freezed,
     Object? fullName = freezed,
+    Object? escapedName = freezed,
     Object? withDecorators = freezed,
     Object? implementsDecorators = freezed,
     Object? decorators = freezed,
@@ -517,6 +528,10 @@ class __$ConstructorDetailsCopyWithImpl<$Res>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
+      escapedName: escapedName == freezed
+          ? _value.escapedName
+          : escapedName // ignore: cast_nullable_to_non_nullable
+              as String,
       withDecorators: withDecorators == freezed
           ? _value.withDecorators
           : withDecorators // ignore: cast_nullable_to_non_nullable
@@ -555,6 +570,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       required this.isFallback,
       required this.hasJsonSerializable,
       required this.fullName,
+      required this.escapedName,
       required this.withDecorators,
       required this.implementsDecorators,
       required this.decorators,
@@ -583,6 +599,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   @override
   final String fullName;
   @override
+  final String escapedName;
+  @override
   final List<String> withDecorators;
   @override
   final List<String> implementsDecorators;
@@ -595,7 +613,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
 
   @override
   String toString() {
-    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, asserts: $asserts)';
+    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, escapedName: $escapedName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, asserts: $asserts)';
   }
 
   @override
@@ -621,6 +639,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
                 other.hasJsonSerializable == hasJsonSerializable) &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
+            (identical(other.escapedName, escapedName) ||
+                other.escapedName == escapedName) &&
             const DeepCollectionEquality()
                 .equals(other.withDecorators, withDecorators) &&
             const DeepCollectionEquality()
@@ -645,6 +665,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       isFallback,
       hasJsonSerializable,
       fullName,
+      escapedName,
       const DeepCollectionEquality().hash(withDecorators),
       const DeepCollectionEquality().hash(implementsDecorators),
       const DeepCollectionEquality().hash(decorators),
@@ -669,6 +690,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       required bool isFallback,
       required bool hasJsonSerializable,
       required String fullName,
+      required String escapedName,
       required List<String> withDecorators,
       required List<String> implementsDecorators,
       required List<String> decorators,
@@ -696,6 +718,8 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   bool get hasJsonSerializable;
   @override
   String get fullName;
+  @override
+  String get escapedName;
   @override
   List<String> get withDecorators;
   @override
@@ -725,7 +749,8 @@ class _$DataTearOff {
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
       required bool shouldUseExtends,
-      required bool hasCustomToString}) {
+      required bool hasCustomToString,
+      required bool hasCustomEquals}) {
     return _Data(
       name: name,
       needsJsonSerializable: needsJsonSerializable,
@@ -736,6 +761,7 @@ class _$DataTearOff {
       genericsParameterTemplate: genericsParameterTemplate,
       shouldUseExtends: shouldUseExtends,
       hasCustomToString: hasCustomToString,
+      hasCustomEquals: hasCustomEquals,
     );
   }
 }
@@ -757,6 +783,7 @@ mixin _$Data {
       throw _privateConstructorUsedError;
   bool get shouldUseExtends => throw _privateConstructorUsedError;
   bool get hasCustomToString => throw _privateConstructorUsedError;
+  bool get hasCustomEquals => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
@@ -775,7 +802,8 @@ abstract class $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool hasCustomToString});
+      bool hasCustomToString,
+      bool hasCustomEquals});
 }
 
 /// @nodoc
@@ -797,6 +825,7 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
     Object? hasCustomToString = freezed,
+    Object? hasCustomEquals = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -835,6 +864,10 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
           ? _value.hasCustomToString
           : hasCustomToString // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasCustomEquals: hasCustomEquals == freezed
+          ? _value.hasCustomEquals
+          : hasCustomEquals // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -853,7 +886,8 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool hasCustomToString});
+      bool hasCustomToString,
+      bool hasCustomEquals});
 }
 
 /// @nodoc
@@ -876,6 +910,7 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
     Object? hasCustomToString = freezed,
+    Object? hasCustomEquals = freezed,
   }) {
     return _then(_Data(
       name: name == freezed
@@ -914,6 +949,10 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
           ? _value.hasCustomToString
           : hasCustomToString // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasCustomEquals: hasCustomEquals == freezed
+          ? _value.hasCustomEquals
+          : hasCustomEquals // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -930,7 +969,8 @@ class _$_Data implements _Data {
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
       required this.shouldUseExtends,
-      required this.hasCustomToString})
+      required this.hasCustomToString,
+      required this.hasCustomEquals})
       : assert(constructors.isNotEmpty);
 
   @override
@@ -951,10 +991,12 @@ class _$_Data implements _Data {
   final bool shouldUseExtends;
   @override
   final bool hasCustomToString;
+  @override
+  final bool hasCustomEquals;
 
   @override
   String toString() {
-    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString)';
+    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString, hasCustomEquals: $hasCustomEquals)';
   }
 
   @override
@@ -981,7 +1023,9 @@ class _$_Data implements _Data {
             (identical(other.shouldUseExtends, shouldUseExtends) ||
                 other.shouldUseExtends == shouldUseExtends) &&
             (identical(other.hasCustomToString, hasCustomToString) ||
-                other.hasCustomToString == hasCustomToString));
+                other.hasCustomToString == hasCustomToString) &&
+            (identical(other.hasCustomEquals, hasCustomEquals) ||
+                other.hasCustomEquals == hasCustomEquals));
   }
 
   @override
@@ -995,7 +1039,8 @@ class _$_Data implements _Data {
       genericsDefinitionTemplate,
       genericsParameterTemplate,
       shouldUseExtends,
-      hasCustomToString);
+      hasCustomToString,
+      hasCustomEquals);
 
   @JsonKey(ignore: true)
   @override
@@ -1013,7 +1058,8 @@ abstract class _Data implements Data {
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
       required bool shouldUseExtends,
-      required bool hasCustomToString}) = _$_Data;
+      required bool hasCustomToString,
+      required bool hasCustomEquals}) = _$_Data;
 
   @override
   String get name;
@@ -1033,6 +1079,8 @@ abstract class _Data implements Data {
   bool get shouldUseExtends;
   @override
   bool get hasCustomToString;
+  @override
+  bool get hasCustomEquals;
   @override
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;

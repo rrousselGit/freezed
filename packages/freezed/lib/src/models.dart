@@ -67,6 +67,7 @@ abstract class Data with _$Data {
     required GenericsParameterTemplate genericsParameterTemplate,
     required bool shouldUseExtends,
     required bool hasCustomToString,
+    required bool hasCustomEquals,
   }) = _Data;
 }
 
