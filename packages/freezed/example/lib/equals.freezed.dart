@@ -107,8 +107,8 @@ class __$EqualsCopyWithImpl<$Res> extends _$EqualsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Equals implements _Equals {
-  _$_Equals({this.name, this.age});
+class _$_Equals extends _Equals {
+  _$_Equals({this.name, this.age}) : super._();
 
   @override
   final String? name;
@@ -126,13 +126,14 @@ class _$_Equals implements _Equals {
       __$EqualsCopyWithImpl<_Equals>(this, _$identity);
 }
 
-abstract class _Equals implements Equals {
+abstract class _Equals extends Equals {
   factory _Equals({String? name, int? age}) = _$_Equals;
+  _Equals._() : super._();
 
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  int? get age => throw _privateConstructorUsedError;
+  int? get age;
   @override
   @JsonKey(ignore: true)
   _$EqualsCopyWith<_Equals> get copyWith => throw _privateConstructorUsedError;

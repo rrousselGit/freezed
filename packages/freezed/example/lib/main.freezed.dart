@@ -426,7 +426,10 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DataToJson(this)..['custom-key'] = 'Default';
+    return {
+      'custom-key': 'Default',
+      ..._$$DataToJson(this),
+    };
   }
 }
 
@@ -560,7 +563,10 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$LoadingToJson(this)..['custom-key'] = 'Loading';
+    return {
+      'custom-key': 'Loading',
+      ..._$$LoadingToJson(this),
+    };
   }
 }
 
@@ -717,7 +723,10 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ErrorDetailsToJson(this)..['custom-key'] = 'Error';
+    return {
+      'custom-key': 'Error',
+      ..._$$ErrorDetailsToJson(this),
+    };
   }
 }
 
@@ -887,7 +896,10 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ComplexToJson(this)..['custom-key'] = 'Complex';
+    return {
+      'custom-key': 'Complex',
+      ..._$$ComplexToJson(this),
+    };
   }
 }
 
