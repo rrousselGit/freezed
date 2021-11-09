@@ -1,3 +1,8 @@
+# [Unreleased]
+
+- Updated dependencies
+- Increased minimum Dart SDK required to 2.14.0
+
 # 0.15.0+1
 
 Fixed the generated `hashCode` not compiling for objects with a large number
