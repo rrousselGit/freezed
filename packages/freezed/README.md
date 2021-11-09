@@ -997,7 +997,7 @@ Freezed will only generate a fromJson if the factory is using `=>`.
 ### fromJSON - classes with multiple constructors
 
 For classes with multiple constructors, [Freezed] will check the JSON response
-for a string element called `type` and choose the constructor to use based
+for a string element called `runtimeType` and choose the constructor to use based
 on its value. For example, given the following constructors:
 
 ```dart
@@ -1011,21 +1011,21 @@ class MyResponse with _$MyResponse {
 }
 ```
 
-Then [Freezed] will use each JSON object's `type` to choose the constructor as follows:
+Then [Freezed] will use each JSON object's `runtimeType` to choose the constructor as follows:
 
 ```json
 [
   {
-    "type": "default",
+    "runtimeType": "default",
     "a": "This JSON object will use constructor MyResponse()"
   },
   {
-    "type": "special",
+    "runtimeType": "special",
     "a": "This JSON object will use constructor MyResponse.special()",
     "b": 42
   },
   {
-    "type": "error",
+    "runtimeType": "error",
     "message": "This JSON object will use constructor MyResponse.error()"
   }
 ]
@@ -1035,7 +1035,7 @@ You can customize key and value with something different
 using `@Freezed` and `@FreezedUnionValue` decorators:
 
 ```dart
-@Freezed(unionKey: 'runtimeType', unionValueCase: FreezedUnionCase.pascal)
+@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
 abstract class MyResponse with _$MyResponse {
   const factory MyResponse(String a) = MyResponseData;
 
@@ -1053,16 +1053,16 @@ which would update the previous json to:
 ```json
 [
   {
-    "runtimeType": "Default",
+    "type": "Default",
     "a": "This JSON object will use constructor MyResponse()"
   },
   {
-    "runtimeType": "SpecialCase",
+    "type": "SpecialCase",
     "a": "This JSON object will use constructor MyResponse.special()",
     "b": 42
   },
   {
-    "runtimeType": "Error",
+    "type": "Error",
     "message": "This JSON object will use constructor MyResponse.error()"
   }
 ]
