@@ -378,7 +378,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
     final rawUnionKey = annotation.getField('unionKey')?.toStringValue() ??
         configs['union_key']?.toString() ??
-        'runtimeType';
+        'type';
 
     final fallbackUnion = annotation.getField('fallbackUnion')?.toStringValue();
 

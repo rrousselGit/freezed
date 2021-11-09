@@ -1,5 +1,6 @@
 # [Unreleased]
 
+- The union key is no longer passed `json_serializable` when deserializing avoid the case of being an `unrecognized_key` in some cases.
 - Updated dependencies
 - Increased minimum Dart SDK required to 2.14.0
 - Fixed an issue where classes with a $ in their name could cause Freezed to fail (Thanks to @comigor #542)

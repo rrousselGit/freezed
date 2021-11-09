@@ -161,7 +161,7 @@ abstract class _MyClass implements MyClass {
 }
 
 Union _$UnionFromJson(Map<String, dynamic> json) {
-  switch (json['custom-key'] as String?) {
+  switch (json['custom-key']) {
     case 'Default':
       return Data.fromJson(json);
     case 'Loading':
@@ -314,12 +314,15 @@ class _$DataCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$Data with DiagnosticableTreeMixin implements Data {
-  const _$Data(this.value);
+  const _$Data(this.value, {String? $type}) : $type = $type ?? 'Default';
 
   factory _$Data.fromJson(Map<String, dynamic> json) => _$$DataFromJson(json);
 
   @override
   final int value;
+
+  @JsonKey(name: 'custom-key')
+  final String $type;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -426,10 +429,7 @@ class _$Data with DiagnosticableTreeMixin implements Data {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'custom-key': 'Default',
-      ..._$$DataToJson(this),
-    };
+    return _$$DataToJson(this);
   }
 }
 
@@ -462,10 +462,13 @@ class _$LoadingCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$Loading with DiagnosticableTreeMixin implements Loading {
-  const _$Loading();
+  const _$Loading({String? $type}) : $type = $type ?? 'Loading';
 
   factory _$Loading.fromJson(Map<String, dynamic> json) =>
       _$$LoadingFromJson(json);
+
+  @JsonKey(name: 'custom-key')
+  final String $type;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -563,10 +566,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'custom-key': 'Loading',
-      ..._$$LoadingToJson(this),
-    };
+    return _$$LoadingToJson(this);
   }
 }
 
@@ -610,13 +610,17 @@ class _$ErrorDetailsCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
-  const _$ErrorDetails([this.message]);
+  const _$ErrorDetails([this.message, String? $type])
+      : $type = $type ?? 'Error';
 
   factory _$ErrorDetails.fromJson(Map<String, dynamic> json) =>
       _$$ErrorDetailsFromJson(json);
 
   @override
   final String? message;
+
+  @JsonKey(name: 'custom-key')
+  final String $type;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -723,10 +727,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'custom-key': 'Error',
-      ..._$$ErrorDetailsToJson(this),
-    };
+    return _$$ErrorDetailsToJson(this);
   }
 }
 
@@ -779,7 +780,7 @@ class _$ComplexCopyWithImpl<$Res> extends _$UnionCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$Complex with DiagnosticableTreeMixin implements Complex {
-  const _$Complex(this.a, this.b);
+  const _$Complex(this.a, this.b, {String? $type}) : $type = $type ?? 'Complex';
 
   factory _$Complex.fromJson(Map<String, dynamic> json) =>
       _$$ComplexFromJson(json);
@@ -788,6 +789,9 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
   final int a;
   @override
   final String b;
+
+  @JsonKey(name: 'custom-key')
+  final String $type;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -896,10 +900,7 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'custom-key': 'Complex',
-      ..._$$ComplexToJson(this),
-    };
+    return _$$ComplexToJson(this);
   }
 }
 

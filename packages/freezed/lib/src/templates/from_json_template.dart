@@ -49,7 +49,7 @@ class FromJson {
       }
 
       content = '''
-        switch (json['$unionKey'] as String?) {
+        switch (json['$unionKey']) {
           $cases
           default:
             $defaultCase
