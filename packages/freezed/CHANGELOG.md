@@ -3,6 +3,8 @@
 - Updated dependencies
 - Increased minimum Dart SDK required to 2.14.0
 - Fixed an issue where classes with a $ in their name could cause Freezed to fail (Thanks to @comigor #542)
+- When using typedefs, the generated code now tries to use the typedef too
+  if possible, instead of the aliased type (Thanks to @Norbert515 #536).
 
 # 0.15.0+1
 
