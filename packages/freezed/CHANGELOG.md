@@ -5,6 +5,7 @@
 - Fixed an issue where classes with a $ in their name could cause Freezed to fail (Thanks to @comigor #542)
 - When using typedefs, the generated code now tries to use the typedef too
   if possible, instead of the aliased type (Thanks to @Norbert515 #536).
+- Added support for custom ==/hashCode implementation (Thanks to @casvanluijtelaa #526)
 
 # 0.15.0+1
 
