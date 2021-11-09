@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:meta/meta.dart';
 
 part 'single_class_constructor.freezed.dart';
 

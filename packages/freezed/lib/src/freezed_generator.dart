@@ -12,7 +12,6 @@ import 'package:freezed/src/templates/tear_off.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:freezed/src/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'models.dart';

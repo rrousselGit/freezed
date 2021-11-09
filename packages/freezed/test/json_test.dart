@@ -2,7 +2,6 @@
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:matcher/matcher.dart';
 import 'package:test/test.dart';
 
 import 'common.dart';
