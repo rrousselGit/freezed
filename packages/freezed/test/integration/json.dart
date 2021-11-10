@@ -3,6 +3,20 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'json.freezed.dart';
 part 'json.g.dart';
 
+abstract class Base {}
+
+@freezed
+class UnionJsonWithExtends extends Base with _$UnionJsonWithExtends {
+  UnionJsonWithExtends._();
+
+  factory UnionJsonWithExtends.first({int? first}) = _UnionJsonFirstWithExtends;
+  factory UnionJsonWithExtends.second({int? second}) =
+      _UnionJsonSecondWithExtends;
+
+  factory UnionJsonWithExtends.fromJson(Map<String, dynamic> json) =>
+      _$UnionJsonWithExtendsFromJson(json);
+}
+
 // regression test for https://github.com/rrousselGit/freezed/issues/409
 @freezed
 class Regression409 with _$Regression409 {
