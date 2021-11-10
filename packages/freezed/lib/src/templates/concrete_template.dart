@@ -102,8 +102,8 @@ ${copyWith.abstractCopyWithGetter}
     final trailingStrings = <String>[
       if (constructor.asserts.isNotEmpty)
         ...constructor.asserts.map((a) => a.toString()),
-      if (superConstructor.isNotEmpty) superConstructor,
       if (_hasTypeProperty) "\$type = \$type ?? '${constructor.unionValue}'",
+      if (superConstructor.isNotEmpty) superConstructor,
     ];
 
     var parameters = constructor.parameters.asThis();
