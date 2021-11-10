@@ -1,3 +1,7 @@
+# 0.15.1+1
+
+- Fixed a bug where the generated code for serializable unions with a base class was invalid
+
 # 0.15.1
 
 - The union key is no longer passed `json_serializable` when deserializing avoid the case of being an `unrecognized_key` in some cases.
