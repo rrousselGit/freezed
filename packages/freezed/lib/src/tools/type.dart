@@ -28,7 +28,7 @@ String resolveFullTypeStringFrom(
 
       return librariesForPrefix.any((l) {
         return l.importedLibrary!.anyTransitiveExport((library) {
-          return library.id == _getElementForType(type).library!.id;
+          return library.id == _getElementForType(type).library?.id;
         });
       });
     },
