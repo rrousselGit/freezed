@@ -2,7 +2,7 @@ name: freezed
 description: >
   Code generation for immutable classes that has a simple syntax/API without
   compromising on the features.
-version: 0.15.1+1
+version: 1.0.0
 homepage: https://github.com/rrousselGit/freezed
 
 environment:
@@ -15,7 +15,7 @@ dependencies:
   collection: ^1.15.0
   meta: ^1.7.0
   source_gen: ^1.1.1
-  freezed_annotation: ^0.15.0
+  freezed_annotation: ^1.0.0
 
 dev_dependencies:
   json_serializable: ^6.0.1

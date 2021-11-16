@@ -1,3 +1,7 @@
+# 1.0.0
+
+freezed_annotation is now stable
+
 # 0.15.0
 
 - **Breaking** Changed the syntax for `@With` and `@Implements` to use a generic annotation.

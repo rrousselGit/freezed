@@ -1,3 +1,14 @@
+# 1.0.0
+
+Freezed is now stable
+
+This release also:
+
+- reverted an involuntary change of how union types were de/serialized, breaking
+  existing code.
+- fixed an issue with generic typedefs (thanks to @SunlightBro #552)
+- fixed a potential null exception
+
 # 0.15.1+1
 
 - Fixed a bug where the generated code for serializable unions with a base class was invalid
