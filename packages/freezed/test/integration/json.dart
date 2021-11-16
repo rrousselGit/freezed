@@ -6,6 +6,15 @@ part 'json.g.dart';
 abstract class Base {}
 
 @freezed
+class DefaultUnionKey with _$DefaultUnionKey {
+  factory DefaultUnionKey.first() = _DefaultUnionKeyFirst;
+  factory DefaultUnionKey.second() = _DefaultUnionKeySecond;
+
+  factory DefaultUnionKey.fromJson(Map<String, dynamic> json) =>
+      _$DefaultUnionKeyFromJson(json);
+}
+
+@freezed
 class UnionJsonWithExtends extends Base with _$UnionJsonWithExtends {
   UnionJsonWithExtends._();
 
