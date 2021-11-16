@@ -50,6 +50,9 @@ String resolveFullTypeStringFrom(
   // Instead of 'SomeTypedef'
   if (type is FunctionType && type.alias?.element != null) {
     displayType = type.alias!.element.name;
+    if (type.alias!.typeArguments.isNotEmpty) {
+      displayType += '<${type.alias!.typeArguments.join(', ')}>';
+    }
     if (type.nullabilitySuffix == NullabilitySuffix.question) {
       displayType += '?';
     }

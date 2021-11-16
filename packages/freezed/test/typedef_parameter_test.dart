@@ -54,5 +54,10 @@ void main() {
     var d = constructor.parameters[3].type;
     expect(d, isA<FunctionType>());
     expect(d.alias!.element.name, equals('ExternalTypedefTwo'));
+
+    var e = constructor.parameters[4].type;
+    expect(e, isA<FunctionType>());
+    expect(e.alias!.element.name, equals('GenericTypedef'));
+    expect(e.alias!.typeArguments.toString(), equals('[int, bool]'));
   });
 }
