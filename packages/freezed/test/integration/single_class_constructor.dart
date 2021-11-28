@@ -4,6 +4,29 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+mixin Some<T> {
+  T get value => throw UnimplementedError();
+}
+mixin Complex<T> {
+  T get value => throw UnimplementedError();
+}
+
+const withAlias = With<Some<Complex<Type>>>();
+
+@freezed
+class WithAlias with _$WithAlias {
+  @withAlias
+  factory WithAlias.first() = WithAliasFirst;
+}
+
+const implementsAlias = Implements<Some<Complex<Type>>>();
+
+@freezed
+class ImplementsAlias with _$ImplementsAlias {
+  @implementsAlias
+  factory ImplementsAlias.first() = ImplementsAliasFirst;
+}
+
 abstract class DataEvent {}
 
 @freezed
