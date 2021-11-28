@@ -38,6 +38,16 @@ Future<void> main() async {
     );
   }
 
+  test('WithAlias', () {
+    // ignore: unused_local_variable
+    Some<Complex<Type>> value = WithAliasFirst();
+  });
+
+  test('ImplementsAlias', () {
+    // ignore: unused_local_variable
+    Some<Complex<Type>> value = ImplementsAliasFirst();
+  });
+
   test('Alias', () {
     expect(Alias(), Alias());
   });
