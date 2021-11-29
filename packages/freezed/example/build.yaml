@@ -5,3 +5,4 @@ targets:
         options:
           union_key: custom-key
           union_value_case: pascal
+          should_generate_maybe_map: false

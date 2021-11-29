@@ -413,21 +413,6 @@ class _$Data with DiagnosticableTreeMixin implements Data {
   }
 
   @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(Data value)? $default, {
-    TResult Function(Loading value)? loading,
-    TResult Function(ErrorDetails value)? error,
-    TResult Function(Complex value)? complex,
-    required TResult orElse(),
-  }) {
-    if ($default != null) {
-      return $default(this);
-    }
-    return orElse();
-  }
-
-  @override
   Map<String, dynamic> toJson() {
     return _$$DataToJson(this);
   }
@@ -547,21 +532,6 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     TResult Function(Complex value)? complex,
   }) {
     return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(Data value)? $default, {
-    TResult Function(Loading value)? loading,
-    TResult Function(ErrorDetails value)? error,
-    TResult Function(Complex value)? complex,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
   }
 
   @override
@@ -708,21 +678,6 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     TResult Function(Complex value)? complex,
   }) {
     return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(Data value)? $default, {
-    TResult Function(Loading value)? loading,
-    TResult Function(ErrorDetails value)? error,
-    TResult Function(Complex value)? complex,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
   }
 
   @override
@@ -881,21 +836,6 @@ class _$Complex with DiagnosticableTreeMixin implements Complex {
     TResult Function(Complex value)? complex,
   }) {
     return complex?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(Data value)? $default, {
-    TResult Function(Loading value)? loading,
-    TResult Function(ErrorDetails value)? error,
-    TResult Function(Complex value)? complex,
-    required TResult orElse(),
-  }) {
-    if (complex != null) {
-      return complex(this);
-    }
-    return orElse();
   }
 
   @override
@@ -1145,19 +1085,6 @@ class _$SharedProperty0
   }) {
     return person?.call(this);
   }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SharedProperty0 value)? person,
-    TResult Function(SharedProperty1 value)? city,
-    required TResult orElse(),
-  }) {
-    if (person != null) {
-      return person(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class SharedProperty0 implements SharedProperty {
@@ -1302,19 +1229,6 @@ class _$SharedProperty1
     TResult Function(SharedProperty1 value)? city,
   }) {
     return city?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SharedProperty0 value)? person,
-    TResult Function(SharedProperty1 value)? city,
-    required TResult orElse(),
-  }) {
-    if (city != null) {
-      return city(this);
-    }
-    return orElse();
   }
 }
 

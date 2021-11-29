@@ -215,19 +215,6 @@ class _$_Example<T> extends _Example<T> with DiagnosticableTreeMixin {
   }) {
     return $default?.call(this);
   }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_Example<T> value)? $default, {
-    TResult Function(_Example2<T> value)? named,
-    required TResult orElse(),
-  }) {
-    if ($default != null) {
-      return $default(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class _Example<T> extends Example<T> {
@@ -357,19 +344,6 @@ class _$_Example2<T> extends _Example2<T> with DiagnosticableTreeMixin {
     TResult Function(_Example2<T> value)? named,
   }) {
     return named?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_Example<T> value)? $default, {
-    TResult Function(_Example2<T> value)? named,
-    required TResult orElse(),
-  }) {
-    if (named != null) {
-      return named(this);
-    }
-    return orElse();
   }
 }
 

@@ -206,19 +206,6 @@ class _$_Example<T> implements _Example<T> {
   }) {
     return $default?.call(this);
   }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_Example<T> value)? $default, {
-    TResult Function(_Example2<T> value)? named,
-    required TResult orElse(),
-  }) {
-    if ($default != null) {
-      return $default(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class _Example<T> implements Example<T> {
@@ -339,19 +326,6 @@ class _$_Example2<T> implements _Example2<T> {
     TResult Function(_Example2<T> value)? named,
   }) {
     return named?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_Example<T> value)? $default, {
-    TResult Function(_Example2<T> value)? named,
-    required TResult orElse(),
-  }) {
-    if (named != null) {
-      return named(this);
-    }
-    return orElse();
   }
 }
 
@@ -618,21 +592,6 @@ class _$SimplePerson implements SimplePerson {
   }) {
     return person?.call(this);
   }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SimplePerson value)? person,
-    TResult Function(SimpleStreet value)? street,
-    TResult Function(SimpleCity value)? city,
-    TResult Function(SimpleCountry value)? country,
-    required TResult orElse(),
-  }) {
-    if (person != null) {
-      return person(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class SimplePerson implements SimpleImplements {
@@ -768,21 +727,6 @@ class _$SimpleStreet with AdministrativeArea<House> implements SimpleStreet {
     TResult Function(SimpleCountry value)? country,
   }) {
     return street?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SimplePerson value)? person,
-    TResult Function(SimpleStreet value)? street,
-    TResult Function(SimpleCity value)? city,
-    TResult Function(SimpleCountry value)? country,
-    required TResult orElse(),
-  }) {
-    if (street != null) {
-      return street(this);
-    }
-    return orElse();
   }
 }
 
@@ -927,21 +871,6 @@ class _$SimpleCity with House implements SimpleCity {
     TResult Function(SimpleCountry value)? country,
   }) {
     return city?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SimplePerson value)? person,
-    TResult Function(SimpleStreet value)? street,
-    TResult Function(SimpleCity value)? city,
-    TResult Function(SimpleCountry value)? country,
-    required TResult orElse(),
-  }) {
-    if (city != null) {
-      return city(this);
-    }
-    return orElse();
   }
 }
 
@@ -1088,21 +1017,6 @@ class _$SimpleCountry with House implements SimpleCountry {
     TResult Function(SimpleCountry value)? country,
   }) {
     return country?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SimplePerson value)? person,
-    TResult Function(SimpleStreet value)? street,
-    TResult Function(SimpleCity value)? city,
-    TResult Function(SimpleCountry value)? country,
-    required TResult orElse(),
-  }) {
-    if (country != null) {
-      return country(this);
-    }
-    return orElse();
   }
 }
 
@@ -1372,21 +1286,6 @@ class _$PersonCustomMethod extends PersonCustomMethod {
   }) {
     return person?.call(this);
   }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(PersonCustomMethod value)? person,
-    TResult Function(StreetCustomMethod value)? street,
-    TResult Function(CityCustomMethod value)? city,
-    TResult Function(DuplexCustomMethod value)? duplex,
-    required TResult orElse(),
-  }) {
-    if (person != null) {
-      return person(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class PersonCustomMethod extends CustomMethodImplements {
@@ -1525,21 +1424,6 @@ class _$StreetCustomMethod extends StreetCustomMethod
     TResult Function(DuplexCustomMethod value)? duplex,
   }) {
     return street?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(PersonCustomMethod value)? person,
-    TResult Function(StreetCustomMethod value)? street,
-    TResult Function(CityCustomMethod value)? city,
-    TResult Function(DuplexCustomMethod value)? duplex,
-    required TResult orElse(),
-  }) {
-    if (street != null) {
-      return street(this);
-    }
-    return orElse();
   }
 }
 
@@ -1688,21 +1572,6 @@ class _$CityCustomMethod extends CityCustomMethod with House {
   }) {
     return city?.call(this);
   }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(PersonCustomMethod value)? person,
-    TResult Function(StreetCustomMethod value)? street,
-    TResult Function(CityCustomMethod value)? city,
-    TResult Function(DuplexCustomMethod value)? duplex,
-    required TResult orElse(),
-  }) {
-    if (city != null) {
-      return city(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class CityCustomMethod extends CustomMethodImplements
@@ -1842,21 +1711,6 @@ class _$DuplexCustomMethod extends DuplexCustomMethod {
     TResult Function(DuplexCustomMethod value)? duplex,
   }) {
     return duplex?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(PersonCustomMethod value)? person,
-    TResult Function(StreetCustomMethod value)? street,
-    TResult Function(CityCustomMethod value)? city,
-    TResult Function(DuplexCustomMethod value)? duplex,
-    required TResult orElse(),
-  }) {
-    if (duplex != null) {
-      return duplex(this);
-    }
-    return orElse();
   }
 }
 
@@ -2092,19 +1946,6 @@ class _$GenericPerson<T> implements GenericPerson<T> {
   }) {
     return person?.call(this);
   }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericCity<T> value)? city,
-    required TResult orElse(),
-  }) {
-    if (person != null) {
-      return person(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class GenericPerson<T> implements GenericImplements<T> {
@@ -2240,19 +2081,6 @@ class _$GenericCity<T> with House implements GenericCity<T> {
     TResult Function(GenericCity<T> value)? city,
   }) {
     return city?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GenericPerson<T> value)? person,
-    TResult Function(GenericCity<T> value)? city,
-    required TResult orElse(),
-  }) {
-    if (city != null) {
-      return city(this);
-    }
-    return orElse();
   }
 }
 

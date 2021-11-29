@@ -259,6 +259,8 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   }
 
   String get _maybeMap {
+    print("coucou ${freezed.shouldGenerateMaybeMap}");
+    if (!freezed.shouldGenerateMaybeMap) return '';
     if (!allConstructors.shouldGenerateUnions) return '';
 
     return '''

@@ -408,10 +408,14 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         throw FallThroughError();
     }
 
+    final shouldGenerateMaybeMap =
+        (configs['should_generate_maybe_map'] as bool?) ?? false;
+
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
       fallbackUnion: fallbackUnion,
       unionValueCase: unionValueCase,
+      shouldGenerateMaybeMap: shouldGenerateMaybeMap,
     );
   }
 
