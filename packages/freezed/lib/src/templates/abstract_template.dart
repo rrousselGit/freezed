@@ -14,6 +14,7 @@ class Abstract {
     required this.shouldGenerateJson,
     required this.allConstructors,
     required this.copyWith,
+    required this.shouldGenerateMaybeMap,
   });
 
   final String name;
@@ -23,6 +24,7 @@ class Abstract {
   final List<ConstructorDetails> allConstructors;
   final bool shouldGenerateJson;
   final CopyWith copyWith;
+  final bool shouldGenerateMaybeMap;
 
   @override
   String toString() {
@@ -80,6 +82,7 @@ ${copyWith.commonContreteImpl(abstractProperties)}
 
   String get _maybeMap {
     if (!allConstructors.shouldGenerateUnions) return '';
+    if (!shouldGenerateMaybeMap) return '';
     return '${maybeMapPrototype(allConstructors, genericsParameter)} => throw $privConstUsedErrorVarName;';
   }
 }

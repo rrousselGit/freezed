@@ -480,6 +480,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       abstractProperties: commonProperties.asGetters(),
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
+      shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
     );
 
     for (final constructor in data.constructors) {
