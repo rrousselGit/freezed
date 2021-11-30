@@ -11,7 +11,7 @@ class Freezed {
     this.unionKey,
     this.unionValueCase = FreezedUnionCase.none,
     this.fallbackUnion,
-    this.shouldGenerateMaybeMap = false,
+    this.shouldGenerateMaybeMap = true,
   });
 
   /// Determines what key should be used to de/serialize union types.

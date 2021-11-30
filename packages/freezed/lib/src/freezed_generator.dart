@@ -71,6 +71,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
+      shouldGenerateMaybeMap: configs.shouldGenerateMaybeMap,
       concretePropertiesName: [
         for (final p in element.fields)
           if (!p.isStatic) p.name,
@@ -409,7 +410,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     }
 
     final shouldGenerateMaybeMap =
-        (configs['should_generate_maybe_map'] as bool?) ?? false;
+        configs['should_generate_maybe_map'] as bool? ?? false;
 
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
@@ -490,6 +491,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         shouldUseExtends: data.shouldUseExtends,
         hasDiagnosticable: globalData.hasDiagnostics,
         shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
+        shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
         constructor: constructor,
         allConstructors: data.constructors,
         commonProperties: commonProperties,

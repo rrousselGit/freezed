@@ -78,6 +78,7 @@ class Data with _$Data {
     required bool shouldUseExtends,
     required bool hasCustomToString,
     required bool hasCustomEquals,
+    required bool shouldGenerateMaybeMap,
   }) = _Data;
 }
 
