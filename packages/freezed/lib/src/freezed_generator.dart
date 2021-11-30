@@ -411,9 +411,13 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     }
 
     final shouldGenerateMaybeMap =
-        configs['should_generate_maybe_map'] as bool? ?? false;
+        annotation.getField('shouldGenerateMaybeMap')?.toBoolValue() ??
+            configs['should_generate_maybe_map'] as bool? ??
+            true;
     final shouldGenerateMaybeWhen =
-        configs['should_generate_maybe_when'] as bool? ?? false;
+        annotation.getField('shouldGenerateMaybeWhen')?.toBoolValue() ??
+            configs['should_generate_maybe_when'] as bool? ??
+            true;
 
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
