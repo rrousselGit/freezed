@@ -12,6 +12,7 @@ class Freezed {
     this.unionValueCase = FreezedUnionCase.none,
     this.fallbackUnion,
     this.shouldGenerateMaybeMap = true,
+    this.shouldGenerateMaybeWhen = true,
   });
 
   /// Determines what key should be used to de/serialize union types.
@@ -132,6 +133,8 @@ class Freezed {
   final String? fallbackUnion;
 
   final bool shouldGenerateMaybeMap;
+
+  final bool shouldGenerateMaybeWhen;
 }
 
 /// An annotation for the `freezed` package.

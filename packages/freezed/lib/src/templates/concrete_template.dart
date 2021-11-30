@@ -25,6 +25,7 @@ class Concrete {
     required this.copyWith,
     required this.shouldUseExtends,
     required this.shouldGenerateMaybeMap,
+    required this.shouldGenerateMaybeWhen,
   });
 
   final ConstructorDetails constructor;
@@ -41,6 +42,7 @@ class Concrete {
   final CopyWith copyWith;
   final bool shouldUseExtends;
   final bool shouldGenerateMaybeMap;
+  final bool shouldGenerateMaybeWhen;
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
@@ -295,6 +297,7 @@ ${mapOrNullPrototype(allConstructors, genericsParameter)} {
   }
 
   String get _maybeWhen {
+    if (!shouldGenerateMaybeWhen) return '';
     if (!allConstructors.shouldGenerateUnions) return '';
 
     var callbackParameters = constructor.impliedProperties.map((e) {

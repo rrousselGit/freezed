@@ -751,7 +751,8 @@ class _$DataTearOff {
       required bool shouldUseExtends,
       required bool hasCustomToString,
       required bool hasCustomEquals,
-      required bool shouldGenerateMaybeMap}) {
+      required bool shouldGenerateMaybeMap,
+      required bool shouldGenerateMaybeWhen}) {
     return _Data(
       name: name,
       needsJsonSerializable: needsJsonSerializable,
@@ -764,6 +765,7 @@ class _$DataTearOff {
       hasCustomToString: hasCustomToString,
       hasCustomEquals: hasCustomEquals,
       shouldGenerateMaybeMap: shouldGenerateMaybeMap,
+      shouldGenerateMaybeWhen: shouldGenerateMaybeWhen,
     );
   }
 }
@@ -787,6 +789,7 @@ mixin _$Data {
   bool get hasCustomToString => throw _privateConstructorUsedError;
   bool get hasCustomEquals => throw _privateConstructorUsedError;
   bool get shouldGenerateMaybeMap => throw _privateConstructorUsedError;
+  bool get shouldGenerateMaybeWhen => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
@@ -807,7 +810,8 @@ abstract class $DataCopyWith<$Res> {
       bool shouldUseExtends,
       bool hasCustomToString,
       bool hasCustomEquals,
-      bool shouldGenerateMaybeMap});
+      bool shouldGenerateMaybeMap,
+      bool shouldGenerateMaybeWhen});
 }
 
 /// @nodoc
@@ -831,6 +835,7 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
     Object? hasCustomToString = freezed,
     Object? hasCustomEquals = freezed,
     Object? shouldGenerateMaybeMap = freezed,
+    Object? shouldGenerateMaybeWhen = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -877,6 +882,10 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
           ? _value.shouldGenerateMaybeMap
           : shouldGenerateMaybeMap // ignore: cast_nullable_to_non_nullable
               as bool,
+      shouldGenerateMaybeWhen: shouldGenerateMaybeWhen == freezed
+          ? _value.shouldGenerateMaybeWhen
+          : shouldGenerateMaybeWhen // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -897,7 +906,8 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       bool shouldUseExtends,
       bool hasCustomToString,
       bool hasCustomEquals,
-      bool shouldGenerateMaybeMap});
+      bool shouldGenerateMaybeMap,
+      bool shouldGenerateMaybeWhen});
 }
 
 /// @nodoc
@@ -922,6 +932,7 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
     Object? hasCustomToString = freezed,
     Object? hasCustomEquals = freezed,
     Object? shouldGenerateMaybeMap = freezed,
+    Object? shouldGenerateMaybeWhen = freezed,
   }) {
     return _then(_Data(
       name: name == freezed
@@ -968,6 +979,10 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
           ? _value.shouldGenerateMaybeMap
           : shouldGenerateMaybeMap // ignore: cast_nullable_to_non_nullable
               as bool,
+      shouldGenerateMaybeWhen: shouldGenerateMaybeWhen == freezed
+          ? _value.shouldGenerateMaybeWhen
+          : shouldGenerateMaybeWhen // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -986,7 +1001,8 @@ class _$_Data implements _Data {
       required this.shouldUseExtends,
       required this.hasCustomToString,
       required this.hasCustomEquals,
-      required this.shouldGenerateMaybeMap})
+      required this.shouldGenerateMaybeMap,
+      required this.shouldGenerateMaybeWhen})
       : assert(constructors.isNotEmpty);
 
   @override
@@ -1011,10 +1027,12 @@ class _$_Data implements _Data {
   final bool hasCustomEquals;
   @override
   final bool shouldGenerateMaybeMap;
+  @override
+  final bool shouldGenerateMaybeWhen;
 
   @override
   String toString() {
-    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString, hasCustomEquals: $hasCustomEquals, shouldGenerateMaybeMap: $shouldGenerateMaybeMap)';
+    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString, hasCustomEquals: $hasCustomEquals, shouldGenerateMaybeMap: $shouldGenerateMaybeMap, shouldGenerateMaybeWhen: $shouldGenerateMaybeWhen)';
   }
 
   @override
@@ -1045,7 +1063,10 @@ class _$_Data implements _Data {
             (identical(other.hasCustomEquals, hasCustomEquals) ||
                 other.hasCustomEquals == hasCustomEquals) &&
             (identical(other.shouldGenerateMaybeMap, shouldGenerateMaybeMap) ||
-                other.shouldGenerateMaybeMap == shouldGenerateMaybeMap));
+                other.shouldGenerateMaybeMap == shouldGenerateMaybeMap) &&
+            (identical(
+                    other.shouldGenerateMaybeWhen, shouldGenerateMaybeWhen) ||
+                other.shouldGenerateMaybeWhen == shouldGenerateMaybeWhen));
   }
 
   @override
@@ -1061,7 +1082,8 @@ class _$_Data implements _Data {
       shouldUseExtends,
       hasCustomToString,
       hasCustomEquals,
-      shouldGenerateMaybeMap);
+      shouldGenerateMaybeMap,
+      shouldGenerateMaybeWhen);
 
   @JsonKey(ignore: true)
   @override
@@ -1081,7 +1103,8 @@ abstract class _Data implements Data {
       required bool shouldUseExtends,
       required bool hasCustomToString,
       required bool hasCustomEquals,
-      required bool shouldGenerateMaybeMap}) = _$_Data;
+      required bool shouldGenerateMaybeMap,
+      required bool shouldGenerateMaybeWhen}) = _$_Data;
 
   @override
   String get name;
@@ -1105,6 +1128,8 @@ abstract class _Data implements Data {
   bool get hasCustomEquals;
   @override
   bool get shouldGenerateMaybeMap;
+  @override
+  bool get shouldGenerateMaybeWhen;
   @override
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;

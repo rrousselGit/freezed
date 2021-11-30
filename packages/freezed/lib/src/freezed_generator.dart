@@ -72,6 +72,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
       shouldGenerateMaybeMap: configs.shouldGenerateMaybeMap,
+      shouldGenerateMaybeWhen: configs.shouldGenerateMaybeWhen,
       concretePropertiesName: [
         for (final p in element.fields)
           if (!p.isStatic) p.name,
@@ -411,12 +412,15 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
     final shouldGenerateMaybeMap =
         configs['should_generate_maybe_map'] as bool? ?? false;
+    final shouldGenerateMaybeWhen =
+        configs['should_generate_maybe_when'] as bool? ?? false;
 
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
       fallbackUnion: fallbackUnion,
       unionValueCase: unionValueCase,
       shouldGenerateMaybeMap: shouldGenerateMaybeMap,
+      shouldGenerateMaybeWhen: shouldGenerateMaybeWhen,
     );
   }
 
@@ -481,6 +485,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
       shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
+      shouldGenerateMaybeWhen: data.shouldGenerateMaybeWhen,
     );
 
     for (final constructor in data.constructors) {
@@ -493,6 +498,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         hasDiagnosticable: globalData.hasDiagnostics,
         shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
         shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
+        shouldGenerateMaybeWhen: data.shouldGenerateMaybeWhen,
         constructor: constructor,
         allConstructors: data.constructors,
         commonProperties: commonProperties,

@@ -19,7 +19,7 @@ class Union with _$Union {
   factory Union.fromJson(Map<String, Object?> json) => _$UnionFromJson(json);
 }
 
-@Freezed(shouldGenerateMaybeMap: false)
+@freezed
 class SharedProperty with _$SharedProperty {
   factory SharedProperty.person({
     String? name,
