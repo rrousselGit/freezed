@@ -132,8 +132,38 @@ class Freezed {
   /// ```
   final String? fallbackUnion;
 
+  /// Allow to deactive the maybeMap generation.
+  /// ```dart
+  /// @Freezed(shouldGenerateMaybeMap: false)
+  /// abstract class Union with _$Union {
+  ///   // ...
+  /// }
+  /// ```
+  ///
+  /// The generated code will not have the following method:
+  ///
+  /// ```dart
+  /// void main() {
+  ///   print(Union.first().maybeMap(orElse: () => null)); // Error
+  /// }
+  /// ```
   final bool shouldGenerateMaybeMap;
 
+  /// Allow to deactive the maybeWhen generation.
+  /// ```dart
+  /// @Freezed(shouldGenerateMaybeWhen: false)
+  /// abstract class Union with _$Union {
+  ///   // ...
+  /// }
+  /// ```
+  ///
+  /// The generated code will not have the following method:
+  ///
+  /// ```dart
+  /// void main() {
+  ///   print(Union.first().maybeWhen(orElse: () => null)); // Error
+  /// }
+  /// ```
   final bool shouldGenerateMaybeWhen;
 }
 
