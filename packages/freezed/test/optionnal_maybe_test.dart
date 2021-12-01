@@ -23,7 +23,7 @@ void main() {
 
   test('does not generates maybeMap', () async {
     await expectLater(compile(r'''
-      import 'multiple_constructors.dart';
+      import 'optionnal_maybe.dart';
 
       void main() {
         final value = OptionnalMaybeMap.first();
@@ -35,12 +35,12 @@ void main() {
 
   test('does not generates maybeWhen', () async {
     await expectLater(compile(r'''
-      import 'multiple_constructors.dart';
+      import 'optionnal_maybe.dart';
 
       void main() {
         final value = OptionnalMaybeWhen.first();
 
-        value.maybeMap(orElse: () => null);
+        value.maybeWhen(orElse: () => null);
       }
       '''), throwsCompileError);
   });
