@@ -14,7 +14,7 @@ dependencies:
   build_config: ^1.0.0
   collection: ^1.15.0
   meta: ^1.7.0
-  source_gen: ^1.1.1
+  source_gen: ^1.2.0
   freezed_annotation: ^1.0.0
 
 dev_dependencies:
