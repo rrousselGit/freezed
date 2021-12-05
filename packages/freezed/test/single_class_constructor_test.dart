@@ -38,6 +38,17 @@ Future<void> main() async {
     );
   }
 
+  test('CustomListEqual', () {
+    expect(
+      CustomListEqual(CustomList([42])),
+      CustomListEqual(CustomList([42])),
+    );
+    expect(
+      CustomListEqual(CustomList([42])).hashCode,
+      CustomListEqual(CustomList([42])).hashCode,
+    );
+  });
+
   test('WithAlias', () {
     // ignore: unused_local_variable
     Some<Complex<Type>> value = WithAliasFirst();

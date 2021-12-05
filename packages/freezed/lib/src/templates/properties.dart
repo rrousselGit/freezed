@@ -111,12 +111,24 @@ extension IsDartCollection on DartType {
   ///
   /// This includes types such as [dynamic], [Object] and generics
   bool get isPossiblyDartCollection {
+    final interface = safeCast<InterfaceType>();
+
     return isDartCoreMap ||
         isDartCoreIterable ||
         isDartCoreSet ||
         isDartCoreList ||
         isDynamic ||
         isDartCoreObject ||
-        this is TypeParameterType;
+        this is TypeParameterType ||
+        (interface != null &&
+            interface.allSupertypes.any((e) => e.isPossiblyDartCollection));
+  }
+}
+
+extension on Object? {
+  T? safeCast<T>() {
+    final that = this;
+    if (that is T) return that;
+    return null;
   }
 }

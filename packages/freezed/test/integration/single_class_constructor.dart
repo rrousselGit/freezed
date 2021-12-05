@@ -1,8 +1,18 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
+
+class CustomList<T> extends UnmodifiableListView<T> {
+  CustomList(Iterable<T> source) : super(source);
+}
+
+@freezed
+class CustomListEqual with _$CustomListEqual {
+  factory CustomListEqual(CustomList<int> list) = CustomListEqualFirst;
+}
 
 mixin Some<T> {
   T? get value => throw UnimplementedError();
