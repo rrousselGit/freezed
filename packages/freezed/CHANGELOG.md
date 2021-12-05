@@ -1,3 +1,8 @@
+# 1.0.1
+
+Fixed an issue where some `build.yaml` options were not properly considered.
+This includes changing where the generated files should be placed. (Thanks to @sperochon)
+
 # 1.0.0
 
 Freezed is now stable
