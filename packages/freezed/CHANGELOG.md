@@ -1,3 +1,8 @@
+# 1.0.2
+
+Fixed a regression with the ==/hashCode implementation generated for
+classes with custom implementations of `List`/`Map`/... (see https://github.com/rrousselGit/freezed/issues/561)
+
 # 1.0.1
 
 Fixed an issue where some `build.yaml` options were not properly considered.
