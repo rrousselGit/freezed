@@ -71,8 +71,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
-      shouldGenerateMaybeMap: configs.shouldGenerateMaybeMap,
-      shouldGenerateMaybeWhen: configs.shouldGenerateMaybeWhen,
+      shouldGenerateMaybeMap: configs.maybeMap,
+      shouldGenerateMaybeWhen: configs.maybeWhen,
       concretePropertiesName: [
         for (final p in element.fields)
           if (!p.isStatic) p.name,
@@ -410,21 +410,19 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         throw FallThroughError();
     }
 
-    final shouldGenerateMaybeMap =
-        annotation.getField('shouldGenerateMaybeMap')?.toBoolValue() ??
-            configs['should_generate_maybe_map'] as bool? ??
-            true;
-    final shouldGenerateMaybeWhen =
-        annotation.getField('shouldGenerateMaybeWhen')?.toBoolValue() ??
-            configs['should_generate_maybe_when'] as bool? ??
-            true;
+    final maybeMap = annotation.getField('maybeMap')?.toBoolValue() ??
+        configs['maybe_map'] as bool? ??
+        true;
+    final maybeWhen = annotation.getField('maybeWhen')?.toBoolValue() ??
+        configs['maybe_when'] as bool? ??
+        true;
 
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
       fallbackUnion: fallbackUnion,
       unionValueCase: unionValueCase,
-      shouldGenerateMaybeMap: shouldGenerateMaybeMap,
-      shouldGenerateMaybeWhen: shouldGenerateMaybeWhen,
+      maybeMap: maybeMap,
+      maybeWhen: maybeWhen,
     );
   }
 

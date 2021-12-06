@@ -885,10 +885,10 @@ if (union is Loading) {
 
 But it is safer as you are forced to handle the fallback case, and it is easier to write.
 
-You can also prevent the generation of the [maybeWhen] method locally by using the `shouldGenerateMaybeWhen` constructor.
+You can also prevent the generation of the [maybeWhen] method locally by using the `maybeWhen` constructor.
 
 ```dart
-@Freezed(shouldGenerateMaybeWhen: false)
+@Freezed(maybeWhen: false)
 class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
@@ -896,7 +896,7 @@ class Union with _$Union {
 }
 ```
 
-If you want to deactivate [maybeWhen] globally, you can set the `should_generate_maybe_when` flag to false in `build.yaml`.
+If you want to deactivate [maybeWhen] globally, you can set the `maybe_when` flag to false in `build.yaml`.
 
 ```yaml
 targets:
@@ -904,7 +904,7 @@ targets:
     builders:
       freezed:
         options:
-          should_generate_maybe_when: false
+          maybe_when: false
 ```
 
 ### Map/MaybeMap
@@ -959,10 +959,10 @@ print(
 ); // Model.second(b: 42, c: true)
 ```
 
-As for [maybeWhen], you can prevent the generation of [maybeMap] method locally by using the `shouldGenerateMaybeMap` constructor.
+As for [maybeWhen], you can prevent the generation of [maybeMap] method locally by using the `maybeMap` constructor.
 
 ```dart
-@Freezed(shouldGenerateMaybeMap: false)
+@Freezed(maybeMap: false)
 class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
@@ -970,7 +970,7 @@ class Union with _$Union {
 }
 ```
 
-If you want to deactivate [maybeMap] globally, you can set the `should_generate_maybe_map` flag to false in `build.yaml`.
+If you want to deactivate [maybeMap] globally, you can set the `maybe_map` flag to false in `build.yaml`.
 
 ```yaml
 targets:
@@ -978,7 +978,7 @@ targets:
     builders:
       freezed:
         options:
-          should_generate_maybe_map: false
+          maybe_map: false
 ```
 
 ## FromJson/ToJson

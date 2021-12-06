@@ -5,5 +5,5 @@ targets:
         options:
           union_key: custom-key
           union_value_case: pascal
-          should_generate_maybe_map: true
-          should_generate_maybe_when: true
+          maybe_map: true
+          maybe_when: true
