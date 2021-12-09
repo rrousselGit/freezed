@@ -1,3 +1,7 @@
+# 1.0.2+1
+
+Updated the README
+
 # 1.0.2
 
 Fixed a regression with the ==/hashCode implementation generated for
