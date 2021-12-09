@@ -10,7 +10,7 @@ Welcome to [Freezed], yet another code generator for unions/pattern-matching/cop
 
 **Important note**:
 
-From 0.14.0 and onwards, Freezed does not support non-null-safe code.
+From 0.14.0 and onwards, Freezed does only support null-safe code.
 
 If you want to keep using Freezed but cannot migrate to null-safety yet, use the version 0.12.7 instead.  
 Note that this version is no-longer maintained (so bugs found there won't be fixed).
