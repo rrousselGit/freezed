@@ -25,7 +25,3 @@ dev_dependencies:
   test: ^1.19.3
   matcher: ^0.12.11
   source_gen_test: ^1.0.1
-
-dependency_overrides:
-  freezed_annotation:
-    path: ../freezed_annotation
