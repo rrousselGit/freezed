@@ -198,7 +198,7 @@ ${copyWith.abstractCopyWithGetter}
     final classProperties = constructor.impliedProperties.map((p) {
       var res = '@override $p';
       if (p.defaultValueSource != null && !p.hasJsonKey) {
-        res = '@JsonKey(defaultValue: ${p.defaultValueSource}) $res';
+        res = '@JsonKey() $res';
       }
       return res;
     });
