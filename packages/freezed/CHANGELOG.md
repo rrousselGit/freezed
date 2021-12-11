@@ -1,3 +1,7 @@
+# 1.1.0
+
+Added support for disabling the generation of `maybeMap`/`maybeWhen` (thanks to @Lyokone)
+
 # 1.0.2+1
 
 Updated the README
