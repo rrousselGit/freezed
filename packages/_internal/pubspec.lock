@@ -158,17 +158,17 @@ packages:
   freezed:
     dependency: "direct dev"
     description:
-      name: freezed
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.15.0+1"
+      path: "../freezed"
+      relative: true
+    source: path
+    version: "1.0.2+1"
   freezed_annotation:
     dependency: "direct main"
     description:
-      name: freezed_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.15.0"
+      path: "../freezed_annotation"
+      relative: true
+    source: path
+    version: "1.0.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -308,7 +308,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   source_span:
     dependency: transitive
     description:
