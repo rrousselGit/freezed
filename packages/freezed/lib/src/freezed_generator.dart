@@ -71,8 +71,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
-      shouldGenerateMaybeMap: configs.maybeMap,
-      shouldGenerateMaybeWhen: configs.maybeWhen,
+      shouldGenerateMaybeMap: configs.maybeMap!,
+      shouldGenerateMaybeWhen: configs.maybeWhen!,
       concretePropertiesName: [
         for (final p in element.fields)
           if (!p.isStatic) p.name,
