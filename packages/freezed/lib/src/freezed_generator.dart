@@ -71,6 +71,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
+      shouldGenerateMaybeMap: configs.maybeMap,
+      shouldGenerateMaybeWhen: configs.maybeWhen,
       concretePropertiesName: [
         for (final p in element.fields)
           if (!p.isStatic) p.name,
@@ -408,10 +410,19 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         throw FallThroughError();
     }
 
+    final maybeMap = annotation.getField('maybeMap')?.toBoolValue() ??
+        configs['maybe_map'] as bool? ??
+        true;
+    final maybeWhen = annotation.getField('maybeWhen')?.toBoolValue() ??
+        configs['maybe_when'] as bool? ??
+        true;
+
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
       fallbackUnion: fallbackUnion,
       unionValueCase: unionValueCase,
+      maybeMap: maybeMap,
+      maybeWhen: maybeWhen,
     );
   }
 
@@ -475,6 +486,8 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       abstractProperties: commonProperties.asGetters(),
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
+      shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
+      shouldGenerateMaybeWhen: data.shouldGenerateMaybeWhen,
     );
 
     for (final constructor in data.constructors) {
@@ -486,6 +499,8 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         shouldUseExtends: data.shouldUseExtends,
         hasDiagnosticable: globalData.hasDiagnostics,
         shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
+        shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
+        shouldGenerateMaybeWhen: data.shouldGenerateMaybeWhen,
         constructor: constructor,
         allConstructors: data.constructors,
         commonProperties: commonProperties,

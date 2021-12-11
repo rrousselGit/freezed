@@ -89,8 +89,8 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
 - [Utilities](#utilities)
-    - [Freezed extension for VSCode](#freezed-extension-for-vscode)
-    - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
+  - [Freezed extension for VSCode](#freezed-extension-for-vscode)
+  - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
 
 # How to use
 
@@ -887,6 +887,28 @@ if (union is Loading) {
 
 But it is safer as you are forced to handle the fallback case, and it is easier to write.
 
+You can also prevent the generation of the [maybeWhen] method locally by using the `maybeWhen` constructor.
+
+```dart
+@Freezed(maybeWhen: false)
+class Union with _$Union {
+  const factory Union(int value) = Data;
+  const factory Union.loading() = Loading;
+  const factory Union.error([String message]) = ErrorDetails;
+}
+```
+
+If you want to deactivate [maybeWhen] globally, you can set the `maybe_when` flag to false in `build.yaml`.
+
+```yaml
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          maybe_when: false
+```
+
 ### Map/MaybeMap
 
 The [map] and [maybeMap] methods are equivalent to [when]/[maybeWhen], but **without** destructuring.
@@ -937,6 +959,28 @@ print(
     second: (value) => value.copyWith(c: true),
   )
 ); // Model.second(b: 42, c: true)
+```
+
+As for [maybeWhen], you can prevent the generation of [maybeMap] method locally by using the `maybeMap` constructor.
+
+```dart
+@Freezed(maybeMap: false)
+class Union with _$Union {
+  const factory Union(int value) = Data;
+  const factory Union.loading() = Loading;
+  const factory Union.error([String message]) = ErrorDetails;
+}
+```
+
+If you want to deactivate [maybeMap] globally, you can set the `maybe_map` flag to false in `build.yaml`.
+
+```yaml
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          maybe_map: false
 ```
 
 ## FromJson/ToJson

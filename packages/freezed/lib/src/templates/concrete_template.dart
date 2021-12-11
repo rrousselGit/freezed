@@ -24,6 +24,8 @@ class Concrete {
     required this.unionKey,
     required this.copyWith,
     required this.shouldUseExtends,
+    required this.shouldGenerateMaybeMap,
+    required this.shouldGenerateMaybeWhen,
   });
 
   final ConstructorDetails constructor;
@@ -39,6 +41,8 @@ class Concrete {
   final String unionKey;
   final CopyWith copyWith;
   final bool shouldUseExtends;
+  final bool shouldGenerateMaybeMap;
+  final bool shouldGenerateMaybeWhen;
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
@@ -259,6 +263,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   }
 
   String get _maybeMap {
+    if (!shouldGenerateMaybeMap) return '';
     if (!allConstructors.shouldGenerateUnions) return '';
 
     return '''
@@ -292,6 +297,7 @@ ${mapOrNullPrototype(allConstructors, genericsParameter)} {
   }
 
   String get _maybeWhen {
+    if (!shouldGenerateMaybeWhen) return '';
     if (!allConstructors.shouldGenerateUnions) return '';
 
     var callbackParameters = constructor.impliedProperties.map((e) {
