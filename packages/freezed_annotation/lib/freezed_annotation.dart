@@ -11,8 +11,8 @@ class Freezed {
     this.unionKey,
     this.unionValueCase = FreezedUnionCase.none,
     this.fallbackUnion,
-    this.maybeMap = true,
-    this.maybeWhen = true,
+    this.maybeMap,
+    this.maybeWhen,
   });
 
   /// Determines what key should be used to de/serialize union types.
@@ -147,7 +147,7 @@ class Freezed {
   ///   print(Union.first().maybeMap(orElse: () => null)); // Error
   /// }
   /// ```
-  final bool maybeMap;
+  final bool? maybeMap;
 
   /// Allow to deactive the maybeWhen generation.
   /// ```dart
@@ -164,7 +164,7 @@ class Freezed {
   ///   print(Union.first().maybeWhen(orElse: () => null)); // Error
   /// }
   /// ```
-  final bool maybeWhen;
+  final bool? maybeWhen;
 }
 
 /// An annotation for the `freezed` package.
