@@ -1,3 +1,7 @@
+# 1.1.1
+
+Lints are now disabled inside generated files (requires Dart 2.15)
+
 # 1.1.0
 
 Added support for disabling the generation of `maybeMap`/`maybeWhen` (thanks to @Lyokone)
