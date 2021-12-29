@@ -1,6 +1,7 @@
 # 1.1.1
 
-Lints are now disabled inside generated files (requires Dart 2.15)
+- Lints are now disabled inside generated files (requires Dart 2.15)
+- Upgraded the analyzer version to 3.0.0
 
 # 1.1.0
 
