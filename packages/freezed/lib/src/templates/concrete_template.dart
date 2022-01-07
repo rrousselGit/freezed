@@ -18,7 +18,8 @@ class Concrete {
     required this.hasDiagnosticable,
     required this.hasCustomToString,
     required this.hasCustomToEquals,
-    required this.shouldGenerateJson,
+    required this.shouldGenerateFromJsonFactory,
+    required this.shouldGenerateToJson,
     required this.commonProperties,
     required this.name,
     required this.unionKey,
@@ -36,7 +37,8 @@ class Concrete {
   final bool hasDiagnosticable;
   final bool hasCustomToString;
   final bool hasCustomToEquals;
-  final bool shouldGenerateJson;
+  final bool shouldGenerateFromJsonFactory;
+  final bool shouldGenerateToJson;
   final String name;
   final String unionKey;
   final CopyWith copyWith;
@@ -52,9 +54,10 @@ class Concrete {
     return '\$${constructor.redirectedName}';
   }
 
-  late final bool _hasTypeProperty = shouldGenerateJson &&
-      allConstructors.length > 1 &&
-      constructor.impliedProperties.every((e) => e.name != unionKey);
+  late final bool _hasTypeProperty =
+      (shouldGenerateFromJsonFactory || shouldGenerateToJson) &&
+          allConstructors.length > 1 &&
+          constructor.impliedProperties.every((e) => e.name != unionKey);
 
   @override
   String toString() {
@@ -64,7 +67,7 @@ ${copyWith.interface}
 ${copyWith.concreteImpl(constructor.parameters)}
 
 /// @nodoc
-${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
+${(shouldGenerateToJson || shouldGenerateFromJsonFactory) && !constructor.hasJsonSerializable ? '@JsonSerializable(${shouldGenerateFromJsonFactory ? '' : 'createFactory: false'}${shouldGenerateToJson ? '' : 'createToJson: false'})' : ''}
 ${constructor.decorators.join('\n')}
 class $concreteName$genericsDefinition $_concreteSuper {
   $_concreteConstructor
@@ -224,17 +227,17 @@ final String \$type;
   }
 
   String get _redirectedFromJsonConstructor {
-    if (!shouldGenerateJson) return '';
+    if (!shouldGenerateFromJsonFactory) return '';
     return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName$genericsParameter.fromJson;';
   }
 
   String get _concreteFromJsonConstructor {
-    if (!shouldGenerateJson) return '';
+    if (!shouldGenerateFromJsonFactory) return '';
     return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${nonPrivateConcreteName}FromJson(json);';
   }
 
   String get _toJson {
-    if (!shouldGenerateJson) return '';
+    if (!shouldGenerateToJson) return '';
 
     return '''
 @override

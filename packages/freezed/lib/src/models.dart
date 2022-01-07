@@ -70,6 +70,8 @@ abstract class Data with _$Data {
     required bool hasCustomEquals,
     required bool shouldGenerateMaybeMap,
     required bool shouldGenerateMaybeWhen,
+    required bool shouldGenerateFromJsonFactory,
+    required bool shouldGenerateToJson,
   }) = _Data;
 }
 

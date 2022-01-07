@@ -41,6 +41,18 @@ Future<void> main() async {
     );
   });
 
+  test('custom json map wrapper', () {
+    expect(
+      CustomJsonMapWrapper.fromJson(<String, dynamic>{'a': 'a'}),
+      CustomJsonMapWrapper(<String, dynamic>{'a': 'a'}),
+    );
+
+    expect(
+      CustomJsonMapWrapper(<String, dynamic>{'a': 'a'}).toJson(),
+      <String, dynamic>{'a': 'a'},
+    );
+  });
+
   group('Freezed.unionKey', () {
     test('fromJson', () {
       expect(

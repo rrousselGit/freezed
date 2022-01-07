@@ -11,7 +11,7 @@ class Abstract {
     required this.genericsParameter,
     required this.genericsDefinition,
     required this.abstractProperties,
-    required this.shouldGenerateJson,
+    required this.shouldGenerateToJson,
     required this.allConstructors,
     required this.copyWith,
     required this.shouldGenerateMaybeMap,
@@ -23,7 +23,7 @@ class Abstract {
   final GenericsParameterTemplate genericsParameter;
   final GenericsDefinitionTemplate genericsDefinition;
   final List<ConstructorDetails> allConstructors;
-  final bool shouldGenerateJson;
+  final bool shouldGenerateToJson;
   final CopyWith copyWith;
   final bool shouldGenerateMaybeMap;
   final bool shouldGenerateMaybeWhen;
@@ -53,7 +53,7 @@ ${copyWith.commonContreteImpl(abstractProperties)}
   }
 
   String get _toJson {
-    if (!shouldGenerateJson) return '';
+    if (!shouldGenerateToJson) return '';
     return 'Map<String, dynamic> toJson() => throw $privConstUsedErrorVarName;';
   }
 

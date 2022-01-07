@@ -13,6 +13,8 @@ class Freezed {
     this.fallbackUnion,
     this.maybeMap,
     this.maybeWhen,
+    this.fromJsonFactory = true,
+    this.toJson = true,
   });
 
   /// Determines what key should be used to de/serialize union types.
@@ -165,6 +167,40 @@ class Freezed {
   /// }
   /// ```
   final bool? maybeWhen;
+
+  /// Allow to disable fromJson factory generation.
+  /// ```dart
+  /// @Freezed(fromJsonFactory: false)
+  /// class CustomMap with _$CustomMap {
+  ///   // ...
+  /// }
+  /// ```
+  ///
+  /// The generated code will not have the following method:
+  ///
+  /// ```dart
+  /// void main() {
+  ///   CustomMap.fromJson({}); // Error
+  /// }
+  /// ```
+  final bool fromJsonFactory;
+
+  /// Allow to disable toJsonc generation.
+  /// ```dart
+  /// @Freezed(toJson: false)
+  /// class CustomMap with _$CustomMap {
+  ///   // ...
+  /// }
+  /// ```
+  ///
+  /// The generated code will not have the following method:
+  ///
+  /// ```dart
+  /// void main() {
+  ///   CustomMap().toJson(); // Error
+  /// }
+  /// ```
+  final bool toJson;
 }
 
 /// An annotation for the `freezed` package.

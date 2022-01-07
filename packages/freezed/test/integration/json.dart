@@ -88,6 +88,20 @@ class CustomJson with _$CustomJson {
   factory CustomJson.fromJson(Map<String, dynamic> json) => _fromJson(json);
 }
 
+@Freezed(fromJsonFactory: false, toJson: false)
+class CustomJsonMapWrapper with _$CustomJsonMapWrapper {
+  const CustomJsonMapWrapper._();
+
+  const factory CustomJsonMapWrapper(
+    Map<String, dynamic> m,
+  ) = _CustomJsonMapWrapper;
+
+  factory CustomJsonMapWrapper.fromJson(Map<String, dynamic> json) =>
+      CustomJsonMapWrapper(json);
+
+  Map<String, dynamic> toJson() => m;
+}
+
 @Freezed(unionKey: 'ty"\'pe')
 class FancyCustomKey with _$FancyCustomKey {
   const factory FancyCustomKey.first(int a) = _FancyCustomKeyFirst;

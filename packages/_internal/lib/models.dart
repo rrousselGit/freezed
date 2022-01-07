@@ -65,7 +65,7 @@ class ConstructorDetails with _$ConstructorDetails {
 }
 
 @freezed
-class Data with _$Data {
+abstract class Data with _$Data {
   @Assert('constructors.isNotEmpty')
   factory Data({
     required String name,
@@ -80,6 +80,8 @@ class Data with _$Data {
     required bool hasCustomEquals,
     required bool shouldGenerateMaybeMap,
     required bool shouldGenerateMaybeWhen,
+    required bool shouldGenerateFromJsonFactory,
+    required bool shouldGenerateToJson,
   }) = _Data;
 }
 

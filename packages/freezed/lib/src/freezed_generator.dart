@@ -73,6 +73,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       constructors: constructorsNeedsGeneration,
       shouldGenerateMaybeMap: configs.maybeMap!,
       shouldGenerateMaybeWhen: configs.maybeWhen!,
+      shouldGenerateFromJsonFactory: configs.fromJsonFactory,
+      shouldGenerateToJson: configs.toJson,
       concretePropertiesName: [
         for (final p in element.fields)
           if (!p.isStatic) p.name,
@@ -417,12 +419,22 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         configs['maybe_when'] as bool? ??
         true;
 
+    final toJson = annotation.getField('toJson')?.toBoolValue() ??
+        configs['to_json'] as bool? ??
+        true;
+    final fromJsonFactory =
+        annotation.getField('fromJsonFactory')?.toBoolValue() ??
+            configs['from_json_factory'] as bool? ??
+            true;
+
     return Freezed(
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
       fallbackUnion: fallbackUnion,
       unionValueCase: unionValueCase,
       maybeMap: maybeMap,
       maybeWhen: maybeWhen,
+      toJson: toJson,
+      fromJsonFactory: fromJsonFactory,
     );
   }
 
@@ -447,7 +459,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     GlobalData globalData,
     Data data,
   ) sync* {
-    if (globalData.hasJson && data.needsJsonSerializable) {
+    if (data.shouldGenerateFromJsonFactory &&
+        globalData.hasJson &&
+        data.needsJsonSerializable) {
       yield FromJson(
         name: data.name,
         unionKey: data.unionKey,
@@ -459,7 +473,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
     yield TearOff(
       name: data.name,
-      serializable: globalData.hasJson && data.needsJsonSerializable,
+      serializable: data.shouldGenerateFromJsonFactory &&
+          globalData.hasJson &&
+          data.needsJsonSerializable,
       genericsParameter: data.genericsParameterTemplate,
       genericsDefinition: data.genericsDefinitionTemplate,
       allConstructors: data.constructors,
@@ -482,7 +498,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       name: data.name,
       genericsDefinition: data.genericsDefinitionTemplate,
       genericsParameter: data.genericsParameterTemplate,
-      shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
+      shouldGenerateToJson: data.shouldGenerateToJson &&
+          globalData.hasJson &&
+          data.needsJsonSerializable,
       abstractProperties: commonProperties.asGetters(),
       allConstructors: data.constructors,
       copyWith: commonCopyWith,
@@ -498,7 +516,12 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         unionKey: data.unionKey,
         shouldUseExtends: data.shouldUseExtends,
         hasDiagnosticable: globalData.hasDiagnostics,
-        shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
+        shouldGenerateFromJsonFactory: data.shouldGenerateFromJsonFactory &&
+            globalData.hasJson &&
+            data.needsJsonSerializable,
+        shouldGenerateToJson: data.shouldGenerateToJson &&
+            globalData.hasJson &&
+            data.needsJsonSerializable,
         shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
         shouldGenerateMaybeWhen: data.shouldGenerateMaybeWhen,
         constructor: constructor,
