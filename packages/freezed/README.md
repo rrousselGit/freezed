@@ -49,7 +49,7 @@ Using Freezed, we will get:
   method correctly supports assigning `null` to a value.
 
 - union-types/pattern matching, for making impossible states impossible.
-  See also [#unionssealed-classes].
+  See also [unions/sealed-classes](#unionssealed-classes).
 
 - an automatic serialization/deserialization of your objects (including union types).
 
