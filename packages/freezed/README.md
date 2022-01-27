@@ -969,7 +969,7 @@ targets:
 
 ## FromJson/ToJson
 
-While [Freezed] will not generate your typical `fromJson`/`toJson` by itself, it knowns
+While [Freezed] will not generate your typical `fromJson`/`toJson` by itself, it knows
 what [json_serializable] is.
 
 Making a class compatible with [json_serializable] is very straightforward.
