@@ -10,14 +10,14 @@ Welcome to [Freezed], yet another code generator for unions/pattern-matching/cop
 
 **Important note**:
 
-From 0.14.0 and onwards, Freezed does only support null-safe code.
+From 0.14.0 and onwards, Freezed only supports null-safe code.
 
 If you want to keep using Freezed but cannot migrate to null-safety yet, use the version 0.12.7 instead.  
 Note that this version is no-longer maintained (so bugs found there won't be fixed).
 
 For the documentation of the version 0.12.7, refer to https://pub.dev/packages/freezed/versions/0.12.7
 
-In the scenario where you are using the version 0.12.7, but one of your dependency is using 0.14.0 or above,
+In the scenario where you are using the version 0.12.7, but one of your dependencies is using 0.14.0 or above,
 you will have a version conflict on `freezed_annotation`.
 
 In that case, you can fix the error by adding the following to your `pubspec.yaml`:
