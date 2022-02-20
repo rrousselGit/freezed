@@ -48,7 +48,7 @@ Using Freezed, we will get:
   _Note_: As opposed to many alternatives, when using Freezed, that `copyWith`
   method correctly supports assigning `null` to a value.
 
-- union-types/pattern matching, for making impossible states impossible.
+- union-types/pattern matching, for making impossible states possible.
   See also [unions/sealed-classes](#unionssealed-classes).
 
 - an automatic serialization/deserialization of your objects (including union types).
