@@ -33,7 +33,7 @@ Upgraded to support last json_annotation version
 
 # 0.14.1
 
-- Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more informations (Thanks to @ookami-kb)
+- Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more information (Thanks to @ookami-kb)
 
 # 0.14.0
 

@@ -35,7 +35,7 @@ class CloneableProperty with _$CloneableProperty {
   }) = _CloneableProperty;
 }
 
-/// The informations of a specific constructor of a class tagged with `@freezed`.
+/// The information of a specific constructor of a class tagged with `@freezed`.
 ///
 /// This only includes constructors where Freezed needs to generate something.
 @freezed
