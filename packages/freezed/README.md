@@ -98,14 +98,20 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
 To use [Freezed], you will need your typical [build_runner]/code-generator setup.\
 First, install [build_runner] and [Freezed] by adding them to your `pubspec.yaml` file:
 
-```yaml
-# pubspec.yaml
-dependencies:
-  freezed_annotation:
+If you are using creating a Flutter project:
 
-dev_dependencies:
-  build_runner:
-  freezed:
+```console
+$ flutter pub add freezed_annotation
+$ flutter pub add --dev build_runner
+$ flutter pub add --dev freezed
+```
+
+If you are using creating a Dart project:
+
+```console
+$ dart pub add freezed_annotation
+$ dart pub add --dev build_runner
+$ dart pub add --dev freezed
 ```
 
 This installs three packages:
