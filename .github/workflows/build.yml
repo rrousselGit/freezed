@@ -18,7 +18,7 @@ jobs:
           - packages/freezed_annotation
           - packages/freezed/example
         channel:
-          - beta
+          - master
 
     steps:
       - uses: actions/checkout@v2
