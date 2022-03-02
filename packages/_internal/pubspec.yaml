@@ -5,8 +5,8 @@ environment:
   sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
-  freezed_annotation: ">=0.14.0"
+  freezed_annotation:
 
 dev_dependencies:
   build_runner:
-  freezed: ^0.15.0+1
+  freezed:

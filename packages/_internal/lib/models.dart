@@ -84,7 +84,7 @@ class Data with _$Data {
 }
 
 @freezed
-abstract class GlobalData with _$GlobalData {
+class GlobalData with _$GlobalData {
   factory GlobalData({
     required bool hasJson,
     required bool hasDiagnostics,

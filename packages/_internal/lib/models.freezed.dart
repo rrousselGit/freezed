@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'models.dart';
@@ -11,7 +12,7 @@ part of 'models.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 class _$CloneablePropertyTearOff {
@@ -195,19 +196,22 @@ class _$_CloneableProperty implements _CloneableProperty {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _CloneableProperty &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.nullable, nullable) ||
-                other.nullable == nullable) &&
-            (identical(other.genericParameters, genericParameters) ||
-                other.genericParameters == genericParameters));
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.typeName, typeName) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.nullable, nullable) &&
+            const DeepCollectionEquality()
+                .equals(other.genericParameters, genericParameters));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, name, typeName, type, nullable, genericParameters);
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(typeName),
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(nullable),
+      const DeepCollectionEquality().hash(genericParameters));
 
   @JsonKey(ignore: true)
   @override
@@ -621,26 +625,24 @@ class _$_ConstructorDetails extends _ConstructorDetails {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ConstructorDetails &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.unionValue, unionValue) ||
-                other.unionValue == unionValue) &&
-            (identical(other.isConst, isConst) || other.isConst == isConst) &&
-            (identical(other.redirectedName, redirectedName) ||
-                other.redirectedName == redirectedName) &&
-            (identical(other.parameters, parameters) ||
-                other.parameters == parameters) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.unionValue, unionValue) &&
+            const DeepCollectionEquality().equals(other.isConst, isConst) &&
+            const DeepCollectionEquality()
+                .equals(other.redirectedName, redirectedName) &&
+            const DeepCollectionEquality()
+                .equals(other.parameters, parameters) &&
             const DeepCollectionEquality()
                 .equals(other.impliedProperties, impliedProperties) &&
-            (identical(other.isDefault, isDefault) ||
-                other.isDefault == isDefault) &&
-            (identical(other.isFallback, isFallback) ||
-                other.isFallback == isFallback) &&
-            (identical(other.hasJsonSerializable, hasJsonSerializable) ||
-                other.hasJsonSerializable == hasJsonSerializable) &&
-            (identical(other.fullName, fullName) ||
-                other.fullName == fullName) &&
-            (identical(other.escapedName, escapedName) ||
-                other.escapedName == escapedName) &&
+            const DeepCollectionEquality().equals(other.isDefault, isDefault) &&
+            const DeepCollectionEquality()
+                .equals(other.isFallback, isFallback) &&
+            const DeepCollectionEquality()
+                .equals(other.hasJsonSerializable, hasJsonSerializable) &&
+            const DeepCollectionEquality().equals(other.fullName, fullName) &&
+            const DeepCollectionEquality()
+                .equals(other.escapedName, escapedName) &&
             const DeepCollectionEquality()
                 .equals(other.withDecorators, withDecorators) &&
             const DeepCollectionEquality()
@@ -655,17 +657,17 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      name,
-      unionValue,
-      isConst,
-      redirectedName,
-      parameters,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(unionValue),
+      const DeepCollectionEquality().hash(isConst),
+      const DeepCollectionEquality().hash(redirectedName),
+      const DeepCollectionEquality().hash(parameters),
       const DeepCollectionEquality().hash(impliedProperties),
-      isDefault,
-      isFallback,
-      hasJsonSerializable,
-      fullName,
-      escapedName,
+      const DeepCollectionEquality().hash(isDefault),
+      const DeepCollectionEquality().hash(isFallback),
+      const DeepCollectionEquality().hash(hasJsonSerializable),
+      const DeepCollectionEquality().hash(fullName),
+      const DeepCollectionEquality().hash(escapedName),
       const DeepCollectionEquality().hash(withDecorators),
       const DeepCollectionEquality().hash(implementsDecorators),
       const DeepCollectionEquality().hash(decorators),
@@ -1040,50 +1042,45 @@ class _$_Data implements _Data {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Data &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.needsJsonSerializable, needsJsonSerializable) ||
-                other.needsJsonSerializable == needsJsonSerializable) &&
-            (identical(other.unionKey, unionKey) ||
-                other.unionKey == unionKey) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.needsJsonSerializable, needsJsonSerializable) &&
+            const DeepCollectionEquality().equals(other.unionKey, unionKey) &&
             const DeepCollectionEquality()
                 .equals(other.concretePropertiesName, concretePropertiesName) &&
             const DeepCollectionEquality()
                 .equals(other.constructors, constructors) &&
-            (identical(other.genericsDefinitionTemplate,
-                    genericsDefinitionTemplate) ||
-                other.genericsDefinitionTemplate ==
-                    genericsDefinitionTemplate) &&
-            (identical(other.genericsParameterTemplate,
-                    genericsParameterTemplate) ||
-                other.genericsParameterTemplate == genericsParameterTemplate) &&
-            (identical(other.shouldUseExtends, shouldUseExtends) ||
-                other.shouldUseExtends == shouldUseExtends) &&
-            (identical(other.hasCustomToString, hasCustomToString) ||
-                other.hasCustomToString == hasCustomToString) &&
-            (identical(other.hasCustomEquals, hasCustomEquals) ||
-                other.hasCustomEquals == hasCustomEquals) &&
-            (identical(other.shouldGenerateMaybeMap, shouldGenerateMaybeMap) ||
-                other.shouldGenerateMaybeMap == shouldGenerateMaybeMap) &&
-            (identical(
-                    other.shouldGenerateMaybeWhen, shouldGenerateMaybeWhen) ||
-                other.shouldGenerateMaybeWhen == shouldGenerateMaybeWhen));
+            const DeepCollectionEquality().equals(
+                other.genericsDefinitionTemplate, genericsDefinitionTemplate) &&
+            const DeepCollectionEquality().equals(
+                other.genericsParameterTemplate, genericsParameterTemplate) &&
+            const DeepCollectionEquality()
+                .equals(other.shouldUseExtends, shouldUseExtends) &&
+            const DeepCollectionEquality()
+                .equals(other.hasCustomToString, hasCustomToString) &&
+            const DeepCollectionEquality()
+                .equals(other.hasCustomEquals, hasCustomEquals) &&
+            const DeepCollectionEquality()
+                .equals(other.shouldGenerateMaybeMap, shouldGenerateMaybeMap) &&
+            const DeepCollectionEquality().equals(
+                other.shouldGenerateMaybeWhen, shouldGenerateMaybeWhen));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      name,
-      needsJsonSerializable,
-      unionKey,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(needsJsonSerializable),
+      const DeepCollectionEquality().hash(unionKey),
       const DeepCollectionEquality().hash(concretePropertiesName),
       const DeepCollectionEquality().hash(constructors),
-      genericsDefinitionTemplate,
-      genericsParameterTemplate,
-      shouldUseExtends,
-      hasCustomToString,
-      hasCustomEquals,
-      shouldGenerateMaybeMap,
-      shouldGenerateMaybeWhen);
+      const DeepCollectionEquality().hash(genericsDefinitionTemplate),
+      const DeepCollectionEquality().hash(genericsParameterTemplate),
+      const DeepCollectionEquality().hash(shouldUseExtends),
+      const DeepCollectionEquality().hash(hasCustomToString),
+      const DeepCollectionEquality().hash(hasCustomEquals),
+      const DeepCollectionEquality().hash(shouldGenerateMaybeMap),
+      const DeepCollectionEquality().hash(shouldGenerateMaybeWhen));
 
   @JsonKey(ignore: true)
   @override
@@ -1251,13 +1248,16 @@ class _$_GlobalData implements _GlobalData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _GlobalData &&
-            (identical(other.hasJson, hasJson) || other.hasJson == hasJson) &&
-            (identical(other.hasDiagnostics, hasDiagnostics) ||
-                other.hasDiagnostics == hasDiagnostics));
+            const DeepCollectionEquality().equals(other.hasJson, hasJson) &&
+            const DeepCollectionEquality()
+                .equals(other.hasDiagnostics, hasDiagnostics));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, hasJson, hasDiagnostics);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(hasJson),
+      const DeepCollectionEquality().hash(hasDiagnostics));
 
   @JsonKey(ignore: true)
   @override
