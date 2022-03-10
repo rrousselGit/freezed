@@ -317,4 +317,7 @@ enum FreezedUnionCase {
 
   /// Encodes a constructor named `snakeCase` with a JSON value `snake_case`.
   snake,
+
+  /// Encodes a constructor named `screamingSnakeCase` with a JSON value `SCREAMING_SNAKE_CASE`.
+  screamingSnake,
 }

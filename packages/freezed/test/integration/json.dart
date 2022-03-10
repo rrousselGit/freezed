@@ -196,6 +196,17 @@ class UnionValueCaseSnake with _$UnionValueCaseSnake {
       _$UnionValueCaseSnakeFromJson(json);
 }
 
+@Freezed(unionValueCase: FreezedUnionCase.screamingSnake)
+class UnionValueCaseScreamingSnake with _$UnionValueCaseScreamingSnake {
+  const factory UnionValueCaseScreamingSnake.first(int a) =
+      _UnionValueCaseScreamingSnakeFirst;
+  const factory UnionValueCaseScreamingSnake.secondValue(int a) =
+      _UnionValueCaseScreamingSnakeSecondValue;
+
+  factory UnionValueCaseScreamingSnake.fromJson(Map<String, dynamic> json) =>
+      _$UnionValueCaseScreamingSnakeFromJson(json);
+}
+
 @Freezed(unionKey: 'runtimeType')
 class RuntimeTypeKey with _$RuntimeTypeKey {
   const factory RuntimeTypeKey.first(int a) = _RuntimeTypeKeyFirst;
@@ -381,6 +392,21 @@ class UnrecognizedKeysUnionValueCaseSnake
   factory UnrecognizedKeysUnionValueCaseSnake.fromJson(
           Map<String, dynamic> json) =>
       _$UnrecognizedKeysUnionValueCaseSnakeFromJson(json);
+}
+
+@Freezed(unionValueCase: FreezedUnionCase.screamingSnake)
+class UnrecognizedKeysUnionValueCaseScreamingSnake
+    with _$UnrecognizedKeysUnionValueCaseScreamingSnake {
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionValueCaseScreamingSnake.first(int a) =
+      _UnrecognizedKeysUnionValueCaseScreamingSnakeFirst;
+  @JsonSerializable(disallowUnrecognizedKeys: true)
+  const factory UnrecognizedKeysUnionValueCaseScreamingSnake.secondValue(
+      int a) = _UnrecognizedKeysUnionValueCaseScreamingSnakeSecondValue;
+
+  factory UnrecognizedKeysUnionValueCaseScreamingSnake.fromJson(
+          Map<String, dynamic> json) =>
+      _$UnrecognizedKeysUnionValueCaseScreamingSnakeFromJson(json);
 }
 
 @freezed

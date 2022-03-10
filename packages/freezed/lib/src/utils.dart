@@ -48,6 +48,8 @@ String kebabCase(String input) => _fixCase(input, '-');
 
 String snakeCase(String input) => _fixCase(input, '_');
 
+String screamingSnake(String input) => snakeCase(input).toUpperCase();
+
 String pascalCase(String input) {
   if (input.isEmpty) {
     return '';

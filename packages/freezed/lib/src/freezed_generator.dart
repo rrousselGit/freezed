@@ -399,6 +399,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       case 'snake':
         unionValueCase = FreezedUnionCase.snake;
         break;
+      case 'screamingSnake':
+        unionValueCase = FreezedUnionCase.screamingSnake;
+        break;
       case null:
         final enumIndex = annotation
             .getField('unionValueCase')!
@@ -679,6 +682,8 @@ extension on ConstructorElement {
         return pascalCase(constructorName);
       case FreezedUnionCase.snake:
         return snakeCase(constructorName);
+      case FreezedUnionCase.screamingSnake:
+        return screamingSnake(constructorName);
       default:
         throw FallThroughError();
     }
