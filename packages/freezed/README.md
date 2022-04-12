@@ -793,7 +793,7 @@ var union = Union(42);
 
 print(
   union.when(
-    (int value) => 'Data $data',
+    (int value) => 'Data $value',
     loading: () => 'loading',
     error: (String? message) => 'Error: $message',
   ),
