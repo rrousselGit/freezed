@@ -10,5 +10,8 @@ Future<void> main() async {
 
   initializeBuildLogTracking();
 
-  testAnnotatedElements<Freezed>(reader, FreezedGenerator({}));
+  testAnnotatedElements<Freezed>(
+    reader,
+    FreezedGenerator(Freezed.fromJson({})),
+  );
 }

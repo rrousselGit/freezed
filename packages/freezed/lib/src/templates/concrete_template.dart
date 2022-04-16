@@ -12,37 +12,17 @@ import 'prototypes.dart';
 class Concrete {
   Concrete({
     required this.constructor,
-    required this.genericsDefinition,
-    required this.genericsParameter,
-    required this.allConstructors,
-    required this.hasDiagnosticable,
-    required this.hasCustomToString,
-    required this.hasCustomToEquals,
-    required this.shouldGenerateJson,
+    required this.data,
+    required this.globalData,
     required this.commonProperties,
-    required this.name,
-    required this.unionKey,
     required this.copyWith,
-    required this.shouldUseExtends,
-    required this.shouldGenerateMaybeMap,
-    required this.shouldGenerateMaybeWhen,
   });
 
   final ConstructorDetails constructor;
-  final List<ConstructorDetails> allConstructors;
-  final GenericsDefinitionTemplate genericsDefinition;
-  final GenericsParameterTemplate genericsParameter;
   final List<Property> commonProperties;
-  final bool hasDiagnosticable;
-  final bool hasCustomToString;
-  final bool hasCustomToEquals;
-  final bool shouldGenerateJson;
-  final String name;
-  final String unionKey;
+  final Data data;
+  final GlobalData globalData;
   final CopyWith copyWith;
-  final bool shouldUseExtends;
-  final bool shouldGenerateMaybeMap;
-  final bool shouldGenerateMaybeWhen;
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
@@ -52,9 +32,10 @@ class Concrete {
     return '\$${constructor.redirectedName}';
   }
 
-  late final bool _hasTypeProperty = shouldGenerateJson &&
-      allConstructors.length > 1 &&
-      constructor.impliedProperties.every((e) => e.name != unionKey);
+  late final bool _hasUnionKeyProperty =
+      (data.generateToJson || data.generateFromJson) &&
+          data.constructors.length > 1 &&
+          constructor.impliedProperties.every((e) => e.name != data.unionKey);
 
   @override
   String toString() {
@@ -64,9 +45,9 @@ ${copyWith.interface}
 ${copyWith.concreteImpl(constructor.parameters)}
 
 /// @nodoc
-${shouldGenerateJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
+${data.generateToJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
 ${constructor.decorators.join('\n')}
-class $concreteName$genericsDefinition $_concreteSuper {
+class $concreteName${data.genericsDefinitionTemplate} $_concreteSuper {
   $_concreteConstructor
 
   $_concreteFromJsonConstructor
@@ -88,8 +69,8 @@ $_toJson
 }
 
 
-abstract class ${constructor.redirectedName}$genericsDefinition $_superKeyword $name$genericsParameter$interfaces {
-  $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName$genericsParameter;
+abstract class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_superKeyword ${data.name}${data.genericsParameterTemplate}$interfaces {
+  $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName${data.genericsParameterTemplate};
   $_privateConcreteConstructor
 
   $_redirectedFromJsonConstructor
@@ -106,13 +87,14 @@ ${copyWith.abstractCopyWithGetter}
     final trailingStrings = <String>[
       if (constructor.asserts.isNotEmpty)
         ...constructor.asserts.map((a) => a.toString()),
-      if (_hasTypeProperty) "\$type = \$type ?? '${constructor.unionValue}'",
+      if (_hasUnionKeyProperty)
+        "\$type = \$type ?? '${constructor.unionValue}'",
       if (superConstructor.isNotEmpty) superConstructor,
     ];
 
     var parameters = constructor.parameters.asThis();
 
-    if (_hasTypeProperty) {
+    if (_hasUnionKeyProperty) {
       final typeProperty = Parameter(
         type: 'String?',
         name: '\$type',
@@ -158,7 +140,7 @@ ${copyWith.abstractCopyWithGetter}
     final buffer = StringBuffer();
 
     if (interfaces.isNotEmpty) {
-      if (shouldUseExtends) {
+      if (data.shouldUseExtends) {
         buffer.write(' implements ');
       } else {
         buffer.write(', ');
@@ -170,31 +152,32 @@ ${copyWith.abstractCopyWithGetter}
   }
 
   String get _superConstructor {
-    if (!shouldUseExtends) return '';
+    if (!data.shouldUseExtends) return '';
     return 'super._()';
   }
 
   String get _privateConcreteConstructor {
-    if (!shouldUseExtends) return '';
+    if (!data.shouldUseExtends) return '';
 
     return '$_isConst ${constructor.redirectedName}._(): super._();';
   }
 
   String get _superKeyword {
-    return shouldUseExtends ? 'extends' : 'implements';
+    return data.shouldUseExtends ? 'extends' : 'implements';
   }
 
   String get _concreteSuper {
     final mixins = [
-      if (hasDiagnosticable && !hasCustomToString) 'DiagnosticableTreeMixin',
+      if (globalData.hasDiagnostics && data.generateToString)
+        'DiagnosticableTreeMixin',
       ...constructor.withDecorators,
     ];
     final mixinsStr = mixins.isEmpty ? '' : ' with ${mixins.join(',')}';
 
-    if (shouldUseExtends) {
-      return 'extends ${constructor.redirectedName}$genericsParameter $mixinsStr';
+    if (data.shouldUseExtends) {
+      return 'extends ${constructor.redirectedName}${data.genericsParameterTemplate} $mixinsStr';
     } else {
-      return '$mixinsStr implements ${constructor.redirectedName}$genericsParameter';
+      return '$mixinsStr implements ${constructor.redirectedName}${data.genericsParameterTemplate}';
     }
   }
 
@@ -207,11 +190,11 @@ ${copyWith.abstractCopyWithGetter}
       return res;
     });
 
-    if (_hasTypeProperty) {
+    if (_hasUnionKeyProperty) {
       return '''
 ${classProperties.join('\n')}
 
-@JsonKey(name: '$unionKey')
+@JsonKey(name: '${data.unionKey}')
 final String \$type;
 ''';
     }
@@ -224,17 +207,17 @@ final String \$type;
   }
 
   String get _redirectedFromJsonConstructor {
-    if (!shouldGenerateJson) return '';
-    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName$genericsParameter.fromJson;';
+    if (!data.generateFromJson) return '';
+    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName${data.genericsParameterTemplate}.fromJson;';
   }
 
   String get _concreteFromJsonConstructor {
-    if (!shouldGenerateJson) return '';
+    if (!data.generateFromJson) return '';
     return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${nonPrivateConcreteName}FromJson(json);';
   }
 
   String get _toJson {
-    if (!shouldGenerateJson) return '';
+    if (!data.generateToJson) return '';
 
     return '''
 @override
@@ -244,7 +227,7 @@ Map<String, dynamic> toJson() {
   }
 
   String get _debugFillProperties {
-    if (!hasDiagnosticable || hasCustomToString) return '';
+    if (!globalData.hasDiagnostics || !data.generateToString) return '';
 
     final diagnostics = [
       for (final e in constructor.impliedProperties)
@@ -263,12 +246,11 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   }
 
   String get _maybeMap {
-    if (!shouldGenerateMaybeMap) return '';
-    if (!allConstructors.shouldGenerateUnions) return '';
+    if (!data.map.maybeMap) return '';
 
     return '''
 @override
-${maybeMapPrototype(allConstructors, genericsParameter)} {
+${maybeMapPrototype(data.constructors, data.genericsParameterTemplate)} {
   if (${constructor.callbackName} != null) {
     return ${constructor.callbackName}(this);
   }
@@ -277,31 +259,30 @@ ${maybeMapPrototype(allConstructors, genericsParameter)} {
   }
 
   String get _map {
-    if (!allConstructors.shouldGenerateUnions) return '';
+    if (!data.map.map) return '';
 
     return '''
 @override
-${mapPrototype(allConstructors, genericsParameter)} {
+${mapPrototype(data.constructors, data.genericsParameterTemplate)} {
   return ${constructor.callbackName}(this);
 }''';
   }
 
   String get _mapOrNull {
-    if (!allConstructors.shouldGenerateUnions) return '';
+    if (!data.when.whenOrNull) return '';
 
     return '''
 @override
-${mapOrNullPrototype(allConstructors, genericsParameter)} {
+${mapOrNullPrototype(data.constructors, data.genericsParameterTemplate)} {
   return ${constructor.callbackName}?.call(this);
 }''';
   }
 
   String get _maybeWhen {
-    if (!shouldGenerateMaybeWhen) return '';
-    if (!allConstructors.shouldGenerateUnions) return '';
+    if (!data.when.maybeWhen) return '';
 
     var callbackParameters = constructor.impliedProperties.map((e) {
-      if (allConstructors.any((c) => c.callbackName == e.name)) {
+      if (data.constructors.any((c) => c.callbackName == e.name)) {
         return 'this.${e.name}';
       }
       return e.name;
@@ -309,7 +290,7 @@ ${mapOrNullPrototype(allConstructors, genericsParameter)} {
 
     return '''
 @override
-${maybeWhenPrototype(allConstructors)} {
+${maybeWhenPrototype(data.constructors)} {
   if (${constructor.callbackName} != null) {
     return ${constructor.callbackName}($callbackParameters);
   }
@@ -318,10 +299,10 @@ ${maybeWhenPrototype(allConstructors)} {
   }
 
   String get _when {
-    if (!allConstructors.shouldGenerateUnions) return '';
+    if (!data.when.when) return '';
 
     var callbackParameters = constructor.impliedProperties.map((e) {
-      if (allConstructors.any((c) => c.callbackName == e.name)) {
+      if (data.constructors.any((c) => c.callbackName == e.name)) {
         return 'this.${e.name}';
       }
       return e.name;
@@ -329,16 +310,16 @@ ${maybeWhenPrototype(allConstructors)} {
 
     return '''
 @override
-${whenPrototype(allConstructors)} {
+${whenPrototype(data.constructors)} {
   return ${constructor.callbackName}($callbackParameters);
 }''';
   }
 
   String get _whenOrNull {
-    if (!allConstructors.shouldGenerateUnions) return '';
+    if (!data.when.whenOrNull) return '';
 
     var callbackParameters = constructor.impliedProperties.map((e) {
-      if (allConstructors.any((c) => c.callbackName == e.name)) {
+      if (data.constructors.any((c) => c.callbackName == e.name)) {
         return 'this.${e.name}';
       }
       return e.name;
@@ -346,7 +327,7 @@ ${whenPrototype(allConstructors)} {
 
     return '''
 @override
-${whenOrNullPrototype(allConstructors)} {
+${whenOrNullPrototype(data.constructors)} {
   return ${constructor.callbackName}?.call($callbackParameters);
 }''';
   }
@@ -362,9 +343,9 @@ ${whenOrNullPrototype(allConstructors)} {
   }
 
   String get _toStringMethod {
-    if (hasCustomToString) return '';
+    if (!data.generateToString) return '';
 
-    final parameters = hasDiagnosticable
+    final parameters = globalData.hasDiagnostics
         ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
         : '';
 
@@ -381,11 +362,11 @@ String toString($parameters) {
   }
 
   String get _operatorEqualMethod {
-    if (hasCustomToEquals) return '';
+    if (!data.generateEqual) return '';
 
     final comparisons = [
       'other.runtimeType == runtimeType',
-      'other is ${constructor.redirectedName}$genericsParameter',
+      'other is ${constructor.redirectedName}${data.genericsParameterTemplate}',
       ...constructor.impliedProperties.map((p) {
         final name = p.name == 'other' ? 'this.other' : p.name;
         if (p.isPossiblyDartCollection) {
@@ -405,7 +386,7 @@ bool operator ==(dynamic other) {
   }
 
   String get _hashCodeMethod {
-    if (hasCustomToEquals) return '';
+    if (!data.generateEqual) return '';
 
     final hashedProperties = [
       'runtimeType',

@@ -675,15 +675,6 @@ Future<void> main() async {
         Generic(42),
       );
     });
-
-    test('tear-off', () {
-      Generic<int> Function(Map<String, Object?>) fromJson = $Generic.fromJson;
-
-      expect(
-        fromJson(<String, dynamic>{'a': 42}),
-        Generic(42),
-      );
-    });
   });
 
   test('single ctor + json can access properties/copyWith', () {

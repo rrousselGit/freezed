@@ -105,25 +105,6 @@ Future<void> main() async {
     );
   });
 
-  test('tear off', () {
-    expect(
-      $NoCommonParam('a', b: 42),
-      NoCommonParam('a', b: 42),
-    );
-    expect(
-      $NoCommonParam.call.runtimeType.toString(),
-      '(String, {int? b}) => NoCommonParam0',
-    );
-    expect(
-      $NoCommonParam.named(42, 42),
-      NoCommonParam.named(42, 42),
-    );
-    expect(
-      $NoCommonParam.named.runtimeType.toString(),
-      '(double, [Object?]) => NoCommonParam1',
-    );
-  });
-
   group('NoSharedParam', () {
     test("doesn't have public properties/methods", () async {
       await expectLater(compile(r'''

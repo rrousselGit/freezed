@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/token.dart';
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -8,7 +9,6 @@ import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
-import 'package:freezed/src/templates/tear_off.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:freezed/src/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -21,11 +21,23 @@ import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
 import 'tools/recursive_import_locator.dart';
 
+extension on DartObject {
+  T decodeField<T>(
+    String fieldName, {
+    required T Function(DartObject obj) decode,
+    required T Function() orElse,
+  }) {
+    final field = getField(fieldName);
+    if (field == null || field.isNull) return orElse();
+    return decode(field);
+  }
+}
+
 @immutable
 class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
-  FreezedGenerator(this.configs);
+  FreezedGenerator(this._buildYamlConfigs);
 
-  final Map<String, Object?> configs;
+  final Freezed _buildYamlConfigs;
 
   @override
   Future<Data> parseElement(
@@ -57,7 +69,13 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       configs,
     );
 
-    final needsJsonSerializable = await _needsJsonSerializable(
+    final shouldGenerateUnions = constructorsNeedsGeneration
+        .where(
+          (element) => element.name.isNotEmpty && !element.name.startsWith('_'),
+        )
+        .isNotEmpty;
+
+    late final needsJsonSerializable = _needsJsonSerializable(
       buildStep,
       globalData,
       element,
@@ -66,15 +84,23 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     return Data(
       name: element.name,
       shouldUseExtends: shouldUseExtends,
-      hasCustomToString: _hasCustomToString(element),
-      hasCustomEquals: _hasCustomEquals(element),
-      needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
+      generateToString: configs.toStringOverride ?? _hasCustomToString(element),
+      generateCopyWith: configs.copyWith!,
+      generateEqual: configs.equal ?? _hasCustomEquals(element),
+      generateFromJson: configs.fromJson ?? await needsJsonSerializable,
+      generateToJson: configs.toJson ?? await needsJsonSerializable,
+      map: MapConfig(
+        map: configs.map?.map ?? shouldGenerateUnions,
+        mapOrNull: configs.map?.mapOrNull ?? shouldGenerateUnions,
+        maybeMap: configs.map?.maybeMap ?? shouldGenerateUnions,
+      ),
+      when: WhenConfig(
+        when: configs.when?.when ?? shouldGenerateUnions,
+        whenOrNull: configs.when?.whenOrNull ?? shouldGenerateUnions,
+        maybeWhen: configs.when?.maybeWhen ?? shouldGenerateUnions,
+      ),
       constructors: constructorsNeedsGeneration,
-      // ignore: deprecated_member_use
-      shouldGenerateMaybeMap: configs.maybeMap!,
-      // ignore: deprecated_member_use
-      shouldGenerateMaybeWhen: configs.maybeWhen!,
       concretePropertiesName: [
         for (final p in element.fields)
           if (!p.isStatic) p.name,
@@ -218,7 +244,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
     ClassElement element,
-    Freezed configs,
+    Freezed options,
   ) async {
     final result = <ConstructorDetails>[];
     for (final constructor in element.constructors) {
@@ -247,7 +273,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         ConstructorDetails(
           asserts: _parseAsserts(constructor).toList(),
           name: constructor.name,
-          unionValue: constructor.unionValue(configs.unionValueCase),
+          unionValue: constructor.unionValue(options.unionValueCase),
           isConst: constructor.isConst,
           fullName: _fullName(element, constructor),
           escapedName: _escapedName(element, constructor),
@@ -273,8 +299,8 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           implementsDecorators:
               _implementsDecorationTypes(constructor).toSet().toList(),
           isDefault: isDefaultConstructor(constructor),
-          isFallback: constructor.isFallbackUnion(configs.fallbackUnion),
           hasJsonSerializable: constructor.hasJsonSerializable,
+          isFallback: constructor.isFallbackUnion(options.fallbackUnion),
           cloneableProperties: await _cloneableProperties(
             buildStep,
             element,
@@ -303,9 +329,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       );
     }
 
-    if (configs.fallbackUnion != null && result.none((c) => c.isFallback)) {
+    if (options.fallbackUnion != null && result.none((c) => c.isFallback)) {
       throw InvalidGenerationSourceError(
-        'Fallback union was specified but no ${configs.fallbackUnion} constructor exists.',
+        'Fallback union was specified but no ${options.fallbackUnion} constructor exists.',
         element: element,
       );
     }
@@ -388,58 +414,128 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
   Freezed _parseConfig(Element element) {
     final annotation = const TypeChecker.fromRuntime(Freezed)
-        .firstAnnotationOf(element, throwOnUnresolved: false)!;
-
-    final rawUnionKey = annotation.getField('unionKey')?.toStringValue() ??
-        configs['union_key']?.toString() ??
-        'runtimeType';
-
-    final fallbackUnion = annotation.getField('fallbackUnion')?.toStringValue();
-
-    FreezedUnionCase unionValueCase;
-    final fromConfig = configs['union_value_case']?.toString();
-    switch (fromConfig) {
-      case 'none':
-        unionValueCase = FreezedUnionCase.none;
-        break;
-      case 'kebab':
-        unionValueCase = FreezedUnionCase.kebab;
-        break;
-      case 'pascal':
-        unionValueCase = FreezedUnionCase.pascal;
-        break;
-      case 'snake':
-        unionValueCase = FreezedUnionCase.snake;
-        break;
-      case 'screamingSnake':
-        unionValueCase = FreezedUnionCase.screamingSnake;
-        break;
-      case null:
-        final enumIndex = annotation
-            .getField('unionValueCase')!
-            .getField('index')!
-            .toIntValue()!;
-        unionValueCase = FreezedUnionCase.values[enumIndex];
-        break;
-      default:
-        throw FallThroughError();
-    }
-
-    final maybeMap = annotation.getField('maybeMap')?.toBoolValue() ??
-        configs['maybe_map'] as bool? ??
-        true;
-    final maybeWhen = annotation.getField('maybeWhen')?.toBoolValue() ??
-        configs['maybe_when'] as bool? ??
-        true;
+        .firstAnnotationOf(element, throwOnUnresolved: false);
 
     return Freezed(
-      unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
-      fallbackUnion: fallbackUnion,
-      unionValueCase: unionValueCase,
+      copyWith: annotation?.decodeField(
+        'copyWith',
+        decode: (obj) => obj.toBoolValue(),
+        orElse: () => _buildYamlConfigs.copyWith,
+      ),
+      equal: annotation?.decodeField(
+        'equal',
+        decode: (obj) => obj.toBoolValue(),
+        orElse: () => _buildYamlConfigs.equal,
+      ),
+      fallbackUnion: annotation?.decodeField(
+        'fallbackUnion',
+        decode: (obj) => obj.toStringValue(),
+        orElse: () => _buildYamlConfigs.fallbackUnion,
+      ),
+      fromJson: annotation?.decodeField(
+        'fromJson',
+        decode: (obj) => obj.toBoolValue(),
+        orElse: () => _buildYamlConfigs.fromJson,
+      ),
+      map: annotation?.decodeField(
+        'map',
+        decode: (obj) {
+          return FreezedMap(
+            map: obj.decodeField(
+              'map',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => _buildYamlConfigs.map?.map,
+            ),
+            maybeMap: obj.decodeField(
+              'maybeMap',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => _buildYamlConfigs.map?.maybeMap,
+            ),
+            mapOrNull: obj.decodeField(
+              'mapOrNull',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => _buildYamlConfigs.map?.mapOrNull,
+            ),
+          );
+        },
+        orElse: () => _buildYamlConfigs.map,
+      ),
       // ignore: deprecated_member_use
-      maybeMap: maybeMap,
+      maybeMap: annotation?.decodeField(
+        'maybeMap',
+        decode: (obj) => obj.toBoolValue(),
+        // ignore: deprecated_member_use
+        orElse: () => _buildYamlConfigs.maybeMap,
+      ),
       // ignore: deprecated_member_use
-      maybeWhen: maybeWhen,
+      maybeWhen: annotation?.decodeField(
+        'maybeWhen',
+        decode: (obj) => obj.toBoolValue(),
+        // ignore: deprecated_member_use
+        orElse: () => _buildYamlConfigs.maybeWhen,
+      ),
+      toJson: annotation?.decodeField(
+        'toJson',
+        decode: (obj) => obj.toBoolValue(),
+        orElse: () => _buildYamlConfigs.toJson,
+      ),
+      toStringOverride: annotation?.decodeField(
+        'toStringOverride',
+        decode: (obj) => obj.toBoolValue(),
+        orElse: () => _buildYamlConfigs.toStringOverride,
+      ),
+      unionKey: annotation
+          ?.decodeField(
+            'unionKey',
+            decode: (obj) => obj.toStringValue(),
+            orElse: () => _buildYamlConfigs.unionKey,
+          )
+          ?.replaceAll("'", r"\'")
+          .replaceAll(r'$', r'\$'),
+      unionValueCase: annotation?.decodeField(
+        'unionValueCase',
+        decode: (obj) {
+          switch (obj.toStringValue()) {
+            case null:
+            case 'none':
+              return FreezedUnionCase.none;
+            case 'kebab':
+              return FreezedUnionCase.kebab;
+            case 'pascal':
+              return FreezedUnionCase.pascal;
+            case 'snake':
+              return FreezedUnionCase.snake;
+            case 'screamingSnake':
+              return FreezedUnionCase.screamingSnake;
+            default:
+              throw UnsupportedError('Unknown value ${obj.toStringValue()}');
+          }
+        },
+        orElse: () => _buildYamlConfigs.unionValueCase,
+      ),
+      when: annotation?.decodeField(
+        'when',
+        decode: (obj) {
+          return FreezedWhen(
+            when: obj.decodeField(
+              'when',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => _buildYamlConfigs.when?.when,
+            ),
+            maybeWhen: obj.decodeField(
+              'maybeWhen',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => _buildYamlConfigs.when?.maybeWhen,
+            ),
+            whenOrNull: obj.decodeField(
+              'whenOrNull',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => _buildYamlConfigs.when?.whenOrNull,
+            ),
+          );
+        },
+        orElse: () => _buildYamlConfigs.when,
+      ),
     );
   }
 
@@ -464,7 +560,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     GlobalData globalData,
     Data data,
   ) sync* {
-    if (globalData.hasJson && data.needsJsonSerializable) {
+    if (data.generateFromJson) {
       yield FromJson(
         name: data.name,
         unionKey: data.unionKey,
@@ -473,14 +569,6 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         genericDefinitions: data.genericsDefinitionTemplate,
       );
     }
-
-    yield TearOff(
-      name: data.name,
-      serializable: globalData.hasJson && data.needsJsonSerializable,
-      genericsParameter: data.genericsParameterTemplate,
-      genericsDefinition: data.genericsDefinitionTemplate,
-      allConstructors: data.constructors,
-    );
 
     final commonProperties = _commonProperties(data.constructors);
 
@@ -496,33 +584,17 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     );
 
     yield Abstract(
-      name: data.name,
-      genericsDefinition: data.genericsDefinitionTemplate,
-      genericsParameter: data.genericsParameterTemplate,
-      shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
-      abstractProperties: commonProperties.asGetters(),
-      allConstructors: data.constructors,
+      data: data,
       copyWith: commonCopyWith,
-      shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
-      shouldGenerateMaybeWhen: data.shouldGenerateMaybeWhen,
+      commonProperties: commonProperties.asGetters(),
     );
 
     for (final constructor in data.constructors) {
       yield Concrete(
-        name: data.name,
-        hasCustomToString: data.hasCustomToString,
-        hasCustomToEquals: data.hasCustomEquals,
-        unionKey: data.unionKey,
-        shouldUseExtends: data.shouldUseExtends,
-        hasDiagnosticable: globalData.hasDiagnostics,
-        shouldGenerateJson: globalData.hasJson && data.needsJsonSerializable,
-        shouldGenerateMaybeMap: data.shouldGenerateMaybeMap,
-        shouldGenerateMaybeWhen: data.shouldGenerateMaybeWhen,
+        data: data,
         constructor: constructor,
-        allConstructors: data.constructors,
         commonProperties: commonProperties,
-        genericsDefinition: data.genericsDefinitionTemplate,
-        genericsParameter: data.genericsParameterTemplate,
+        globalData: globalData,
         copyWith: CopyWith(
           clonedClassName: constructor.redirectedName,
           cloneableProperties: constructor.cloneableProperties,
@@ -679,7 +751,7 @@ extension on ConstructorElement {
     return constructorName == fallbackConstructorName;
   }
 
-  String unionValue(FreezedUnionCase unionCase) {
+  String unionValue(FreezedUnionCase? unionCase) {
     final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
         .firstAnnotationOf(this, throwOnUnresolved: false);
     if (annotation != null) {
@@ -688,6 +760,7 @@ extension on ConstructorElement {
 
     final constructorName = isDefaultConstructor(this) ? 'default' : name;
     switch (unionCase) {
+      case null:
       case FreezedUnionCase.none:
         return constructorName;
       case FreezedUnionCase.kebab:
@@ -698,8 +771,6 @@ extension on ConstructorElement {
         return snakeCase(constructorName);
       case FreezedUnionCase.screamingSnake:
         return screamingSnake(constructorName);
-      default:
-        throw FallThroughError();
     }
   }
 }

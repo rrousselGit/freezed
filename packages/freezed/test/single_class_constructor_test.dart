@@ -106,10 +106,6 @@ Future<void> main() async {
     );
   });
 
-  test('tear off uses const ctor if possible', () {
-    expect(identical($Empty(), const Empty()), isTrue);
-  });
-
   test('deep copy of recursive classes', () {
     final value = Product(name: 'foo', parent: Product(name: 'bar'));
 
@@ -144,19 +140,11 @@ Future<void> main() async {
         IntDefault(),
         IntDefault(42),
       );
-      expect(
-        $IntDefault(),
-        IntDefault(42),
-      );
     });
 
     test('double', () {
       expect(
         DoubleDefault(),
-        DoubleDefault(42),
-      );
-      expect(
-        $DoubleDefault(),
         DoubleDefault(42),
       );
     });
@@ -166,10 +154,6 @@ Future<void> main() async {
         StringDefault(),
         StringDefault('42'),
       );
-      expect(
-        $StringDefault(),
-        StringDefault('42'),
-      );
     });
 
     test('List', () {
@@ -177,19 +161,11 @@ Future<void> main() async {
         ListDefault(),
         ListDefault([42]),
       );
-      expect(
-        $ListDefault(),
-        ListDefault([42]),
-      );
     });
 
     test('Type', () {
       expect(
         TypeDefault(),
-        TypeDefault(TypeDefault),
-      );
-      expect(
-        $TypeDefault(),
         TypeDefault(TypeDefault),
       );
     });

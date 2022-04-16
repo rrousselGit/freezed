@@ -10,6 +10,10 @@ targets:
           include:
             - test/integration/*
             - test/integration/**/*
+      source_gen|combining_builder:
+        options:
+          ignore_for_file:
+            - "type-lint"
 
 builders:
   freezed:
