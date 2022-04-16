@@ -380,6 +380,36 @@ Future<void> main() async {
         <String, dynamic>{'runtimeType': 'second_value', 'a': 21},
       );
     });
+
+    test('FreezedUnionCase.screamingSnake fromJson', () {
+      expect(
+        UnionValueCaseScreamingSnake.fromJson(<String, dynamic>{
+          'runtimeType': 'FIRST',
+          'a': 42,
+        }),
+        UnionValueCaseScreamingSnake.first(42),
+      );
+
+      expect(
+        UnionValueCaseScreamingSnake.fromJson(<String, dynamic>{
+          'runtimeType': 'SECOND_VALUE',
+          'a': 21,
+        }),
+        UnionValueCaseScreamingSnake.secondValue(21),
+      );
+    });
+
+    test('FreezedUnionCase.screamingSnake toJson', () {
+      expect(
+        UnionValueCaseScreamingSnake.first(42).toJson(),
+        <String, dynamic>{'runtimeType': 'FIRST', 'a': 42},
+      );
+
+      expect(
+        UnionValueCaseScreamingSnake.secondValue(21).toJson(),
+        <String, dynamic>{'runtimeType': 'SECOND_VALUE', 'a': 21},
+      );
+    });
   });
 
   group('JsonSerializable.disallowUnrecognizedKeys', () {
@@ -572,6 +602,38 @@ Future<void> main() async {
         expect(
           UnrecognizedKeysUnionValueCaseSnake.secondValue(21).toJson(),
           <String, dynamic>{'runtimeType': 'second_value', 'a': 21},
+        );
+      });
+
+      test('FreezedUnionCase.screamingScreamingSnake fromJson', () {
+        expect(
+          UnrecognizedKeysUnionValueCaseScreamingSnake
+              .fromJson(<String, dynamic>{
+            'runtimeType': 'FIRST',
+            'a': 42,
+          }),
+          UnrecognizedKeysUnionValueCaseScreamingSnake.first(42),
+        );
+
+        expect(
+          UnrecognizedKeysUnionValueCaseScreamingSnake
+              .fromJson(<String, dynamic>{
+            'runtimeType': 'SECOND_VALUE',
+            'a': 21,
+          }),
+          UnrecognizedKeysUnionValueCaseScreamingSnake.secondValue(21),
+        );
+      });
+
+      test('FreezedUnionCase.screamingScreamingSnake toJson', () {
+        expect(
+          UnrecognizedKeysUnionValueCaseScreamingSnake.first(42).toJson(),
+          <String, dynamic>{'runtimeType': 'FIRST', 'a': 42},
+        );
+
+        expect(
+          UnrecognizedKeysUnionValueCaseScreamingSnake.secondValue(21).toJson(),
+          <String, dynamic>{'runtimeType': 'SECOND_VALUE', 'a': 21},
         );
       });
     });
