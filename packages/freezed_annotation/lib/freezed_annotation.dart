@@ -1,15 +1,20 @@
+import 'package:json_annotation/json_annotation.dart';
+
 export 'package:collection/collection.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:meta/meta.dart';
 
+part 'freezed_annotation.g.dart';
+
 /// Options for enabling/disabling specific `Union.map` features;
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class FreezedMap {
   /// Options for enabling/disabling specific `Union.map` features;
-  const FreezedMap({
-    this.map,
-    this.mapOrNull,
-    this.maybeMap,
-  });
+  const FreezedMap({this.map, this.mapOrNull, this.maybeMap});
+
+  /// Decode a [FreezedMap] from a build.yaml
+  factory FreezedMap.fromJson(Map<String, Object?> json) =>
+      _$FreezedMapFromJson(json);
 
   /// Enables the generation of all `Union.map` features
   static const all = FreezedMap(map: true, mapOrNull: true, maybeMap: true);
@@ -21,22 +26,26 @@ class FreezedMap {
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? map;
 
   /// Whether to generate `Union.mapOrNull`
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? mapOrNull;
 
   /// Whether to generate `Union.maybeMap`
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? maybeMap;
 }
 
 /// Options for enabling/disabling specific `Union.when` features;
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class FreezedWhen {
   /// Options for enabling/disabling specific `Union.when` features;
   const FreezedWhen({
@@ -44,6 +53,10 @@ class FreezedWhen {
     this.whenOrNull,
     this.maybeWhen,
   });
+
+  /// Decode a [FreezedWhen] from a build.yaml
+  factory FreezedWhen.fromJson(Map<String, Object?> json) =>
+      _$FreezedWhenFromJson(json);
 
   /// Enables the generation of all `Union.when` features
   static const all = FreezedWhen(when: true, whenOrNull: true, maybeWhen: true);
@@ -59,29 +72,33 @@ class FreezedWhen {
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? when;
 
   /// Whether to generate `Union.whenOrNull`
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? whenOrNull;
 
   /// Whether to generate `Union.maybeWhen`
   ///
   /// If null, will fallback to the build.yaml configs.
   /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? maybeWhen;
 }
 
 /// {@template freezed_annotation.freezed}
 /// Flags a class as needing to be processed by Freezed and allows passing options.
 /// {@endtemplate}
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class Freezed {
   /// {@template freezed_annotation.freezed}
   const Freezed({
     this.unionKey,
-    this.unionValueCase = FreezedUnionCase.none,
+    this.unionValueCase,
     this.fallbackUnion,
     this.copyWith,
     this.equal,
@@ -93,6 +110,10 @@ class Freezed {
     @Deprecated('use `Freezed(map: )` instead') this.maybeMap,
     @Deprecated('use `Freezed(when: )` instead') this.maybeWhen,
   });
+
+  /// Decode the options from a build.yaml
+  factory Freezed.fromJson(Map<String, Object?> json) =>
+      _$FreezedFromJson(json);
 
   /// Determines what key should be used to de/serialize union types.
   ///
@@ -141,6 +162,7 @@ class Freezed {
   ///   print(Union.second().toJson()); // { 'type': 'second' }
   /// }
   /// ```
+  @JsonKey(defaultValue: 'runtimeType')
   final String? unionKey;
 
   /// Determines how the value used to de/serialize union types would be
@@ -173,7 +195,8 @@ class Freezed {
   ///
   /// You can also use [FreezedUnionValue] annotation to customize single
   /// union case.
-  final FreezedUnionCase unionValueCase;
+  @JsonKey(defaultValue: FreezedUnionCase.none)
+  final FreezedUnionCase? unionValueCase;
 
   /// Determines which constructor should be used when there is no matching one
   /// through constructor name or using [FreezedUnionValue]
@@ -215,18 +238,21 @@ class Freezed {
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// Of that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? toStringOverride;
 
   /// Whether to generate a `fromJson` or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// Of that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? equal;
 
   /// Whether to generate a `fromJson` or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// Of that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
   final bool? copyWith;
 
   /// Whether to generate a `fromJson` or not
@@ -327,6 +353,7 @@ class Freezed {
   /// }
   /// ```
   @Deprecated('use `Freezed(map: )` instead')
+  @JsonKey(defaultValue: true)
   final bool? maybeMap;
 
   /// Allow to deactive the maybeWhen generation.
@@ -345,6 +372,7 @@ class Freezed {
   /// }
   /// ```
   @Deprecated('use `Freezed(when: )` instead')
+  @JsonKey(defaultValue: true)
   final bool? maybeWhen;
 }
 
@@ -486,6 +514,7 @@ class FreezedUnionValue {
 }
 
 /// Options for automatic union values renaming.
+@JsonEnum(fieldRename: FieldRename.snake)
 enum FreezedUnionCase {
   /// Use the name without changes.
   none,
