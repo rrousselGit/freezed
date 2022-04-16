@@ -3,13 +3,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'optionnal_maybe.freezed.dart';
 part 'optionnal_maybe.g.dart';
 
-@Freezed(map: FreezedMap.none)
+@Freezed(map: FreezedMapOptions.none)
 class OptionnalMaybeMap with _$OptionnalMaybeMap {
   const factory OptionnalMaybeMap.first() = OptionnalMaybeMap1;
   const factory OptionnalMaybeMap.second() = OptionnalMaybeMap2;
 }
 
-@Freezed(when: FreezedWhen.none)
+@Freezed(when: FreezedWhenOptions.none)
 class OptionnalMaybeWhen with _$OptionnalMaybeWhen {
   const factory OptionnalMaybeWhen.first() = OptionnalMaybeWhen1;
   const factory OptionnalMaybeWhen.second() = OptionnalMaybeWhen2;
@@ -30,12 +30,12 @@ class OptionalEqual with _$OptionalEqual {
   factory OptionalEqual() = _OptionalEqual;
 }
 
-@Freezed(map: FreezedMap.all, when: FreezedWhen.all)
+@Freezed(map: FreezedMapOptions.all, when: FreezedWhenOptions.all)
 class ForceUnionMethod with _$ForceUnionMethod {
   factory ForceUnionMethod() = _ForceUnionMethod;
 }
 
-@Freezed(map: FreezedMap.all, when: FreezedWhen.all)
+@Freezed(map: FreezedMapOptions.all, when: FreezedWhenOptions.all)
 class ForceUnionMethod2 with _$ForceUnionMethod2 {
   factory ForceUnionMethod2.two() = _ForceUnionMethod2;
 }

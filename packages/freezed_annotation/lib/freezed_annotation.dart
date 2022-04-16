@@ -8,19 +8,21 @@ part 'freezed_annotation.g.dart';
 
 /// Options for enabling/disabling specific `Union.map` features;
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
-class FreezedMap {
+class FreezedMapOptions {
   /// Options for enabling/disabling specific `Union.map` features;
-  const FreezedMap({this.map, this.mapOrNull, this.maybeMap});
+  const FreezedMapOptions({this.map, this.mapOrNull, this.maybeMap});
 
-  /// Decode a [FreezedMap] from a build.yaml
-  factory FreezedMap.fromJson(Map<String, Object?> json) =>
+  /// Decode a [FreezedMapOptions] from a build.yaml
+  factory FreezedMapOptions.fromJson(Map<String, Object?> json) =>
       _$FreezedMapFromJson(json);
 
   /// Enables the generation of all `Union.map` features
-  static const all = FreezedMap(map: true, mapOrNull: true, maybeMap: true);
+  static const all =
+      FreezedMapOptions(map: true, mapOrNull: true, maybeMap: true);
 
   /// Disables the generation of all `Union.map` features
-  static const none = FreezedMap(map: false, mapOrNull: false, maybeMap: false);
+  static const none =
+      FreezedMapOptions(map: false, mapOrNull: false, maybeMap: false);
 
   /// Whether to generate `Union.map`
   ///
@@ -46,23 +48,23 @@ class FreezedMap {
 
 /// Options for enabling/disabling specific `Union.when` features;
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
-class FreezedWhen {
+class FreezedWhenOptions {
   /// Options for enabling/disabling specific `Union.when` features;
-  const FreezedWhen({
+  const FreezedWhenOptions({
     this.when,
     this.whenOrNull,
     this.maybeWhen,
   });
 
-  /// Decode a [FreezedWhen] from a build.yaml
-  factory FreezedWhen.fromJson(Map<String, Object?> json) =>
+  /// Decode a [FreezedWhenOptions] from a build.yaml
+  factory FreezedWhenOptions.fromJson(Map<String, Object?> json) =>
       _$FreezedWhenFromJson(json);
 
   /// Enables the generation of all `Union.when` features
-  static const all = FreezedWhen(when: true, whenOrNull: true, maybeWhen: true);
+  static const all = FreezedWhenOptions(when: true, whenOrNull: true, maybeWhen: true);
 
   /// Disables the generation of all `Union.when` features
-  static const none = FreezedWhen(
+  static const none = FreezedWhenOptions(
     when: false,
     whenOrNull: false,
     maybeWhen: false,
@@ -325,14 +327,14 @@ class Freezed {
   /// Options for customizing the generation of `map` functions
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
-  /// If that value is null too, defaults to [FreezedMap.all].
-  final FreezedMap? map;
+  /// If that value is null too, defaults to [FreezedMapOptions.all].
+  final FreezedMapOptions? map;
 
   /// Options for customizing the generation of `when` functions
   ///
   /// If null, picks up the default values from the project's `build.yaml`
-  /// If that value is null too, defaults to [FreezedWhen.all].
-  final FreezedWhen? when;
+  /// If that value is null too, defaults to [FreezedWhenOptions.all].
+  final FreezedWhenOptions? when;
 }
 
 /// An annotation for the `freezed` package.

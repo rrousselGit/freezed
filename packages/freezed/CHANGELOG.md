@@ -10,7 +10,7 @@
 - Removed `@Freezed(maybeMap: )` & `@Freezed(maybeWhen: )` in favor of a separate:
 
   ```Dart
-  @Freezed(map: FreezedMap(...), when: FreezedWhen(...))
+  @Freezed(map: FreezedMap(...), when: FreezedWhenOptions(...))
   ```
 
 - Feat: Add screaming snake union case type (#617) (thanks to @zbarbuto)

@@ -443,7 +443,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       map: annotation?.decodeField(
         'map',
         decode: (obj) {
-          return FreezedMap(
+          return FreezedMapOptions(
             map: obj.decodeField(
               'map',
               decode: (obj) => obj.toBoolValue(),
@@ -493,7 +493,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       when: annotation?.decodeField(
         'when',
         decode: (obj) {
-          return FreezedWhen(
+          return FreezedWhenOptions(
             when: obj.decodeField(
               'when',
               decode: (obj) => obj.toBoolValue(),

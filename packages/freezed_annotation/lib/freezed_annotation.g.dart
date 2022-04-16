@@ -8,13 +8,14 @@ part of 'freezed_annotation.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FreezedMap _$FreezedMapFromJson(Map<String, dynamic> json) => FreezedMap(
+FreezedMapOptions _$FreezedMapFromJson(Map<String, dynamic> json) =>
+    FreezedMapOptions(
       map: json['map'] as bool? ?? true,
       mapOrNull: json['map_or_null'] as bool? ?? true,
       maybeMap: json['maybe_map'] as bool? ?? true,
     );
 
-FreezedWhen _$FreezedWhenFromJson(Map<String, dynamic> json) => FreezedWhen(
+FreezedWhenOptions _$FreezedWhenFromJson(Map<String, dynamic> json) => FreezedWhenOptions(
       when: json['when'] as bool? ?? true,
       whenOrNull: json['when_or_null'] as bool? ?? true,
       maybeWhen: json['maybe_when'] as bool? ?? true,
@@ -32,10 +33,10 @@ Freezed _$FreezedFromJson(Map<String, dynamic> json) => Freezed(
       toJson: json['to_json'] as bool?,
       map: json['map'] == null
           ? null
-          : FreezedMap.fromJson(json['map'] as Map<String, dynamic>),
+          : FreezedMapOptions.fromJson(json['map'] as Map<String, dynamic>),
       when: json['when'] == null
           ? null
-          : FreezedWhen.fromJson(json['when'] as Map<String, dynamic>),
+          : FreezedWhenOptions.fromJson(json['when'] as Map<String, dynamic>),
     );
 
 const _$FreezedUnionCaseEnumMap = {
