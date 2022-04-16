@@ -15,7 +15,8 @@ FreezedMapOptions _$FreezedMapFromJson(Map<String, dynamic> json) =>
       maybeMap: json['maybe_map'] as bool? ?? true,
     );
 
-FreezedWhenOptions _$FreezedWhenFromJson(Map<String, dynamic> json) => FreezedWhenOptions(
+FreezedWhenOptions _$FreezedWhenFromJson(Map<String, dynamic> json) =>
+    FreezedWhenOptions(
       when: json['when'] as bool? ?? true,
       whenOrNull: json['when_or_null'] as bool? ?? true,
       maybeWhen: json['maybe_when'] as bool? ?? true,

@@ -61,7 +61,8 @@ class FreezedWhenOptions {
       _$FreezedWhenFromJson(json);
 
   /// Enables the generation of all `Union.when` features
-  static const all = FreezedWhenOptions(when: true, whenOrNull: true, maybeWhen: true);
+  static const all =
+      FreezedWhenOptions(when: true, whenOrNull: true, maybeWhen: true);
 
   /// Disables the generation of all `Union.when` features
   static const none = FreezedWhenOptions(
