@@ -71,7 +71,9 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       needsJsonSerializable: needsJsonSerializable,
       unionKey: configs.unionKey!,
       constructors: constructorsNeedsGeneration,
+      // ignore: deprecated_member_use
       shouldGenerateMaybeMap: configs.maybeMap!,
+      // ignore: deprecated_member_use
       shouldGenerateMaybeWhen: configs.maybeWhen!,
       concretePropertiesName: [
         for (final p in element.fields)
@@ -434,7 +436,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       unionKey: rawUnionKey.replaceAll("'", r"\'").replaceAll(r'$', r'\$'),
       fallbackUnion: fallbackUnion,
       unionValueCase: unionValueCase,
+      // ignore: deprecated_member_use
       maybeMap: maybeMap,
+      // ignore: deprecated_member_use
       maybeWhen: maybeWhen,
     );
   }

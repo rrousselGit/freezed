@@ -90,7 +90,7 @@ class Freezed {
     this.toJson,
     this.map,
     this.when,
-    this.maybeMap,
+    @Deprecated('use `Freezed(map: )` instead') this.maybeMap,
     @Deprecated('use `Freezed(when: )` instead') this.maybeWhen,
   });
 
