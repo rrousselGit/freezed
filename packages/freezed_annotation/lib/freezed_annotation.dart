@@ -2,6 +2,78 @@ export 'package:collection/collection.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:meta/meta.dart';
 
+/// Options for enabling/disabling specific `Union.map` features;
+class FreezedMap {
+  /// Options for enabling/disabling specific `Union.map` features;
+  const FreezedMap({
+    this.map,
+    this.mapOrNull,
+    this.maybeMap,
+  });
+
+  /// Enables the generation of all `Union.map` features
+  static const all = FreezedMap(map: true, mapOrNull: true, maybeMap: true);
+
+  /// Disables the generation of all `Union.map` features
+  static const none = FreezedMap(map: false, mapOrNull: false, maybeMap: false);
+
+  /// Whether to generate `Union.map`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? map;
+
+  /// Whether to generate `Union.mapOrNull`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? mapOrNull;
+
+  /// Whether to generate `Union.maybeMap`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? maybeMap;
+}
+
+/// Options for enabling/disabling specific `Union.when` features;
+class FreezedWhen {
+  /// Options for enabling/disabling specific `Union.when` features;
+  const FreezedWhen({
+    this.when,
+    this.whenOrNull,
+    this.maybeWhen,
+  });
+
+  /// Enables the generation of all `Union.when` features
+  static const all = FreezedWhen(when: true, whenOrNull: true, maybeWhen: true);
+
+  /// Disables the generation of all `Union.when` features
+  static const none = FreezedWhen(
+    when: false,
+    whenOrNull: false,
+    maybeWhen: false,
+  );
+
+  /// Whether to generate `Union.when`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? when;
+
+  /// Whether to generate `Union.whenOrNull`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? whenOrNull;
+
+  /// Whether to generate `Union.maybeWhen`
+  ///
+  /// If null, will fallback to the build.yaml configs.
+  /// If that value is null too, defaults to true.
+  final bool? maybeWhen;
+}
+
 /// {@template freezed_annotation.freezed}
 /// Flags a class as needing to be processed by Freezed and allows passing options.
 /// {@endtemplate}
@@ -11,8 +83,15 @@ class Freezed {
     this.unionKey,
     this.unionValueCase = FreezedUnionCase.none,
     this.fallbackUnion,
+    this.copyWith,
+    this.equal,
+    this.toStringOverride,
+    this.fromJson,
+    this.toJson,
+    this.map,
+    this.when,
     this.maybeMap,
-    this.maybeWhen,
+    @Deprecated('use `Freezed(when: )` instead') this.maybeWhen,
   });
 
   /// Determines what key should be used to de/serialize union types.
@@ -132,6 +211,106 @@ class Freezed {
   /// ```
   final String? fallbackUnion;
 
+  /// Whether to generate a `fromJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// Of that value is null too, defaults to true.
+  final bool? toStringOverride;
+
+  /// Whether to generate a `fromJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// Of that value is null too, defaults to true.
+  final bool? equal;
+
+  /// Whether to generate a `fromJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// Of that value is null too, defaults to true.
+  final bool? copyWith;
+
+  /// Whether to generate a `fromJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  ///
+  /// If that value is null too, will be inferred based on whether the Freezed
+  /// class has a `fromJson` constructor`, such that
+  ///
+  /// ```dart
+  /// @freezed
+  /// class Example with _$Example {
+  ///   factory Example(int a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json) => _$ExampleFromJson(json);
+  /// }
+  /// ```
+  ///
+  /// generates a `fromJson`.
+  ///
+  /// On the other hand, changing `fromJson(Map json) => _$ExampleFromJson(json)`
+  /// to no-longer  use `=>` and instead use `{ return }`  will disable the
+  /// generation of `fromJson`,
+  ///
+  /// ```dart
+  /// @freezed
+  /// class Example with _$Example {
+  ///   factory Example(int a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json) {
+  ///     // Will not generate a _$ExampleFromJson class as we are using `{ return }`
+  ///     return {...};
+  ///   }
+  /// }
+  /// ```
+  final bool? fromJson;
+
+  /// Whether to generate a `toJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  ///
+  /// If that value is null too, will be inferred based on whether the Freezed
+  /// class has a `fromJson` constructor`, such that
+  ///
+  /// ```dart
+  /// @freezed
+  /// class Example with _$Example {
+  ///   factory Example(int a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json) => _$ExampleFromJson(json);
+  /// }
+  /// ```
+  ///
+  /// generates a `toJson`.
+  ///
+  /// On the other hand, changing `fromJson(Map json) => _$ExampleFromJson(json)`
+  /// to no-longer  use `=>` and instead use `{ return }`  will disable the
+  /// generation of `toJson`,
+  ///
+  /// ```dart
+  /// @freezed
+  /// class Example with _$Example {
+  ///   factory Example(int a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json) {
+  ///     // Will not generate a _$ExampleFromJson class as we are using `{ return }`
+  ///     return {...};
+  ///   }
+  /// }
+  /// ```
+  final bool? toJson;
+
+  /// Options for customizing the generation of `map` functions
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// If that value is null too, defaults to [FreezedMap.all].
+  final FreezedMap? map;
+
+  /// Options for customizing the generation of `when` functions
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`
+  /// If that value is null too, defaults to [FreezedWhen.all].
+  final FreezedWhen? when;
+
   /// Allow to deactive the maybeMap generation.
   /// ```dart
   /// @Freezed(maybeMap: false)
@@ -147,6 +326,7 @@ class Freezed {
   ///   print(Union.first().maybeMap(orElse: () => null)); // Error
   /// }
   /// ```
+  @Deprecated('use `Freezed(map: )` instead')
   final bool? maybeMap;
 
   /// Allow to deactive the maybeWhen generation.
@@ -164,6 +344,7 @@ class Freezed {
   ///   print(Union.first().maybeWhen(orElse: () => null)); // Error
   /// }
   /// ```
+  @Deprecated('use `Freezed(when: )` instead')
   final bool? maybeWhen;
 }
 
