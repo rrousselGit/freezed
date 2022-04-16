@@ -65,26 +65,46 @@ class ConstructorDetails with _$ConstructorDetails {
 }
 
 @freezed
+class MapConfig with _$MapConfig {
+  factory MapConfig({
+    required bool map,
+    required bool mapOrNull,
+    required bool maybeMap,
+  }) = _MapConfig;
+}
+
+@freezed
+class WhenConfig with _$WhenConfig {
+  factory WhenConfig({
+    required bool when,
+    required bool whenOrNull,
+    required bool maybeWhen,
+  }) = _WhenConfig;
+}
+
+@freezed
 class Data with _$Data {
   @Assert('constructors.isNotEmpty')
   factory Data({
     required String name,
-    required bool needsJsonSerializable,
     required String unionKey,
+    required bool generateCopyWith,
+    required bool generateEqual,
+    required bool generateToString,
+    required MapConfig map,
+    required WhenConfig when,
+    required bool generateFromJson,
+    required bool generateToJson,
     required List<String> concretePropertiesName,
     required List<ConstructorDetails> constructors,
     required GenericsDefinitionTemplate genericsDefinitionTemplate,
     required GenericsParameterTemplate genericsParameterTemplate,
     required bool shouldUseExtends,
-    required bool hasCustomToString,
-    required bool hasCustomEquals,
-    required bool shouldGenerateMaybeMap,
-    required bool shouldGenerateMaybeWhen,
   }) = _Data;
 }
 
 @freezed
-abstract class GlobalData with _$GlobalData {
+class GlobalData with _$GlobalData {
   factory GlobalData({
     required bool hasJson,
     required bool hasDiagnostics,

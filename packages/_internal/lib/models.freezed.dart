@@ -11,7 +11,7 @@ part of 'models.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 class _$CloneablePropertyTearOff {
@@ -737,35 +737,369 @@ abstract class _ConstructorDetails extends ConstructorDetails {
 }
 
 /// @nodoc
+class _$MapConfigTearOff {
+  const _$MapConfigTearOff();
+
+  _MapConfig call(
+      {required bool map, required bool mapOrNull, required bool maybeMap}) {
+    return _MapConfig(
+      map: map,
+      mapOrNull: mapOrNull,
+      maybeMap: maybeMap,
+    );
+  }
+}
+
+/// @nodoc
+const $MapConfig = _$MapConfigTearOff();
+
+/// @nodoc
+mixin _$MapConfig {
+  bool get map => throw _privateConstructorUsedError;
+  bool get mapOrNull => throw _privateConstructorUsedError;
+  bool get maybeMap => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $MapConfigCopyWith<MapConfig> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MapConfigCopyWith<$Res> {
+  factory $MapConfigCopyWith(MapConfig value, $Res Function(MapConfig) then) =
+      _$MapConfigCopyWithImpl<$Res>;
+  $Res call({bool map, bool mapOrNull, bool maybeMap});
+}
+
+/// @nodoc
+class _$MapConfigCopyWithImpl<$Res> implements $MapConfigCopyWith<$Res> {
+  _$MapConfigCopyWithImpl(this._value, this._then);
+
+  final MapConfig _value;
+  // ignore: unused_field
+  final $Res Function(MapConfig) _then;
+
+  @override
+  $Res call({
+    Object? map = freezed,
+    Object? mapOrNull = freezed,
+    Object? maybeMap = freezed,
+  }) {
+    return _then(_value.copyWith(
+      map: map == freezed
+          ? _value.map
+          : map // ignore: cast_nullable_to_non_nullable
+              as bool,
+      mapOrNull: mapOrNull == freezed
+          ? _value.mapOrNull
+          : mapOrNull // ignore: cast_nullable_to_non_nullable
+              as bool,
+      maybeMap: maybeMap == freezed
+          ? _value.maybeMap
+          : maybeMap // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$MapConfigCopyWith<$Res> implements $MapConfigCopyWith<$Res> {
+  factory _$MapConfigCopyWith(
+          _MapConfig value, $Res Function(_MapConfig) then) =
+      __$MapConfigCopyWithImpl<$Res>;
+  @override
+  $Res call({bool map, bool mapOrNull, bool maybeMap});
+}
+
+/// @nodoc
+class __$MapConfigCopyWithImpl<$Res> extends _$MapConfigCopyWithImpl<$Res>
+    implements _$MapConfigCopyWith<$Res> {
+  __$MapConfigCopyWithImpl(_MapConfig _value, $Res Function(_MapConfig) _then)
+      : super(_value, (v) => _then(v as _MapConfig));
+
+  @override
+  _MapConfig get _value => super._value as _MapConfig;
+
+  @override
+  $Res call({
+    Object? map = freezed,
+    Object? mapOrNull = freezed,
+    Object? maybeMap = freezed,
+  }) {
+    return _then(_MapConfig(
+      map: map == freezed
+          ? _value.map
+          : map // ignore: cast_nullable_to_non_nullable
+              as bool,
+      mapOrNull: mapOrNull == freezed
+          ? _value.mapOrNull
+          : mapOrNull // ignore: cast_nullable_to_non_nullable
+              as bool,
+      maybeMap: maybeMap == freezed
+          ? _value.maybeMap
+          : maybeMap // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_MapConfig implements _MapConfig {
+  _$_MapConfig(
+      {required this.map, required this.mapOrNull, required this.maybeMap});
+
+  @override
+  final bool map;
+  @override
+  final bool mapOrNull;
+  @override
+  final bool maybeMap;
+
+  @override
+  String toString() {
+    return 'MapConfig(map: $map, mapOrNull: $mapOrNull, maybeMap: $maybeMap)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _MapConfig &&
+            (identical(other.map, map) || other.map == map) &&
+            (identical(other.mapOrNull, mapOrNull) ||
+                other.mapOrNull == mapOrNull) &&
+            (identical(other.maybeMap, maybeMap) ||
+                other.maybeMap == maybeMap));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, map, mapOrNull, maybeMap);
+
+  @JsonKey(ignore: true)
+  @override
+  _$MapConfigCopyWith<_MapConfig> get copyWith =>
+      __$MapConfigCopyWithImpl<_MapConfig>(this, _$identity);
+}
+
+abstract class _MapConfig implements MapConfig {
+  factory _MapConfig(
+      {required bool map,
+      required bool mapOrNull,
+      required bool maybeMap}) = _$_MapConfig;
+
+  @override
+  bool get map;
+  @override
+  bool get mapOrNull;
+  @override
+  bool get maybeMap;
+  @override
+  @JsonKey(ignore: true)
+  _$MapConfigCopyWith<_MapConfig> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+class _$WhenConfigTearOff {
+  const _$WhenConfigTearOff();
+
+  _WhenConfig call(
+      {required bool when, required bool whenOrNull, required bool maybeWhen}) {
+    return _WhenConfig(
+      when: when,
+      whenOrNull: whenOrNull,
+      maybeWhen: maybeWhen,
+    );
+  }
+}
+
+/// @nodoc
+const $WhenConfig = _$WhenConfigTearOff();
+
+/// @nodoc
+mixin _$WhenConfig {
+  bool get when => throw _privateConstructorUsedError;
+  bool get whenOrNull => throw _privateConstructorUsedError;
+  bool get maybeWhen => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $WhenConfigCopyWith<WhenConfig> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $WhenConfigCopyWith<$Res> {
+  factory $WhenConfigCopyWith(
+          WhenConfig value, $Res Function(WhenConfig) then) =
+      _$WhenConfigCopyWithImpl<$Res>;
+  $Res call({bool when, bool whenOrNull, bool maybeWhen});
+}
+
+/// @nodoc
+class _$WhenConfigCopyWithImpl<$Res> implements $WhenConfigCopyWith<$Res> {
+  _$WhenConfigCopyWithImpl(this._value, this._then);
+
+  final WhenConfig _value;
+  // ignore: unused_field
+  final $Res Function(WhenConfig) _then;
+
+  @override
+  $Res call({
+    Object? when = freezed,
+    Object? whenOrNull = freezed,
+    Object? maybeWhen = freezed,
+  }) {
+    return _then(_value.copyWith(
+      when: when == freezed
+          ? _value.when
+          : when // ignore: cast_nullable_to_non_nullable
+              as bool,
+      whenOrNull: whenOrNull == freezed
+          ? _value.whenOrNull
+          : whenOrNull // ignore: cast_nullable_to_non_nullable
+              as bool,
+      maybeWhen: maybeWhen == freezed
+          ? _value.maybeWhen
+          : maybeWhen // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$WhenConfigCopyWith<$Res> implements $WhenConfigCopyWith<$Res> {
+  factory _$WhenConfigCopyWith(
+          _WhenConfig value, $Res Function(_WhenConfig) then) =
+      __$WhenConfigCopyWithImpl<$Res>;
+  @override
+  $Res call({bool when, bool whenOrNull, bool maybeWhen});
+}
+
+/// @nodoc
+class __$WhenConfigCopyWithImpl<$Res> extends _$WhenConfigCopyWithImpl<$Res>
+    implements _$WhenConfigCopyWith<$Res> {
+  __$WhenConfigCopyWithImpl(
+      _WhenConfig _value, $Res Function(_WhenConfig) _then)
+      : super(_value, (v) => _then(v as _WhenConfig));
+
+  @override
+  _WhenConfig get _value => super._value as _WhenConfig;
+
+  @override
+  $Res call({
+    Object? when = freezed,
+    Object? whenOrNull = freezed,
+    Object? maybeWhen = freezed,
+  }) {
+    return _then(_WhenConfig(
+      when: when == freezed
+          ? _value.when
+          : when // ignore: cast_nullable_to_non_nullable
+              as bool,
+      whenOrNull: whenOrNull == freezed
+          ? _value.whenOrNull
+          : whenOrNull // ignore: cast_nullable_to_non_nullable
+              as bool,
+      maybeWhen: maybeWhen == freezed
+          ? _value.maybeWhen
+          : maybeWhen // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_WhenConfig implements _WhenConfig {
+  _$_WhenConfig(
+      {required this.when, required this.whenOrNull, required this.maybeWhen});
+
+  @override
+  final bool when;
+  @override
+  final bool whenOrNull;
+  @override
+  final bool maybeWhen;
+
+  @override
+  String toString() {
+    return 'WhenConfig(when: $when, whenOrNull: $whenOrNull, maybeWhen: $maybeWhen)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _WhenConfig &&
+            (identical(other.when, when) || other.when == when) &&
+            (identical(other.whenOrNull, whenOrNull) ||
+                other.whenOrNull == whenOrNull) &&
+            (identical(other.maybeWhen, maybeWhen) ||
+                other.maybeWhen == maybeWhen));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, when, whenOrNull, maybeWhen);
+
+  @JsonKey(ignore: true)
+  @override
+  _$WhenConfigCopyWith<_WhenConfig> get copyWith =>
+      __$WhenConfigCopyWithImpl<_WhenConfig>(this, _$identity);
+}
+
+abstract class _WhenConfig implements WhenConfig {
+  factory _WhenConfig(
+      {required bool when,
+      required bool whenOrNull,
+      required bool maybeWhen}) = _$_WhenConfig;
+
+  @override
+  bool get when;
+  @override
+  bool get whenOrNull;
+  @override
+  bool get maybeWhen;
+  @override
+  @JsonKey(ignore: true)
+  _$WhenConfigCopyWith<_WhenConfig> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 class _$DataTearOff {
   const _$DataTearOff();
 
   _Data call(
       {required String name,
-      required bool needsJsonSerializable,
       required String unionKey,
+      required bool generateCopyWith,
+      required bool generateEqual,
+      required bool generateToString,
+      required MapConfig map,
+      required WhenConfig when,
+      required bool generateFromJson,
+      required bool generateToJson,
       required List<String> concretePropertiesName,
       required List<ConstructorDetails> constructors,
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
-      required bool shouldUseExtends,
-      required bool hasCustomToString,
-      required bool hasCustomEquals,
-      required bool shouldGenerateMaybeMap,
-      required bool shouldGenerateMaybeWhen}) {
+      required bool shouldUseExtends}) {
     return _Data(
       name: name,
-      needsJsonSerializable: needsJsonSerializable,
       unionKey: unionKey,
+      generateCopyWith: generateCopyWith,
+      generateEqual: generateEqual,
+      generateToString: generateToString,
+      map: map,
+      when: when,
+      generateFromJson: generateFromJson,
+      generateToJson: generateToJson,
       concretePropertiesName: concretePropertiesName,
       constructors: constructors,
       genericsDefinitionTemplate: genericsDefinitionTemplate,
       genericsParameterTemplate: genericsParameterTemplate,
       shouldUseExtends: shouldUseExtends,
-      hasCustomToString: hasCustomToString,
-      hasCustomEquals: hasCustomEquals,
-      shouldGenerateMaybeMap: shouldGenerateMaybeMap,
-      shouldGenerateMaybeWhen: shouldGenerateMaybeWhen,
     );
   }
 }
@@ -776,8 +1110,14 @@ const $Data = _$DataTearOff();
 /// @nodoc
 mixin _$Data {
   String get name => throw _privateConstructorUsedError;
-  bool get needsJsonSerializable => throw _privateConstructorUsedError;
   String get unionKey => throw _privateConstructorUsedError;
+  bool get generateCopyWith => throw _privateConstructorUsedError;
+  bool get generateEqual => throw _privateConstructorUsedError;
+  bool get generateToString => throw _privateConstructorUsedError;
+  MapConfig get map => throw _privateConstructorUsedError;
+  WhenConfig get when => throw _privateConstructorUsedError;
+  bool get generateFromJson => throw _privateConstructorUsedError;
+  bool get generateToJson => throw _privateConstructorUsedError;
   List<String> get concretePropertiesName => throw _privateConstructorUsedError;
   List<ConstructorDetails> get constructors =>
       throw _privateConstructorUsedError;
@@ -786,10 +1126,6 @@ mixin _$Data {
   GenericsParameterTemplate get genericsParameterTemplate =>
       throw _privateConstructorUsedError;
   bool get shouldUseExtends => throw _privateConstructorUsedError;
-  bool get hasCustomToString => throw _privateConstructorUsedError;
-  bool get hasCustomEquals => throw _privateConstructorUsedError;
-  bool get shouldGenerateMaybeMap => throw _privateConstructorUsedError;
-  bool get shouldGenerateMaybeWhen => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
@@ -801,17 +1137,22 @@ abstract class $DataCopyWith<$Res> {
       _$DataCopyWithImpl<$Res>;
   $Res call(
       {String name,
-      bool needsJsonSerializable,
       String unionKey,
+      bool generateCopyWith,
+      bool generateEqual,
+      bool generateToString,
+      MapConfig map,
+      WhenConfig when,
+      bool generateFromJson,
+      bool generateToJson,
       List<String> concretePropertiesName,
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
-      bool shouldUseExtends,
-      bool hasCustomToString,
-      bool hasCustomEquals,
-      bool shouldGenerateMaybeMap,
-      bool shouldGenerateMaybeWhen});
+      bool shouldUseExtends});
+
+  $MapConfigCopyWith<$Res> get map;
+  $WhenConfigCopyWith<$Res> get when;
 }
 
 /// @nodoc
@@ -825,31 +1166,57 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
   @override
   $Res call({
     Object? name = freezed,
-    Object? needsJsonSerializable = freezed,
     Object? unionKey = freezed,
+    Object? generateCopyWith = freezed,
+    Object? generateEqual = freezed,
+    Object? generateToString = freezed,
+    Object? map = freezed,
+    Object? when = freezed,
+    Object? generateFromJson = freezed,
+    Object? generateToJson = freezed,
     Object? concretePropertiesName = freezed,
     Object? constructors = freezed,
     Object? genericsDefinitionTemplate = freezed,
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
-    Object? hasCustomToString = freezed,
-    Object? hasCustomEquals = freezed,
-    Object? shouldGenerateMaybeMap = freezed,
-    Object? shouldGenerateMaybeWhen = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      needsJsonSerializable: needsJsonSerializable == freezed
-          ? _value.needsJsonSerializable
-          : needsJsonSerializable // ignore: cast_nullable_to_non_nullable
-              as bool,
       unionKey: unionKey == freezed
           ? _value.unionKey
           : unionKey // ignore: cast_nullable_to_non_nullable
               as String,
+      generateCopyWith: generateCopyWith == freezed
+          ? _value.generateCopyWith
+          : generateCopyWith // ignore: cast_nullable_to_non_nullable
+              as bool,
+      generateEqual: generateEqual == freezed
+          ? _value.generateEqual
+          : generateEqual // ignore: cast_nullable_to_non_nullable
+              as bool,
+      generateToString: generateToString == freezed
+          ? _value.generateToString
+          : generateToString // ignore: cast_nullable_to_non_nullable
+              as bool,
+      map: map == freezed
+          ? _value.map
+          : map // ignore: cast_nullable_to_non_nullable
+              as MapConfig,
+      when: when == freezed
+          ? _value.when
+          : when // ignore: cast_nullable_to_non_nullable
+              as WhenConfig,
+      generateFromJson: generateFromJson == freezed
+          ? _value.generateFromJson
+          : generateFromJson // ignore: cast_nullable_to_non_nullable
+              as bool,
+      generateToJson: generateToJson == freezed
+          ? _value.generateToJson
+          : generateToJson // ignore: cast_nullable_to_non_nullable
+              as bool,
       concretePropertiesName: concretePropertiesName == freezed
           ? _value.concretePropertiesName
           : concretePropertiesName // ignore: cast_nullable_to_non_nullable
@@ -870,23 +1237,21 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
           ? _value.shouldUseExtends
           : shouldUseExtends // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasCustomToString: hasCustomToString == freezed
-          ? _value.hasCustomToString
-          : hasCustomToString // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hasCustomEquals: hasCustomEquals == freezed
-          ? _value.hasCustomEquals
-          : hasCustomEquals // ignore: cast_nullable_to_non_nullable
-              as bool,
-      shouldGenerateMaybeMap: shouldGenerateMaybeMap == freezed
-          ? _value.shouldGenerateMaybeMap
-          : shouldGenerateMaybeMap // ignore: cast_nullable_to_non_nullable
-              as bool,
-      shouldGenerateMaybeWhen: shouldGenerateMaybeWhen == freezed
-          ? _value.shouldGenerateMaybeWhen
-          : shouldGenerateMaybeWhen // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
+  }
+
+  @override
+  $MapConfigCopyWith<$Res> get map {
+    return $MapConfigCopyWith<$Res>(_value.map, (value) {
+      return _then(_value.copyWith(map: value));
+    });
+  }
+
+  @override
+  $WhenConfigCopyWith<$Res> get when {
+    return $WhenConfigCopyWith<$Res>(_value.when, (value) {
+      return _then(_value.copyWith(when: value));
+    });
   }
 }
 
@@ -897,17 +1262,24 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
   @override
   $Res call(
       {String name,
-      bool needsJsonSerializable,
       String unionKey,
+      bool generateCopyWith,
+      bool generateEqual,
+      bool generateToString,
+      MapConfig map,
+      WhenConfig when,
+      bool generateFromJson,
+      bool generateToJson,
       List<String> concretePropertiesName,
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
-      bool shouldUseExtends,
-      bool hasCustomToString,
-      bool hasCustomEquals,
-      bool shouldGenerateMaybeMap,
-      bool shouldGenerateMaybeWhen});
+      bool shouldUseExtends});
+
+  @override
+  $MapConfigCopyWith<$Res> get map;
+  @override
+  $WhenConfigCopyWith<$Res> get when;
 }
 
 /// @nodoc
@@ -922,31 +1294,57 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? needsJsonSerializable = freezed,
     Object? unionKey = freezed,
+    Object? generateCopyWith = freezed,
+    Object? generateEqual = freezed,
+    Object? generateToString = freezed,
+    Object? map = freezed,
+    Object? when = freezed,
+    Object? generateFromJson = freezed,
+    Object? generateToJson = freezed,
     Object? concretePropertiesName = freezed,
     Object? constructors = freezed,
     Object? genericsDefinitionTemplate = freezed,
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
-    Object? hasCustomToString = freezed,
-    Object? hasCustomEquals = freezed,
-    Object? shouldGenerateMaybeMap = freezed,
-    Object? shouldGenerateMaybeWhen = freezed,
   }) {
     return _then(_Data(
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      needsJsonSerializable: needsJsonSerializable == freezed
-          ? _value.needsJsonSerializable
-          : needsJsonSerializable // ignore: cast_nullable_to_non_nullable
-              as bool,
       unionKey: unionKey == freezed
           ? _value.unionKey
           : unionKey // ignore: cast_nullable_to_non_nullable
               as String,
+      generateCopyWith: generateCopyWith == freezed
+          ? _value.generateCopyWith
+          : generateCopyWith // ignore: cast_nullable_to_non_nullable
+              as bool,
+      generateEqual: generateEqual == freezed
+          ? _value.generateEqual
+          : generateEqual // ignore: cast_nullable_to_non_nullable
+              as bool,
+      generateToString: generateToString == freezed
+          ? _value.generateToString
+          : generateToString // ignore: cast_nullable_to_non_nullable
+              as bool,
+      map: map == freezed
+          ? _value.map
+          : map // ignore: cast_nullable_to_non_nullable
+              as MapConfig,
+      when: when == freezed
+          ? _value.when
+          : when // ignore: cast_nullable_to_non_nullable
+              as WhenConfig,
+      generateFromJson: generateFromJson == freezed
+          ? _value.generateFromJson
+          : generateFromJson // ignore: cast_nullable_to_non_nullable
+              as bool,
+      generateToJson: generateToJson == freezed
+          ? _value.generateToJson
+          : generateToJson // ignore: cast_nullable_to_non_nullable
+              as bool,
       concretePropertiesName: concretePropertiesName == freezed
           ? _value.concretePropertiesName
           : concretePropertiesName // ignore: cast_nullable_to_non_nullable
@@ -967,22 +1365,6 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
           ? _value.shouldUseExtends
           : shouldUseExtends // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasCustomToString: hasCustomToString == freezed
-          ? _value.hasCustomToString
-          : hasCustomToString // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hasCustomEquals: hasCustomEquals == freezed
-          ? _value.hasCustomEquals
-          : hasCustomEquals // ignore: cast_nullable_to_non_nullable
-              as bool,
-      shouldGenerateMaybeMap: shouldGenerateMaybeMap == freezed
-          ? _value.shouldGenerateMaybeMap
-          : shouldGenerateMaybeMap // ignore: cast_nullable_to_non_nullable
-              as bool,
-      shouldGenerateMaybeWhen: shouldGenerateMaybeWhen == freezed
-          ? _value.shouldGenerateMaybeWhen
-          : shouldGenerateMaybeWhen // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -992,25 +1374,39 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
 class _$_Data implements _Data {
   _$_Data(
       {required this.name,
-      required this.needsJsonSerializable,
       required this.unionKey,
+      required this.generateCopyWith,
+      required this.generateEqual,
+      required this.generateToString,
+      required this.map,
+      required this.when,
+      required this.generateFromJson,
+      required this.generateToJson,
       required this.concretePropertiesName,
       required this.constructors,
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
-      required this.shouldUseExtends,
-      required this.hasCustomToString,
-      required this.hasCustomEquals,
-      required this.shouldGenerateMaybeMap,
-      required this.shouldGenerateMaybeWhen})
+      required this.shouldUseExtends})
       : assert(constructors.isNotEmpty);
 
   @override
   final String name;
   @override
-  final bool needsJsonSerializable;
-  @override
   final String unionKey;
+  @override
+  final bool generateCopyWith;
+  @override
+  final bool generateEqual;
+  @override
+  final bool generateToString;
+  @override
+  final MapConfig map;
+  @override
+  final WhenConfig when;
+  @override
+  final bool generateFromJson;
+  @override
+  final bool generateToJson;
   @override
   final List<String> concretePropertiesName;
   @override
@@ -1021,18 +1417,10 @@ class _$_Data implements _Data {
   final GenericsParameterTemplate genericsParameterTemplate;
   @override
   final bool shouldUseExtends;
-  @override
-  final bool hasCustomToString;
-  @override
-  final bool hasCustomEquals;
-  @override
-  final bool shouldGenerateMaybeMap;
-  @override
-  final bool shouldGenerateMaybeWhen;
 
   @override
   String toString() {
-    return 'Data(name: $name, needsJsonSerializable: $needsJsonSerializable, unionKey: $unionKey, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, hasCustomToString: $hasCustomToString, hasCustomEquals: $hasCustomEquals, shouldGenerateMaybeMap: $shouldGenerateMaybeMap, shouldGenerateMaybeWhen: $shouldGenerateMaybeWhen)';
+    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
   }
 
   @override
@@ -1041,10 +1429,20 @@ class _$_Data implements _Data {
         (other.runtimeType == runtimeType &&
             other is _Data &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.needsJsonSerializable, needsJsonSerializable) ||
-                other.needsJsonSerializable == needsJsonSerializable) &&
             (identical(other.unionKey, unionKey) ||
                 other.unionKey == unionKey) &&
+            (identical(other.generateCopyWith, generateCopyWith) ||
+                other.generateCopyWith == generateCopyWith) &&
+            (identical(other.generateEqual, generateEqual) ||
+                other.generateEqual == generateEqual) &&
+            (identical(other.generateToString, generateToString) ||
+                other.generateToString == generateToString) &&
+            (identical(other.map, map) || other.map == map) &&
+            (identical(other.when, when) || other.when == when) &&
+            (identical(other.generateFromJson, generateFromJson) ||
+                other.generateFromJson == generateFromJson) &&
+            (identical(other.generateToJson, generateToJson) ||
+                other.generateToJson == generateToJson) &&
             const DeepCollectionEquality()
                 .equals(other.concretePropertiesName, concretePropertiesName) &&
             const DeepCollectionEquality()
@@ -1057,33 +1455,26 @@ class _$_Data implements _Data {
                     genericsParameterTemplate) ||
                 other.genericsParameterTemplate == genericsParameterTemplate) &&
             (identical(other.shouldUseExtends, shouldUseExtends) ||
-                other.shouldUseExtends == shouldUseExtends) &&
-            (identical(other.hasCustomToString, hasCustomToString) ||
-                other.hasCustomToString == hasCustomToString) &&
-            (identical(other.hasCustomEquals, hasCustomEquals) ||
-                other.hasCustomEquals == hasCustomEquals) &&
-            (identical(other.shouldGenerateMaybeMap, shouldGenerateMaybeMap) ||
-                other.shouldGenerateMaybeMap == shouldGenerateMaybeMap) &&
-            (identical(
-                    other.shouldGenerateMaybeWhen, shouldGenerateMaybeWhen) ||
-                other.shouldGenerateMaybeWhen == shouldGenerateMaybeWhen));
+                other.shouldUseExtends == shouldUseExtends));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       name,
-      needsJsonSerializable,
       unionKey,
+      generateCopyWith,
+      generateEqual,
+      generateToString,
+      map,
+      when,
+      generateFromJson,
+      generateToJson,
       const DeepCollectionEquality().hash(concretePropertiesName),
       const DeepCollectionEquality().hash(constructors),
       genericsDefinitionTemplate,
       genericsParameterTemplate,
-      shouldUseExtends,
-      hasCustomToString,
-      hasCustomEquals,
-      shouldGenerateMaybeMap,
-      shouldGenerateMaybeWhen);
+      shouldUseExtends);
 
   @JsonKey(ignore: true)
   @override
@@ -1094,24 +1485,38 @@ class _$_Data implements _Data {
 abstract class _Data implements Data {
   factory _Data(
       {required String name,
-      required bool needsJsonSerializable,
       required String unionKey,
+      required bool generateCopyWith,
+      required bool generateEqual,
+      required bool generateToString,
+      required MapConfig map,
+      required WhenConfig when,
+      required bool generateFromJson,
+      required bool generateToJson,
       required List<String> concretePropertiesName,
       required List<ConstructorDetails> constructors,
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
-      required bool shouldUseExtends,
-      required bool hasCustomToString,
-      required bool hasCustomEquals,
-      required bool shouldGenerateMaybeMap,
-      required bool shouldGenerateMaybeWhen}) = _$_Data;
+      required bool shouldUseExtends}) = _$_Data;
 
   @override
   String get name;
   @override
-  bool get needsJsonSerializable;
-  @override
   String get unionKey;
+  @override
+  bool get generateCopyWith;
+  @override
+  bool get generateEqual;
+  @override
+  bool get generateToString;
+  @override
+  MapConfig get map;
+  @override
+  WhenConfig get when;
+  @override
+  bool get generateFromJson;
+  @override
+  bool get generateToJson;
   @override
   List<String> get concretePropertiesName;
   @override
@@ -1122,14 +1527,6 @@ abstract class _Data implements Data {
   GenericsParameterTemplate get genericsParameterTemplate;
   @override
   bool get shouldUseExtends;
-  @override
-  bool get hasCustomToString;
-  @override
-  bool get hasCustomEquals;
-  @override
-  bool get shouldGenerateMaybeMap;
-  @override
-  bool get shouldGenerateMaybeWhen;
   @override
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;

@@ -1,19 +1,117 @@
+import 'package:json_annotation/json_annotation.dart';
+
 export 'package:collection/collection.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:meta/meta.dart';
 
+part 'freezed_annotation.g.dart';
+
+/// Options for enabling/disabling specific `Union.map` features;
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+class FreezedMap {
+  /// Options for enabling/disabling specific `Union.map` features;
+  const FreezedMap({this.map, this.mapOrNull, this.maybeMap});
+
+  /// Decode a [FreezedMap] from a build.yaml
+  factory FreezedMap.fromJson(Map<String, Object?> json) =>
+      _$FreezedMapFromJson(json);
+
+  /// Enables the generation of all `Union.map` features
+  static const all = FreezedMap(map: true, mapOrNull: true, maybeMap: true);
+
+  /// Disables the generation of all `Union.map` features
+  static const none = FreezedMap(map: false, mapOrNull: false, maybeMap: false);
+
+  /// Whether to generate `Union.map`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
+  final bool? map;
+
+  /// Whether to generate `Union.mapOrNull`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
+  final bool? mapOrNull;
+
+  /// Whether to generate `Union.maybeMap`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
+  final bool? maybeMap;
+}
+
+/// Options for enabling/disabling specific `Union.when` features;
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+class FreezedWhen {
+  /// Options for enabling/disabling specific `Union.when` features;
+  const FreezedWhen({
+    this.when,
+    this.whenOrNull,
+    this.maybeWhen,
+  });
+
+  /// Decode a [FreezedWhen] from a build.yaml
+  factory FreezedWhen.fromJson(Map<String, Object?> json) =>
+      _$FreezedWhenFromJson(json);
+
+  /// Enables the generation of all `Union.when` features
+  static const all = FreezedWhen(when: true, whenOrNull: true, maybeWhen: true);
+
+  /// Disables the generation of all `Union.when` features
+  static const none = FreezedWhen(
+    when: false,
+    whenOrNull: false,
+    maybeWhen: false,
+  );
+
+  /// Whether to generate `Union.when`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
+  final bool? when;
+
+  /// Whether to generate `Union.whenOrNull`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
+  final bool? whenOrNull;
+
+  /// Whether to generate `Union.maybeWhen`
+  ///
+  /// If null, will fallback to the build.yaml configs.
+  /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
+  final bool? maybeWhen;
+}
+
 /// {@template freezed_annotation.freezed}
 /// Flags a class as needing to be processed by Freezed and allows passing options.
 /// {@endtemplate}
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class Freezed {
   /// {@template freezed_annotation.freezed}
   const Freezed({
     this.unionKey,
-    this.unionValueCase = FreezedUnionCase.none,
+    this.unionValueCase,
     this.fallbackUnion,
-    this.maybeMap,
-    this.maybeWhen,
+    this.copyWith,
+    this.equal,
+    this.toStringOverride,
+    this.fromJson,
+    this.toJson,
+    this.map,
+    this.when,
   });
+
+  /// Decode the options from a build.yaml
+  factory Freezed.fromJson(Map<String, Object?> json) =>
+      _$FreezedFromJson(json);
 
   /// Determines what key should be used to de/serialize union types.
   ///
@@ -62,6 +160,7 @@ class Freezed {
   ///   print(Union.second().toJson()); // { 'type': 'second' }
   /// }
   /// ```
+  @JsonKey(defaultValue: 'runtimeType')
   final String? unionKey;
 
   /// Determines how the value used to de/serialize union types would be
@@ -94,7 +193,7 @@ class Freezed {
   ///
   /// You can also use [FreezedUnionValue] annotation to customize single
   /// union case.
-  final FreezedUnionCase unionValueCase;
+  final FreezedUnionCase? unionValueCase;
 
   /// Determines which constructor should be used when there is no matching one
   /// through constructor name or using [FreezedUnionValue]
@@ -132,39 +231,108 @@ class Freezed {
   /// ```
   final String? fallbackUnion;
 
-  /// Allow to deactive the maybeMap generation.
-  /// ```dart
-  /// @Freezed(maybeMap: false)
-  /// abstract class Union with _$Union {
-  ///   // ...
-  /// }
-  /// ```
+  /// Whether to generate a `fromJson` or not
   ///
-  /// The generated code will not have the following method:
-  ///
-  /// ```dart
-  /// void main() {
-  ///   print(Union.first().maybeMap(orElse: () => null)); // Error
-  /// }
-  /// ```
-  final bool? maybeMap;
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// If that value is null too, generates a `toString` only if the class
+  /// has no custom `toString`.
+  final bool? toStringOverride;
 
-  /// Allow to deactive the maybeWhen generation.
+  /// Whether to generate a `fromJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// If that value is null too, generates a ==/hashcode only if the class
+  /// does not have a custom ==
+  final bool? equal;
+
+  /// Whether to generate a `fromJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// If that value is null too, defaults to true.
+  @JsonKey(defaultValue: true)
+  final bool? copyWith;
+
+  /// Whether to generate a `fromJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  ///
+  /// If that value is null too, will be inferred based on whether the Freezed
+  /// class has a `fromJson` constructor`, such that
+  ///
   /// ```dart
-  /// @Freezed(maybeWhen: false)
-  /// abstract class Union with _$Union {
-  ///   // ...
+  /// @freezed
+  /// class Example with _$Example {
+  ///   factory Example(int a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json) => _$ExampleFromJson(json);
   /// }
   /// ```
   ///
-  /// The generated code will not have the following method:
+  /// generates a `fromJson`.
+  ///
+  /// On the other hand, changing `fromJson(Map json) => _$ExampleFromJson(json)`
+  /// to no-longer  use `=>` and instead use `{ return }`  will disable the
+  /// generation of `fromJson`,
   ///
   /// ```dart
-  /// void main() {
-  ///   print(Union.first().maybeWhen(orElse: () => null)); // Error
+  /// @freezed
+  /// class Example with _$Example {
+  ///   factory Example(int a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json) {
+  ///     // Will not generate a _$ExampleFromJson class as we are using `{ return }`
+  ///     return {...};
+  ///   }
   /// }
   /// ```
-  final bool? maybeWhen;
+  final bool? fromJson;
+
+  /// Whether to generate a `toJson` or not
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  ///
+  /// If that value is null too, will be inferred based on whether the Freezed
+  /// class has a `fromJson` constructor`, such that
+  ///
+  /// ```dart
+  /// @freezed
+  /// class Example with _$Example {
+  ///   factory Example(int a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json) => _$ExampleFromJson(json);
+  /// }
+  /// ```
+  ///
+  /// generates a `toJson`.
+  ///
+  /// On the other hand, changing `fromJson(Map json) => _$ExampleFromJson(json)`
+  /// to no-longer  use `=>` and instead use `{ return }`  will disable the
+  /// generation of `toJson`,
+  ///
+  /// ```dart
+  /// @freezed
+  /// class Example with _$Example {
+  ///   factory Example(int a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json) {
+  ///     // Will not generate a _$ExampleFromJson class as we are using `{ return }`
+  ///     return {...};
+  ///   }
+  /// }
+  /// ```
+  final bool? toJson;
+
+  /// Options for customizing the generation of `map` functions
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// If that value is null too, defaults to [FreezedMap.all].
+  final FreezedMap? map;
+
+  /// Options for customizing the generation of `when` functions
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`
+  /// If that value is null too, defaults to [FreezedWhen.all].
+  final FreezedWhen? when;
 }
 
 /// An annotation for the `freezed` package.
@@ -305,6 +473,7 @@ class FreezedUnionValue {
 }
 
 /// Options for automatic union values renaming.
+@JsonEnum(fieldRename: FieldRename.snake)
 enum FreezedUnionCase {
   /// Use the name without changes.
   none,

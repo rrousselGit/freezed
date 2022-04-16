@@ -184,15 +184,23 @@ String _unionPrototype(
     }
   }
 
-  buffer
-    ..write('{')
-    ..writeAll(parameters, ',')
-    ..write(',');
+  final hasOrElse = !areCallbacksRequired && !isReturnTypeNullable;
 
-  if (!areCallbacksRequired && !isReturnTypeNullable) {
-    buffer.write('required TResult orElse(),');
+  if (parameters.isNotEmpty || hasOrElse) {
+    buffer.write('{');
+    if (parameters.isNotEmpty) {
+      buffer
+        ..writeAll(parameters, ',')
+        ..write(',');
+    }
+
+    if (hasOrElse) {
+      buffer.write('required TResult orElse(),');
+    }
+
+    buffer.write('}');
   }
-  buffer.write('})');
+  buffer.write(')');
   return buffer.toString();
 }
 

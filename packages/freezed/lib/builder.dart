@@ -1,4 +1,5 @@
 import 'package:build/build.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'src/freezed_generator.dart';
@@ -6,7 +7,7 @@ import 'src/freezed_generator.dart';
 /// Builds generators for `build_runner` to run
 Builder freezed(BuilderOptions options) {
   return PartBuilder(
-    [FreezedGenerator(options.config)],
+    [FreezedGenerator(Freezed.fromJson(options.config))],
     '.freezed.dart',
     header: '''
 // coverage:ignore-file

@@ -45,8 +45,6 @@ class GenericImplements<T> with _$GenericImplements<T> {
 
   @With<House>()
   @Implements<GeographicArea>()
-  @With<AdministrativeArea<T>>()
-  @Implements<Generic<T>>()
   const factory GenericImplements.city(String name, int population) =
       GenericCity<T>;
 }
