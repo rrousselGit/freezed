@@ -1,3 +1,9 @@
+# 1.2.0 [Unreleased]
+
+- Feat: Add screaming snake union case type (#617) (thanks to @zbarbuto)
+- Fix null exceptions in some cases when using typedefs (thanks to @smiLLe)
+- Support analyzer 4.0.0
+
 # 1.1.1
 
 - Lints are now disabled inside generated files (requires Dart 2.15)
