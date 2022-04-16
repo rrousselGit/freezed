@@ -27,6 +27,10 @@ class TearOff {
 
     return '''
 /// @nodoc
+@Deprecated(
+  'Tear-off support will be removed in the future. '
+  'Dart now officially support constructor tear-off, so this feature is no-longer needed.',
+)
 class _\$${name}TearOff {
   const _\$${name}TearOff();
 
@@ -34,6 +38,10 @@ ${tearOffs.join()}
 }
 
 /// @nodoc
+@Deprecated(
+  'Tear-off support will be removed in the future. '
+  'Dart now officially support constructor tear-off, so this feature is no-longer needed.',
+)
 const $outputName = _\$${name}TearOff();
 ''';
   }

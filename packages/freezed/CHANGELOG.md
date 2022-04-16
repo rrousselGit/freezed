@@ -1,5 +1,7 @@
 # 1.2.0 [Unreleased]
 
+- The generated tear-offs are now deprecated. Dart now officially support
+  constructor tear-off.
 - Feat: Add screaming snake union case type (#617) (thanks to @zbarbuto)
 - Fix null exceptions in some cases when using typedefs (thanks to @smiLLe)
 - Support analyzer 4.0.0

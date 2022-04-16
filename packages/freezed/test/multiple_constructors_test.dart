@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, omit_local_variable_types
+// ignore_for_file: prefer_const_constructors, omit_local_variable_types, deprecated_member_use_from_same_package
 import 'dart:async';
 
 import 'package:analyzer/dart/analysis/results.dart';
