@@ -3,6 +3,7 @@ import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
 import 'common.dart';
+import 'integration/optionnal_maybe.dart';
 
 void main() {
   test('has no issue', () async {
@@ -29,8 +30,21 @@ void main() {
         final value = OptionnalMaybeMap.first();
 
         value.maybeMap(orElse: () => null);
+        value.map(
+          first: (_) {},
+          second: (_) {},
+        );
+        value.mapOrNull();
       }
       '''), throwsCompileError);
+
+    const OptionnalMaybeMap.first()
+      ..whenOrNull()
+      ..maybeWhen(orElse: () {})
+      ..when(
+        first: () {},
+        second: () {},
+      );
   });
 
   test('does not generates maybeWhen', () async {
@@ -41,7 +55,83 @@ void main() {
         final value = OptionnalMaybeWhen.first();
 
         value.maybeWhen(orElse: () => null);
+        value.when(
+          first: () {},
+          second: () {},
+        );
+        value.whenOrNull();
       }
       '''), throwsCompileError);
+
+    const OptionnalMaybeWhen.first()
+      ..mapOrNull()
+      ..maybeMap(orElse: () {})
+      ..map(
+        first: (_) {},
+        second: (_) {},
+      );
+  });
+
+  test('can disable copyWith', () async {
+    await expectLater(compile(r'''
+import 'optionnal_maybe.dart';
+
+void main() {
+  OptionalCopyWith().copyWith;
+}
+'''), throwsCompileError);
+  });
+
+  test('can disable toString', () {
+    expect(
+      const OptionalToString().toString(),
+      r"Instance of '_$_OptionalToString'",
+    );
+  });
+
+  test('can disable ==/hash', () {
+    expect(
+      OptionalEqual(),
+      isNot(OptionalEqual()),
+    );
+    expect(
+      OptionalEqual().hashCode,
+      isNot(OptionalEqual().hashCode),
+    );
+  });
+
+  test('can force the generation of when/map', () {
+    ForceUnionMethod2.two()
+      ..map(two: (_) {})
+      ..mapOrNull()
+      ..maybeMap(orElse: () {})
+      ..when(two: () {})
+      ..whenOrNull()
+      ..maybeWhen(orElse: () {});
+
+    ForceUnionMethod()
+      ..map((value) => null)
+      ..mapOrNull((value) => null)
+      ..maybeMap((value) => null, orElse: () {})
+      ..when(() => null)
+      ..whenOrNull(() => null)
+      ..maybeWhen(() => null, orElse: () {});
+  });
+
+  test('can disable toJson', () async {
+    OptionalToJson();
+    OptionalToJson.fromJson({});
+
+    await expectLater(compile(r'''
+import 'optionnal_maybe.dart';
+
+void main() {
+  OptionalToJson().toJson;
+}
+'''), throwsCompileError);
+  });
+
+  test('can force toJson', () async {
+    expect(ForceToJson(42).toJson(), {'a': 42});
   });
 }

@@ -22,7 +22,7 @@ class Concrete {
   final List<Property> commonProperties;
   final Data data;
   final GlobalData globalData;
-  final CopyWith copyWith;
+  final CopyWith? copyWith;
 
   String get concreteName {
     return '_\$${constructor.redirectedName}';
@@ -39,13 +39,25 @@ class Concrete {
 
   @override
   String toString() {
-    return '''
-${copyWith.interface}
+    var jsonSerializable = '';
+    if (!constructor.hasJsonSerializable) {
+      if (data.generateFromJson || data.generateToJson) {
+        final params = [
+          if (data.generateToJson == false) 'createToJson: false',
+          if (data.generateFromJson == false) 'createFactory: false',
+        ].join(',');
 
-${copyWith.concreteImpl(constructor.parameters)}
+        jsonSerializable = '@JsonSerializable($params)';
+      }
+    }
+
+    return '''
+${copyWith?.interface ?? ''}
+
+${copyWith?.concreteImpl(constructor.parameters) ?? ''}
 
 /// @nodoc
-${data.generateToJson && !constructor.hasJsonSerializable ? '@JsonSerializable()' : ''}
+$jsonSerializable
 ${constructor.decorators.join('\n')}
 class $concreteName${data.genericsDefinitionTemplate} $_concreteSuper {
   $_concreteConstructor
@@ -58,7 +70,7 @@ $_toStringMethod
 $_debugFillProperties
 $_operatorEqualMethod
 $_hashCodeMethod
-${copyWith.concreteCopyWithGetter}
+${copyWith?.concreteCopyWithGetter ?? ''}
 $_when
 $_whenOrNull
 $_maybeWhen
@@ -76,7 +88,7 @@ abstract class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $
   $_redirectedFromJsonConstructor
 
 $_abstractProperties
-${copyWith.abstractCopyWithGetter}
+${copyWith?.abstractCopyWithGetter ?? ''}
 }
 ''';
   }
@@ -269,7 +281,7 @@ ${mapPrototype(data.constructors, data.genericsParameterTemplate)} {
   }
 
   String get _mapOrNull {
-    if (!data.when.whenOrNull) return '';
+    if (!data.map.mapOrNull) return '';
 
     return '''
 @override
@@ -388,6 +400,10 @@ bool operator ==(dynamic other) {
   String get _hashCodeMethod {
     if (!data.generateEqual) return '';
 
+    final jsonKey = data.generateFromJson || data.generateToJson
+        ? '@JsonKey(ignore: true)'
+        : '';
+
     final hashedProperties = [
       'runtimeType',
       for (final property in constructor.impliedProperties)
@@ -399,18 +415,21 @@ bool operator ==(dynamic other) {
 
     if (hashedProperties.length == 1) {
       return '''
+$jsonKey
 @override
 int get hashCode => ${hashedProperties.first}.hashCode;
 ''';
     }
     if (hashedProperties.length >= 20) {
       return '''
+$jsonKey
 @override
 int get hashCode => Object.hashAll([${hashedProperties.join(',')}]);
 ''';
     }
 
     return '''
+$jsonKey
 @override
 int get hashCode => Object.hash(${hashedProperties.join(',')});
 ''';

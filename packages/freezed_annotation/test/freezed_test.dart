@@ -75,19 +75,15 @@ void main() {
       final defaultValue = Freezed.fromJson({});
 
       expect(defaultValue.copyWith, isTrue);
-      expect(defaultValue.equal, isTrue);
+      expect(defaultValue.equal, isNull);
       expect(defaultValue.fallbackUnion, null);
       expect(defaultValue.fromJson, isNull);
       expect(defaultValue.map, isNull);
       expect(defaultValue.toJson, isNull);
-      expect(defaultValue.toStringOverride, isTrue);
+      expect(defaultValue.toStringOverride, isNull);
       expect(defaultValue.unionKey, 'runtimeType');
-      expect(defaultValue.unionValueCase, FreezedUnionCase.none);
+      expect(defaultValue.unionValueCase, isNull);
       expect(defaultValue.when, isNull);
-      // ignore: deprecated_member_use_from_same_package
-      expect(defaultValue.maybeMap, true);
-      // ignore: deprecated_member_use_from_same_package
-      expect(defaultValue.maybeMap, true);
     });
   });
 }

@@ -85,9 +85,10 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       name: element.name,
       shouldUseExtends: shouldUseExtends,
       unionKey: configs.unionKey!,
-      generateToString: configs.toStringOverride ?? _hasCustomToString(element),
+      generateToString:
+          configs.toStringOverride ?? !_hasCustomToString(element),
       generateCopyWith: configs.copyWith!,
-      generateEqual: configs.equal ?? _hasCustomEquals(element),
+      generateEqual: configs.equal ?? !_hasCustomEquals(element),
       generateFromJson: configs.fromJson ?? await needsJsonSerializable,
       generateToJson: configs.toJson ?? await needsJsonSerializable,
       map: MapConfig(
@@ -268,6 +269,8 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       }
 
       _assertValidFreezedConstructorUsage(constructor, className: element.name);
+
+      // print('Hey ${options.unionValueCase}');
 
       result.add(
         ConstructorDetails(
@@ -460,20 +463,6 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         },
         orElse: () => _buildYamlConfigs.map,
       ),
-      // ignore: deprecated_member_use
-      maybeMap: annotation?.decodeField(
-        'maybeMap',
-        decode: (obj) => obj.toBoolValue(),
-        // ignore: deprecated_member_use
-        orElse: () => _buildYamlConfigs.maybeMap,
-      ),
-      // ignore: deprecated_member_use
-      maybeWhen: annotation?.decodeField(
-        'maybeWhen',
-        decode: (obj) => obj.toBoolValue(),
-        // ignore: deprecated_member_use
-        orElse: () => _buildYamlConfigs.maybeWhen,
-      ),
       toJson: annotation?.decodeField(
         'toJson',
         decode: (obj) => obj.toBoolValue(),
@@ -495,21 +484,9 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
       unionValueCase: annotation?.decodeField(
         'unionValueCase',
         decode: (obj) {
-          switch (obj.toStringValue()) {
-            case null:
-            case 'none':
-              return FreezedUnionCase.none;
-            case 'kebab':
-              return FreezedUnionCase.kebab;
-            case 'pascal':
-              return FreezedUnionCase.pascal;
-            case 'snake':
-              return FreezedUnionCase.snake;
-            case 'screamingSnake':
-              return FreezedUnionCase.screamingSnake;
-            default:
-              throw UnsupportedError('Unknown value ${obj.toStringValue()}');
-          }
+          final enumIndex = obj.getField('index')?.toIntValue();
+          if (enumIndex == null) return null;
+          return FreezedUnionCase.values[enumIndex];
         },
         orElse: () => _buildYamlConfigs.unionValueCase,
       ),
@@ -572,16 +549,18 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
     final commonProperties = _commonProperties(data.constructors);
 
-    final commonCopyWith = CopyWith(
-      clonedClassName: data.name,
-      cloneableProperties: _commonCloneableProperties(
-        data.constructors,
-        commonProperties,
-      ).toList(),
-      genericsDefinition: data.genericsDefinitionTemplate,
-      genericsParameter: data.genericsParameterTemplate,
-      allProperties: commonProperties,
-    );
+    final commonCopyWith = !data.generateCopyWith
+        ? null
+        : CopyWith(
+            clonedClassName: data.name,
+            cloneableProperties: _commonCloneableProperties(
+              data.constructors,
+              commonProperties,
+            ).toList(),
+            genericsDefinition: data.genericsDefinitionTemplate,
+            genericsParameter: data.genericsParameterTemplate,
+            allProperties: commonProperties,
+          );
 
     yield Abstract(
       data: data,
@@ -595,14 +574,16 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         constructor: constructor,
         commonProperties: commonProperties,
         globalData: globalData,
-        copyWith: CopyWith(
-          clonedClassName: constructor.redirectedName,
-          cloneableProperties: constructor.cloneableProperties,
-          genericsDefinition: data.genericsDefinitionTemplate,
-          genericsParameter: data.genericsParameterTemplate,
-          allProperties: constructor.impliedProperties,
-          parent: commonCopyWith,
-        ),
+        copyWith: !data.generateCopyWith
+            ? null
+            : CopyWith(
+                clonedClassName: constructor.redirectedName,
+                cloneableProperties: constructor.cloneableProperties,
+                genericsDefinition: data.genericsDefinitionTemplate,
+                genericsParameter: data.genericsParameterTemplate,
+                allProperties: constructor.impliedProperties,
+                parent: commonCopyWith,
+              ),
       );
     }
   }

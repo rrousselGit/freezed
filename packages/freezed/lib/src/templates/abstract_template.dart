@@ -12,7 +12,7 @@ class Abstract {
   });
 
   final Data data;
-  final CopyWith copyWith;
+  final CopyWith? copyWith;
   final List<Getter> commonProperties;
 
   @override
@@ -30,12 +30,12 @@ $_map
 $_mapOrNull
 $_maybeMap
 $_toJson
-${copyWith.abstractCopyWithGetter}
+${copyWith?.abstractCopyWithGetter ?? ''}
 }
 
-${copyWith.interface}
+${copyWith?.interface ?? ''}
 
-${copyWith.commonContreteImpl(commonProperties)}
+${copyWith?.commonContreteImpl(commonProperties) ?? ''}
 ''';
   }
 

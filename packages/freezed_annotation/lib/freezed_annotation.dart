@@ -107,8 +107,6 @@ class Freezed {
     this.toJson,
     this.map,
     this.when,
-    @Deprecated('use `Freezed(map: )` instead') this.maybeMap,
-    @Deprecated('use `Freezed(when: )` instead') this.maybeWhen,
   });
 
   /// Decode the options from a build.yaml
@@ -195,7 +193,6 @@ class Freezed {
   ///
   /// You can also use [FreezedUnionValue] annotation to customize single
   /// union case.
-  @JsonKey(defaultValue: FreezedUnionCase.none)
   final FreezedUnionCase? unionValueCase;
 
   /// Determines which constructor should be used when there is no matching one
@@ -237,21 +234,21 @@ class Freezed {
   /// Whether to generate a `fromJson` or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
-  /// Of that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
+  /// If that value is null too, generates a `toString` only if the class
+  /// has no custom `toString`.
   final bool? toStringOverride;
 
   /// Whether to generate a `fromJson` or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
-  /// Of that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
+  /// If that value is null too, generates a ==/hashcode only if the class
+  /// does not have a custom ==
   final bool? equal;
 
   /// Whether to generate a `fromJson` or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
-  /// Of that value is null too, defaults to true.
+  /// If that value is null too, defaults to true.
   @JsonKey(defaultValue: true)
   final bool? copyWith;
 
@@ -336,44 +333,6 @@ class Freezed {
   /// If null, picks up the default values from the project's `build.yaml`
   /// If that value is null too, defaults to [FreezedWhen.all].
   final FreezedWhen? when;
-
-  /// Allow to deactive the maybeMap generation.
-  /// ```dart
-  /// @Freezed(maybeMap: false)
-  /// abstract class Union with _$Union {
-  ///   // ...
-  /// }
-  /// ```
-  ///
-  /// The generated code will not have the following method:
-  ///
-  /// ```dart
-  /// void main() {
-  ///   print(Union.first().maybeMap(orElse: () => null)); // Error
-  /// }
-  /// ```
-  @Deprecated('use `Freezed(map: )` instead')
-  @JsonKey(defaultValue: true)
-  final bool? maybeMap;
-
-  /// Allow to deactive the maybeWhen generation.
-  /// ```dart
-  /// @Freezed(maybeWhen: false)
-  /// abstract class Union with _$Union {
-  ///   // ...
-  /// }
-  /// ```
-  ///
-  /// The generated code will not have the following method:
-  ///
-  /// ```dart
-  /// void main() {
-  ///   print(Union.first().maybeWhen(orElse: () => null)); // Error
-  /// }
-  /// ```
-  @Deprecated('use `Freezed(when: )` instead')
-  @JsonKey(defaultValue: true)
-  final bool? maybeWhen;
 }
 
 /// An annotation for the `freezed` package.

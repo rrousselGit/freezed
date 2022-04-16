@@ -26,6 +26,7 @@ void main() {
       );
     });
   });
+
   group('CustomMethod', () {
     test('fromString', () {
       const object = CustomMethodImplements.street('Sarah');
