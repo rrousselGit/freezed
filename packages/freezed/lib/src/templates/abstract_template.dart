@@ -13,16 +13,22 @@ class Abstract {
 
   final Data data;
   final CopyWith? copyWith;
-  final List<Getter> commonProperties;
+  final List<Property> commonProperties;
 
   @override
   String toString() {
+    final abstractProperties = commonProperties
+        .expand((e) => [
+              e.unimplementedGetter,
+              if (!e.isFinal) e.unimplementedSetter,
+            ])
+        .join();
+
     return '''
 /// @nodoc
 mixin _\$${data.name}${data.genericsDefinitionTemplate} {
 
-${commonProperties.map((e) => e.toString(throwUnimplementError: true)).join()}
-
+$abstractProperties
 $_when
 $_whenOrNull
 $_maybeWhen

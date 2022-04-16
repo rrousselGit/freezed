@@ -24,13 +24,15 @@ class Property {
     required this.defaultValueSource,
     required this.hasJsonKey,
     required this.doc,
+    required this.isFinal,
     required this.isPossiblyDartCollection,
   }) : type = type ?? 'dynamic';
 
   static Future<Property> fromParameter(
     ParameterElement element,
-    BuildStep buildStep,
-  ) async {
+    BuildStep buildStep, {
+    required bool addImplicitFinal,
+  }) async {
     final defaultValue = element.defaultValue;
     if (defaultValue != null &&
         (element.hasRequired || element.isRequiredPositional)) {
@@ -42,6 +44,7 @@ class Property {
 
     return Property(
       name: element.name,
+      isFinal: addImplicitFinal || element.isFinal,
       doc: await documentationOfParameter(element, buildStep),
       type: parseTypeSource(element),
       decorators: parseDecorators(element.metadata),
@@ -53,6 +56,7 @@ class Property {
 
   final String type;
   final String name;
+  final bool isFinal;
   final List<String> decorators;
   final String? defaultValueSource;
   final bool hasJsonKey;
@@ -61,48 +65,62 @@ class Property {
 
   @override
   String toString() {
-    return '$doc${decorators.join()} final $type $name;';
+    final leading = isFinal ? 'final ' : '';
+    return '$doc${decorators.join()} $leading $type $name;';
   }
 
-  Getter get getter => Getter(
+  UnimplementedGetter get unimplementedGetter => UnimplementedGetter(
         name: name,
         type: type,
         decorators: decorators,
         doc: doc,
-        isPossiblyDartCollection: isPossiblyDartCollection,
+      );
+
+  UnimplementedSetter get unimplementedSetter => UnimplementedSetter(
+        name: name,
+        type: type,
+        decorators: decorators,
+        doc: doc,
       );
 }
 
-class Getter {
-  Getter({
+class UnimplementedGetter {
+  UnimplementedGetter({
     required String? type,
     required this.name,
     required this.decorators,
     required this.doc,
-    required this.isPossiblyDartCollection,
   }) : type = type ?? 'dynamic';
 
   final String type;
   final String name;
   final List<String> decorators;
   final String doc;
-  final bool isPossiblyDartCollection;
 
   @override
-  String toString({
-    bool throwUnimplementError = false,
-  }) {
-    if (throwUnimplementError) {
-      return '$doc${decorators.join()} $type get $name => '
-          'throw $privConstUsedErrorVarName;';
-    }
-    return '$doc${decorators.join()} $type get $name;';
+  String toString() {
+    return '$doc${decorators.join()} $type get $name => '
+        'throw $privConstUsedErrorVarName;';
   }
 }
 
-extension PropertiesAsGetters on List<Property> {
-  List<Getter> asGetters() {
-    return map((p) => p.getter).toList();
+class UnimplementedSetter {
+  UnimplementedSetter({
+    required String? type,
+    required this.name,
+    required this.decorators,
+    required this.doc,
+  }) : type = type ?? 'dynamic';
+
+  final String type;
+  final String name;
+  final List<String> decorators;
+  final String doc;
+
+  @override
+  String toString() {
+    return '$doc${decorators.join()} set $name($type value) => '
+        'throw $privConstUsedErrorVarName;';
   }
 }
 

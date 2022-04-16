@@ -64,6 +64,7 @@ class ParametersTemplate {
     BuildStep buildStep,
     List<ParameterElement> parameters, {
     bool isAssignedToThis = false,
+    required bool addImplicitFinal,
   }) async {
     Future<Parameter> asParameter(ParameterElement e) async {
       if (isAssignedToThis) {
@@ -72,6 +73,7 @@ class ParametersTemplate {
           name: e.name,
           defaultValueSource: e.defaultValue,
           isRequired: e.isRequiredNamed,
+          isFinal: addImplicitFinal || e.isFinal,
           decorators: parseDecorators(e.metadata),
           doc: await documentationOfParameter(e, buildStep),
           isPossiblyDartCollection: e.type.isPossiblyDartCollection,
@@ -81,6 +83,7 @@ class ParametersTemplate {
         name: e.name,
         defaultValueSource: e.defaultValue,
         isRequired: e.isRequiredNamed,
+        isFinal: addImplicitFinal || e.isFinal,
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
         doc: await documentationOfParameter(e, buildStep),
@@ -122,6 +125,7 @@ class ParametersTemplate {
           .map(
             (e) => LocalParameter(
               isRequired: e.isRequired,
+              isFinal: e.isFinal,
               name: e.name,
               type: e.type,
               decorators: e.decorators,
@@ -146,6 +150,7 @@ class ParametersTemplate {
           .map(
             (e) => Parameter(
               isRequired: e.isRequired,
+              isFinal: e.isFinal,
               name: e.name,
               type: e.type,
               decorators: e.decorators,
@@ -197,6 +202,7 @@ class ParametersTemplate {
                 name: e.name,
                 type: e.type,
                 isRequired: e.isRequired,
+                isFinal: e.isFinal,
                 decorators: e.decorators,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
@@ -208,6 +214,7 @@ class ParametersTemplate {
                 name: e.name,
                 type: e.type,
                 isRequired: e.isRequired,
+                isFinal: e.isFinal,
                 decorators: e.decorators,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
@@ -219,6 +226,7 @@ class ParametersTemplate {
                 name: e.name,
                 type: e.type,
                 isRequired: e.isRequired,
+                isFinal: e.isFinal,
                 decorators: e.decorators,
                 defaultValueSource: e.defaultValueSource,
                 doc: e.doc,
@@ -237,6 +245,7 @@ class Parameter {
     required this.isRequired,
     required this.decorators,
     required this.doc,
+    required this.isFinal,
     required this.isPossiblyDartCollection,
     this.showDefaultValue = false,
   });
@@ -248,6 +257,7 @@ class Parameter {
   final List<String> decorators;
   final bool showDefaultValue;
   final bool isPossiblyDartCollection;
+  final bool isFinal;
   final String doc;
 
   Parameter copyWith({
@@ -260,6 +270,7 @@ class Parameter {
     bool? showDefaultValue,
     bool? isPossiblyDartCollection,
     String? doc,
+    bool? isFinal,
   }) =>
       Parameter(
         type: type ?? this.type,
@@ -269,6 +280,7 @@ class Parameter {
         decorators: decorators ?? this.decorators,
         showDefaultValue: showDefaultValue ?? this.showDefaultValue,
         doc: doc ?? this.doc,
+        isFinal: isFinal ?? this.isFinal,
         isPossiblyDartCollection:
             isPossiblyDartCollection ?? this.isPossiblyDartCollection,
       );
@@ -276,6 +288,9 @@ class Parameter {
   @override
   String toString() {
     var res = ' ${type ?? 'dynamic'} $name';
+    if (isFinal) {
+      res = 'final $res';
+    }
     if (isRequired) {
       res = 'required $res';
     }
@@ -294,6 +309,7 @@ class LocalParameter extends Parameter {
     required String name,
     required String? type,
     required String? defaultValueSource,
+    required bool isFinal,
     required bool isRequired,
     required List<String> decorators,
     required String doc,
@@ -301,6 +317,7 @@ class LocalParameter extends Parameter {
   }) : super(
           name: name,
           type: type,
+          isFinal: isFinal,
           showDefaultValue: true,
           isRequired: isRequired,
           decorators: decorators,
@@ -331,6 +348,7 @@ class CallbackParameter extends Parameter {
     required String defaultValueSource,
     required String type,
     required bool isRequired,
+    required bool isFinal,
     required this.isNullable,
     required List<String> decorators,
     required this.parameters,
@@ -341,6 +359,7 @@ class CallbackParameter extends Parameter {
           type: type,
           showDefaultValue: false,
           isRequired: isRequired,
+          isFinal: isFinal,
           decorators: decorators,
           defaultValueSource: defaultValueSource,
           doc: doc,

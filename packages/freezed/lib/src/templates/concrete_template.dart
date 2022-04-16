@@ -110,6 +110,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
       final typeProperty = Parameter(
         type: 'String?',
         name: '\$type',
+        isFinal: true,
         defaultValueSource: null,
         isRequired: false,
         decorators: [],
@@ -347,9 +348,9 @@ ${whenOrNullPrototype(data.constructors)} {
   String get _abstractProperties {
     return constructor.impliedProperties.map((p) {
       if (commonProperties.any((element) => element.name == p.name)) {
-        return '@override ${p.getter}';
+        return '@override ${p.unimplementedGetter}';
       } else {
-        return '${p.getter}';
+        return '${p.unimplementedGetter}';
       }
     }).join();
   }
