@@ -9,11 +9,11 @@ import 'imports.dart';
 ///
 /// this is usually type.element, except if it is a typedef then it is
 /// type.alias.element
-Element _getElementForType(DartType type) {
+Element? _getElementForType(DartType type) {
   if (type.element != null) {
-    return type.element!;
+    return type.element;
   }
-  return type.alias!.element;
+  return type.alias?.element;
 }
 
 /// Renders a type based on its string + potential import alias
@@ -28,7 +28,7 @@ String resolveFullTypeStringFrom(
 
       return librariesForPrefix.any((l) {
         return l.importedLibrary!.anyTransitiveExport((library) {
-          return library.id == _getElementForType(type).library?.id;
+          return library.id == _getElementForType(type)?.library?.id;
         });
       });
     },
