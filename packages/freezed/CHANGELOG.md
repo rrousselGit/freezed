@@ -1,7 +1,18 @@
-# 1.2.0 [Unreleased]
+# 2.0.0 [Unreleased]
 
-- The generated tear-offs are now deprecated. Dart now officially support
-  constructor tear-off.
+- Freezed no-longer generates `$MyClassTearOff`. This feature is now available in Dart
+- Added parameters of `@Freezed` to customize the generated code.
+  This includes: fromJson, toJson, map, when, equal, toStringOverride, copyWith.
+
+  These parameters allow disabling code that would otherwise be generated.
+  It also allows forcing the generation even if it would otherwise not be generated.
+
+- Removed `@Freezed(maybeMap: )` & `@Freezed(maybeWhen: )` in favor of a separate:
+
+  ```Dart
+  @Freezed(map: FreezedMap(...), when: FreezedWhen(...))
+  ```
+
 - Feat: Add screaming snake union case type (#617) (thanks to @zbarbuto)
 - Fix null exceptions in some cases when using typedefs (thanks to @smiLLe)
 - Support analyzer 4.0.0
