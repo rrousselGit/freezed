@@ -254,8 +254,18 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
               await Property.fromParameter(parameter, buildStep),
           ],
           decorators: constructor.metadata
+              .where((element) {
+                final elementSourceUri =
+                    element.element?.declaration?.librarySource?.uri;
+
+                final isFreezedAnnotation = elementSourceUri != null &&
+                    elementSourceUri.scheme == 'package' &&
+                    elementSourceUri.pathSegments.isNotEmpty &&
+                    elementSourceUri.pathSegments.first == 'freezed_annotation';
+
+                return !isFreezedAnnotation;
+              })
               .map((e) => e.toSource())
-              .where((e) => !e.startsWith('@Assert('))
               .toList(),
           withDecorators: _withDecorationTypes(constructor).toSet().toList(),
           implementsDecorators:
