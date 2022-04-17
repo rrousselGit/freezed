@@ -1,0 +1,67 @@
+@immutable
+class Person {
+  const Person({
+    required this.firstName,
+    required this.lastName,
+    required this.age,
+  });
+
+  factory Person.fromJson(Map<String, Object?> json) {
+    return Person(
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+      age: json['age'] as int,
+    );
+  }
+
+  final String firstName;
+  final String lastName;
+  final int age;
+
+  Person copyWith({
+    String? firstName,
+    String? lastName,
+    int? age,
+  }) {
+    return Person(
+      firstName: firstName,
+      lastName: lastName,
+      age: age,
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'age': age,
+    };
+  }
+
+  @overrride
+  String toString() {
+    return 'Person('
+      'firstName: $firstName, '
+      'lastName: $lastName, '
+      'age: $age'
+    ')';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is Person &&
+        person.runtimeType == runtimeType &&
+        person.firstName == firstName &&
+        person.lastName == lastName &&
+        person.age == age;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      runtimeType,
+      firstName,
+      lastName,
+      age,
+  );
+}
