@@ -23,10 +23,9 @@ and the readability of your model significantly.
 Freezed tries to fix that by implementing most of this for you, allowing you
 to focus on the definition of your model.
 
-<p style="align:center; display:flex">
-  <img src="resources/before.png" alt="before" style="flex: 1"/>
-  <img src="resources/after.png" alt="after" style="flex: 1"/>
-</p>
+|             Before              |             After              |
+| :-----------------------------: | :----------------------------: |
+| ![before](resources/before.png) | ![before](resources/after.png) |
 
 # Index
 
