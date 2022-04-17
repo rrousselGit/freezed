@@ -74,7 +74,6 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
     - [Custom getters and methods](#custom-getters-and-methods)
     - [Asserts](#asserts)
     - [Default values](#default-values)
-    - [Constructor tear-off](#constructor-tear-off)
     - [Decorators and comments](#decorators-and-comments)
     - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
   - [==/toString](#tostring)
@@ -88,8 +87,8 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
 - [Utilities](#utilities)
-    - [Freezed extension for VSCode](#freezed-extension-for-vscode)
-    - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
+  - [Freezed extension for VSCode](#freezed-extension-for-vscode)
+  - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
 
 # How to use
 
@@ -379,26 +378,6 @@ abstract class Example with _$Example {
 **NOTE**:\
 If you are using serialization/deserialization, this will automatically add
 a `@JsonKey(defaultValue: <something>)` for you.
-
-### Constructor tear-off
-
-A common use-case is to do a one-to-one mapping between the parameters of a callback
-and a constructor.\
-For example, you may write:
-
-```dart
-future.catchError((error) => MyClass.error(error))
-```
-
-But that's kind of redundant. As such, [Freezed] offers a simpler syntax:
-
-```dart
-future.catchError($MyClass.error)
-```
-
-This new code is strictly equivalent to the previous snippet, just shorter.
-
-Note that this is both compatible with [default values](#default-values) and generics.
 
 ### Decorators and comments
 
