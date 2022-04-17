@@ -4,6 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
@@ -11,7 +12,16 @@ import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:freezed/src/utils.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart'
+    show
+        Assert,
+        Freezed,
+        FreezedMapOptions,
+        FreezedUnionCase,
+        FreezedUnionValue,
+        FreezedWhenOptions;
+import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
+import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'models.dart';

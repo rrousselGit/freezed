@@ -1,6 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-export 'package:collection/collection.dart';
+export 'package:collection/collection.dart' show DeepCollectionEquality;
 export 'package:json_annotation/json_annotation.dart';
 export 'package:meta/meta.dart';
 
@@ -110,6 +111,7 @@ class Freezed {
     this.toJson,
     this.map,
     this.when,
+    this.makeCollectionsUnmodifiable,
     this.addImplicitFinal = true,
   });
 
@@ -255,6 +257,10 @@ class Freezed {
   /// ]
   /// ```
   final String? fallbackUnion;
+
+  /// If true, then this converts [List], [Map] and [Set] into respectively
+  /// [UnmodifiableListView], [UnmodifiableMapView] or [UnmodifiableSetView].
+  final bool? makeCollectionsUnmodifiable;
 
   /// Whether to generate a `fromJson` or not
   ///

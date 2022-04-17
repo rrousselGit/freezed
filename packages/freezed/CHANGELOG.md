@@ -1,17 +1,18 @@
 # 2.0.0 [Unreleased]
 
-- Freezed no-longer generates `$MyClassTearOff`. This feature is now available in Dart
+- **Breaking**: freezed_annotation no-longer exports the entire package:collection
+- **Breaking**: Freezed no-longer generates `$MyClassTearOff`. This feature is now available in Dart
+- **Breaking** Removed `@Freezed(maybeMap: )` & `@Freezed(maybeWhen: )` in favor of a separate:
+
+  ```Dart
+  @Freezed(map: FreezedMap(...), when: FreezedWhenOptions(...))
+  ```
+
 - Added parameters of `@Freezed` to customize the generated code.
   This includes: fromJson, toJson, map, when, equal, toStringOverride, copyWith.
 
   These parameters allow disabling code that would otherwise be generated.
   It also allows forcing the generation even if it would otherwise not be generated.
-
-- Removed `@Freezed(maybeMap: )` & `@Freezed(maybeWhen: )` in favor of a separate:
-
-  ```Dart
-  @Freezed(map: FreezedMap(...), when: FreezedWhenOptions(...))
-  ```
 
 - Feat: Add screaming snake union case type (#617) (thanks to @zbarbuto)
 - Fix null exceptions in some cases when using typedefs (thanks to @smiLLe)
