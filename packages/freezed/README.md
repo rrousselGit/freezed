@@ -23,8 +23,8 @@ and the readability of your model significantly.
 Freezed tries to fix that by implementing most of this for you, allowing you
 to focus on the definition of your model.
 
-|             Before              |             After              |
-| :-----------------------------: | :----------------------------: |
+| Before                          | After                          |
+| ------------------------------- | ------------------------------ |
 | ![before](resources/before.png) | ![before](resources/after.png) |
 
 # Index
