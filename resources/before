@@ -40,7 +40,11 @@ class Person {
 
   @overrride
   String toString() {
-    return 'Person(firstName: $firstName, lastName: $lastName, age: $age)';
+    return 'Person('
+      'firstName: $firstName, '
+      'lastName: $lastName, '
+      'age: $age'
+    ')';
   }
 
   @override
@@ -53,5 +57,11 @@ class Person {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, firstName, lastName, age);
+  int get hashCode {
+    return Object.hash(
+      runtimeType,
+      firstName,
+      lastName,
+      age,
+  );
 }
