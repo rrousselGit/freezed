@@ -35,9 +35,12 @@ Future<AstNode> tryGetAstNodeForElement(
 
       return result!.getElementDeclaration(element)!.node;
     } on InconsistentAnalysisException {
-      library = await buildStep.resolver.libraryFor(
-        await buildStep.resolver.assetIdForElement(element.library!),
-      );
+      final assetId =
+          await buildStep.resolver.assetIdForElement(element.library!);
+      if (await buildStep.resolver.isLibrary(assetId).then((value) => !value)) {
+        rethrow;
+      }
+      library = await buildStep.resolver.libraryFor(assetId);
     }
   }
 }
