@@ -23,9 +23,9 @@ and the readability of your model significantly.
 Freezed tries to fix that by implementing most of this for you, allowing you
 to focus on the definition of your model.
 
-<p>
-  <img src="resources/before.png" alt="before" width="200" style="vertical-align: top" />
-  <img src="resources/after.png" alt="after" width="200" style="vertical-align: top" />
+<p style="display: flex; align-items: start">
+  <img src="resources/before.png" alt="before" />
+  <img src="resources/after.png" alt="after" />
 </p>
 
 # Index
