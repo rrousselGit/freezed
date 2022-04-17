@@ -173,7 +173,7 @@ The following snippet defines a model named `Person`:
 
 From this example, we can notice a few things:
 
-- It is necessary to annotate our model with `@freezed` (or `@Freezed`/`@cheesed`, more about that later).  
+- It is necessary to annotate our model with `@freezed` (or `@Freezed`/`@unfreezed`, more about that later).  
   This annotation is what tells Freezed to generate code for that class.
 
 - We must also apply a mixin with the name of our class, prefixed by `_$`.
@@ -190,10 +190,10 @@ From this example, we can notice a few things:
 So far, we've seen how to define a model where all of its properties are `final`;
 but you may want to define mutable properties in your model.
 
-Freezed supports this, by replacing the `@freezed` annotation with `@cheesed`:
+Freezed supports this, by replacing the `@freezed` annotation with `@unfreezed`:
 
 ```dart
-@cheesed
+@unfreezed
 class Person with _$Person {
   factory Person({
     required String firstName,
