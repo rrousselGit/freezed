@@ -24,8 +24,8 @@ Freezed tries to fix that by implementing most of this for you, allowing you
 to focus on the definition of your model.
 
 <p style="align:center; display:flex">
-  <img width="460" src="resources/before.png" alt="before" />
-  <img width="460" src="resources/after.png" alt="after" />
+  <img src="resources/before.png" alt="before" style="flex: 1"/>
+  <img src="resources/after.png" alt="after" style="flex: 1"/>
 </p>
 
 # Index
