@@ -369,7 +369,7 @@ const freezed = Freezed();
 ///
 /// As opposed to [freezed], properties of the object can be mutable.
 /// On the other hand, a data class will not implement ==.
-const data = Freezed(equal: false, addImplicitFinal: false);
+const cheesed = Freezed(equal: false, addImplicitFinal: false);
 
 /// {@template freezed_annotation.assert}
 /// A decorator that allows adding `assert(...)` on the generated classes.
