@@ -14,7 +14,7 @@ class FreezedMapOptions {
 
   /// Decode a [FreezedMapOptions] from a build.yaml
   factory FreezedMapOptions.fromJson(Map<String, Object?> json) =>
-      _$FreezedMapFromJson(json);
+      _$FreezedMapOptionsFromJson(json);
 
   /// Enables the generation of all `Union.map` features
   static const all =
@@ -58,7 +58,7 @@ class FreezedWhenOptions {
 
   /// Decode a [FreezedWhenOptions] from a build.yaml
   factory FreezedWhenOptions.fromJson(Map<String, Object?> json) =>
-      _$FreezedWhenFromJson(json);
+      _$FreezedWhenOptionsFromJson(json);
 
   /// Enables the generation of all `Union.when` features
   static const all =
