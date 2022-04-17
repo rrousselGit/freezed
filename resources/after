@@ -1,0 +1,8 @@
+@immutable
+class Person with _$Person {
+  const factory Person({
+    required String firstName,
+    required String lastName,
+    required int age,
+  }) = _Person;
+}
