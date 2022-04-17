@@ -46,7 +46,7 @@ ${_abstractDeepCopyMethods().join()}
   }
 
   String commonContreteImpl(
-    List<Getter> commonProperties,
+    List<Property> commonProperties,
   ) {
     var copyWith = '';
 
@@ -63,6 +63,7 @@ ${_abstractDeepCopyMethods().join()}
             return Parameter(
               decorators: e.decorators,
               name: e.name,
+              isFinal: false,
               showDefaultValue: false,
               isRequired: false,
               defaultValueSource: '',

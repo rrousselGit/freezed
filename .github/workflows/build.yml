@@ -16,7 +16,7 @@ jobs:
         package:
           - packages/freezed
           - packages/freezed_annotation
-          - packages/freezed/example
+          # - packages/freezed/example
         channel:
           - master
 
@@ -31,9 +31,6 @@ jobs:
       - name: Removing example folder
         run: rm -rf example
         working-directory: ${{ matrix.package }}
-
-      - name: Override dependencies
-        run: ./scripts/setup_dependencies.sh
 
       - name: Install dependencies
         run: flutter pub get
@@ -56,11 +53,9 @@ jobs:
 
       - name: Run tests
         run: |
-          if grep -q "name: freezed_annotation" "pubspec.yaml"; then
-           echo "skip"
-          elif grep -q "name: freezed" "pubspec.yaml"; then
-            dart pub get && dart test
-          else
+          if grep -q "name: example" "pubspec.yaml"; then
             flutter test
+          else
+            dart test
           fi
         working-directory: ${{ matrix.package }}

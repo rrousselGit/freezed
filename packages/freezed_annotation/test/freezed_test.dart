@@ -47,16 +47,24 @@ void main() {
       expect(FreezedWhenOptions.fromJson({'when': false}).maybeWhen, isTrue);
 
       expect(FreezedWhenOptions.fromJson({'when_or_null': false}).when, isTrue);
-      expect(FreezedWhenOptions.fromJson({'when_or_null': false}).whenOrNull,
-          isFalse);
-      expect(FreezedWhenOptions.fromJson({'when_or_null': false}).maybeWhen,
-          isTrue);
+      expect(
+        FreezedWhenOptions.fromJson({'when_or_null': false}).whenOrNull,
+        isFalse,
+      );
+      expect(
+        FreezedWhenOptions.fromJson({'when_or_null': false}).maybeWhen,
+        isTrue,
+      );
 
       expect(FreezedWhenOptions.fromJson({'maybe_when': false}).when, isTrue);
-      expect(FreezedWhenOptions.fromJson({'maybe_when': false}).whenOrNull,
-          isTrue);
-      expect(FreezedWhenOptions.fromJson({'maybe_when': false}).maybeWhen,
-          isFalse);
+      expect(
+        FreezedWhenOptions.fromJson({'maybe_when': false}).whenOrNull,
+        isTrue,
+      );
+      expect(
+        FreezedWhenOptions.fromJson({'maybe_when': false}).maybeWhen,
+        isFalse,
+      );
     });
 
     test('.all', () {

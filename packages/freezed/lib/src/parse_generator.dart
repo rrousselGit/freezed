@@ -11,9 +11,13 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     LibraryReader oldLibrary,
     BuildStep buildStep,
   ) async {
-    var library = await buildStep.resolver.libraryFor(
-      await buildStep.resolver.assetIdForElement(oldLibrary.element),
-    );
+    final assetId =
+        await buildStep.resolver.assetIdForElement(oldLibrary.element);
+    if (await buildStep.resolver.isLibrary(assetId).then((value) => !value)) {
+      return '';
+    }
+
+    final library = await buildStep.resolver.libraryFor(assetId);
 
     final values = StringBuffer();
 

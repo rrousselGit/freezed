@@ -123,6 +123,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         Property(
           decorators: commonParameter.decorators,
           name: commonParameter.name,
+          isFinal: commonParameter.isFinal,
           doc: commonParameter.doc,
           type: commonParameter.type,
           defaultValueSource: commonParameter.defaultValueSource,
@@ -282,7 +283,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           escapedName: _escapedName(element, constructor),
           impliedProperties: [
             for (final parameter in constructor.parameters)
-              await Property.fromParameter(parameter, buildStep),
+              await Property.fromParameter(
+                parameter,
+                buildStep,
+                addImplicitFinal: options.addImplicitFinal,
+              ),
           ],
           decorators: constructor.metadata
               .where((element) {
@@ -312,6 +317,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
           parameters: await ParametersTemplate.fromParameterElements(
             buildStep,
             constructor.parameters,
+            addImplicitFinal: options.addImplicitFinal,
           ),
           redirectedName: redirectedName,
         ),
@@ -417,30 +423,31 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
   Freezed _parseConfig(Element element) {
     final annotation = const TypeChecker.fromRuntime(Freezed)
-        .firstAnnotationOf(element, throwOnUnresolved: false);
+        .firstAnnotationOf(element, throwOnUnresolved: false)!;
 
     return Freezed(
-      copyWith: annotation?.decodeField(
+      copyWith: annotation.decodeField(
         'copyWith',
         decode: (obj) => obj.toBoolValue(),
         orElse: () => _buildYamlConfigs.copyWith,
       ),
-      equal: annotation?.decodeField(
+      equal: annotation.decodeField(
         'equal',
         decode: (obj) => obj.toBoolValue(),
         orElse: () => _buildYamlConfigs.equal,
       ),
-      fallbackUnion: annotation?.decodeField(
+      fallbackUnion: annotation.decodeField(
         'fallbackUnion',
         decode: (obj) => obj.toStringValue(),
         orElse: () => _buildYamlConfigs.fallbackUnion,
       ),
-      fromJson: annotation?.decodeField(
+      fromJson: annotation.decodeField(
         'fromJson',
         decode: (obj) => obj.toBoolValue(),
         orElse: () => _buildYamlConfigs.fromJson,
       ),
-      map: annotation?.decodeField(
+      addImplicitFinal: annotation.getField('addImplicitFinal')!.toBoolValue()!,
+      map: annotation.decodeField(
         'map',
         decode: (obj) {
           return FreezedMapOptions(
@@ -463,25 +470,25 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         },
         orElse: () => _buildYamlConfigs.map,
       ),
-      toJson: annotation?.decodeField(
+      toJson: annotation.decodeField(
         'toJson',
         decode: (obj) => obj.toBoolValue(),
         orElse: () => _buildYamlConfigs.toJson,
       ),
-      toStringOverride: annotation?.decodeField(
+      toStringOverride: annotation.decodeField(
         'toStringOverride',
         decode: (obj) => obj.toBoolValue(),
         orElse: () => _buildYamlConfigs.toStringOverride,
       ),
       unionKey: annotation
-          ?.decodeField(
+          .decodeField(
             'unionKey',
             decode: (obj) => obj.toStringValue(),
             orElse: () => _buildYamlConfigs.unionKey,
           )
           ?.replaceAll("'", r"\'")
           .replaceAll(r'$', r'\$'),
-      unionValueCase: annotation?.decodeField(
+      unionValueCase: annotation.decodeField(
         'unionValueCase',
         decode: (obj) {
           final enumIndex = obj.getField('index')?.toIntValue();
@@ -490,7 +497,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         },
         orElse: () => _buildYamlConfigs.unionValueCase,
       ),
-      when: annotation?.decodeField(
+      when: annotation.decodeField(
         'when',
         decode: (obj) {
           return FreezedWhenOptions(
@@ -565,7 +572,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
     yield Abstract(
       data: data,
       copyWith: commonCopyWith,
-      commonProperties: commonProperties.asGetters(),
+      commonProperties: commonProperties,
     );
 
     for (final constructor in data.constructors) {

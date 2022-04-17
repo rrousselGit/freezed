@@ -14,7 +14,7 @@ class FreezedMapOptions {
 
   /// Decode a [FreezedMapOptions] from a build.yaml
   factory FreezedMapOptions.fromJson(Map<String, Object?> json) =>
-      _$FreezedMapFromJson(json);
+      _$FreezedMapOptionsFromJson(json);
 
   /// Enables the generation of all `Union.map` features
   static const all =
@@ -58,7 +58,7 @@ class FreezedWhenOptions {
 
   /// Decode a [FreezedWhenOptions] from a build.yaml
   factory FreezedWhenOptions.fromJson(Map<String, Object?> json) =>
-      _$FreezedWhenFromJson(json);
+      _$FreezedWhenOptionsFromJson(json);
 
   /// Enables the generation of all `Union.when` features
   static const all =
@@ -110,11 +110,33 @@ class Freezed {
     this.toJson,
     this.map,
     this.when,
+    this.addImplicitFinal = true,
   });
 
   /// Decode the options from a build.yaml
   factory Freezed.fromJson(Map<String, Object?> json) =>
       _$FreezedFromJson(json);
+
+  /// Whether to assume that all constructor parameters are marked as final.
+  ///
+  /// This means that:
+  ///
+  /// ```dart
+  /// @Freezed(addImplicitFinal: true) // default to true
+  /// class Person with _$Person {
+  ///   factory Person(String name, int age) = _Person;
+  /// }
+  /// ```
+  ///
+  /// is strictly equivalent to:
+  ///
+  /// ```dart
+  /// @Freezed(addImplicitFinal: false)
+  /// class Person with _$Person {
+  ///   factory Person(final String name, final int age) = _Person;
+  /// }
+  /// ```
+  final bool addImplicitFinal;
 
   /// Determines what key should be used to de/serialize union types.
   ///
@@ -338,11 +360,16 @@ class Freezed {
   final FreezedWhenOptions? when;
 }
 
-/// An annotation for the `freezed` package.
+/// Defines an immutable data-class.
 ///
-/// Annotating a class with this annotation will flag it as needing to be
-/// processed by the `freezed` code generator.
+/// This will consider all properties of the object as immutable.
 const freezed = Freezed();
+
+/// Defines a potentially mutable data-class.
+///
+/// As opposed to [freezed], properties of the object can be mutable.
+/// On the other hand, a data class will not implement ==.
+const data = Freezed(equal: false, addImplicitFinal: false);
 
 /// {@template freezed_annotation.assert}
 /// A decorator that allows adding `assert(...)` on the generated classes.

@@ -116,6 +116,7 @@ String _mapPrototype(
           name: 'value',
           type: '${constructor.redirectedName}$genericParameters',
           isRequired: false,
+          isFinal: false,
           decorators: const [],
           defaultValueSource: '',
           doc: '',
@@ -140,10 +141,12 @@ String _whenPrototype(
     name: name,
     ctor2parameters: (constructor) {
       return ParametersTemplate([
-        ...constructor.parameters.requiredPositionalParameters,
-        ...constructor.parameters.optionalPositionalParameters,
+        ...constructor.parameters.requiredPositionalParameters
+            .map((e) => e.copyWith(isFinal: false)),
+        ...constructor.parameters.optionalPositionalParameters
+            .map((e) => e.copyWith(isFinal: false)),
         ...constructor.parameters.namedParameters
-            .map((e) => e.copyWith(isRequired: false)),
+            .map((e) => e.copyWith(isRequired: false, isFinal: false)),
       ]);
     },
   );
@@ -166,6 +169,7 @@ String _unionPrototype(
     var template = CallbackParameter(
       name: constructorNameToCallbackName(constructor.name),
       type: 'TResult',
+      isFinal: false,
       isRequired: !constructor.isDefault && areCallbacksRequired,
       isNullable: !areCallbacksRequired,
       parameters: ctor2parameters(constructor),
