@@ -4,63 +4,31 @@
 
 [<img src="https://raw.githubusercontent.com/rrousselGit/provider/master/resources/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
 
-Welcome to [Freezed], yet another code generator for unions/pattern-matching/copy.
-
-# 0.14.0 and null-safety
-
-**Important note**:
-
-From 0.14.0 and onwards, Freezed only supports null-safe code.
-
-If you want to keep using Freezed but cannot migrate to null-safety yet, use the version 0.12.7 instead.  
-Note that this version is no-longer maintained (so bugs found there won't be fixed).
-
-For the documentation of the version 0.12.7, refer to https://pub.dev/packages/freezed/versions/0.12.7
-
-In the scenario where you are using the version 0.12.7, but one of your dependencies is using 0.14.0 or above,
-you will have a version conflict on `freezed_annotation`.
-
-In that case, you can fix the error by adding the following to your `pubspec.yaml`:
-
-```yaml
-dependency_overrides:
-  freezed: ^0.12.7
-  freezed_annotation: ^0.12.0
-```
+Welcome to [Freezed], yet another code generator for data-classes/unions/pattern-matching/cloning.
 
 # Motivation
 
-If you are familiar with other programming languages, you may have heard about
-concepts such as data-classes or pattern matching.  
-These features are excellent at making your codebase more robust and readable.  
-Sadly, Dart currently does not support those features.
+Dart is awesome, but defining a "model" can be tedious. We may have to:
 
-Freezed is designed as a language patch, relying on code-generation to implement
-those missing features.
+- define a constructor + the properties
+- override `toString`, `operator ==`, `hashCode`
+- implement a `copyWith` method to clone the object
+- handling de/serialization
 
-Using Freezed, we will get:
+On top of that, Dart is also missing features such as union types and pattern-matching.
 
-- a simple and concise syntax for defining models, where we don't need to
-  define both a constructor and a property.  
-  Instead, we only need to define the constructor, removing unnecessary duplication.
+Implementing all of this can take hundreds of lines, which are error-prone
+and the readability of your model significantly.
 
-- a `copyWith` method, for cloning objects with different values.  
-  _Note_: As opposed to many alternatives, when using Freezed, that `copyWith`
-  method correctly supports assigning `null` to a value.
+Freezed tries to fix that by implementing most of this for you, allowing you
+to focus on the definition of your model.
 
-- union-types/pattern matching, for making impossible states impossible.
-  See also [unions/sealed-classes](#unionssealed-classes).
-
-- an automatic serialization/deserialization of your objects (including union types).
-
-- a default `==`/`toString` implementation which respectively compares/shows
-  all properties of the object.
-
-See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/freezed/example/lib/main.dart) or [the index](#index) for a preview on what's available
+| Before                          | After                          |
+| ------------------------------- | ------------------------------ |
+| ![before](resources/before.png) | ![before](resources/after.png) |
 
 # Index
 
-- [0.14.0 and null-safety](#0140-and-null-safety)
 - [Motivation](#motivation)
 - [Index](#index)
 - [How to use](#how-to-use)
@@ -74,7 +42,6 @@ See [the example](https://github.com/rrousselGit/freezed/blob/master/packages/fr
     - [Custom getters and methods](#custom-getters-and-methods)
     - [Asserts](#asserts)
     - [Default values](#default-values)
-    - [Constructor tear-off](#constructor-tear-off)
     - [Decorators and comments](#decorators-and-comments)
     - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
   - [==/toString](#tostring)
@@ -379,26 +346,6 @@ abstract class Example with _$Example {
 **NOTE**:\
 If you are using serialization/deserialization, this will automatically add
 a `@JsonKey(defaultValue: <something>)` for you.
-
-### Constructor tear-off
-
-A common use-case is to do a one-to-one mapping between the parameters of a callback
-and a constructor.\
-For example, you may write:
-
-```dart
-future.catchError((error) => MyClass.error(error))
-```
-
-But that's kind of redundant. As such, [Freezed] offers a simpler syntax:
-
-```dart
-future.catchError($MyClass.error)
-```
-
-This new code is strictly equivalent to the previous snippet, just shorter.
-
-Note that this is both compatible with [default values](#default-values) and generics.
 
 ### Decorators and comments
 

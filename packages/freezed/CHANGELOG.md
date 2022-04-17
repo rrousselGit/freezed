@@ -17,6 +17,7 @@
 - Fix null exceptions in some cases when using typedefs (thanks to @smiLLe)
 - Support analyzer 4.0.0
 - Fix an issue with generic Freezed classes failing to compile when using `@With<Mixin<T>>()` #614
+- Added `@cheesed` as a variant to `@freezed`, for mutable classes
 
 # 1.1.1
 
