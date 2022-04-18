@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test/test.dart';
 
@@ -100,6 +102,23 @@ void main() {
       expect(defaultValue.unionKey, 'runtimeType');
       expect(defaultValue.unionValueCase, isNull);
       expect(defaultValue.when, isNull);
+    });
+  });
+
+  group('FastDeepCollectionEquality', () {
+    test('equals', () {
+      expect(FastDeepCollectionEquality().equals(<int>[1, 2, 3], [1, 2, 3]), isTrue);
+      expect(FastDeepCollectionEquality().equals(<int>[1, 2, 3], Uint8List.fromList([1, 2, 3])), isTrue);
+      expect(FastDeepCollectionEquality().equals(<int>[2, 3, 4], [1, 2, 3]), isFalse);
+      expect(FastDeepCollectionEquality().equals(<int>[2, 3, 4], Uint8List.fromList([1, 2, 3])), isFalse);
+
+      expect(FastDeepCollectionEquality().equals(<double>[1.5, 2.5], [1.5, 2.5]), isTrue);
+      expect(FastDeepCollectionEquality().equals(<double>[1.5, 2.5], Float32List.fromList([1.5, 2.5])), isTrue);
+      expect(FastDeepCollectionEquality().equals(<double>[1.5, 2.5], [0.5]), isFalse);
+      expect(FastDeepCollectionEquality().equals(<double>[1.5, 2.5], Float32List.fromList([0.5])), isFalse);
+
+      expect(FastDeepCollectionEquality().equals(<String>["a", "b"], <String>["a", "b"]), isTrue);
+      expect(FastDeepCollectionEquality().equals(<String>["a", "b"], <String>["b", "c"]), isFalse);
     });
   });
 }

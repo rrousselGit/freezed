@@ -529,16 +529,18 @@ enum FreezedUnionCase {
 
 // https://github.com/rrousselGit/freezed/issues/626
 class FastDeepCollectionEquality implements Equality {
+  final Equality _base;
+
   const FastDeepCollectionEquality()
       : _base = const DeepCollectionEquality();
 
   @override
   bool equals(e1, e2) {
     if (e1 is List<int>) {
-      return e2 is List<int> && _listEquals<int>(a, b);
+      return e2 is List<int> && _listEquals<int>(e1, e2);
     }
     if (e1 is List<double>) {
-      return e2 is List<double> && _listEquals<double>(a, b);
+      return e2 is List<double> && _listEquals<double>(e1, e2);
     }
     return _base.equals(e1, e2);
   }
