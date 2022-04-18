@@ -58,6 +58,7 @@ to focus on the definition of your model.
 - [Utilities](#utilities)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
+  - [Sponsors](#sponsors)
 
 # How to use
 
@@ -1150,6 +1151,14 @@ Example:
   ```dart
   factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
   ```
+
+## Sponsors
+
+<p align="center">
+  <a href="https://raw.githubusercontent.com/rrousselGit/freezed/master/sponsorkit/sponsors.svg">
+    <img src='https://raw.githubusercontent.com/rrousselGit/freezed/master/sponsorkit/sponsors.svg'/>
+  </a>
+</p>
 
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
