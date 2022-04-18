@@ -527,7 +527,6 @@ enum FreezedUnionCase {
   screamingSnake,
 }
 
-// https://github.com/rrousselGit/freezed/issues/626
 class FastDeepCollectionEquality implements Equality {
   final Equality _base;
 
@@ -536,6 +535,7 @@ class FastDeepCollectionEquality implements Equality {
 
   @override
   bool equals(e1, e2) {
+    // Speed up for types like List<int>, see https://github.com/rrousselGit/freezed/issues/626 for details
     if (e1 is List<int>) {
       return e2 is List<int> && _listEquals<int>(e1, e2);
     }
