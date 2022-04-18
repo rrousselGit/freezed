@@ -1,27 +1,19 @@
-import { defineConfig, presets } from 'sponsorkit'
+import { defineConfig, presets } from "sponsorkit";
 
 export default defineConfig({
-  // Providers configs
   github: {
     login: "rrousselGit",
   },
-
-  // Rendering configs
   width: 800,
-  formats: ["json", "svg", "png"],
+  formats: ["svg"],
   tiers: [
     {
       title: "Backers",
       preset: presets.base,
     },
     {
-      title: "Sponsors",
-      monthlyDollars: 10,
-      preset: presets.medium,
-    },
-    {
       title: "Silver Sponsors",
-      monthlyDollars: 50,
+      monthlyDollars: 25,
       preset: presets.large,
     },
     {
