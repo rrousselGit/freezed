@@ -1,28 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { defineConfig, presets } from "sponsorkit";
+import { defineConfig, presets } from 'sponsorkit'
 
 export default defineConfig({
+  // Providers configs
   github: {
     login: "rrousselGit",
   },
+
+  // Rendering configs
+  width: 800,
+  formats: ["json", "svg", "png"],
   tiers: [
     {
       title: "Backers",
-      // to replace the entire tier rendering
-      // compose: (composer, tierSponsors, config) => {
-      //   composer.addRaw(
-      //     '<-- custom svg -->',
-      //   )
-      // },
+      preset: presets.base,
     },
     {
       title: "Sponsors",
-      monthlyDollars: 24,
+      monthlyDollars: 10,
       preset: presets.medium,
-      // to insert custom elements after the tier block
-      composeAfter: (composer, tierSponsors, config) => {
-        composer.addSpan(10);
-      },
     },
     {
       title: "Silver Sponsors",
