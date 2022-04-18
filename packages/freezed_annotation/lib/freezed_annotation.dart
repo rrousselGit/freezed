@@ -530,8 +530,7 @@ enum FreezedUnionCase {
 class FastDeepCollectionEquality implements Equality {
   final Equality _base;
 
-  const FastDeepCollectionEquality()
-      : _base = const DeepCollectionEquality();
+  const FastDeepCollectionEquality() : _base = const DeepCollectionEquality();
 
   @override
   bool equals(e1, e2) {
@@ -552,15 +551,11 @@ class FastDeepCollectionEquality implements Equality {
   bool isValidKey(Object? o) => o is List || _base.isValidKey(o);
 
   static bool _listEquals<T>(List<T>? a, List<T>? b) {
-    if (a == null)
-      return b == null;
-    if (b == null || a.length != b.length)
-      return false;
-    if (identical(a, b))
-      return true;
+    if (a == null) return b == null;
+    if (b == null || a.length != b.length) return false;
+    if (identical(a, b)) return true;
     for (int index = 0; index < a.length; index += 1) {
-      if (a[index] != b[index])
-        return false;
+      if (a[index] != b[index]) return false;
     }
     return true;
   }
