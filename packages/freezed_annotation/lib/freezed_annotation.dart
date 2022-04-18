@@ -526,3 +526,40 @@ enum FreezedUnionCase {
   /// Encodes a constructor named `screamingSnakeCase` with a JSON value `SCREAMING_SNAKE_CASE`.
   screamingSnake,
 }
+
+// https://github.com/rrousselGit/freezed/issues/626
+class FastDeepCollectionEquality implements Equality {
+  const FastDeepCollectionEquality()
+      : _base = const DeepCollectionEquality();
+
+  @override
+  bool equals(e1, e2) {
+    if (e1 is List<int>) {
+      return e2 is List<int> && _listEquals<int>(a, b);
+    }
+    if (e1 is List<double>) {
+      return e2 is List<double> && _listEquals<double>(a, b);
+    }
+    return _base.equals(e1, e2);
+  }
+
+  @override
+  int hash(Object? o) => _base.hash(o);
+
+  @override
+  bool isValidKey(Object? o) => o is List || _base.isValidKey(o);
+
+  static bool _listEquals<T>(List<T>? a, List<T>? b) {
+    if (a == null)
+      return b == null;
+    if (b == null || a.length != b.length)
+      return false;
+    if (identical(a, b))
+      return true;
+    for (int index = 0; index < a.length; index += 1) {
+      if (a[index] != b[index])
+        return false;
+    }
+    return true;
+  }
+}

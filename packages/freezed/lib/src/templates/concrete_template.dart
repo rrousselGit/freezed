@@ -374,7 +374,6 @@ String toString($parameters) {
 ''';
   }
 
-  // TODO
   String get _operatorEqualMethod {
     if (!data.generateEqual) return '';
 
@@ -384,8 +383,8 @@ String toString($parameters) {
       ...constructor.impliedProperties.map((p) {
         final name = p.name == 'other' ? 'this.other' : p.name;
         if (p.isPossiblyDartCollection) {
-          // no need to check `identical` as `DeepCollectionEquality` already does it
-          return 'const DeepCollectionEquality().equals(other.${p.name}, $name)';
+          // no need to check `identical` as `FastDeepCollectionEquality` already does it
+          return 'const FastDeepCollectionEquality().equals(other.${p.name}, $name)';
         }
         return '(identical(other.${p.name}, $name) || other.${p.name} == $name)';
       }),
@@ -410,7 +409,7 @@ bool operator ==(dynamic other) {
       'runtimeType',
       for (final property in constructor.impliedProperties)
         if (property.isPossiblyDartCollection)
-          'const DeepCollectionEquality().hash(${property.name})'
+          'const FastDeepCollectionEquality().hash(${property.name})'
         else
           property.name,
     ];
