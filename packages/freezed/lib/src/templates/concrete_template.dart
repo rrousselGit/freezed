@@ -374,6 +374,7 @@ String toString($parameters) {
 ''';
   }
 
+  // TODO
   String get _operatorEqualMethod {
     if (!data.generateEqual) return '';
 
