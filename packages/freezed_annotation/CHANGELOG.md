@@ -1,3 +1,15 @@
+# 2.0.0
+
+- **Breaking**: freezed_annotation no-longer exports the entire package:collection
+- **Breaking** Removed `@Freezed(maybeMap: )` & `@Freezed(maybeWhen: )` in favor of a separate:
+
+  ```Dart
+  @Freezed(map: FreezedMap(...), when: FreezedWhenOptions(...))
+  ```
+
+- Feat: Add screaming snake union case type (#617) (thanks to @zbarbuto)
+- Added `@unfreezed` as a variant to `@freezed`, for mutable classes
+
 # 1.1.0
 
 Added support for disabling the generation of `maybeMap`/`maybeWhen` (thanks to @Lyokone)

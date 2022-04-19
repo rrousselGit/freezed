@@ -1,4 +1,4 @@
-# 2.0.0 [Unreleased]
+# 2.0.0
 
 - **Breaking**: freezed_annotation no-longer exports the entire package:collection
 - **Breaking**: Freezed no-longer generates `$MyClassTearOff`. This feature is now available in Dart
