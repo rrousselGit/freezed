@@ -8,6 +8,10 @@
   @Freezed(map: FreezedMap(...), when: FreezedWhenOptions(...))
   ```
 
+- **Breaking**: Freezed now converts Lists/Maps/Sets into UnmodifiableListView/UnmodifiableMapView/UnmodifiableSetView.
+  This can be disabled for one class by specifying `@Feezed(makeCollectionsUnmodifiable: false)`.
+  Alternatively, this can be configured inside the `build.yaml` file
+
 - Added parameters of `@Freezed` to customize the generated code.
   This includes: fromJson, toJson, map, when, equal, toStringOverride, copyWith.
 

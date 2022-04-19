@@ -37,6 +37,7 @@ to focus on the definition of your model.
   - [Run the generator](#run-the-generator)
   - [Creating a Model using Freezed](#creating-a-model-using-freezed)
     - [Defining a mutable class instead of an immutable one](#defining-a-mutable-class-instead-of-an-immutable-one)
+    - [Allowing the mutation of Lists/Maps/Sets](#allowing-the-mutation-of-listsmapssets)
     - [How copyWith works](#how-copywith-works)
     - [Going further: Deep copy](#going-further-deep-copy)
     - [Adding getters and methods to our models](#adding-getters-and-methods-to-our-models)
@@ -235,6 +236,39 @@ differences:
 
 - Of course, since our `Person` class is mutable, it is no-longer possible
   to instantiate it using `const`.
+
+### Allowing the mutation of Lists/Maps/Sets
+
+By default when using `@freezed` (but not `@unfreezed`), properties of type `List`/`Map`/`Set`
+are transformed to be immutable.
+
+This means that writing the following will cause a runtime exception:
+
+```dart
+@freezed
+class Example with _$Example {
+  factory Example(List<int> list) = _Example;
+}
+
+void main() {
+  var example = Example([]);
+  example.list.add(42); // throws because we are mutating a collection
+}
+```
+
+That behavior can be disabled by writing:
+
+```dart
+@Freezed(makeCollectionsUnmodifiable: false)
+class Example with _$Example {
+  factory Example(List<int> list) = _Example;
+}
+
+void main() {
+  var example = Example([]);
+  example.list.add(42); // OK
+}
+```
 
 ### How copyWith works
 
