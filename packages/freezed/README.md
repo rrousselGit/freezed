@@ -281,7 +281,7 @@ For example if we define:
 ```dart
 @freezed
 class Person with _$Person {
-  factory Person(String name, int age) = _Person;
+  factory Person(String name, int? age) = _Person;
 }
 ```
 
