@@ -85,6 +85,7 @@ class Data with _$Data {
     required WhenConfig when,
     required bool generateFromJson,
     required bool generateToJson,
+    required bool makeCollectionsImmutable,
     required List<String> concretePropertiesName,
     required List<ConstructorDetails> constructors,
     required GenericsDefinitionTemplate genericsDefinitionTemplate,

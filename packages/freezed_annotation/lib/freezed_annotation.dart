@@ -7,6 +7,61 @@ export 'package:meta/meta.dart';
 
 part 'freezed_annotation.g.dart';
 
+/// An [UnmodifiableListView] which overrides ==
+class EqualUnmodifiableListView<T> extends UnmodifiableListView<T> {
+  /// An [UnmodifiableListView] which overrides ==
+  EqualUnmodifiableListView(this._source) : super(_source);
+
+  final Iterable<T> _source;
+
+  @override
+  bool operator ==(Object other) {
+    return other is EqualUnmodifiableListView<T> &&
+        other.runtimeType == runtimeType &&
+        other._source == _source;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _source);
+}
+
+/// An [UnmodifiableSetView] which overrides ==
+class EqualUnmodifiableSetView<T> extends UnmodifiableSetView<T> {
+  /// An [UnmodifiableSetView] which overrides ==
+  EqualUnmodifiableSetView(this._source) : super(_source);
+
+  final Set<T> _source;
+
+  @override
+  bool operator ==(Object other) {
+    return other is EqualUnmodifiableSetView<T> &&
+        other.runtimeType == runtimeType &&
+        other._source == _source;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _source);
+}
+
+/// An [UnmodifiableMapView] which overrides ==
+class EqualUnmodifiableMapView<Key, Value>
+    extends UnmodifiableMapView<Key, Value> {
+  /// An [UnmodifiableMapView] which overrides ==
+  EqualUnmodifiableMapView(this._source) : super(_source);
+
+  final Map<Key, Value> _source;
+
+  @override
+  bool operator ==(Object other) {
+    return other is EqualUnmodifiableMapView<Key, Value> &&
+        other.runtimeType == runtimeType &&
+        other._source == _source;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, _source);
+}
+
 /// Options for enabling/disabling specific `Union.map` features;
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class FreezedMapOptions {
@@ -260,6 +315,7 @@ class Freezed {
 
   /// If true, then this converts [List], [Map] and [Set] into respectively
   /// [UnmodifiableListView], [UnmodifiableMapView] or [UnmodifiableSetView].
+  @JsonKey(defaultValue: true)
   final bool? makeCollectionsUnmodifiable;
 
   /// Whether to generate a `fromJson` or not
@@ -375,7 +431,11 @@ const freezed = Freezed();
 ///
 /// As opposed to [freezed], properties of the object can be mutable.
 /// On the other hand, a data class will not implement ==.
-const unfreezed = Freezed(equal: false, addImplicitFinal: false);
+const unfreezed = Freezed(
+  equal: false,
+  addImplicitFinal: false,
+  makeCollectionsUnmodifiable: false,
+);
 
 /// {@template freezed_annotation.assert}
 /// A decorator that allows adding `assert(...)` on the generated classes.

@@ -5,13 +5,116 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
 
-class CustomList<T> extends UnmodifiableListView<T> {
-  CustomList(Iterable<T> source) : super(source);
+class CustomMap<A, B> extends MapBase<A, B> {
+  CustomMap(this._source);
+
+  final Map<A, B> _source;
+
+  @override
+  B? operator [](Object? key) => _source[key];
+
+  @override
+  void operator []=(A key, B value) => _source[key] = value;
+
+  @override
+  void clear() => _source.clear();
+
+  @override
+  Iterable<A> get keys => _source.keys;
+
+  @override
+  B? remove(Object? key) => _source.remove(key);
+}
+
+class CustomSet<T> extends SetBase<T> {
+  CustomSet(this._source);
+
+  final Set<T> _source;
+
+  @override
+  bool add(T value) => _source.add(value);
+
+  @override
+  bool contains(Object? element) => _source.contains(element);
+
+  @override
+  Iterator<T> get iterator => _source.iterator;
+
+  @override
+  int get length => _source.length;
+
+  @override
+  T? lookup(Object? element) => _source.lookup(element);
+
+  @override
+  bool remove(Object? value) => _source.remove(value);
+
+  @override
+  Set<T> toSet() => _source.toSet();
+}
+
+class CustomList<T> extends ListBase<T?> {
+  CustomList(this._source);
+
+  final List<T?> _source;
+
+  @override
+  int get length => _source.length;
+
+  @override
+  set length(int length) => _source.length = length;
+
+  @override
+  T? operator [](int index) => _source[index];
+
+  @override
+  void operator []=(int index, T? value) => _source[index] = value;
 }
 
 @freezed
 class CustomListEqual with _$CustomListEqual {
   factory CustomListEqual(CustomList<int> list) = CustomListEqualFirst;
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class ListEqual with _$ListEqual {
+  factory ListEqual(List<int> list) = ListEqualFirst;
+}
+
+@freezed
+class UnmodifiableListEqual with _$UnmodifiableListEqual {
+  factory UnmodifiableListEqual(List<int> list) = UnmodifiableListEqualFirst;
+}
+
+@freezed
+class CustomSetEqual with _$CustomSetEqual {
+  factory CustomSetEqual(CustomSet<int> dartSet) = CustomSetEqualFirst;
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class SetEqual with _$SetEqual {
+  factory SetEqual(Set<int> dartSet) = SetEqualFirst;
+}
+
+@freezed
+class UnmodifiableSetEqual with _$UnmodifiableSetEqual {
+  factory UnmodifiableSetEqual(Set<int> dartSet) = UnmodifiableSetEqualFirst;
+}
+
+@freezed
+class CustomMapEqual with _$CustomMapEqual {
+  factory CustomMapEqual(CustomMap<String, Object?> map) = CustomMapEqualFirst;
+}
+
+@Freezed(makeCollectionsUnmodifiable: false)
+class MapEqual with _$MapEqual {
+  factory MapEqual(Map<String, Object?> map) = MapEqualFirst;
+}
+
+@freezed
+class UnmodifiableMapEqual with _$UnmodifiableMapEqual {
+  factory UnmodifiableMapEqual(Map<String, Object?> map) =
+      UnmodifiableMapEqualFirst;
 }
 
 mixin Some<T> {

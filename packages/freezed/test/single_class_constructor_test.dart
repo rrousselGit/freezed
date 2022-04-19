@@ -38,14 +38,131 @@ Future<void> main() async {
     );
   }
 
+  test('CustomSetEqual', () {
+    expect(
+      CustomSetEqual(CustomSet({42}))..dartSet.add(21),
+      CustomSetEqual(CustomSet({42, 21})),
+      reason: 'Custom lists are not wrapped in an UnmodifiableSetView',
+    );
+
+    expect(
+      CustomSetEqual(CustomSet({42})),
+      CustomSetEqual(CustomSet({42})),
+    );
+
+    expect(
+      CustomSetEqual(CustomSet({42})).hashCode,
+      CustomSetEqual(CustomSet({42})).hashCode,
+    );
+  });
+
+  test('SetEqual', () {
+    expect(
+      SetEqual({42})..dartSet.add(21),
+      SetEqual({42, 21}),
+    );
+
+    expect(SetEqual({42}), SetEqual({42}));
+    expect(SetEqual({42}).hashCode, SetEqual({42}).hashCode);
+  });
+
+  test('UnmodifiableSetEqual', () {
+    expect(
+      () => UnmodifiableSetEqual({42})..dartSet.add(21),
+      throwsUnsupportedError,
+    );
+
+    expect(
+      UnmodifiableSetEqual({42}),
+      UnmodifiableSetEqual({42}),
+    );
+    expect(
+      UnmodifiableSetEqual({42}).hashCode,
+      UnmodifiableSetEqual({42}).hashCode,
+    );
+  });
+
   test('CustomListEqual', () {
+    expect(
+      CustomListEqual(CustomList([42]))..list.add(21),
+      CustomListEqual(CustomList([42, 21])),
+      reason: 'Custom lists are not wrapped in an UnmodifiableListView',
+    );
+
     expect(
       CustomListEqual(CustomList([42])),
       CustomListEqual(CustomList([42])),
     );
+
     expect(
       CustomListEqual(CustomList([42])).hashCode,
       CustomListEqual(CustomList([42])).hashCode,
+    );
+  });
+
+  test('ListEqual', () {
+    expect(
+      ListEqual([42])..list.add(21),
+      ListEqual([42, 21]),
+    );
+
+    expect(ListEqual([42]), ListEqual([42]));
+    expect(ListEqual([42]).hashCode, ListEqual([42]).hashCode);
+  });
+
+  test('UnmodifiableListEqual', () {
+    expect(() => UnmodifiableListEqual([42])..list.add(21),
+        throwsUnsupportedError);
+
+    expect(
+      UnmodifiableListEqual([42]),
+      UnmodifiableListEqual([42]),
+    );
+    expect(
+      UnmodifiableListEqual([42]).hashCode,
+      UnmodifiableListEqual([42]).hashCode,
+    );
+  });
+
+  test('CustomMapEqual', () {
+    expect(
+      CustomMapEqual(CustomMap({'a': 42}))..map['b'] = 21,
+      CustomMapEqual(CustomMap({'a': 42, 'b': 21})),
+      reason: 'Custom lists are not wrapped in an UnmodifiableMapView',
+    );
+
+    expect(
+      CustomMapEqual(CustomMap({'a': 42})),
+      CustomMapEqual(CustomMap({'a': 42})),
+    );
+
+    expect(
+      CustomMapEqual(CustomMap({'a': 42})).hashCode,
+      CustomMapEqual(CustomMap({'a': 42})).hashCode,
+    );
+  });
+
+  test('MapEqual', () {
+    expect(
+      MapEqual({'a': 42})..map['b'] = 21,
+      MapEqual({'a': 42, 'b': 21}),
+    );
+
+    expect(MapEqual({'a': 42}), MapEqual({'a': 42}));
+    expect(MapEqual({'a': 42}).hashCode, MapEqual({'a': 42}).hashCode);
+  });
+
+  test('UnmodifiableMapEqual', () {
+    expect(() => UnmodifiableMapEqual({'a': 42})..map['b'] = 21,
+        throwsUnsupportedError);
+
+    expect(
+      UnmodifiableMapEqual({'a': 42}),
+      UnmodifiableMapEqual({'a': 42}),
+    );
+    expect(
+      UnmodifiableMapEqual({'a': 42}).hashCode,
+      UnmodifiableMapEqual({'a': 42}).hashCode,
     );
   });
 

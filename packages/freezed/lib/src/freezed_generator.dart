@@ -111,6 +111,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         whenOrNull: configs.when?.whenOrNull ?? shouldGenerateUnions,
         maybeWhen: configs.when?.maybeWhen ?? shouldGenerateUnions,
       ),
+      makeCollectionsImmutable: configs.makeCollectionsUnmodifiable!,
       constructors: constructorsNeedsGeneration,
       concretePropertiesName: [
         for (final p in element.fields)
@@ -124,7 +125,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   }
 
   List<Property> _commonProperties(
-      List<ConstructorDetails> constructorsNeedsGeneration) {
+    List<ConstructorDetails> constructorsNeedsGeneration,
+  ) {
     final commonParameters =
         _commonParametersBetweenAllConstructors(constructorsNeedsGeneration);
 
@@ -137,6 +139,9 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           doc: commonParameter.doc,
           type: commonParameter.type,
           defaultValueSource: commonParameter.defaultValueSource,
+          isDartList: commonParameter.isDartList,
+          isDartMap: commonParameter.isDartMap,
+          isDartSet: commonParameter.isDartSet,
           isPossiblyDartCollection: commonParameter.isPossiblyDartCollection,
           // TODO: support hasJsonKey
           hasJsonKey: false,
@@ -440,6 +445,11 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         'copyWith',
         decode: (obj) => obj.toBoolValue(),
         orElse: () => _buildYamlConfigs.copyWith,
+      ),
+      makeCollectionsUnmodifiable: annotation.decodeField(
+        'makeCollectionsUnmodifiable',
+        decode: (obj) => obj.toBoolValue(),
+        orElse: () => _buildYamlConfigs.makeCollectionsUnmodifiable,
       ),
       equal: annotation.decodeField(
         'equal',

@@ -39,7 +39,7 @@ Freezed _$FreezedFromJson(Map<String, dynamic> json) => Freezed(
           ? null
           : FreezedWhenOptions.fromJson(json['when'] as Map<String, dynamic>),
       makeCollectionsUnmodifiable:
-          json['make_collections_unmodifiable'] as bool?,
+          json['make_collections_unmodifiable'] as bool? ?? true,
       addImplicitFinal: json['add_implicit_final'] as bool? ?? true,
     );
 

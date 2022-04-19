@@ -1080,6 +1080,7 @@ class _$DataTearOff {
       required WhenConfig when,
       required bool generateFromJson,
       required bool generateToJson,
+      required bool makeCollectionsImmutable,
       required List<String> concretePropertiesName,
       required List<ConstructorDetails> constructors,
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
@@ -1095,6 +1096,7 @@ class _$DataTearOff {
       when: when,
       generateFromJson: generateFromJson,
       generateToJson: generateToJson,
+      makeCollectionsImmutable: makeCollectionsImmutable,
       concretePropertiesName: concretePropertiesName,
       constructors: constructors,
       genericsDefinitionTemplate: genericsDefinitionTemplate,
@@ -1118,6 +1120,7 @@ mixin _$Data {
   WhenConfig get when => throw _privateConstructorUsedError;
   bool get generateFromJson => throw _privateConstructorUsedError;
   bool get generateToJson => throw _privateConstructorUsedError;
+  bool get makeCollectionsImmutable => throw _privateConstructorUsedError;
   List<String> get concretePropertiesName => throw _privateConstructorUsedError;
   List<ConstructorDetails> get constructors =>
       throw _privateConstructorUsedError;
@@ -1145,6 +1148,7 @@ abstract class $DataCopyWith<$Res> {
       WhenConfig when,
       bool generateFromJson,
       bool generateToJson,
+      bool makeCollectionsImmutable,
       List<String> concretePropertiesName,
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
@@ -1174,6 +1178,7 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
     Object? when = freezed,
     Object? generateFromJson = freezed,
     Object? generateToJson = freezed,
+    Object? makeCollectionsImmutable = freezed,
     Object? concretePropertiesName = freezed,
     Object? constructors = freezed,
     Object? genericsDefinitionTemplate = freezed,
@@ -1216,6 +1221,10 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
       generateToJson: generateToJson == freezed
           ? _value.generateToJson
           : generateToJson // ignore: cast_nullable_to_non_nullable
+              as bool,
+      makeCollectionsImmutable: makeCollectionsImmutable == freezed
+          ? _value.makeCollectionsImmutable
+          : makeCollectionsImmutable // ignore: cast_nullable_to_non_nullable
               as bool,
       concretePropertiesName: concretePropertiesName == freezed
           ? _value.concretePropertiesName
@@ -1270,6 +1279,7 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       WhenConfig when,
       bool generateFromJson,
       bool generateToJson,
+      bool makeCollectionsImmutable,
       List<String> concretePropertiesName,
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
@@ -1302,6 +1312,7 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
     Object? when = freezed,
     Object? generateFromJson = freezed,
     Object? generateToJson = freezed,
+    Object? makeCollectionsImmutable = freezed,
     Object? concretePropertiesName = freezed,
     Object? constructors = freezed,
     Object? genericsDefinitionTemplate = freezed,
@@ -1345,6 +1356,10 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
           ? _value.generateToJson
           : generateToJson // ignore: cast_nullable_to_non_nullable
               as bool,
+      makeCollectionsImmutable: makeCollectionsImmutable == freezed
+          ? _value.makeCollectionsImmutable
+          : makeCollectionsImmutable // ignore: cast_nullable_to_non_nullable
+              as bool,
       concretePropertiesName: concretePropertiesName == freezed
           ? _value.concretePropertiesName
           : concretePropertiesName // ignore: cast_nullable_to_non_nullable
@@ -1382,6 +1397,7 @@ class _$_Data implements _Data {
       required this.when,
       required this.generateFromJson,
       required this.generateToJson,
+      required this.makeCollectionsImmutable,
       required this.concretePropertiesName,
       required this.constructors,
       required this.genericsDefinitionTemplate,
@@ -1408,6 +1424,8 @@ class _$_Data implements _Data {
   @override
   final bool generateToJson;
   @override
+  final bool makeCollectionsImmutable;
+  @override
   final List<String> concretePropertiesName;
   @override
   final List<ConstructorDetails> constructors;
@@ -1420,7 +1438,7 @@ class _$_Data implements _Data {
 
   @override
   String toString() {
-    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
+    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
   }
 
   @override
@@ -1443,6 +1461,9 @@ class _$_Data implements _Data {
                 other.generateFromJson == generateFromJson) &&
             (identical(other.generateToJson, generateToJson) ||
                 other.generateToJson == generateToJson) &&
+            (identical(
+                    other.makeCollectionsImmutable, makeCollectionsImmutable) ||
+                other.makeCollectionsImmutable == makeCollectionsImmutable) &&
             const DeepCollectionEquality()
                 .equals(other.concretePropertiesName, concretePropertiesName) &&
             const DeepCollectionEquality()
@@ -1470,6 +1491,7 @@ class _$_Data implements _Data {
       when,
       generateFromJson,
       generateToJson,
+      makeCollectionsImmutable,
       const DeepCollectionEquality().hash(concretePropertiesName),
       const DeepCollectionEquality().hash(constructors),
       genericsDefinitionTemplate,
@@ -1493,6 +1515,7 @@ abstract class _Data implements Data {
       required WhenConfig when,
       required bool generateFromJson,
       required bool generateToJson,
+      required bool makeCollectionsImmutable,
       required List<String> concretePropertiesName,
       required List<ConstructorDetails> constructors,
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
@@ -1517,6 +1540,8 @@ abstract class _Data implements Data {
   bool get generateFromJson;
   @override
   bool get generateToJson;
+  @override
+  bool get makeCollectionsImmutable;
   @override
   List<String> get concretePropertiesName;
   @override

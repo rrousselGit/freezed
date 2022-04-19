@@ -99,23 +99,37 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
     final trailingStrings = <String>[
       if (constructor.asserts.isNotEmpty)
         ...constructor.asserts.map((a) => a.toString()),
+      if (data.makeCollectionsImmutable)
+        ...constructor.impliedProperties
+            .where((e) => e.isDartList || e.isDartMap || e.isDartSet)
+            .map((e) => '_${e.name} = ${e.name}'),
       if (_hasUnionKeyProperty)
         "\$type = \$type ?? '${constructor.unionValue}'",
       if (superConstructor.isNotEmpty) superConstructor,
     ];
 
-    var parameters = constructor.parameters.asThis();
+    var parameters = constructor.parameters.mapParameters((p) {
+      if (data.makeCollectionsImmutable &&
+          (p.isDartList || p.isDartMap || p.isDartSet)) {
+        return Parameter.fromParameter(p);
+      }
+      return LocalParameter.fromParameter(p);
+    });
 
     if (_hasUnionKeyProperty) {
       final typeProperty = Parameter(
         type: 'String?',
         name: '\$type',
         isFinal: true,
+        isDartList: false,
+        isDartSet: false,
+        isDartMap: false,
         defaultValueSource: null,
         isRequired: false,
         decorators: [],
         doc: '',
         isPossiblyDartCollection: false,
+        showDefaultValue: false,
       );
 
       parameters = ParametersTemplate(
@@ -195,12 +209,39 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
   }
 
   String get _properties {
-    final classProperties = constructor.impliedProperties.map((p) {
-      var res = '@override $p';
-      if (p.defaultValueSource != null && !p.hasJsonKey) {
-        res = '@JsonKey() $res';
+    final classProperties = constructor.impliedProperties.expand((p) {
+      final annotatedProperty = p.copyWith(
+        decorators: [
+          '@override',
+          if (p.defaultValueSource != null && !p.hasJsonKey) '@JsonKey()',
+          ...p.decorators,
+        ],
+      );
+
+      if (data.makeCollectionsImmutable) {
+        String? viewType;
+
+        if (p.isDartList) {
+          viewType = 'EqualUnmodifiableListView';
+        } else if (p.isDartMap) {
+          viewType = 'EqualUnmodifiableMapView';
+        } else if (p.isDartSet) {
+          viewType = 'EqualUnmodifiableSetView';
+        }
+
+        if (viewType != null) {
+          return [
+            p.copyWith(name: '_${p.name}'),
+            annotatedProperty.asGetter(''' {
+  // ignore: implicit_dynamic_type
+  return $viewType(_${p.name});
+}
+'''),
+          ];
+        }
       }
-      return res;
+
+      return [annotatedProperty];
     });
 
     if (_hasUnionKeyProperty) {

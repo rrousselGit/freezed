@@ -100,6 +100,13 @@ void main() {
       expect(defaultValue.unionKey, 'runtimeType');
       expect(defaultValue.unionValueCase, isNull);
       expect(defaultValue.when, isNull);
+      expect(defaultValue.makeCollectionsUnmodifiable, isTrue);
     });
+  });
+
+  test('unfreezed', () {
+    expect(unfreezed.makeCollectionsUnmodifiable, false);
+    expect(unfreezed.equal, false);
+    expect(unfreezed.addImplicitFinal, false);
   });
 }

@@ -58,12 +58,15 @@ ${_abstractDeepCopyMethods().join()}
 
       final body = _copyWithMethodBody(
         parametersTemplate: ParametersTemplate(
-          [],
+          const [],
           namedParameters: commonProperties.map((e) {
             return Parameter(
               decorators: e.decorators,
               name: e.name,
               isFinal: false,
+              isDartList: false,
+              isDartMap: false,
+              isDartSet: false,
               showDefaultValue: false,
               isRequired: false,
               defaultValueSource: '',
@@ -267,7 +270,7 @@ ${_deepCopyMethods().join()}
 $returnType get ${cloneableProperty.name} {
   $earlyReturn
   return ${_clonerInterfaceFor(cloneableProperty)}(_value.${cloneableProperty.name}$nullabilitySuffix, (value) {
-    return _then(_value.copyWith(${cloneableProperty.name}:  value));
+    return _then(_value.copyWith(${cloneableProperty.name}: value));
   });
 }''';
     }

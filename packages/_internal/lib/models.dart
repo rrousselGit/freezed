@@ -95,6 +95,7 @@ class Data with _$Data {
     required WhenConfig when,
     required bool generateFromJson,
     required bool generateToJson,
+    required bool makeCollectionsImmutable,
     required List<String> concretePropertiesName,
     required List<ConstructorDetails> constructors,
     required GenericsDefinitionTemplate genericsDefinitionTemplate,
@@ -109,11 +110,4 @@ class GlobalData with _$GlobalData {
     required bool hasJson,
     required bool hasDiagnostics,
   }) = _GlobalData;
-}
-
-extension ShouldGenerateWhen on List<ConstructorDetails> {
-  bool get shouldGenerateUnions {
-    return where((element) =>
-        element.name.isNotEmpty && !element.name.startsWith('_')).isNotEmpty;
-  }
 }

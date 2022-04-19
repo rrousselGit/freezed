@@ -67,20 +67,11 @@ class ParametersTemplate {
     required bool addImplicitFinal,
   }) async {
     Future<Parameter> asParameter(ParameterElement e) async {
-      if (isAssignedToThis) {
-        return LocalParameter(
-          type: parseTypeSource(e),
-          name: e.name,
-          defaultValueSource: e.defaultValue,
-          isRequired: e.isRequiredNamed,
-          isFinal: addImplicitFinal || e.isFinal,
-          decorators: parseDecorators(e.metadata),
-          doc: await documentationOfParameter(e, buildStep),
-          isPossiblyDartCollection: e.type.isPossiblyDartCollection,
-        );
-      }
-      return Parameter(
+      final value = Parameter(
         name: e.name,
+        isDartList: e.type.isDartCoreList,
+        isDartMap: e.type.isDartCoreMap,
+        isDartSet: e.type.isDartCoreSet,
         defaultValueSource: e.defaultValue,
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,
@@ -88,7 +79,11 @@ class ParametersTemplate {
         decorators: parseDecorators(e.metadata),
         doc: await documentationOfParameter(e, buildStep),
         isPossiblyDartCollection: e.type.isPossiblyDartCollection,
+        showDefaultValue: true,
       );
+
+      if (isAssignedToThis) return LocalParameter.fromParameter(value);
+      return value;
     }
 
     return ParametersTemplate(
@@ -120,53 +115,22 @@ class ParametersTemplate {
   }
 
   ParametersTemplate asThis() {
-    List<Parameter> asThis(List<Parameter> parameters) {
-      return parameters
-          .map(
-            (e) => LocalParameter(
-              isRequired: e.isRequired,
-              isFinal: e.isFinal,
-              name: e.name,
-              type: e.type,
-              decorators: e.decorators,
-              defaultValueSource: e.defaultValueSource,
-              doc: e.doc,
-              isPossiblyDartCollection: e.isPossiblyDartCollection,
-            ),
-          )
-          .toList();
-    }
-
-    return ParametersTemplate(
-      asThis(requiredPositionalParameters),
-      optionalPositionalParameters: asThis(optionalPositionalParameters),
-      namedParameters: asThis(namedParameters),
-    );
+    return mapParameters((e) => LocalParameter.fromParameter(e));
   }
 
   ParametersTemplate asExpanded({bool showDefaultValue = false}) {
-    List<Parameter> asExpanded(List<Parameter> parameters) {
-      return parameters
-          .map(
-            (e) => Parameter(
-              isRequired: e.isRequired,
-              isFinal: e.isFinal,
-              name: e.name,
-              type: e.type,
-              decorators: e.decorators,
-              defaultValueSource: e.defaultValueSource,
-              showDefaultValue: showDefaultValue,
-              doc: e.doc,
-              isPossiblyDartCollection: e.isPossiblyDartCollection,
-            ),
-          )
-          .toList();
-    }
+    return mapParameters((parameter) {
+      return Parameter.fromParameter(parameter)
+          .copyWith(showDefaultValue: showDefaultValue);
+    });
+  }
 
+  ParametersTemplate mapParameters(Parameter Function(Parameter parameter) cb) {
     return ParametersTemplate(
-      asExpanded(requiredPositionalParameters),
-      optionalPositionalParameters: asExpanded(optionalPositionalParameters),
-      namedParameters: asExpanded(namedParameters),
+      requiredPositionalParameters.map(cb).toList(),
+      optionalPositionalParameters:
+          optionalPositionalParameters.map(cb).toList(),
+      namedParameters: namedParameters.map(cb).toList(),
     );
   }
 
@@ -196,43 +160,9 @@ class ParametersTemplate {
   }
 
   ParametersTemplate get asExpandedDefinition {
-    return ParametersTemplate(
-      requiredPositionalParameters
-          .map((e) => Parameter(
-                name: e.name,
-                type: e.type,
-                isRequired: e.isRequired,
-                isFinal: e.isFinal,
-                decorators: e.decorators,
-                defaultValueSource: e.defaultValueSource,
-                doc: e.doc,
-                isPossiblyDartCollection: e.isPossiblyDartCollection,
-              ))
-          .toList(),
-      namedParameters: namedParameters
-          .map((e) => Parameter(
-                name: e.name,
-                type: e.type,
-                isRequired: e.isRequired,
-                isFinal: e.isFinal,
-                decorators: e.decorators,
-                defaultValueSource: e.defaultValueSource,
-                doc: e.doc,
-                isPossiblyDartCollection: e.isPossiblyDartCollection,
-              ))
-          .toList(),
-      optionalPositionalParameters: optionalPositionalParameters
-          .map((e) => Parameter(
-                name: e.name,
-                type: e.type,
-                isRequired: e.isRequired,
-                isFinal: e.isFinal,
-                decorators: e.decorators,
-                defaultValueSource: e.defaultValueSource,
-                doc: e.doc,
-                isPossiblyDartCollection: e.isPossiblyDartCollection,
-              ))
-          .toList(),
+    return mapParameters(
+      (parameter) =>
+          Parameter.fromParameter(parameter).copyWith(showDefaultValue: false),
     );
   }
 }
@@ -243,17 +173,39 @@ class Parameter {
     required this.name,
     required this.defaultValueSource,
     required this.isRequired,
+    required this.isDartList,
+    required this.isDartMap,
+    required this.isDartSet,
     required this.decorators,
     required this.doc,
     required this.isFinal,
     required this.isPossiblyDartCollection,
-    this.showDefaultValue = false,
+    required this.showDefaultValue,
   });
+
+  Parameter.fromParameter(Parameter p)
+      : this(
+          name: p.name,
+          type: p.type,
+          defaultValueSource: p.defaultValueSource,
+          isFinal: p.isFinal,
+          isRequired: p.isRequired,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          decorators: p.decorators,
+          showDefaultValue: p.showDefaultValue,
+          doc: p.doc,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
+        );
 
   final String? type;
   final String name;
   final String? defaultValueSource;
   final bool isRequired;
+  final bool isDartList;
+  final bool isDartMap;
+  final bool isDartSet;
   final List<String> decorators;
   final bool showDefaultValue;
   final bool isPossiblyDartCollection;
@@ -264,12 +216,15 @@ class Parameter {
     String? type,
     String? name,
     String? defaultValueSource,
+    bool? isDartList,
     bool? isRequired,
     bool? nullable,
     List<String>? decorators,
     bool? showDefaultValue,
     bool? isPossiblyDartCollection,
     String? doc,
+    bool? isDartMap,
+    bool? isDartSet,
     bool? isFinal,
   }) =>
       Parameter(
@@ -280,6 +235,9 @@ class Parameter {
         decorators: decorators ?? this.decorators,
         showDefaultValue: showDefaultValue ?? this.showDefaultValue,
         doc: doc ?? this.doc,
+        isDartMap: isDartMap ?? this.isDartMap,
+        isDartSet: isDartSet ?? this.isDartSet,
+        isDartList: isDartList ?? this.isDartList,
         isFinal: isFinal ?? this.isFinal,
         isPossiblyDartCollection:
             isPossiblyDartCollection ?? this.isPossiblyDartCollection,
@@ -311,6 +269,9 @@ class LocalParameter extends Parameter {
     required String? defaultValueSource,
     required bool isFinal,
     required bool isRequired,
+    required bool isDartList,
+    required bool isDartMap,
+    required bool isDartSet,
     required List<String> decorators,
     required String doc,
     required bool isPossiblyDartCollection,
@@ -320,10 +281,28 @@ class LocalParameter extends Parameter {
           isFinal: isFinal,
           showDefaultValue: true,
           isRequired: isRequired,
+          isDartList: isDartList,
+          isDartMap: isDartMap,
+          isDartSet: isDartSet,
           decorators: decorators,
           defaultValueSource: defaultValueSource,
           doc: doc,
           isPossiblyDartCollection: isPossiblyDartCollection,
+        );
+
+  LocalParameter.fromParameter(Parameter p)
+      : this(
+          name: p.name,
+          type: p.type,
+          defaultValueSource: p.defaultValueSource,
+          isFinal: p.isFinal,
+          isRequired: p.isRequired,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          decorators: p.decorators,
+          doc: p.doc,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
         );
 
   @override
@@ -349,6 +328,9 @@ class CallbackParameter extends Parameter {
     required String type,
     required bool isRequired,
     required bool isFinal,
+    required bool isDartList,
+    required bool isDartMap,
+    required bool isDartSet,
     required this.isNullable,
     required List<String> decorators,
     required this.parameters,
@@ -360,6 +342,9 @@ class CallbackParameter extends Parameter {
           showDefaultValue: false,
           isRequired: isRequired,
           isFinal: isFinal,
+          isDartList: isDartList,
+          isDartMap: isDartMap,
+          isDartSet: isDartSet,
           decorators: decorators,
           defaultValueSource: defaultValueSource,
           doc: doc,
