@@ -3,6 +3,24 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'multiple_constructors.freezed.dart';
 
 @freezed
+class DefaultValueNamedConstructor with _$DefaultValueNamedConstructor {
+  factory DefaultValueNamedConstructor.a([@Default(42) int value]) =
+      _ADefaultValueNamedConstructor;
+  factory DefaultValueNamedConstructor.b([@Default(42) int value]) =
+      _BDefaultValueNamedConstructor;
+}
+
+@freezed
+class NamedDefaultValueNamedConstructor
+    with _$NamedDefaultValueNamedConstructor {
+  factory NamedDefaultValueNamedConstructor.a({@Default(42) int value}) =
+      _BNamedDefaultValueNamedConstructor;
+
+  factory NamedDefaultValueNamedConstructor.b({@Default(42) int value}) =
+      _ANamedDefaultValueNamedConstructor;
+}
+
+@freezed
 class NoCommonParam with _$NoCommonParam {
   const factory NoCommonParam(String a, {int? b}) = NoCommonParam0;
   const factory NoCommonParam.named(double c, [Object? d]) = NoCommonParam1;

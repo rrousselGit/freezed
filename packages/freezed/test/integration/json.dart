@@ -471,26 +471,6 @@ class DefaultValue with _$DefaultValue {
 }
 
 @freezed
-class DefaultValueNamedConstructor with _$DefaultValueNamedConstructor {
-  factory DefaultValueNamedConstructor.named([@Default(42) int value]) =
-      _DefaultValueNamedConstructor;
-
-  factory DefaultValueNamedConstructor.fromJson(Map<String, dynamic> json) =>
-      _$DefaultValueNamedConstructorFromJson(json);
-}
-
-@freezed
-class NamedDefaultValueNamedConstructor
-    with _$NamedDefaultValueNamedConstructor {
-  factory NamedDefaultValueNamedConstructor.named({@Default(42) int value}) =
-      _NamedDefaultValueNamedConstructor;
-
-  factory NamedDefaultValueNamedConstructor.fromJson(
-          Map<String, dynamic> json) =>
-      _$NamedDefaultValueNamedConstructorFromJson(json);
-}
-
-@freezed
 class DefaultValueJsonKey with _$DefaultValueJsonKey {
   factory DefaultValueJsonKey([
     @Default(42) @JsonKey(defaultValue: 21) int value,
