@@ -148,9 +148,15 @@ String _whenPrototype(
         ...constructor.parameters.requiredPositionalParameters
             .map((e) => e.copyWith(isFinal: false)),
         ...constructor.parameters.optionalPositionalParameters
-            .map((e) => e.copyWith(isFinal: false)),
-        ...constructor.parameters.namedParameters
-            .map((e) => e.copyWith(isRequired: false, isFinal: false)),
+            .map((e) => e.copyWith(
+                  isFinal: false,
+                  showDefaultValue: false,
+                )),
+        ...constructor.parameters.namedParameters.map((e) => e.copyWith(
+              isRequired: false,
+              isFinal: false,
+              showDefaultValue: false,
+            )),
       ]);
     },
   );
