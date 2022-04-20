@@ -1,3 +1,7 @@
+# 2.0.2
+
+Fixed invalid generated code when defining nullable collections.
+
 # 2.0.1
 
 - Fixed a bug where the generated when/map methods were potentially invalid when
