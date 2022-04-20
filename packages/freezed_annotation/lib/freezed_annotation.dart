@@ -318,21 +318,21 @@ class Freezed {
   @JsonKey(defaultValue: true)
   final bool? makeCollectionsUnmodifiable;
 
-  /// Whether to generate a `fromJson` or not
+  /// Whether to generate a `toString` or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// If that value is null too, generates a `toString` only if the class
   /// has no custom `toString`.
   final bool? toStringOverride;
 
-  /// Whether to generate a `fromJson` or not
+  /// Whether to generate a `==/hashcode` or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// If that value is null too, generates a ==/hashcode only if the class
   /// does not have a custom ==
   final bool? equal;
 
-  /// Whether to generate a `fromJson` or not
+  /// Whether to generate a `copyWith` or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// If that value is null too, defaults to true.
