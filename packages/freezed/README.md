@@ -96,8 +96,6 @@ If you plan on using [Freezed] in combination with `json_serializable`, recent
 versions of `json_serializable` and `meta` may require you to disable the
 `invalid_annotation_target` warning.
 
-Similarly, you may want to disable warnings that happen in `.freezed.dart`, if any.
-
 To do that, you can add the following to an `analysis_options.yaml`
 at the root of your project:
 
@@ -131,8 +129,6 @@ part 'my_file.freezed.dart';
 The reason being, importing `foundation.dart` also imports classes to make an
 object nicely readable in Flutter's devtool.\
 If you import `foundation.dart`, [Freezed] will automatically do it for you.
-
-A full example would be:
 
 ## Creating a Model using Freezed
 
