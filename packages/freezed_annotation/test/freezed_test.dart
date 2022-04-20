@@ -5,20 +5,28 @@ void main() {
   group('FreezedMapOptions', () {
     test('.fromJson', () {
       expect(FreezedMapOptions.fromJson({'map': false}).map, isFalse);
-      expect(FreezedMapOptions.fromJson({'map': false}).mapOrNull, isTrue);
-      expect(FreezedMapOptions.fromJson({'map': false}).maybeMap, isTrue);
+      expect(FreezedMapOptions.fromJson({'map': false}).mapOrNull, isNull);
+      expect(FreezedMapOptions.fromJson({'map': false}).maybeMap, isNull);
 
-      expect(FreezedMapOptions.fromJson({'map_or_null': false}).map, isTrue);
-      expect(FreezedMapOptions.fromJson({'map_or_null': false}).mapOrNull,
-          isFalse);
+      expect(FreezedMapOptions.fromJson({'map_or_null': false}).map, isNull);
       expect(
-          FreezedMapOptions.fromJson({'map_or_null': false}).maybeMap, isTrue);
+        FreezedMapOptions.fromJson({'map_or_null': false}).mapOrNull,
+        isFalse,
+      );
+      expect(
+        FreezedMapOptions.fromJson({'map_or_null': false}).maybeMap,
+        isNull,
+      );
 
-      expect(FreezedMapOptions.fromJson({'maybe_map': false}).map, isTrue);
+      expect(FreezedMapOptions.fromJson({'maybe_map': false}).map, isNull);
       expect(
-          FreezedMapOptions.fromJson({'maybe_map': false}).mapOrNull, isTrue);
+        FreezedMapOptions.fromJson({'maybe_map': false}).mapOrNull,
+        isNull,
+      );
       expect(
-          FreezedMapOptions.fromJson({'maybe_map': false}).maybeMap, isFalse);
+        FreezedMapOptions.fromJson({'maybe_map': false}).maybeMap,
+        isFalse,
+      );
     });
 
     test('.all', () {
@@ -43,23 +51,23 @@ void main() {
   group('FreezedWhenOptions', () {
     test('.fromJson', () {
       expect(FreezedWhenOptions.fromJson({'when': false}).when, isFalse);
-      expect(FreezedWhenOptions.fromJson({'when': false}).whenOrNull, isTrue);
-      expect(FreezedWhenOptions.fromJson({'when': false}).maybeWhen, isTrue);
+      expect(FreezedWhenOptions.fromJson({'when': false}).whenOrNull, isNull);
+      expect(FreezedWhenOptions.fromJson({'when': false}).maybeWhen, isNull);
 
-      expect(FreezedWhenOptions.fromJson({'when_or_null': false}).when, isTrue);
+      expect(FreezedWhenOptions.fromJson({'when_or_null': false}).when, isNull);
       expect(
         FreezedWhenOptions.fromJson({'when_or_null': false}).whenOrNull,
         isFalse,
       );
       expect(
         FreezedWhenOptions.fromJson({'when_or_null': false}).maybeWhen,
-        isTrue,
+        isNull,
       );
 
-      expect(FreezedWhenOptions.fromJson({'maybe_when': false}).when, isTrue);
+      expect(FreezedWhenOptions.fromJson({'maybe_when': false}).when, isNull);
       expect(
         FreezedWhenOptions.fromJson({'maybe_when': false}).whenOrNull,
-        isTrue,
+        isNull,
       );
       expect(
         FreezedWhenOptions.fromJson({'maybe_when': false}).maybeWhen,

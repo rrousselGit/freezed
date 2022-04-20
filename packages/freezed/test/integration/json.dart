@@ -3,6 +3,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'json.freezed.dart';
 part 'json.g.dart';
 
+@freezed
+class NoWhen with _$NoWhen {
+  factory NoWhen({int? first}) = _NoWhen;
+
+  factory NoWhen.fromJson(Map<String, dynamic> json) => _$NoWhenFromJson(json);
+}
+
 abstract class Base {}
 
 @freezed
