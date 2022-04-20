@@ -10,16 +10,16 @@ part of 'freezed_annotation.dart';
 
 FreezedMapOptions _$FreezedMapOptionsFromJson(Map<String, dynamic> json) =>
     FreezedMapOptions(
-      map: json['map'] as bool? ?? true,
-      mapOrNull: json['map_or_null'] as bool? ?? true,
-      maybeMap: json['maybe_map'] as bool? ?? true,
+      map: json['map'] as bool?,
+      mapOrNull: json['map_or_null'] as bool?,
+      maybeMap: json['maybe_map'] as bool?,
     );
 
 FreezedWhenOptions _$FreezedWhenOptionsFromJson(Map<String, dynamic> json) =>
     FreezedWhenOptions(
-      when: json['when'] as bool? ?? true,
-      whenOrNull: json['when_or_null'] as bool? ?? true,
-      maybeWhen: json['maybe_when'] as bool? ?? true,
+      when: json['when'] as bool?,
+      whenOrNull: json['when_or_null'] as bool?,
+      maybeWhen: json['maybe_when'] as bool?,
     );
 
 Freezed _$FreezedFromJson(Map<String, dynamic> json) => Freezed(

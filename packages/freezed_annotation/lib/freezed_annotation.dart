@@ -84,21 +84,18 @@ class FreezedMapOptions {
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
   final bool? map;
 
   /// Whether to generate `Union.mapOrNull`
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
   final bool? mapOrNull;
 
   /// Whether to generate `Union.maybeMap`
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
   final bool? maybeMap;
 }
 
@@ -131,21 +128,18 @@ class FreezedWhenOptions {
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
   final bool? when;
 
   /// Whether to generate `Union.whenOrNull`
   ///
   /// If null, will fallback to the build.yaml configs
   /// If that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
   final bool? whenOrNull;
 
   /// Whether to generate `Union.maybeWhen`
   ///
   /// If null, will fallback to the build.yaml configs.
   /// If that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
   final bool? maybeWhen;
 }
 
