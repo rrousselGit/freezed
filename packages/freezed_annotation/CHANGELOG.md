@@ -1,3 +1,9 @@
+# 2.0.1
+
+- Fixed a bug where the generated when/map methods were potentially invalid when
+  using default values
+- Fixed a bug where when/map methods were generated even when not necessary
+
 # 2.0.0
 
 - **Breaking**: freezed_annotation no-longer exports the entire package:collection
