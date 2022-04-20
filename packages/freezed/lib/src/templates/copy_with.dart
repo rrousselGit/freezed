@@ -63,6 +63,7 @@ ${_abstractDeepCopyMethods().join()}
             return Parameter(
               decorators: e.decorators,
               name: e.name,
+              isNullable: false,
               isFinal: false,
               isDartList: false,
               isDartMap: false,

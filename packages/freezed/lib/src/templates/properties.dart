@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
@@ -25,6 +26,7 @@ class Property {
     required this.hasJsonKey,
     required this.doc,
     required this.isFinal,
+    required this.isNullable,
     required this.isDartList,
     required this.isDartMap,
     required this.isDartSet,
@@ -47,6 +49,7 @@ class Property {
 
     return Property(
       name: element.name,
+      isNullable: element.type.nullabilitySuffix == NullabilitySuffix.question,
       isDartList: element.type.isDartCoreList,
       isDartMap: element.type.isDartCoreMap,
       isDartSet: element.type.isDartCoreSet,
@@ -62,6 +65,7 @@ class Property {
 
   final String type;
   final String name;
+  final bool isNullable;
   final bool isDartList;
   final bool isDartMap;
   final bool isDartSet;
@@ -104,6 +108,7 @@ class Property {
   Property copyWith({
     String? type,
     String? name,
+    bool? isNullable,
     bool? isDartList,
     bool? isDartMap,
     bool? isDartSet,
@@ -117,6 +122,7 @@ class Property {
     return Property(
       type: type ?? this.type,
       name: name ?? this.name,
+      isNullable: isNullable ?? this.isNullable,
       decorators: decorators ?? this.decorators,
       defaultValueSource: defaultValueSource ?? this.defaultValueSource,
       hasJsonKey: hasJsonKey ?? this.hasJsonKey,

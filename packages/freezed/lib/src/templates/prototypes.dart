@@ -116,6 +116,7 @@ String _mapPrototype(
           name: 'value',
           type: '${constructor.redirectedName}$genericParameters',
           isRequired: false,
+          isNullable: false,
           isFinal: false,
           isDartList: false,
           isDartSet: false,

@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:build/build.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -69,6 +70,7 @@ class ParametersTemplate {
     Future<Parameter> asParameter(ParameterElement e) async {
       final value = Parameter(
         name: e.name,
+        isNullable: e.type.nullabilitySuffix == NullabilitySuffix.question,
         isDartList: e.type.isDartCoreList,
         isDartMap: e.type.isDartCoreMap,
         isDartSet: e.type.isDartCoreSet,
@@ -173,6 +175,7 @@ class Parameter {
     required this.name,
     required this.defaultValueSource,
     required this.isRequired,
+    required this.isNullable,
     required this.isDartList,
     required this.isDartMap,
     required this.isDartSet,
@@ -187,6 +190,7 @@ class Parameter {
       : this(
           name: p.name,
           type: p.type,
+          isNullable: p.isNullable,
           defaultValueSource: p.defaultValueSource,
           isFinal: p.isFinal,
           isRequired: p.isRequired,
@@ -202,6 +206,7 @@ class Parameter {
   final String? type;
   final String name;
   final String? defaultValueSource;
+  final bool isNullable;
   final bool isRequired;
   final bool isDartList;
   final bool isDartMap;
@@ -217,6 +222,7 @@ class Parameter {
     String? name,
     String? defaultValueSource,
     bool? isDartList,
+    bool? isNullable,
     bool? isRequired,
     bool? nullable,
     List<String>? decorators,
@@ -230,6 +236,7 @@ class Parameter {
       Parameter(
         type: type ?? this.type,
         name: name ?? this.name,
+        isNullable: isNullable ?? this.isNullable,
         defaultValueSource: defaultValueSource ?? this.defaultValueSource,
         isRequired: isRequired ?? this.isRequired,
         decorators: decorators ?? this.decorators,
@@ -268,6 +275,7 @@ class LocalParameter extends Parameter {
     required String? type,
     required String? defaultValueSource,
     required bool isFinal,
+    required bool isNullable,
     required bool isRequired,
     required bool isDartList,
     required bool isDartMap,
@@ -279,6 +287,7 @@ class LocalParameter extends Parameter {
           name: name,
           type: type,
           isFinal: isFinal,
+          isNullable: isNullable,
           showDefaultValue: true,
           isRequired: isRequired,
           isDartList: isDartList,
@@ -294,6 +303,7 @@ class LocalParameter extends Parameter {
       : this(
           name: p.name,
           type: p.type,
+          isNullable: p.isNullable,
           defaultValueSource: p.defaultValueSource,
           isFinal: p.isFinal,
           isRequired: p.isRequired,
@@ -331,7 +341,7 @@ class CallbackParameter extends Parameter {
     required bool isDartList,
     required bool isDartMap,
     required bool isDartSet,
-    required this.isNullable,
+    required bool isNullable,
     required List<String> decorators,
     required this.parameters,
     required String doc,
@@ -339,6 +349,7 @@ class CallbackParameter extends Parameter {
   }) : super(
           name: name,
           type: type,
+          isNullable: isNullable,
           showDefaultValue: false,
           isRequired: isRequired,
           isFinal: isFinal,
@@ -352,7 +363,6 @@ class CallbackParameter extends Parameter {
         );
 
   final ParametersTemplate parameters;
-  final bool isNullable;
 
   @override
   String toString() {

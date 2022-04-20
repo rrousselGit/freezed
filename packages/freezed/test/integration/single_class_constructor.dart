@@ -87,6 +87,12 @@ class UnmodifiableListEqual with _$UnmodifiableListEqual {
 }
 
 @freezed
+class NullUnmodifiableListEqual with _$NullUnmodifiableListEqual {
+  factory NullUnmodifiableListEqual(List<int>? list) =
+      NullUnmodifiableListEqualFirst;
+}
+
+@freezed
 class CustomSetEqual with _$CustomSetEqual {
   factory CustomSetEqual(CustomSet<int> dartSet) = CustomSetEqualFirst;
 }
@@ -99,6 +105,12 @@ class SetEqual with _$SetEqual {
 @freezed
 class UnmodifiableSetEqual with _$UnmodifiableSetEqual {
   factory UnmodifiableSetEqual(Set<int> dartSet) = UnmodifiableSetEqualFirst;
+}
+
+@freezed
+class NullUnmodifiableSetEqual with _$NullUnmodifiableSetEqual {
+  factory NullUnmodifiableSetEqual(Set<int>? dartSet) =
+      NullUnmodifiableSetEqualFirst;
 }
 
 @freezed
@@ -115,6 +127,12 @@ class MapEqual with _$MapEqual {
 class UnmodifiableMapEqual with _$UnmodifiableMapEqual {
   factory UnmodifiableMapEqual(Map<String, Object?> map) =
       UnmodifiableMapEqualFirst;
+}
+
+@freezed
+class NullUnmodifiableMapEqual with _$NullUnmodifiableMapEqual {
+  factory NullUnmodifiableMapEqual(Map<String, Object?>? map) =
+      NullUnmodifiableMapEqualFirst;
 }
 
 mixin Some<T> {

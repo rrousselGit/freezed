@@ -139,6 +139,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           doc: commonParameter.doc,
           type: commonParameter.type,
           defaultValueSource: commonParameter.defaultValueSource,
+          isNullable: commonParameter.isNullable,
           isDartList: commonParameter.isDartList,
           isDartMap: commonParameter.isDartMap,
           isDartSet: commonParameter.isDartSet,

@@ -120,6 +120,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
       final typeProperty = Parameter(
         type: 'String?',
         name: '\$type',
+        isNullable: true,
         isFinal: true,
         isDartList: false,
         isDartSet: false,
@@ -232,7 +233,13 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
         if (viewType != null) {
           return [
             p.copyWith(name: '_${p.name}'),
-            annotatedProperty.asGetter(''' {
+            if (p.isNullable) annotatedProperty.asGetter(''' {
+  final value = _${p.name};
+  if (value == null) return null;
+  // ignore: implicit_dynamic_type
+  return $viewType(value);
+}
+''') else annotatedProperty.asGetter(''' {
   // ignore: implicit_dynamic_type
   return $viewType(_${p.name});
 }
