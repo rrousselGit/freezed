@@ -648,7 +648,7 @@ void main() {
     expect(value.b, 42);
   });
 
-  test('required parameters are transmited to redirected constructor',
+  test('required parameters are transmitted to redirected constructor',
       () async {
     final main = await resolveSources({
       'freezed|test/integration/main.dart': '''

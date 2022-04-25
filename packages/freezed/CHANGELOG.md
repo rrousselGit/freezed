@@ -121,7 +121,7 @@ of properties. (#531)
 
 - Now supports types coming from `import '...' as alias;`
 - generated .freezed.dart are now excluded from code coverage reports.
-- if `toString` is overriden, Freezed no-longer applies `Diagnosticable` which would break the `toString` (fixes #221)
+- if `toString` is overridden, Freezed no-longer applies `Diagnosticable` which would break the `toString` (fixes #221)
 - Add `union.whenOrNull` and `union.mapOrNull`, similar to `maybeWhen` and `maybeMap`
   but instead of an `orElse` they return `null`.
 
@@ -292,7 +292,7 @@ Migrated to null safety
 
 # 0.12.2
 
-- Upgrade the depenencies (analyzer, build_runner)
+- Upgrade the dependencies (analyzer, build_runner)
 - fixed a bug where a custom `fromJson` constructor still generated the `fromJson`
   constructor with json_serializable
   (see also https://github.com/rrousselGit/freezed/issues/280)

@@ -3,20 +3,20 @@ import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
 import 'common.dart';
-import 'integration/optionnal_maybe.dart';
+import 'integration/optional_maybe.dart';
 
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
       {
-        'freezed|test/integration/optionnal_maybe.dart': useAssetReader,
+        'freezed|test/integration/optional_maybe.dart': useAssetReader,
       },
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('optionnal_maybe')),
+          (element) => element.source.toString().contains('optional_maybe')),
     );
 
     final errorResult = await main.session.getErrors(
-            '/freezed/test/integration/optionnal_maybe_test.freezed.dart')
+            '/freezed/test/integration/optional_maybe_test.freezed.dart')
         as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
@@ -24,10 +24,10 @@ void main() {
 
   test('does not generates maybeMap', () async {
     await expectLater(compile(r'''
-      import 'optionnal_maybe.dart';
+      import 'optional_maybe.dart';
 
       void main() {
-        final value = OptionnalMaybeMap.first();
+        final value = OptionalMaybeMap.first();
 
         value.maybeMap(orElse: () => null);
         value.map(
@@ -38,7 +38,7 @@ void main() {
       }
       '''), throwsCompileError);
 
-    const OptionnalMaybeMap.first()
+    const OptionalMaybeMap.first()
       ..whenOrNull()
       ..maybeWhen(orElse: () {})
       ..when(
@@ -49,10 +49,10 @@ void main() {
 
   test('does not generates maybeWhen', () async {
     await expectLater(compile(r'''
-      import 'optionnal_maybe.dart';
+      import 'optional_maybe.dart';
 
       void main() {
-        final value = OptionnalMaybeWhen.first();
+        final value = OptionalMaybeWhen.first();
 
         value.maybeWhen(orElse: () => null);
         value.when(
@@ -63,7 +63,7 @@ void main() {
       }
       '''), throwsCompileError);
 
-    const OptionnalMaybeWhen.first()
+    const OptionalMaybeWhen.first()
       ..mapOrNull()
       ..maybeMap(orElse: () {})
       ..map(
@@ -74,7 +74,7 @@ void main() {
 
   test('can disable copyWith', () async {
     await expectLater(compile(r'''
-import 'optionnal_maybe.dart';
+import 'optional_maybe.dart';
 
 void main() {
   OptionalCopyWith().copyWith;
@@ -123,7 +123,7 @@ void main() {
     OptionalToJson.fromJson({});
 
     await expectLater(compile(r'''
-import 'optionnal_maybe.dart';
+import 'optional_maybe.dart';
 
 void main() {
   OptionalToJson().toJson;

@@ -1,18 +1,18 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'optionnal_maybe.freezed.dart';
-part 'optionnal_maybe.g.dart';
+part 'optional_maybe.freezed.dart';
+part 'optional_maybe.g.dart';
 
 @Freezed(map: FreezedMapOptions.none)
-class OptionnalMaybeMap with _$OptionnalMaybeMap {
-  const factory OptionnalMaybeMap.first() = OptionnalMaybeMap1;
-  const factory OptionnalMaybeMap.second() = OptionnalMaybeMap2;
+class OptionalMaybeMap with _$OptionalMaybeMap {
+  const factory OptionalMaybeMap.first() = OptionalMaybeMap1;
+  const factory OptionalMaybeMap.second() = OptionalMaybeMap2;
 }
 
 @Freezed(when: FreezedWhenOptions.none)
-class OptionnalMaybeWhen with _$OptionnalMaybeWhen {
-  const factory OptionnalMaybeWhen.first() = OptionnalMaybeWhen1;
-  const factory OptionnalMaybeWhen.second() = OptionnalMaybeWhen2;
+class OptionalMaybeWhen with _$OptionalMaybeWhen {
+  const factory OptionalMaybeWhen.first() = OptionalMaybeWhen1;
+  const factory OptionalMaybeWhen.second() = OptionalMaybeWhen2;
 }
 
 @Freezed(copyWith: false)
