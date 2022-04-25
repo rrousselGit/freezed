@@ -38,7 +38,7 @@ class Person {
     };
   }
 
-  @overrride
+  @override
   String toString() {
     return 'Person('
       'firstName: $firstName, '
