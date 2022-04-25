@@ -25,12 +25,13 @@ Future<void> main() async {
     );
 
     expect(
-      jsonFile.topLevelElements.any((e) => e.name == r'_$Regresssion280'),
-      isFalse,
-    );
-    expect(
-      jsonFile.topLevelElements.any((e) => e.name == r'_$Regresssion280n2'),
-      isFalse,
+      jsonFile.topLevelElements.map((e) => e.name),
+      allOf(
+        isNot(contains(r'_$Regression280FromJson')),
+        isNot(contains(r'_$Regression280ToJson')),
+        isNot(contains(r'_$Regression280n2FromJson')),
+        isNot(contains(r'_$Regression280n2FToJson')),
+      ),
     );
   });
 
