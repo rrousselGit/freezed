@@ -287,8 +287,6 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
 
       _assertValidFreezedConstructorUsage(constructor, className: element.name);
 
-      // print('Hey ${options.unionValueCase}');
-
       result.add(
         ConstructorDetails(
           asserts: _parseAsserts(constructor).toList(),
