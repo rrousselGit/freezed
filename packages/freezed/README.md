@@ -1015,9 +1015,6 @@ class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynam
 
   @override
   MyResponse fromJson(Map<String, dynamic> json) {
-    if (json == null) {
-      return null;
-    }
     // type data was already set (e.g. because we serialized it ourselves)
     if (json['runtimeType'] != null) {
       return MyResponse.fromJson(json);
