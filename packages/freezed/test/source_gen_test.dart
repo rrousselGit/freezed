@@ -12,6 +12,6 @@ Future<void> main() async {
 
   testAnnotatedElements<Freezed>(
     reader,
-    FreezedGenerator(Freezed.fromJson({})),
+    FreezedGenerator(Freezed.fromJson(<Object?, Object?>{})),
   );
 }

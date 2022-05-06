@@ -4,27 +4,47 @@ import 'package:test/test.dart';
 void main() {
   group('FreezedMapOptions', () {
     test('.fromJson', () {
-      expect(FreezedMapOptions.fromJson({'map': false}).map, isFalse);
-      expect(FreezedMapOptions.fromJson({'map': false}).mapOrNull, isNull);
-      expect(FreezedMapOptions.fromJson({'map': false}).maybeMap, isNull);
-
-      expect(FreezedMapOptions.fromJson({'map_or_null': false}).map, isNull);
       expect(
-        FreezedMapOptions.fromJson({'map_or_null': false}).mapOrNull,
+        FreezedMapOptions.fromJson(<Object?, Object?>{'map': false}).map,
         isFalse,
       );
       expect(
-        FreezedMapOptions.fromJson({'map_or_null': false}).maybeMap,
+        FreezedMapOptions.fromJson(<Object?, Object?>{'map': false}).mapOrNull,
+        isNull,
+      );
+      expect(
+        FreezedMapOptions.fromJson(<Object?, Object?>{'map': false}).maybeMap,
         isNull,
       );
 
-      expect(FreezedMapOptions.fromJson({'maybe_map': false}).map, isNull);
       expect(
-        FreezedMapOptions.fromJson({'maybe_map': false}).mapOrNull,
+        FreezedMapOptions.fromJson(<Object?, Object?>{'map_or_null': false})
+            .map,
         isNull,
       );
       expect(
-        FreezedMapOptions.fromJson({'maybe_map': false}).maybeMap,
+        FreezedMapOptions.fromJson(<Object?, Object?>{'map_or_null': false})
+            .mapOrNull,
+        isFalse,
+      );
+      expect(
+        FreezedMapOptions.fromJson(<Object?, Object?>{'map_or_null': false})
+            .maybeMap,
+        isNull,
+      );
+
+      expect(
+        FreezedMapOptions.fromJson(<Object?, Object?>{'maybe_map': false}).map,
+        isNull,
+      );
+      expect(
+        FreezedMapOptions.fromJson(<Object?, Object?>{'maybe_map': false})
+            .mapOrNull,
+        isNull,
+      );
+      expect(
+        FreezedMapOptions.fromJson(<Object?, Object?>{'maybe_map': false})
+            .maybeMap,
         isFalse,
       );
     });
@@ -50,27 +70,49 @@ void main() {
 
   group('FreezedWhenOptions', () {
     test('.fromJson', () {
-      expect(FreezedWhenOptions.fromJson({'when': false}).when, isFalse);
-      expect(FreezedWhenOptions.fromJson({'when': false}).whenOrNull, isNull);
-      expect(FreezedWhenOptions.fromJson({'when': false}).maybeWhen, isNull);
-
-      expect(FreezedWhenOptions.fromJson({'when_or_null': false}).when, isNull);
       expect(
-        FreezedWhenOptions.fromJson({'when_or_null': false}).whenOrNull,
+        FreezedWhenOptions.fromJson(<Object?, Object?>{'when': false}).when,
         isFalse,
       );
       expect(
-        FreezedWhenOptions.fromJson({'when_or_null': false}).maybeWhen,
+        FreezedWhenOptions.fromJson(<Object?, Object?>{'when': false})
+            .whenOrNull,
+        isNull,
+      );
+      expect(
+        FreezedWhenOptions.fromJson(<Object?, Object?>{'when': false})
+            .maybeWhen,
         isNull,
       );
 
-      expect(FreezedWhenOptions.fromJson({'maybe_when': false}).when, isNull);
       expect(
-        FreezedWhenOptions.fromJson({'maybe_when': false}).whenOrNull,
+        FreezedWhenOptions.fromJson(<Object?, Object?>{'when_or_null': false})
+            .when,
         isNull,
       );
       expect(
-        FreezedWhenOptions.fromJson({'maybe_when': false}).maybeWhen,
+        FreezedWhenOptions.fromJson(<Object?, Object?>{'when_or_null': false})
+            .whenOrNull,
+        isFalse,
+      );
+      expect(
+        FreezedWhenOptions.fromJson(<Object?, Object?>{'when_or_null': false})
+            .maybeWhen,
+        isNull,
+      );
+
+      expect(
+          FreezedWhenOptions.fromJson(<Object?, Object?>{'maybe_when': false})
+              .when,
+          isNull);
+      expect(
+        FreezedWhenOptions.fromJson(<Object?, Object?>{'maybe_when': false})
+            .whenOrNull,
+        isNull,
+      );
+      expect(
+        FreezedWhenOptions.fromJson(<Object?, Object?>{'maybe_when': false})
+            .maybeWhen,
         isFalse,
       );
     });
@@ -96,7 +138,7 @@ void main() {
 
   group('Freezed', () {
     test('.fromJson', () {
-      final defaultValue = Freezed.fromJson({});
+      final defaultValue = Freezed.fromJson(<Object?, Object?>{});
 
       expect(defaultValue.copyWith, isTrue);
       expect(defaultValue.equal, isNull);

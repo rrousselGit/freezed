@@ -8,21 +8,19 @@ part of 'freezed_annotation.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FreezedMapOptions _$FreezedMapOptionsFromJson(Map<String, dynamic> json) =>
-    FreezedMapOptions(
+FreezedMapOptions _$FreezedMapOptionsFromJson(Map json) => FreezedMapOptions(
       map: json['map'] as bool?,
       mapOrNull: json['map_or_null'] as bool?,
       maybeMap: json['maybe_map'] as bool?,
     );
 
-FreezedWhenOptions _$FreezedWhenOptionsFromJson(Map<String, dynamic> json) =>
-    FreezedWhenOptions(
+FreezedWhenOptions _$FreezedWhenOptionsFromJson(Map json) => FreezedWhenOptions(
       when: json['when'] as bool?,
       whenOrNull: json['when_or_null'] as bool?,
       maybeWhen: json['maybe_when'] as bool?,
     );
 
-Freezed _$FreezedFromJson(Map<String, dynamic> json) => Freezed(
+Freezed _$FreezedFromJson(Map json) => Freezed(
       unionKey: json['union_key'] as String? ?? 'runtimeType',
       unionValueCase: $enumDecodeNullable(
           _$FreezedUnionCaseEnumMap, json['union_value_case']),
@@ -34,10 +32,10 @@ Freezed _$FreezedFromJson(Map<String, dynamic> json) => Freezed(
       toJson: json['to_json'] as bool?,
       map: json['map'] == null
           ? null
-          : FreezedMapOptions.fromJson(json['map'] as Map<String, dynamic>),
+          : FreezedMapOptions.fromJson(json['map'] as Map),
       when: json['when'] == null
           ? null
-          : FreezedWhenOptions.fromJson(json['when'] as Map<String, dynamic>),
+          : FreezedWhenOptions.fromJson(json['when'] as Map),
       makeCollectionsUnmodifiable:
           json['make_collections_unmodifiable'] as bool? ?? true,
       addImplicitFinal: json['add_implicit_final'] as bool? ?? true,

@@ -63,13 +63,17 @@ class EqualUnmodifiableMapView<Key, Value>
 }
 
 /// Options for enabling/disabling specific `Union.map` features;
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  createToJson: false,
+  anyMap: true,
+)
 class FreezedMapOptions {
   /// Options for enabling/disabling specific `Union.map` features;
   const FreezedMapOptions({this.map, this.mapOrNull, this.maybeMap});
 
   /// Decode a [FreezedMapOptions] from a build.yaml
-  factory FreezedMapOptions.fromJson(Map<String, Object?> json) =>
+  factory FreezedMapOptions.fromJson(Map json) =>
       _$FreezedMapOptionsFromJson(json);
 
   /// Enables the generation of all `Union.map` features
@@ -100,7 +104,11 @@ class FreezedMapOptions {
 }
 
 /// Options for enabling/disabling specific `Union.when` features;
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  createToJson: false,
+  anyMap: true,
+)
 class FreezedWhenOptions {
   /// Options for enabling/disabling specific `Union.when` features;
   const FreezedWhenOptions({
@@ -110,7 +118,7 @@ class FreezedWhenOptions {
   });
 
   /// Decode a [FreezedWhenOptions] from a build.yaml
-  factory FreezedWhenOptions.fromJson(Map<String, Object?> json) =>
+  factory FreezedWhenOptions.fromJson(Map json) =>
       _$FreezedWhenOptionsFromJson(json);
 
   /// Enables the generation of all `Union.when` features
@@ -146,7 +154,11 @@ class FreezedWhenOptions {
 /// {@template freezed_annotation.freezed}
 /// Flags a class as needing to be processed by Freezed and allows passing options.
 /// {@endtemplate}
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  createToJson: false,
+  anyMap: true,
+)
 class Freezed {
   /// {@template freezed_annotation.freezed}
   const Freezed({
@@ -165,8 +177,7 @@ class Freezed {
   });
 
   /// Decode the options from a build.yaml
-  factory Freezed.fromJson(Map<String, Object?> json) =>
-      _$FreezedFromJson(json);
+  factory Freezed.fromJson(Map json) => _$FreezedFromJson(json);
 
   /// Whether to assume that all constructor parameters are marked as final.
   ///
