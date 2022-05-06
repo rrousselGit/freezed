@@ -429,16 +429,20 @@ String toString($parameters) {
       'other.runtimeType == runtimeType',
       'other is $concreteName${data.genericsParameterTemplate}',
       ...constructor.impliedProperties.map((p) {
-        var name = p.name == 'other' ? 'this.other' : p.name;
+        var name = p.name;
         if (p.isPossiblyDartCollection) {
           if (data.makeCollectionsImmutable &&
               (p.isDartList || p.isDartMap || p.isDartSet)) {
             name = '_$name';
           }
-          // no need to check `identical` as `DeepCollectionEquality` already does it
-          return 'const DeepCollectionEquality().equals(other.$name, $name)';
         }
-        return '(identical(other.${p.name}, $name) || other.$name == $name)';
+        final target = p.name == 'other' ? 'this.' : '';
+
+        if (p.isPossiblyDartCollection) {
+          // no need to check `identical` as `DeepCollectionEquality` already does it
+          return 'const DeepCollectionEquality().equals(other.$name, $target$name)';
+        }
+        return '(identical(other.${p.name}, $target$name) || other.$name == $target$name)';
       }),
     ];
 

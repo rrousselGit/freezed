@@ -18,3 +18,12 @@ class _WeirdDecorator {
   final String a;
   final double? b;
 }
+
+class Foo {
+  const Foo();
+}
+
+@freezed
+class ListDecorator with _$ListDecorator {
+  factory ListDecorator(@Foo() List<int> a) = ListDecorator0;
+}
