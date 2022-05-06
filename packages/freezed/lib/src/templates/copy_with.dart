@@ -10,6 +10,7 @@ class CopyWith {
     required this.genericsParameter,
     required this.allProperties,
     required this.cloneableProperties,
+    required this.data,
     this.parent,
   });
 
@@ -26,6 +27,11 @@ class CopyWith {
   final List<Property> allProperties;
   final List<CloneableProperty> cloneableProperties;
   final CopyWith? parent;
+  final Data data;
+
+  /// When collections are wrapped in an UnmodifiableView, this bool determines
+  /// if the raw collection can be accessed instead.
+  bool get canAccessRawCollection => parent != null;
 
   String get interface {
     var implements = _hasSuperClass
@@ -185,7 +191,14 @@ $s''';
     required String returnType,
   }) {
     String parameterToValue(Parameter p) {
-      var ternary = '${p.name} == freezed ? $accessor.${p.name} : ${p.name} ';
+      var propertyName = p.name;
+      if (canAccessRawCollection &&
+          (p.isDartList || p.isDartMap || p.isDartSet) &&
+          data.makeCollectionsImmutable) {
+        propertyName = '_$propertyName';
+      }
+      var ternary =
+          '${p.name} == freezed ? $accessor.$propertyName : ${p.name} ';
       if (p.type != 'Object?' && p.type != null) {
         ternary += _ignoreLints('as ${p.type}');
       }

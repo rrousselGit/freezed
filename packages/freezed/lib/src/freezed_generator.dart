@@ -586,6 +586,7 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
             genericsDefinition: data.genericsDefinitionTemplate,
             genericsParameter: data.genericsParameterTemplate,
             allProperties: commonProperties,
+            data: data,
           );
 
     yield Abstract(
@@ -603,11 +604,12 @@ Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#t
         copyWith: !data.generateCopyWith
             ? null
             : CopyWith(
-                clonedClassName: constructor.redirectedName,
+                clonedClassName: '_\$${constructor.redirectedName}',
                 cloneableProperties: constructor.cloneableProperties,
                 genericsDefinition: data.genericsDefinitionTemplate,
                 genericsParameter: data.genericsParameterTemplate,
                 allProperties: constructor.impliedProperties,
+                data: data,
                 parent: commonCopyWith,
               ),
       );

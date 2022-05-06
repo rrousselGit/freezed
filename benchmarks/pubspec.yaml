@@ -1,0 +1,26 @@
+name: example
+description: A new Flutter project.
+
+environment:
+  sdk: ">=2.14.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  freezed_annotation:
+    path: ../packages/freezed_annotation
+  json_annotation: ^4.4.0
+
+dev_dependencies:
+  freezed:
+    path: ../packages/freezed
+  json_serializable: ^6.1.3
+  build_runner:
+  flutter_test:
+    sdk: flutter
+
+dependency_overrides:
+  freezed:
+    path: ../packages/freezed
+  freezed_annotation:
+    path: ../packages/freezed_annotation

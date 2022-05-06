@@ -1,0 +1,6 @@
+/.dart_tool
+/test/**/*.g.dart
+/test/**/*.freezed.dart
+.packages
+# Remove the following pattern if you wish to check in your lock file
+pubspec.lock

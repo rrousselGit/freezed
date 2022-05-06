@@ -427,14 +427,18 @@ String toString($parameters) {
 
     final comparisons = [
       'other.runtimeType == runtimeType',
-      'other is ${constructor.redirectedName}${data.genericsParameterTemplate}',
+      'other is $concreteName${data.genericsParameterTemplate}',
       ...constructor.impliedProperties.map((p) {
-        final name = p.name == 'other' ? 'this.other' : p.name;
+        var name = p.name == 'other' ? 'this.other' : p.name;
         if (p.isPossiblyDartCollection) {
+          if (data.makeCollectionsImmutable &&
+              (p.isDartList || p.isDartMap || p.isDartSet)) {
+            name = '_$name';
+          }
           // no need to check `identical` as `DeepCollectionEquality` already does it
-          return 'const DeepCollectionEquality().equals(other.${p.name}, $name)';
+          return 'const DeepCollectionEquality().equals(other.$name, $name)';
         }
-        return '(identical(other.${p.name}, $name) || other.${p.name} == $name)';
+        return '(identical(other.${p.name}, $name) || other.$name == $name)';
       }),
     ];
 
@@ -457,7 +461,11 @@ bool operator ==(dynamic other) {
       'runtimeType',
       for (final property in constructor.impliedProperties)
         if (property.isPossiblyDartCollection)
-          'const DeepCollectionEquality().hash(${property.name})'
+          if (data.makeCollectionsImmutable &&
+              (property.isDartList || property.isDartMap || property.isDartSet))
+            'const DeepCollectionEquality().hash(_${property.name})'
+          else
+            'const DeepCollectionEquality().hash(${property.name})'
         else
           property.name,
     ];
