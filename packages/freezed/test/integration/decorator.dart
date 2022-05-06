@@ -1,3 +1,5 @@
+library decorator;
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'decorator.freezed.dart';

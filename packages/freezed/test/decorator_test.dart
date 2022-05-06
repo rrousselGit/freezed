@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/analysis/results.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -19,6 +20,35 @@ void main() {
     expect(errorResult.errors, isEmpty);
     errorResult = await main.session
         .getErrors('/freezed/test/integration/decorator.dart') as ErrorsResult;
+  });
+
+  test(
+      'internal raw collection is not decorated when using immutable collections',
+      () async {
+    final main = await resolveSources(
+      {
+        'freezed|test/integration/main.dart': r'''
+import 'decorator.dart';
+''',
+      },
+      (r) => r.libraries
+          .firstWhere((element) => element.library.name == 'decorator'),
+    );
+
+    final concrete = main.topLevelElements
+        .whereType<ClassElement>()
+        .firstWhere((e) => e.name == r'_$ListDecorator0');
+
+    expect(
+      concrete.fields.firstWhere((element) => element.name == '_a').metadata,
+      isEmpty,
+    );
+
+    final unmodifiableGetter =
+        concrete.fields.firstWhere((element) => element.name == 'a').getter!;
+
+    expect(unmodifiableGetter.metadata.length, 2);
+    expect(unmodifiableGetter.metadata.last.toSource(), '@Foo()');
   });
 
   test('warns if try to use deprecated property', () async {

@@ -232,7 +232,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
 
         if (viewType != null) {
           return [
-            p.copyWith(name: '_${p.name}'),
+            p.copyWith(name: '_${p.name}', decorators: const []),
             if (p.isNullable) annotatedProperty.asGetter(''' {
   final value = _${p.name};
   if (value == null) return null;
