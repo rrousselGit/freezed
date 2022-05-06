@@ -1,3 +1,8 @@
+# 2.0.3
+
+– fix: performance regression with ==/hashCode/copyWith due to immutable collections (#653)
+– fix: build.yaml decoding crash
+
 # 2.0.2
 
 Fixed invalid generated code when defining nullable collections.
