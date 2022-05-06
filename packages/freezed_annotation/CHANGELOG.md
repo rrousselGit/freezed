@@ -1,3 +1,7 @@
+# 2.0.3
+
+– fix: build.yaml decoding crash
+
 # 2.0.1
 
 - Fixed a bug where the generated when/map methods were potentially invalid when
