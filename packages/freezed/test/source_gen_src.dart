@@ -216,8 +216,8 @@ class Mixed0 implements Mixed {
   contains: true,
   expectedLogItems: [
     '''
-The class AstractClass was declared as abstract, but it is not need anymore.
-Read here: https://github.com/rrousselGit/freezed/tree/master/packages/freezed#the-abstract-keyword
+The class AstractClass was declared as abstract, but it is not needed anymore.
+Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/CHANGELOG.md#0140
 ''',
   ],
 )
