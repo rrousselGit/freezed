@@ -1,3 +1,7 @@
+# 2.0.3+1
+
+Update warning message when using abstract freezed classes
+
 # 2.0.3
 
 – fix: performance regression with ==/hashCode/copyWith due to immutable collections (#653)
