@@ -24,9 +24,7 @@ String resolveFullTypeStringFrom(
 }) {
   final owner = originLibrary.prefixes.firstWhereOrNull(
     (e) {
-      final librariesForPrefix = e.library.getImportsWithPrefix(e);
-
-      return librariesForPrefix.any((l) {
+      return e.imports.any((l) {
         return l.importedLibrary!.anyTransitiveExport((library) {
           return library.id == _getElementForType(type)?.library?.id;
         });
