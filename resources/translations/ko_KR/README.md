@@ -30,7 +30,7 @@ On top of that, Dart is also missing features such as union types and pattern-ma
 
 | Before                          | After                          |
 | ------------------------------- | ------------------------------ |
-| ![before](../../resources/before.png) | ![before](../../resources/after.png) |
+| ![before](https://github.com/rrousselGit/freezed/blob/master/resources/before.png) | ![After](https://github.com/rrousselGit/freezed/blob/master/resources/after.png) |
 
 # 인덱스
 
@@ -44,12 +44,12 @@ On top of that, Dart is also missing features such as union types and pattern-ma
     - [immutable 클래스 대신 mutable 클래스 정의하기](#Immutable-클래스-대신-Mutable-클래스-정의하기)
     - [Lists/Maps/Sets의 변경 허용하기](#Lists/Maps/Sets의-변경-허용하기)
     - [copyWith의 작동방식](#copyWith의-작동방식)
-    - [더 나아가기: 깊은복사](#더-나아가기:-깊은복사)
+    - [더 나아가기: 깊은복사](#더-나아가기-깊은복사)
     - [모델에 getters 와 메소드 추가하기](#모델에-getters와-메소드-추가하기)
     - [Asserts](#asserts)
     - [기본 값](#기본-값)
     - [데코레이터와 코멘트](#데코레이터와-코멘트)
-  - [Union types과 Sealed classes](#Union types과 Sealed classes)
+  - [Union types과 Sealed classes](#Union-types과-Sealed-classes)
     - [공유속성 Shared properties](#공유속성-Shared-properties)
     - [패턴매칭(pattern-matching)을 사용하여 비공유 속성 읽기](#패턴매칭(pattern-matching)을-사용하여-비공유-속성읽기)
       - [When](#when)
