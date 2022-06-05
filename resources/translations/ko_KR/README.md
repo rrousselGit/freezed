@@ -173,7 +173,7 @@ class Person with _$Person {
 - Freeze는 자동으로 아래의 항목을 생성합니다.
   - 다른 속성을 가진 객체를 복제하기 위한 `copyWith` 메소드
   - 객체의 모든 속성을 나열하는 `toString` 재정의(오버라이드)
-  - `operator ==` 및 `hashCode` 재정의(`Person`은 변경할 수 없으므로(immutable))
+  - `operator ==` 및 `hashCode` 재정의(`Person`은 변경할 수 없으므로(immutable)
 
 예제로부터 우리는 몇 가지를 알 수 있습니다.
 
@@ -268,9 +268,6 @@ void main() {
 
 ### copyWith의 작동방식
 
-As explained before, when defining a model using Freezed, then the code-generator
-will automatically generate a `copyWith` method for us.  
-
 이전에 설명했듯이 [Freezed]를 사용하여 모델을 정의할 때 코드 생성기는 자동으로 `copyWith` 메서드를 생성합니다. 이는 다른 값을 가진 개체를 복제하는 데 사용됩니다.
 
 예를 들어 다음을 정의하는 경우:
@@ -335,7 +332,7 @@ Company newCompany = company.copyWith(
 );
 ```
 
-위의 코드는 _작동_하지만 많은 복사로 인해 비교적 코드가 장황합니다. 
+위의 코드는 잘 동작하지만 많은 복사로 인해 비교적 코드가 장황합니다. 
 여기에서 [Freezed]의 "깊은복사(deep copy)"를 사용할 수 있습니다.
 
 만약에 [Freezed]모델이 또 다른 [Freezed]모델을 속성을 가지고 있다면,
@@ -367,7 +364,7 @@ company = company.copyWith.director(name: 'Larry', assistant: Assistant(...));
 
 **Null 고려사항**
 
-일부 객체는 'null'일 수도 있습니다. 예를 들어, `Company` 클래스를 사용하면 `Director`의 `assistant`가 `null`이 될 수 있습니다.
+일부 객체는 `null`일 수도 있습니다. 예를 들어, `Company` 클래스를 사용하면 `Director`의 `assistant`가 `null`이 될 수 있습니다.
 
 예를 들어, 다음과 같이 작성해보면
 
@@ -538,12 +535,12 @@ class Person with _$Person {
 
 ## Union types과 Sealed classes
 
-Coming from other languages, you may be used with features like "union types"/"sealed classes"/pattern matching.  
-These are powerful tools in combination with a type system, but Dart currently does not support them.
 
-But fear not, [Freezed] supports them, generating a few utilities to help you with those.
+다른 언어에서 온 경우 "union types"/"sealed classes"/pattern matching과 같은 기능을 사용할 수 있습니다.
+이들은 타입 시스템과 결합된 강력한 도구이지만 현재 Dart는 이를 지원하지 않습니다.
+걱정하지 마세요. [Freezed]는 이러한 기능들을 지원하는 몇 가지 유틸리티를 생성합니다.
 
-Long story short, in any Freezed class, you can writing multiple constructors:
+간단히 말해서 모든 Freezed 클래스에서 복수의 생성자를 작성할 수 있습니다.
 
 ```dart
 @freezed
@@ -554,35 +551,37 @@ class Union with _$Union {
 }
 ```
 
-By doing this, our model now can be in different mutually exclusive states.
-
-In particular, this snippet defines a model `Union`, and that model has 3 possible states:
+이렇게 함으로써 우리의 모델은 이제 서로 다른 상호 배타적인 상태가 될 수 있습니다.
+특히 이 snippet은 `Union` 모델을 정의하며 해당 모델에는 3가지 상태가 있습니다.
 
 - data
 - loading
 - error
 
-Note how we gave meaningful names to the right hand of the factory constructors we defined.
-They will come in handy later.
+정의한 팩토리 생성자의 오른쪽에 의미 있는 이름을 부여한 방법에 유의하십시오. 즉 정의하는 이름을 다르게 지정해야 합니다. (Data, Loading, Error)
+나중에 유용하게 사용할 수 있습니다.
 
 One thing you may also notice is that with this example, then we can no-longer
 write code such as:
+
+또한 이 예제를 사용하면 다음과 같은 코드를 더 이상 작성할 수 없습니다.
 
 ```dart
 void main() {
   Union union = Union.data(42);
 
-  print(union.value); // compilation error: property value does not exist
+  print(union.value); // 컴파일 오류: 속성 값이 존재하지 않습니다
 }
 ```
 
-Let's see why that is the case in the following section.
+다음 섹션에서 그 이유를 살펴보겠습니다.
 
 ### 공유속성 Shared properties
 
-When defining multiple constructors, you will lose the ability to read properties that are not common to all constructors:
+여러 생성자를 정의할 때 모든 생성자에 공통적이지 않은 속성을 읽을 수 있는 기능을 잃게 됩니다.
+즉 공통되지 않은 파라미터는 읽을 수 없다는 이야기입니다. 
 
-For example, if you write:
+예를 들어 다음과 같이 작성하는 경우:
 
 ```dart
 @freezed
@@ -592,17 +591,17 @@ class Example with _$Example {
 }
 ```
 
-Then you will be unable to read `age` and `population` directly:
+그러면 `age`와 `population`를 직접 읽을 수 없습니다.
 
 ```dart
 var example = Example.person('Remi', 24);
-print(example.age); // does not compile!
+print(example.age); // 컴파일하지 않습니다!
 ```
 
-On the other hand, you **can** read properties that are defined on all constructors.\
-For example, the `name` variable is common to both `Example.person` and `Example.city` constructors.
+반면에 모든 생성자에 정의된 속성을 **읽을 수** 있습니다.\
+예를 들어 `name` 변수는 `Example.person` 및 `Example.city` 생성자 모두 공통으로 가지고 있는 속성입니다.
 
-As such we can write:
+따라서 다음과 같이 작성할 수 있습니다.
 
 ```dart
 var example = Example.person('Remi', 24);
@@ -611,8 +610,8 @@ example = Example.city('London', 8900000);
 print(example.name); // London
 ```
 
-The same logic can be applied to `copyWith` too.  
-We can use `copyWith` with properties defined on all constructors:
+같은 논리를 `copyWith`에도 적용할 수 있습니다.
+모든 생성자에 정의된 속성과 함께 `copyWith`를 사용할 수 있습니다.
 
 ```dart
 var example = Example.person('Remi', 24);
@@ -622,19 +621,19 @@ example = Example.city('London', 8900000);
 print(example.copyWith(name: 'Paris')); // Example.city(name: Paris, population: 8900000)
 ```
 
-On the other hand, properties that are unique to a specific constructor aren't available:
+반면에 특정 생성자에 고유한 속성은 사용할 수 없습니다.
 
 ```dart
 var example = Example.person('Remi', 24);
 
-example.copyWith(age: 42); // compilation error, parameter `age` does not exist
+example.copyWith(age: 42); // 컴파일 오류, 매개변수 `age`가 존재하지 않습니다
 ```
 
-To solve this problem, we need check the state of our object using what we call "pattern matching".
+이 문제를 해결하려면 "pattern matching"을 사용하여 객체의 상태를 확인해야 합니다.
 
 ### 패턴매칭(pattern-matching)을 사용하여 비공유 속성읽기
 
-For this section, let's consider the following union:
+이 섹션에서는 union을 고려해 보겠습니다.
 
 ```dart
 @freezed
@@ -644,19 +643,19 @@ class Example with _$Example {
 }
 ```
 
-Let's see how we can use pattern matching to read the content of an `Example` instance.
+패턴 일치(pattern matching)를 사용하여 `Example` 인스턴스의 내용을 읽는 방법을 살펴보겠습니다.
 
-For this, we have a few solutions:
+여기 몇 가지 해결방법이 있습니다.
 
-- (preferred) Using the utilities ([when]/[map]) generated by Freezed to inspect the content of our object
-- (discouraged) Using `is`/`as` to cast an `Example` variable into either a `Person` or a `City`
+- (선호) Freezed에 의해 생성된 유틸리티([when]/[map])를 사용하여 객체의 내용을 검사합니다.
+- (권장) `is`/`as`를 사용하여 `Example` 변수를 `Person` 또는 `City`로 캐스팅
 
 #### When
 
-The [when] method is the equivalent to pattern matching with destructing.  
-The prototype of the method depends on the constructors defined.
+[when] 메서드는 구조화를 사용한 패턴 일치와 동일합니다.  
+메서드의 프로토타입은 정의된 생성자에 따라 다릅니다.
 
-For example, with:
+예를 들어
 
 ```dart
 @freezed
@@ -667,7 +666,7 @@ class Union with _$Union {
 }
 ```
 
-Then [when] will be:
+그러면 [when]은 아래와 같습니다.
 
 ```dart
 var union = Union(42);
@@ -681,7 +680,7 @@ print(
 ); // Data 42
 ```
 
-Whereas if we defined:
+반면에 다음과 같이 정의하면
 
 ```dart
 @freezed
@@ -691,7 +690,7 @@ class Model with _$Model {
 }
 ```
 
-Then [when] will be:
+그러면 [when]은 아래와 같습니다.
 
 ```dart
 var model = Model.first('42');
@@ -704,17 +703,17 @@ print(
 ); // first 42
 ```
 
-Notice how each callback matches with a constructor's name and prototype.
+각 콜백이 생성자의 이름 및 프로토타입과 어떻게 일치하는지 확인하십시오.
 
 **NOTE**:\
-All callbacks are required and must not be `null`.\
-If that is not what you want, consider using [maybeWhen].
+모든 콜백은 필수이며 `null` 이 아니어야 합니다.\
+원하는 것이 아니라면 [maybeWhen] 사용을 고려해보세요.
 
 #### Map
 
-The [map] methods are equivalent to [when], but **without** destructuring.
+[map] 메서드는 [when]와 동일하지만 **구조화하지 않음**입니다.
 
-Consider this class:
+아래에 정의된 클래스를 생각해봅시다.
 
 ```dart
 @freezed
@@ -724,7 +723,7 @@ class Model with _$Model {
 }
 ```
 
-With such class, while [when] will be:
+이러한 클래스를 사용하면 [when]는 다음과 같습니다.
 
 ```dart
 var model = Model.first('42');
@@ -737,7 +736,7 @@ print(
 ); // first 42
 ```
 
-[map] will instead be:
+[map]을 사용하면 다음과 같습니다. 
 
 ```dart
 var model = Model.first('42');
@@ -750,7 +749,7 @@ print(
 ); // first 42
 ```
 
-This can be useful if you want to do complex operations, like [copyWith]/`toString` for example:
+예를 들어 [copyWith]/`toString`과 같은 복잡한 작업을 수행하려는 경우에 유용할 수 있습니다.
 
 ```dart
 var model = Model.second(42, false)
@@ -764,37 +763,36 @@ print(
 
 #### is/as를 사용하여 Freezed 클래스의 내용읽기
 
-Alternatively, one (less desirable) solution is to use the `is`/`as` keywords.  
-More specifically, you can write:
+대안으로, (덜 바람직하지 않은) 해결책은 `is`/`as` 키워드를 사용하는 것입니다. 
+더 구체적으로 다음과 같이 작성할 수 있습니다.
 
 ```dart
 void main() {
   Example value;
 
   if (value is Person) {
-    // By using `is`, this allows the compiler to know that "value" is a Person instance
-    // and therefore allows us to read all of its properties.
+    // `is`를 사용하면 컴파일러가 "value"이 Person 인스턴스임을 알 수 있습니다.
+    // 따라서 모든 속성을 읽을 수 있습니다.
     print(value.age);
     value = value.copyWith(age: 42);
   }
 
-  // Alternatively we can use `as` if we are certain of type of an object:
+  // 또는 객체 유형이 확실하면 `as`를 사용할 수 있습니다.
   Person person = value as Person;
   print(person.age);
 }
 ```
 
 **Note**:  
-Using `is` and `as`, while possible, is discouraged.
-
-The reasoning is that they are not "exhaustive". See https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/
+가능하면 'is'와 'as'를 사용하지 않는 것이 좋습니다.
+그 이유는 그것들이 "포괄적이지 않다(exhaustive)"는 것입니다. https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/ 를 확인해보세요.
 
 ### union types에대한 individual classes용 mixins과 interfaces
 
-When you have multiple types in the same class you might want to make
-one of those types to implement a interface or mixin a class. You can do
-that using the `@Implements` decorator or `@With` respectively. In this
-case `City` is implementing with `GeographicArea`.
+동일한 클래스에 여러 유형이 있는 경우 해당 유형 중 하나를 만들어 인터페이스를 구현하거나 클래스를 혼합할 수 있습니다.
+각각 `@Implements` 데코레이터 또는 `@With`를 사용하여 이를 수행할 수 있습니다.
+아래 코드의 경우 `City`는 `GeographicArea`로 구현됩니다.
+
 
 ```dart
 abstract class GeographicArea {
@@ -811,10 +809,9 @@ class Example with _$Example {
 }
 ```
 
-In case you want to specify a generic mixin or interface you need to
-declare it as a string using the `With.fromString` constructor,
-`Implements.fromString` respectively. Similar `Street` is mixing with
-`AdministrativeArea<House>`.
+일반 믹스인 또는 인터페이스를 지정하려면 다음을 수행해야 합니다.
+`With.fromString` 생성자를 사용하여 문자열로 선언하고, 각각 `Implements.fromString`.
+`Street`가 `AdministrativeArea<House>`와 혼합되어 있습니다.
 
 ```dart
 abstract class GeographicArea {}
@@ -836,25 +833,22 @@ class Example with _$Example {
 }
 ```
 
-**Note**: You need to make sure that you comply with the interface
-requirements by implementing all the abstract members. If the interface
-has no members or just fields, you can fulfil the interface contract by
-adding them in the constructor of the union type. Keep in mind that if
-the interface defines a method or a getter, that you implement in the
-class, you need to use the
-[Adding getters and methods to our models](#adding-getters-and-methods-to-our-models) instructions.
+**Note**: 
+모든 추상 멤버를 구현하여 인터페이스 요구사항을 준수하는지 확인해야 합니다.
+인터페이스에 멤버가 없거나 필드만 있는 경우 공용체 유형의 생성자에 추가하여 the interface contract를 이행할 수 있습니다. 인터페이스가 클래스에서 구현하는 메서드 또는 getter를 정의하는 경우 [모델에 게터 및 메서드 추가](#adding-getters-and-methods-to-our-models ) 내용을 확인해 보세요.
 
-**Note 2**: You cannot use `@With`/`@Implements` with freezed classes.
-Freezed classes can neither be extended nor implemented.
+
+**Note 2**: 
+Freezed 클래스에는 `@With`/`@Implements`를 사용할 수 없습니다.
+Freezed 클래스는 확장하거나 구현할 수 없습니다.
 
 ## FromJson/ToJson
 
-While [Freezed] will not generate your typical `fromJson`/`toJson` by itself, it knows
-what [json_serializable] is.
+[Freezed]는 일반적인 `fromJson`/`toJson`을 자체적으로 생성하지 않지만 [json_serializable]이 무엇인지 알고 있습니다.
 
-Making a class compatible with [json_serializable] is very straightforward.
+[json_serializable]과 호환되는 클래스를 만드는 것은 매우 간단합니다.
 
-Consider this snippet:
+아래의 snippet을 확인해보세요.
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -868,12 +862,12 @@ class Model with _$Model {
 }
 ```
 
-The changes necessary to make it compatible with [json_serializable] consists of two lines:
+[json_serializable]과 호환되도록 하는 데 필요한 변경 사항은 다음 두 줄로 구성됩니다.
 
-- a new `part`: `part 'model.g.dart';`
-- a new constructor on the targeted class: `factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);`
+- `part`를 새로 추가합니다: `part 'model.g.dart';`
+- 새로운 생성자를 추가합니다: `factory Model.fromJson(Map<String, dynamic> json) => _$ModelFromJson(json);`
 
-The end result is:
+최종적인 결과는 아래와 같습니다. 
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -890,25 +884,24 @@ class Model with _$Model {
 }
 ```
 
-Don't forget to add `json_serializable` to your `pubspec.yaml`:
+`pubspec.yaml`에 `json_serializable`을 추가하는 것을 잊지마세요.
 
 ```yaml
 dev_dependencies:
   json_serializable:
 ```
 
-That's it!\
-With these changes, [Freezed] will automatically ask [json_serializable] to generate all the necessary
-`fromJson`/`toJson`.
+이게 전부입니다!\
+간단한 변경으로 [Freezed]는 [json_serializable]에 필요한 모든 `fromJson`/`toJson`을 생성하도록 자동으로 요청합니다.
 
 **Note**:  
-Freezed will only generate a fromJson if the factory is using `=>`.
+Freezed는 factory가 `=>`를 사용하는 경우에만 `fromJson`을 생성합니다.
 
 ### fromJSON - 복수의 생성자가 있는 클래스
 
-For classes with multiple constructors, [Freezed] will check the JSON response
-for a string element called `runtimeType` and choose the constructor to use based
-on its value. For example, given the following constructors:
+여러 생성자가 있는 클래스의 경우 [Freezed]는 `runtimeType`이라는 문자열 요소에 대한 JSON 응답을 확인하고 해당 값에 따라 사용할 생성자를 선택합니다.
+예를 들어, 다음 생성자가 주어진 경우:
+
 
 ```dart
 @freezed
@@ -921,7 +914,7 @@ class MyResponse with _$MyResponse {
 }
 ```
 
-Then [Freezed] will use each JSON object's `runtimeType` to choose the constructor as follows:
+[Freezed]는 각 JSON 객체의 `runtimeType`을 사용하여 다음과 같이 생성자를 선택합니다.
 
 ```json
 [
@@ -941,8 +934,7 @@ Then [Freezed] will use each JSON object's `runtimeType` to choose the construct
 ]
 ```
 
-You can customize key and value with something different
-using `@Freezed` and `@FreezedUnionValue` decorators:
+`@Freezed` 및 `@FreezedUnionValue` 데코레이터를 사용하여 다른 것으로 키와 값을 사용자 정의할 수 있습니다.
 
 ```dart
 @Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.pascal)
@@ -958,7 +950,7 @@ class MyResponse with _$MyResponse {
 }
 ```
 
-which would update the previous json to:
+이전 json을 아래와 같이 업데이트합니다.
 
 ```json
 [
@@ -978,8 +970,8 @@ which would update the previous json to:
 ]
 ```
 
-If you want to customize key and value for all the classes, you can specify it inside your
-`build.yaml` file, for example:
+모든 클래스의 키와 값을 사용자 정의하려면 `build.yaml` 파일 내부에 지정할 수 있습니다. 
+예를 들면 다음과 같습니다.
 
 ```yaml
 targets:
@@ -991,9 +983,8 @@ targets:
           union_value_case: pascal
 ```
 
-If you don't control the JSON response, then you can implement a custom converter.
-Your custom converter will need to implement its own logic for determining which
-constructor to use.
+JSON 응답을 제어하지 않는 경우 사용자 지정 변환기를 구현할 수 있습니다.
+사용자 지정 변환기는 사용할 생성자를 결정하기 위한 자체 논리를 구현해야 합니다.
 
 ```dart
 class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynamic>> {
@@ -1001,11 +992,12 @@ class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynam
 
   @override
   MyResponse fromJson(Map<String, dynamic> json) {
-    // type data was already set (e.g. because we serialized it ourselves)
+    // 타입 데이터가 이미 설정되었습니다(예: 직접 직렬화했기 때문에)
     if (json['runtimeType'] != null) {
       return MyResponse.fromJson(json);
     }
-    // you need to find some condition to know which type it is. e.g. check the presence of some field in the json
+   
+    // 어떤 타입인지 알기 위해서는 몇 가지 조건을 찾아야 합니다. 예를 들어 json에 일부 필드가 있는지 확인하십시오.
     if (isTypeData) {
       return MyResponseData.fromJson(json);
     } else if (isTypeSpecial) {
@@ -1022,7 +1014,7 @@ class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynam
 }
 ```
 
-To then apply your custom converter pass the decorator to a constructor parameter.
+그런 다음 사용자 지정 변환기(커스텀 컨버터)를 적용하려면 데코레이터를 생성자 매개변수에 전달합니다.
 
 ```dart
 @freezed
@@ -1033,9 +1025,8 @@ class MyModel with _$MyModel {
 }
 ```
 
-By doing this, json serializable will use `MyResponseConverter.fromJson()` and `MyResponseConverter.toJson()` to convert `MyResponse`.
-
-You can also use a custom converter on a constructor parameter contained in a `List`.
+이렇게 하면 직렬화 가능한 json은 `MyResponseConverter.fromJson()` 및 `MyResponseConverter.toJson()`을 사용하여 `MyResponse`를 변환합니다.
+`List`에 포함된 생성자 매개변수에 사용자 지정 변환기(custom converter)를 사용할 수도 있습니다.
 
 ```dart
 @freezed
@@ -1047,15 +1038,13 @@ class MyModel with _$MyModel {
 ```
 
 **Note**:  
-In order to serialize nested lists of freezed objects, you are supposed to either
-specify a `@JsonSerializable(explicitToJson: true)` or change `explicit_to_json`
-inside your `build.yaml` file ([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)).
 
-**What about `@JsonKey` annotation?**
+고정된 개체의 중첩 목록을 직렬화하려면 `@JsonSerializable(explicitToJson: true)`을 지정하거나 `build.yaml` 파일([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)) 내에서 `explicit_to_json`을 변경해야 합니다.
 
-All decorators passed to a constructor parameter are "copy-pasted" to the generated
-property too.\
-As such, you can write:
+**`@JsonKey` annotation은 어떤가요?**
+
+생성자 매개변수에 전달된 모든 데코레이터는 생성된 속성에도 "복사-붙여넣기"됩니다.
+따라서 다음과 같이 작성할 수 있습니다.
 
 ```dart
 @freezed
@@ -1066,9 +1055,9 @@ class Example with _$Example {
 }
 ```
 
-**What about `@JsonSerializable` annotation?**
+**`@JsonSerializable` annotation은 어떤가요?**
 
-You can pass `@JsonSerializable` annotation by placing it over constructor e.g.:
+예를 들어 다음과 같이 생성자 위에 배치하여 `@JsonSerializable` annotation을 전달할 수 있습니다.
 
 ```dart
 @freezed
@@ -1080,21 +1069,22 @@ class Example with _$Example {
 }
 ```
 
-If you want to define some custom json_serializable flags for all the classes (e.g. `explicit_to_json` or `any_map`) you can do it via `build.yaml` file as described [here](https://pub.dev/packages/json_serializable#build-configuration).
+번역 결과
+모든 클래스에 대해 사용자 정의 json_serializable 플래그를 정의하려는 경우(예를 들어 `explicit_to_json` 또는 `any_map`) [여기](https://pub.dev/packages/json_serializable#build-configuration)에 설명된 대로 `build.yaml` 파일을 통해 수행할 수 있습니다.
 
-See also the [decorators](#decorators) section
 
-## Configurations
+[데코레이터와 코멘트](#데코레이터와-코멘트) 섹션을 참고해보세요.
 
-Freezed offers various options to customize the generated code. For example, you
-may want to disable the generation of `when` methods.
+## 환경설정
 
-To do so, there are two possibilities:
+[Freezed]는 생성된 코드를 사용자 정의할 수 있는 다양한 옵션을 제공합니다. 예를 들어 `when` 메서드의 생성을 비활성화할 수 있습니다.
+
+
+이렇게 하려면 두 가지 경우가 있습니다.
 
 ### 특정 모델의 동작변경
 
-If you want to customize the generated code for only one specific class,
-you can do so by using a different annotation:
+하나의 특정 클래스에 대해서만 생성된 코드를 사용자 지정하려면 다른 annotation을 사용하여 수행할 수 있습니다.
 
 ```dart
 @Freezed()
@@ -1103,26 +1093,26 @@ class Person with _$Person {
 }
 ```
 
-By doing so, you can now pass various parameters to `@Freezed` to change the output:
+이렇게 하면 이제 다양한 매개변수를 `@Freezed`에 전달하여 출력을 변경할 수 있습니다.
 
 ```dart
 @Freezed(
-  // Disable the generation of copyWith/==
+  // copyWith/== 생성 비활성화
   copyWith: false,
   equal: false,
 )
 class Person with _$Person {...}
 ```
 
-To view all the possibilities, see the documentation of `@Freezed`: https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html
+모든 가능한 경우를 확인해보고자 한다면 `@Freezed` 문서를 참조하세요: https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html
 
 ### 전체 프로젝트의 동작변경
 
-Instead of applying your modification to a single class, you may want to apply it to
-all Freezed models at the same time.
 
-You can do so by customizing a file called `build.yaml`  
-This file is an optional configuration file that should be placed next to your `pubspec.yaml`:
+수정 사항을 단일 클래스에 적용하는 대신 모든 Freezed 모델에 동시에 적용할 수 있습니다.
+`build.yaml`이라는 파일을 사용자 지정하여 사용할 수 있습니다. 
+이 파일은 `pubspec.yaml` 파일과 동일 폴더에 위치해야 합니다.
+
 
 ```
 my_project_folder/
@@ -1131,8 +1121,7 @@ my_project_folder/
   lib/
 ```
 
-There, you will be able to change the same options as the options found in `@Freezed` (see above)
-by writing:
+거기에서 다음과 같이 작성하여 `@Freezed`(위 참조)에 있는 옵션과 동일한 옵션을 변경할 수 있습니다.
 
 ```yaml
 targets:
@@ -1140,7 +1129,7 @@ targets:
     builders:
       freezed:
         options:
-          # Disable the generation of copyWith/== for the entire project
+          # 전체 프로젝트에 대해 copyWith/== 생성 비활성화
           copy_with: false
           equal: false
 ```
@@ -1149,24 +1138,27 @@ targets:
 
 ### VSCode전용 Freezed extension
 
-The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed) extension might help you work faster with freezed. For example :
+[Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed)확장 프로그램을 사용하면 Freezed를 더 빠르게 작업할 수 있도록 도와줍니다.
 
-- Use `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac) to quickly build using `build_runner`.
-- Quickly generate a Freezed class by using `Ctrl+Shift+P` > `Generate Freezed class`.
+예를 들어:
+
+- `build_runner`를 사용하여 빠르게 빌드하려면 `Ctrl+Shift+B`(Mac의 경우 `Cmd+Shift+B`)를 사용하세요.
+- 'Ctrl+Shift+P' > 'Freezed 클래스 생성'을 사용하여 Freezed 클래스를 빠르게 생성합니다.
 
 ### IntelliJ/Android Studio전용 Freezed extension
 
-You can get Live Templates for boiler plate code [here](https://github.com/Tinhorn/freezed_intellij_live_templates).
+보일러 플레이트 코드에 대한 라이브 템플릿을 얻을 수 있습니다.
+[확장링크](https://github.com/Tinhorn/freezed_intellij_live_templates).
 
-Example:
+예:
 
-- type **freezedClass** and press <kbd>Tab</kbd> to generate a freezed class
+- **freezedClass**를 입력하고 <kbd>Tab</kbd>를 눌러 freezed 클래스를 생성합니다.
   ```dart
   @freezed
   class Demo with _$Demo {
   }
   ```
-- type **freezedFromJson** and press <kbd>Tab</kbd> to generate the fromJson method for json_serializable
+- **freezedFromJson**을 입력하고 <kbd>Tab</kbd>를 눌러 `json_serializable`에 대한 `fromJson` 메서드를 생성합니다.
   ```dart
   factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
   ```
