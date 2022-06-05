@@ -7,38 +7,40 @@
 
 [<img src="https://raw.githubusercontent.com/rrousselGit/provider/master/resources/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
 
+[Freezed] 세계에 오신걸 환영합니다. [Freezed]는 data-classes/unions/pattern-matching/cloning를 위한 코드 생성기입니다.
+
 Welcome to [Freezed], yet another code generator for data-classes/unions/pattern-matching/cloning.
 
-# Motivation
+# Freezed를 만들게된 이유
 
-Dart is awesome, but defining a "model" can be tedious. We may have to:
+Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지루할 수 있습니다. 아래와 같은 작업을 해야할 수 있습니다.
 
-- define a constructor + the properties
-- override `toString`, `operator ==`, `hashCode`
-- implement a `copyWith` method to clone the object
-- handling de/serialization
+- 생성자 + 속성 정의하기
+- `toString`, `operator ==`, `hashCode` 오버라이드
+- 객체를 복제하기 위한 `copyWith` 메소드 구현
+- 역/직열화 처리
 
 On top of that, Dart is also missing features such as union types and pattern-matching.
 
-Implementing all of this can take hundreds of lines, which are error-prone
-and the readability of your model significantly.
+게다가 Dart에는 `union types` 및 `pattern-matching`와 같은 기능이 없습니다.
 
-Freezed tries to fix that by implementing most of this for you, allowing you
-to focus on the definition of your model.
+이 모든 것을 구현하려면 수백 줄이 필요할 수 있습니다. 이런 작업은 오류가 발생하기 쉽고 모델의 가독성이 떨어질 수 있습니다.
+
+[Freezed]는 이 대부분을 구현하여 위와 같은 문제를 해결함으로 사용자가 모델 정의에 집중할 수 있도록 도와줍니다.
 
 | Before                          | After                          |
 | ------------------------------- | ------------------------------ |
 | ![before](resources/before.png) | ![before](resources/after.png) |
 
-# Index
+# 인덱스
 
-- [Motivation](#motivation)
-- [Index](#index)
-- [How to use](#how-to-use)
-  - [Install](#install)
-    - [Disabling invalid_annotation_target warning and warning in generates files.](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
-  - [Run the generator](#run-the-generator)
-  - [Creating a Model using Freezed](#creating-a-model-using-freezed)
+- [Freezed를 만들게된 이유](#Freezed를 만들게된 이유)
+- [인덱스](#인덱스)
+- [사용방법](#사용방법)
+  - [설치하기](#설치하기)
+    - [invalid_annotation_target 경고 및 생성파일의 경고를 비활성 시키기](#invalid_annotation_target 경고 및 생성파일의 경고를 비활성 시키기)
+  - [generator 실행하기](#generator 실행하기)
+  - [Freezed를 사용하여 모델 생성하기](#Freezed를 사용하여 모델 생성하기)
     - [Defining a mutable class instead of an immutable one](#defining-a-mutable-class-instead-of-an-immutable-one)
     - [Allowing the mutation of Lists/Maps/Sets](#allowing-the-mutation-of-listsmapssets)
     - [How copyWith works](#how-copywith-works)
@@ -64,9 +66,9 @@ to focus on the definition of your model.
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
   - [Sponsors](#sponsors)
 
-# How to use
+# 사용방법
 
-## Install
+## 설치하기
 
 To use [Freezed], you will need your typical [build_runner]/code-generator setup.\
 First, install [build_runner] and [Freezed] by adding them to your `pubspec.yaml` file:
@@ -93,7 +95,7 @@ This installs three packages:
 - [freezed], the code generator
 - [freezed_annotation](https://pub.dev/packages/freezed_annotation), a package containing annotations for [freezed].
 
-### Disabling invalid_annotation_target warning and warning in generates files.
+### invalid_annotation_target 경고 및 생성파일의 경고를 비활성 시키기
 
 If you plan on using [Freezed] in combination with `json_serializable`, recent
 versions of `json_serializable` and `meta` may require you to disable the
@@ -108,7 +110,7 @@ analyzer:
     invalid_annotation_target: ignore
 ```
 
-## Run the generator
+## generator 실행하기
 
 To run the code generator, execute the following command:
 
@@ -139,7 +141,7 @@ The reason being, importing `foundation.dart` also imports classes to make an
 object nicely readable in Flutter's devtool.\
 If you import `foundation.dart`, [Freezed] will automatically do it for you.
 
-## Creating a Model using Freezed
+## Freezed를 사용하여 모델 생성하기
 
 An example is better than a long abstract explanation, so here's a typical Freezed class:
 
