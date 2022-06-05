@@ -9,18 +9,15 @@
 
 [Freezed] 세계에 오신걸 환영합니다. [Freezed]는 data-classes/unions/pattern-matching/cloning를 위한 코드 생성기입니다.
 
-Welcome to [Freezed], yet another code generator for data-classes/unions/pattern-matching/cloning.
-
 # Freezed를 만들게된 이유
 
-Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지루할 수 있습니다. 아래와 같은 작업을 해야할 수 있습니다.
+Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지루할 수 있습니다. 
+`모델`을 정의하기 위해서는 아래의 작업을 해야할 수 있습니다.
 
 - 생성자 + 속성 정의하기
 - `toString`, `operator ==`, `hashCode` 오버라이드
 - 객체를 복제하기 위한 `copyWith` 메소드 구현
 - 역/직열화 처리
-
-On top of that, Dart is also missing features such as union types and pattern-matching.
 
 게다가 Dart에는 `union types` 및 `pattern-matching`와 같은 기능이 없습니다.
 
@@ -28,14 +25,14 @@ On top of that, Dart is also missing features such as union types and pattern-ma
 
 [Freezed]는 이 대부분을 구현하여 위와 같은 문제를 해결함으로 사용자가 모델 정의에 집중할 수 있도록 도와줍니다.
 
-| Before                          | After                          |
+| Freezed 사용 전                          | Freezed 사용 후                          |
 | ------------------------------- | ------------------------------ |
 | ![before](https://github.com/rrousselGit/freezed/blob/master/resources/before.png) | ![After](https://github.com/rrousselGit/freezed/blob/master/resources/after.png) |
 
-# 인덱스
+# 목차
 
 - [Freezed를 만들게된 이유](#Freezed를-만들게된-이유)
-- [인덱스](#인덱스)
+- [목차](#목차)
 - [사용방법](#사용방법)
   - [설치하기](#설치하기)
     - [invalid_annotation_target 경고 및 생성파일의 경고를 비활성 시키기](#invalid_annotation_target-경고-및-생성파일의-경고를-비활성-시키기)
@@ -70,10 +67,11 @@ On top of that, Dart is also missing features such as union types and pattern-ma
 
 ## 설치하기
 
-To use [Freezed], you will need your typical [build_runner]/code-generator setup.\
-First, install [build_runner] and [Freezed] by adding them to your `pubspec.yaml` file:
+[Freezed]를 사용하려면 일반적으로 [build_runner]/code-generator 설정이 필요합니다.
+먼저 [build_runner]와 [Freezed]를 `pubspec.yaml` 파일에 추가합니다.
 
-If you are using creating a Flutter project:
+
+만약에 `Flutter`프로젝트를 생성하는 경우에는 아래와 같이 진행합니다.
 
 ```console
 $ flutter pub add freezed_annotation
@@ -81,7 +79,7 @@ $ flutter pub add --dev build_runner
 $ flutter pub add --dev freezed
 ```
 
-If you are using creating a Dart project:
+만약에 `Dart`프로젝트를 생성하는 경우에는 아래와 같이 진행합니다.
 
 ```console
 $ dart pub add freezed_annotation
@@ -89,20 +87,17 @@ $ dart pub add --dev build_runner
 $ dart pub add --dev freezed
 ```
 
-This installs three packages:
+이렇게 하면 3개의 패키지(freezed_annotation, build_runner, freezed)가 설치됩니다.
 
-- [build_runner](https://pub.dev/packages/build_runner), the tool to run code-generators
-- [freezed], the code generator
-- [freezed_annotation](https://pub.dev/packages/freezed_annotation), a package containing annotations for [freezed].
+- [build_runner](https://pub.dev/packages/build_runner): `code-generators`를 실행하기 위한 도구입니다. 
+- [freezed]: `code generator` 입니다.
+- [freezed_annotation](https://pub.dev/packages/freezed_annotation): [freezed]전용 annotations을 포함하고 있는 패키지.
 
 ### invalid_annotation_target 경고 및 생성파일의 경고를 비활성 시키기
 
-If you plan on using [Freezed] in combination with `json_serializable`, recent
-versions of `json_serializable` and `meta` may require you to disable the
-`invalid_annotation_target` warning.
+[Freezed]를 `json_serializable`과 함께 사용할 계획이라면 최근 `json_serializable`와 `meta` 버전의 `invalid_annotation_target` 경고를 비활성화해야 할 수 있습니다.
 
-To do that, you can add the following to an `analysis_options.yaml`
-at the root of your project:
+이를 해결하려면 프로젝트 루트에서 `analysis_options.yaml`에 아래의 내용을 추가할 수 있습니다.
 
 ```yaml
 analyzer:
@@ -112,22 +107,22 @@ analyzer:
 
 ## generator 실행하기
 
-To run the code generator, execute the following command:
+코드 생성기를 실행하려면 다음 명령을 실행하십시오.
 
 ```
 dart run build_runner build
 ```
 
-For Flutter projects, you can also run:
+`Flutter`프로젝트라면 아래의 명령을 수행하면 됩니다.
 
 ```
 flutter pub run build_runner build
 ```
 
-Note that like most code-generators, [Freezed] will need you to both import the annotation ([freezed_annotation])
-and use the `part` keyword on the top of your files.
+대부분의 코드 생성기와 마찬가지로 [Freezed]는 `annotation`([freezed_annotation])을 모두 import해야 합니다.
+그리고 파일 상단에 `part` 키워드를 사용하세요.
 
-As such, a file that wants to use [Freezed] will start with:
+이 처럼 [Freezed]를 사용하려는 파일은 아래와 같이 시작합니다.
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -136,24 +131,24 @@ part 'my_file.freezed.dart';
 
 ```
 
-**CONSIDER** also importing `package:flutter/foundation.dart`.\
-The reason being, importing `foundation.dart` also imports classes to make an
-object nicely readable in Flutter's devtool.\
-If you import `foundation.dart`, [Freezed] will automatically do it for you.
+
+**고려사항** 
+`package:flutter/foundation.dart`도 같이 import해서 사용합니다. 그 이유는 `foundation.dart`를 가져오면 Flutter의 `devtool`에서 개체를 보기 좋게 만들기 위해 클래스도 가져오기 때문입니다 `foundation.dart`를 가져오면 [Freezed]가 자동으로 수행합니다.
 
 ## Freezed를 사용하여 모델 생성하기
 
-An example is better than a long abstract explanation, so here's a typical Freezed class:
+예제는 길고긴 추상적인 설명보다 이해하기 쉽습니다.
+다음은 전형적인 Freezed 클래스입니다:
 
 ```dart
-// This file is "main.dart"
+// 이 파일은 "main.dart" 입니다.
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
-// required: associates our `main.dart` with the code generated by Freezed
+// 필수: `main.dart`를 Freezed에서 생성한 코드와 연결합니다.
 part 'main.freezed.dart';
-// optional: Since our Person class is serializable, we must add this line.
-// But if Person was not serializable, we could skip it.
+// 옵션(선택사항): Person 클래스는 직렬화 가능하므로 이 줄을 추가해야 합니다.
+// 그러나 Person이 직렬화 가능하지 않은 경우 건너뛸 수 있습니다.
 part 'main.g.dart';
 
 @freezed
@@ -169,37 +164,34 @@ class Person with _$Person {
 }
 ```
 
-The following snippet defines a model named `Person`:
+다음 `snippet`은 `Person`이라는 모델을 정의합니다.
 
-- `Person` has 3 properties: `firstName`, `lastName` and `age`
-- Because we are using `@freezed`, all of this class's properties are immutable.
-- Since we defined a `fromJson`, this class is de/serializable.
-  Freezed will add a `toJson` method for us.
-- Freezed will also automatically generate:
-  - a `copyWith` method, for cloning the object with different properties
-  - a `toString` override listing all the properties of the object
-  - an `operator ==` and `hashCode` override (since `Person` is immutable)
+- `Person`에는 `firstName`, `lastName` 및 `age`의 3가지 속성이 있습니다.
+- 우리는 `@freezed`를 사용하기 때문에 이 클래스의 모든 속성은 변경할 수 없습니다(immutable).
+- 'fromJson'을 정의했기 때문에 이 클래스는 역직렬화/직렬화 가능합니다.
+  Freezed는 `toJson` 메소드를 자동으로 추가할 것입니다.
+- Freeze는 자동으로 아래의 항목을 생성합니다.
+  - 다른 속성을 가진 객체를 복제하기 위한 `copyWith` 메소드
+  - 객체의 모든 속성을 나열하는 `toString` 재정의(오버라이드)
+  - `operator ==` 및 `hashCode` 재정의(`Person`은 변경할 수 없으므로(immutable))
 
-From this example, we can notice a few things:
+예제로부터 우리는 몇 가지를 알 수 있습니다.
 
-- It is necessary to annotate our model with `@freezed` (or `@Freezed`/`@unfreezed`, more about that later).  
-  This annotation is what tells Freezed to generate code for that class.
+- 모델에 `@freezed`(또는 `@Freezed`/`@unfreezed`, 나중에(아래에) 자세히 설명)annotate을 달아야 합니다.
+  이 `annotation`은 Freezed에게 해당 클래스에 대한 코드를 생성하도록 지시하는 것입니다.
+- 또한 접두사 `_$`가 붙은 클래스 이름과 함께 `믹스인(mixin)`을 적용해야 합니다. 믹스인은 객체의 다양한 속성/메서드를 정의합니다.
 
-- We must also apply a mixin with the name of our class, prefixed by `_$`.
-  This mixin is what defines the various properties/methods of our object.
-
-- When defining a constructor in a Freezed class, we should use the `factory` keyword
-  as showcased (`const` is optional).  
-  The parameters of this constructor will be the list of all properties that this class contains.  
-  Parameters **don't** have to be named and required. Feel free to use
-  positional optional parameters if you want!
+- Freezed 클래스에서 생성자를 정의할 때 표시된 대로 `factory` 키워드를 사용해야 합니다(`const`는 선택 사항임).
+  이 생성자의 매개변수는 이 클래스에 포함된 모든 속성의 목록이 됩니다.
+  매개변수는 **필요하지 않음**에 이름을 지정하고 필수로 지정해야 합니다. 부담없이 사용하세요
+  원하는 경우 positional optional parameters를 사용하세요.
 
 ### Immutable 클래스 대신 Mutable 클래스 정의하기
 
-So far, we've seen how to define a model where all of its properties are `final`;
-but you may want to define mutable properties in your model.
+지금까지 모든 속성이 `final`인 모델을 정의하는 방법을 살펴보았습니다. 
+그러나 모델에서 변경 가능한 속성을 정의할 수 있습니다.
 
-Freezed supports this, by replacing the `@freezed` annotation with `@unfreezed`:
+Freezed는 `@freezed` annotation을 `@unfreezed`로 대체하여 사용할 수 있습니다.
 
 ```dart
 @unfreezed
@@ -215,10 +207,9 @@ class Person with _$Person {
 }
 ```
 
-This defines a model mostly identical to our previous snippets, but with the following
-differences:
+위의 예시는 이전 `snippets`과 거의 동일하지만 다음과 같은 차이점이 있는 모델을 정의합니다.
 
-- `firstName` and `lastName` are now mutable. As such, we can write:
+- `firstName`과 `lastName`은 이제 변경할 수 있습니다. 따라서 다음과 같이 작성할 수 있습니다.
 
   ```dart
   void main() {
@@ -229,8 +220,8 @@ differences:
   }
   ```
 
-- `age` is still immutable, because we explicitly marked the property as `final`.
-- `Person` no-longer has a custom ==/hashCode implementation:
+- `age`는 속성을 명시적으로 `final`로 표시했기 때문에 여전히 변경할 수 없습니다(immutable).
+- `Person`에는 더 이상 사용자 정의 ==/hashCode 구현이 없습니다.
 
   ```dart
   void main() {
@@ -241,15 +232,13 @@ differences:
   }
   ```
 
-- Of course, since our `Person` class is mutable, it is no-longer possible
-  to instantiate it using `const`.
+- 당연히 `Person` 클래스는 변경 가능하므로 `const`를 사용하여 더 이상 인스턴스화할 수 없습니다.
 
 ### Lists/Maps/Sets의 변경 허용하기
 
-By default when using `@freezed` (but not `@unfreezed`), properties of type `List`/`Map`/`Set`
-are transformed to be immutable.
+기본적으로 `@freezed`를 사용할 때(`@unfreezed`는 제외), `List`/`Map`/`Set` 데이터 타입의 속성은 변경할 수 없도록 변환됩니다(immutable).
 
-This means that writing the following will cause a runtime exception:
+즉, 아래와 같이 작성하면 런타임 예외(runtime exception)가 발생합니다.
 
 ```dart
 @freezed
@@ -259,11 +248,11 @@ class Example with _$Example {
 
 void main() {
   var example = Example([]);
-  example.list.add(42); // throws because we are mutating a collection
+  example.list.add(42); // 컬렉션을 변경하기 때문에 throw됩니다.
 }
 ```
 
-That behavior can be disabled by writing:
+아래와 같이 설정하면 해당 동작을 비활성화할 수 있습니다.
 
 ```dart
 @Freezed(makeCollectionsUnmodifiable: false)
@@ -281,9 +270,10 @@ void main() {
 
 As explained before, when defining a model using Freezed, then the code-generator
 will automatically generate a `copyWith` method for us.  
-This method is used to clone an object with different values.
 
-For example if we define:
+이전에 설명했듯이 [Freezed]를 사용하여 모델을 정의할 때 코드 생성기는 자동으로 `copyWith` 메서드를 생성합니다. 이는 다른 값을 가진 개체를 복제하는 데 사용됩니다.
+
+예를 들어 다음을 정의하는 경우:
 
 ```dart
 @freezed
@@ -292,27 +282,27 @@ class Person with _$Person {
 }
 ```
 
-Then we could write:
+그 다음 아래와 같이 작성할 수 있습니다.
 
 ```dart
 void main() {
   var person = Person('Remi', 24);
 
-  // `age` not passed, its value is preserved
+  // `age`가 전달되지 않고 값이 유지됩니다.
   print(person.copyWith(name: 'Dash')); // Person(name: Dash, age: 24)
-  // `age` is set to `null`
+  // `age`는 `null`로 설정됩니다.
   print(person.copyWith(age: null)); // Person(name: Remi, age: null)
 }
 ```
 
-Notice Freezed supports `person.copyWith(age: null)`.
+Freezed는 `person.copyWith(age: null)`을 지원하는것에 주목하세요.
 
 ### 더 나아가기: 깊은복사
 
-While `copyWith` is very powerful in itself, it starts to get inconvenient on more complex objects.
+`copyWith`는 그 자체로 매우 강력하지만 더 복잡한 객체에서는 불편해지기 시작합니다.
 
-Consider the following classes:
-
+아래와 같은 클래스들이 있다고 생각해 봅시다.
+ 
 ```dart
 @freezed
 class Company with _$Company {
@@ -330,8 +320,8 @@ class Assistant with _$Assistant {
 }
 ```
 
-Then, from a reference on `Company`, we may want to perform changes on `Assistant`.\
-For example, to change the `name` of an assistant, using `copyWith` we would have to write:
+그런 다음 `Company`에 참조된 `Assistant`에 대한 변경을 원할 수 있습니다.\
+예를 들어, `copyWith`를 사용하여 `Assistant`의 `name`을 변경하려면 다음과 같이 작성해야 합니다.
 
 ```dart
 Company company;
@@ -345,11 +335,11 @@ Company newCompany = company.copyWith(
 );
 ```
 
-This _works_, but is relatively verbose with a lot of duplicates.\
-This is where we could use [Freezed]'s "deep copy".
+위의 코드는 _작동_하지만 많은 복사로 인해 비교적 코드가 장황합니다. 
+여기에서 [Freezed]의 "깊은복사(deep copy)"를 사용할 수 있습니다.
 
-If a Freezed model contains properties that are also Freezed models, then
-the code-generator will offer an alternate syntax to the previous example:
+만약에 [Freezed]모델이 또 다른 [Freezed]모델을 속성을 가지고 있다면,
+코드 생성기는 이전 예제에 대한 대체 구문을 제공합니다.
 
 ```dart
 Company company;
@@ -357,19 +347,16 @@ Company company;
 Company newCompany = company.copyWith.director.assistant(name: 'John Smith');
 ```
 
-This snippet will achieve strictly the same result as the previous snippet
-(creating a new company with an updated assistant name), but no longer has duplicates.
+이 snippet은 이전 snippet(업데이트된 `assistant`의 `name`으로 새로운 `company` 생성)과 완전히 동일한 결과를 달성하지만 더 이상 중복되지 않습니다.
 
-Going deeper in this syntax, if instead, we wanted to change the director's name
-then we could write:
+이 구문을 더 자세히 살펴보고 대신 감독(director)의 이름을 변경하려면 다음과 같이 작성할 수 있습니다.
 
 ```dart
 Company company;
 Company newCompany = company.copyWith.director(name: 'John Doe');
 ```
 
-Overall, based on the definitions of `Company`/`Director`/`Assistant` mentioned above,
-all the following "copy" syntaxes will work:
+전반적으로 위에서 언급한 `Company`/`Director`/`Assistant`의 정의에 따라 다음의 모든 "복사" 구문이 작동합니다.
 
 ```dart
 Company company;
@@ -378,25 +365,23 @@ company = company.copyWith(name: 'Google', director: Director(...));
 company = company.copyWith.director(name: 'Larry', assistant: Assistant(...));
 ```
 
-**Null consideration**
+**Null 고려사항**
 
-Some objects may also be `null`. For example, using our `Company` class,
-then `Director`'s `assistant` may be `null`.
+일부 객체는 'null'일 수도 있습니다. 예를 들어, `Company` 클래스를 사용하면 `Director`의 `assistant`가 `null`이 될 수 있습니다.
 
-As such, writing:
+예를 들어, 다음과 같이 작성해보면
 
 ```dart
 Company company = Company(name: 'Google', director: Director(assistant: null));
 Company newCompany = company.copyWith.director.assistant(name: 'John');
 ```
 
-doesn't make sense.  
-We can't change the assistant's name if there is no assistant to begin with.
+말도 안돼는 이야기이죠. 의미 없습니다.
+처음부터 assistant가 없으면 assistant의 이름을 변경할 수 없습니다.
 
-In that situation, `company.copyWith.director.assistant` will return `null`,
-causing our code to fail to compile.
+이 상황에서 `company.copyWith.director.assistant`는 `null`을 반환하여 코드를 컴파일하지 못하게 합니다.
 
-To fix it, we can use the `?.call` operator and write:
+이를 수정하기 위해 `?.call` 연산자를 사용하고 다음과 같이 작성할 수 있습니다.
 
 ```dart
 Company? newCompany = company.copyWith.director.assistant?.call(name: 'John');
@@ -404,8 +389,8 @@ Company? newCompany = company.copyWith.director.assistant?.call(name: 'John');
 
 ### 모델에 getters와 메소드 추가하기
 
-Sometimes, you may want to manually define methods/properties in our classes.  
-But you will quickly notice that if you try to do:
+때로는 클래스에서 메서드/속성을 수동으로 정의하고 싶을 수도 있습니다. 
+그러나 아래의 코드를 작성해보면 빨리 이해할 수 있습니다.
 
 ```dart
 @freezed
@@ -418,14 +403,15 @@ class Person with _$Person {
 }
 ```
 
-then it won't work.
+위의 코드는 작동하지 않습니다. 
 
-For that to work, we need an extra step: We need to define a private empty constructor:
+원하는 메서드나 속성을 추가하려면 추가처리가 필요합니다.
+`a private empty constructor`를 정의해야 합니다.
 
 ```dart
 @freezed
 class Person with _$Person {
-  // Added constructor. Must not have any parameter
+  // 생성자를 추가했습니다. 매개변수가 없어야 합니다.
   const Person._();
 
   const factory Person(String name, {int? age}) = _Person;
@@ -438,8 +424,8 @@ class Person with _$Person {
 
 ### Asserts
 
-Dart does not allow adding `assert(...)` statements to a `factory` constructor.  
-As such, to add asserts to your Freezed classes, you will need the `@Assert` decorator:
+Dart는 `factory` 생성자에 `assert(...)` 문을 추가하는 것을 허용하지 않습니다.
+따라서 Freezed 클래스에 assert를 추가하려면 `@Assert` 데코레이터가 필요합니다.
 
 ```dart
 class Person with _$Person {
@@ -454,11 +440,8 @@ class Person with _$Person {
 
 ### 기본 값
 
-Similarly to asserts, Dart does not allow "redirecting factory constructors"
-to specify default values.
-
-As such, if you want to specify default values for your properties,
-you will need the `@Default` annotation:
+asserts과 유사하게 Dart는 "redirecting factory constructors"이 기본값을 지정하는 것을 허용하지 않습니다.
+따라서 속성의 기본값을 지정하려면 `@Default` annotation이 필요합니다.
 
 ```dart
 class Example with _$Example {
@@ -467,15 +450,13 @@ class Example with _$Example {
 ```
 
 **NOTE**:\
-If you are using serialization/deserialization, this will automatically add
-a `@JsonKey(defaultValue: <something>)` for you.
+직렬화/역직렬화를 사용하는 경우 자동으로 `@JsonKey(defaultValue: <something>)`가 추가됩니다.
 
 ### 데코레이터와 코멘트
 
-[Freezed] supports property and class level decorators/documentation by
-decorating/documenting their respective parameter and constructor definition.
+[Freezed]는 각각의 매개변수와 생성자 정의를 decorators/documentation하여 속성 및 클래스 수준 decorators/documentation를 지원합니다.
 
-Consider:
+아래와 같은 예제를 생각해봅시다.
 
 ```dart
 @freezed
@@ -488,15 +469,15 @@ class Person with _$Person {
 }
 ```
 
-If you want to document `name`, you can do:
+`name`을 문서화하려면 다음을 수행할 수 있습니다.
 
 ```dart
 @freezed
 class Person with _$Person {
   const factory Person({
-    /// The name of the user.
+    /// 사용자의 이름입니다.
     ///
-    /// Must not be null
+    /// null이 아니어야 합니다.
     String? name,
     int? age,
     Gender? gender,
@@ -504,7 +485,7 @@ class Person with _$Person {
 }
 ```
 
-If you want to mark the property `gender` as `@deprecated`, then you can do:
+속성 `gender`를 `@deprecated`로 표시하려면 아래의 예시처럼 작성해 보세요.
 
 ```dart
 @freezed
@@ -517,31 +498,31 @@ class Person with _$Person {
 }
 ```
 
-This will deprecate both:
+이렇게 하면 둘 다 더 이상 사용되지 않습니다.
 
-- The constructor
+- 생성자(The constructor): 
   ```dart
-  Person(gender: Gender.something); // gender is deprecated
+  Person(gender: Gender.something); // gender는 더 이상 사용되지 않습니다
   ```
-- The generated class's constructor:
+- 자동 생성된 클래스의 생성자(The generated class's constructor):
   ```dart
-  _Person(gender: Gender.something); // gender is deprecated
+  _Person(gender: Gender.something); // gender는 더 이상 사용되지 않습니다
   ```
-- the property:
+- 속성(the property):
   ```dart
   Person person;
-  print(person.gender); // gender is deprecated
+  print(person.gender); // gender는 더 이상 사용되지 않습니다
   ```
-- the `copyWith` parameter:
+- `copyWith` 파라미터 (the `copyWith` parameter):
   ```dart
   Person person;
-  person.copyWith(gender: Gender.something); // gender is deprecated
+  person.copyWith(gender: Gender.something); // gender는 더 이상 사용되지 않습니다
   ```
 
-Similarly, if you want to decorate the generated class you can decorate the
-defining factory constructor.
+마찬가지로 생성된 클래스를 decorate하려는 경우 정의하는 팩토리 생성자를 decorate할 수 있습니다.
+다시 말해, 클래스 자체를 `deprecated` 시키기 위해서는 factory 생성자위에 `@deprecated`를 annotation으로 붙여주면 됩니다. 
 
-As such, to deprecate `_Person`, you could do:
+따라서 `_Person`을 더 이상 사용하지 않으려면 다음과 같이 작성하면 됩니다.
 
 ```dart
 @freezed
