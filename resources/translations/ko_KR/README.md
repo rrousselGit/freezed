@@ -784,7 +784,7 @@ void main() {
 ```
 
 **Note**:  
-가능하면 'is'와 'as'를 사용하지 않는 것이 좋습니다.
+가능하면 `is`와 `as`를 사용하지 않는 것이 좋습니다.
 그 이유는 그것들이 "포괄적이지 않다(exhaustive)"는 것입니다. https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/ 를 확인해보세요.
 
 ### union types에대한 individual classes용 mixins과 interfaces
