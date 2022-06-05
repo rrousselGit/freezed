@@ -30,40 +30,40 @@ On top of that, Dart is also missing features such as union types and pattern-ma
 
 | Before                          | After                          |
 | ------------------------------- | ------------------------------ |
-| ![before](resources/before.png) | ![before](resources/after.png) |
+| ![before](../../resources/before.png) | ![before](../../resources/after.png) |
 
 # 인덱스
 
-- [Freezed를 만들게된 이유](#Freezed를 만들게된 이유)
+- [Freezed를 만들게된 이유](#Freezed를-만들게된-이유)
 - [인덱스](#인덱스)
 - [사용방법](#사용방법)
   - [설치하기](#설치하기)
-    - [invalid_annotation_target 경고 및 생성파일의 경고를 비활성 시키기](#invalid_annotation_target 경고 및 생성파일의 경고를 비활성 시키기)
-  - [generator 실행하기](#generator 실행하기)
-  - [Freezed를 사용하여 모델 생성하기](#Freezed를 사용하여 모델 생성하기)
-    - [Defining a mutable class instead of an immutable one](#defining-a-mutable-class-instead-of-an-immutable-one)
-    - [Allowing the mutation of Lists/Maps/Sets](#allowing-the-mutation-of-listsmapssets)
-    - [How copyWith works](#how-copywith-works)
-    - [Going further: Deep copy](#going-further-deep-copy)
-    - [Adding getters and methods to our models](#adding-getters-and-methods-to-our-models)
+    - [invalid_annotation_target 경고 및 생성파일의 경고를 비활성 시키기](#invalid_annotation_target-경고-및-생성파일의-경고를-비활성-시키기)
+  - [generator 실행하기](#generator-실행하기)
+  - [Freezed를 사용하여 모델 생성하기](#Freezed를-사용하여-모델-생성하기)
+    - [immutable 클래스 대신 mutable 클래스 정의하기](#Immutable-클래스-대신-Mutable-클래스-정의하기)
+    - [Lists/Maps/Sets의 변경 허용하기](#Lists/Maps/Sets의-변경-허용하기)
+    - [copyWith의 작동방식](#copyWith의-작동방식)
+    - [더 나아가기: 깊은복사](#더-나아가기:-깊은복사)
+    - [모델에 getters 와 메소드 추가하기](#모델에-getters와-메소드-추가하기)
     - [Asserts](#asserts)
-    - [Default values](#default-values)
-    - [Decorators and comments](#decorators-and-comments)
-  - [Union types and Sealed classes](#union-types-and-sealed-classes)
-    - [Shared properties](#shared-properties)
-    - [Using pattern matching to read non-shared properties](#using-pattern-matching-to-read-non-shared-properties)
+    - [기본 값](#기본-값)
+    - [데코레이터와 코멘트](#데코레이터와-코멘트)
+  - [Union types과 Sealed classes](#Union types과 Sealed classes)
+    - [공유속성 Shared properties](#공유속성-Shared-properties)
+    - [패턴매칭(pattern-matching)을 사용하여 비공유 속성 읽기](#패턴매칭(pattern-matching)을-사용하여-비공유-속성읽기)
       - [When](#when)
       - [Map](#map)
-      - [Using is/as to read the content of a Freezed class](#using-isas-to-read-the-content-of-a-freezed-class)
-    - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
+      - [is/as를 사용하여 Freezed 클래스의 내용 읽기](#is/as를-사용하여-Freezed-클래스의-내용읽기)
+    - [union types에대한 individual classes용 mixins과 interfaces](#union-types에대한-individual-classes용-mixins과-interfaces)
   - [FromJson/ToJson](#fromjsontojson)
-    - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
+    - [fromJSON - 복수의 생성자가 있는 클래스](#fromjson---복수의-생성자가-있는-클래스)
   - [Configurations](#configurations)
-    - [Changing the behavior for a specific model](#changing-the-behavior-for-a-specific-model)
-    - [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)
+    - [특정 모델의 동작변경](#특정-모델의-동작변경)
+    - [전체 프로젝트의 동작변경](#전체-프로젝트의-동작변경)
 - [Utilities](#utilities)
-    - [Freezed extension for VSCode](#freezed-extension-for-vscode)
-    - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
+    - [VSCode전용 Freezed extension](#VSCode전용-Freezed-extension)
+    - [IntelliJ/Android Studio전용 Freezed extension](#IntelliJ/Android-Studio전용-Freezed-extension)
   - [Sponsors](#sponsors)
 
 # 사용방법
@@ -194,7 +194,7 @@ From this example, we can notice a few things:
   Parameters **don't** have to be named and required. Feel free to use
   positional optional parameters if you want!
 
-### Defining a mutable class instead of an immutable one
+### Immutable 클래스 대신 Mutable 클래스 정의하기
 
 So far, we've seen how to define a model where all of its properties are `final`;
 but you may want to define mutable properties in your model.
@@ -244,7 +244,7 @@ differences:
 - Of course, since our `Person` class is mutable, it is no-longer possible
   to instantiate it using `const`.
 
-### Allowing the mutation of Lists/Maps/Sets
+### Lists/Maps/Sets의 변경 허용하기
 
 By default when using `@freezed` (but not `@unfreezed`), properties of type `List`/`Map`/`Set`
 are transformed to be immutable.
@@ -277,7 +277,7 @@ void main() {
 }
 ```
 
-### How copyWith works
+### copyWith의 작동방식
 
 As explained before, when defining a model using Freezed, then the code-generator
 will automatically generate a `copyWith` method for us.  
@@ -307,7 +307,7 @@ void main() {
 
 Notice Freezed supports `person.copyWith(age: null)`.
 
-### Going further: Deep copy
+### 더 나아가기: 깊은복사
 
 While `copyWith` is very powerful in itself, it starts to get inconvenient on more complex objects.
 
@@ -402,7 +402,7 @@ To fix it, we can use the `?.call` operator and write:
 Company? newCompany = company.copyWith.director.assistant?.call(name: 'John');
 ```
 
-### Adding getters and methods to our models
+### 모델에 getters와 메소드 추가하기
 
 Sometimes, you may want to manually define methods/properties in our classes.  
 But you will quickly notice that if you try to do:
@@ -452,7 +452,7 @@ class Person with _$Person {
 }
 ```
 
-### Default values
+### 기본 값
 
 Similarly to asserts, Dart does not allow "redirecting factory constructors"
 to specify default values.
@@ -470,7 +470,7 @@ class Example with _$Example {
 If you are using serialization/deserialization, this will automatically add
 a `@JsonKey(defaultValue: <something>)` for you.
 
-### Decorators and comments
+### 데코레이터와 코멘트
 
 [Freezed] supports property and class level decorators/documentation by
 decorating/documenting their respective parameter and constructor definition.
@@ -555,7 +555,7 @@ class Person with _$Person {
 }
 ```
 
-## Union types and Sealed classes
+## Union types과 Sealed classes
 
 Coming from other languages, you may be used with features like "union types"/"sealed classes"/pattern matching.  
 These are powerful tools in combination with a type system, but Dart currently does not support them.
@@ -597,7 +597,7 @@ void main() {
 
 Let's see why that is the case in the following section.
 
-### Shared properties
+### 공유속성 Shared properties
 
 When defining multiple constructors, you will lose the ability to read properties that are not common to all constructors:
 
@@ -651,7 +651,7 @@ example.copyWith(age: 42); // compilation error, parameter `age` does not exist
 
 To solve this problem, we need check the state of our object using what we call "pattern matching".
 
-### Using pattern matching to read non-shared properties
+### 패턴매칭(pattern-matching)을 사용하여 비공유 속성읽기
 
 For this section, let's consider the following union:
 
@@ -781,7 +781,7 @@ print(
 ); // Model.second(b: 42, c: true)
 ```
 
-#### Using is/as to read the content of a Freezed class
+#### is/as를 사용하여 Freezed 클래스의 내용읽기
 
 Alternatively, one (less desirable) solution is to use the `is`/`as` keywords.  
 More specifically, you can write:
@@ -808,7 +808,7 @@ Using `is` and `as`, while possible, is discouraged.
 
 The reasoning is that they are not "exhaustive". See https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/
 
-### Mixins and Interfaces for individual classes for union types
+### union types에대한 individual classes용 mixins과 interfaces
 
 When you have multiple types in the same class you might want to make
 one of those types to implement a interface or mixin a class. You can do
@@ -923,7 +923,7 @@ With these changes, [Freezed] will automatically ask [json_serializable] to gene
 **Note**:  
 Freezed will only generate a fromJson if the factory is using `=>`.
 
-### fromJSON - classes with multiple constructors
+### fromJSON - 복수의 생성자가 있는 클래스
 
 For classes with multiple constructors, [Freezed] will check the JSON response
 for a string element called `runtimeType` and choose the constructor to use based
@@ -1110,7 +1110,7 @@ may want to disable the generation of `when` methods.
 
 To do so, there are two possibilities:
 
-### Changing the behavior for a specific model
+### 특정 모델의 동작변경
 
 If you want to customize the generated code for only one specific class,
 you can do so by using a different annotation:
@@ -1135,7 +1135,7 @@ class Person with _$Person {...}
 
 To view all the possibilities, see the documentation of `@Freezed`: https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html
 
-### Changing the behavior for the entire project
+### 전체 프로젝트의 동작변경
 
 Instead of applying your modification to a single class, you may want to apply it to
 all Freezed models at the same time.
@@ -1166,14 +1166,14 @@ targets:
 
 # Utilities
 
-### Freezed extension for VSCode
+### VSCode전용 Freezed extension
 
 The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed) extension might help you work faster with freezed. For example :
 
 - Use `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac) to quickly build using `build_runner`.
 - Quickly generate a Freezed class by using `Ctrl+Shift+P` > `Generate Freezed class`.
 
-### Freezed extension for IntelliJ/Android Studio
+### IntelliJ/Android Studio전용 Freezed extension
 
 You can get Live Templates for boiler plate code [here](https://github.com/Tinhorn/freezed_intellij_live_templates).
 
