@@ -73,17 +73,24 @@ First, install [build_runner] and [Freezed] by adding them to your `pubspec.yaml
 If you are using creating a Flutter project:
 
 ```console
-$ flutter pub add freezed_annotation
-$ flutter pub add --dev build_runner
-$ flutter pub add --dev freezed
+flutter pub add freezed_annotation
+flutter pub add --dev build_runner
+flutter pub add --dev freezed
+# if using freezed to generate fromJson/toJson, also add:
+flutter pub add json_annotation
+flutter pub add --dev json_serializable
 ```
+
 
 If you are using creating a Dart project:
 
 ```console
-$ dart pub add freezed_annotation
-$ dart pub add --dev build_runner
-$ dart pub add --dev freezed
+dart pub add freezed_annotation
+dart pub add --dev build_runner
+dart pub add --dev freezed
+# if using freezed to generate fromJson/toJson, also add:
+dart pub add json_annotation
+dart pub add --dev json_serializable
 ```
 
 This installs three packages:
