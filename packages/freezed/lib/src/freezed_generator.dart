@@ -250,13 +250,26 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) {
     return constructorsNeedsGeneration.first.parameters.allParameters
-        .where((parameter) {
-      return constructorsNeedsGeneration.every((constructor) {
-        return constructor.parameters.allParameters.any((p) {
-          return p.name == parameter.name && p.type == parameter.type;
-        });
-      });
-    }).toList();
+        .map((parameter) {
+          var hasAnyFinalProperty = false;
+          for (final constructor in constructorsNeedsGeneration) {
+            final matchingParameter =
+                constructor.parameters.allParameters.firstWhereOrNull((p) {
+              return p.name == parameter.name && p.type == parameter.type;
+            });
+
+            if (matchingParameter == null) return null;
+            if (matchingParameter.isFinal) hasAnyFinalProperty = true;
+          }
+
+          if (hasAnyFinalProperty) {
+            return parameter.copyWith(isFinal: true);
+          }
+
+          return parameter;
+        })
+        .whereNotNull()
+        .toList();
   }
 
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(

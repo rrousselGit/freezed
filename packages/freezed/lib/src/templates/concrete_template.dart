@@ -394,12 +394,14 @@ ${whenOrNullPrototype(data.constructors)} {
   }
 
   String get _abstractProperties {
-    return constructor.impliedProperties.map((p) {
-      if (commonProperties.any((element) => element.name == p.name)) {
-        return '@override ${p.unimplementedGetter}';
-      } else {
-        return '${p.unimplementedGetter}';
-      }
+    return constructor.impliedProperties.expand((p) {
+      return [
+        if (commonProperties.any((element) => element.name == p.name))
+          '@override ${p.abstractGetter}'
+        else
+          '${p.abstractGetter}',
+        if (!p.isFinal) p.abstractSetter,
+      ];
     }).join();
   }
 
