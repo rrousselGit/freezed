@@ -90,6 +90,14 @@ class Property {
         body: ' => throw $privConstUsedErrorVarName;',
       );
 
+  Getter get abstractGetter => Getter(
+        name: name,
+        type: type,
+        decorators: decorators,
+        doc: doc,
+        body: ';',
+      );
+
   Getter asGetter(String body) => Getter(
         name: name,
         type: type,
@@ -98,11 +106,20 @@ class Property {
         body: body,
       );
 
-  UnimplementedSetter get unimplementedSetter => UnimplementedSetter(
+  Setter get unimplementedSetter => Setter(
         name: name,
         type: type,
         decorators: decorators,
         doc: doc,
+        body: ' => throw $privConstUsedErrorVarName;',
+      );
+
+  Setter get abstractSetter => Setter(
+        name: name,
+        type: type,
+        decorators: decorators,
+        doc: doc,
+        body: ';',
       );
 
   Property copyWith({
@@ -158,23 +175,24 @@ class Getter {
   }
 }
 
-class UnimplementedSetter {
-  UnimplementedSetter({
+class Setter {
+  Setter({
     required String? type,
     required this.name,
     required this.decorators,
     required this.doc,
+    required this.body,
   }) : type = type ?? 'dynamic';
 
   final String type;
   final String name;
   final List<String> decorators;
   final String doc;
+  final String body;
 
   @override
   String toString() {
-    return '$doc${decorators.join()} set $name($type value) => '
-        'throw $privConstUsedErrorVarName;';
+    return '$doc${decorators.join()} set $name($type value)$body';
   }
 }
 

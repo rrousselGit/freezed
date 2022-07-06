@@ -1,3 +1,7 @@
+# 2.0.4
+
+Fixes a bug where using `@unfreezed` on unions somehow still generated immutable properties.
+
 # 2.0.3+1
 
 Update warning message when using abstract freezed classes
