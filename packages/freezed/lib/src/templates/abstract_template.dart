@@ -45,9 +45,12 @@ ${copyWith?.commonContreteImpl(commonProperties) ?? ''}
 ''';
   }
 
+  String get _toJsonParams => toJsonParameters(
+      data.genericsParameterTemplate, data.genericArgumentFactories);
   String get _toJson {
     if (!data.generateToJson) return '';
-    return 'Map<String, dynamic> toJson() => throw $privConstUsedErrorVarName;';
+    return 'Map<String, dynamic> toJson($_toJsonParams)'
+        ' => throw $privConstUsedErrorVarName;';
   }
 
   String get _when {

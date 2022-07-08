@@ -1085,7 +1085,8 @@ class _$DataTearOff {
       required List<ConstructorDetails> constructors,
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
-      required bool shouldUseExtends}) {
+      required bool shouldUseExtends,
+      required bool genericArgumentFactories}) {
     return _Data(
       name: name,
       unionKey: unionKey,
@@ -1102,6 +1103,7 @@ class _$DataTearOff {
       genericsDefinitionTemplate: genericsDefinitionTemplate,
       genericsParameterTemplate: genericsParameterTemplate,
       shouldUseExtends: shouldUseExtends,
+      genericArgumentFactories: genericArgumentFactories,
     );
   }
 }
@@ -1129,6 +1131,7 @@ mixin _$Data {
   GenericsParameterTemplate get genericsParameterTemplate =>
       throw _privateConstructorUsedError;
   bool get shouldUseExtends => throw _privateConstructorUsedError;
+  bool get genericArgumentFactories => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
@@ -1153,7 +1156,8 @@ abstract class $DataCopyWith<$Res> {
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
-      bool shouldUseExtends});
+      bool shouldUseExtends,
+      bool genericArgumentFactories});
 
   $MapConfigCopyWith<$Res> get map;
   $WhenConfigCopyWith<$Res> get when;
@@ -1184,6 +1188,7 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
     Object? genericsDefinitionTemplate = freezed,
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
+    Object? genericArgumentFactories = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -1246,6 +1251,10 @@ class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
           ? _value.shouldUseExtends
           : shouldUseExtends // ignore: cast_nullable_to_non_nullable
               as bool,
+      genericArgumentFactories: genericArgumentFactories == freezed
+          ? _value.genericArgumentFactories
+          : genericArgumentFactories // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -1284,7 +1293,8 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       List<ConstructorDetails> constructors,
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
-      bool shouldUseExtends});
+      bool shouldUseExtends,
+      bool genericArgumentFactories});
 
   @override
   $MapConfigCopyWith<$Res> get map;
@@ -1318,6 +1328,7 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
     Object? genericsDefinitionTemplate = freezed,
     Object? genericsParameterTemplate = freezed,
     Object? shouldUseExtends = freezed,
+    Object? genericArgumentFactories = freezed,
   }) {
     return _then(_Data(
       name: name == freezed
@@ -1380,6 +1391,10 @@ class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
           ? _value.shouldUseExtends
           : shouldUseExtends // ignore: cast_nullable_to_non_nullable
               as bool,
+      genericArgumentFactories: genericArgumentFactories == freezed
+          ? _value.genericArgumentFactories
+          : genericArgumentFactories // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -1402,7 +1417,8 @@ class _$_Data implements _Data {
       required this.constructors,
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
-      required this.shouldUseExtends})
+      required this.shouldUseExtends,
+      required this.genericArgumentFactories})
       : assert(constructors.isNotEmpty);
 
   @override
@@ -1435,10 +1451,12 @@ class _$_Data implements _Data {
   final GenericsParameterTemplate genericsParameterTemplate;
   @override
   final bool shouldUseExtends;
+  @override
+  final bool genericArgumentFactories;
 
   @override
   String toString() {
-    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends)';
+    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, genericArgumentFactories: $genericArgumentFactories)';
   }
 
   @override
@@ -1476,7 +1494,10 @@ class _$_Data implements _Data {
                     genericsParameterTemplate) ||
                 other.genericsParameterTemplate == genericsParameterTemplate) &&
             (identical(other.shouldUseExtends, shouldUseExtends) ||
-                other.shouldUseExtends == shouldUseExtends));
+                other.shouldUseExtends == shouldUseExtends) &&
+            (identical(
+                    other.genericArgumentFactories, genericArgumentFactories) ||
+                other.genericArgumentFactories == genericArgumentFactories));
   }
 
   @override
@@ -1496,7 +1517,8 @@ class _$_Data implements _Data {
       const DeepCollectionEquality().hash(constructors),
       genericsDefinitionTemplate,
       genericsParameterTemplate,
-      shouldUseExtends);
+      shouldUseExtends,
+      genericArgumentFactories);
 
   @JsonKey(ignore: true)
   @override
@@ -1520,7 +1542,8 @@ abstract class _Data implements Data {
       required List<ConstructorDetails> constructors,
       required GenericsDefinitionTemplate genericsDefinitionTemplate,
       required GenericsParameterTemplate genericsParameterTemplate,
-      required bool shouldUseExtends}) = _$_Data;
+      required bool shouldUseExtends,
+      required bool genericArgumentFactories}) = _$_Data;
 
   @override
   String get name;
@@ -1552,6 +1575,8 @@ abstract class _Data implements Data {
   GenericsParameterTemplate get genericsParameterTemplate;
   @override
   bool get shouldUseExtends;
+  @override
+  bool get genericArgumentFactories;
   @override
   @JsonKey(ignore: true)
   _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;

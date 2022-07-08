@@ -101,6 +101,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       generateEqual: configs.equal ?? !_hasCustomEquals(element),
       generateFromJson: configs.fromJson ?? await needsJsonSerializable,
       generateToJson: configs.toJson ?? await needsJsonSerializable,
+      genericArgumentFactories: configs.genericArgumentFactories,
       map: MapConfig(
         map: configs.map?.map ?? shouldGenerateUnions,
         mapOrNull: configs.map?.mapOrNull ?? shouldGenerateUnions,
@@ -494,6 +495,11 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         decode: (obj) => obj.toBoolValue(),
         orElse: () => _buildYamlConfigs.toJson,
       ),
+      genericArgumentFactories: annotation.decodeField(
+        'genericArgumentFactories',
+        decode: (obj) => obj.toBoolValue()!,
+        orElse: () => _buildYamlConfigs.genericArgumentFactories,
+      ),
       toStringOverride: annotation.decodeField(
         'toStringOverride',
         decode: (obj) => obj.toBoolValue(),
@@ -570,6 +576,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         constructors: data.constructors,
         genericParameters: data.genericsParameterTemplate,
         genericDefinitions: data.genericsDefinitionTemplate,
+        genericArgumentFactories: data.genericArgumentFactories,
       );
     }
 

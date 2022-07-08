@@ -697,6 +697,91 @@ void main() {
         Generic(42),
       );
     });
+
+    group('JsonSerializable.genericArgumentFactories', () {
+      test('single ctor + single type argument', () {
+        expect(
+          GenericWithArgumentFactories.fromJson(
+            <String, dynamic>{'value': 'hello', 'value2': 'world'},
+            (s) => s! as String,
+          ),
+          GenericWithArgumentFactories('hello', 'world'),
+        );
+      });
+      test('single ctor + two type arguments', () {
+        expect(
+          GenericTupleWithArgumentFactories.fromJson(
+            <String, dynamic>{'value1': 1, 'value2': 0.0, 'value3': '!'},
+            (s) => s! as int,
+            (s) => s! as double,
+          ),
+          GenericTupleWithArgumentFactories(1, 0.0, '!'),
+        );
+      });
+      test('multi ctor + two type arguments', () {
+        expect(
+          GenericMultiCtorWithArgumentFactories.fromJson(
+            <String, dynamic>{
+              'first': 1,
+              'second': 0.0,
+              'another': '!',
+              'runtimeType': 'default'
+            },
+            (s) => s! as int,
+            (s) => s! as double,
+          ),
+          GenericMultiCtorWithArgumentFactories(1, 0.0, '!'),
+        );
+        expect(
+          GenericMultiCtorWithArgumentFactories.fromJson(
+            <String, dynamic>{
+              'first': 1,
+              'second': 0.0,
+              'another': '!',
+              'runtimeType': 'both'
+            },
+            (s) => s! as int,
+            (s) => s! as double,
+          ),
+          GenericMultiCtorWithArgumentFactories.both(1, 0.0, '!'),
+        );
+        expect(
+          GenericMultiCtorWithArgumentFactories.fromJson(
+            <String, dynamic>{'another': '!', 'runtimeType': 'none'},
+            (s) => s! as int,
+            (s) => s! as double,
+          ),
+          GenericMultiCtorWithArgumentFactories<int, double>.none('!'),
+        );
+        expect(
+          GenericMultiCtorWithArgumentFactories.fromJson(
+            <String, dynamic>{
+              'first': 1,
+              'another': '!',
+              'runtimeType': 'first'
+            },
+            (s) => s! as int,
+            (s) => s! as double,
+          ),
+          GenericMultiCtorWithArgumentFactories<int, double>.first(1, '!'),
+        );
+        expect(
+          GenericMultiCtorWithArgumentFactories.fromJson(
+            <String, dynamic>{
+              'second': 0.0,
+              'another': '!',
+              'runtimeType': 'second'
+            },
+            (s) => s! as int,
+            (s) => s! as double,
+          ),
+          GenericMultiCtorWithArgumentFactories<int, double>.second(
+            0.0,
+            '!',
+          ),
+        );
+      });
+    });
   });
 
   test('single ctor + json can access properties/copyWith', () {

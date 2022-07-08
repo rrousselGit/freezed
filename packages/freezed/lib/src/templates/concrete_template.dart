@@ -45,6 +45,9 @@ class Concrete {
         final params = [
           if (data.generateToJson == false) 'createToJson: false',
           if (data.generateFromJson == false) 'createFactory: false',
+          if (data.genericsParameterTemplate.typeParameters.isNotEmpty &&
+              data.genericArgumentFactories == true)
+            'genericArgumentFactories: true',
         ].join(',');
 
         jsonSerializable = '@JsonSerializable($params)';
@@ -267,23 +270,37 @@ final String \$type;
     return constructor.isConst ? 'const' : '';
   }
 
+  String get _fromJsonArgs => fromJsonArguments(
+      data.genericsParameterTemplate, data.genericArgumentFactories);
+
+  String get _fromJsonParams => fromJsonParameters(
+      data.genericsParameterTemplate, data.genericArgumentFactories);
+
   String get _redirectedFromJsonConstructor {
     if (!data.generateFromJson) return '';
-    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json) = $concreteName${data.genericsParameterTemplate}.fromJson;';
+    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json$_fromJsonParams)'
+        ' = $concreteName${data.genericsParameterTemplate}.fromJson;';
   }
 
   String get _concreteFromJsonConstructor {
     if (!data.generateFromJson) return '';
-    return 'factory $concreteName.fromJson(Map<String, dynamic> json) => _\$${nonPrivateConcreteName}FromJson(json);';
+    return 'factory $concreteName.fromJson(Map<String, dynamic> json$_fromJsonParams)'
+        ' => _\$${nonPrivateConcreteName}FromJson(json$_fromJsonArgs);';
   }
+
+  String get _toJsonParams => toJsonParameters(
+      data.genericsParameterTemplate, data.genericArgumentFactories);
+
+  String get _toJsonArgs => toJsonArguments(
+      data.genericsParameterTemplate, data.genericArgumentFactories);
 
   String get _toJson {
     if (!data.generateToJson) return '';
 
     return '''
 @override
-Map<String, dynamic> toJson() {
-  return _\$${nonPrivateConcreteName}ToJson(this);
+Map<String, dynamic> toJson($_toJsonParams) {
+  return _\$${nonPrivateConcreteName}ToJson${data.genericsParameterTemplate}(this, $_toJsonArgs);
 }''';
   }
 
