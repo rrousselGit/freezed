@@ -31,16 +31,17 @@ class RecursiveImportLocator {
     }
 
     return libraries.any((lib) => _doesExportRecursively(
-          library: lib,
-          where: where,
-          whereLibrary: whereLibrary,
-        ));
+        library: lib,
+        where: where,
+        whereLibrary: whereLibrary,
+        visited: {lib.library.librarySource.fullName}));
   }
 
   bool _doesExportRecursively({
     required _LibraryWithVisibility library,
     required ExportPredicate where,
     LibraryPredicate? whereLibrary,
+    required Set<String> visited,
   }) {
     if (library.isRelevant(whereLibrary)) {
       if (library.exportedTopLevelElements.any(where)) {
@@ -49,11 +50,15 @@ class RecursiveImportLocator {
     }
 
     return library.exportedLibraries.any((export) {
-      return _doesExportRecursively(
-        library: export,
-        where: where,
-        whereLibrary: whereLibrary,
-      );
+      final name = export.library.librarySource.fullName;
+      if (!visited.contains(name)) {
+        return _doesExportRecursively(
+            library: export,
+            where: where,
+            whereLibrary: whereLibrary,
+            visited: visited..add(name));
+      }
+      return false;
     });
   }
 }
