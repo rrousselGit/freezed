@@ -1,3 +1,7 @@
+# 2.1.0+1
+
+Improve pub score
+
 # 2.1.0
 
 - Add support for de/serializing generic Freezed classes (Thanks to @TimWhiting)
