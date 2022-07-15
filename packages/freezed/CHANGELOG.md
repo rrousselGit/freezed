@@ -1,3 +1,7 @@
+# 2.0.5
+
+Increase minimum analyzer version.
+
 # 2.0.4
 
 Fixes a bug where using `@unfreezed` on unions somehow still generated immutable properties.

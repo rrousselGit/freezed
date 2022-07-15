@@ -536,10 +536,9 @@ class Person with _$Person {
 ## Union types과 Sealed classes
 
 
-다른 언어에서 온 경우 "union types"/"sealed classes"/pattern matching과 같은 기능을 사용할 수 있습니다.
-이들은 타입 시스템과 결합된 강력한 도구이지만 현재 Dart는 이를 지원하지 않습니다.
-걱정하지 마세요. [Freezed]는 이러한 기능들을 지원하는 몇 가지 유틸리티를 생성합니다.
-
+만약 다른 언어를 쓰다 오셨다면 "union types"/"sealed classes"/pattern matching과 같은 기능을 사용한 적이 있을 겁니다.
+이 기능들은 타입 시스템에서 타입을 조합해내는 강력한 도구이지만 현재 Dart에서는 이 기능들을 지원하지 않습니다.
+하지만 걱정마세요. [Freezed]가 몇 가지 유틸리티를 만들어서 이 기능들을 지원하니까요.
 간단히 말해서 모든 Freezed 클래스에서 복수의 생성자를 작성할 수 있습니다.
 
 ```dart
@@ -551,20 +550,17 @@ class Union with _$Union {
 }
 ```
 
-이렇게 함으로써 우리의 모델은 이제 서로 다른 상호 배타적인 상태가 될 수 있습니다.
-특히 이 snippet은 `Union` 모델을 정의하며 해당 모델에는 3가지 상태가 있습니다.
+이렇게 하면 우리의 모델이 이제 상호 배타적인 상태가 될 수 있습니다.
+구체적으로 말하자면, 이 snippet은 `Union` 모델을 정의하며 해당 모델은 3가지 상태를 가집니다.
 
 - data
 - loading
 - error
 
-정의한 팩토리 생성자의 오른쪽에 의미 있는 이름을 부여한 방법에 유의하십시오. 즉 정의하는 이름을 다르게 지정해야 합니다. (Data, Loading, Error)
+정의한 팩토리 생성자의 오른쪽에 의미 있는 이름을 부여하는 방법을 주목하세요.
 나중에 유용하게 사용할 수 있습니다.
 
-One thing you may also notice is that with this example, then we can no-longer
-write code such as:
-
-또한 이 예제를 사용하면 다음과 같은 코드를 더 이상 작성할 수 없습니다.
+또 주목해야 할 점은 이 예시에서 다음과 같은 코드는 더 이상 쓸 수 없다는 것입니다.
 
 ```dart
 void main() {
@@ -578,8 +574,7 @@ void main() {
 
 ### 공유속성 Shared properties
 
-여러 생성자를 정의할 때 모든 생성자에 공통적이지 않은 속성을 읽을 수 있는 기능을 잃게 됩니다.
-즉 공통되지 않은 파라미터는 읽을 수 없다는 이야기입니다. 
+여러 생성자를 정의하면 모든 생성자들이 공통적으로 가지고 있지 않은 속성을 읽을 수 없게 됩니다.
 
 예를 들어 다음과 같이 작성하는 경우:
 
@@ -591,17 +586,18 @@ class Example with _$Example {
 }
 ```
 
-그러면 `age`와 `population`를 직접 읽을 수 없습니다.
+`age`와 `population` 속성은 직접 읽을 수 없습니다.
 
 ```dart
 var example = Example.person('Remi', 24);
-print(example.age); // 컴파일하지 않습니다!
+print(example.age); // 컴파일되지 않습니다!
 ```
 
-반면에 모든 생성자에 정의된 속성을 **읽을 수** 있습니다.\
+반면에 모든 생성자에 정의된 속성은 **읽을 수** 있습니다.
+
 예를 들어 `name` 변수는 `Example.person` 및 `Example.city` 생성자 모두 공통으로 가지고 있는 속성입니다.
 
-따라서 다음과 같이 작성할 수 있습니다.
+따라서 다음과 같이 코드를 쓸 수 있습니다.
 
 ```dart
 var example = Example.person('Remi', 24);
@@ -611,7 +607,7 @@ print(example.name); // London
 ```
 
 같은 논리를 `copyWith`에도 적용할 수 있습니다.
-모든 생성자에 정의된 속성과 함께 `copyWith`를 사용할 수 있습니다.
+모든 생성자에 정의된 속성에는 `copyWith`를 사용할 수 있습니다.
 
 ```dart
 var example = Example.person('Remi', 24);
@@ -621,7 +617,7 @@ example = Example.city('London', 8900000);
 print(example.copyWith(name: 'Paris')); // Example.city(name: Paris, population: 8900000)
 ```
 
-반면에 특정 생성자에 고유한 속성은 사용할 수 없습니다.
+반면에 특정 생성자에만 있는 속성에는 사용할 수 없습니다.
 
 ```dart
 var example = Example.person('Remi', 24);
@@ -633,7 +629,7 @@ example.copyWith(age: 42); // 컴파일 오류, 매개변수 `age`가 존재하�
 
 ### 패턴매칭(pattern-matching)을 사용하여 비공유 속성읽기
 
-이 섹션에서는 union을 고려해 보겠습니다.
+이번 섹션에서는 다음에 나오는 union을 한 번 봅시다.
 
 ```dart
 @freezed
@@ -643,19 +639,19 @@ class Example with _$Example {
 }
 ```
 
-패턴 일치(pattern matching)를 사용하여 `Example` 인스턴스의 내용을 읽는 방법을 살펴보겠습니다.
+이제 패턴 비교(pattern matching)를 사용하여 `Example` 인스턴스의 내용을 읽는 방법을 살펴보겠습니다.
 
 여기 몇 가지 해결방법이 있습니다.
 
 - (선호) Freezed에 의해 생성된 유틸리티([when]/[map])를 사용하여 객체의 내용을 검사합니다.
-- (권장) `is`/`as`를 사용하여 `Example` 변수를 `Person` 또는 `City`로 캐스팅
+- (비추천) `is`/`as`를 사용하여 `Example` 변수를 `Person` 또는 `City`로 캐스팅
 
 #### When
 
-[when] 메서드는 구조화를 사용한 패턴 일치와 동일합니다.  
-메서드의 프로토타입은 정의된 생성자에 따라 다릅니다.
+[when] 메서드는 '구조 분해(destructing)'를 사용한 패턴 비교와 동일합니다.  
+when 메서드의 프로토타입은 생성자가 정의된 방식에 따라 다릅니다.
 
-예를 들어
+아래의 예시를 보면
 
 ```dart
 @freezed
@@ -666,7 +662,7 @@ class Union with _$Union {
 }
 ```
 
-그러면 [when]은 아래와 같습니다.
+[when]은 아래와 같이 사용할 수 있습니다.
 
 ```dart
 var union = Union(42);
@@ -690,7 +686,7 @@ class Model with _$Model {
 }
 ```
 
-그러면 [when]은 아래와 같습니다.
+[when]은 아래와 같이 사용할 수 있습니다.
 
 ```dart
 var model = Model.first('42');
@@ -706,12 +702,12 @@ print(
 각 콜백이 생성자의 이름 및 프로토타입과 어떻게 일치하는지 확인하십시오.
 
 **NOTE**:\
-모든 콜백은 필수이며 `null` 이 아니어야 합니다.\
-원하는 것이 아니라면 [maybeWhen] 사용을 고려해보세요.
+모든 콜백이 필수이며 `null` 이 아니어야 합니다.\
+원하는 방식이 아니라면 [maybeWhen] 사용을 고려해보세요.
 
 #### Map
 
-[map] 메서드는 [when]와 동일하지만 **구조화하지 않음**입니다.
+[map] 메서드는 [when]와 동일하지만 **구조분해(destructing)를 하지 않**습니다.
 
 아래에 정의된 클래스를 생각해봅시다.
 
@@ -723,7 +719,7 @@ class Model with _$Model {
 }
 ```
 
-이러한 클래스를 사용하면 [when]는 다음과 같습니다.
+이러한 클래스를 사용하면 [when] 메서드를 다음과 같이 쓸 수 있습니다.
 
 ```dart
 var model = Model.first('42');
@@ -736,7 +732,7 @@ print(
 ); // first 42
 ```
 
-[map]을 사용하면 다음과 같습니다. 
+[map] 메서드을 사용하면 다음과 같습니다. 
 
 ```dart
 var model = Model.first('42');
@@ -763,7 +759,7 @@ print(
 
 #### is/as를 사용하여 Freezed 클래스의 내용읽기
 
-대안으로, (덜 바람직하지 않은) 해결책은 `is`/`as` 키워드를 사용하는 것입니다. 
+대안으로, (덜 권장하는) 해결책은 `is`/`as` 키워드를 사용하는 것입니다. 
 더 구체적으로 다음과 같이 작성할 수 있습니다.
 
 ```dart
@@ -785,11 +781,11 @@ void main() {
 
 **Note**:  
 가능하면 `is`와 `as`를 사용하지 않는 것이 좋습니다.
-그 이유는 그것들이 "포괄적이지 않다(exhaustive)"는 것입니다. https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/ 를 확인해보세요.
+그 이유는 그것들이 "완전하지(exhaustive)"는 않기 때문입니다. https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/ 를 확인해보세요.
 
-### union types에대한 individual classes용 mixins과 interfaces
+### union type일 때 개별 클래스를 이용하여 mixin과 interface 만들기
 
-동일한 클래스에 여러 유형이 있는 경우 해당 유형 중 하나를 만들어 인터페이스를 구현하거나 클래스를 혼합할 수 있습니다.
+동일한 클래스에 여러 타입이 있을 경우(union type) 해당 타입 중 하나를 만들어 인터페이스를 구현하거나 믹스인을 써서 클래스에 혼합할 수 있습니다.
 각각 `@Implements` 데코레이터 또는 `@With`를 사용하여 이를 수행할 수 있습니다.
 아래 코드의 경우 `City`는 `GeographicArea`로 구현됩니다.
 
@@ -809,7 +805,7 @@ class Example with _$Example {
 }
 ```
 
-일반 믹스인 또는 인터페이스를 지정하려면 다음을 수행해야 합니다.
+제네릭 믹스인 또는 인터페이스를 지정하려면 다음을 수행해야 합니다.
 `With.fromString` 생성자를 사용하여 문자열로 선언하고, 각각 `Implements.fromString`.
 `Street`가 `AdministrativeArea<House>`와 혼합되어 있습니다.
 
@@ -840,7 +836,7 @@ class Example with _$Example {
 
 **Note 2**: 
 Freezed 클래스에는 `@With`/`@Implements`를 사용할 수 없습니다.
-Freezed 클래스는 확장하거나 구현할 수 없습니다.
+Freezed 클래스는 확장되거나 구현될 수 없습니다.
 
 ## FromJson/ToJson
 
