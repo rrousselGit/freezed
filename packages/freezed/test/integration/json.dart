@@ -542,20 +542,26 @@ class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
       _GenericWithArgumentFactories<T>;
 
   factory GenericWithArgumentFactories.fromJson(
-          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+  ) =>
       _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
 }
 
 @Freezed(genericArgumentFactories: true)
 class GenericTupleWithArgumentFactories<T, S>
     with _$GenericTupleWithArgumentFactories<T, S> {
-  factory GenericTupleWithArgumentFactories(T value1, S value2, String value3) =
-      _GenericTupleWithArgumentFactories<T, S>;
+  factory GenericTupleWithArgumentFactories(
+    T value1,
+    S value2,
+    String value3,
+  ) = _GenericTupleWithArgumentFactories<T, S>;
 
   factory GenericTupleWithArgumentFactories.fromJson(
-          Map<String, dynamic> json,
-          T Function(Object? json) fromJsonT,
-          S Function(Object? json) fromJsonS) =>
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+    S Function(Object? json) fromJsonS,
+  ) =>
       _$GenericTupleWithArgumentFactoriesFromJson(json, fromJsonT, fromJsonS);
 }
 
@@ -563,27 +569,36 @@ class GenericTupleWithArgumentFactories<T, S>
 class GenericMultiCtorWithArgumentFactories<T, S>
     with _$GenericMultiCtorWithArgumentFactories<T, S> {
   factory GenericMultiCtorWithArgumentFactories(
-          T first, S second, String another) =
-      _GenericMultiCtorWithArgumentFactories<T, S>;
+    T first,
+    S second,
+    String another,
+  ) = _GenericMultiCtorWithArgumentFactories<T, S>;
 
   factory GenericMultiCtorWithArgumentFactories.first(T first, String another) =
       _GenericMultiCtorWithArgumentFactoriesVal<T, S>;
 
   factory GenericMultiCtorWithArgumentFactories.second(
-          S second, String another) =
-      _GenericMultiCtorWithArgumentFactoriesSec<T, S>;
+    S second,
+    String another,
+  ) = _GenericMultiCtorWithArgumentFactoriesSec<T, S>;
 
   factory GenericMultiCtorWithArgumentFactories.both(
-          T first, S second, String another) =
-      _GenericMultiCtorWithArgumentFactoriesBoth<T, S>;
+    T first,
+    S second,
+    String another,
+  ) = _GenericMultiCtorWithArgumentFactoriesBoth<T, S>;
 
   factory GenericMultiCtorWithArgumentFactories.none(String another) =
       _GenericMultiCtorWithArgumentFactoriesNone<T, S>;
 
   factory GenericMultiCtorWithArgumentFactories.fromJson(
-          Map<String, dynamic> json,
-          T Function(Object? json) fromJsonT,
-          S Function(Object? json) fromJsonS) =>
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+    S Function(Object? json) fromJsonS,
+  ) =>
       _$GenericMultiCtorWithArgumentFactoriesFromJson<T, S>(
-          json, fromJsonT, fromJsonS);
+        json,
+        fromJsonT,
+        fromJsonS,
+      );
 }

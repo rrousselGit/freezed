@@ -701,26 +701,28 @@ void main() {
     group('JsonSerializable.genericArgumentFactories', () {
       test('single ctor + single type argument', () {
         expect(
-          GenericWithArgumentFactories.fromJson(
+          GenericWithArgumentFactories<String>.fromJson(
             <String, dynamic>{'value': 'hello', 'value2': 'world'},
             (s) => s! as String,
           ),
-          GenericWithArgumentFactories('hello', 'world'),
+          GenericWithArgumentFactories<String>('hello', 'world'),
         );
       });
+
       test('single ctor + two type arguments', () {
         expect(
-          GenericTupleWithArgumentFactories.fromJson(
+          GenericTupleWithArgumentFactories<int, double>.fromJson(
             <String, dynamic>{'value1': 1, 'value2': 0.0, 'value3': '!'},
             (s) => s! as int,
             (s) => s! as double,
           ),
-          GenericTupleWithArgumentFactories(1, 0.0, '!'),
+          GenericTupleWithArgumentFactories<int, double>(1, 0.0, '!'),
         );
       });
+
       test('multi ctor + two type arguments', () {
         expect(
-          GenericMultiCtorWithArgumentFactories.fromJson(
+          GenericMultiCtorWithArgumentFactories<int, double>.fromJson(
             <String, dynamic>{
               'first': 1,
               'second': 0.0,
@@ -730,10 +732,10 @@ void main() {
             (s) => s! as int,
             (s) => s! as double,
           ),
-          GenericMultiCtorWithArgumentFactories(1, 0.0, '!'),
+          GenericMultiCtorWithArgumentFactories<int, double>(1, 0.0, '!'),
         );
         expect(
-          GenericMultiCtorWithArgumentFactories.fromJson(
+          GenericMultiCtorWithArgumentFactories<int, double>.fromJson(
             <String, dynamic>{
               'first': 1,
               'second': 0.0,
@@ -743,7 +745,7 @@ void main() {
             (s) => s! as int,
             (s) => s! as double,
           ),
-          GenericMultiCtorWithArgumentFactories.both(1, 0.0, '!'),
+          GenericMultiCtorWithArgumentFactories<int, double>.both(1, 0.0, '!'),
         );
         expect(
           GenericMultiCtorWithArgumentFactories.fromJson(
@@ -754,7 +756,7 @@ void main() {
           GenericMultiCtorWithArgumentFactories<int, double>.none('!'),
         );
         expect(
-          GenericMultiCtorWithArgumentFactories.fromJson(
+          GenericMultiCtorWithArgumentFactories<int, double>.fromJson(
             <String, dynamic>{
               'first': 1,
               'another': '!',
