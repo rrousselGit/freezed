@@ -117,7 +117,7 @@ class ParametersTemplate {
   }
 
   ParametersTemplate asThis() {
-    return mapParameters((e) => LocalParameter.fromParameter(e));
+    return mapParameters(LocalParameter.fromParameter);
   }
 
   ParametersTemplate asExpanded({bool showDefaultValue = false}) {
