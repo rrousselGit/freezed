@@ -1,6 +1,7 @@
-# Unreleased fixes
+# 2.1.0
 
-Fixed a StackOverflow error when defining circular `export`s.
+- Add support for de/serializing generic Freezed classes (Thanks to @TimWhiting)
+- Fixed a StackOverflow error when defining circular `export`s (Thanks to @TimWhiting)
 
 # 2.0.5
 

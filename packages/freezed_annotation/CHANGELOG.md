@@ -1,3 +1,7 @@
+# 2.1.0
+
+- Add support for de/serializing generic Freezed classes (Thanks to @TimWhiting)
+
 # 2.0.3
 
 – fix: build.yaml decoding crash
