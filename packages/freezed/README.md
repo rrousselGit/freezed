@@ -55,7 +55,7 @@ to focus on the definition of your model.
     - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
-    - [genericArgumentFactories](#generic-argument-factories---serializing-generic-types)
+    - [Deserializing generic classes](#deserializing-generic-classes)
   - [Configurations](#configurations)
     - [Changing the behavior for a specific model](#changing-the-behavior-for-a-specific-model)
     - [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)
@@ -81,7 +81,6 @@ flutter pub add --dev freezed
 flutter pub add json_annotation
 flutter pub add --dev json_serializable
 ```
-
 
 If you are using creating a Dart project:
 
@@ -1075,33 +1074,9 @@ In order to serialize nested lists of freezed objects, you are supposed to eithe
 specify a `@JsonSerializable(explicitToJson: true)` or change `explicit_to_json`
 inside your `build.yaml` file ([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)).
 
-### Generic argument factories - serializing generic types
+### Deserializing generic classes
 
-In order to serialize generic typed freezed objects, you can either specify a type converter, or you can enable `genericArgumentFactories`.
-
-If you know how to serialize all values of that generic type (such as when you bound the generic type with a type that you control) you can use a type converter:
-
-```dart
-@freezed
-class MyModel<T extends KnownType> with _$MyModel {
-  const factory MyModel<T>(@MyTConverter() T myResponse) = MyModelData;
-
-  factory MyModel<T>.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
-}
-
-class MyTConverter implements JsonConverter<T, dynamic> {
-  const MyTConverter();
-
-  @override
-  T fromJson(dynamic json) => // TODO: Convert from json
-
-  @override
-  dynamic> toJson(T data) => // TODO: Convert to json
-}
-```
-
-If you don't know all of the types that could be used and want the user of the object to be able to pass functions to handle the serialization of the generic type consider using `genericArgumentFactories`. 
-
+In order to de/serialize generic typed freezed objects, you can enable `genericArgumentFactories`.  
 All you need to do is change the signature of the `fromJson` method and add `genericArgumentFactories: true` to the freezed configuration.
 
 ```dart
@@ -1114,15 +1089,7 @@ class ApiResponse<T> with _$ApiResponse {
 }
 ```
 
-Using genericArgumentFactories will also generate a `toJson` method with a slightly different signature:
-
-```dart
-Map<String, Object?> toJson(Object? Function(T) toJsonT);
-```
-
-This also works with multiple type arguments, with one parameter per argument. The convention is to name the arguments `toJson$typeArg` and `fromJson$typeArg`.
-
-If creating many classes with this freezed configuration consider altering the global configuration of freezed using the `build.yaml` file.
+Alternatively, you can enable `genericArgumentFactories` for the whole project by modifying your `build.yaml` file to include the following:
 
 ```yaml
 targets:
