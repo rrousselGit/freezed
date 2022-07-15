@@ -2,6 +2,27 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'multiple_constructors.freezed.dart';
 
+@unfreezed
+class UnfreezedImmutableUnion with _$UnfreezedImmutableUnion {
+  factory UnfreezedImmutableUnion(final String a) =
+      DirectUnfreezedImmutableUnion;
+  factory UnfreezedImmutableUnion.named(String a) =
+      DirectUnfreezedImmutableUnionNamed;
+}
+
+@unfreezed
+class UnfreezedImmutableUnion2 with _$UnfreezedImmutableUnion2 {
+  factory UnfreezedImmutableUnion2(String a) = DirectUnfreezedImmutableUnion2;
+  factory UnfreezedImmutableUnion2.named(final String a) =
+      DirectUnfreezedImmutableUnionNamed2;
+}
+
+@unfreezed
+class MutableUnion with _$MutableUnion {
+  factory MutableUnion(String a, int b) = MutableUnion0;
+  factory MutableUnion.named(String a, int c) = MutableUnion1;
+}
+
 @freezed
 class DefaultValueNamedConstructor with _$DefaultValueNamedConstructor {
   factory DefaultValueNamedConstructor.a([@Default(42) int value]) =
