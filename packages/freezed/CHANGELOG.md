@@ -1,3 +1,7 @@
+# Unreleased fixes
+
+Fixed a StackOverflow error when defining circular `export`s.
+
 # 2.0.5
 
 Increase minimum analyzer version.
@@ -14,6 +18,7 @@ Update warning message when using abstract freezed classes
 
 – fix: performance regression with ==/hashCode/copyWith due to immutable collections (#653)
 – fix: build.yaml decoding crash
+
 - fix: remove annotations on internal properties related to immutable collections (#659)
 
 # 2.0.2
