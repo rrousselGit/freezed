@@ -229,3 +229,43 @@ bool isDefaultConstructor(ConstructorElement constructor) {
 String constructorNameToCallbackName(String constructorName) {
   return constructorName.isEmpty ? '\$default' : constructorName;
 }
+
+String toJsonParameters(
+  GenericsParameterTemplate parameters,
+  bool genericArgumentFactories,
+) {
+  if (!genericArgumentFactories) {
+    return '';
+  }
+  return '${parameters.typeParameters.map((t) => 'Object? Function($t) toJson$t').join(',')}';
+}
+
+String toJsonArguments(
+  GenericsParameterTemplate parameters,
+  bool genericArgumentFactories,
+) {
+  if (!genericArgumentFactories) {
+    return '';
+  }
+  return '${parameters.typeParameters.map((t) => 'toJson$t').join(',')}';
+}
+
+String fromJsonParameters(
+  GenericsParameterTemplate parameters,
+  bool genericArgumentFactories,
+) {
+  if (!genericArgumentFactories) {
+    return '';
+  }
+  return ',${parameters.typeParameters.map((t) => '$t Function(Object?) fromJson$t').join(',')}';
+}
+
+String fromJsonArguments(
+  GenericsParameterTemplate parameters,
+  bool genericArgumentFactories,
+) {
+  if (!genericArgumentFactories) {
+    return '';
+  }
+  return ',${parameters.typeParameters.map((t) => 'fromJson$t').join(',')}';
+}

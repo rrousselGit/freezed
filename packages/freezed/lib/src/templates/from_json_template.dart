@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 
 import '../models.dart';
+import 'prototypes.dart';
 
 class FromJson {
   FromJson({
@@ -10,6 +11,7 @@ class FromJson {
     required this.constructors,
     required this.genericParameters,
     required this.genericDefinitions,
+    required this.genericArgumentFactories,
   });
 
   final String name;
@@ -17,6 +19,7 @@ class FromJson {
   final List<ConstructorDetails> constructors;
   final GenericsParameterTemplate genericParameters;
   final GenericsDefinitionTemplate genericDefinitions;
+  final bool genericArgumentFactories;
 
   @override
   String toString() {
@@ -24,7 +27,7 @@ class FromJson {
 
     if (constructors.length == 1) {
       content =
-          'return ${constructors.first.redirectedName}$genericParameters.fromJson(json);';
+          'return ${constructors.first.redirectedName}$genericParameters.fromJson(json${fromJsonArguments(genericParameters, genericArgumentFactories)});';
     } else {
       final cases = constructors
           .where((element) => !element.isFallback)
@@ -34,7 +37,7 @@ class FromJson {
 
         return '''
         case '$caseName':
-          return $concreteName$genericParameters.fromJson(json);
+          return $concreteName$genericParameters.fromJson(json${fromJsonArguments(genericParameters, genericArgumentFactories)});
         ''';
       }).join();
 
@@ -45,7 +48,7 @@ class FromJson {
           constructors.singleWhereOrNull((element) => element.isFallback);
       if (fallbackConstructor != null) {
         defaultCase =
-            'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(json);';
+            'return ${fallbackConstructor.redirectedName}$genericParameters.fromJson(json${fromJsonArguments(genericParameters, genericArgumentFactories)});';
       }
 
       content = '''
@@ -58,7 +61,7 @@ class FromJson {
     }
 
     return '''
-$name$genericParameters _\$${name}FromJson$genericDefinitions(Map<String, dynamic> json) {
+$name$genericParameters _\$${name}FromJson$genericDefinitions(Map<String, dynamic> json${fromJsonParameters(genericParameters, genericArgumentFactories)}) {
 $content
 }
 ''';

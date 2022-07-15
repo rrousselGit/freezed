@@ -174,6 +174,7 @@ class Freezed {
     this.when,
     this.makeCollectionsUnmodifiable,
     this.addImplicitFinal = true,
+    this.genericArgumentFactories = false,
   });
 
   /// Decode the options from a build.yaml
@@ -413,6 +414,23 @@ class Freezed {
   /// }
   /// ```
   final bool? toJson;
+
+  /// Whether to enable the genericArgumentFactories feature of JsonSerializable
+  ///
+  /// Defaults to false.
+  ///
+  /// This changes `fromJson(Map json) => _$ExampleFromJson(json)`
+  /// to have an additional parameter for each type parameter for the class
+  ///
+  /// ```dart
+  /// @freezed
+  /// class Example<T> with _$Example<T> {
+  ///   factory Example<T>(T a) = _Example;
+  ///
+  ///   factory Example.fromJson(Map<String, Object?> json, T Function(Object?) fromJsonT) => _$ExampleFromJson(json, fromJsonT)`
+  /// }
+  /// ```
+  final bool genericArgumentFactories;
 
   /// Options for customizing the generation of `map` functions
   ///
