@@ -91,6 +91,7 @@ class Data with _$Data {
     required GenericsDefinitionTemplate genericsDefinitionTemplate,
     required GenericsParameterTemplate genericsParameterTemplate,
     required bool shouldUseExtends,
+    required bool genericArgumentFactories,
   }) = _Data;
 }
 

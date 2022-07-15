@@ -55,6 +55,7 @@ to focus on the definition of your model.
     - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
+    - [Deserializing generic classes](#deserializing-generic-classes)
   - [Configurations](#configurations)
     - [Changing the behavior for a specific model](#changing-the-behavior-for-a-specific-model)
     - [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)
@@ -80,7 +81,6 @@ flutter pub add --dev freezed
 flutter pub add json_annotation
 flutter pub add --dev json_serializable
 ```
-
 
 If you are using creating a Dart project:
 
@@ -1073,6 +1073,32 @@ class MyModel with _$MyModel {
 In order to serialize nested lists of freezed objects, you are supposed to either
 specify a `@JsonSerializable(explicitToJson: true)` or change `explicit_to_json`
 inside your `build.yaml` file ([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)).
+
+### Deserializing generic classes
+
+In order to de/serialize generic typed freezed objects, you can enable `genericArgumentFactories`.  
+All you need to do is change the signature of the `fromJson` method and add `genericArgumentFactories: true` to the freezed configuration.
+
+```dart
+@Freezed(genericArgumentFactories: true)
+class ApiResponse<T> with _$ApiResponse {
+  const factory ApiResponse<T>.data(T data) = ApiResponseData;
+  const factory ApiResponse<T>.error(String message) = ApiResponseError;
+
+  factory ApiResponse<T>.fromJson(Map<String, dynamic> json, T Function(Object?) fromJsonT) => _$ApiResponseFromJson(json, fromJsonT);
+}
+```
+
+Alternatively, you can enable `genericArgumentFactories` for the whole project by modifying your `build.yaml` file to include the following:
+
+```yaml
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          generic_argument_factories: true
+```
 
 **What about `@JsonKey` annotation?**
 

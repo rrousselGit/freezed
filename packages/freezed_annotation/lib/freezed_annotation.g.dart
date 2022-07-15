@@ -39,6 +39,8 @@ Freezed _$FreezedFromJson(Map json) => Freezed(
       makeCollectionsUnmodifiable:
           json['make_collections_unmodifiable'] as bool? ?? true,
       addImplicitFinal: json['add_implicit_final'] as bool? ?? true,
+      genericArgumentFactories:
+          json['generic_argument_factories'] as bool? ?? false,
     );
 
 const _$FreezedUnionCaseEnumMap = {
