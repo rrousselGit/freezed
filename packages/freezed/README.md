@@ -20,7 +20,7 @@ Dart is awesome, but defining a "model" can be tedious. We may have to:
 On top of that, Dart is also missing features such as union types and pattern-matching.
 
 Implementing all of this can take hundreds of lines, which are error-prone
-and the readability of your model significantly.
+and affect the readability of your model significantly.
 
 Freezed tries to fix that by implementing most of this for you, allowing you
 to focus on the definition of your model.
@@ -71,7 +71,7 @@ to focus on the definition of your model.
 To use [Freezed], you will need your typical [build_runner]/code-generator setup.\
 First, install [build_runner] and [Freezed] by adding them to your `pubspec.yaml` file:
 
-If you are using creating a Flutter project:
+For a Flutter project:
 
 ```console
 flutter pub add freezed_annotation
@@ -82,7 +82,7 @@ flutter pub add json_annotation
 flutter pub add --dev json_serializable
 ```
 
-If you are using creating a Dart project:
+For a Dart project:
 
 ```console
 dart pub add freezed_annotation
@@ -105,7 +105,7 @@ If you plan on using [Freezed] in combination with `json_serializable`, recent
 versions of `json_serializable` and `meta` may require you to disable the
 `invalid_annotation_target` warning.
 
-To do that, you can add the following to an `analysis_options.yaml`
+To do that, you can add the following to the `analysis_options.yaml` file
 at the root of your project:
 
 ```yaml
@@ -313,7 +313,7 @@ Notice Freezed supports `person.copyWith(age: null)`.
 
 ### Going further: Deep copy
 
-While `copyWith` is very powerful in itself, it starts to get inconvenient on more complex objects.
+While `copyWith` is very powerful in itself, it becomes inconvenient on more complex objects.
 
 Consider the following classes:
 
@@ -561,12 +561,12 @@ class Person with _$Person {
 
 ## Union types and Sealed classes
 
-Coming from other languages, you may be used with features like "union types"/"sealed classes"/pattern matching.  
+Coming from other languages, you may be used to features like "union types"/"sealed classes"/pattern matching.  
 These are powerful tools in combination with a type system, but Dart currently does not support them.
 
 But fear not, [Freezed] supports them, generating a few utilities to help you with those.
 
-Long story short, in any Freezed class, you can writing multiple constructors:
+Long story short, in any Freezed class, you can write multiple constructors:
 
 ```dart
 @freezed
@@ -815,7 +815,7 @@ The reasoning is that they are not "exhaustive". See https://www.fullstory.com/b
 ### Mixins and Interfaces for individual classes for union types
 
 When you have multiple types in the same class you might want to make
-one of those types to implement a interface or mixin a class. You can do
+one of those types to implement an interface or mixin a class. You can do
 that using the `@Implements` decorator or `@With` respectively. In this
 case `City` is implementing with `GeographicArea`.
 
@@ -861,8 +861,8 @@ class Example with _$Example {
 
 **Note**: You need to make sure that you comply with the interface
 requirements by implementing all the abstract members. If the interface
-has no members or just fields, you can fulfil the interface contract by
-adding them in the constructor of the union type. Keep in mind that if
+has no members or just fields, you can fulfill the interface contract by
+adding them to the union type's constructor. Keep in mind that if
 the interface defines a method or a getter, that you implement in the
 class, you need to use the
 [Adding getters and methods to our models](#adding-getters-and-methods-to-our-models) instructions.
@@ -913,7 +913,7 @@ class Model with _$Model {
 }
 ```
 
-Don't forget to add `json_serializable` to your `pubspec.yaml`:
+Don't forget to add `json_serializable` to your `pubspec.yaml` file:
 
 ```yaml
 dev_dependencies:
@@ -1077,7 +1077,7 @@ inside your `build.yaml` file ([see the documentation](https://github.com/google
 ### Deserializing generic classes
 
 In order to de/serialize generic typed freezed objects, you can enable `genericArgumentFactories`.  
-All you need to do is change the signature of the `fromJson` method and add `genericArgumentFactories: true` to the freezed configuration.
+All you need to do is to change the signature of the `fromJson` method and add `genericArgumentFactories: true` to the freezed configuration.
 
 ```dart
 @Freezed(genericArgumentFactories: true)
@@ -1200,8 +1200,8 @@ targets:
 
 The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed) extension might help you work faster with freezed. For example :
 
-- Use `Ctrl+Shift+B` (`Cmd+Shift+B` on Mac) to quickly build using `build_runner`.
-- Quickly generate a Freezed class by using `Ctrl+Shift+P` > `Generate Freezed class`.
+- Use <kbd>Ctrl+Shift+B</kbd> (<kbd>Cmd+Shift+B</kbd> on Mac) to quickly build using `build_runner`.
+- Quickly generate a Freezed class by using <kbd>Ctrl+Shift+P</kbd> > `Generate Freezed class`.
 
 ### Freezed extension for IntelliJ/Android Studio
 
@@ -1231,9 +1231,9 @@ Example:
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
 [freezed_annotation]: https://pub.dartlang.org/packages/freezed_annotation
-[copywith]: #copyWith
+[copywith]: #how-copywith-works
 [when]: #when
 [maybewhen]: #maybeWhen
-[map]: #mapMaybeMap
+[map]: #map
 [maybemap]: #mapMaybeMap
 [json_serializable]: https://pub.dev/packages/json_serializable
