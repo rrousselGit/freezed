@@ -23,7 +23,7 @@ class RecursiveImportLocator {
     // based on importedLibraries in
     // analyzer-0.39.4/lib/src/dart/element/element.dart:5321
     final libraries = <_LibraryWithVisibility>{};
-    for (final import in root.imports) {
+    for (final import in root.libraryImports) {
       final library = import.importedLibrary;
       if (library != null) {
         libraries.add(_LibraryWithVisibility.root(library, import.combinators));
@@ -108,7 +108,7 @@ class _LibraryWithVisibility {
   /// analyzer-0.39.4/lib/src/dart/element/element.dart:5230
   List<_LibraryWithVisibility> get exportedLibraries {
     final libraries = <_LibraryWithVisibility>{};
-    for (final export in library.exports) {
+    for (final export in library.libraryExports) {
       final library = export.exportedLibrary;
       if (library != null) {
         libraries.add(_LibraryWithVisibility(
