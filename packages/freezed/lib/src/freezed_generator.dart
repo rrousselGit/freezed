@@ -412,11 +412,12 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     for (final parameter in constructor.parameters) {
       final type = parseTypeSource(parameter);
 
-      final parameterTypeElement = parameter.type.element;
-      if (parameterTypeElement == null) continue;
-      if (parameterTypeElement is! ClassElement) continue;
+      final parameterType = parameter.type;
+      if (parameterType is! InterfaceType) continue;
+      final element = parameterType.element2;
+      if (element is! ClassElement) continue;
 
-      final classElement = parameterTypeElement;
+      final classElement = element;
 
       if (!typeChecker.hasAnnotationOf(classElement)) continue;
 
@@ -425,7 +426,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         type: type!,
         nullable:
             parameter.type.nullabilitySuffix == NullabilitySuffix.question,
-        typeName: parameter.type.element!.name!,
+        typeName: classElement.name,
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType)
               .typeArguments
@@ -648,8 +649,8 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     for (final type in [
       element,
       ...element.allSupertypes
-          .map((e) => e.element)
           .where((e) => !e.isDartCoreObject)
+          .map((e) => e.element2)
     ]) {
       for (final method in type.methods) {
         if (method.name == 'toString') {
@@ -665,8 +666,8 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     for (final type in [
       element,
       ...element.allSupertypes
-          .map((e) => e.element)
           .where((e) => !e.isDartCoreObject)
+          .map((e) => e.element2)
     ]) {
       for (final method in type.methods.where((e) => e.isOperator)) {
         if (method.name == '==') {
