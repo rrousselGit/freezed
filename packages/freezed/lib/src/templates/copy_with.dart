@@ -186,6 +186,14 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
 // ignore: ${lints.join(', ')}
 $s''';
 
+  String _defaultValue({required bool isNullable}) {
+    if (isNullable) {
+      return 'freezed';
+    } else {
+      return 'null';
+    }
+  }
+
   String _copyWithMethodBody({
     String accessor = '_value',
     required ParametersTemplate parametersTemplate,
@@ -199,7 +207,7 @@ $s''';
         propertyName = '_$propertyName';
       }
       var ternary =
-          'freezed == ${p.name} ? $accessor.$propertyName : ${p.name} ';
+          '${_defaultValue(isNullable: p.isNullable)} == ${p.name} ? $accessor.$propertyName : ${p.name} ';
       if (p.type != 'Object?' && p.type != null) {
         ternary += _ignoreLints('as ${p.type}');
       }
@@ -231,7 +239,7 @@ $constructorParameters
     required String methodName,
   }) {
     final parameters = properties.map((p) {
-      return 'Object? ${p.name} = freezed,';
+      return 'Object? ${p.name} = ${_defaultValue(isNullable: p.isNullable)},';
     }).join();
 
     return '\$Res $methodName({$parameters})';

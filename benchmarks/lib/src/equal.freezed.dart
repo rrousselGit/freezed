@@ -44,15 +44,15 @@ class _$ModelWithListCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? someList = freezed,
-    Object? counter = freezed,
+    Object? someList = null,
+    Object? counter = null,
   }) {
     return _then(_value.copyWith(
-      someList: freezed == someList
+      someList: null == someList
           ? _value.someList
           : someList // ignore: cast_nullable_to_non_nullable
               as List<int>,
-      counter: freezed == counter
+      counter: null == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
@@ -84,15 +84,15 @@ class __$$_ModelWithListCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? someList = freezed,
-    Object? counter = freezed,
+    Object? someList = null,
+    Object? counter = null,
   }) {
     return _then(_$_ModelWithList(
-      someList: freezed == someList
+      someList: null == someList
           ? _value._someList
           : someList // ignore: cast_nullable_to_non_nullable
               as List<int>,
-      counter: freezed == counter
+      counter: null == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,

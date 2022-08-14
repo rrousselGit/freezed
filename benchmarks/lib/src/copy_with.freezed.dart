@@ -40,10 +40,10 @@ class _$ModelCopyWithImpl<$Res> implements $ModelCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? counter = freezed,
+    Object? counter = null,
   }) {
     return _then(_value.copyWith(
-      counter: freezed == counter
+      counter: null == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
@@ -71,10 +71,10 @@ class __$$_ModelCopyWithImpl<$Res> extends _$ModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? counter = freezed,
+    Object? counter = null,
   }) {
     return _then(_$_Model(
-      counter: freezed == counter
+      counter: null == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
@@ -155,10 +155,10 @@ class _$ModelWrapperCopyWithImpl<$Res> implements $ModelWrapperCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? model = freezed,
+    Object? model = null,
   }) {
     return _then(_value.copyWith(
-      model: freezed == model
+      model: null == model
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as Model,
@@ -201,10 +201,10 @@ class __$$_ModelWrapperCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? model = freezed,
+    Object? model = null,
   }) {
     return _then(_$_ModelWrapper(
-      model: freezed == model
+      model: null == model
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as Model,
