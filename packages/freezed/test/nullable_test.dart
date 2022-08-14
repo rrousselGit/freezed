@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:test/test.dart';
 
 import 'common.dart';
