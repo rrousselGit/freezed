@@ -48,11 +48,11 @@ class _$ModelWithListCopyWithImpl<$Res>
     Object? counter = freezed,
   }) {
     return _then(_value.copyWith(
-      someList: someList == freezed
+      someList: freezed == someList
           ? _value.someList
           : someList // ignore: cast_nullable_to_non_nullable
               as List<int>,
-      counter: counter == freezed
+      counter: freezed == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
@@ -88,11 +88,11 @@ class __$$_ModelWithListCopyWithImpl<$Res>
     Object? counter = freezed,
   }) {
     return _then(_$_ModelWithList(
-      someList: someList == freezed
+      someList: freezed == someList
           ? _value._someList
           : someList // ignore: cast_nullable_to_non_nullable
               as List<int>,
-      counter: counter == freezed
+      counter: freezed == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,

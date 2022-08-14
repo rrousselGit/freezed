@@ -43,7 +43,7 @@ class _$ModelCopyWithImpl<$Res> implements $ModelCopyWith<$Res> {
     Object? counter = freezed,
   }) {
     return _then(_value.copyWith(
-      counter: counter == freezed
+      counter: freezed == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
@@ -74,7 +74,7 @@ class __$$_ModelCopyWithImpl<$Res> extends _$ModelCopyWithImpl<$Res>
     Object? counter = freezed,
   }) {
     return _then(_$_Model(
-      counter: counter == freezed
+      counter: freezed == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
@@ -158,7 +158,7 @@ class _$ModelWrapperCopyWithImpl<$Res> implements $ModelWrapperCopyWith<$Res> {
     Object? model = freezed,
   }) {
     return _then(_value.copyWith(
-      model: model == freezed
+      model: freezed == model
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as Model,
@@ -204,7 +204,7 @@ class __$$_ModelWrapperCopyWithImpl<$Res>
     Object? model = freezed,
   }) {
     return _then(_$_ModelWrapper(
-      model: model == freezed
+      model: freezed == model
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as Model,

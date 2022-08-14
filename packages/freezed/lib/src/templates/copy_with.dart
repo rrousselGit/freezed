@@ -199,7 +199,7 @@ $s''';
         propertyName = '_$propertyName';
       }
       var ternary =
-          '${p.name} == freezed ? $accessor.$propertyName : ${p.name} ';
+          'freezed == ${p.name} ? $accessor.$propertyName : ${p.name} ';
       if (p.type != 'Object?' && p.type != null) {
         ternary += _ignoreLints('as ${p.type}');
       }
