@@ -218,7 +218,7 @@ $s''';
       }
       var ternary =
           '${_defaultValue(isNullable: p.isNullable)} == ${p.name} ? $accessor.$propertyName : ${p.name} ';
-      if (p.type != 'Object?' && p.type != null) {
+      if (p.type != 'Object?' && p.type != 'Object' && p.type != null) {
         ternary += _ignoreLints('as ${p.type}');
       }
       return '$ternary,';
@@ -296,8 +296,7 @@ ${_deepCopyMethods(isConcrete: true).join()}
           ? '${_clonerInterfaceFor(cloneableProperty)}?'
           : '${_clonerInterfaceFor(cloneableProperty)}';
 
-      final cast =
-          isConcrete ? '' : 'as \$Val';
+      final cast = isConcrete ? '' : 'as \$Val';
 
       yield '''
 @override
