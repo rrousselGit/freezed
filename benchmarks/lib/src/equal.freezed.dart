@@ -41,6 +41,7 @@ class _$ModelWithListCopyWithImpl<$Res>
   // ignore: unused_field
   final $Res Function(ModelWithList) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? someList = freezed,
@@ -80,6 +81,7 @@ class __$$_ModelWithListCopyWithImpl<$Res>
   @override
   _$_ModelWithList get _value => super._value as _$_ModelWithList;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? someList = freezed,
@@ -138,6 +140,7 @@ class _$_ModelWithList implements _ModelWithList {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ModelWithListCopyWith<_$_ModelWithList> get copyWith =>
       __$$_ModelWithListCopyWithImpl<_$_ModelWithList>(this, _$identity);
 }

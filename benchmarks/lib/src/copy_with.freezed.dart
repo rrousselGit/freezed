@@ -37,6 +37,7 @@ class _$ModelCopyWithImpl<$Res> implements $ModelCopyWith<$Res> {
   // ignore: unused_field
   final $Res Function(Model) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? counter = freezed,
@@ -67,6 +68,7 @@ class __$$_ModelCopyWithImpl<$Res> extends _$ModelCopyWithImpl<$Res>
   @override
   _$_Model get _value => super._value as _$_Model;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? counter = freezed,
@@ -107,6 +109,7 @@ class _$_Model implements _Model {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ModelCopyWith<_$_Model> get copyWith =>
       __$$_ModelCopyWithImpl<_$_Model>(this, _$identity);
 }
@@ -149,6 +152,7 @@ class _$ModelWrapperCopyWithImpl<$Res> implements $ModelWrapperCopyWith<$Res> {
   // ignore: unused_field
   final $Res Function(ModelWrapper) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? model = freezed,
@@ -162,6 +166,7 @@ class _$ModelWrapperCopyWithImpl<$Res> implements $ModelWrapperCopyWith<$Res> {
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ModelCopyWith<$Res> get model {
     return $ModelCopyWith<$Res>(_value.model, (value) {
       return _then(_value.copyWith(model: value));
@@ -193,6 +198,7 @@ class __$$_ModelWrapperCopyWithImpl<$Res>
   @override
   _$_ModelWrapper get _value => super._value as _$_ModelWrapper;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? model = freezed,
@@ -233,6 +239,7 @@ class _$_ModelWrapper implements _ModelWrapper {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ModelWrapperCopyWith<_$_ModelWrapper> get copyWith =>
       __$$_ModelWrapperCopyWithImpl<_$_ModelWrapper>(this, _$identity);
 }

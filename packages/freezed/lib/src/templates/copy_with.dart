@@ -86,7 +86,7 @@ ${_abstractDeepCopyMethods().join()}
         returnType: '_value.copyWith',
       );
 
-      copyWith = '@override $prototype $body';
+      copyWith = '@pragma(\'vm:prefer-inline\') @override $prototype $body';
     }
 
     return '''
@@ -159,6 +159,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
     return '''
 @JsonKey(ignore: true)
 @override
+@pragma('vm:prefer-inline')
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
 ''';
   }
@@ -176,7 +177,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
       returnType: '$clonedClassName$genericsParameter',
     );
 
-    return '@override $prototype $body';
+    return '@pragma(\'vm:prefer-inline\') @override $prototype $body';
   }
 
   String _ignoreLints(String s,
@@ -281,6 +282,7 @@ ${_deepCopyMethods().join()}
 
       yield '''
 @override
+@pragma('vm:prefer-inline')
 $returnType get ${cloneableProperty.name} {
   $earlyReturn
   return ${_clonerInterfaceFor(cloneableProperty)}(_value.${cloneableProperty.name}$nullabilitySuffix, (value) {
