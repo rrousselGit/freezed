@@ -297,7 +297,7 @@ ${_deepCopyMethods(isConcrete: true).join()}
           : '${_clonerInterfaceFor(cloneableProperty)}';
 
       final cast =
-          isConcrete ? 'as $clonedClassName$genericsParameter' : 'as \$Val';
+          isConcrete ? '' : 'as \$Val';
 
       yield '''
 @override
