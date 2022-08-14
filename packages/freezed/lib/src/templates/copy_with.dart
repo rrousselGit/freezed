@@ -102,6 +102,7 @@ ${_abstractDeepCopyMethods().join()}
 class $_implClassName${genericsDefinition.append('\$Res').append('\$Val extends $clonedClassName$genericsParameter')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
   $_implClassName(this._value, this._then);
 
+  // ignore: unused_field
   final \$Val _value;
   // ignore: unused_field
   final \$Res Function(\$Val) _then;
