@@ -147,9 +147,9 @@ abstract class _ModelWithList implements ModelWithList {
       _$_ModelWithList;
 
   @override
-  List<int> get someList => throw _privateConstructorUsedError;
+  List<int> get someList;
   @override
-  int get counter => throw _privateConstructorUsedError;
+  int get counter;
   @override
   @JsonKey(ignore: true)
   _$$_ModelWithListCopyWith<_$_ModelWithList> get copyWith =>
