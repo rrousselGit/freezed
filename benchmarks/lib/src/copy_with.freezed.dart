@@ -25,17 +25,18 @@ mixin _$Model {
 /// @nodoc
 abstract class $ModelCopyWith<$Res> {
   factory $ModelCopyWith(Model value, $Res Function(Model) then) =
-      _$ModelCopyWithImpl<$Res>;
+      _$ModelCopyWithImpl<$Res, Model>;
   $Res call({int counter});
 }
 
 /// @nodoc
-class _$ModelCopyWithImpl<$Res> implements $ModelCopyWith<$Res> {
+class _$ModelCopyWithImpl<$Res, $Val extends Model>
+    implements $ModelCopyWith<$Res> {
   _$ModelCopyWithImpl(this._value, this._then);
 
-  final Model _value;
+  final $Val _value;
   // ignore: unused_field
-  final $Res Function(Model) _then;
+  final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
   @override
@@ -47,7 +48,7 @@ class _$ModelCopyWithImpl<$Res> implements $ModelCopyWith<$Res> {
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 }
 
@@ -60,13 +61,10 @@ abstract class _$$_ModelCopyWith<$Res> implements $ModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ModelCopyWithImpl<$Res> extends _$ModelCopyWithImpl<$Res>
+class __$$_ModelCopyWithImpl<$Res> extends _$ModelCopyWithImpl<$Res, _$_Model>
     implements _$$_ModelCopyWith<$Res> {
   __$$_ModelCopyWithImpl(_$_Model _value, $Res Function(_$_Model) _then)
-      : super(_value, (v) => _then(v as _$_Model));
-
-  @override
-  _$_Model get _value => super._value as _$_Model;
+      : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
@@ -138,19 +136,20 @@ mixin _$ModelWrapper {
 abstract class $ModelWrapperCopyWith<$Res> {
   factory $ModelWrapperCopyWith(
           ModelWrapper value, $Res Function(ModelWrapper) then) =
-      _$ModelWrapperCopyWithImpl<$Res>;
+      _$ModelWrapperCopyWithImpl<$Res, ModelWrapper>;
   $Res call({Model model});
 
   $ModelCopyWith<$Res> get model;
 }
 
 /// @nodoc
-class _$ModelWrapperCopyWithImpl<$Res> implements $ModelWrapperCopyWith<$Res> {
+class _$ModelWrapperCopyWithImpl<$Res, $Val extends ModelWrapper>
+    implements $ModelWrapperCopyWith<$Res> {
   _$ModelWrapperCopyWithImpl(this._value, this._then);
 
-  final ModelWrapper _value;
+  final $Val _value;
   // ignore: unused_field
-  final $Res Function(ModelWrapper) _then;
+  final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
   @override
@@ -162,14 +161,14 @@ class _$ModelWrapperCopyWithImpl<$Res> implements $ModelWrapperCopyWith<$Res> {
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as Model,
-    ));
+    ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
   $ModelCopyWith<$Res> get model {
     return $ModelCopyWith<$Res>(_value.model, (value) {
-      return _then(_value.copyWith(model: value));
+      return _then(_value.copyWith(model: value) as $Val);
     });
   }
 }
@@ -189,14 +188,11 @@ abstract class _$$_ModelWrapperCopyWith<$Res>
 
 /// @nodoc
 class __$$_ModelWrapperCopyWithImpl<$Res>
-    extends _$ModelWrapperCopyWithImpl<$Res>
+    extends _$ModelWrapperCopyWithImpl<$Res, _$_ModelWrapper>
     implements _$$_ModelWrapperCopyWith<$Res> {
   __$$_ModelWrapperCopyWithImpl(
       _$_ModelWrapper _value, $Res Function(_$_ModelWrapper) _then)
-      : super(_value, (v) => _then(v as _$_ModelWrapper));
-
-  @override
-  _$_ModelWrapper get _value => super._value as _$_ModelWrapper;
+      : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
