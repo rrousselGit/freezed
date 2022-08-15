@@ -147,6 +147,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           isPossiblyDartCollection: commonParameter.isPossiblyDartCollection,
           // TODO: support hasJsonKey
           hasJsonKey: false,
+          isCommonWithDifferentNullability:
+              commonParameter.isCommonWithDifferentNullability,
         ),
     ];
   }
@@ -252,25 +254,48 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
   ) {
     return constructorsNeedsGeneration.first.parameters.allParameters
         .map((parameter) {
-          var hasAnyFinalProperty = false;
+          var anyMatchingPropertyIsFinal = false;
+          var anyMatchingPropertyIsNullable = false;
+
           for (final constructor in constructorsNeedsGeneration) {
             final matchingParameter =
                 constructor.parameters.allParameters.firstWhereOrNull((p) {
-              return p.name == parameter.name && p.type == parameter.type;
+              return p.name == parameter.name &&
+                  _typeStringWithoutNullability(p.type) ==
+                      _typeStringWithoutNullability(parameter.type);
             });
 
             if (matchingParameter == null) return null;
-            if (matchingParameter.isFinal) hasAnyFinalProperty = true;
+            if (matchingParameter.isFinal) anyMatchingPropertyIsFinal = true;
+            if (matchingParameter.isNullable)
+              anyMatchingPropertyIsNullable = true;
           }
 
-          if (hasAnyFinalProperty) {
-            return parameter.copyWith(isFinal: true);
+          final isNullable =
+              parameter.isNullable || anyMatchingPropertyIsNullable;
+
+          if (parameter.isNullable != isNullable) {
+            print(parameter.name);
           }
 
-          return parameter;
+          return parameter.copyWith(
+            isFinal: parameter.isFinal || anyMatchingPropertyIsFinal,
+            isNullable: isNullable,
+            type: isNullable && (parameter.type?.endsWith('?') == false)
+                ? '${parameter.type}?'
+                : parameter.type,
+            isCommonWithDifferentNullability:
+                parameter.isNullable != isNullable,
+          );
         })
         .whereNotNull()
         .toList();
+  }
+
+  String? _typeStringWithoutNullability(String? type) {
+    return type?.endsWith('?') == true
+        ? type?.substring(0, type.length - 1)
+        : type;
   }
 
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
@@ -606,7 +631,9 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
             ).toList(),
             genericsDefinition: data.genericsDefinitionTemplate,
             genericsParameter: data.genericsParameterTemplate,
-            allProperties: commonProperties,
+            allProperties: commonProperties
+                .whereNot((element) => element.isCommonWithDifferentNullability)
+                .toList(),
             data: data,
           );
 

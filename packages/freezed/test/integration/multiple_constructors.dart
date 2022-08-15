@@ -65,6 +65,14 @@ class SharedParam with _$SharedParam {
 }
 
 @freezed
+class SharedParamNullable with _$SharedParamNullable {
+  const factory SharedParamNullable(String a, String b, int c) =
+      SharedParamNullable0;
+  const factory SharedParamNullable.named(String? a, String b, int d) = 
+      SharedParamNullable1;
+}
+
+@freezed
 class Complex with _$Complex {
   @Assert("a != ''", '"Hello"')
   const factory Complex(

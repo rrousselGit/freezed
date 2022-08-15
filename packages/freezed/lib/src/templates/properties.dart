@@ -31,6 +31,7 @@ class Property {
     required this.isDartMap,
     required this.isDartSet,
     required this.isPossiblyDartCollection,
+    required this.isCommonWithDifferentNullability,
   }) : type = type ?? 'dynamic';
 
   static Future<Property> fromParameter(
@@ -60,6 +61,7 @@ class Property {
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
       isPossiblyDartCollection: element.type.isPossiblyDartCollection,
+      isCommonWithDifferentNullability: false,
     );
   }
 
@@ -75,6 +77,7 @@ class Property {
   final bool hasJsonKey;
   final String doc;
   final bool isPossiblyDartCollection;
+  final bool isCommonWithDifferentNullability;
 
   @override
   String toString() {
@@ -135,6 +138,7 @@ class Property {
     bool? hasJsonKey,
     String? doc,
     bool? isPossiblyDartCollection,
+    bool? isCommonWithDifferentNullability,
   }) {
     return Property(
       type: type ?? this.type,
@@ -150,6 +154,8 @@ class Property {
       isDartSet: isDartSet ?? this.isDartSet,
       isPossiblyDartCollection:
           isPossiblyDartCollection ?? this.isPossiblyDartCollection,
+      isCommonWithDifferentNullability: isCommonWithDifferentNullability ??
+          this.isCommonWithDifferentNullability,
     );
   }
 }

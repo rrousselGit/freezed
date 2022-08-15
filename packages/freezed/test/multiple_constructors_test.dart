@@ -504,8 +504,48 @@ void main() {
 }
 '''), throwsCompileError);
     });
+  });
 
-    // TODO: shared property name but different type
+  group('SharedParamNullable', () {
+    test('has the common properties available', () {
+      SharedParamNullable value = SharedParamNullable('a', 'b', 42);
+      expect(value.a, 'a');
+
+      value = SharedParamNullable.named('b', 'c', 24);
+      expect(value.a, 'b');
+    });
+
+    test(
+      "copy doesn't have shared params with different nullability",
+      () async {
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final param = SharedParamNullable('a', 'b', 42);
+  param.copyWith(a: '2');
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final param = SharedParamNullable('a', 'b', 42);
+  param.copyWith(b: '1');
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final param = SharedParamNullable('a', 'b', 42);
+  param.copyWith(c: 42);
+}
+'''), throwsCompileError);
+      },
+    );
   });
 
   test('Can have a named constructor and a property using the same name', () {

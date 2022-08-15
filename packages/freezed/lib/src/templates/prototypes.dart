@@ -127,6 +127,7 @@ String _mapPrototype(
           // TODO: do we want to support freezed classes that implements MapView/ListView?
           isPossiblyDartCollection: false,
           showDefaultValue: false,
+          isCommonWithDifferentNullability: false,
         ),
       ]);
     },
@@ -191,6 +192,7 @@ String _unionPrototype(
       defaultValueSource: '',
       doc: '',
       isPossiblyDartCollection: false,
+      isCommonWithDifferentNullability: false,
     );
 
     if (constructor.isDefault) {

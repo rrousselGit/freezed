@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 
@@ -65,23 +66,28 @@ ${_abstractDeepCopyMethods().join()}
       final body = _copyWithMethodBody(
         parametersTemplate: ParametersTemplate(
           const [],
-          namedParameters: commonProperties.map((e) {
-            return Parameter(
-              decorators: e.decorators,
-              name: e.name,
-              isNullable: false,
-              isFinal: false,
-              isDartList: false,
-              isDartMap: false,
-              isDartSet: false,
-              showDefaultValue: false,
-              isRequired: false,
-              defaultValueSource: '',
-              type: e.type,
-              doc: e.doc,
-              isPossiblyDartCollection: e.isPossiblyDartCollection,
-            );
-          }).toList(),
+          namedParameters: commonProperties
+              .map((e) {
+                return Parameter(
+                  decorators: e.decorators,
+                  name: e.name,
+                  isNullable: false,
+                  isFinal: false,
+                  isDartList: false,
+                  isDartMap: false,
+                  isDartSet: false,
+                  showDefaultValue: false,
+                  isRequired: false,
+                  defaultValueSource: '',
+                  type: e.type,
+                  doc: e.doc,
+                  isPossiblyDartCollection: e.isPossiblyDartCollection,
+                  isCommonWithDifferentNullability:
+                      e.isCommonWithDifferentNullability,
+                );
+              })
+              .whereNot((element) => element.isCommonWithDifferentNullability)
+              .toList(),
         ),
         returnType: '_value.copyWith',
       );

@@ -135,6 +135,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
         doc: '',
         isPossiblyDartCollection: false,
         showDefaultValue: false,
+        isCommonWithDifferentNullability: false,
       );
 
       parameters = ParametersTemplate(
