@@ -274,10 +274,6 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
           final isNullable =
               parameter.isNullable || anyMatchingPropertyIsNullable;
 
-          if (parameter.isNullable != isNullable) {
-            print(parameter.name);
-          }
-
           return parameter.copyWith(
             isFinal: parameter.isFinal || anyMatchingPropertyIsFinal,
             isNullable: isNullable,

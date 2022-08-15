@@ -68,7 +68,7 @@ class SharedParam with _$SharedParam {
 class SharedParamNullable with _$SharedParamNullable {
   const factory SharedParamNullable(String a, String b, int c) =
       SharedParamNullable0;
-  const factory SharedParamNullable.named(String? a, String b, int d) = 
+  const factory SharedParamNullable.named(String? a, String b, int d) =
       SharedParamNullable1;
 }
 
