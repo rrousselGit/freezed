@@ -515,8 +515,33 @@ void main() {
       expect(value.a, 'b');
     });
 
+    test('copy common updates when non null', () {
+      SharedParamNullable value = SharedParamNullable('a', 'b', 42);
+      expect(value.a, 'a');
+
+      value = value.copyWith(a: 'b');
+      expect(value.a, 'b');
+    });
+
+    test('copy common updates when null', () {
+      SharedParamNullable value = SharedParamNullable.named(null, 'b', 42);
+      expect(value.a, null);
+
+      value = value.copyWith(a: 'a');
+      expect(value.a, 'a');
+    });
+
+    test('copy on null common variable', () {
+      SharedParamNullable value = SharedParamNullable.named(null, 'b', 42);
+      expect(value.a, null);
+
+      value = value.copyWith(b: 'c');
+      expect(value.a, null);
+      expect(value.b, 'c');
+    });
+
     test(
-      "copy doesn't have shared params with different nullability",
+      'copy has shared params with different nullability available as non-null',
       () async {
         await expectLater(compile(r'''
 import 'multiple_constructors.dart';
@@ -524,6 +549,15 @@ import 'multiple_constructors.dart';
 void main() {
   final param = SharedParamNullable('a', 'b', 42);
   param.copyWith(a: '2');
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final param = SharedParamNullable('a', 'b', 42);
+  param.copyWith(a: null);
 }
 '''), throwsCompileError);
 

@@ -261,8 +261,8 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
             final matchingParameter =
                 constructor.parameters.allParameters.firstWhereOrNull((p) {
               return p.name == parameter.name &&
-                  _typeStringWithoutNullability(p.type) ==
-                      _typeStringWithoutNullability(parameter.type);
+                  typeStringWithoutNullability(p.type) ==
+                      typeStringWithoutNullability(parameter.type);
             });
 
             if (matchingParameter == null) return null;
@@ -286,12 +286,6 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         })
         .whereNotNull()
         .toList();
-  }
-
-  String? _typeStringWithoutNullability(String? type) {
-    return type?.endsWith('?') == true
-        ? type?.substring(0, type.length - 1)
-        : type;
   }
 
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
@@ -627,9 +621,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
             ).toList(),
             genericsDefinition: data.genericsDefinitionTemplate,
             genericsParameter: data.genericsParameterTemplate,
-            allProperties: commonProperties
-                .whereNot((element) => element.isCommonWithDifferentNullability)
-                .toList(),
+            allProperties: commonProperties,
             data: data,
           );
 
