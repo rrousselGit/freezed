@@ -128,6 +128,7 @@ String _mapPrototype(
           isPossiblyDartCollection: false,
           showDefaultValue: false,
           isCommonWithDifferentNullability: false,
+          parameterElement: null,
         ),
       ]);
     },
@@ -193,6 +194,7 @@ String _unionPrototype(
       doc: '',
       isPossiblyDartCollection: false,
       isCommonWithDifferentNullability: false,
+      parameterElement: null,
     );
 
     if (constructor.isDefault) {

@@ -65,11 +65,12 @@ class SharedParam with _$SharedParam {
 }
 
 @freezed
-class SharedParamNullable with _$SharedParamNullable {
-  const factory SharedParamNullable(String a, String b, int c) =
-      SharedParamNullable0;
-  const factory SharedParamNullable.named(String? a, String b, int d) =
-      SharedParamNullable1;
+class SharedParamCommonSuperType with _$SharedParamCommonSuperType {
+  const factory SharedParamCommonSuperType(String a, int b, int c) =
+      SharedParamCommonSuperType0;
+
+  const factory SharedParamCommonSuperType.named(String? a, double b, int d) =
+      SharedParamCommonSuperType1;
 }
 
 @freezed

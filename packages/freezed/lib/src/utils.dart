@@ -71,9 +71,3 @@ String _fixCase(String input, String separator) =>
 
       return lower;
     });
-
-String? typeStringWithoutNullability(String? type) {
-  return type?.endsWith('?') == true
-      ? type?.substring(0, type.length - 1)
-      : type;
-}

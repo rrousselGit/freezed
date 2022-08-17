@@ -506,38 +506,25 @@ void main() {
     });
   });
 
-  group('SharedParamNullable', () {
+  group('SharedParamCommonSuperType', () {
     test('has the common properties available', () {
-      SharedParamNullable value = SharedParamNullable('a', 'b', 42);
+      SharedParamCommonSuperType value =
+          SharedParamCommonSuperType('a', 1337, 42);
       expect(value.a, 'a');
+      expect(value.b, 1337);
 
-      value = SharedParamNullable.named('b', 'c', 24);
+      value = SharedParamCommonSuperType.named('b', 2.4, 24);
       expect(value.a, 'b');
+      expect(value.b, 2.4);
     });
 
-    test('copy common updates when non null', () {
-      SharedParamNullable value = SharedParamNullable('a', 'b', 42);
+    test('copy has different nullability available', () {
+      SharedParamCommonSuperType value =
+          SharedParamCommonSuperType('a', 1337, 42);
       expect(value.a, 'a');
 
       value = value.copyWith(a: 'b');
       expect(value.a, 'b');
-    });
-
-    test('copy common updates when null', () {
-      SharedParamNullable value = SharedParamNullable.named(null, 'b', 42);
-      expect(value.a, null);
-
-      value = value.copyWith(a: 'a');
-      expect(value.a, 'a');
-    });
-
-    test('copy on null common variable', () {
-      SharedParamNullable value = SharedParamNullable.named(null, 'b', 42);
-      expect(value.a, null);
-
-      value = value.copyWith(b: 'c');
-      expect(value.a, null);
-      expect(value.b, 'c');
     });
 
     test(
@@ -547,7 +534,7 @@ void main() {
 import 'multiple_constructors.dart';
 
 void main() {
-  final param = SharedParamNullable('a', 'b', 42);
+  final param = SharedParamCommonSuperType('a', 1337, 42);
   param.copyWith(a: '2');
 }
 '''), completes);
@@ -556,26 +543,22 @@ void main() {
 import 'multiple_constructors.dart';
 
 void main() {
-  final param = SharedParamNullable('a', 'b', 42);
+  final param = SharedParamCommonSuperType('a', 1337, 42);
   param.copyWith(a: null);
 }
 '''), throwsCompileError);
+      },
+    );
 
+    test(
+      'copy does not have shared params with common super type available',
+      () async {
         await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
-  final param = SharedParamNullable('a', 'b', 42);
-  param.copyWith(b: '1');
-}
-'''), completes);
-
-        await expectLater(compile(r'''
-import 'multiple_constructors.dart';
-
-void main() {
-  final param = SharedParamNullable('a', 'b', 42);
-  param.copyWith(c: 42);
+  final param = SharedParamCommonSuperType('a', 'b', 42);
+  param.copyWith(b: 42);
 }
 '''), throwsCompileError);
       },

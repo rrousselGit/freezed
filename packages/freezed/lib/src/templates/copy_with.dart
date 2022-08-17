@@ -1,6 +1,5 @@
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
-import 'package:freezed/src/utils.dart';
 
 import '../models.dart';
 
@@ -83,6 +82,7 @@ ${_abstractDeepCopyMethods().join()}
               isPossiblyDartCollection: e.isPossiblyDartCollection,
               isCommonWithDifferentNullability:
                   e.isCommonWithDifferentNullability,
+              parameterElement: null,
             );
           }).toList(),
         ),
@@ -137,10 +137,10 @@ ${_deepCopyMethods().join()}
   }) {
     final parameters = properties.map((p) {
       final type = p.isCommonWithDifferentNullability
-          ? typeStringWithoutNullability(p.type)
+          ? p.type.replaceFirst(RegExp(r'\?$'), '')
           : p.type;
 
-      return '${p.decorators.join()} $type ${p.name}';
+      return '${p.decorators.join()} covariant $type ${p.name}';
     }).join(',');
 
     return _maybeOverride('''
@@ -205,7 +205,7 @@ $s''';
         propertyName = '_$propertyName';
       }
       final type = p.isCommonWithDifferentNullability
-          ? typeStringWithoutNullability(p.type)
+          ? p.type!.replaceFirst(RegExp(r'\?$'), '')
           : p.type;
       var ternary = '${p.name} == freezed ? $accessor.$propertyName ';
 
@@ -245,9 +245,7 @@ $constructorParameters
     required String methodName,
   }) {
     final parameters = properties.map((p) {
-      final type = p.isCommonWithDifferentNullability ? 'Object' : 'Object?';
-
-      return '$type ${p.name} = freezed,';
+      return 'Object? ${p.name} = freezed,';
     }).join();
 
     return '\$Res $methodName({$parameters})';

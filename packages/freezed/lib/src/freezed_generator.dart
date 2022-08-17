@@ -128,29 +128,19 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   List<Property> _commonProperties(
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) {
-    final commonParameters =
-        _commonParametersBetweenAllConstructors(constructorsNeedsGeneration);
+    return _commonParametersBetweenAllConstructors(
+      constructorsNeedsGeneration,
+      allowCommonSuperType: false,
+    ).map(Property.fromParameter).toList();
+  }
 
-    return [
-      for (final commonParameter in commonParameters)
-        Property(
-          decorators: commonParameter.decorators,
-          name: commonParameter.name,
-          isFinal: commonParameter.isFinal,
-          doc: commonParameter.doc,
-          type: commonParameter.type,
-          defaultValueSource: commonParameter.defaultValueSource,
-          isNullable: commonParameter.isNullable,
-          isDartList: commonParameter.isDartList,
-          isDartMap: commonParameter.isDartMap,
-          isDartSet: commonParameter.isDartSet,
-          isPossiblyDartCollection: commonParameter.isPossiblyDartCollection,
-          // TODO: support hasJsonKey
-          hasJsonKey: false,
-          isCommonWithDifferentNullability:
-              commonParameter.isCommonWithDifferentNullability,
-        ),
-    ];
+  List<Property> _commonGetters(
+    List<ConstructorDetails> constructorsNeedsGeneration,
+  ) {
+    return _commonParametersBetweenAllConstructors(
+      constructorsNeedsGeneration,
+      allowCommonSuperType: true,
+    ).map(Property.fromParameter).toList();
   }
 
   void _assertValidClassUsage(ClassElement element) {
@@ -250,38 +240,47 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
   }
 
   List<Parameter> _commonParametersBetweenAllConstructors(
-    List<ConstructorDetails> constructorsNeedsGeneration,
-  ) {
+    List<ConstructorDetails> constructorsNeedsGeneration, {
+    required bool allowCommonSuperType,
+  }) {
     return constructorsNeedsGeneration.first.parameters.allParameters
         .map((parameter) {
           var anyMatchingPropertyIsFinal = false;
-          var anyMatchingPropertyIsNullable = false;
+          var isCommonWithDifferentNullability = false;
 
-          for (final constructor in constructorsNeedsGeneration) {
-            final matchingParameter =
-                constructor.parameters.allParameters.firstWhereOrNull((p) {
-              return p.name == parameter.name &&
-                  typeStringWithoutNullability(p.type) ==
-                      typeStringWithoutNullability(parameter.type);
-            });
+          DartType? commonType;
+
+          for (final constructor in constructorsNeedsGeneration.skip(1)) {
+            final matchingParameter = constructor.parameters.allParameters
+                .firstWhereOrNull((p) => p.name == parameter.name);
 
             if (matchingParameter == null) return null;
-            if (matchingParameter.isFinal) anyMatchingPropertyIsFinal = true;
-            if (matchingParameter.isNullable)
-              anyMatchingPropertyIsNullable = true;
-          }
 
-          final isNullable =
-              parameter.isNullable || anyMatchingPropertyIsNullable;
+            final commonTypeWithMatch =
+                parameter.parameterElement!.library!.typeSystem.leastUpperBound(
+              parameter.parameterElement!.type,
+              matchingParameter.parameterElement!.type,
+            );
+
+            if (commonTypeWithMatch.isDartCoreObject) return null;
+
+            if (!allowCommonSuperType &&
+                commonTypeWithMatch.getDisplayString(withNullability: false) !=
+                    parameter.type?.replaceAll(r'?$', '')) return null;
+
+            if (commonType != null && commonType != commonTypeWithMatch)
+              return null;
+
+            commonType = commonTypeWithMatch;
+            if (matchingParameter.isFinal) anyMatchingPropertyIsFinal = true;
+            if (parameter.isNullable != matchingParameter.isNullable)
+              isCommonWithDifferentNullability = true;
+          }
 
           return parameter.copyWith(
             isFinal: parameter.isFinal || anyMatchingPropertyIsFinal,
-            isNullable: isNullable,
-            type: isNullable && (parameter.type?.endsWith('?') == false)
-                ? '${parameter.type}?'
-                : parameter.type,
-            isCommonWithDifferentNullability:
-                parameter.isNullable != isNullable,
+            type: commonType?.getDisplayString(withNullability: true),
+            isCommonWithDifferentNullability: isCommonWithDifferentNullability,
           );
         })
         .whereNotNull()
@@ -326,7 +325,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
           escapedName: _escapedName(element, constructor),
           impliedProperties: [
             for (final parameter in constructor.parameters)
-              await Property.fromParameter(
+              await Property.fromParameterElement(
                 parameter,
                 buildStep,
                 addImplicitFinal: options.addImplicitFinal,
@@ -610,6 +609,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     }
 
     final commonProperties = _commonProperties(data.constructors);
+    final commonGetters = _commonGetters(data.constructors);
 
     final commonCopyWith = !data.generateCopyWith
         ? null
@@ -628,6 +628,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     yield Abstract(
       data: data,
       copyWith: commonCopyWith,
+      commonGetters: commonGetters,
       commonProperties: commonProperties,
     );
 

@@ -2,6 +2,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
+import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../utils.dart';
@@ -32,9 +33,29 @@ class Property {
     required this.isDartSet,
     required this.isPossiblyDartCollection,
     required this.isCommonWithDifferentNullability,
+    required this.parameterElement,
   }) : type = type ?? 'dynamic';
 
-  static Future<Property> fromParameter(
+  Property.fromParameter(Parameter p)
+      : this(
+          decorators: p.decorators,
+          name: p.name,
+          isFinal: p.isFinal,
+          doc: p.doc,
+          type: p.type,
+          defaultValueSource: p.defaultValueSource,
+          isNullable: p.isNullable,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
+          // TODO: support hasJsonKey
+          hasJsonKey: false,
+          isCommonWithDifferentNullability: p.isCommonWithDifferentNullability,
+          parameterElement: p.parameterElement,
+        );
+
+  static Future<Property> fromParameterElement(
     ParameterElement element,
     BuildStep buildStep, {
     required bool addImplicitFinal,
@@ -62,6 +83,7 @@ class Property {
       hasJsonKey: element.hasJsonKey,
       isPossiblyDartCollection: element.type.isPossiblyDartCollection,
       isCommonWithDifferentNullability: false,
+      parameterElement: element,
     );
   }
 
@@ -78,6 +100,7 @@ class Property {
   final String doc;
   final bool isPossiblyDartCollection;
   final bool isCommonWithDifferentNullability;
+  final ParameterElement? parameterElement;
 
   @override
   String toString() {
@@ -139,6 +162,7 @@ class Property {
     String? doc,
     bool? isPossiblyDartCollection,
     bool? isCommonWithDifferentNullability,
+    ParameterElement? parameterElement,
   }) {
     return Property(
       type: type ?? this.type,
@@ -156,6 +180,7 @@ class Property {
           isPossiblyDartCollection ?? this.isPossiblyDartCollection,
       isCommonWithDifferentNullability: isCommonWithDifferentNullability ??
           this.isCommonWithDifferentNullability,
+      parameterElement: parameterElement ?? this.parameterElement,
     );
   }
 }

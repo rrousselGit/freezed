@@ -83,6 +83,7 @@ class ParametersTemplate {
         isPossiblyDartCollection: e.type.isPossiblyDartCollection,
         showDefaultValue: true,
         isCommonWithDifferentNullability: false,
+        parameterElement: e,
       );
 
       if (isAssignedToThis) return LocalParameter.fromParameter(value);
@@ -186,6 +187,7 @@ class Parameter {
     required this.isPossiblyDartCollection,
     required this.showDefaultValue,
     required this.isCommonWithDifferentNullability,
+    required this.parameterElement,
   });
 
   Parameter.fromParameter(Parameter p)
@@ -204,6 +206,7 @@ class Parameter {
           doc: p.doc,
           isPossiblyDartCollection: p.isPossiblyDartCollection,
           isCommonWithDifferentNullability: p.isCommonWithDifferentNullability,
+          parameterElement: p.parameterElement,
         );
 
   final String? type;
@@ -220,6 +223,7 @@ class Parameter {
   final bool isFinal;
   final String doc;
   final bool isCommonWithDifferentNullability;
+  final ParameterElement? parameterElement;
 
   Parameter copyWith({
     String? type,
@@ -255,6 +259,7 @@ class Parameter {
             isPossiblyDartCollection ?? this.isPossiblyDartCollection,
         isCommonWithDifferentNullability: isCommonWithDifferentNullability ??
             this.isCommonWithDifferentNullability,
+        parameterElement: parameterElement,
       );
 
   @override
@@ -291,6 +296,7 @@ class LocalParameter extends Parameter {
     required String doc,
     required bool isPossiblyDartCollection,
     required bool isCommonWithDifferentNullability,
+    required ParameterElement? parameterElement,
   }) : super(
           name: name,
           type: type,
@@ -306,6 +312,7 @@ class LocalParameter extends Parameter {
           doc: doc,
           isPossiblyDartCollection: isPossiblyDartCollection,
           isCommonWithDifferentNullability: isCommonWithDifferentNullability,
+          parameterElement: parameterElement,
         );
 
   LocalParameter.fromParameter(Parameter p)
@@ -323,6 +330,7 @@ class LocalParameter extends Parameter {
           doc: p.doc,
           isPossiblyDartCollection: p.isPossiblyDartCollection,
           isCommonWithDifferentNullability: p.isCommonWithDifferentNullability,
+          parameterElement: p.parameterElement,
         );
 
   @override
@@ -357,6 +365,7 @@ class CallbackParameter extends Parameter {
     required String doc,
     required bool isPossiblyDartCollection,
     required bool isCommonWithDifferentNullability,
+    required ParameterElement? parameterElement,
   }) : super(
           name: name,
           type: type,
@@ -372,6 +381,7 @@ class CallbackParameter extends Parameter {
           doc: doc,
           isPossiblyDartCollection: isPossiblyDartCollection,
           isCommonWithDifferentNullability: isCommonWithDifferentNullability,
+          parameterElement: parameterElement,
         );
 
   final ParametersTemplate parameters;
