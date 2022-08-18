@@ -71,3 +71,16 @@ String _fixCase(String input, String separator) =>
 
       return lower;
     });
+
+String typeStringWithoutNullability(String typeString) {
+  return typeString.replaceAll(RegExp(r'\?$'), '');
+}
+
+String typeStringWithNullability(String typeString) {
+  return typeString.endsWith('?') ? typeString : '$typeString?';
+}
+
+bool typeStringsEqualIgnoringNullability(String typeA, String typeB) {
+  return typeStringWithoutNullability(typeA) ==
+      typeStringWithoutNullability(typeB);
+}

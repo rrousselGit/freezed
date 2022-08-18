@@ -234,11 +234,23 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
   ) {
     return constructorsNeedsGeneration.first.parameters.allParameters
         .map((parameter) {
-      var anyMatchingPropertyIsFinal = false;
-      var commonSupertype = parameter.parameterElement!.type;
-      var commonSubtype = parameter.parameterElement?.type;
-
       final library = parameter.parameterElement!.library!;
+
+      String typeString(DartType type, {bool withNullability = true}) {
+        return resolveFullTypeStringFrom(
+          library,
+          type,
+          withNullability: withNullability,
+        );
+      }
+
+      var anyMatchingPropertyIsFinal = false;
+
+      var commonSupertypeDartType = parameter.parameterElement!.type;
+      var commonSubTypeDartType = parameter.parameterElement?.type;
+
+      String? commonSupertypeString;
+      String? commonSubtypeString;
 
       for (final constructor in constructorsNeedsGeneration.skip(1)) {
         final matchingParameter = constructor.parameters.allParameters
@@ -247,43 +259,57 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         if (matchingParameter == null) return null;
 
         final matchingParameterType = matchingParameter.parameterElement!.type;
-
-        commonSupertype = library.typeSystem.leastUpperBound(
-          commonSupertype,
-          matchingParameterType,
-        );
-
-        if (commonSupertype
-            .getDisplayString(withNullability: true)
-            .contains('dynamic')) return null;
-
         if (matchingParameter.isFinal) anyMatchingPropertyIsFinal = true;
 
-        if (commonSubtype != null) {
-          if (library.typeSystem
-              .isSubtypeOf(matchingParameterType, commonSubtype)) {
-            commonSubtype = matchingParameterType;
-          } else if (!library.typeSystem
-              .isSubtypeOf(commonSubtype, matchingParameterType)) {
-            commonSubtype = null;
+        if (commonSupertypeDartType is FunctionType ||
+            commonSupertypeDartType.isDynamic) {
+          // If the type is a typedef, by finding the upper bound we would lose
+          // the initial definition. Therefore FunctionTypes are currently not
+          // supported for finding in finding common super types.
+          // => Resort back to type string matching.
+          commonSupertypeString ??= parameter.type!;
+          if (commonSupertypeString.contains('dynamic')) return null;
+
+          if (!typeStringsEqualIgnoringNullability(
+              commonSupertypeString, matchingParameter.type!)) {
+            return null;
+          }
+
+          if (commonSupertypeDartType.isNullable !=
+              matchingParameterType.isNullable) {
+            commonSupertypeString =
+                typeStringWithNullability(commonSupertypeString);
+            commonSubtypeString =
+                typeStringWithoutNullability(commonSupertypeString);
+          }
+        } else {
+          commonSupertypeDartType = library.typeSystem.leastUpperBound(
+            commonSupertypeDartType,
+            matchingParameterType,
+          );
+
+          if (commonSupertypeDartType
+              .getDisplayString(withNullability: true)
+              .contains('dynamic')) return null;
+
+          if (commonSubTypeDartType != null) {
+            if (library.typeSystem
+                .isSubtypeOf(matchingParameterType, commonSubTypeDartType)) {
+              commonSubTypeDartType = matchingParameterType;
+            } else if (!library.typeSystem
+                .isSubtypeOf(commonSubTypeDartType, matchingParameterType)) {
+              commonSubTypeDartType = null;
+            }
           }
         }
       }
 
       return parameter.copyWith(
         isFinal: parameter.isFinal || anyMatchingPropertyIsFinal,
-        commonSupertype: resolveFullTypeStringFrom(
-          library,
-          commonSupertype,
-          withNullability: true,
-        ),
-        commonSubtype: commonSubtype?.let(
-          (cs) => resolveFullTypeStringFrom(
-            library,
-            cs,
-            withNullability: true,
-          ),
-        ),
+        commonSupertype:
+            commonSupertypeString ?? typeString(commonSupertypeDartType),
+        commonSubtype:
+            commonSubtypeString ?? commonSubTypeDartType?.let(typeString),
       );
     }).whereNotNull();
   }
@@ -850,4 +876,8 @@ String? parseLateGetterSource(String source) {
 extension Let<T> on T {
   @pragma('vm:prefer-inline')
   R let<R>(R Function(T) f) => f(this);
+}
+
+extension on DartType {
+  bool get isNullable => nullabilitySuffix == NullabilitySuffix.question;
 }

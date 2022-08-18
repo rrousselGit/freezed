@@ -136,13 +136,16 @@ class Property {
         body: body,
       );
 
-  Setter get unimplementedSetter => Setter(
-        name: name,
-        type: commonSubtype ?? type,
-        decorators: decorators,
-        doc: doc,
-        body: ' => throw $privConstUsedErrorVarName;',
-      );
+  Setter? get unimplementedSetter =>
+      commonSupertype != null && commonSubtype != commonSupertype
+          ? null
+          : Setter(
+              name: name,
+              type: commonSubtype ?? type,
+              decorators: decorators,
+              doc: doc,
+              body: ' => throw $privConstUsedErrorVarName;',
+            );
 
   Setter get abstractSetter => Setter(
         name: name,
@@ -189,7 +192,11 @@ class Property {
   }
 }
 
-class Getter {
+class ClassMember {
+  const ClassMember();
+}
+
+class Getter implements ClassMember {
   Getter({
     required String? type,
     required this.name,
@@ -210,7 +217,7 @@ class Getter {
   }
 }
 
-class Setter {
+class Setter implements ClassMember {
   Setter({
     required String? type,
     required this.name,

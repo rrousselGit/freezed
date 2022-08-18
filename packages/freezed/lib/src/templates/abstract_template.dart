@@ -18,10 +18,12 @@ class Abstract {
   @override
   String toString() {
     final abstractProperties = commonProperties
-        .expand((e) => [
+        .expand((e) => <ClassMember?>[
               e.unimplementedGetter,
               if (!e.isFinal) e.unimplementedSetter,
             ])
+        .whereType<ClassMember>()
+        .map((e) => e.toString())
         .join();
 
     return '''

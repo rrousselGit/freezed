@@ -65,33 +65,6 @@ class SharedParam with _$SharedParam {
 }
 
 @freezed
-class SharedParamCommonSuperSubtype with _$SharedParamCommonSuperSubtype {
-  const factory SharedParamCommonSuperSubtype(String a, int b, double c) =
-      SharedParamCommonSuperSubtype0;
-
-  const factory SharedParamCommonSuperSubtype.named(
-      String? a, double b, num c) = SharedParamCommonSuperSubtype1;
-}
-
-class SharedParamCommonSupertypeA {}
-
-class SharedParamCommonSupertypeB implements SharedParamCommonSupertypeA {}
-
-class SharedParamCommonSupertypeC implements SharedParamCommonSupertypeB {}
-
-class SharedParamCommonSupertypeD implements SharedParamCommonSupertypeA {}
-
-@freezed
-class SharedParamCommonSupertype with _$SharedParamCommonSupertype {
-  const factory SharedParamCommonSupertype(SharedParamCommonSupertypeB param) =
-      SharedParamCommonSupertype0;
-  const factory SharedParamCommonSupertype.one(
-      SharedParamCommonSupertypeC param) = SharedParamCommonSupertype1;
-  const factory SharedParamCommonSupertype.two(
-      SharedParamCommonSupertypeD param) = SharedParamCommonSupertype2;
-}
-
-@freezed
 class Complex with _$Complex {
   @Assert("a != ''", '"Hello"')
   const factory Complex(
