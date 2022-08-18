@@ -9,17 +9,15 @@ class Abstract {
     required this.data,
     required this.copyWith,
     required this.commonProperties,
-    required this.commonGetters,
   });
 
   final Data data;
   final CopyWith? copyWith;
-  final List<Property> commonProperties;
-  final List<Property> commonGetters;
+  final Iterable<Property> commonProperties;
 
   @override
   String toString() {
-    final abstractProperties = commonGetters
+    final abstractProperties = commonProperties
         .expand((e) => [
               e.unimplementedGetter,
               if (!e.isFinal) e.unimplementedSetter,
@@ -43,7 +41,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
 
 ${copyWith?.interface ?? ''}
 
-${copyWith?.commonContreteImpl(commonProperties) ?? ''}
+${copyWith?.commonContreteImpl ?? ''}
 ''';
   }
 

@@ -128,19 +128,9 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   List<Property> _commonProperties(
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) {
-    return _commonParametersBetweenAllConstructors(
-      constructorsNeedsGeneration,
-      allowCommonSuperType: false,
-    ).map(Property.fromParameter).toList();
-  }
-
-  List<Property> _commonGetters(
-    List<ConstructorDetails> constructorsNeedsGeneration,
-  ) {
-    return _commonParametersBetweenAllConstructors(
-      constructorsNeedsGeneration,
-      allowCommonSuperType: true,
-    ).map(Property.fromParameter).toList();
+    return _commonPropertiesBetweenAllConstructors(constructorsNeedsGeneration)
+        .map(Property.fromParameter)
+        .toList();
   }
 
   void _assertValidClassUsage(ClassElement element) {
@@ -239,52 +229,63 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     return false;
   }
 
-  List<Parameter> _commonParametersBetweenAllConstructors(
-    List<ConstructorDetails> constructorsNeedsGeneration, {
-    required bool allowCommonSuperType,
-  }) {
+  Iterable<Parameter> _commonPropertiesBetweenAllConstructors(
+    List<ConstructorDetails> constructorsNeedsGeneration,
+  ) {
     return constructorsNeedsGeneration.first.parameters.allParameters
         .map((parameter) {
-          var anyMatchingPropertyIsFinal = false;
-          var isCommonWithDifferentNullability = false;
+      var anyMatchingPropertyIsFinal = false;
+      var commonSupertype = parameter.parameterElement!.type;
+      var commonSubtype = parameter.parameterElement?.type;
 
-          DartType? commonType;
+      final library = parameter.parameterElement!.library!;
 
-          for (final constructor in constructorsNeedsGeneration.skip(1)) {
-            final matchingParameter = constructor.parameters.allParameters
-                .firstWhereOrNull((p) => p.name == parameter.name);
+      for (final constructor in constructorsNeedsGeneration.skip(1)) {
+        final matchingParameter = constructor.parameters.allParameters
+            .firstWhereOrNull((p) => p.name == parameter.name);
 
-            if (matchingParameter == null) return null;
+        if (matchingParameter == null) return null;
 
-            final commonTypeWithMatch =
-                parameter.parameterElement!.library!.typeSystem.leastUpperBound(
-              parameter.parameterElement!.type,
-              matchingParameter.parameterElement!.type,
-            );
+        final matchingParameterType = matchingParameter.parameterElement!.type;
 
-            if (commonTypeWithMatch.isDartCoreObject) return null;
+        commonSupertype = library.typeSystem.leastUpperBound(
+          commonSupertype,
+          matchingParameterType,
+        );
 
-            if (!allowCommonSuperType &&
-                commonTypeWithMatch.getDisplayString(withNullability: false) !=
-                    parameter.type?.replaceAll(r'?$', '')) return null;
+        if (commonSupertype
+            .getDisplayString(withNullability: true)
+            .contains('dynamic')) return null;
 
-            if (commonType != null && commonType != commonTypeWithMatch)
-              return null;
+        if (matchingParameter.isFinal) anyMatchingPropertyIsFinal = true;
 
-            commonType = commonTypeWithMatch;
-            if (matchingParameter.isFinal) anyMatchingPropertyIsFinal = true;
-            if (parameter.isNullable != matchingParameter.isNullable)
-              isCommonWithDifferentNullability = true;
+        if (commonSubtype != null) {
+          if (library.typeSystem
+              .isSubtypeOf(matchingParameterType, commonSubtype)) {
+            commonSubtype = matchingParameterType;
+          } else if (!library.typeSystem
+              .isSubtypeOf(commonSubtype, matchingParameterType)) {
+            commonSubtype = null;
           }
+        }
+      }
 
-          return parameter.copyWith(
-            isFinal: parameter.isFinal || anyMatchingPropertyIsFinal,
-            type: commonType?.getDisplayString(withNullability: true),
-            isCommonWithDifferentNullability: isCommonWithDifferentNullability,
-          );
-        })
-        .whereNotNull()
-        .toList();
+      return parameter.copyWith(
+        isFinal: parameter.isFinal || anyMatchingPropertyIsFinal,
+        commonSupertype: resolveFullTypeStringFrom(
+          library,
+          commonSupertype,
+          withNullability: true,
+        ),
+        commonSubtype: commonSubtype?.let(
+          (cs) => resolveFullTypeStringFrom(
+            library,
+            cs,
+            withNullability: true,
+          ),
+        ),
+      );
+    }).whereNotNull();
   }
 
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
@@ -452,8 +453,8 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
   }
 
   Iterable<CloneableProperty> _commonCloneableProperties(
-    List<ConstructorDetails> constructors,
-    List<Property> commonProperties,
+    Iterable<ConstructorDetails> constructors,
+    Iterable<Property> commonProperties,
   ) sync* {
     for (final cloneableProperty in constructors.first.cloneableProperties) {
       for (final commonProperty in commonProperties) {
@@ -609,7 +610,8 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     }
 
     final commonProperties = _commonProperties(data.constructors);
-    final commonGetters = _commonGetters(data.constructors);
+    final commonCopyableProperties =
+        commonProperties.where((p) => p.isCopyable);
 
     final commonCopyWith = !data.generateCopyWith
         ? null
@@ -617,18 +619,17 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
             clonedClassName: data.name,
             cloneableProperties: _commonCloneableProperties(
               data.constructors,
-              commonProperties,
+              commonCopyableProperties,
             ).toList(),
             genericsDefinition: data.genericsDefinitionTemplate,
             genericsParameter: data.genericsParameterTemplate,
-            allProperties: commonProperties,
+            allProperties: commonCopyableProperties,
             data: data,
           );
 
     yield Abstract(
       data: data,
       copyWith: commonCopyWith,
-      commonGetters: commonGetters,
       commonProperties: commonProperties,
     );
 
@@ -844,4 +845,9 @@ String? parseLateGetterSource(String source) {
     }
   }
   return null;
+}
+
+extension Let<T> on T {
+  @pragma('vm:prefer-inline')
+  R let<R>(R Function(T) f) => f(this);
 }

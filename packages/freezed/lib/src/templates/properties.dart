@@ -32,8 +32,8 @@ class Property {
     required this.isDartMap,
     required this.isDartSet,
     required this.isPossiblyDartCollection,
-    required this.isCommonWithDifferentNullability,
-    required this.parameterElement,
+    required this.commonSupertype,
+    required this.commonSubtype,
   }) : type = type ?? 'dynamic';
 
   Property.fromParameter(Parameter p)
@@ -51,8 +51,8 @@ class Property {
           isPossiblyDartCollection: p.isPossiblyDartCollection,
           // TODO: support hasJsonKey
           hasJsonKey: false,
-          isCommonWithDifferentNullability: p.isCommonWithDifferentNullability,
-          parameterElement: p.parameterElement,
+          commonSupertype: p.commonSupertype,
+          commonSubtype: p.commonSubtype,
         );
 
   static Future<Property> fromParameterElement(
@@ -82,8 +82,8 @@ class Property {
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
       isPossiblyDartCollection: element.type.isPossiblyDartCollection,
-      isCommonWithDifferentNullability: false,
-      parameterElement: element,
+      commonSupertype: null,
+      commonSubtype: null,
     );
   }
 
@@ -99,8 +99,12 @@ class Property {
   final bool hasJsonKey;
   final String doc;
   final bool isPossiblyDartCollection;
-  final bool isCommonWithDifferentNullability;
-  final ParameterElement? parameterElement;
+  final String? commonSupertype;
+  final String? commonSubtype;
+
+  bool get isCopyable =>
+      (commonSupertype != null && commonSubtype != null) ||
+      (commonSupertype == null && commonSubtype == null);
 
   @override
   String toString() {
@@ -110,7 +114,7 @@ class Property {
 
   Getter get unimplementedGetter => Getter(
         name: name,
-        type: type,
+        type: commonSupertype ?? type,
         decorators: decorators,
         doc: doc,
         body: ' => throw $privConstUsedErrorVarName;',
@@ -134,7 +138,7 @@ class Property {
 
   Setter get unimplementedSetter => Setter(
         name: name,
-        type: type,
+        type: commonSubtype ?? type,
         decorators: decorators,
         doc: doc,
         body: ' => throw $privConstUsedErrorVarName;',
@@ -161,7 +165,8 @@ class Property {
     bool? hasJsonKey,
     String? doc,
     bool? isPossiblyDartCollection,
-    bool? isCommonWithDifferentNullability,
+    String? commonSupertype,
+    String? commonSubtype,
     ParameterElement? parameterElement,
   }) {
     return Property(
@@ -178,9 +183,8 @@ class Property {
       isDartSet: isDartSet ?? this.isDartSet,
       isPossiblyDartCollection:
           isPossiblyDartCollection ?? this.isPossiblyDartCollection,
-      isCommonWithDifferentNullability: isCommonWithDifferentNullability ??
-          this.isCommonWithDifferentNullability,
-      parameterElement: parameterElement ?? this.parameterElement,
+      commonSupertype: commonSupertype ?? this.commonSupertype,
+      commonSubtype: commonSubtype ?? this.commonSubtype,
     );
   }
 }

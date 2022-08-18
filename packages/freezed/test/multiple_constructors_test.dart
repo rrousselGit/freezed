@@ -506,35 +506,38 @@ void main() {
     });
   });
 
-  group('SharedParamCommonSuperType', () {
+  group('SharedParamCommonSuperSubtype', () {
     test('has the common properties available', () {
-      SharedParamCommonSuperType value =
-          SharedParamCommonSuperType('a', 1337, 42);
+      SharedParamCommonSuperSubtype value =
+          SharedParamCommonSuperSubtype('a', 1337, 42.24);
       expect(value.a, 'a');
       expect(value.b, 1337);
+      expect(value.c, 42.24);
 
-      value = SharedParamCommonSuperType.named('b', 2.4, 24);
+      value = SharedParamCommonSuperSubtype.named('b', 12.34, 56.78);
       expect(value.a, 'b');
-      expect(value.b, 2.4);
+      expect(value.b, 12.34);
+      expect(value.c, 56.78);
     });
 
-    test('copy has different nullability available', () {
-      SharedParamCommonSuperType value =
-          SharedParamCommonSuperType('a', 1337, 42);
+    test('copy has all with common subtypes available', () {
+      SharedParamCommonSuperSubtype value =
+          SharedParamCommonSuperSubtype('a', 1337, 42);
       expect(value.a, 'a');
 
-      value = value.copyWith(a: 'b');
+      value = value.copyWith(a: 'b', c: 24.42);
       expect(value.a, 'b');
+      expect(value.c, 24.42);
     });
 
     test(
-      'copy has shared params with different nullability available as non-null',
+      'copy has shared params with common subtypes available',
       () async {
         await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
-  final param = SharedParamCommonSuperType('a', 1337, 42);
+  final param = SharedParamCommonSuperSubtype('a', 1337, 42);
   param.copyWith(a: '2');
 }
 '''), completes);
@@ -543,26 +546,82 @@ void main() {
 import 'multiple_constructors.dart';
 
 void main() {
-  final param = SharedParamCommonSuperType('a', 1337, 42);
+  final param = SharedParamCommonSuperSubtype('a', 1337, 42);
+  param.copyWith(c: 12.34);
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final param = SharedParamCommonSuperSubtype('a', 1337, 42);
+  param.copyWith(c: 24.42);
+}
+'''), completes);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final param = SharedParamCommonSuperSubtype('a', 1337, 42);
   param.copyWith(a: null);
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final param = SharedParamCommonSuperSubtype('a', 1337, 42);
+  param.copyWith(c: null);
 }
 '''), throwsCompileError);
       },
     );
 
     test(
-      'copy does not have shared params with common super type available',
+      'copy does not have shared params without common subtype available',
       () async {
         await expectLater(compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
-  final param = SharedParamCommonSuperType('a', 'b', 42);
+  final param = SharedParamCommonSuperSubtype('a', 1337, 42);
   param.copyWith(b: 42);
+}
+'''), throwsCompileError);
+
+        await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  final param = SharedParamCommonSuperSubtype('a', 1337, 42);
+  param.copyWith(b: null);
 }
 '''), throwsCompileError);
       },
     );
+  });
+
+  group('SharedParamCommonSupertype', () {
+    test('has common param available', () {
+      SharedParamCommonSupertype value =
+          SharedParamCommonSupertype(SharedParamCommonSupertypeB());
+      expect(value.param, isA<SharedParamCommonSupertypeB>());
+    });
+
+    test('does not have copy available', () async {
+      await expectLater(compile(r'''
+import 'multiple_constructors.dart';
+
+void main() {
+  SharedParamCommonSupertype param =
+    SharedParamCommonSupertype(SharedParamCommonSupertypeB());
+  param.copyWith;
+}
+'''), throwsCompileError);
+    });
   });
 
   test('Can have a named constructor and a property using the same name', () {

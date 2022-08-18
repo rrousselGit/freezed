@@ -24,7 +24,7 @@ class CopyWith {
   final String clonedClassName;
   final GenericsDefinitionTemplate genericsDefinition;
   final GenericsParameterTemplate genericsParameter;
-  final List<Property> allProperties;
+  final Iterable<Property> allProperties;
   final List<CloneableProperty> cloneableProperties;
   final CopyWith? parent;
   final Data data;
@@ -51,9 +51,7 @@ ${_abstractDeepCopyMethods().join()}
     return parent != null && parent!.allProperties.isNotEmpty;
   }
 
-  String commonContreteImpl(
-    List<Property> commonProperties,
-  ) {
+  String get commonContreteImpl {
     var copyWith = '';
 
     if (allProperties.isNotEmpty) {
@@ -65,26 +63,26 @@ ${_abstractDeepCopyMethods().join()}
       final body = _copyWithMethodBody(
         parametersTemplate: ParametersTemplate(
           const [],
-          namedParameters: commonProperties.map((e) {
-            return Parameter(
-              decorators: e.decorators,
-              name: e.name,
-              isNullable: false,
-              isFinal: false,
-              isDartList: false,
-              isDartMap: false,
-              isDartSet: false,
-              showDefaultValue: false,
-              isRequired: false,
-              defaultValueSource: '',
-              type: e.type,
-              doc: e.doc,
-              isPossiblyDartCollection: e.isPossiblyDartCollection,
-              isCommonWithDifferentNullability:
-                  e.isCommonWithDifferentNullability,
-              parameterElement: null,
-            );
-          }).toList(),
+          namedParameters: allProperties
+              .map((e) => Parameter(
+                    decorators: e.decorators,
+                    name: e.name,
+                    isNullable: false,
+                    isFinal: false,
+                    isDartList: false,
+                    isDartMap: false,
+                    isDartSet: false,
+                    showDefaultValue: false,
+                    isRequired: false,
+                    defaultValueSource: '',
+                    type: e.commonSupertype ?? e.type,
+                    doc: e.doc,
+                    isPossiblyDartCollection: e.isPossiblyDartCollection,
+                    commonSupertype: e.commonSupertype,
+                    commonSubtype: e.commonSubtype,
+                    parameterElement: null,
+                  ))
+              .toList(),
         ),
         returnType: '_value.copyWith',
       );
@@ -133,12 +131,10 @@ ${_deepCopyMethods().join()}
 
   String _copyWithProtypeFor({
     required String methodName,
-    required List<Property> properties,
+    required Iterable<Property> properties,
   }) {
     final parameters = properties.map((p) {
-      final type = p.isCommonWithDifferentNullability
-          ? p.type.replaceFirst(RegExp(r'\?$'), '')
-          : p.type;
+      final type = p.commonSubtype ?? p.type;
 
       return '${p.decorators.join()} covariant $type ${p.name}';
     }).join(',');
@@ -204,12 +200,11 @@ $s''';
           data.makeCollectionsImmutable) {
         propertyName = '_$propertyName';
       }
-      final type = p.isCommonWithDifferentNullability
-          ? p.type!.replaceFirst(RegExp(r'\?$'), '')
-          : p.type;
+
       var ternary = '${p.name} == freezed ? $accessor.$propertyName ';
 
-      if (p.isCommonWithDifferentNullability) {
+      final type = p.commonSubtype ?? p.type;
+      if (p.commonSubtype != null && p.type != p.commonSubtype) {
         ternary += 'as $type ';
       }
 
@@ -241,7 +236,7 @@ $constructorParameters
   }
 
   String _concreteCopyWithPrototype({
-    required List<Property> properties,
+    required Iterable<Property> properties,
     required String methodName,
   }) {
     final parameters = properties.map((p) {

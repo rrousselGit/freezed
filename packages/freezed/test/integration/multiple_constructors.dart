@@ -65,12 +65,30 @@ class SharedParam with _$SharedParam {
 }
 
 @freezed
-class SharedParamCommonSuperType with _$SharedParamCommonSuperType {
-  const factory SharedParamCommonSuperType(String a, int b, int c) =
-      SharedParamCommonSuperType0;
+class SharedParamCommonSuperSubtype with _$SharedParamCommonSuperSubtype {
+  const factory SharedParamCommonSuperSubtype(String a, int b, double c) =
+      SharedParamCommonSuperSubtype0;
 
-  const factory SharedParamCommonSuperType.named(String? a, double b, int d) =
-      SharedParamCommonSuperType1;
+  const factory SharedParamCommonSuperSubtype.named(
+      String? a, double b, num c) = SharedParamCommonSuperSubtype1;
+}
+
+class SharedParamCommonSupertypeA {}
+
+class SharedParamCommonSupertypeB implements SharedParamCommonSupertypeA {}
+
+class SharedParamCommonSupertypeC implements SharedParamCommonSupertypeB {}
+
+class SharedParamCommonSupertypeD implements SharedParamCommonSupertypeA {}
+
+@freezed
+class SharedParamCommonSupertype with _$SharedParamCommonSupertype {
+  const factory SharedParamCommonSupertype(SharedParamCommonSupertypeB param) =
+      SharedParamCommonSupertype0;
+  const factory SharedParamCommonSupertype.one(
+      SharedParamCommonSupertypeC param) = SharedParamCommonSupertype1;
+  const factory SharedParamCommonSupertype.two(
+      SharedParamCommonSupertypeD param) = SharedParamCommonSupertype2;
 }
 
 @freezed

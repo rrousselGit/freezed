@@ -450,7 +450,7 @@ class NullDefault with _$NullDefault {
 class ExplicitConstDefault with _$ExplicitConstDefault {
   factory ExplicitConstDefault(
       //ignore: unnecessary_const
-      [@Default(<Object>[]) List<Object> value]) = _ExplicitConstDefault;
+      [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
 }
 
 @freezed

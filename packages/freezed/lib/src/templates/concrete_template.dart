@@ -135,7 +135,8 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
         doc: '',
         isPossiblyDartCollection: false,
         showDefaultValue: false,
-        isCommonWithDifferentNullability: false,
+        commonSupertype: null,
+        commonSubtype: null,
         parameterElement: null,
       );
 

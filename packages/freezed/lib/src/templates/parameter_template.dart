@@ -82,7 +82,8 @@ class ParametersTemplate {
         doc: await documentationOfParameter(e, buildStep),
         isPossiblyDartCollection: e.type.isPossiblyDartCollection,
         showDefaultValue: true,
-        isCommonWithDifferentNullability: false,
+        commonSupertype: null,
+        commonSubtype: null,
         parameterElement: e,
       );
 
@@ -186,7 +187,8 @@ class Parameter {
     required this.isFinal,
     required this.isPossiblyDartCollection,
     required this.showDefaultValue,
-    required this.isCommonWithDifferentNullability,
+    required this.commonSupertype,
+    required this.commonSubtype,
     required this.parameterElement,
   });
 
@@ -205,7 +207,8 @@ class Parameter {
           showDefaultValue: p.showDefaultValue,
           doc: p.doc,
           isPossiblyDartCollection: p.isPossiblyDartCollection,
-          isCommonWithDifferentNullability: p.isCommonWithDifferentNullability,
+          commonSubtype: p.commonSubtype,
+          commonSupertype: p.commonSupertype,
           parameterElement: p.parameterElement,
         );
 
@@ -222,7 +225,8 @@ class Parameter {
   final bool isPossiblyDartCollection;
   final bool isFinal;
   final String doc;
-  final bool isCommonWithDifferentNullability;
+  final String? commonSupertype;
+  final String? commonSubtype;
   final ParameterElement? parameterElement;
 
   Parameter copyWith({
@@ -240,7 +244,8 @@ class Parameter {
     bool? isDartMap,
     bool? isDartSet,
     bool? isFinal,
-    bool? isCommonWithDifferentNullability,
+    String? commonSupertype,
+    String? commonSubtype,
   }) =>
       Parameter(
         type: type ?? this.type,
@@ -257,8 +262,8 @@ class Parameter {
         isFinal: isFinal ?? this.isFinal,
         isPossiblyDartCollection:
             isPossiblyDartCollection ?? this.isPossiblyDartCollection,
-        isCommonWithDifferentNullability: isCommonWithDifferentNullability ??
-            this.isCommonWithDifferentNullability,
+        commonSupertype: commonSupertype ?? this.commonSupertype,
+        commonSubtype: commonSubtype ?? this.commonSubtype,
         parameterElement: parameterElement,
       );
 
@@ -295,7 +300,8 @@ class LocalParameter extends Parameter {
     required List<String> decorators,
     required String doc,
     required bool isPossiblyDartCollection,
-    required bool isCommonWithDifferentNullability,
+    required String? commonSupertype,
+    required String? commonSubtype,
     required ParameterElement? parameterElement,
   }) : super(
           name: name,
@@ -311,7 +317,8 @@ class LocalParameter extends Parameter {
           defaultValueSource: defaultValueSource,
           doc: doc,
           isPossiblyDartCollection: isPossiblyDartCollection,
-          isCommonWithDifferentNullability: isCommonWithDifferentNullability,
+          commonSupertype: commonSupertype,
+          commonSubtype: commonSubtype,
           parameterElement: parameterElement,
         );
 
@@ -329,7 +336,8 @@ class LocalParameter extends Parameter {
           decorators: p.decorators,
           doc: p.doc,
           isPossiblyDartCollection: p.isPossiblyDartCollection,
-          isCommonWithDifferentNullability: p.isCommonWithDifferentNullability,
+          commonSupertype: p.commonSupertype,
+          commonSubtype: p.commonSubtype,
           parameterElement: p.parameterElement,
         );
 
@@ -364,7 +372,8 @@ class CallbackParameter extends Parameter {
     required this.parameters,
     required String doc,
     required bool isPossiblyDartCollection,
-    required bool isCommonWithDifferentNullability,
+    required String? commonSupertype,
+    required String? commonSubtype,
     required ParameterElement? parameterElement,
   }) : super(
           name: name,
@@ -380,7 +389,8 @@ class CallbackParameter extends Parameter {
           defaultValueSource: defaultValueSource,
           doc: doc,
           isPossiblyDartCollection: isPossiblyDartCollection,
-          isCommonWithDifferentNullability: isCommonWithDifferentNullability,
+          commonSupertype: commonSupertype,
+          commonSubtype: commonSubtype,
           parameterElement: parameterElement,
         );
 
