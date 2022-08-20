@@ -102,9 +102,7 @@ class Property {
   final String? commonSupertype;
   final String? commonSubtype;
 
-  bool get isCopyable =>
-      (commonSupertype != null && commonSubtype != null) ||
-      (commonSupertype == null && commonSubtype == null);
+  bool get isCopyable => commonSupertype == commonSubtype;
 
   @override
   String toString() {
@@ -136,16 +134,13 @@ class Property {
         body: body,
       );
 
-  Setter? get unimplementedSetter =>
-      commonSupertype != null && commonSubtype != commonSupertype
-          ? null
-          : Setter(
-              name: name,
-              type: commonSubtype ?? type,
-              decorators: decorators,
-              doc: doc,
-              body: ' => throw $privConstUsedErrorVarName;',
-            );
+  Setter get unimplementedSetter => Setter(
+        name: name,
+        type: commonSubtype ?? type,
+        decorators: decorators,
+        doc: doc,
+        body: ' => throw $privConstUsedErrorVarName;',
+      );
 
   Setter get abstractSetter => Setter(
         name: name,

@@ -24,7 +24,7 @@ class CopyWith {
   final String clonedClassName;
   final GenericsDefinitionTemplate genericsDefinition;
   final GenericsParameterTemplate genericsParameter;
-  final Iterable<Property> allProperties;
+  final List<Property> allProperties;
   final List<CloneableProperty> cloneableProperties;
   final CopyWith? parent;
   final Data data;
@@ -63,26 +63,26 @@ ${_abstractDeepCopyMethods().join()}
       final body = _copyWithMethodBody(
         parametersTemplate: ParametersTemplate(
           const [],
-          namedParameters: allProperties
-              .map((e) => Parameter(
-                    decorators: e.decorators,
-                    name: e.name,
-                    isNullable: false,
-                    isFinal: false,
-                    isDartList: false,
-                    isDartMap: false,
-                    isDartSet: false,
-                    showDefaultValue: false,
-                    isRequired: false,
-                    defaultValueSource: '',
-                    type: e.commonSupertype ?? e.type,
-                    doc: e.doc,
-                    isPossiblyDartCollection: e.isPossiblyDartCollection,
-                    commonSupertype: e.commonSupertype,
-                    commonSubtype: e.commonSubtype,
-                    parameterElement: null,
-                  ))
-              .toList(),
+          namedParameters: allProperties.map((e) {
+            return Parameter(
+              decorators: e.decorators,
+              name: e.name,
+              isNullable: false,
+              isFinal: false,
+              isDartList: false,
+              isDartMap: false,
+              isDartSet: false,
+              showDefaultValue: false,
+              isRequired: false,
+              defaultValueSource: '',
+              type: e.commonSupertype ?? e.type,
+              doc: e.doc,
+              isPossiblyDartCollection: e.isPossiblyDartCollection,
+              commonSupertype: e.commonSupertype,
+              commonSubtype: e.commonSubtype,
+              parameterElement: null,
+            );
+          }).toList(),
         ),
         returnType: '_value.copyWith',
       );
@@ -131,7 +131,7 @@ ${_deepCopyMethods().join()}
 
   String _copyWithProtypeFor({
     required String methodName,
-    required Iterable<Property> properties,
+    required List<Property> properties,
   }) {
     final parameters = properties.map((p) {
       final type = p.commonSubtype ?? p.type;
@@ -236,7 +236,7 @@ $constructorParameters
   }
 
   String _concreteCopyWithPrototype({
-    required Iterable<Property> properties,
+    required List<Property> properties,
     required String methodName,
   }) {
     final parameters = properties.map((p) {
