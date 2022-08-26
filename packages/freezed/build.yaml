@@ -22,4 +22,4 @@ builders:
     build_extensions: { ".dart": [".freezed.dart"] }
     auto_apply: dependents
     build_to: source
-    runs_before: ["json_serializable|json_serializable"]
+    runs_before: ["json_serializable|json_serializable", "objectbox_generator|resolver", "objectbox_generator|generator"]
