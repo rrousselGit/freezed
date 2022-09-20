@@ -753,17 +753,19 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
 }
 
 extension on LibraryElement {
-  bool get importsJsonSerializable => const RecursiveImportLocator().hasImport(
-        root: this,
-        where: isClass('JsonSerializable'),
-        whereLibrary: isWithin('json_annotation'),
-      );
+  bool get importsJsonSerializable {
+    return findAllAvailableTopLevelElements().any((element) {
+      return element.name == 'JsonSerializable' &&
+          (element.library?.isFromPackage('json_annotation') ?? false);
+    });
+  }
 
-  bool get importsDiagnosticable => const RecursiveImportLocator().hasImport(
-        root: this,
-        where: isClass('Diagnosticable'),
-        whereLibrary: isWithin('flutter'),
-      );
+  bool get importsDiagnosticable {
+    return findAllAvailableTopLevelElements().any((element) {
+      return element.name == 'DiagnosticableTreeMixin' &&
+          (element.library?.isFromPackage('flutter') ?? false);
+    });
+  }
 }
 
 extension on Element {
