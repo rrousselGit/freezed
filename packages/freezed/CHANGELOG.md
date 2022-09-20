@@ -1,6 +1,7 @@
 # 2.1.1
 
-Bump Analyzer to 5.0.0
+- Bump Analyzer to 5.0.0
+- Fix an issuee where Freezed fails to detect that the `Diagnosticable` API is available
 
 # 2.1.0+1
 
