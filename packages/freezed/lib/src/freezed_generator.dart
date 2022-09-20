@@ -381,11 +381,16 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       if (!metadata.isWith) continue;
       final object = metadata.computeConstantValue()!;
 
-      yield resolveFullTypeStringFrom(
-        constructor.library,
-        (object.type! as InterfaceType).typeArguments.single,
-        withNullability: false,
-      );
+      final stringType = object.getField('stringType');
+      if (stringType?.isNull == false) {
+        yield stringType!.toStringValue()!;
+      } else {
+        yield resolveFullTypeStringFrom(
+          constructor.library,
+          (object.type! as InterfaceType).typeArguments.single,
+          withNullability: false,
+        );
+      }
     }
   }
 
@@ -396,11 +401,16 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       if (!metadata.isImplements) continue;
       final object = metadata.computeConstantValue()!;
 
-      yield resolveFullTypeStringFrom(
-        constructor.library,
-        (object.type! as InterfaceType).typeArguments.single,
-        withNullability: false,
-      );
+      final stringType = object.getField('stringType');
+      if (stringType?.isNull == false) {
+        yield stringType!.toStringValue()!;
+      } else {
+        yield resolveFullTypeStringFrom(
+          constructor.library,
+          (object.type! as InterfaceType).typeArguments.single,
+          withNullability: false,
+        );
+      }
     }
   }
 
