@@ -758,12 +758,6 @@ extension on LibraryElement {
       return element.name == 'JsonSerializable' &&
           (element.library?.isFromPackage('json_annotation') ?? false);
     });
-
-    // return const RecursiveImportLocator().hasImport(
-    //   root: this,
-    //   where: (e) => e.name == 'JsonSerializable' && e is ClassElement,
-    //   whereLibrary: isWithin('json_annotation'),
-    // );
   }
 
   bool get importsDiagnosticable {
@@ -771,25 +765,6 @@ extension on LibraryElement {
       return element.name == 'DiagnosticableTreeMixin' &&
           (element.library?.isFromPackage('flutter') ?? false);
     });
-
-    // return const RecursiveImportLocator().hasImport(
-    //     root: this,
-    //     where: (e) {
-    //       // print('<<< ${e.library?.librarySource?.fullName}');
-    //       if (e.name == 'Diagnosticable') {
-    //         // print('<<<< $e');
-    //         //   print('Hello ${e.runtimeType} $e');
-    //       }
-    //       return e.name == 'Diagnosticable' && e is MixinElement;
-    //     },
-    //     whereLibrary: (e) {
-    //       // if (isWithin('flutter')(e)) {
-    //       // print('<<< ${e.librarySource!.fullName}');
-    //       return isWithin('flutter')(e);
-    //       // return true;
-    //       // }
-    //       return false;
-    //     });
   }
 }
 
