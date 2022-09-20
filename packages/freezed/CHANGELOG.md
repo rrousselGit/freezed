@@ -1,3 +1,7 @@
+# 2.1.1
+
+Bump Analyzer to 5.0.0
+
 # 2.1.0+1
 
 Improve pub score
