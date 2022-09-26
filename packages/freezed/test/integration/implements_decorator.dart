@@ -54,7 +54,9 @@ class GenericImplements<T> with _$GenericImplements<T> {
       GenericCity<T>;
 }
 
-abstract class Generic<T> {}
+abstract class Generic<T> {
+  T get value;
+}
 
 abstract class GeographicArea {
   String get name;
