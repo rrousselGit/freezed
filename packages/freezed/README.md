@@ -1081,11 +1081,11 @@ All you need to do is to change the signature of the `fromJson` method and add `
 
 ```dart
 @Freezed(genericArgumentFactories: true)
-class ApiResponse<T> with _$ApiResponse {
-  const factory ApiResponse<T>.data(T data) = ApiResponseData;
-  const factory ApiResponse<T>.error(String message) = ApiResponseError;
+class ApiResponse<T> with _$ApiResponse<T> {
+  const factory ApiResponse.data(T data) = ApiResponseData;
+  const factory ApiResponse.error(String message) = ApiResponseError;
 
-  factory ApiResponse<T>.fromJson(Map<String, dynamic> json, T Function(Object?) fromJsonT) => _$ApiResponseFromJson(json, fromJsonT);
+  factory ApiResponse.fromJson(Map<String, dynamic> json, T Function(Object?) fromJsonT) => _$ApiResponseFromJson(json, fromJsonT);
 }
 ```
 

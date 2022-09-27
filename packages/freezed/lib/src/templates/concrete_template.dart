@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/tools/type.dart';
@@ -552,12 +553,11 @@ String? parseTypeSource(VariableElement element) {
   if (type.contains('dynamic') && element.nameOffset > 0) {
     final source =
         element.source!.contents.data.substring(0, element.nameOffset);
-    if (element.type.element != null &&
-        element.type.isDynamic &&
-        element.type.element!.isSynthetic) {
+    final eleType = element.type;
+    if (eleType is DynamicType) {
       final match = RegExp(r'(\w+\??)\s+$').firstMatch(source);
       return match?.group(1);
-    } else if (element.type.element != null) {
+    } else if (eleType is InterfaceType) {
       final match = RegExp(r'(\w+<.+?>\??)\s+$').firstMatch(source);
       return match?.group(1) ?? type;
     }
