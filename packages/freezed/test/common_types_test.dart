@@ -100,33 +100,12 @@ void main() {
     });
   });
 
-  // group('CommonTypeNestedContainer', () {
-  //   test(
-  //     'nested copyWith with a default value that is not a subtype of the common subtype',
-  //     () {
-  //       var commonTypeContainer = const CommonTypeNestedContainer(
-  //         internal: CommonTypeNested.two(a: 0.0),
-  //       );
-  //       commonTypeContainer = commonTypeContainer.copyWith.internal();
-  //       expect(commonTypeContainer.internal.a, 0.0);
-
-  //       commonTypeContainer = commonTypeContainer.copyWith.internal(a: 12);
-  //       expect(commonTypeContainer.internal.a, 12);
-  //     },
-  //   );
-  // });
-
   group('CommonUnfreezed', () {
     test('should have common getters available', () {
       var value = CommonUnfreezed.one(a: 42, b: 3.14);
       expect(value.a, 42);
       expect(value.b, 3.14);
     });
-
-    // test('should have common setters available', () {
-    //   var value = CommonUnfreezed.one(a: 42, b: 3.14)..b = 42.24;
-    //   expect(value.b, 42.24);
-    // });
 
     test('should not have setters for getters with different type', () async {
       await expectLater(library.withCode('''
