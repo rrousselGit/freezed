@@ -587,4 +587,34 @@ void main() {
       );
     });
   });
+
+  test('warns about unused copyWith result', () async {
+    final main = await resolveSources(
+      {
+        'freezed|test/integration/main.dart': r'''
+library main;
+import 'deep_copy.dart';
+
+void main() {
+  Company company = Company();
+  company.copyWith.director!(name: 'Larry');
+  company.copyWith(name: 'MyCompany');
+}
+''',
+      },
+      (r) => r.libraries.firstWhere(
+          (element) => element.source.toString().contains('deep_copy')),
+    );
+
+    final errorResult = await main.session
+        .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+
+    expect(
+      errorResult.errors.map((e) => e.errorCode.name),
+      [
+        'UNUSED_RESULT',
+        'UNUSED_RESULT',
+      ],
+    );
+  });
 }
