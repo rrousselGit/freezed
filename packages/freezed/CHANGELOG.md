@@ -1,3 +1,7 @@
+# [Unreleased]
+
+The generated `copyWith` is now annotated by `@useResult`
+
 # 2.1.1
 
 - Bump Analyzer to 5.0.0
