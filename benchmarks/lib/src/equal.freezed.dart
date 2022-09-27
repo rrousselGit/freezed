@@ -28,34 +28,37 @@ mixin _$ModelWithList {
 abstract class $ModelWithListCopyWith<$Res> {
   factory $ModelWithListCopyWith(
           ModelWithList value, $Res Function(ModelWithList) then) =
-      _$ModelWithListCopyWithImpl<$Res>;
+      _$ModelWithListCopyWithImpl<$Res, ModelWithList>;
+  @useResult
   $Res call({List<int> someList, int counter});
 }
 
 /// @nodoc
-class _$ModelWithListCopyWithImpl<$Res>
+class _$ModelWithListCopyWithImpl<$Res, $Val extends ModelWithList>
     implements $ModelWithListCopyWith<$Res> {
   _$ModelWithListCopyWithImpl(this._value, this._then);
 
-  final ModelWithList _value;
   // ignore: unused_field
-  final $Res Function(ModelWithList) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? someList = freezed,
-    Object? counter = freezed,
+    Object? someList = null,
+    Object? counter = null,
   }) {
     return _then(_value.copyWith(
-      someList: someList == freezed
+      someList: null == someList
           ? _value.someList
           : someList // ignore: cast_nullable_to_non_nullable
               as List<int>,
-      counter: counter == freezed
+      counter: null == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 }
 
@@ -66,31 +69,30 @@ abstract class _$$_ModelWithListCopyWith<$Res>
           _$_ModelWithList value, $Res Function(_$_ModelWithList) then) =
       __$$_ModelWithListCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({List<int> someList, int counter});
 }
 
 /// @nodoc
 class __$$_ModelWithListCopyWithImpl<$Res>
-    extends _$ModelWithListCopyWithImpl<$Res>
+    extends _$ModelWithListCopyWithImpl<$Res, _$_ModelWithList>
     implements _$$_ModelWithListCopyWith<$Res> {
   __$$_ModelWithListCopyWithImpl(
       _$_ModelWithList _value, $Res Function(_$_ModelWithList) _then)
-      : super(_value, (v) => _then(v as _$_ModelWithList));
+      : super(_value, _then);
 
-  @override
-  _$_ModelWithList get _value => super._value as _$_ModelWithList;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? someList = freezed,
-    Object? counter = freezed,
+    Object? someList = null,
+    Object? counter = null,
   }) {
     return _then(_$_ModelWithList(
-      someList: someList == freezed
+      someList: null == someList
           ? _value._someList
           : someList // ignore: cast_nullable_to_non_nullable
               as List<int>,
-      counter: counter == freezed
+      counter: null == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
               as int,
@@ -138,6 +140,7 @@ class _$_ModelWithList implements _ModelWithList {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ModelWithListCopyWith<_$_ModelWithList> get copyWith =>
       __$$_ModelWithListCopyWithImpl<_$_ModelWithList>(this, _$identity);
 }
@@ -147,9 +150,9 @@ abstract class _ModelWithList implements ModelWithList {
       _$_ModelWithList;
 
   @override
-  List<int> get someList => throw _privateConstructorUsedError;
+  List<int> get someList;
   @override
-  int get counter => throw _privateConstructorUsedError;
+  int get counter;
   @override
   @JsonKey(ignore: true)
   _$$_ModelWithListCopyWith<_$_ModelWithList> get copyWith =>
