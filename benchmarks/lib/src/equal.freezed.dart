@@ -29,6 +29,7 @@ abstract class $ModelWithListCopyWith<$Res> {
   factory $ModelWithListCopyWith(
           ModelWithList value, $Res Function(ModelWithList) then) =
       _$ModelWithListCopyWithImpl<$Res, ModelWithList>;
+  @useResult
   $Res call({List<int> someList, int counter});
 }
 
@@ -37,6 +38,7 @@ class _$ModelWithListCopyWithImpl<$Res, $Val extends ModelWithList>
     implements $ModelWithListCopyWith<$Res> {
   _$ModelWithListCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
@@ -67,6 +69,7 @@ abstract class _$$_ModelWithListCopyWith<$Res>
           _$_ModelWithList value, $Res Function(_$_ModelWithList) then) =
       __$$_ModelWithListCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({List<int> someList, int counter});
 }
 

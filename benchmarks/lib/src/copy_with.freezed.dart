@@ -26,6 +26,7 @@ mixin _$Model {
 abstract class $ModelCopyWith<$Res> {
   factory $ModelCopyWith(Model value, $Res Function(Model) then) =
       _$ModelCopyWithImpl<$Res, Model>;
+  @useResult
   $Res call({int counter});
 }
 
@@ -34,6 +35,7 @@ class _$ModelCopyWithImpl<$Res, $Val extends Model>
     implements $ModelCopyWith<$Res> {
   _$ModelCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
@@ -57,6 +59,7 @@ abstract class _$$_ModelCopyWith<$Res> implements $ModelCopyWith<$Res> {
   factory _$$_ModelCopyWith(_$_Model value, $Res Function(_$_Model) then) =
       __$$_ModelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({int counter});
 }
 
@@ -137,6 +140,7 @@ abstract class $ModelWrapperCopyWith<$Res> {
   factory $ModelWrapperCopyWith(
           ModelWrapper value, $Res Function(ModelWrapper) then) =
       _$ModelWrapperCopyWithImpl<$Res, ModelWrapper>;
+  @useResult
   $Res call({Model model});
 
   $ModelCopyWith<$Res> get model;
@@ -147,6 +151,7 @@ class _$ModelWrapperCopyWithImpl<$Res, $Val extends ModelWrapper>
     implements $ModelWrapperCopyWith<$Res> {
   _$ModelWrapperCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
@@ -180,6 +185,7 @@ abstract class _$$_ModelWrapperCopyWith<$Res>
           _$_ModelWrapper value, $Res Function(_$_ModelWrapper) then) =
       __$$_ModelWrapperCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({Model model});
 
   @override
