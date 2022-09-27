@@ -7,7 +7,6 @@ import 'package:test/test.dart';
 
 import 'integration/common_types.dart';
 
-// TODO: Uncomment tests when copyWith for common subtypes is implemented
 Future<void> main() async {
   final library = await Library.parseFromStacktrace();
 
@@ -40,35 +39,6 @@ Future<void> main() async {
       expect(value.c, 56.78);
     });
 
-    // test('copy has all with common subtypes available', () {
-    //   var value = const CommonSuperSubtype('a', 1337, 42);
-    //   expect(value.a, 'a');
-
-    //   value = value.copyWith(a: 'b', c: 24.42);
-    //   expect(value.a, 'b');
-    //   expect(value.c, 24.42);
-    // });
-
-    // test('copy has shared params with common subtypes available', () async {
-    //   var param = const CommonSuperSubtype('a', 1337, 42);
-    //   param = param.copyWith(a: '2', c: 24.42);
-    //   expect(param.a, '2');
-    //   expect(param.c, 24.42);
-    // });
-
-//     test('copy does not have shared params without common subtype available',
-//         () async {
-//       await expectLater(library.withCode('''
-// import 'integration/common_types.dart';
-
-// void main() {
-//   final param = CommonSuperSubtype('a', 1337, 42);
-
-//   // expect-error: UNDEFINED_NAMED_PARAMETER
-//   param.copyWith(b: 42);
-// }
-// '''), compiles);
-//     });
   });
 
   group('GeneratedDependency', () {
