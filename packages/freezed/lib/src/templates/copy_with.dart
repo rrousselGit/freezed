@@ -137,6 +137,7 @@ ${_deepCopyMethods().join()}
     }).join(',');
 
     return _maybeOverride('''
+@useResult
 \$Res $methodName({
 $parameters
 });
