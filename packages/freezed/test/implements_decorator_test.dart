@@ -66,8 +66,11 @@ void main() {
     test('static @With and @Implements', () {
       const object = GenericCity<int>('Morning', 140000);
       // testing that GenericStreet's abstract class implements the types too
+      // ignore: unused_local_variable
       House house = object;
+      // ignore: unused_local_variable
       GeographicArea area = object;
+
       expect(object, isA<House>());
       expect(
         object,
@@ -78,8 +81,11 @@ void main() {
     test('generic @With and @Implements using fromString', () {
       const object = GenericStreet<int>('Oak', 42);
       // testing that GenericStreet's abstract class implements the types too
+      // ignore: unused_local_variable
       AdministrativeArea<int> area = object;
+      // ignore: unused_local_variable
       Generic<int> generic = object;
+
       expect(object, isA<AdministrativeArea<int>>());
       expect(
         object,
