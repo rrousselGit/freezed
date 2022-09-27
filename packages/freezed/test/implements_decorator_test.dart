@@ -64,7 +64,10 @@ void main() {
 
   group('Generic type', () {
     test('static @With and @Implements', () {
-      const object = GenericImplements<int>.city('Morning', 140000);
+      const object = GenericCity<int>('Morning', 140000);
+      // testing that GenericStreet's abstract class implements the types too
+      House house = object;
+      GeographicArea area = object;
       expect(object, isA<House>());
       expect(
         object,
@@ -73,7 +76,10 @@ void main() {
     });
 
     test('generic @With and @Implements using fromString', () {
-      const object = GenericImplements<int>.street('Oak', 42);
+      const object = GenericStreet<int>('Oak', 42);
+      // testing that GenericStreet's abstract class implements the types too
+      AdministrativeArea<int> area = object;
+      Generic<int> generic = object;
       expect(object, isA<AdministrativeArea<int>>());
       expect(
         object,
