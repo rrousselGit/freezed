@@ -80,7 +80,7 @@ void main() {
       );
 
       var freezedClass = main.topLevelElements
-          .whereType<ClassElement>()
+          .whereType<MixinElement>()
           .firstWhere((element) => element.displayName == r'_$CommonTypedefs');
 
       var a = freezedClass.getGetter('a')!.returnType;
