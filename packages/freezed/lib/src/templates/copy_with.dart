@@ -33,14 +33,21 @@ class CopyWith {
   /// if the raw collection can be accessed instead.
   bool get canAccessRawCollection => parent != null;
 
-  String get interface {
+  String get interface => _interface(appendGenericToFactory: false);
+  String get commonInterface => _interface(appendGenericToFactory: true);
+
+  String _interface({required bool appendGenericToFactory}) {
     var implements = _hasSuperClass
         ? 'implements ${parent!._abstractClassName}${genericsParameter.append('\$Res')}'
         : '';
+    var implGenerics = genericsParameter.append('\$Res');
+    if (appendGenericToFactory) {
+      implGenerics = implGenerics.append('$clonedClassName$genericsParameter');
+    }
     return '''
 /// @nodoc
 abstract class $_abstractClassName${genericsDefinition.append('\$Res')} $implements {
-  factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) then) = $_implClassName${genericsParameter.append('\$Res')};
+  factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) then) = $_implClassName$implGenerics;
 ${_copyWithPrototype('call')}
 
 ${_abstractDeepCopyMethods().join()}
@@ -67,7 +74,7 @@ ${_abstractDeepCopyMethods().join()}
             return Parameter(
               decorators: e.decorators,
               name: e.name,
-              isNullable: false,
+              isNullable: e.isNullable,
               isFinal: false,
               isDartList: false,
               isDartMap: false,
@@ -85,22 +92,24 @@ ${_abstractDeepCopyMethods().join()}
           }).toList(),
         ),
         returnType: '_value.copyWith',
+        returnCast: 'as \$Val',
       );
 
-      copyWith = '@override $prototype $body';
+      copyWith = '@pragma(\'vm:prefer-inline\') @override $prototype $body';
     }
 
     return '''
 /// @nodoc
-class $_implClassName${genericsDefinition.append('\$Res')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
+class $_implClassName${genericsDefinition.append('\$Res').append('\$Val extends $clonedClassName$genericsParameter')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
   $_implClassName(this._value, this._then);
 
-  final $clonedClassName$genericsParameter _value;
   // ignore: unused_field
-  final \$Res Function($clonedClassName$genericsParameter) _then;
+  final \$Val _value;
+  // ignore: unused_field
+  final \$Res Function(\$Val) _then;
 
 $copyWith
-${_deepCopyMethods().join()}
+${_deepCopyMethods(isConcrete: false).join()}
 }
 ''';
   }
@@ -140,6 +149,7 @@ ${_deepCopyMethods().join()}
     }).join(',');
 
     return _maybeOverride('''
+@useResult
 \$Res $methodName({
 $parameters
 });
@@ -162,6 +172,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
     return '''
 @JsonKey(ignore: true)
 @override
+@pragma('vm:prefer-inline')
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
 ''';
   }
@@ -179,7 +190,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
       returnType: '$clonedClassName$genericsParameter',
     );
 
-    return '@override $prototype $body';
+    return '@pragma(\'vm:prefer-inline\') @override $prototype $body';
   }
 
   String _ignoreLints(String s,
@@ -188,10 +199,19 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
 // ignore: ${lints.join(', ')}
 $s''';
 
+  String _defaultValue({required bool isNullable}) {
+    if (isNullable) {
+      return 'freezed';
+    } else {
+      return 'null';
+    }
+  }
+
   String _copyWithMethodBody({
     String accessor = '_value',
     required ParametersTemplate parametersTemplate,
     required String returnType,
+    String returnCast = '',
   }) {
     String parameterToValue(Parameter p) {
       var propertyName = p.name;
@@ -201,7 +221,8 @@ $s''';
         propertyName = '_$propertyName';
       }
 
-      var ternary = '${p.name} == freezed ? $accessor.$propertyName ';
+      var ternary =
+          '${_defaultValue(isNullable: p.isNullable)} == ${p.name} ? $accessor.$propertyName ';
 
       final type = p.commonSubtype ?? p.type;
       if (p.commonSubtype != null && p.type != p.commonSubtype) {
@@ -209,9 +230,10 @@ $s''';
       }
 
       ternary += ': ${p.name} ';
-      if (p.type != 'Object?' && p.type != null) {
-        ternary += _ignoreLints('as $type');
+      if (p.type != 'Object?' && p.type != 'Object' && p.type != null) {
+        ternary += _ignoreLints('as ${p.type}');
       }
+
       return '$ternary,';
     }
 
@@ -231,7 +253,7 @@ $s''';
     return '''{
   return _then($returnType(
 $constructorParameters
-  ));
+  )$returnCast);
 }''';
   }
 
@@ -240,7 +262,7 @@ $constructorParameters
     required String methodName,
   }) {
     final parameters = properties.map((p) {
-      return 'Object? ${p.name} = freezed,';
+      return 'Object? ${p.name} = ${_defaultValue(isNullable: p.isNullable)},';
     }).join();
 
     return '\$Res $methodName({$parameters})';
@@ -253,20 +275,18 @@ $constructorParameters
   String concreteImpl(ParametersTemplate parametersTemplate) {
     return '''
 /// @nodoc
-class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._implClassName}${genericsParameter.append('\$Res')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
+class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._implClassName}${genericsParameter.append('\$Res').append('$clonedClassName$genericsParameter')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
   $_implClassName($clonedClassName$genericsParameter _value, \$Res Function($clonedClassName$genericsParameter) _then)
-      : super(_value, (v) => _then(v as $clonedClassName$genericsParameter));
+      : super(_value, _then);
 
-@override
-$clonedClassName$genericsParameter get _value => super._value as $clonedClassName$genericsParameter;
 
 ${_copyWithMethod(parametersTemplate)}
 
-${_deepCopyMethods().join()}
+${_deepCopyMethods(isConcrete: true).join()}
 }''';
   }
 
-  Iterable<String> _deepCopyMethods() sync* {
+  Iterable<String> _deepCopyMethods({required bool isConcrete}) sync* {
     final toGenerateProperties = parent == null
         ? cloneableProperties
         : cloneableProperties.where((property) {
@@ -289,12 +309,15 @@ ${_deepCopyMethods().join()}
           ? '${_clonerInterfaceFor(cloneableProperty)}?'
           : '${_clonerInterfaceFor(cloneableProperty)}';
 
+      final cast = isConcrete ? '' : 'as \$Val';
+
       yield '''
 @override
+@pragma('vm:prefer-inline')
 $returnType get ${cloneableProperty.name} {
   $earlyReturn
   return ${_clonerInterfaceFor(cloneableProperty)}(_value.${cloneableProperty.name}$nullabilitySuffix, (value) {
-    return _then(_value.copyWith(${cloneableProperty.name}: value));
+    return _then(_value.copyWith(${cloneableProperty.name}: value) $cast);
   });
 }''';
     }

@@ -48,7 +48,7 @@ $_toJson
 ${copyWith?.abstractCopyWithGetter ?? ''}
 }
 
-${copyWith?.interface ?? ''}
+${copyWith?.commonInterface ?? ''}
 
 ${copyWith?.commonContreteImpl ?? ''}
 ''';
