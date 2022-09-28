@@ -814,10 +814,10 @@ The reasoning is that they are not "exhaustive". See https://www.fullstory.com/b
 
 ### Mixins and Interfaces for individual classes for union types
 
-When you have multiple types in the same class you might want to make
-one of those types to implement an interface or mixin a class. You can do
-that using the `@Implements` decorator or `@With` respectively. In this
-case `City` is implementing with `GeographicArea`.
+When you have multiple types in the same class you might want one of those
+types to implement an interface or mixin a class. You can do that using the
+`@Implements` or `@With` decorators respectively. In the following example
+`City` implements `GeographicArea`.
 
 ```dart
 abstract class GeographicArea {
@@ -834,10 +834,12 @@ class Example with _$Example {
 }
 ```
 
-In case you want to specify a generic mixin or interface you need to
-declare it as a string using the `With.fromString` constructor,
-`Implements.fromString` respectively. Similar `Street` is mixing with
-`AdministrativeArea<House>`.
+This also works for implementing or mixing in generic classes e.g.
+`AdministrativeArea<House>` except when the class has a generic type parameter
+e.g. `AdministrativeArea<T>`. In this case freezed will generate correct code
+but dart will throw a load error on the annotation declaration when compiling.
+To avoid this you should use the `@Implements.fromString` and
+`@With.fromString` decorators as follows:
 
 ```dart
 abstract class GeographicArea {}
@@ -846,16 +848,17 @@ abstract class Shop {}
 abstract class AdministrativeArea<T> {}
 
 @freezed
-class Example with _$Example {
-  const factory Example.person(String name, int age) = Person;
+class Example<T> with _$Example<T> {
+  const factory Example.person(String name, int age) = Person<T>;
 
-  @With<AdministrativeArea<House>>()
-  const factory Example.street(String name) = Street;
+  @With.fromString('AdministrativeArea<T>')
+  const factory Example.street(String name) = Street<T>;
 
   @With<House>()
   @Implements<Shop>()
   @Implements<GeographicArea>()
-  const factory Example.city(String name, int population) = City;
+  @Implements.fromString('AdministrativeArea<T>')
+  const factory Example.city(String name, int population) = City<T>;
 }
 ```
 

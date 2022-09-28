@@ -531,8 +531,13 @@ class Default {
 /// method or a getter, that you implement in the class, you need to use the
 /// [Custom getters and methods](#custom-getters-and-methods) instructions.
 class Implements<T> {
+  /// Marks a union type to implement the interface T.
   const Implements() : stringType = null;
 
+  /// Marks a union type to implement the interface [stringType]. This
+  /// constructor must be used when implementing a generic class with a generic
+  /// type parameter e.g. `AdministrativeArea<T>` otherwise dart will throw a
+  /// load error when compiling the annotation.
   const Implements.fromString(this.stringType);
 
   final String? stringType;
@@ -561,8 +566,13 @@ class Implements<T> {
 /// method or a getter, that you implement in the class, you need to use the
 /// [Custom getters and methods](#custom-getters-and-methods) instructions.
 class With<T> {
+  /// Marks a union type to mixin the interface T.
   const With() : stringType = null;
 
+  /// Marks a union type to mixin the interface [stringType]. This constructor
+  /// must be used when mixing in a generic class with a generic type parameter
+  /// e.g. `AdministrativeArea<T>` otherwise dart will throw a load error when
+  /// compiling the annotation.
   const With.fromString(this.stringType);
 
   final String? stringType;
