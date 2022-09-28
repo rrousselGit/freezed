@@ -246,9 +246,11 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
 
           var anyMatchingPropertyIsFinal = false;
 
-          var commonSupertypeDartType = parameter.parameterElement!.type;
-          var commonSubTypeDartType = parameter.parameterElement?.type;
+          var commonSupertype = parameter.parameterElement!.type;
+          var commonSubtype = parameter.parameterElement?.type;
 
+          // Required fallback type for when common types can't be resolved
+          // using the type system
           String? commonSupertypeString;
           String? commonSubtypeString;
 
@@ -262,12 +264,11 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
                 matchingParameter.parameterElement!.type;
             if (matchingParameter.isFinal) anyMatchingPropertyIsFinal = true;
 
-            if (commonSupertypeDartType is FunctionType ||
-                commonSupertypeDartType.isDynamic) {
+            if (commonSupertype is FunctionType || commonSupertype.isDynamic) {
               // If the type is a typedef, by finding the upper bound we would lose
               // the initial definition. Therefore FunctionTypes are currently not
-              // supported for finding in finding common super types.
-              // => Resort back to type string matching.
+              // supported as common super types.
+              // => Fall back to type string matching.
               commonSupertypeString ??= parameter.type!;
               if (commonSupertypeString.contains('dynamic')) return null;
 
@@ -276,7 +277,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
                 return null;
               }
 
-              if (commonSupertypeDartType.isNullable !=
+              if (commonSupertype.isNullable !=
                   matchingParameterType.isNullable) {
                 commonSupertypeString =
                     typeStringWithNullability(commonSupertypeString);
@@ -284,22 +285,22 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
                     typeStringWithoutNullability(commonSupertypeString);
               }
             } else {
-              commonSupertypeDartType = library.typeSystem.leastUpperBound(
-                commonSupertypeDartType,
+              commonSupertype = library.typeSystem.leastUpperBound(
+                commonSupertype,
                 matchingParameterType,
               );
 
-              if (commonSupertypeDartType
+              if (commonSupertype
                   .getDisplayString(withNullability: true)
                   .contains('dynamic')) return null;
 
-              if (commonSubTypeDartType != null) {
-                if (library.typeSystem.isSubtypeOf(
-                    matchingParameterType, commonSubTypeDartType)) {
-                  commonSubTypeDartType = matchingParameterType;
-                } else if (!library.typeSystem.isSubtypeOf(
-                    commonSubTypeDartType, matchingParameterType)) {
-                  commonSubTypeDartType = null;
+              if (commonSubtype != null) {
+                if (library.typeSystem
+                    .isSubtypeOf(matchingParameterType, commonSubtype)) {
+                  commonSubtype = matchingParameterType;
+                } else if (!library.typeSystem
+                    .isSubtypeOf(commonSubtype, matchingParameterType)) {
+                  commonSubtype = null;
                 }
               }
             }
@@ -308,9 +309,9 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
           return parameter.copyWith(
             isFinal: parameter.isFinal || anyMatchingPropertyIsFinal,
             commonSupertype:
-                commonSupertypeString ?? typeString(commonSupertypeDartType),
+                commonSupertypeString ?? typeString(commonSupertype),
             commonSubtype:
-                commonSubtypeString ?? commonSubTypeDartType?.let(typeString),
+                commonSubtypeString ?? commonSubtype?.let(typeString),
           );
         })
         .whereNotNull()
