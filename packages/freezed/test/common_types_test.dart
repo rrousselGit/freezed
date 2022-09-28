@@ -30,15 +30,17 @@ Future<void> main() async {
     test('has the common properties available', () {
       var value = const CommonSuperSubtype('a', 1337, 42.24);
       expect(value.a, 'a');
+      expect(value.a, isA<String?>());
       expect(value.b, 1337);
+      expect(value.b, isA<num>());
       expect(value.c, 42.24);
+      expect(value.c, isA<num>());
 
       value = const CommonSuperSubtype.named('b', 12.34, 56.78);
       expect(value.a, 'b');
       expect(value.b, 12.34);
       expect(value.c, 56.78);
     });
-
   });
 
   group('GeneratedDependency', () {
@@ -104,7 +106,9 @@ void main() {
     test('should have common getters available', () {
       var value = CommonUnfreezed.one(a: 42, b: 3.14);
       expect(value.a, 42);
+      expect(value.a, isA<int>());
       expect(value.b, 3.14);
+      expect(value.b, isA<double>());
     });
 
     test('should not have setters for getters with different type', () async {
