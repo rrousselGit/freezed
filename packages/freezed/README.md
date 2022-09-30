@@ -1131,7 +1131,7 @@ class Example with _$Example {
 
 If you want to define some custom json_serializable flags for all the classes (e.g. `explicit_to_json` or `any_map`) you can do it via `build.yaml` file as described [here](https://pub.dev/packages/json_serializable#build-configuration).
 
-See also the [decorators](#decorators) section
+See also the [decorators](#decorators-and-comments) section
 
 ## Configurations
 
