@@ -37,7 +37,10 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Install dependencies
-        run: flutter pub ${{ matrix.dependencies }}
+        run: |
+          flutter pub get
+          flutter pub deps -s compact
+          flutter pub ${{ matrix.dependencies }}
         working-directory: ${{ matrix.package }}
 
       - name: Check format
