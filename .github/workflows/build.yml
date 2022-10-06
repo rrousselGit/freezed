@@ -20,6 +20,7 @@ jobs:
           # - packages/freezed/example
         channel:
           - master
+          - stable
         dependencies:
           - get
           - downgrade
@@ -38,11 +39,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          flutter pub get
           flutter pub ${{ matrix.dependencies }}
         working-directory: ${{ matrix.package }}
 
       - name: Check format
+        if: ${{ matrix.channel }} == 'master'
         run: flutter format --set-exit-if-changed .
         working-directory: ${{ matrix.package }}
 
