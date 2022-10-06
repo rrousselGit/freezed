@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           flutter pub get
-          flutter pub deps -s compact
+          flutter pub upgrade
           flutter pub ${{ matrix.dependencies }}
         working-directory: ${{ matrix.package }}
 
