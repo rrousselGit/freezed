@@ -19,7 +19,7 @@ jobs:
           - packages/freezed_annotation
           # - packages/freezed/example
         channel:
-          - stable
+          - master
         dependencies:
           - get
           - downgrade
@@ -42,9 +42,9 @@ jobs:
           flutter pub ${{ matrix.dependencies }}
         working-directory: ${{ matrix.package }}
 
-#      - name: Check format
-#        run: flutter format --set-exit-if-changed .
-#        working-directory: ${{ matrix.package }}
+      - name: Check format
+        run: flutter format --set-exit-if-changed .
+        working-directory: ${{ matrix.package }}
 
       - name: Generate
         run: |
