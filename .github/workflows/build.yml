@@ -39,13 +39,12 @@ jobs:
       - name: Install dependencies
         run: |
           flutter pub get
-          flutter pub upgrade
           flutter pub ${{ matrix.dependencies }}
         working-directory: ${{ matrix.package }}
 
-      - name: Check format
-        run: flutter format --set-exit-if-changed .
-        working-directory: ${{ matrix.package }}
+#      - name: Check format
+#        run: flutter format --set-exit-if-changed .
+#        working-directory: ${{ matrix.package }}
 
       - name: Generate
         run: |
