@@ -19,6 +19,13 @@ jobs:
           # - packages/freezed/example
         channel:
           - master
+          - stable
+        dependencies:
+          - get
+          - downgrade
+        exclude:
+          - channel: master
+            dependencies: downgrade
 
     steps:
       - uses: actions/checkout@v2
@@ -27,16 +34,19 @@ jobs:
         with:
           channel: ${{ matrix.channel }}
 
-      # It is executed separatly
+      # It is executed separately
       - name: Removing example folder
         run: rm -rf example
         working-directory: ${{ matrix.package }}
 
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub ${{ matrix.dependencies }}
         working-directory: ${{ matrix.package }}
 
       - name: Check format
+        # Check format only on master
+        if: matrix.channel == 'master'
         run: flutter format --set-exit-if-changed .
         working-directory: ${{ matrix.package }}
 
