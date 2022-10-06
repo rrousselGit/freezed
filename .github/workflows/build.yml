@@ -19,7 +19,7 @@ jobs:
           - packages/freezed_annotation
           # - packages/freezed/example
         channel:
-          - master
+          - stable
         dependencies:
           - get
           - downgrade
