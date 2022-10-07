@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
+      # eval matrix.channel 1
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
