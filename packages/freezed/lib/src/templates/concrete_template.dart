@@ -529,7 +529,8 @@ extension DefaultValue on ParameterElement {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
-        var needsConstModifier = !res.trimLeft().startsWith('const') &&
+        var needsConstModifier = !declaration.type.isDartCoreString &&
+            !res.trimLeft().startsWith('const') &&
             (res.contains('(') || res.contains('[') || res.contains('{'));
 
         if (needsConstModifier) {

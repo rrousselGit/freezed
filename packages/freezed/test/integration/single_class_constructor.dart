@@ -411,6 +411,12 @@ class StringDefault with _$StringDefault {
 }
 
 @freezed
+class SpecialStringDefault with _$SpecialStringDefault {
+  factory SpecialStringDefault([@Default('(1)[2]{3}') String value]) =
+      _SpecialStringDefault;
+}
+
+@freezed
 class DoubleDefault with _$DoubleDefault {
   factory DoubleDefault([@Default(42.0) double value]) = _DoubleDefault;
 }

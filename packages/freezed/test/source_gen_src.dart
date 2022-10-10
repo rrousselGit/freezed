@@ -229,3 +229,32 @@ abstract class AstractClass {
 class _AstractClass implements AstractClass {
   const _AstractClass();
 }
+
+/// Checks if generator still adds `const` prefix to const default values.
+@ShouldGenerate(
+  '''final List<Object> listObject = const <Object>[
+        1,
+        1.0,
+        {'1': 1},
+        [1, 1, 1]
+      ]''',
+  contains: true,
+)
+@freezed
+class DefaultConst {
+  factory DefaultConst({
+    @Default(<Object>[
+      1,
+      1.0,
+      {'1': 1},
+      [1, 1, 1],
+    ])
+        List<Object> listObject,
+  }) = _DefaultConst;
+}
+
+class _DefaultConst implements DefaultConst {
+  _DefaultConst({
+    List<Object>? listObject,
+  });
+}
