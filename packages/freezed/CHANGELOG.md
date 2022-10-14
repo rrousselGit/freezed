@@ -1,7 +1,8 @@
 # [Unreleased]
 
 - The generated `copyWith` is now annotated by `@useResult` (thanks to @miDeb)
-- Improve performance of `copyWith` (thanks to @miDeb)
+- Improved performance of `copyWith` (thanks to @miDeb)
+- Improved type inference when using `mapOrNull`/`whenOrNull` (thanks to @DevNico) 
 - fixes @Default for Strings containing (, [ or { (thanks to @hugobrancowb)
 - fix Freezed incorrectly comparing primitives using `DeepCollectionEquality` (thanks to @knaeckeKami)
 - fix image links (thanks to @SunlightBro)
