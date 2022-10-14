@@ -203,15 +203,20 @@ extension IsDartCollection on DartType {
   bool get isPossiblyDartCollection {
     final interface = safeCast<InterfaceType>();
 
-    return isDartCoreMap ||
-        isDartCoreIterable ||
-        isDartCoreSet ||
-        isDartCoreList ||
+    return _isDartCollectionType ||
         isDynamic ||
         isDartCoreObject ||
         this is TypeParameterType ||
         (interface != null &&
-            interface.allSupertypes.any((e) => e.isPossiblyDartCollection));
+            interface.allSupertypes.any((e) => e._isDartCollectionType));
+  }
+
+  /// Whether this type is a [List], [Map], [Set] or [Iterable].
+  bool get _isDartCollectionType {
+    return isDartCoreMap ||
+        isDartCoreIterable ||
+        isDartCoreSet ||
+        isDartCoreList;
   }
 }
 
