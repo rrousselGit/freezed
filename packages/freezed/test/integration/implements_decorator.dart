@@ -43,13 +43,20 @@ class GenericImplements<T> with _$GenericImplements<T> {
   const factory GenericImplements.person(String name, int age) =
       GenericPerson<T>;
 
+  @With.fromString('AdministrativeArea<T>')
+  @Implements.fromString('Generic<T>')
+  const factory GenericImplements.street(String name, T value) =
+      GenericStreet<T>;
+
   @With<House>()
   @Implements<GeographicArea>()
   const factory GenericImplements.city(String name, int population) =
       GenericCity<T>;
 }
 
-abstract class Generic<T> {}
+abstract class Generic<T> {
+  T get value;
+}
 
 abstract class GeographicArea {
   String get name;

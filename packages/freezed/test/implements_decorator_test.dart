@@ -62,12 +62,35 @@ void main() {
     });
   });
 
-  test('Generic type', () {
-    const object = GenericImplements<int>.city('Morning', 140000);
-    expect(object, isA<House>());
-    expect(
-      object,
-      isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'),
-    );
+  group('Generic type', () {
+    test('static @With and @Implements', () {
+      const object = GenericCity<int>('Morning', 140000);
+      // testing that GenericStreet's abstract class implements the types too
+      // ignore: unused_local_variable
+      House house = object;
+      // ignore: unused_local_variable
+      GeographicArea area = object;
+
+      expect(object, isA<House>());
+      expect(
+        object,
+        isA<GeographicArea>().having((s) => s.name, 'name', 'Morning'),
+      );
+    });
+
+    test('generic @With and @Implements using fromString', () {
+      const object = GenericStreet<int>('Oak', 42);
+      // testing that GenericStreet's abstract class implements the types too
+      // ignore: unused_local_variable
+      AdministrativeArea<int> area = object;
+      // ignore: unused_local_variable
+      Generic<int> generic = object;
+
+      expect(object, isA<AdministrativeArea<int>>());
+      expect(
+        object,
+        isA<Generic<int>>().having((s) => s.value, 'value', 42),
+      );
+    });
   });
 }
