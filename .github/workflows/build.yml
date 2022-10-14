@@ -2,6 +2,8 @@ name: Build
 
 on:
   push:
+    branches:
+      - master
   pull_request:
   schedule:
     # runs the CI everyday at 10AM
@@ -16,7 +18,6 @@ jobs:
         package:
           - packages/freezed
           - packages/freezed_annotation
-          # - packages/freezed/example
         channel:
           - master
           - stable

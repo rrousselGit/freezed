@@ -2,6 +2,7 @@
 
 - The generated `copyWith` is now annotated by `@useResult` (thanks to @miDeb)
 - Improve performance of `copyWith` (thanks to @miDeb)
+- fixes @Default for Strings containing (, [ or { (thanks to @hugobrancowb)
 
 # 2.1.1
 
