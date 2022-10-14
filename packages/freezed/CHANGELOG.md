@@ -1,3 +1,16 @@
+# [Unreleased]
+
+- The generated `copyWith` is now annotated by `@useResult` (thanks to @miDeb)
+- Improve performance of `copyWith` (thanks to @miDeb)
+- fixes @Default for Strings containing (, [ or { (thanks to @hugobrancowb)
+- fix Freezed incorrectly comparing primitives using `DeepCollectionEquality` (thanks to @knaeckeKami)
+- fix image links (thanks to @SunlightBro)
+
+# 2.1.1
+
+- Bump Analyzer to 5.0.0
+- Fix an issuee where Freezed fails to detect that the `Diagnosticable` API is available
+
 # 2.1.0+1
 
 Improve pub score

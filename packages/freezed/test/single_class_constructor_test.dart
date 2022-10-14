@@ -271,6 +271,11 @@ Future<void> main() async {
         StringDefault(),
         StringDefault('42'),
       );
+
+      expect(
+        SpecialStringDefault(),
+        SpecialStringDefault('(1)[2]{3}'),
+      );
     });
 
     test('List', () {

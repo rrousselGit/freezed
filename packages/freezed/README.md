@@ -25,9 +25,9 @@ and affect the readability of your model significantly.
 Freezed tries to fix that by implementing most of this for you, allowing you
 to focus on the definition of your model.
 
-| Before                          | After                          |
-| ------------------------------- | ------------------------------ |
-| ![before](resources/before.png) | ![before](resources/after.png) |
+| Before                                                                                       | After                                                                                       |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # Index
 
@@ -1081,11 +1081,11 @@ All you need to do is to change the signature of the `fromJson` method and add `
 
 ```dart
 @Freezed(genericArgumentFactories: true)
-class ApiResponse<T> with _$ApiResponse {
-  const factory ApiResponse<T>.data(T data) = ApiResponseData;
-  const factory ApiResponse<T>.error(String message) = ApiResponseError;
+class ApiResponse<T> with _$ApiResponse<T> {
+  const factory ApiResponse.data(T data) = ApiResponseData;
+  const factory ApiResponse.error(String message) = ApiResponseError;
 
-  factory ApiResponse<T>.fromJson(Map<String, dynamic> json, T Function(Object?) fromJsonT) => _$ApiResponseFromJson(json, fromJsonT);
+  factory ApiResponse.fromJson(Map<String, dynamic> json, T Function(Object?) fromJsonT) => _$ApiResponseFromJson(json, fromJsonT);
 }
 ```
 
@@ -1131,7 +1131,7 @@ class Example with _$Example {
 
 If you want to define some custom json_serializable flags for all the classes (e.g. `explicit_to_json` or `any_map`) you can do it via `build.yaml` file as described [here](https://pub.dev/packages/json_serializable#build-configuration).
 
-See also the [decorators](#decorators) section
+See also the [decorators](#decorators-and-comments) section
 
 ## Configurations
 

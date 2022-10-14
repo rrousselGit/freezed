@@ -85,6 +85,8 @@ void main() {
         errorResult.errors.map((e) => e.errorCode.name),
         anyOf([
           [
+            'UNUSED_RESULT',
+            'UNUSED_RESULT',
             'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
             'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
             'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
@@ -94,6 +96,8 @@ void main() {
             // 'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
           ],
           [
+            'UNUSED_RESULT',
+            'UNUSED_RESULT',
             'DEPRECATED_MEMBER_USE',
             'DEPRECATED_MEMBER_USE',
             'DEPRECATED_MEMBER_USE',

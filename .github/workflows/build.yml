@@ -2,6 +2,8 @@ name: Build
 
 on:
   push:
+    branches:
+      - master
   pull_request:
   schedule:
     # runs the CI everyday at 10AM
@@ -16,27 +18,37 @@ jobs:
         package:
           - packages/freezed
           - packages/freezed_annotation
-          # - packages/freezed/example
         channel:
           - master
+          - stable
+        dependencies:
+          - get
+          - downgrade
+        exclude:
+          - channel: master
+            dependencies: downgrade
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
+          cache: ${{ matrix.channel == 'stable' }}
 
-      # It is executed separatly
+      # It is executed separately
       - name: Removing example folder
         run: rm -rf example
         working-directory: ${{ matrix.package }}
 
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub ${{ matrix.dependencies }}
         working-directory: ${{ matrix.package }}
 
       - name: Check format
+        # Check format only on master
+        if: matrix.channel == 'master'
         run: flutter format --set-exit-if-changed .
         working-directory: ${{ matrix.package }}
 

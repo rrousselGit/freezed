@@ -2,19 +2,19 @@ name: example
 description: A new Flutter project.
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   freezed_annotation:
     path: ../../freezed_annotation
-  json_annotation: ^4.4.0
+  json_annotation: ^4.6.0
 
 dev_dependencies:
   freezed:
     path: ../
-  json_serializable: ^6.1.3
+  json_serializable: ^6.3.2
   build_runner:
   flutter_test:
     sdk: flutter
