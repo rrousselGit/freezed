@@ -1,4 +1,4 @@
-# [Unreleased]
+# 2.2.0
 
 - Re-introduced `@With.fromString` and `@Implements.fromString` to allow unions
   to implement generic types. (thanks to @rorystephenson)

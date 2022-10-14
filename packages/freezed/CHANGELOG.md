@@ -1,4 +1,4 @@
-# [Unreleased]
+# 2.2.0
 
 - The generated `copyWith` is now annotated by `@useResult` (thanks to @miDeb)
 - Improved performance of `copyWith` (thanks to @miDeb)
