@@ -2,6 +2,7 @@
 
 - The generated `copyWith` is now annotated by `@useResult` (thanks to @miDeb)
 - Improve performance of `copyWith` (thanks to @miDeb)
+- fix image links (thanks to @SunlightBro)
 
 # 2.1.1
 
