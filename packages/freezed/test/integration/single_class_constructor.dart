@@ -244,6 +244,7 @@ class Doc with _$Doc {
     /// line
     /// positional
     int positional, {
+
     /// Single line named
     int? named,
 
@@ -414,6 +415,26 @@ class StringDefault with _$StringDefault {
 class SpecialStringDefault with _$SpecialStringDefault {
   factory SpecialStringDefault([@Default('(1)[2]{3}') String value]) =
       _SpecialStringDefault;
+}
+
+/// Adds `const` to default non-literral values
+@freezed
+class DefaultNonLitteralConst with _$DefaultNonLitteralConst {
+  factory DefaultNonLitteralConst({
+    @Default(Object()) Object listObject,
+  }) = _DefaultNonLitteralConst;
+}
+
+/// Does not add `const` to non-literral values if already present
+@freezed
+class DefaultNonLitteralAlreadyConst with _$DefaultNonLitteralAlreadyConst {
+  factory DefaultNonLitteralAlreadyConst({
+    @Default(
+      // ignore: unnecessary_const
+      const Object(),
+    )
+        Object listObject,
+  }) = _DefaultNonLitteralAlreadyConst;
 }
 
 @freezed
