@@ -6,11 +6,8 @@ const _kUseNaiveImpl = false;
 
 @freezed
 class Model with _$Model {
-  factory Model({
-    required int counter
-  }) = _Model;
+  factory Model({required int counter}) = _Model;
 }
-
 
 @freezed
 class ModelWrapper with _$ModelWrapper {
