@@ -1,8 +1,12 @@
+# 2.2.1
+
+Upgrade analyzer
+
 # 2.2.0
 
 - The generated `copyWith` is now annotated by `@useResult` (thanks to @miDeb)
 - Improved performance of `copyWith` (thanks to @miDeb)
-- Improved type inference when using `mapOrNull`/`whenOrNull` (thanks to @DevNico) 
+- Improved type inference when using `mapOrNull`/`whenOrNull` (thanks to @DevNico)
 - Re-introduced `@With.fromString` and `@Implements.fromString` to allow unions
   to implement generic types. (thanks to @rorystephenson)
 - fixes @Default for Strings containing (, [ or { (thanks to @hugobrancowb)
