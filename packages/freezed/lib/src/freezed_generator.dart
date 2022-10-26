@@ -424,7 +424,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
 
       final parameterType = parameter.type;
       if (parameterType is! InterfaceType) continue;
-      final element = parameterType.element2;
+      final element = parameterType.element;
       if (element is! ClassElement) continue;
 
       final classElement = element;
@@ -660,7 +660,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       element,
       ...element.allSupertypes
           .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element2)
+          .map((e) => e.element)
     ]) {
       for (final method in type.methods) {
         if (method.name == 'toString') {
@@ -677,7 +677,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       element,
       ...element.allSupertypes
           .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element2)
+          .map((e) => e.element)
     ]) {
       for (final method in type.methods.where((e) => e.isOperator)) {
         if (method.name == '==') {

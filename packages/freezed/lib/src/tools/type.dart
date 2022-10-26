@@ -11,7 +11,7 @@ import 'imports.dart';
 /// type.alias.element
 Element? _getElementForType(DartType type) {
   if (type is InterfaceType) {
-    return type.element2;
+    return type.element;
   }
   if (type is FunctionType) {
     return type.alias?.element;
@@ -27,7 +27,7 @@ String resolveFullTypeStringFrom(
 }) {
   final owner = originLibrary.prefixes.firstWhereOrNull(
     (e) {
-      return e.imports2.any((l) {
+      return e.imports.any((l) {
         return l.importedLibrary!.anyTransitiveExport((library) {
           return library.id == _getElementForType(type)?.library?.id;
         });
