@@ -1,4 +1,4 @@
-// ignore_for_file: omit_local_variable_types
+// ignore_for_file: omit_local_variable_types, unused_local_variable
 
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:build_test/build_test.dart';
@@ -27,43 +27,97 @@ Future<void> main() async {
   });
 
   group('CommonSuperSubtype', () {
-    test('has the common properties available', () {
-      const value = CommonSuperSubtype('a', 1337, 42.24);
-      String? a = value.a;
-      expect(a, 'a');
-      num b = value.b;
-      expect(b, 1337);
-      num c = value.c;
-      expect(c, 42.24);
+    test('on the shared interface, has the common properties available', () {
+      const value = CommonSuperSubtype(
+        nullabilityDifference: 42,
+        typeDifference: 21,
+      );
+      int? nullabilityDifference = value.nullabilityDifference;
+      num typeDifference = value.typeDifference;
 
-      const value2 = CommonSuperSubtype.named('b', 12.34, 56.78);
-      expect(value2.a, 'b');
-      expect(value2.b, 12.34);
-      expect(value2.c, 56.78);
-    });
-  });
+      expect(value.nullabilityDifference, 42);
+      expect(value.typeDifference, 21);
 
-  group('GeneratedDependency', () {
-    test('should have getters available', () async {
-      final param = const GeneratedDependency(Dependency0());
-      expect(param.a, isA<Dependency0>());
-    });
-  });
-
-  group('CommonInterfaceSupertype', () {
-    test('has common param available', () {
-      var value = const CommonInterfaceSupertype(CommonInterfaceB());
-      expect(value.param, isA<CommonInterfaceB>());
+      const value2 = CommonSuperSubtype.named(
+        nullabilityDifference: null,
+        typeDifference: 22,
+      );
+      expect(value2.nullabilityDifference, null);
+      expect(value2.typeDifference, 22);
     });
 
-    test('does not have copy available', () async {
+    test('on the subclass, properties use explicit type', () {
+      const value = CommonSuperSubtype0(
+        nullabilityDifference: 42,
+        typeDifference: 21,
+      );
+      int nullabilityDifference = value.nullabilityDifference;
+      int typeDifference = value.typeDifference;
+
+      expect(value.nullabilityDifference, 42);
+      expect(value.typeDifference, 21);
+
+      const value2 = CommonSuperSubtype1(
+        nullabilityDifference: null,
+        typeDifference: 22,
+      );
+      int? nullabilityDifference2 = value2.nullabilityDifference;
+      double typeDifference2 = value2.typeDifference;
+
+      expect(value2.nullabilityDifference, null);
+      expect(value2.typeDifference, 22);
+    });
+
+    test(
+        'should not have getters for properties that are not shared between all unions',
+        () async {
       await expectLater(library.withCode('''
 import 'integration/common_types.dart';
 
 void main() {
-  CommonInterfaceSupertype param = CommonInterfaceSupertype(CommonInterfaceB());
-  // expect-error: UNDEFINED_METHOD
-  param.copyWith();
+  const value = CommonSuperSubtype(
+    nullabilityDifference: 42,
+    typeDifference: 21,
+  );
+  // expect-error: UNDEFINED_GETTER
+  value.unknown;
+}
+'''), compiles);
+    });
+
+    test('Can clone properties with nullability difference', () {
+      const value = CommonSuperSubtype0(
+        nullabilityDifference: 42,
+        typeDifference: 21,
+      );
+
+      expect(
+        value.copyWith(nullabilityDifference: 84),
+        const CommonSuperSubtype0(
+          nullabilityDifference: 84,
+          typeDifference: 21,
+        ),
+      );
+    });
+
+    test('Cannot clone with type mismatch', () async {
+      await expectLater(library.withCode('''
+import 'integration/common_types.dart';
+
+void main() {
+  final param = CommonSuperSubtype(
+    nullabilityDifference: 42,
+    typeDifference: 21,
+  );
+  param.copyWith(
+    // Since not all unions have a nullable property, we cannot assign "null"
+    // on the shared interface.
+    // expect-error: ASSIGNMENT_TO_FINAL_NO_SETTER
+    nullabilityDifference: null,
+    // Since not all unions use the same type, we can't clone that property at all.
+    // expect-error: ASSIGNMENT_TO_FINAL_NO_SETTER
+    typeDifference: 42,
+  );
 }
 '''), compiles);
     });

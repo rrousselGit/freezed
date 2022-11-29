@@ -4,48 +4,16 @@ part 'common_types.freezed.dart';
 
 @freezed
 class CommonSuperSubtype with _$CommonSuperSubtype {
-  const factory CommonSuperSubtype(
-    String a,
-    int b,
-    double c,
-  ) = CommonSuperSubtype0;
+  const factory CommonSuperSubtype({
+    required int nullabilityDifference,
+    required int typeDifference,
+    String? unknown,
+  }) = CommonSuperSubtype0;
 
-  const factory CommonSuperSubtype.named(
-    String? a,
-    double b,
-    num c,
-  ) = CommonSuperSubtype1;
-}
-
-class CommonInterface {
-  const CommonInterface();
-}
-
-class CommonInterfaceA implements CommonInterface {
-  const CommonInterfaceA();
-}
-
-class CommonInterfaceB implements CommonInterfaceA {
-  const CommonInterfaceB();
-}
-
-class CommonInterfaceC implements CommonInterface {
-  const CommonInterfaceC();
-}
-
-@freezed
-class CommonInterfaceSupertype with _$CommonInterfaceSupertype {
-  const factory CommonInterfaceSupertype(
-    CommonInterfaceA param,
-  ) = CommonInterfaceSupertype0;
-
-  const factory CommonInterfaceSupertype.one(
-    CommonInterfaceB param,
-  ) = CommonInterfaceSupertype1;
-
-  const factory CommonInterfaceSupertype.two(
-    CommonInterfaceC param,
-  ) = CommonInterfaceSupertype2;
+  const factory CommonSuperSubtype.named({
+    required int? nullabilityDifference,
+    required double typeDifference,
+  }) = CommonSuperSubtype1;
 }
 
 @freezed
