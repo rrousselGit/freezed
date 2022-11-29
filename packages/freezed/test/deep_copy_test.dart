@@ -5,6 +5,9 @@ import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/deep_copy.dart';
+import 'integration/generic.dart'
+    show AnyGeneric, NullableGeneric, NonNullableGeneric;
+import 'integration/single_class_constructor.dart' show Dynamic;
 
 void main() {
   // TODO: copyWith is identical to itself if don't have descendants
@@ -66,6 +69,42 @@ void main() {
     expect(
       () => company.copyWith.director!.assistant!(name: 'John'),
       throwsA(isA<TypeError>()),
+    );
+
+    expect(
+      Dynamic(foo: 42, bar: 21).copyWith(foo: null, bar: null),
+      Dynamic(foo: null, bar: null),
+    );
+    expect(
+      Dynamic(foo: 42, bar: 21).copyWith(),
+      Dynamic(foo: 42, bar: 21),
+    );
+
+    expect(
+      AnyGeneric<int?>(42).copyWith(value: null),
+      AnyGeneric<int?>(null),
+    );
+    expect(
+      AnyGeneric<int?>(42).copyWith(),
+      AnyGeneric<int?>(42),
+    );
+
+    expect(
+      NullableGeneric<int?>(42).copyWith(value: null),
+      NullableGeneric<int?>(null),
+    );
+    expect(
+      NullableGeneric<int?>(42).copyWith(),
+      NullableGeneric<int?>(42),
+    );
+
+    expect(
+      NonNullableGeneric<int>(42).copyWith(value: 21),
+      NonNullableGeneric<int>(21),
+    );
+    expect(
+      NonNullableGeneric<int>(42).copyWith(),
+      NonNullableGeneric<int>(42),
     );
   });
 

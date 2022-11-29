@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../utils.dart';
@@ -49,7 +49,7 @@ class Property {
 
     return Property(
       name: element.name,
-      isNullable: element.type.nullabilitySuffix == NullabilitySuffix.question,
+      isNullable: element.type.isNullable,
       isDartList: element.type.isDartCoreList,
       isDartMap: element.type.isDartCoreMap,
       isDartSet: element.type.isDartCoreSet,

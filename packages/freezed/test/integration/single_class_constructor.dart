@@ -1,9 +1,19 @@
+// ignore_for_file: unnecessary_question_mark
+
 import 'dart:async';
 import 'dart:collection';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
+
+@freezed
+class Dynamic with _$Dynamic {
+  factory Dynamic({
+    dynamic foo,
+    dynamic? bar,
+  }) = DynamicFirst;
+}
 
 class CustomMap<A, B> extends MapBase<A, B> {
   CustomMap(this._source);
