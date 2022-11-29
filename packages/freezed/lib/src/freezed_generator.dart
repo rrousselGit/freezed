@@ -898,7 +898,3 @@ extension Let<T> on T {
   @pragma('vm:prefer-inline')
   R let<R>(R Function(T) f) => f(this);
 }
-
-extension on DartType {
-  bool get isNullable => nullabilitySuffix == NullabilitySuffix.question;
-}

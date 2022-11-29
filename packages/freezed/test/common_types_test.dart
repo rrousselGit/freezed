@@ -93,7 +93,7 @@ void main() {
 
       var c = freezedClass.getGetter('c')!.returnType;
       expect(c, isA<InterfaceType>());
-      expect(c.element2!.name, equals('String'));
+      expect(c.element!.name, equals('String'));
 
       var e = freezedClass.getGetter('genericTypedef')!.returnType;
       expect(e, isA<FunctionType>());
