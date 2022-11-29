@@ -1,6 +1,7 @@
 # [Unreleased fix]
 
-Fixes copyWith not working with `null` on some scenarios.
+- Fixes copyWith not working with `null` on some scenarios.
+- Fixes a stackoverflow error when continuously passing unmodifiable collections as parameter to freezed classes
 
 # 2.2.1
 
