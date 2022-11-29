@@ -2,7 +2,7 @@
 
 - Fixes copyWith not working with `null` on some scenarios.
 - Fixes a stackoverflow error when continuously passing unmodifiable collections as parameter to freezed classes
-
+- fix: Deep copy now correctly handles cases where a property is a Freezed class with disabled `copyWith`
 # 2.2.1
 
 Upgrade analyzer
