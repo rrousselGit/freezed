@@ -235,15 +235,22 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
         }
 
         if (viewType != null) {
+          // If the collection is already unmodifiable, we don't want to wrap
+          // it in an unmodifiable view again.
+          final isAlreadyUnmodifiableCheck =
+              'if (_${p.name} is $viewType) return _${p.name};';
+
           return [
             p.copyWith(name: '_${p.name}', decorators: const []),
             if (p.isNullable) annotatedProperty.asGetter(''' {
   final value = _${p.name};
   if (value == null) return null;
+  $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(value);
 }
 ''') else annotatedProperty.asGetter(''' {
+  $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(_${p.name});
 }

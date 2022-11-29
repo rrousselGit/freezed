@@ -80,6 +80,12 @@ Future<void> main() async {
       UnmodifiableSetEqual({42}).hashCode,
       UnmodifiableSetEqual({42}).hashCode,
     );
+
+    final immutableCollection = UnmodifiableSetEqual({42}).dartSet;
+    expect(
+      UnmodifiableSetEqual(immutableCollection).dartSet,
+      same(immutableCollection),
+    );
   });
 
   test('CustomListEqual', () {
@@ -122,6 +128,12 @@ Future<void> main() async {
       UnmodifiableListEqual([42]).hashCode,
       UnmodifiableListEqual([42]).hashCode,
     );
+
+    final immutableCollection = UnmodifiableListEqual([42]).list;
+    expect(
+      UnmodifiableListEqual(immutableCollection).list,
+      same(immutableCollection),
+    );
   });
 
   test('CustomMapEqual', () {
@@ -163,6 +175,12 @@ Future<void> main() async {
     expect(
       UnmodifiableMapEqual({'a': 42}).hashCode,
       UnmodifiableMapEqual({'a': 42}).hashCode,
+    );
+
+    final immutableCollection = UnmodifiableMapEqual({'a': 42}).map;
+    expect(
+      UnmodifiableMapEqual(immutableCollection).map,
+      same(immutableCollection),
     );
   });
 
