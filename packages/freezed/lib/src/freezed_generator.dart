@@ -424,19 +424,24 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
 
       final parameterType = parameter.type;
       if (parameterType is! InterfaceType) continue;
-      final element = parameterType.element;
-      if (element is! ClassElement) continue;
+      final typeElement = parameterType.element;
+      if (typeElement is! ClassElement) continue;
 
-      final classElement = element;
+      final freezedAnnotation = typeChecker.firstAnnotationOf(typeElement);
 
-      if (!typeChecker.hasAnnotationOf(classElement)) continue;
+      /// Handles classes annotated with Freezed
+      if (freezedAnnotation == null) continue;
+
+      final configs = _parseConfig(typeElement);
+      // copyWith not enabled, so the property is not cloneable
+      if (configs.copyWith != true) continue;
 
       yield CloneableProperty(
         name: parameter.name,
         type: type!,
         nullable:
             parameter.type.nullabilitySuffix == NullabilitySuffix.question,
-        typeName: classElement.name,
+        typeName: typeElement.name,
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType)
               .typeArguments

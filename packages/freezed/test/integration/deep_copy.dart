@@ -49,3 +49,13 @@ class Generic<T> with _$Generic<T> {
 class Recursive with _$Recursive {
   factory Recursive([Recursive? value]) = _Recursive;
 }
+
+@freezed
+class DisabledDeepCopyWith with _$DisabledDeepCopyWith {
+  factory DisabledDeepCopyWith(DisabledCopy disabled) = _DisabledDeepCopyWith;
+}
+
+@Freezed(copyWith: false)
+class DisabledCopy with _$DisabledCopy {
+  factory DisabledCopy(DisabledCopy disabled) = _DisabledCopy;
+}
