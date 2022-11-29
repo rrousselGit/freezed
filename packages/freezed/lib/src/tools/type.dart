@@ -5,6 +5,16 @@ import 'package:collection/collection.dart';
 
 import 'imports.dart';
 
+extension DartTypeX on DartType {
+  bool get isNullable {
+    final that = this;
+    if (that is TypeParameterType) {
+      return that.bound.isNullable;
+    }
+    return isDynamic || nullabilitySuffix == NullabilitySuffix.question;
+  }
+}
+
 /// Returns the [Element] for a given [DartType]
 ///
 /// this is usually type.element, except if it is a typedef then it is
