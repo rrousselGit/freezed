@@ -1,3 +1,8 @@
+# 2.2.0
+
+- Re-introduced `@With.fromString` and `@Implements.fromString` to allow unions
+  to implement generic types. (thanks to @rorystephenson)
+
 # 2.1.0
 
 - Add support for de/serializing generic Freezed classes (Thanks to @TimWhiting)

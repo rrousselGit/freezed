@@ -1,8 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../utils.dart';
@@ -71,7 +71,7 @@ class Property {
 
     return Property(
       name: element.name,
-      isNullable: element.type.nullabilitySuffix == NullabilitySuffix.question,
+      isNullable: element.type.isNullable,
       isDartList: element.type.isDartCoreList,
       isDartMap: element.type.isDartCoreMap,
       isDartSet: element.type.isDartCoreSet,
@@ -240,15 +240,20 @@ extension IsDartCollection on DartType {
   bool get isPossiblyDartCollection {
     final interface = safeCast<InterfaceType>();
 
-    return isDartCoreMap ||
-        isDartCoreIterable ||
-        isDartCoreSet ||
-        isDartCoreList ||
+    return _isDartCollectionType ||
         isDynamic ||
         isDartCoreObject ||
         this is TypeParameterType ||
         (interface != null &&
-            interface.allSupertypes.any((e) => e.isPossiblyDartCollection));
+            interface.allSupertypes.any((e) => e._isDartCollectionType));
+  }
+
+  /// Whether this type is a [List], [Map], [Set] or [Iterable].
+  bool get _isDartCollectionType {
+    return isDartCoreMap ||
+        isDartCoreIterable ||
+        isDartCoreSet ||
+        isDartCoreList;
   }
 }
 

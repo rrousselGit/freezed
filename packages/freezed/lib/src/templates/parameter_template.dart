@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:build/build.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:freezed/src/utils.dart';
 
 class GenericsDefinitionTemplate {
@@ -70,7 +70,7 @@ class ParametersTemplate {
     Future<Parameter> asParameter(ParameterElement e) async {
       final value = Parameter(
         name: e.name,
-        isNullable: e.type.nullabilitySuffix == NullabilitySuffix.question,
+        isNullable: e.type.isNullable,
         isDartList: e.type.isDartCoreList,
         isDartMap: e.type.isDartCoreMap,
         isDartSet: e.type.isDartCoreSet,

@@ -410,6 +410,13 @@ void main() {
   });
 
   group('whenOrNull', () {
+    test('can map to nullable return type without type cast', () {
+      String? res = NoDefault.first('a').whenOrNull(
+        first: (a) => a.isEmpty ? null : a,
+      );
+      expect(res, 'a');
+    });
+
     test('has all parameters as optional', () {
       expect(NoDefault.first('a').whenOrNull(), null);
       expect(NoDefault.second('a').whenOrNull(), null);

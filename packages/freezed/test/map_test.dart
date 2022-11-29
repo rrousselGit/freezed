@@ -416,6 +416,13 @@ void main() {
       expect(NoDefault.second('a').mapOrNull(), null);
     });
 
+    test('can map to nullable return type without type cast', () {
+      String? res = NoDefault.first('a').mapOrNull(
+        first: (value) => value.a.isEmpty ? null : value.a,
+      );
+      expect(res, 'a');
+    });
+
     test('calls callback on matching constructor', () {
       expect(
         NoDefault.first('a').mapOrNull(first: (v) => v),

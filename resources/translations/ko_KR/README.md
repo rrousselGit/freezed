@@ -16,7 +16,7 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
 
 - 생성자 + 속성 정의하기
 - `toString`, `operator ==`, `hashCode` 오버라이드
-- 객체를 복제하기 위한 `copyWith` 메소드 구현
+- 객체를 복제하기 위한 `copyWith` 메서드 구현
 - 역/직열화 처리
 
 게다가 Dart에는 `union types` 및 `pattern-matching`와 같은 기능이 없습니다.
@@ -42,7 +42,7 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
     - [Lists/Maps/Sets의 변경 허용하기](#Lists/Maps/Sets의-변경-허용하기)
     - [copyWith의 작동방식](#copyWith의-작동방식)
     - [더 나아가기: 깊은복사](#더-나아가기-깊은복사)
-    - [모델에 getters 와 메소드 추가하기](#모델에-getters와-메소드-추가하기)
+    - [모델에 getters 와 메서드 추가하기](#모델에-getters와-메서드-추가하기)
     - [Asserts](#asserts)
     - [기본 값](#기본-값)
     - [데코레이터와 코멘트](#데코레이터와-코멘트)
@@ -52,15 +52,16 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
       - [When](#when)
       - [Map](#map)
       - [is/as를 사용하여 Freezed 클래스의 내용 읽기](#is/as를-사용하여-Freezed-클래스의-내용읽기)
-    - [union types에대한 individual classes용 mixins과 interfaces](#union-types에대한-individual-classes용-mixins과-interfaces)
+    - [union type일 때 개별 클래스를 이용하여 mixin과 interface 만들기](#union-type일-때-개별-클래스를-이용하여-mixin과-interface-만들기)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - 복수의 생성자가 있는 클래스](#fromjson---복수의-생성자가-있는-클래스)
-  - [Configurations](#configurations)
+    - [제네릭 클래스 역직렬화하기](#제네릭-클래스-역직렬화하기)
+  - [환경설정](#환경설정)
     - [특정 모델의 동작변경](#특정-모델의-동작변경)
     - [전체 프로젝트의 동작변경](#전체-프로젝트의-동작변경)
 - [Utilities](#utilities)
     - [VSCode전용 Freezed extension](#VSCode전용-Freezed-extension)
-    - [IntelliJ/Android Studio전용 Freezed extension](#IntelliJ/Android-Studio전용-Freezed-extension)
+    - [IntelliJ/Android Studio전용 Freezed extension](#IntelliJAndroid-Studio전용-Freezed-extension)
   - [Sponsors](#sponsors)
 
 # 사용방법
@@ -74,17 +75,23 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
 만약에 `Flutter`프로젝트를 생성하는 경우에는 아래와 같이 진행합니다.
 
 ```console
-$ flutter pub add freezed_annotation
-$ flutter pub add --dev build_runner
-$ flutter pub add --dev freezed
+flutter pub add freezed_annotation
+flutter pub add --dev build_runner
+flutter pub add --dev freezed
+# fromJson/toJson 생성도 사용하려면 아래를 추가하세요:
+flutter pub add json_annotation
+flutter pub add --dev json_serializable
 ```
 
 만약에 `Dart`프로젝트를 생성하는 경우에는 아래와 같이 진행합니다.
 
 ```console
-$ dart pub add freezed_annotation
-$ dart pub add --dev build_runner
-$ dart pub add --dev freezed
+dart pub add freezed_annotation
+dart pub add --dev build_runner
+dart pub add --dev freezed
+# fromJson/toJson 생성도 사용하려면 아래를 추가하세요:
+dart pub add json_annotation
+dart pub add --dev json_serializable
 ```
 
 이렇게 하면 3개의 패키지(freezed_annotation, build_runner, freezed)가 설치됩니다.
@@ -169,9 +176,9 @@ class Person with _$Person {
 - `Person`에는 `firstName`, `lastName` 및 `age`의 3가지 속성이 있습니다.
 - 우리는 `@freezed`를 사용하기 때문에 이 클래스의 모든 속성은 변경할 수 없습니다(immutable).
 - 'fromJson'을 정의했기 때문에 이 클래스는 역직렬화/직렬화 가능합니다.
-  Freezed는 `toJson` 메소드를 자동으로 추가할 것입니다.
+  Freezed는 `toJson` 메서드를 자동으로 추가할 것입니다.
 - Freeze는 자동으로 아래의 항목을 생성합니다.
-  - 다른 속성을 가진 객체를 복제하기 위한 `copyWith` 메소드
+  - 다른 속성을 가진 객체를 복제하기 위한 `copyWith` 메서드
   - 객체의 모든 속성을 나열하는 `toString` 재정의(오버라이드)
   - `operator ==` 및 `hashCode` 재정의(`Person`은 변경할 수 없으므로(immutable)
 
@@ -384,7 +391,7 @@ Company newCompany = company.copyWith.director.assistant(name: 'John');
 Company? newCompany = company.copyWith.director.assistant?.call(name: 'John');
 ```
 
-### 모델에 getters와 메소드 추가하기
+### 모델에 getters와 메서드 추가하기
 
 때로는 클래스에서 메서드/속성을 수동으로 정의하고 싶을 수도 있습니다. 
 그러나 아래의 코드를 작성해보면 빨리 이해할 수 있습니다.
@@ -805,9 +812,10 @@ class Example with _$Example {
 }
 ```
 
-제네릭 믹스인 또는 인터페이스를 지정하려면 다음을 수행해야 합니다.
-`With.fromString` 생성자를 사용하여 문자열로 선언하고, 각각 `Implements.fromString`.
-`Street`가 `AdministrativeArea<House>`와 혼합되어 있습니다.
+`AdministrativeArea<House>`같은 제네릭 클래스에서 구현하거나 믹스인을 혼합해서 쓸 때도 마찬가지입니다.
+`AdministrativeArea<T>`처럼 제네릭 타입 파라미터를 가지는 클래스는 빼고요.
+이 경우에 freezed는 올바른 코드를 만들지만 다트가 어노테이션 선언을 컴파일할 때 load 에러를 일으킵니다.
+이를 피하기 위해서는 아래와 같이 `@Implements.fromString`과 `@With.fromString`를 사용해야 합니다:
 
 ```dart
 abstract class GeographicArea {}
@@ -816,27 +824,27 @@ abstract class Shop {}
 abstract class AdministrativeArea<T> {}
 
 @freezed
-class Example with _$Example {
-  const factory Example.person(String name, int age) = Person;
-
-  @With<AdministrativeArea<House>>()
-  const factory Example.street(String name) = Street;
-
+class Example<T> with _$Example<T> {
+  const factory Example.person(String name, int age) = Person<T>;
+  
+  @With.fromString('AdministrativeArea<T>')
+  const factory Example.street(String name) = Street<T>;
+  
   @With<House>()
   @Implements<Shop>()
   @Implements<GeographicArea>()
-  const factory Example.city(String name, int population) = City;
-}
+  @Implements.fromString('AdministrativeArea<T>')
+  const factory Example.city(String name, int population) = City<T>;
 ```
 
 **Note**: 
 모든 추상 멤버를 구현하여 인터페이스 요구사항을 준수하는지 확인해야 합니다.
-인터페이스에 멤버가 없거나 필드만 있는 경우 공용체 유형의 생성자에 추가하여 the interface contract를 이행할 수 있습니다. 인터페이스가 클래스에서 구현하는 메서드 또는 getter를 정의하는 경우 [모델에 게터 및 메서드 추가](#adding-getters-and-methods-to-our-models ) 내용을 확인해 보세요.
+인터페이스에 멤버가 없거나 필드만 있는 경우 공용체 유형의 생성자에 추가하여 the interface contract를 이행할 수 있습니다. 인터페이스가 클래스에서 구현하는 메서드 또는 getter를 정의하는 경우 [모델에 getters와 메서드 추가하기](#모델에-getters와-메서드-추가하기) 내용을 확인해 보세요.
 
 
 **Note 2**: 
 Freezed 클래스에는 `@With`/`@Implements`를 사용할 수 없습니다.
-Freezed 클래스는 확장되거나 구현될 수 없습니다.
+Freezed 클래스를 확장하거나 구현할 수는 없습니다.
 
 ## FromJson/ToJson
 
@@ -1037,6 +1045,32 @@ class MyModel with _$MyModel {
 
 고정된 개체의 중첩 목록을 직렬화하려면 `@JsonSerializable(explicitToJson: true)`을 지정하거나 `build.yaml` 파일([see the documentation](https://github.com/google/json_serializable.dart/tree/master/json_serializable#build-configuration)) 내에서 `explicit_to_json`을 변경해야 합니다.
 
+### 제네릭 클래스 역직렬화하기
+
+제네릭 타입의 freezed 객체를 역/직렬화하기 위해서는 `genericArgumentFactories`를 사용할 수 있습니다.
+이를 위해서는 `fromJson` 메서드의 시그니처를 바꾸고 `genericArgumentFactories: true`를 freezed 환경설정에 추가해야 합니다:
+
+```dart
+@Freezed(genericArgumentFactories: true)
+class ApiResponse<T> with _$ApiResponse<T> {
+  const factory ApiResponse.data(T data) = ApiResponseData;
+  const factory ApiResponse.error(String message) = ApiResponseError;
+  
+  factory ApiResponse.fromJson(Map<String, dynamic> json, T Function(Object?) fromJsonT) => _$ApiResponseFromJson(json, fromJsonT);
+}
+```
+
+아래와 같이 `build.yaml` 파일을 수정해서 프로젝트 전체에서 `genericArgumentFactories`를 허용할 수도 있습니다:
+
+```yaml
+targets:
+  $default:
+    builders:
+      freezed:
+        options:
+          generic_argument_factories: true
+```
+
 **`@JsonKey` annotation은 어떤가요?**
 
 생성자 매개변수에 전달된 모든 데코레이터는 생성된 속성에도 "복사-붙여넣기"됩니다.
@@ -1065,7 +1099,6 @@ class Example with _$Example {
 }
 ```
 
-번역 결과
 모든 클래스에 대해 사용자 정의 json_serializable 플래그를 정의하려는 경우(예를 들어 `explicit_to_json` 또는 `any_map`) [여기](https://pub.dev/packages/json_serializable#build-configuration)에 설명된 대로 `build.yaml` 파일을 통해 수행할 수 있습니다.
 
 

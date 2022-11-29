@@ -5,13 +5,23 @@ import 'package:collection/collection.dart';
 
 import 'imports.dart';
 
+extension DartTypeX on DartType {
+  bool get isNullable {
+    final that = this;
+    if (that is TypeParameterType) {
+      return that.bound.isNullable;
+    }
+    return isDynamic || nullabilitySuffix == NullabilitySuffix.question;
+  }
+}
+
 /// Returns the [Element] for a given [DartType]
 ///
 /// this is usually type.element, except if it is a typedef then it is
 /// type.alias.element
 Element? _getElementForType(DartType type) {
   if (type is InterfaceType) {
-    return type.element2;
+    return type.element;
   }
   if (type is FunctionType) {
     return type.alias?.element;
@@ -27,7 +37,7 @@ String resolveFullTypeStringFrom(
 }) {
   final owner = originLibrary.prefixes.firstWhereOrNull(
     (e) {
-      return e.imports2.any((l) {
+      return e.imports.any((l) {
         return l.importedLibrary!.anyTransitiveExport((library) {
           return library.id == _getElementForType(type)?.library?.id;
         });

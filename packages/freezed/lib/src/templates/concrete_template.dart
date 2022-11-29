@@ -238,15 +238,22 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
         }
 
         if (viewType != null) {
+          // If the collection is already unmodifiable, we don't want to wrap
+          // it in an unmodifiable view again.
+          final isAlreadyUnmodifiableCheck =
+              'if (_${p.name} is $viewType) return _${p.name};';
+
           return [
             p.copyWith(name: '_${p.name}', decorators: const []),
             if (p.isNullable) annotatedProperty.asGetter(''' {
   final value = _${p.name};
   if (value == null) return null;
+  $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(value);
 }
 ''') else annotatedProperty.asGetter(''' {
+  $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(_${p.name});
 }
@@ -532,7 +539,8 @@ extension DefaultValue on ParameterElement {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
-        var needsConstModifier = !res.trimLeft().startsWith('const') &&
+        var needsConstModifier = !declaration.type.isDartCoreString &&
+            !res.trimLeft().startsWith('const') &&
             (res.contains('(') || res.contains('[') || res.contains('{'));
 
         if (needsConstModifier) {

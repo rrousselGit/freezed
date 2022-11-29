@@ -1,9 +1,19 @@
+// ignore_for_file: unnecessary_question_mark
+
 import 'dart:async';
 import 'dart:collection';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
+
+@freezed
+class Dynamic with _$Dynamic {
+  factory Dynamic({
+    dynamic foo,
+    dynamic? bar,
+  }) = DynamicFirst;
+}
 
 class CustomMap<A, B> extends MapBase<A, B> {
   CustomMap(this._source);
@@ -408,6 +418,32 @@ class IntDefault with _$IntDefault {
 @freezed
 class StringDefault with _$StringDefault {
   factory StringDefault([@Default('42') String value]) = _StringDefault;
+}
+
+@freezed
+class SpecialStringDefault with _$SpecialStringDefault {
+  factory SpecialStringDefault([@Default('(1)[2]{3}') String value]) =
+      _SpecialStringDefault;
+}
+
+/// Adds `const` to default non-literral values
+@freezed
+class DefaultNonLitteralConst with _$DefaultNonLitteralConst {
+  factory DefaultNonLitteralConst({
+    @Default(Object()) Object listObject,
+  }) = _DefaultNonLitteralConst;
+}
+
+/// Does not add `const` to non-literral values if already present
+@freezed
+class DefaultNonLitteralAlreadyConst with _$DefaultNonLitteralAlreadyConst {
+  factory DefaultNonLitteralAlreadyConst({
+    @Default(
+      // ignore: unnecessary_const
+      const Object(),
+    )
+        Object listObject,
+  }) = _DefaultNonLitteralAlreadyConst;
 }
 
 @freezed

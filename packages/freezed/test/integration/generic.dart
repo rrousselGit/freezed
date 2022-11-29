@@ -8,6 +8,21 @@ class Model<T> {
 }
 
 @freezed
+class AnyGeneric<T> with _$AnyGeneric<T> {
+  factory AnyGeneric(T value) = _AnyGeneric<T>;
+}
+
+@freezed
+class NullableGeneric<T extends Object?> with _$NullableGeneric<T> {
+  factory NullableGeneric(T value) = _NullableGeneric<T>;
+}
+
+@freezed
+class NonNullableGeneric<T extends Object> with _$NonNullableGeneric<T> {
+  factory NonNullableGeneric(T value) = _NonNullableGeneric<T>;
+}
+
+@freezed
 class Generic<T extends Model<dynamic>> with _$Generic<T> {
   factory Generic(T model) = _Generic<T>;
 }

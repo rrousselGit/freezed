@@ -1,7 +1,22 @@
-# [Unreleased]
+# [Unreleased fix]
+
+- Fixes copyWith not working with `null` on some scenarios.
+- Fixes a stackoverflow error when continuously passing unmodifiable collections as parameter to freezed classes
+- fix: Deep copy now correctly handles cases where a property is a Freezed class with disabled `copyWith`
+# 2.2.1
+
+Upgrade analyzer
+
+# 2.2.0
 
 - The generated `copyWith` is now annotated by `@useResult` (thanks to @miDeb)
-- Improve performance of `copyWith` (thanks to @miDeb)
+- Improved performance of `copyWith` (thanks to @miDeb)
+- Improved type inference when using `mapOrNull`/`whenOrNull` (thanks to @DevNico)
+- Re-introduced `@With.fromString` and `@Implements.fromString` to allow unions
+  to implement generic types. (thanks to @rorystephenson)
+- fixes @Default for Strings containing (, [ or { (thanks to @hugobrancowb)
+- fix Freezed incorrectly comparing primitives using `DeepCollectionEquality` (thanks to @knaeckeKami)
+- fix image links (thanks to @SunlightBro)
 
 # 2.1.1
 

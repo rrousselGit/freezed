@@ -426,11 +426,16 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       if (!metadata.isWith) continue;
       final object = metadata.computeConstantValue()!;
 
-      yield resolveFullTypeStringFrom(
-        constructor.library,
-        (object.type! as InterfaceType).typeArguments.single,
-        withNullability: false,
-      );
+      final stringType = object.getField('stringType');
+      if (stringType?.isNull == false) {
+        yield stringType!.toStringValue()!;
+      } else {
+        yield resolveFullTypeStringFrom(
+          constructor.library,
+          (object.type! as InterfaceType).typeArguments.single,
+          withNullability: false,
+        );
+      }
     }
   }
 
@@ -441,11 +446,16 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       if (!metadata.isImplements) continue;
       final object = metadata.computeConstantValue()!;
 
-      yield resolveFullTypeStringFrom(
-        constructor.library,
-        (object.type! as InterfaceType).typeArguments.single,
-        withNullability: false,
-      );
+      final stringType = object.getField('stringType');
+      if (stringType?.isNull == false) {
+        yield stringType!.toStringValue()!;
+      } else {
+        yield resolveFullTypeStringFrom(
+          constructor.library,
+          (object.type! as InterfaceType).typeArguments.single,
+          withNullability: false,
+        );
+      }
     }
   }
 
@@ -459,19 +469,24 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
 
       final parameterType = parameter.type;
       if (parameterType is! InterfaceType) continue;
-      final element = parameterType.element2;
-      if (element is! ClassElement) continue;
+      final typeElement = parameterType.element;
+      if (typeElement is! ClassElement) continue;
 
-      final classElement = element;
+      final freezedAnnotation = typeChecker.firstAnnotationOf(typeElement);
 
-      if (!typeChecker.hasAnnotationOf(classElement)) continue;
+      /// Handles classes annotated with Freezed
+      if (freezedAnnotation == null) continue;
+
+      final configs = _parseConfig(typeElement);
+      // copyWith not enabled, so the property is not cloneable
+      if (configs.copyWith != true) continue;
 
       yield CloneableProperty(
         name: parameter.name,
         type: type!,
         nullable:
             parameter.type.nullabilitySuffix == NullabilitySuffix.question,
-        typeName: classElement.name,
+        typeName: typeElement.name,
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType)
               .typeArguments
@@ -697,7 +712,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       element,
       ...element.allSupertypes
           .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element2)
+          .map((e) => e.element)
     ]) {
       for (final method in type.methods) {
         if (method.name == 'toString') {
@@ -714,7 +729,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       element,
       ...element.allSupertypes
           .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element2)
+          .map((e) => e.element)
     ]) {
       for (final method in type.methods.where((e) => e.isOperator)) {
         if (method.name == '==') {

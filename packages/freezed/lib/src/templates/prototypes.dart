@@ -182,7 +182,7 @@ String _unionPrototype(
   for (final constructor in allConstructors) {
     var template = CallbackParameter(
       name: constructorNameToCallbackName(constructor.name),
-      type: 'TResult',
+      type: returnType,
       isFinal: false,
       isDartList: false,
       isDartMap: false,
@@ -219,7 +219,7 @@ String _unionPrototype(
     }
 
     if (hasOrElse) {
-      buffer.write('required TResult orElse(),');
+      buffer.write('required $returnType orElse(),');
     }
 
     buffer.write('}');
