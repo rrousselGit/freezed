@@ -1,3 +1,5 @@
+// ignore_for_file: omit_local_variable_types
+
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -28,18 +30,18 @@ Future<void> main() async {
 
   group('CommonSuperSubtype', () {
     test('has the common properties available', () {
-      var value = const CommonSuperSubtype('a', 1337, 42.24);
-      expect(value.a, 'a');
-      expect(value.a, isA<String?>());
-      expect(value.b, 1337);
-      expect(value.b, isA<num>());
-      expect(value.c, 42.24);
-      expect(value.c, isA<num>());
+      const value = CommonSuperSubtype('a', 1337, 42.24);
+      String? a = value.a;
+      expect(a, 'a');
+      num b = value.b;
+      expect(b, 1337);
+      num c = value.c;
+      expect(c, 42.24);
 
-      value = const CommonSuperSubtype.named('b', 12.34, 56.78);
-      expect(value.a, 'b');
-      expect(value.b, 12.34);
-      expect(value.c, 56.78);
+      const value2 = CommonSuperSubtype.named('b', 12.34, 56.78);
+      expect(value2.a, 'b');
+      expect(value2.b, 12.34);
+      expect(value2.c, 56.78);
     });
   });
 
@@ -104,11 +106,12 @@ void main() {
 
   group('CommonUnfreezed', () {
     test('should have common getters available', () {
-      var value = CommonUnfreezed.one(a: 42, b: 3.14);
-      expect(value.a, 42);
-      expect(value.a, isA<int>());
-      expect(value.b, 3.14);
-      expect(value.b, isA<double>());
+      final value = CommonUnfreezed.one(a: 42, b: 3.14);
+
+      num a = value.a;
+      expect(a, 42);
+      double b = value.b;
+      expect(b, 3.14);
     });
 
     test('should not have setters for getters with different type', () async {
@@ -119,6 +122,8 @@ void main() {
   final param = CommonUnfreezed.one(a: 42, b: 3.14);
   // expect-error: ASSIGNMENT_TO_FINAL_NO_SETTER
   param.a = 42.24;
+  // OK since all union cases are typed the same
+  param.b = 42;
 }
 '''), compiles);
     });
