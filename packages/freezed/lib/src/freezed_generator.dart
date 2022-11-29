@@ -128,7 +128,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   List<Property> _commonProperties(
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) {
-    return _commonPropertiesBetweenAllConstructors(constructorsNeedsGeneration)
+    return _commonParametersBetweenAllConstructors(constructorsNeedsGeneration)
         .map(Property.fromParameter)
         .toList();
   }
@@ -229,7 +229,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     return false;
   }
 
-  List<Parameter> _commonPropertiesBetweenAllConstructors(
+  List<Parameter> _commonParametersBetweenAllConstructors(
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) {
     return constructorsNeedsGeneration.first.parameters.allParameters
@@ -656,7 +656,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
 
     final commonProperties = _commonProperties(data.constructors);
     final commonCopyableProperties =
-        commonProperties.where((p) => p.isCopyable).toList();
+        commonProperties.where((p) => p.isDowncastedAsCommonProperty).toList();
 
     final commonCopyWith = !data.generateCopyWith
         ? null

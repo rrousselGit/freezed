@@ -19,17 +19,20 @@ class Abstract {
   String toString() {
     final abstractProperties = commonProperties
         .expand((e) {
-          return <ClassMember?>[
+          return [
             e.unimplementedGetter,
             if (!e.isFinal &&
                 // Don't add a setter for a field where the setters type is not
                 // a subtype of the getters type.
+                // This happens when a property shared between union cases
+                // is downcasted, such as if one case uses int and another uses double.
+                // In that scenario, the getter would be of type num. But a
+                // setter of type num wouldn't make sense
                 !(e.commonSupertype != null &&
                     e.commonSubtype != e.commonSupertype))
               e.unimplementedSetter,
           ];
         })
-        .whereType<ClassMember>()
         .map((e) => e.toString())
         .join();
 

@@ -102,7 +102,12 @@ class Property {
   final String? commonSupertype;
   final String? commonSubtype;
 
-  bool get isCopyable => commonSupertype == commonSubtype;
+  /// When a property is shared between union cases, this boolean
+  /// presents whether the union cases define a property within the same name
+  /// but different type.
+  ///
+  /// In that scenario, the abstract class uses a downcasted version of the property.
+  bool get isDowncastedAsCommonProperty => commonSupertype == commonSubtype;
 
   @override
   String toString() {
@@ -187,11 +192,7 @@ class Property {
   }
 }
 
-class ClassMember {
-  const ClassMember();
-}
-
-class Getter implements ClassMember {
+class Getter {
   Getter({
     required String? type,
     required this.name,
@@ -212,7 +213,7 @@ class Getter implements ClassMember {
   }
 }
 
-class Setter implements ClassMember {
+class Setter {
   Setter({
     required String? type,
     required this.name,
