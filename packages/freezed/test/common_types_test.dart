@@ -1,8 +1,6 @@
 // ignore_for_file: omit_local_variable_types
 
 import 'package:analyzer/dart/analysis/results.dart';
-import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:build_test/build_test.dart';
 import 'package:expect_error/expect_error.dart';
 import 'package:test/test.dart';
@@ -68,39 +66,6 @@ void main() {
   param.copyWith();
 }
 '''), compiles);
-    });
-  });
-
-  group('CommonTypedefs', () {
-    test('generates correct typedefs', () async {
-      final main = await resolveSources(
-        {
-          'freezed|test/integration/common_types.dart': useAssetReader,
-        },
-        (r) => r.libraries.firstWhere(
-            (element) => element.source.toString().contains('common_types')),
-      );
-
-      var freezedClass = main.topLevelElements
-          .whereType<MixinElement>()
-          .firstWhere((element) => element.displayName == r'_$CommonTypedefs');
-
-      var a = freezedClass.getGetter('a')!.returnType;
-      expect(a, isA<FunctionType>());
-      expect(a.alias!.element.name, equals('ExternalTypedef'));
-
-      var b = freezedClass.getGetter('b')!.returnType;
-      expect(b, isA<FunctionType>());
-      expect(b.alias!.element.name, equals('ExternalTypedefTwo'));
-
-      var c = freezedClass.getGetter('c')!.returnType;
-      expect(c, isA<InterfaceType>());
-      expect(c.element!.name, equals('String'));
-
-      var e = freezedClass.getGetter('genericTypedef')!.returnType;
-      expect(e, isA<FunctionType>());
-      expect(e.alias!.element.name, equals('GenericTypedef'));
-      expect(e.alias!.typeArguments.toString(), equals('[int, bool]'));
     });
   });
 

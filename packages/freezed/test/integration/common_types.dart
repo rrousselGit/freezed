@@ -1,22 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'external_typedef.dart';
-import 'external_typedef_two.dart' as two;
-import 'typedef_parameter.dart';
 
 part 'common_types.freezed.dart';
-
-@freezed
-class Dependency with _$Dependency {
-  const factory Dependency() = Dependency0;
-}
-
-@freezed
-class GeneratedDependency with _$GeneratedDependency {
-  const factory GeneratedDependency(Dependency0 a) = _GeneratedDependency0;
-
-  const factory GeneratedDependency.named({required Dependency0 a}) =
-      _GeneratedDependency1;
-}
 
 @freezed
 class CommonSuperSubtype with _$CommonSuperSubtype {
@@ -62,25 +46,6 @@ class CommonInterfaceSupertype with _$CommonInterfaceSupertype {
   const factory CommonInterfaceSupertype.two(
     CommonInterfaceC param,
   ) = CommonInterfaceSupertype2;
-}
-
-typedef TypedefString = String;
-
-@freezed
-class CommonTypedefs with _$CommonTypedefs {
-  const factory CommonTypedefs.one({
-    required ExternalTypedef a,
-    required two.ExternalTypedefTwo b,
-    required TypedefString c,
-    required GenericTypedef<int, bool> genericTypedef,
-  }) = CommonTypedefsOne;
-
-  const factory CommonTypedefs.two({
-    required ExternalTypedef? a,
-    required two.ExternalTypedefTwo? b,
-    required TypedefString? c,
-    required GenericTypedef<int, bool> genericTypedef,
-  }) = CommonTypedefsTwo;
 }
 
 @freezed

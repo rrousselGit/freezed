@@ -236,82 +236,39 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         .map((parameter) {
           final library = parameter.parameterElement!.library!;
 
-          String typeString(DartType type, {bool withNullability = true}) {
-            return resolveFullTypeStringFrom(
-              library,
-              type,
-              withNullability: withNullability,
-            );
-          }
+          var anyMatchingPropertyIsFinal = parameter.isFinal;
+          var commonTypeBetweenAllUnionConstructors =
+              parameter.parameterElement!.type;
 
-          var anyMatchingPropertyIsFinal = false;
-
-          var commonSupertype = parameter.parameterElement!.type;
-          var commonSubtype = parameter.parameterElement?.type;
-
-          // Required fallback type for when common types can't be resolved
-          // using the type system
-          String? commonSupertypeString;
-          String? commonSubtypeString;
-
+          // skip(1) as "parameter" is from the first constructor.
           for (final constructor in constructorsNeedsGeneration.skip(1)) {
             final matchingParameter = constructor.parameters.allParameters
                 .firstWhereOrNull((p) => p.name == parameter.name);
-
+            // The property is not present in one of the union cases, so shouldn't
+            // be present in the abstract class.
             if (matchingParameter == null) return null;
+            anyMatchingPropertyIsFinal =
+                anyMatchingPropertyIsFinal || matchingParameter.isFinal;
 
-            final matchingParameterType =
-                matchingParameter.parameterElement!.type;
-            if (matchingParameter.isFinal) anyMatchingPropertyIsFinal = true;
-
-            if (commonSupertype is FunctionType || commonSupertype.isDynamic) {
-              // If the type is a typedef, by finding the upper bound we would lose
-              // the initial definition. Therefore FunctionTypes are currently not
-              // supported as common super types.
-              // => Fall back to type string matching.
-              commonSupertypeString ??= parameter.type!;
-              if (commonSupertypeString.contains('dynamic')) return null;
-
-              if (!typeStringsEqualIgnoringNullability(
-                  commonSupertypeString, matchingParameter.type!)) {
-                return null;
-              }
-
-              if (commonSupertype.isNullable !=
-                  matchingParameterType.isNullable) {
-                commonSupertypeString =
-                    typeStringWithNullability(commonSupertypeString);
-                commonSubtypeString =
-                    typeStringWithoutNullability(commonSupertypeString);
-              }
-            } else {
-              commonSupertype = library.typeSystem.leastUpperBound(
-                commonSupertype,
-                matchingParameterType,
-              );
-
-              if (commonSupertype
-                  .getDisplayString(withNullability: true)
-                  .contains('dynamic')) return null;
-
-              if (commonSubtype != null) {
-                if (library.typeSystem
-                    .isSubtypeOf(matchingParameterType, commonSubtype)) {
-                  commonSubtype = matchingParameterType;
-                } else if (!library.typeSystem
-                    .isSubtypeOf(commonSubtype, matchingParameterType)) {
-                  commonSubtype = null;
-                }
-              }
-            }
+            commonTypeBetweenAllUnionConstructors =
+                library.typeSystem.leastUpperBound(
+              commonTypeBetweenAllUnionConstructors,
+              matchingParameter.parameterElement!.type,
+            );
           }
 
+          final commonTypeString = resolveFullTypeStringFrom(
+            library,
+            commonTypeBetweenAllUnionConstructors,
+            withNullability: true,
+          );
+
           return parameter.copyWith(
-            isFinal: parameter.isFinal || anyMatchingPropertyIsFinal,
-            commonSupertype:
-                commonSupertypeString ?? typeString(commonSupertype),
-            commonSubtype:
-                commonSubtypeString ?? commonSubtype?.let(typeString),
+            isFinal: anyMatchingPropertyIsFinal ||
+                // The field was downcasted because some union cases use a
+                // different type for that field. As such, there is no valid setter
+                parameter.type != commonTypeString,
+            type: commonTypeString,
           );
         })
         .whereNotNull()
@@ -892,9 +849,4 @@ String? parseLateGetterSource(String source) {
     }
   }
   return null;
-}
-
-extension Let<T> on T {
-  @pragma('vm:prefer-inline')
-  R let<R>(R Function(T) f) => f(this);
 }
