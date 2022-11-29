@@ -1,3 +1,7 @@
+# [Unreleased fix]
+
+Fixes copyWith not working with `null` on some scenarios.
+
 # 2.2.1
 
 Upgrade analyzer
