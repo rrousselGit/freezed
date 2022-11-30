@@ -25,14 +25,14 @@ String constructorNameToCallbackName(String name) => name;
 /// This allows Freezed to support deep copy of the object.
 /// This does include primitives like [int] and [List].
 @freezed
-class CloneableProperty with _$CloneableProperty {
-  factory CloneableProperty({
+class DeepCloneableProperty with _$DeepCloneableProperty {
+  factory DeepCloneableProperty({
     required String name,
     required String typeName,
     required String type,
     required bool nullable,
     required GenericsParameterTemplate genericParameters,
-  }) = _CloneableProperty;
+  }) = _DeepCloneableProperty;
 }
 
 /// The information of a specific constructor of a class tagged with `@freezed`.
@@ -55,7 +55,7 @@ class ConstructorDetails with _$ConstructorDetails {
     required List<String> withDecorators,
     required List<String> implementsDecorators,
     required List<String> decorators,
-    required List<CloneableProperty> cloneableProperties,
+    required List<DeepCloneableProperty> cloneableProperties,
     required List<AssertTemplate> asserts,
   }) = _ConstructorDetails;
 

@@ -504,8 +504,6 @@ void main() {
 }
 '''), throwsCompileError);
     });
-
-    // TODO: shared property name but different type
   });
 
   test('Can have a named constructor and a property using the same name', () {

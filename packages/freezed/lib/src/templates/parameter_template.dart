@@ -82,6 +82,7 @@ class ParametersTemplate {
         doc: await documentationOfParameter(e, buildStep),
         isPossiblyDartCollection: e.type.isPossiblyDartCollection,
         showDefaultValue: true,
+        parameterElement: e,
       );
 
       if (isAssignedToThis) return LocalParameter.fromParameter(value);
@@ -184,6 +185,7 @@ class Parameter {
     required this.isFinal,
     required this.isPossiblyDartCollection,
     required this.showDefaultValue,
+    required this.parameterElement,
   });
 
   Parameter.fromParameter(Parameter p)
@@ -201,6 +203,7 @@ class Parameter {
           showDefaultValue: p.showDefaultValue,
           doc: p.doc,
           isPossiblyDartCollection: p.isPossiblyDartCollection,
+          parameterElement: p.parameterElement,
         );
 
   final String? type;
@@ -216,6 +219,7 @@ class Parameter {
   final bool isPossiblyDartCollection;
   final bool isFinal;
   final String doc;
+  final ParameterElement? parameterElement;
 
   Parameter copyWith({
     String? type,
@@ -248,6 +252,7 @@ class Parameter {
         isFinal: isFinal ?? this.isFinal,
         isPossiblyDartCollection:
             isPossiblyDartCollection ?? this.isPossiblyDartCollection,
+        parameterElement: parameterElement,
       );
 
   @override
@@ -283,6 +288,7 @@ class LocalParameter extends Parameter {
     required List<String> decorators,
     required String doc,
     required bool isPossiblyDartCollection,
+    required ParameterElement? parameterElement,
   }) : super(
           name: name,
           type: type,
@@ -297,6 +303,7 @@ class LocalParameter extends Parameter {
           defaultValueSource: defaultValueSource,
           doc: doc,
           isPossiblyDartCollection: isPossiblyDartCollection,
+          parameterElement: parameterElement,
         );
 
   LocalParameter.fromParameter(Parameter p)
@@ -313,6 +320,7 @@ class LocalParameter extends Parameter {
           decorators: p.decorators,
           doc: p.doc,
           isPossiblyDartCollection: p.isPossiblyDartCollection,
+          parameterElement: p.parameterElement,
         );
 
   @override
@@ -346,6 +354,7 @@ class CallbackParameter extends Parameter {
     required this.parameters,
     required String doc,
     required bool isPossiblyDartCollection,
+    required ParameterElement? parameterElement,
   }) : super(
           name: name,
           type: type,
@@ -360,6 +369,7 @@ class CallbackParameter extends Parameter {
           defaultValueSource: defaultValueSource,
           doc: doc,
           isPossiblyDartCollection: isPossiblyDartCollection,
+          parameterElement: parameterElement,
         );
 
   final ParametersTemplate parameters;

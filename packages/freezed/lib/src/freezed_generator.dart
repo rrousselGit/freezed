@@ -43,6 +43,14 @@ extension on DartObject {
   }
 }
 
+class CommonProperties {
+  /// Properties that have a getter in the abstract class
+  final List<Property> readableProperties = [];
+
+  /// Properties that are visible on `copyWith`
+  final List<Property> cloneableProperties = [];
+}
+
 @immutable
 class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   FreezedGenerator(this._buildYamlConfigs);
@@ -123,32 +131,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       genericsParameterTemplate:
           GenericsParameterTemplate.fromGenericElement(element.typeParameters),
     );
-  }
-
-  List<Property> _commonProperties(
-    List<ConstructorDetails> constructorsNeedsGeneration,
-  ) {
-    final commonParameters =
-        _commonParametersBetweenAllConstructors(constructorsNeedsGeneration);
-
-    return [
-      for (final commonParameter in commonParameters)
-        Property(
-          decorators: commonParameter.decorators,
-          name: commonParameter.name,
-          isFinal: commonParameter.isFinal,
-          doc: commonParameter.doc,
-          type: commonParameter.type,
-          defaultValueSource: commonParameter.defaultValueSource,
-          isNullable: commonParameter.isNullable,
-          isDartList: commonParameter.isDartList,
-          isDartMap: commonParameter.isDartMap,
-          isDartSet: commonParameter.isDartSet,
-          isPossiblyDartCollection: commonParameter.isPossiblyDartCollection,
-          // TODO: support hasJsonKey
-          hasJsonKey: false,
-        ),
-    ];
   }
 
   void _assertValidClassUsage(ClassElement element) {
@@ -247,30 +229,77 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     return false;
   }
 
-  List<Parameter> _commonParametersBetweenAllConstructors(
+  CommonProperties _commonParametersBetweenAllConstructors(
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) {
-    return constructorsNeedsGeneration.first.parameters.allParameters
-        .map((parameter) {
-          var hasAnyFinalProperty = false;
-          for (final constructor in constructorsNeedsGeneration) {
-            final matchingParameter =
-                constructor.parameters.allParameters.firstWhereOrNull((p) {
-              return p.name == parameter.name && p.type == parameter.type;
-            });
+    final result = CommonProperties();
+    if (constructorsNeedsGeneration.length == 1) {
+      result.readableProperties.addAll(
+        constructorsNeedsGeneration.first.parameters.allParameters
+            .map(Property.fromParameter),
+      );
+      result.cloneableProperties.addAll(result.readableProperties);
+      return result;
+    }
 
-            if (matchingParameter == null) return null;
-            if (matchingParameter.isFinal) hasAnyFinalProperty = true;
-          }
+    parameterLoop:
+    for (final parameter
+        in constructorsNeedsGeneration.first.parameters.allParameters) {
+      final library = parameter.parameterElement!.library!;
 
-          if (hasAnyFinalProperty) {
-            return parameter.copyWith(isFinal: true);
-          }
+      var anyMatchingPropertyIsFinal = parameter.isFinal;
+      var commonTypeBetweenAllUnionConstructors =
+          parameter.parameterElement!.type;
 
-          return parameter;
-        })
-        .whereNotNull()
-        .toList();
+      // skip(1) as "parameter" is from the first constructor.
+      for (final constructor in constructorsNeedsGeneration) {
+        final matchingParameter = constructor.parameters.allParameters
+            .firstWhereOrNull((p) => p.name == parameter.name);
+        // The property is not present in one of the union cases, so shouldn't
+        // be present in the abstract class.
+        if (matchingParameter == null) continue parameterLoop;
+
+        anyMatchingPropertyIsFinal =
+            anyMatchingPropertyIsFinal || matchingParameter.isFinal;
+
+        commonTypeBetweenAllUnionConstructors =
+            library.typeSystem.leastUpperBound(
+          commonTypeBetweenAllUnionConstructors,
+          matchingParameter.parameterElement!.type,
+        );
+      }
+
+      final commonTypeString = resolveFullTypeStringFrom(
+        library,
+        commonTypeBetweenAllUnionConstructors,
+        withNullability: true,
+      );
+
+      final commonProperty = Property.fromParameter(parameter).copyWith(
+        isFinal: anyMatchingPropertyIsFinal ||
+            // The field was downcasted because some union cases use a
+            // different type for that field. As such, there is no valid setter
+            parameter.type != commonTypeString,
+        type: commonTypeString,
+      );
+
+      result.readableProperties.add(commonProperty);
+
+      // For {int a, int b, int c} | {int a, int? b, double c}, allows:
+      // copyWith({int a, int b})
+      // - int? b is not allowed because `null` is not compatible with the
+      //   first union case.
+      // - num c is not allowed because num is not assignable int/double
+      if (parameter.type == commonProperty.type ||
+          '${parameter.type}?' == commonProperty.type) {
+        result.cloneableProperties.add(
+          // Let's not downcast copyWith parameters
+          commonProperty.copyWith(type: parameter.type),
+        );
+      }
+    }
+
+    return result;
   }
 
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
@@ -311,7 +340,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
           escapedName: _escapedName(element, constructor),
           impliedProperties: [
             for (final parameter in constructor.parameters)
-              await Property.fromParameter(
+              await Property.fromParameterElement(
                 parameter,
                 buildStep,
                 addImplicitFinal: options.addImplicitFinal,
@@ -337,7 +366,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
           isDefault: isDefaultConstructor(constructor),
           hasJsonSerializable: constructor.hasJsonSerializable,
           isFallback: constructor.isFallbackUnion(options.fallbackUnion),
-          cloneableProperties: await _cloneableProperties(
+          cloneableProperties: _cloneableProperties(
             buildStep,
             element,
             constructor,
@@ -414,11 +443,11 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     }
   }
 
-  Stream<CloneableProperty> _cloneableProperties(
+  Iterable<DeepCloneableProperty> _cloneableProperties(
     BuildStep buildStep,
     ClassElement element,
     ConstructorElement constructor,
-  ) async* {
+  ) sync* {
     for (final parameter in constructor.parameters) {
       final type = parseTypeSource(parameter);
 
@@ -436,7 +465,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       // copyWith not enabled, so the property is not cloneable
       if (configs.copyWith != true) continue;
 
-      yield CloneableProperty(
+      yield DeepCloneableProperty(
         name: parameter.name,
         type: type!,
         nullable:
@@ -452,7 +481,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     }
   }
 
-  Iterable<CloneableProperty> _commonCloneableProperties(
+  Iterable<DeepCloneableProperty> _getCommonDeepCloneableProperties(
     List<ConstructorDetails> constructors,
     List<Property> commonProperties,
   ) sync* {
@@ -609,42 +638,45 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       );
     }
 
-    final commonProperties = _commonProperties(data.constructors);
+    final commonProperties =
+        _commonParametersBetweenAllConstructors(data.constructors);
 
     final commonCopyWith = !data.generateCopyWith
         ? null
         : CopyWith(
             clonedClassName: data.name,
-            cloneableProperties: _commonCloneableProperties(
+            readableProperties: commonProperties.readableProperties,
+            cloneableProperties: commonProperties.cloneableProperties,
+            deepCloneableProperties: _getCommonDeepCloneableProperties(
               data.constructors,
-              commonProperties,
+              commonProperties.cloneableProperties,
             ).toList(),
             genericsDefinition: data.genericsDefinitionTemplate,
             genericsParameter: data.genericsParameterTemplate,
-            allProperties: commonProperties,
             data: data,
           );
 
     yield Abstract(
       data: data,
       copyWith: commonCopyWith,
-      commonProperties: commonProperties,
+      commonProperties: commonProperties.readableProperties,
     );
 
     for (final constructor in data.constructors) {
       yield Concrete(
         data: data,
         constructor: constructor,
-        commonProperties: commonProperties,
+        commonProperties: commonProperties.readableProperties,
         globalData: globalData,
         copyWith: !data.generateCopyWith
             ? null
             : CopyWith(
                 clonedClassName: '_\$${constructor.redirectedName}',
-                cloneableProperties: constructor.cloneableProperties,
+                cloneableProperties: constructor.impliedProperties,
+                readableProperties: constructor.impliedProperties,
+                deepCloneableProperties: constructor.cloneableProperties,
                 genericsDefinition: data.genericsDefinitionTemplate,
                 genericsParameter: data.genericsParameterTemplate,
-                allProperties: constructor.impliedProperties,
                 data: data,
                 parent: commonCopyWith,
               ),
