@@ -112,10 +112,70 @@ void main() {
   param.copyWith(
     // Since not all unions have a nullable property, we cannot assign "null"
     // on the shared interface.
-    // expect-error: ASSIGNMENT_TO_FINAL_NO_SETTER
+    // expect-error: ARGUMENT_TYPE_NOT_ASSIGNABLE
     nullabilityDifference: null,
     // Since not all unions use the same type, we can't clone that property at all.
-    // expect-error: ASSIGNMENT_TO_FINAL_NO_SETTER
+    // expect-error: UNDEFINED_NAMED_PARAMETER
+    typeDifference: 42,
+  );
+}
+'''), compiles);
+    });
+  });
+
+  group('DeepCopySharedProperties', () {
+    test('Can clone properties with nullability difference', () {
+      const value = DeepCopySharedProperties(
+        CommonSuperSubtype0(
+          nullabilityDifference: 42,
+          typeDifference: 21,
+        ),
+      );
+
+      expect(
+        value.copyWith(
+          value: const CommonSuperSubtype0(
+            nullabilityDifference: 84,
+            typeDifference: 21,
+          ),
+        ),
+        const DeepCopySharedProperties(
+          CommonSuperSubtype0(
+            nullabilityDifference: 84,
+            typeDifference: 21,
+          ),
+        ),
+      );
+
+      expect(
+        value.copyWith.value(nullabilityDifference: 84),
+        const DeepCopySharedProperties(
+          CommonSuperSubtype0(
+            nullabilityDifference: 84,
+            typeDifference: 21,
+          ),
+        ),
+      );
+    });
+
+    test('Cannot clone with type mismatch', () async {
+      await expectLater(library.withCode('''
+import 'integration/common_types.dart';
+
+void main() {
+  final param = DeepCopySharedProperties(
+    CommonSuperSubtype(
+      nullabilityDifference: 42,
+      typeDifference: 21,
+    ),
+  );
+  param.copyWith.value(
+    // Since not all unions have a nullable property, we cannot assign "null"
+    // on the shared interface.
+    // expect-error: ARGUMENT_TYPE_NOT_ASSIGNABLE
+    nullabilityDifference: null,
+    // Since not all unions use the same type, we can't clone that property at all.
+    // expect-error: UNDEFINED_NAMED_PARAMETER
     typeDifference: 42,
   );
 }

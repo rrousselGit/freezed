@@ -17,16 +17,9 @@ class CommonSuperSubtype with _$CommonSuperSubtype {
 }
 
 @freezed
-class CommonTypeNested with _$CommonTypeNested {
-  const factory CommonTypeNested.one({required int a}) = CommonTypeNestedOne;
-  const factory CommonTypeNested.two({required num a}) = CommonTypeNestedTwo;
-}
-
-@freezed
-class CommonTypeNestedContainer with _$CommonTypeNestedContainer {
-  const factory CommonTypeNestedContainer({
-    required CommonTypeNested internal,
-  }) = _CommonTypeNestedContainer;
+class DeepCopySharedProperties with _$DeepCopySharedProperties {
+  const factory DeepCopySharedProperties(CommonSuperSubtype value) =
+      _DeepCopySharedProperties;
 }
 
 @unfreezed

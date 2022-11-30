@@ -41,7 +41,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
 
 ${copyWith?.commonInterface ?? ''}
 
-${copyWith?.commonContreteImpl ?? ''}
+${copyWith?.commonConcreteImpl ?? ''}
 ''';
   }
 
