@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
+import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -33,7 +34,24 @@ class Property {
     required this.isPossiblyDartCollection,
   }) : type = type ?? 'dynamic';
 
-  static Future<Property> fromParameter(
+  Property.fromParameter(Parameter p)
+      : this(
+          decorators: p.decorators,
+          name: p.name,
+          isFinal: p.isFinal,
+          doc: p.doc,
+          type: p.type,
+          defaultValueSource: p.defaultValueSource,
+          isNullable: p.isNullable,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
+          // TODO: support hasJsonKey
+          hasJsonKey: false,
+        );
+
+  static Future<Property> fromParameterElement(
     ParameterElement element,
     BuildStep buildStep, {
     required bool addImplicitFinal,
@@ -135,6 +153,7 @@ class Property {
     bool? hasJsonKey,
     String? doc,
     bool? isPossiblyDartCollection,
+    ParameterElement? parameterElement,
   }) {
     return Property(
       type: type ?? this.type,

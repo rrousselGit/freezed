@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'models.dart';
@@ -14,30 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$CloneablePropertyTearOff {
-  const _$CloneablePropertyTearOff();
-
-  _CloneableProperty call(
-      {required String name,
-      required String typeName,
-      required String type,
-      required bool nullable,
-      required GenericsParameterTemplate genericParameters}) {
-    return _CloneableProperty(
-      name: name,
-      typeName: typeName,
-      type: type,
-      nullable: nullable,
-      genericParameters: genericParameters,
-    );
-  }
-}
-
-/// @nodoc
-const $CloneableProperty = _$CloneablePropertyTearOff();
-
-/// @nodoc
-mixin _$CloneableProperty {
+mixin _$DeepCloneableProperty {
   String get name => throw _privateConstructorUsedError;
   String get typeName => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
@@ -46,15 +24,16 @@ mixin _$CloneableProperty {
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $CloneablePropertyCopyWith<CloneableProperty> get copyWith =>
+  $DeepCloneablePropertyCopyWith<DeepCloneableProperty> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CloneablePropertyCopyWith<$Res> {
-  factory $CloneablePropertyCopyWith(
-          CloneableProperty value, $Res Function(CloneableProperty) then) =
-      _$CloneablePropertyCopyWithImpl<$Res>;
+abstract class $DeepCloneablePropertyCopyWith<$Res> {
+  factory $DeepCloneablePropertyCopyWith(DeepCloneableProperty value,
+          $Res Function(DeepCloneableProperty) then) =
+      _$DeepCloneablePropertyCopyWithImpl<$Res, DeepCloneableProperty>;
+  @useResult
   $Res call(
       {String name,
       String typeName,
@@ -64,54 +43,58 @@ abstract class $CloneablePropertyCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CloneablePropertyCopyWithImpl<$Res>
-    implements $CloneablePropertyCopyWith<$Res> {
-  _$CloneablePropertyCopyWithImpl(this._value, this._then);
+class _$DeepCloneablePropertyCopyWithImpl<$Res,
+        $Val extends DeepCloneableProperty>
+    implements $DeepCloneablePropertyCopyWith<$Res> {
+  _$DeepCloneablePropertyCopyWithImpl(this._value, this._then);
 
-  final CloneableProperty _value;
   // ignore: unused_field
-  final $Res Function(CloneableProperty) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? typeName = freezed,
-    Object? type = freezed,
-    Object? nullable = freezed,
-    Object? genericParameters = freezed,
+    Object? name = null,
+    Object? typeName = null,
+    Object? type = null,
+    Object? nullable = null,
+    Object? genericParameters = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      typeName: typeName == freezed
+      typeName: null == typeName
           ? _value.typeName
           : typeName // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      nullable: nullable == freezed
+      nullable: null == nullable
           ? _value.nullable
           : nullable // ignore: cast_nullable_to_non_nullable
               as bool,
-      genericParameters: genericParameters == freezed
+      genericParameters: null == genericParameters
           ? _value.genericParameters
           : genericParameters // ignore: cast_nullable_to_non_nullable
               as GenericsParameterTemplate,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$CloneablePropertyCopyWith<$Res>
-    implements $CloneablePropertyCopyWith<$Res> {
-  factory _$CloneablePropertyCopyWith(
-          _CloneableProperty value, $Res Function(_CloneableProperty) then) =
-      __$CloneablePropertyCopyWithImpl<$Res>;
+abstract class _$$_DeepCloneablePropertyCopyWith<$Res>
+    implements $DeepCloneablePropertyCopyWith<$Res> {
+  factory _$$_DeepCloneablePropertyCopyWith(_$_DeepCloneableProperty value,
+          $Res Function(_$_DeepCloneableProperty) then) =
+      __$$_DeepCloneablePropertyCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String name,
       String typeName,
@@ -121,42 +104,40 @@ abstract class _$CloneablePropertyCopyWith<$Res>
 }
 
 /// @nodoc
-class __$CloneablePropertyCopyWithImpl<$Res>
-    extends _$CloneablePropertyCopyWithImpl<$Res>
-    implements _$CloneablePropertyCopyWith<$Res> {
-  __$CloneablePropertyCopyWithImpl(
-      _CloneableProperty _value, $Res Function(_CloneableProperty) _then)
-      : super(_value, (v) => _then(v as _CloneableProperty));
+class __$$_DeepCloneablePropertyCopyWithImpl<$Res>
+    extends _$DeepCloneablePropertyCopyWithImpl<$Res, _$_DeepCloneableProperty>
+    implements _$$_DeepCloneablePropertyCopyWith<$Res> {
+  __$$_DeepCloneablePropertyCopyWithImpl(_$_DeepCloneableProperty _value,
+      $Res Function(_$_DeepCloneableProperty) _then)
+      : super(_value, _then);
 
-  @override
-  _CloneableProperty get _value => super._value as _CloneableProperty;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? typeName = freezed,
-    Object? type = freezed,
-    Object? nullable = freezed,
-    Object? genericParameters = freezed,
+    Object? name = null,
+    Object? typeName = null,
+    Object? type = null,
+    Object? nullable = null,
+    Object? genericParameters = null,
   }) {
-    return _then(_CloneableProperty(
-      name: name == freezed
+    return _then(_$_DeepCloneableProperty(
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      typeName: typeName == freezed
+      typeName: null == typeName
           ? _value.typeName
           : typeName // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      nullable: nullable == freezed
+      nullable: null == nullable
           ? _value.nullable
           : nullable // ignore: cast_nullable_to_non_nullable
               as bool,
-      genericParameters: genericParameters == freezed
+      genericParameters: null == genericParameters
           ? _value.genericParameters
           : genericParameters // ignore: cast_nullable_to_non_nullable
               as GenericsParameterTemplate,
@@ -166,8 +147,8 @@ class __$CloneablePropertyCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CloneableProperty implements _CloneableProperty {
-  _$_CloneableProperty(
+class _$_DeepCloneableProperty implements _DeepCloneableProperty {
+  _$_DeepCloneableProperty(
       {required this.name,
       required this.typeName,
       required this.type,
@@ -187,14 +168,14 @@ class _$_CloneableProperty implements _CloneableProperty {
 
   @override
   String toString() {
-    return 'CloneableProperty(name: $name, typeName: $typeName, type: $type, nullable: $nullable, genericParameters: $genericParameters)';
+    return 'DeepCloneableProperty(name: $name, typeName: $typeName, type: $type, nullable: $nullable, genericParameters: $genericParameters)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _CloneableProperty &&
+            other is _$_DeepCloneableProperty &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.typeName, typeName) ||
                 other.typeName == typeName) &&
@@ -211,18 +192,20 @@ class _$_CloneableProperty implements _CloneableProperty {
 
   @JsonKey(ignore: true)
   @override
-  _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith =>
-      __$CloneablePropertyCopyWithImpl<_CloneableProperty>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_DeepCloneablePropertyCopyWith<_$_DeepCloneableProperty> get copyWith =>
+      __$$_DeepCloneablePropertyCopyWithImpl<_$_DeepCloneableProperty>(
+          this, _$identity);
 }
 
-abstract class _CloneableProperty implements CloneableProperty {
-  factory _CloneableProperty(
-          {required String name,
-          required String typeName,
-          required String type,
-          required bool nullable,
-          required GenericsParameterTemplate genericParameters}) =
-      _$_CloneableProperty;
+abstract class _DeepCloneableProperty implements DeepCloneableProperty {
+  factory _DeepCloneableProperty(
+          {required final String name,
+          required final String typeName,
+          required final String type,
+          required final bool nullable,
+          required final GenericsParameterTemplate genericParameters}) =
+      _$_DeepCloneableProperty;
 
   @override
   String get name;
@@ -236,54 +219,9 @@ abstract class _CloneableProperty implements CloneableProperty {
   GenericsParameterTemplate get genericParameters;
   @override
   @JsonKey(ignore: true)
-  _$CloneablePropertyCopyWith<_CloneableProperty> get copyWith =>
+  _$$_DeepCloneablePropertyCopyWith<_$_DeepCloneableProperty> get copyWith =>
       throw _privateConstructorUsedError;
 }
-
-/// @nodoc
-class _$ConstructorDetailsTearOff {
-  const _$ConstructorDetailsTearOff();
-
-  _ConstructorDetails call(
-      {required String name,
-      required String unionValue,
-      required bool isConst,
-      required String redirectedName,
-      required ParametersTemplate parameters,
-      required List<Property> impliedProperties,
-      required bool isDefault,
-      required bool isFallback,
-      required bool hasJsonSerializable,
-      required String fullName,
-      required String escapedName,
-      required List<String> withDecorators,
-      required List<String> implementsDecorators,
-      required List<String> decorators,
-      required List<CloneableProperty> cloneableProperties,
-      required List<AssertTemplate> asserts}) {
-    return _ConstructorDetails(
-      name: name,
-      unionValue: unionValue,
-      isConst: isConst,
-      redirectedName: redirectedName,
-      parameters: parameters,
-      impliedProperties: impliedProperties,
-      isDefault: isDefault,
-      isFallback: isFallback,
-      hasJsonSerializable: hasJsonSerializable,
-      fullName: fullName,
-      escapedName: escapedName,
-      withDecorators: withDecorators,
-      implementsDecorators: implementsDecorators,
-      decorators: decorators,
-      cloneableProperties: cloneableProperties,
-      asserts: asserts,
-    );
-  }
-}
-
-/// @nodoc
-const $ConstructorDetails = _$ConstructorDetailsTearOff();
 
 /// @nodoc
 mixin _$ConstructorDetails {
@@ -301,7 +239,7 @@ mixin _$ConstructorDetails {
   List<String> get withDecorators => throw _privateConstructorUsedError;
   List<String> get implementsDecorators => throw _privateConstructorUsedError;
   List<String> get decorators => throw _privateConstructorUsedError;
-  List<CloneableProperty> get cloneableProperties =>
+  List<DeepCloneableProperty> get cloneableProperties =>
       throw _privateConstructorUsedError;
   List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
 
@@ -314,7 +252,8 @@ mixin _$ConstructorDetails {
 abstract class $ConstructorDetailsCopyWith<$Res> {
   factory $ConstructorDetailsCopyWith(
           ConstructorDetails value, $Res Function(ConstructorDetails) then) =
-      _$ConstructorDetailsCopyWithImpl<$Res>;
+      _$ConstructorDetailsCopyWithImpl<$Res, ConstructorDetails>;
+  @useResult
   $Res call(
       {String name,
       String unionValue,
@@ -330,114 +269,117 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
-      List<CloneableProperty> cloneableProperties,
+      List<DeepCloneableProperty> cloneableProperties,
       List<AssertTemplate> asserts});
 }
 
 /// @nodoc
-class _$ConstructorDetailsCopyWithImpl<$Res>
+class _$ConstructorDetailsCopyWithImpl<$Res, $Val extends ConstructorDetails>
     implements $ConstructorDetailsCopyWith<$Res> {
   _$ConstructorDetailsCopyWithImpl(this._value, this._then);
 
-  final ConstructorDetails _value;
   // ignore: unused_field
-  final $Res Function(ConstructorDetails) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? unionValue = freezed,
-    Object? isConst = freezed,
-    Object? redirectedName = freezed,
-    Object? parameters = freezed,
-    Object? impliedProperties = freezed,
-    Object? isDefault = freezed,
-    Object? isFallback = freezed,
-    Object? hasJsonSerializable = freezed,
-    Object? fullName = freezed,
-    Object? escapedName = freezed,
-    Object? withDecorators = freezed,
-    Object? implementsDecorators = freezed,
-    Object? decorators = freezed,
-    Object? cloneableProperties = freezed,
-    Object? asserts = freezed,
+    Object? name = null,
+    Object? unionValue = null,
+    Object? isConst = null,
+    Object? redirectedName = null,
+    Object? parameters = null,
+    Object? impliedProperties = null,
+    Object? isDefault = null,
+    Object? isFallback = null,
+    Object? hasJsonSerializable = null,
+    Object? fullName = null,
+    Object? escapedName = null,
+    Object? withDecorators = null,
+    Object? implementsDecorators = null,
+    Object? decorators = null,
+    Object? cloneableProperties = null,
+    Object? asserts = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      unionValue: unionValue == freezed
+      unionValue: null == unionValue
           ? _value.unionValue
           : unionValue // ignore: cast_nullable_to_non_nullable
               as String,
-      isConst: isConst == freezed
+      isConst: null == isConst
           ? _value.isConst
           : isConst // ignore: cast_nullable_to_non_nullable
               as bool,
-      redirectedName: redirectedName == freezed
+      redirectedName: null == redirectedName
           ? _value.redirectedName
           : redirectedName // ignore: cast_nullable_to_non_nullable
               as String,
-      parameters: parameters == freezed
+      parameters: null == parameters
           ? _value.parameters
           : parameters // ignore: cast_nullable_to_non_nullable
               as ParametersTemplate,
-      impliedProperties: impliedProperties == freezed
+      impliedProperties: null == impliedProperties
           ? _value.impliedProperties
           : impliedProperties // ignore: cast_nullable_to_non_nullable
               as List<Property>,
-      isDefault: isDefault == freezed
+      isDefault: null == isDefault
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
               as bool,
-      isFallback: isFallback == freezed
+      isFallback: null == isFallback
           ? _value.isFallback
           : isFallback // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasJsonSerializable: hasJsonSerializable == freezed
+      hasJsonSerializable: null == hasJsonSerializable
           ? _value.hasJsonSerializable
           : hasJsonSerializable // ignore: cast_nullable_to_non_nullable
               as bool,
-      fullName: fullName == freezed
+      fullName: null == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
-      escapedName: escapedName == freezed
+      escapedName: null == escapedName
           ? _value.escapedName
           : escapedName // ignore: cast_nullable_to_non_nullable
               as String,
-      withDecorators: withDecorators == freezed
+      withDecorators: null == withDecorators
           ? _value.withDecorators
           : withDecorators // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      implementsDecorators: implementsDecorators == freezed
+      implementsDecorators: null == implementsDecorators
           ? _value.implementsDecorators
           : implementsDecorators // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      decorators: decorators == freezed
+      decorators: null == decorators
           ? _value.decorators
           : decorators // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      cloneableProperties: cloneableProperties == freezed
+      cloneableProperties: null == cloneableProperties
           ? _value.cloneableProperties
           : cloneableProperties // ignore: cast_nullable_to_non_nullable
-              as List<CloneableProperty>,
-      asserts: asserts == freezed
+              as List<DeepCloneableProperty>,
+      asserts: null == asserts
           ? _value.asserts
           : asserts // ignore: cast_nullable_to_non_nullable
               as List<AssertTemplate>,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$ConstructorDetailsCopyWith<$Res>
+abstract class _$$_ConstructorDetailsCopyWith<$Res>
     implements $ConstructorDetailsCopyWith<$Res> {
-  factory _$ConstructorDetailsCopyWith(
-          _ConstructorDetails value, $Res Function(_ConstructorDetails) then) =
-      __$ConstructorDetailsCopyWithImpl<$Res>;
+  factory _$$_ConstructorDetailsCopyWith(_$_ConstructorDetails value,
+          $Res Function(_$_ConstructorDetails) then) =
+      __$$_ConstructorDetailsCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String name,
       String unionValue,
@@ -453,103 +395,101 @@ abstract class _$ConstructorDetailsCopyWith<$Res>
       List<String> withDecorators,
       List<String> implementsDecorators,
       List<String> decorators,
-      List<CloneableProperty> cloneableProperties,
+      List<DeepCloneableProperty> cloneableProperties,
       List<AssertTemplate> asserts});
 }
 
 /// @nodoc
-class __$ConstructorDetailsCopyWithImpl<$Res>
-    extends _$ConstructorDetailsCopyWithImpl<$Res>
-    implements _$ConstructorDetailsCopyWith<$Res> {
-  __$ConstructorDetailsCopyWithImpl(
-      _ConstructorDetails _value, $Res Function(_ConstructorDetails) _then)
-      : super(_value, (v) => _then(v as _ConstructorDetails));
+class __$$_ConstructorDetailsCopyWithImpl<$Res>
+    extends _$ConstructorDetailsCopyWithImpl<$Res, _$_ConstructorDetails>
+    implements _$$_ConstructorDetailsCopyWith<$Res> {
+  __$$_ConstructorDetailsCopyWithImpl(
+      _$_ConstructorDetails _value, $Res Function(_$_ConstructorDetails) _then)
+      : super(_value, _then);
 
-  @override
-  _ConstructorDetails get _value => super._value as _ConstructorDetails;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? unionValue = freezed,
-    Object? isConst = freezed,
-    Object? redirectedName = freezed,
-    Object? parameters = freezed,
-    Object? impliedProperties = freezed,
-    Object? isDefault = freezed,
-    Object? isFallback = freezed,
-    Object? hasJsonSerializable = freezed,
-    Object? fullName = freezed,
-    Object? escapedName = freezed,
-    Object? withDecorators = freezed,
-    Object? implementsDecorators = freezed,
-    Object? decorators = freezed,
-    Object? cloneableProperties = freezed,
-    Object? asserts = freezed,
+    Object? name = null,
+    Object? unionValue = null,
+    Object? isConst = null,
+    Object? redirectedName = null,
+    Object? parameters = null,
+    Object? impliedProperties = null,
+    Object? isDefault = null,
+    Object? isFallback = null,
+    Object? hasJsonSerializable = null,
+    Object? fullName = null,
+    Object? escapedName = null,
+    Object? withDecorators = null,
+    Object? implementsDecorators = null,
+    Object? decorators = null,
+    Object? cloneableProperties = null,
+    Object? asserts = null,
   }) {
-    return _then(_ConstructorDetails(
-      name: name == freezed
+    return _then(_$_ConstructorDetails(
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      unionValue: unionValue == freezed
+      unionValue: null == unionValue
           ? _value.unionValue
           : unionValue // ignore: cast_nullable_to_non_nullable
               as String,
-      isConst: isConst == freezed
+      isConst: null == isConst
           ? _value.isConst
           : isConst // ignore: cast_nullable_to_non_nullable
               as bool,
-      redirectedName: redirectedName == freezed
+      redirectedName: null == redirectedName
           ? _value.redirectedName
           : redirectedName // ignore: cast_nullable_to_non_nullable
               as String,
-      parameters: parameters == freezed
+      parameters: null == parameters
           ? _value.parameters
           : parameters // ignore: cast_nullable_to_non_nullable
               as ParametersTemplate,
-      impliedProperties: impliedProperties == freezed
-          ? _value.impliedProperties
+      impliedProperties: null == impliedProperties
+          ? _value._impliedProperties
           : impliedProperties // ignore: cast_nullable_to_non_nullable
               as List<Property>,
-      isDefault: isDefault == freezed
+      isDefault: null == isDefault
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
               as bool,
-      isFallback: isFallback == freezed
+      isFallback: null == isFallback
           ? _value.isFallback
           : isFallback // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasJsonSerializable: hasJsonSerializable == freezed
+      hasJsonSerializable: null == hasJsonSerializable
           ? _value.hasJsonSerializable
           : hasJsonSerializable // ignore: cast_nullable_to_non_nullable
               as bool,
-      fullName: fullName == freezed
+      fullName: null == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String,
-      escapedName: escapedName == freezed
+      escapedName: null == escapedName
           ? _value.escapedName
           : escapedName // ignore: cast_nullable_to_non_nullable
               as String,
-      withDecorators: withDecorators == freezed
-          ? _value.withDecorators
+      withDecorators: null == withDecorators
+          ? _value._withDecorators
           : withDecorators // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      implementsDecorators: implementsDecorators == freezed
-          ? _value.implementsDecorators
+      implementsDecorators: null == implementsDecorators
+          ? _value._implementsDecorators
           : implementsDecorators // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      decorators: decorators == freezed
-          ? _value.decorators
+      decorators: null == decorators
+          ? _value._decorators
           : decorators // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      cloneableProperties: cloneableProperties == freezed
-          ? _value.cloneableProperties
+      cloneableProperties: null == cloneableProperties
+          ? _value._cloneableProperties
           : cloneableProperties // ignore: cast_nullable_to_non_nullable
-              as List<CloneableProperty>,
-      asserts: asserts == freezed
-          ? _value.asserts
+              as List<DeepCloneableProperty>,
+      asserts: null == asserts
+          ? _value._asserts
           : asserts // ignore: cast_nullable_to_non_nullable
               as List<AssertTemplate>,
     ));
@@ -565,18 +505,24 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       required this.isConst,
       required this.redirectedName,
       required this.parameters,
-      required this.impliedProperties,
+      required final List<Property> impliedProperties,
       required this.isDefault,
       required this.isFallback,
       required this.hasJsonSerializable,
       required this.fullName,
       required this.escapedName,
-      required this.withDecorators,
-      required this.implementsDecorators,
-      required this.decorators,
-      required this.cloneableProperties,
-      required this.asserts})
-      : super._();
+      required final List<String> withDecorators,
+      required final List<String> implementsDecorators,
+      required final List<String> decorators,
+      required final List<DeepCloneableProperty> cloneableProperties,
+      required final List<AssertTemplate> asserts})
+      : _impliedProperties = impliedProperties,
+        _withDecorators = withDecorators,
+        _implementsDecorators = implementsDecorators,
+        _decorators = decorators,
+        _cloneableProperties = cloneableProperties,
+        _asserts = asserts,
+        super._();
 
   @override
   final String name;
@@ -588,8 +534,13 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final String redirectedName;
   @override
   final ParametersTemplate parameters;
+  final List<Property> _impliedProperties;
   @override
-  final List<Property> impliedProperties;
+  List<Property> get impliedProperties {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_impliedProperties);
+  }
+
   @override
   final bool isDefault;
   @override
@@ -600,16 +551,40 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final String fullName;
   @override
   final String escapedName;
+  final List<String> _withDecorators;
   @override
-  final List<String> withDecorators;
+  List<String> get withDecorators {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_withDecorators);
+  }
+
+  final List<String> _implementsDecorators;
   @override
-  final List<String> implementsDecorators;
+  List<String> get implementsDecorators {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_implementsDecorators);
+  }
+
+  final List<String> _decorators;
   @override
-  final List<String> decorators;
+  List<String> get decorators {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_decorators);
+  }
+
+  final List<DeepCloneableProperty> _cloneableProperties;
   @override
-  final List<CloneableProperty> cloneableProperties;
+  List<DeepCloneableProperty> get cloneableProperties {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_cloneableProperties);
+  }
+
+  final List<AssertTemplate> _asserts;
   @override
-  final List<AssertTemplate> asserts;
+  List<AssertTemplate> get asserts {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_asserts);
+  }
 
   @override
   String toString() {
@@ -620,7 +595,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ConstructorDetails &&
+            other is _$_ConstructorDetails &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.unionValue, unionValue) ||
                 other.unionValue == unionValue) &&
@@ -630,7 +605,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
             (identical(other.parameters, parameters) ||
                 other.parameters == parameters) &&
             const DeepCollectionEquality()
-                .equals(other.impliedProperties, impliedProperties) &&
+                .equals(other._impliedProperties, _impliedProperties) &&
             (identical(other.isDefault, isDefault) ||
                 other.isDefault == isDefault) &&
             (identical(other.isFallback, isFallback) ||
@@ -642,14 +617,14 @@ class _$_ConstructorDetails extends _ConstructorDetails {
             (identical(other.escapedName, escapedName) ||
                 other.escapedName == escapedName) &&
             const DeepCollectionEquality()
-                .equals(other.withDecorators, withDecorators) &&
+                .equals(other._withDecorators, _withDecorators) &&
             const DeepCollectionEquality()
-                .equals(other.implementsDecorators, implementsDecorators) &&
+                .equals(other._implementsDecorators, _implementsDecorators) &&
             const DeepCollectionEquality()
-                .equals(other.decorators, decorators) &&
+                .equals(other._decorators, _decorators) &&
             const DeepCollectionEquality()
-                .equals(other.cloneableProperties, cloneableProperties) &&
-            const DeepCollectionEquality().equals(other.asserts, asserts));
+                .equals(other._cloneableProperties, _cloneableProperties) &&
+            const DeepCollectionEquality().equals(other._asserts, _asserts));
   }
 
   @override
@@ -660,42 +635,44 @@ class _$_ConstructorDetails extends _ConstructorDetails {
       isConst,
       redirectedName,
       parameters,
-      const DeepCollectionEquality().hash(impliedProperties),
+      const DeepCollectionEquality().hash(_impliedProperties),
       isDefault,
       isFallback,
       hasJsonSerializable,
       fullName,
       escapedName,
-      const DeepCollectionEquality().hash(withDecorators),
-      const DeepCollectionEquality().hash(implementsDecorators),
-      const DeepCollectionEquality().hash(decorators),
-      const DeepCollectionEquality().hash(cloneableProperties),
-      const DeepCollectionEquality().hash(asserts));
+      const DeepCollectionEquality().hash(_withDecorators),
+      const DeepCollectionEquality().hash(_implementsDecorators),
+      const DeepCollectionEquality().hash(_decorators),
+      const DeepCollectionEquality().hash(_cloneableProperties),
+      const DeepCollectionEquality().hash(_asserts));
 
   @JsonKey(ignore: true)
   @override
-  _$ConstructorDetailsCopyWith<_ConstructorDetails> get copyWith =>
-      __$ConstructorDetailsCopyWithImpl<_ConstructorDetails>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ConstructorDetailsCopyWith<_$_ConstructorDetails> get copyWith =>
+      __$$_ConstructorDetailsCopyWithImpl<_$_ConstructorDetails>(
+          this, _$identity);
 }
 
 abstract class _ConstructorDetails extends ConstructorDetails {
   factory _ConstructorDetails(
-      {required String name,
-      required String unionValue,
-      required bool isConst,
-      required String redirectedName,
-      required ParametersTemplate parameters,
-      required List<Property> impliedProperties,
-      required bool isDefault,
-      required bool isFallback,
-      required bool hasJsonSerializable,
-      required String fullName,
-      required String escapedName,
-      required List<String> withDecorators,
-      required List<String> implementsDecorators,
-      required List<String> decorators,
-      required List<CloneableProperty> cloneableProperties,
-      required List<AssertTemplate> asserts}) = _$_ConstructorDetails;
+      {required final String name,
+      required final String unionValue,
+      required final bool isConst,
+      required final String redirectedName,
+      required final ParametersTemplate parameters,
+      required final List<Property> impliedProperties,
+      required final bool isDefault,
+      required final bool isFallback,
+      required final bool hasJsonSerializable,
+      required final String fullName,
+      required final String escapedName,
+      required final List<String> withDecorators,
+      required final List<String> implementsDecorators,
+      required final List<String> decorators,
+      required final List<DeepCloneableProperty> cloneableProperties,
+      required final List<AssertTemplate> asserts}) = _$_ConstructorDetails;
   _ConstructorDetails._() : super._();
 
   @override
@@ -727,31 +704,14 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   @override
   List<String> get decorators;
   @override
-  List<CloneableProperty> get cloneableProperties;
+  List<DeepCloneableProperty> get cloneableProperties;
   @override
   List<AssertTemplate> get asserts;
   @override
   @JsonKey(ignore: true)
-  _$ConstructorDetailsCopyWith<_ConstructorDetails> get copyWith =>
+  _$$_ConstructorDetailsCopyWith<_$_ConstructorDetails> get copyWith =>
       throw _privateConstructorUsedError;
 }
-
-/// @nodoc
-class _$MapConfigTearOff {
-  const _$MapConfigTearOff();
-
-  _MapConfig call(
-      {required bool map, required bool mapOrNull, required bool maybeMap}) {
-    return _MapConfig(
-      map: map,
-      mapOrNull: mapOrNull,
-      maybeMap: maybeMap,
-    );
-  }
-}
-
-/// @nodoc
-const $MapConfig = _$MapConfigTearOff();
 
 /// @nodoc
 mixin _$MapConfig {
@@ -767,75 +727,80 @@ mixin _$MapConfig {
 /// @nodoc
 abstract class $MapConfigCopyWith<$Res> {
   factory $MapConfigCopyWith(MapConfig value, $Res Function(MapConfig) then) =
-      _$MapConfigCopyWithImpl<$Res>;
+      _$MapConfigCopyWithImpl<$Res, MapConfig>;
+  @useResult
   $Res call({bool map, bool mapOrNull, bool maybeMap});
 }
 
 /// @nodoc
-class _$MapConfigCopyWithImpl<$Res> implements $MapConfigCopyWith<$Res> {
+class _$MapConfigCopyWithImpl<$Res, $Val extends MapConfig>
+    implements $MapConfigCopyWith<$Res> {
   _$MapConfigCopyWithImpl(this._value, this._then);
 
-  final MapConfig _value;
   // ignore: unused_field
-  final $Res Function(MapConfig) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? map = freezed,
-    Object? mapOrNull = freezed,
-    Object? maybeMap = freezed,
+    Object? map = null,
+    Object? mapOrNull = null,
+    Object? maybeMap = null,
   }) {
     return _then(_value.copyWith(
-      map: map == freezed
+      map: null == map
           ? _value.map
           : map // ignore: cast_nullable_to_non_nullable
               as bool,
-      mapOrNull: mapOrNull == freezed
+      mapOrNull: null == mapOrNull
           ? _value.mapOrNull
           : mapOrNull // ignore: cast_nullable_to_non_nullable
               as bool,
-      maybeMap: maybeMap == freezed
+      maybeMap: null == maybeMap
           ? _value.maybeMap
           : maybeMap // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$MapConfigCopyWith<$Res> implements $MapConfigCopyWith<$Res> {
-  factory _$MapConfigCopyWith(
-          _MapConfig value, $Res Function(_MapConfig) then) =
-      __$MapConfigCopyWithImpl<$Res>;
+abstract class _$$_MapConfigCopyWith<$Res> implements $MapConfigCopyWith<$Res> {
+  factory _$$_MapConfigCopyWith(
+          _$_MapConfig value, $Res Function(_$_MapConfig) then) =
+      __$$_MapConfigCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({bool map, bool mapOrNull, bool maybeMap});
 }
 
 /// @nodoc
-class __$MapConfigCopyWithImpl<$Res> extends _$MapConfigCopyWithImpl<$Res>
-    implements _$MapConfigCopyWith<$Res> {
-  __$MapConfigCopyWithImpl(_MapConfig _value, $Res Function(_MapConfig) _then)
-      : super(_value, (v) => _then(v as _MapConfig));
+class __$$_MapConfigCopyWithImpl<$Res>
+    extends _$MapConfigCopyWithImpl<$Res, _$_MapConfig>
+    implements _$$_MapConfigCopyWith<$Res> {
+  __$$_MapConfigCopyWithImpl(
+      _$_MapConfig _value, $Res Function(_$_MapConfig) _then)
+      : super(_value, _then);
 
-  @override
-  _MapConfig get _value => super._value as _MapConfig;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? map = freezed,
-    Object? mapOrNull = freezed,
-    Object? maybeMap = freezed,
+    Object? map = null,
+    Object? mapOrNull = null,
+    Object? maybeMap = null,
   }) {
-    return _then(_MapConfig(
-      map: map == freezed
+    return _then(_$_MapConfig(
+      map: null == map
           ? _value.map
           : map // ignore: cast_nullable_to_non_nullable
               as bool,
-      mapOrNull: mapOrNull == freezed
+      mapOrNull: null == mapOrNull
           ? _value.mapOrNull
           : mapOrNull // ignore: cast_nullable_to_non_nullable
               as bool,
-      maybeMap: maybeMap == freezed
+      maybeMap: null == maybeMap
           ? _value.maybeMap
           : maybeMap // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -865,7 +830,7 @@ class _$_MapConfig implements _MapConfig {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _MapConfig &&
+            other is _$_MapConfig &&
             (identical(other.map, map) || other.map == map) &&
             (identical(other.mapOrNull, mapOrNull) ||
                 other.mapOrNull == mapOrNull) &&
@@ -878,15 +843,16 @@ class _$_MapConfig implements _MapConfig {
 
   @JsonKey(ignore: true)
   @override
-  _$MapConfigCopyWith<_MapConfig> get copyWith =>
-      __$MapConfigCopyWithImpl<_MapConfig>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_MapConfigCopyWith<_$_MapConfig> get copyWith =>
+      __$$_MapConfigCopyWithImpl<_$_MapConfig>(this, _$identity);
 }
 
 abstract class _MapConfig implements MapConfig {
   factory _MapConfig(
-      {required bool map,
-      required bool mapOrNull,
-      required bool maybeMap}) = _$_MapConfig;
+      {required final bool map,
+      required final bool mapOrNull,
+      required final bool maybeMap}) = _$_MapConfig;
 
   @override
   bool get map;
@@ -896,26 +862,9 @@ abstract class _MapConfig implements MapConfig {
   bool get maybeMap;
   @override
   @JsonKey(ignore: true)
-  _$MapConfigCopyWith<_MapConfig> get copyWith =>
+  _$$_MapConfigCopyWith<_$_MapConfig> get copyWith =>
       throw _privateConstructorUsedError;
 }
-
-/// @nodoc
-class _$WhenConfigTearOff {
-  const _$WhenConfigTearOff();
-
-  _WhenConfig call(
-      {required bool when, required bool whenOrNull, required bool maybeWhen}) {
-    return _WhenConfig(
-      when: when,
-      whenOrNull: whenOrNull,
-      maybeWhen: maybeWhen,
-    );
-  }
-}
-
-/// @nodoc
-const $WhenConfig = _$WhenConfigTearOff();
 
 /// @nodoc
 mixin _$WhenConfig {
@@ -932,76 +881,81 @@ mixin _$WhenConfig {
 abstract class $WhenConfigCopyWith<$Res> {
   factory $WhenConfigCopyWith(
           WhenConfig value, $Res Function(WhenConfig) then) =
-      _$WhenConfigCopyWithImpl<$Res>;
+      _$WhenConfigCopyWithImpl<$Res, WhenConfig>;
+  @useResult
   $Res call({bool when, bool whenOrNull, bool maybeWhen});
 }
 
 /// @nodoc
-class _$WhenConfigCopyWithImpl<$Res> implements $WhenConfigCopyWith<$Res> {
+class _$WhenConfigCopyWithImpl<$Res, $Val extends WhenConfig>
+    implements $WhenConfigCopyWith<$Res> {
   _$WhenConfigCopyWithImpl(this._value, this._then);
 
-  final WhenConfig _value;
   // ignore: unused_field
-  final $Res Function(WhenConfig) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? when = freezed,
-    Object? whenOrNull = freezed,
-    Object? maybeWhen = freezed,
+    Object? when = null,
+    Object? whenOrNull = null,
+    Object? maybeWhen = null,
   }) {
     return _then(_value.copyWith(
-      when: when == freezed
+      when: null == when
           ? _value.when
           : when // ignore: cast_nullable_to_non_nullable
               as bool,
-      whenOrNull: whenOrNull == freezed
+      whenOrNull: null == whenOrNull
           ? _value.whenOrNull
           : whenOrNull // ignore: cast_nullable_to_non_nullable
               as bool,
-      maybeWhen: maybeWhen == freezed
+      maybeWhen: null == maybeWhen
           ? _value.maybeWhen
           : maybeWhen // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$WhenConfigCopyWith<$Res> implements $WhenConfigCopyWith<$Res> {
-  factory _$WhenConfigCopyWith(
-          _WhenConfig value, $Res Function(_WhenConfig) then) =
-      __$WhenConfigCopyWithImpl<$Res>;
+abstract class _$$_WhenConfigCopyWith<$Res>
+    implements $WhenConfigCopyWith<$Res> {
+  factory _$$_WhenConfigCopyWith(
+          _$_WhenConfig value, $Res Function(_$_WhenConfig) then) =
+      __$$_WhenConfigCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({bool when, bool whenOrNull, bool maybeWhen});
 }
 
 /// @nodoc
-class __$WhenConfigCopyWithImpl<$Res> extends _$WhenConfigCopyWithImpl<$Res>
-    implements _$WhenConfigCopyWith<$Res> {
-  __$WhenConfigCopyWithImpl(
-      _WhenConfig _value, $Res Function(_WhenConfig) _then)
-      : super(_value, (v) => _then(v as _WhenConfig));
+class __$$_WhenConfigCopyWithImpl<$Res>
+    extends _$WhenConfigCopyWithImpl<$Res, _$_WhenConfig>
+    implements _$$_WhenConfigCopyWith<$Res> {
+  __$$_WhenConfigCopyWithImpl(
+      _$_WhenConfig _value, $Res Function(_$_WhenConfig) _then)
+      : super(_value, _then);
 
-  @override
-  _WhenConfig get _value => super._value as _WhenConfig;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? when = freezed,
-    Object? whenOrNull = freezed,
-    Object? maybeWhen = freezed,
+    Object? when = null,
+    Object? whenOrNull = null,
+    Object? maybeWhen = null,
   }) {
-    return _then(_WhenConfig(
-      when: when == freezed
+    return _then(_$_WhenConfig(
+      when: null == when
           ? _value.when
           : when // ignore: cast_nullable_to_non_nullable
               as bool,
-      whenOrNull: whenOrNull == freezed
+      whenOrNull: null == whenOrNull
           ? _value.whenOrNull
           : whenOrNull // ignore: cast_nullable_to_non_nullable
               as bool,
-      maybeWhen: maybeWhen == freezed
+      maybeWhen: null == maybeWhen
           ? _value.maybeWhen
           : maybeWhen // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -1031,7 +985,7 @@ class _$_WhenConfig implements _WhenConfig {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _WhenConfig &&
+            other is _$_WhenConfig &&
             (identical(other.when, when) || other.when == when) &&
             (identical(other.whenOrNull, whenOrNull) ||
                 other.whenOrNull == whenOrNull) &&
@@ -1044,15 +998,16 @@ class _$_WhenConfig implements _WhenConfig {
 
   @JsonKey(ignore: true)
   @override
-  _$WhenConfigCopyWith<_WhenConfig> get copyWith =>
-      __$WhenConfigCopyWithImpl<_WhenConfig>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_WhenConfigCopyWith<_$_WhenConfig> get copyWith =>
+      __$$_WhenConfigCopyWithImpl<_$_WhenConfig>(this, _$identity);
 }
 
 abstract class _WhenConfig implements WhenConfig {
   factory _WhenConfig(
-      {required bool when,
-      required bool whenOrNull,
-      required bool maybeWhen}) = _$_WhenConfig;
+      {required final bool when,
+      required final bool whenOrNull,
+      required final bool maybeWhen}) = _$_WhenConfig;
 
   @override
   bool get when;
@@ -1062,54 +1017,9 @@ abstract class _WhenConfig implements WhenConfig {
   bool get maybeWhen;
   @override
   @JsonKey(ignore: true)
-  _$WhenConfigCopyWith<_WhenConfig> get copyWith =>
+  _$$_WhenConfigCopyWith<_$_WhenConfig> get copyWith =>
       throw _privateConstructorUsedError;
 }
-
-/// @nodoc
-class _$DataTearOff {
-  const _$DataTearOff();
-
-  _Data call(
-      {required String name,
-      required String unionKey,
-      required bool generateCopyWith,
-      required bool generateEqual,
-      required bool generateToString,
-      required MapConfig map,
-      required WhenConfig when,
-      required bool generateFromJson,
-      required bool generateToJson,
-      required bool makeCollectionsImmutable,
-      required List<String> concretePropertiesName,
-      required List<ConstructorDetails> constructors,
-      required GenericsDefinitionTemplate genericsDefinitionTemplate,
-      required GenericsParameterTemplate genericsParameterTemplate,
-      required bool shouldUseExtends,
-      required bool genericArgumentFactories}) {
-    return _Data(
-      name: name,
-      unionKey: unionKey,
-      generateCopyWith: generateCopyWith,
-      generateEqual: generateEqual,
-      generateToString: generateToString,
-      map: map,
-      when: when,
-      generateFromJson: generateFromJson,
-      generateToJson: generateToJson,
-      makeCollectionsImmutable: makeCollectionsImmutable,
-      concretePropertiesName: concretePropertiesName,
-      constructors: constructors,
-      genericsDefinitionTemplate: genericsDefinitionTemplate,
-      genericsParameterTemplate: genericsParameterTemplate,
-      shouldUseExtends: shouldUseExtends,
-      genericArgumentFactories: genericArgumentFactories,
-    );
-  }
-}
-
-/// @nodoc
-const $Data = _$DataTearOff();
 
 /// @nodoc
 mixin _$Data {
@@ -1140,7 +1050,8 @@ mixin _$Data {
 /// @nodoc
 abstract class $DataCopyWith<$Res> {
   factory $DataCopyWith(Data value, $Res Function(Data) then) =
-      _$DataCopyWithImpl<$Res>;
+      _$DataCopyWithImpl<$Res, Data>;
+  @useResult
   $Res call(
       {String name,
       String unionKey,
@@ -1164,120 +1075,126 @@ abstract class $DataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
+class _$DataCopyWithImpl<$Res, $Val extends Data>
+    implements $DataCopyWith<$Res> {
   _$DataCopyWithImpl(this._value, this._then);
 
-  final Data _value;
   // ignore: unused_field
-  final $Res Function(Data) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? unionKey = freezed,
-    Object? generateCopyWith = freezed,
-    Object? generateEqual = freezed,
-    Object? generateToString = freezed,
-    Object? map = freezed,
-    Object? when = freezed,
-    Object? generateFromJson = freezed,
-    Object? generateToJson = freezed,
-    Object? makeCollectionsImmutable = freezed,
-    Object? concretePropertiesName = freezed,
-    Object? constructors = freezed,
-    Object? genericsDefinitionTemplate = freezed,
-    Object? genericsParameterTemplate = freezed,
-    Object? shouldUseExtends = freezed,
-    Object? genericArgumentFactories = freezed,
+    Object? name = null,
+    Object? unionKey = null,
+    Object? generateCopyWith = null,
+    Object? generateEqual = null,
+    Object? generateToString = null,
+    Object? map = null,
+    Object? when = null,
+    Object? generateFromJson = null,
+    Object? generateToJson = null,
+    Object? makeCollectionsImmutable = null,
+    Object? concretePropertiesName = null,
+    Object? constructors = null,
+    Object? genericsDefinitionTemplate = null,
+    Object? genericsParameterTemplate = null,
+    Object? shouldUseExtends = null,
+    Object? genericArgumentFactories = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      unionKey: unionKey == freezed
+      unionKey: null == unionKey
           ? _value.unionKey
           : unionKey // ignore: cast_nullable_to_non_nullable
               as String,
-      generateCopyWith: generateCopyWith == freezed
+      generateCopyWith: null == generateCopyWith
           ? _value.generateCopyWith
           : generateCopyWith // ignore: cast_nullable_to_non_nullable
               as bool,
-      generateEqual: generateEqual == freezed
+      generateEqual: null == generateEqual
           ? _value.generateEqual
           : generateEqual // ignore: cast_nullable_to_non_nullable
               as bool,
-      generateToString: generateToString == freezed
+      generateToString: null == generateToString
           ? _value.generateToString
           : generateToString // ignore: cast_nullable_to_non_nullable
               as bool,
-      map: map == freezed
+      map: null == map
           ? _value.map
           : map // ignore: cast_nullable_to_non_nullable
               as MapConfig,
-      when: when == freezed
+      when: null == when
           ? _value.when
           : when // ignore: cast_nullable_to_non_nullable
               as WhenConfig,
-      generateFromJson: generateFromJson == freezed
+      generateFromJson: null == generateFromJson
           ? _value.generateFromJson
           : generateFromJson // ignore: cast_nullable_to_non_nullable
               as bool,
-      generateToJson: generateToJson == freezed
+      generateToJson: null == generateToJson
           ? _value.generateToJson
           : generateToJson // ignore: cast_nullable_to_non_nullable
               as bool,
-      makeCollectionsImmutable: makeCollectionsImmutable == freezed
+      makeCollectionsImmutable: null == makeCollectionsImmutable
           ? _value.makeCollectionsImmutable
           : makeCollectionsImmutable // ignore: cast_nullable_to_non_nullable
               as bool,
-      concretePropertiesName: concretePropertiesName == freezed
+      concretePropertiesName: null == concretePropertiesName
           ? _value.concretePropertiesName
           : concretePropertiesName // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      constructors: constructors == freezed
+      constructors: null == constructors
           ? _value.constructors
           : constructors // ignore: cast_nullable_to_non_nullable
               as List<ConstructorDetails>,
-      genericsDefinitionTemplate: genericsDefinitionTemplate == freezed
+      genericsDefinitionTemplate: null == genericsDefinitionTemplate
           ? _value.genericsDefinitionTemplate
           : genericsDefinitionTemplate // ignore: cast_nullable_to_non_nullable
               as GenericsDefinitionTemplate,
-      genericsParameterTemplate: genericsParameterTemplate == freezed
+      genericsParameterTemplate: null == genericsParameterTemplate
           ? _value.genericsParameterTemplate
           : genericsParameterTemplate // ignore: cast_nullable_to_non_nullable
               as GenericsParameterTemplate,
-      shouldUseExtends: shouldUseExtends == freezed
+      shouldUseExtends: null == shouldUseExtends
           ? _value.shouldUseExtends
           : shouldUseExtends // ignore: cast_nullable_to_non_nullable
               as bool,
-      genericArgumentFactories: genericArgumentFactories == freezed
+      genericArgumentFactories: null == genericArgumentFactories
           ? _value.genericArgumentFactories
           : genericArgumentFactories // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $MapConfigCopyWith<$Res> get map {
     return $MapConfigCopyWith<$Res>(_value.map, (value) {
-      return _then(_value.copyWith(map: value));
+      return _then(_value.copyWith(map: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $WhenConfigCopyWith<$Res> get when {
     return $WhenConfigCopyWith<$Res>(_value.when, (value) {
-      return _then(_value.copyWith(when: value));
+      return _then(_value.copyWith(when: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
-  factory _$DataCopyWith(_Data value, $Res Function(_Data) then) =
-      __$DataCopyWithImpl<$Res>;
+abstract class _$$_DataCopyWith<$Res> implements $DataCopyWith<$Res> {
+  factory _$$_DataCopyWith(_$_Data value, $Res Function(_$_Data) then) =
+      __$$_DataCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String name,
       String unionKey,
@@ -1303,95 +1220,93 @@ abstract class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res>
-    implements _$DataCopyWith<$Res> {
-  __$DataCopyWithImpl(_Data _value, $Res Function(_Data) _then)
-      : super(_value, (v) => _then(v as _Data));
+class __$$_DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res, _$_Data>
+    implements _$$_DataCopyWith<$Res> {
+  __$$_DataCopyWithImpl(_$_Data _value, $Res Function(_$_Data) _then)
+      : super(_value, _then);
 
-  @override
-  _Data get _value => super._value as _Data;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? unionKey = freezed,
-    Object? generateCopyWith = freezed,
-    Object? generateEqual = freezed,
-    Object? generateToString = freezed,
-    Object? map = freezed,
-    Object? when = freezed,
-    Object? generateFromJson = freezed,
-    Object? generateToJson = freezed,
-    Object? makeCollectionsImmutable = freezed,
-    Object? concretePropertiesName = freezed,
-    Object? constructors = freezed,
-    Object? genericsDefinitionTemplate = freezed,
-    Object? genericsParameterTemplate = freezed,
-    Object? shouldUseExtends = freezed,
-    Object? genericArgumentFactories = freezed,
+    Object? name = null,
+    Object? unionKey = null,
+    Object? generateCopyWith = null,
+    Object? generateEqual = null,
+    Object? generateToString = null,
+    Object? map = null,
+    Object? when = null,
+    Object? generateFromJson = null,
+    Object? generateToJson = null,
+    Object? makeCollectionsImmutable = null,
+    Object? concretePropertiesName = null,
+    Object? constructors = null,
+    Object? genericsDefinitionTemplate = null,
+    Object? genericsParameterTemplate = null,
+    Object? shouldUseExtends = null,
+    Object? genericArgumentFactories = null,
   }) {
-    return _then(_Data(
-      name: name == freezed
+    return _then(_$_Data(
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      unionKey: unionKey == freezed
+      unionKey: null == unionKey
           ? _value.unionKey
           : unionKey // ignore: cast_nullable_to_non_nullable
               as String,
-      generateCopyWith: generateCopyWith == freezed
+      generateCopyWith: null == generateCopyWith
           ? _value.generateCopyWith
           : generateCopyWith // ignore: cast_nullable_to_non_nullable
               as bool,
-      generateEqual: generateEqual == freezed
+      generateEqual: null == generateEqual
           ? _value.generateEqual
           : generateEqual // ignore: cast_nullable_to_non_nullable
               as bool,
-      generateToString: generateToString == freezed
+      generateToString: null == generateToString
           ? _value.generateToString
           : generateToString // ignore: cast_nullable_to_non_nullable
               as bool,
-      map: map == freezed
+      map: null == map
           ? _value.map
           : map // ignore: cast_nullable_to_non_nullable
               as MapConfig,
-      when: when == freezed
+      when: null == when
           ? _value.when
           : when // ignore: cast_nullable_to_non_nullable
               as WhenConfig,
-      generateFromJson: generateFromJson == freezed
+      generateFromJson: null == generateFromJson
           ? _value.generateFromJson
           : generateFromJson // ignore: cast_nullable_to_non_nullable
               as bool,
-      generateToJson: generateToJson == freezed
+      generateToJson: null == generateToJson
           ? _value.generateToJson
           : generateToJson // ignore: cast_nullable_to_non_nullable
               as bool,
-      makeCollectionsImmutable: makeCollectionsImmutable == freezed
+      makeCollectionsImmutable: null == makeCollectionsImmutable
           ? _value.makeCollectionsImmutable
           : makeCollectionsImmutable // ignore: cast_nullable_to_non_nullable
               as bool,
-      concretePropertiesName: concretePropertiesName == freezed
-          ? _value.concretePropertiesName
+      concretePropertiesName: null == concretePropertiesName
+          ? _value._concretePropertiesName
           : concretePropertiesName // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      constructors: constructors == freezed
-          ? _value.constructors
+      constructors: null == constructors
+          ? _value._constructors
           : constructors // ignore: cast_nullable_to_non_nullable
               as List<ConstructorDetails>,
-      genericsDefinitionTemplate: genericsDefinitionTemplate == freezed
+      genericsDefinitionTemplate: null == genericsDefinitionTemplate
           ? _value.genericsDefinitionTemplate
           : genericsDefinitionTemplate // ignore: cast_nullable_to_non_nullable
               as GenericsDefinitionTemplate,
-      genericsParameterTemplate: genericsParameterTemplate == freezed
+      genericsParameterTemplate: null == genericsParameterTemplate
           ? _value.genericsParameterTemplate
           : genericsParameterTemplate // ignore: cast_nullable_to_non_nullable
               as GenericsParameterTemplate,
-      shouldUseExtends: shouldUseExtends == freezed
+      shouldUseExtends: null == shouldUseExtends
           ? _value.shouldUseExtends
           : shouldUseExtends // ignore: cast_nullable_to_non_nullable
               as bool,
-      genericArgumentFactories: genericArgumentFactories == freezed
+      genericArgumentFactories: null == genericArgumentFactories
           ? _value.genericArgumentFactories
           : genericArgumentFactories // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -1413,13 +1328,15 @@ class _$_Data implements _Data {
       required this.generateFromJson,
       required this.generateToJson,
       required this.makeCollectionsImmutable,
-      required this.concretePropertiesName,
-      required this.constructors,
+      required final List<String> concretePropertiesName,
+      required final List<ConstructorDetails> constructors,
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
       required this.shouldUseExtends,
       required this.genericArgumentFactories})
-      : assert(constructors.isNotEmpty);
+      : assert(constructors.isNotEmpty),
+        _concretePropertiesName = concretePropertiesName,
+        _constructors = constructors;
 
   @override
   final String name;
@@ -1441,10 +1358,20 @@ class _$_Data implements _Data {
   final bool generateToJson;
   @override
   final bool makeCollectionsImmutable;
+  final List<String> _concretePropertiesName;
   @override
-  final List<String> concretePropertiesName;
+  List<String> get concretePropertiesName {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_concretePropertiesName);
+  }
+
+  final List<ConstructorDetails> _constructors;
   @override
-  final List<ConstructorDetails> constructors;
+  List<ConstructorDetails> get constructors {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_constructors);
+  }
+
   @override
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   @override
@@ -1463,7 +1390,7 @@ class _$_Data implements _Data {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Data &&
+            other is _$_Data &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.unionKey, unionKey) ||
                 other.unionKey == unionKey) &&
@@ -1482,10 +1409,10 @@ class _$_Data implements _Data {
             (identical(
                     other.makeCollectionsImmutable, makeCollectionsImmutable) ||
                 other.makeCollectionsImmutable == makeCollectionsImmutable) &&
+            const DeepCollectionEquality().equals(
+                other._concretePropertiesName, _concretePropertiesName) &&
             const DeepCollectionEquality()
-                .equals(other.concretePropertiesName, concretePropertiesName) &&
-            const DeepCollectionEquality()
-                .equals(other.constructors, constructors) &&
+                .equals(other._constructors, _constructors) &&
             (identical(other.genericsDefinitionTemplate,
                     genericsDefinitionTemplate) ||
                 other.genericsDefinitionTemplate ==
@@ -1513,8 +1440,8 @@ class _$_Data implements _Data {
       generateFromJson,
       generateToJson,
       makeCollectionsImmutable,
-      const DeepCollectionEquality().hash(concretePropertiesName),
-      const DeepCollectionEquality().hash(constructors),
+      const DeepCollectionEquality().hash(_concretePropertiesName),
+      const DeepCollectionEquality().hash(_constructors),
       genericsDefinitionTemplate,
       genericsParameterTemplate,
       shouldUseExtends,
@@ -1522,28 +1449,29 @@ class _$_Data implements _Data {
 
   @JsonKey(ignore: true)
   @override
-  _$DataCopyWith<_Data> get copyWith =>
-      __$DataCopyWithImpl<_Data>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_DataCopyWith<_$_Data> get copyWith =>
+      __$$_DataCopyWithImpl<_$_Data>(this, _$identity);
 }
 
 abstract class _Data implements Data {
   factory _Data(
-      {required String name,
-      required String unionKey,
-      required bool generateCopyWith,
-      required bool generateEqual,
-      required bool generateToString,
-      required MapConfig map,
-      required WhenConfig when,
-      required bool generateFromJson,
-      required bool generateToJson,
-      required bool makeCollectionsImmutable,
-      required List<String> concretePropertiesName,
-      required List<ConstructorDetails> constructors,
-      required GenericsDefinitionTemplate genericsDefinitionTemplate,
-      required GenericsParameterTemplate genericsParameterTemplate,
-      required bool shouldUseExtends,
-      required bool genericArgumentFactories}) = _$_Data;
+      {required final String name,
+      required final String unionKey,
+      required final bool generateCopyWith,
+      required final bool generateEqual,
+      required final bool generateToString,
+      required final MapConfig map,
+      required final WhenConfig when,
+      required final bool generateFromJson,
+      required final bool generateToJson,
+      required final bool makeCollectionsImmutable,
+      required final List<String> concretePropertiesName,
+      required final List<ConstructorDetails> constructors,
+      required final GenericsDefinitionTemplate genericsDefinitionTemplate,
+      required final GenericsParameterTemplate genericsParameterTemplate,
+      required final bool shouldUseExtends,
+      required final bool genericArgumentFactories}) = _$_Data;
 
   @override
   String get name;
@@ -1579,23 +1507,8 @@ abstract class _Data implements Data {
   bool get genericArgumentFactories;
   @override
   @JsonKey(ignore: true)
-  _$DataCopyWith<_Data> get copyWith => throw _privateConstructorUsedError;
+  _$$_DataCopyWith<_$_Data> get copyWith => throw _privateConstructorUsedError;
 }
-
-/// @nodoc
-class _$GlobalDataTearOff {
-  const _$GlobalDataTearOff();
-
-  _GlobalData call({required bool hasJson, required bool hasDiagnostics}) {
-    return _GlobalData(
-      hasJson: hasJson,
-      hasDiagnostics: hasDiagnostics,
-    );
-  }
-}
-
-/// @nodoc
-const $GlobalData = _$GlobalDataTearOff();
 
 /// @nodoc
 mixin _$GlobalData {
@@ -1611,66 +1524,71 @@ mixin _$GlobalData {
 abstract class $GlobalDataCopyWith<$Res> {
   factory $GlobalDataCopyWith(
           GlobalData value, $Res Function(GlobalData) then) =
-      _$GlobalDataCopyWithImpl<$Res>;
+      _$GlobalDataCopyWithImpl<$Res, GlobalData>;
+  @useResult
   $Res call({bool hasJson, bool hasDiagnostics});
 }
 
 /// @nodoc
-class _$GlobalDataCopyWithImpl<$Res> implements $GlobalDataCopyWith<$Res> {
+class _$GlobalDataCopyWithImpl<$Res, $Val extends GlobalData>
+    implements $GlobalDataCopyWith<$Res> {
   _$GlobalDataCopyWithImpl(this._value, this._then);
 
-  final GlobalData _value;
   // ignore: unused_field
-  final $Res Function(GlobalData) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? hasJson = freezed,
-    Object? hasDiagnostics = freezed,
+    Object? hasJson = null,
+    Object? hasDiagnostics = null,
   }) {
     return _then(_value.copyWith(
-      hasJson: hasJson == freezed
+      hasJson: null == hasJson
           ? _value.hasJson
           : hasJson // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasDiagnostics: hasDiagnostics == freezed
+      hasDiagnostics: null == hasDiagnostics
           ? _value.hasDiagnostics
           : hasDiagnostics // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$GlobalDataCopyWith<$Res> implements $GlobalDataCopyWith<$Res> {
-  factory _$GlobalDataCopyWith(
-          _GlobalData value, $Res Function(_GlobalData) then) =
-      __$GlobalDataCopyWithImpl<$Res>;
+abstract class _$$_GlobalDataCopyWith<$Res>
+    implements $GlobalDataCopyWith<$Res> {
+  factory _$$_GlobalDataCopyWith(
+          _$_GlobalData value, $Res Function(_$_GlobalData) then) =
+      __$$_GlobalDataCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({bool hasJson, bool hasDiagnostics});
 }
 
 /// @nodoc
-class __$GlobalDataCopyWithImpl<$Res> extends _$GlobalDataCopyWithImpl<$Res>
-    implements _$GlobalDataCopyWith<$Res> {
-  __$GlobalDataCopyWithImpl(
-      _GlobalData _value, $Res Function(_GlobalData) _then)
-      : super(_value, (v) => _then(v as _GlobalData));
+class __$$_GlobalDataCopyWithImpl<$Res>
+    extends _$GlobalDataCopyWithImpl<$Res, _$_GlobalData>
+    implements _$$_GlobalDataCopyWith<$Res> {
+  __$$_GlobalDataCopyWithImpl(
+      _$_GlobalData _value, $Res Function(_$_GlobalData) _then)
+      : super(_value, _then);
 
-  @override
-  _GlobalData get _value => super._value as _GlobalData;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? hasJson = freezed,
-    Object? hasDiagnostics = freezed,
+    Object? hasJson = null,
+    Object? hasDiagnostics = null,
   }) {
-    return _then(_GlobalData(
-      hasJson: hasJson == freezed
+    return _then(_$_GlobalData(
+      hasJson: null == hasJson
           ? _value.hasJson
           : hasJson // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasDiagnostics: hasDiagnostics == freezed
+      hasDiagnostics: null == hasDiagnostics
           ? _value.hasDiagnostics
           : hasDiagnostics // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -1697,7 +1615,7 @@ class _$_GlobalData implements _GlobalData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _GlobalData &&
+            other is _$_GlobalData &&
             (identical(other.hasJson, hasJson) || other.hasJson == hasJson) &&
             (identical(other.hasDiagnostics, hasDiagnostics) ||
                 other.hasDiagnostics == hasDiagnostics));
@@ -1708,13 +1626,15 @@ class _$_GlobalData implements _GlobalData {
 
   @JsonKey(ignore: true)
   @override
-  _$GlobalDataCopyWith<_GlobalData> get copyWith =>
-      __$GlobalDataCopyWithImpl<_GlobalData>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_GlobalDataCopyWith<_$_GlobalData> get copyWith =>
+      __$$_GlobalDataCopyWithImpl<_$_GlobalData>(this, _$identity);
 }
 
 abstract class _GlobalData implements GlobalData {
-  factory _GlobalData({required bool hasJson, required bool hasDiagnostics}) =
-      _$_GlobalData;
+  factory _GlobalData(
+      {required final bool hasJson,
+      required final bool hasDiagnostics}) = _$_GlobalData;
 
   @override
   bool get hasJson;
@@ -1722,6 +1642,6 @@ abstract class _GlobalData implements GlobalData {
   bool get hasDiagnostics;
   @override
   @JsonKey(ignore: true)
-  _$GlobalDataCopyWith<_GlobalData> get copyWith =>
+  _$$_GlobalDataCopyWith<_$_GlobalData> get copyWith =>
       throw _privateConstructorUsedError;
 }

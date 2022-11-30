@@ -8,8 +8,9 @@ class CopyWith {
     required this.clonedClassName,
     required this.genericsDefinition,
     required this.genericsParameter,
-    required this.allProperties,
     required this.cloneableProperties,
+    required this.readableProperties,
+    required this.deepCloneableProperties,
     required this.data,
     this.parent,
   });
@@ -24,8 +25,9 @@ class CopyWith {
   final String clonedClassName;
   final GenericsDefinitionTemplate genericsDefinition;
   final GenericsParameterTemplate genericsParameter;
-  final List<Property> allProperties;
-  final List<CloneableProperty> cloneableProperties;
+  final List<Property> cloneableProperties;
+  final List<Property> readableProperties;
+  final List<DeepCloneableProperty> deepCloneableProperties;
   final CopyWith? parent;
   final Data data;
 
@@ -33,10 +35,11 @@ class CopyWith {
   /// if the raw collection can be accessed instead.
   bool get canAccessRawCollection => parent != null;
 
-  String get interface => _interface(appendGenericToFactory: false);
-  String get commonInterface => _interface(appendGenericToFactory: true);
+  String get interface => _deepCopyInterface(appendGenericToFactory: false);
+  String get commonInterface =>
+      _deepCopyInterface(appendGenericToFactory: true);
 
-  String _interface({required bool appendGenericToFactory}) {
+  String _deepCopyInterface({required bool appendGenericToFactory}) {
     var implements = _hasSuperClass
         ? 'implements ${parent!._abstractClassName}${genericsParameter.append('\$Res')}'
         : '';
@@ -54,25 +57,40 @@ ${_abstractDeepCopyMethods().join()}
 }''';
   }
 
-  bool get _hasSuperClass {
-    return parent != null && parent!.allProperties.isNotEmpty;
+  String get abstractCopyWithGetter {
+    if (cloneableProperties.isEmpty) return '';
+
+    return _maybeOverride(
+      '''
+@JsonKey(ignore: true)
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
+''',
+    );
   }
 
-  String commonContreteImpl(
-    List<Property> commonProperties,
-  ) {
+  String get concreteCopyWithGetter {
+    if (cloneableProperties.isEmpty) return '';
+    return '''
+@JsonKey(ignore: true)
+@override
+@pragma('vm:prefer-inline')
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
+''';
+  }
+
+  String get commonConcreteImpl {
     var copyWith = '';
 
-    if (allProperties.isNotEmpty) {
+    if (cloneableProperties.isNotEmpty) {
       final prototype = _concreteCopyWithPrototype(
-        properties: allProperties,
+        properties: cloneableProperties,
         methodName: 'call',
       );
 
       final body = _copyWithMethodBody(
         parametersTemplate: ParametersTemplate(
           const [],
-          namedParameters: commonProperties.map((e) {
+          namedParameters: cloneableProperties.map((e) {
             return Parameter(
               decorators: e.decorators,
               name: e.name,
@@ -87,6 +105,7 @@ ${_abstractDeepCopyMethods().join()}
               type: e.type,
               doc: e.doc,
               isPossiblyDartCollection: e.isPossiblyDartCollection,
+              parameterElement: null,
             );
           }).toList(),
         ),
@@ -113,28 +132,59 @@ ${_deepCopyMethods(isConcrete: false).join()}
 ''';
   }
 
+  /// The implementation of the callable class that contains both the copyWith
+  /// and the cloneable properties.
+  String concreteImpl(ParametersTemplate parametersTemplate) {
+    return '''
+/// @nodoc
+class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._implClassName}${genericsParameter.append('\$Res').append('$clonedClassName$genericsParameter')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
+  $_implClassName($clonedClassName$genericsParameter _value, \$Res Function($clonedClassName$genericsParameter) _then)
+      : super(_value, _then);
+
+
+${_copyWithMethod(parametersTemplate)}
+
+${_deepCopyMethods(isConcrete: true).join()}
+}''';
+  }
+
+  bool get _hasSuperClass {
+    return parent != null && parent!.cloneableProperties.isNotEmpty;
+  }
+
   Iterable<String> _abstractDeepCopyMethods() sync* {
-    for (final cloneableProperty in cloneableProperties) {
+    for (final deepCloneableProperty in deepCloneableProperties) {
       var leading = '';
       if (_hasSuperClass &&
-          parent!.cloneableProperties
-              .any((c) => c.name == cloneableProperty.name)) {
+          parent!.deepCloneableProperties
+              .any((c) => c.name == deepCloneableProperty.name)) {
         leading = '@override ';
       }
 
-      final nullabilitySuffix = cloneableProperty.nullable ? '?' : '';
+      final nullabilitySuffix = deepCloneableProperty.nullable ? '?' : '';
 
-      yield '$leading${_clonerInterfaceFor(cloneableProperty)}$nullabilitySuffix get ${cloneableProperty.name};';
+      yield '$leading${_clonerInterfaceFor(deepCloneableProperty)}$nullabilitySuffix get ${deepCloneableProperty.name};';
     }
   }
 
   String _copyWithPrototype(String methodName) {
-    if (allProperties.isEmpty) return '';
+    if (cloneableProperties.isEmpty) return '';
 
     return _copyWithProtypeFor(
       methodName: methodName,
-      properties: allProperties,
+      properties: cloneableProperties,
     );
+  }
+
+  String _concreteCopyWithPrototype({
+    required List<Property> properties,
+    required String methodName,
+  }) {
+    final parameters = properties.map((p) {
+      return 'Object? ${p.name} = ${_defaultValue(isNullable: p.isNullable)},';
+    }).join();
+
+    return '\$Res $methodName({$parameters})';
   }
 
   String _copyWithProtypeFor({
@@ -153,32 +203,11 @@ $parameters
 ''');
   }
 
-  String get abstractCopyWithGetter {
-    if (allProperties.isEmpty) return '';
-
-    return _maybeOverride(
-      '''
-@JsonKey(ignore: true)
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
-''',
-    );
-  }
-
-  String get concreteCopyWithGetter {
-    if (allProperties.isEmpty) return '';
-    return '''
-@JsonKey(ignore: true)
-@override
-@pragma('vm:prefer-inline')
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
-''';
-  }
-
   String _copyWithMethod(ParametersTemplate parametersTemplate) {
-    if (allProperties.isEmpty) return '';
+    if (cloneableProperties.isEmpty) return '';
 
     final prototype = _concreteCopyWithPrototype(
-      properties: allProperties,
+      properties: cloneableProperties,
       methodName: 'call',
     );
 
@@ -210,19 +239,45 @@ $s''';
     required String returnType,
     String returnCast = '',
   }) {
-    String parameterToValue(Parameter p) {
-      var propertyName = p.name;
+    String thisPropertyFor({
+      required Property propertyGetterForCopyWithParameter,
+      required Parameter to,
+    }) {
+      var propertyName = to.name;
       if (canAccessRawCollection &&
-          (p.isDartList || p.isDartMap || p.isDartSet) &&
+          (to.isDartList || to.isDartMap || to.isDartSet) &&
           data.makeCollectionsImmutable) {
         propertyName = '_$propertyName';
       }
-      var ternary =
-          '${_defaultValue(isNullable: p.isNullable)} == ${p.name} ? $accessor.$propertyName : ${p.name} ';
+
+      var cast = '';
+      if (propertyGetterForCopyWithParameter.type != to.type) cast = '!';
+
+      return '$accessor.$propertyName$cast';
+    }
+
+    String parameterAssignmentFor(Parameter p) {
+      var result = '${p.name} ';
       if (p.type != 'Object?' && p.type != 'Object' && p.type != null) {
-        ternary += _ignoreLints('as ${p.type}');
+        result += _ignoreLints('as ${p.type}');
       }
-      return '$ternary,';
+
+      return result;
+    }
+
+    String parameterToValue(Parameter p) {
+      final propertyGetterForCopyWithParameter =
+          readableProperties.firstWhere((element) => element.name == p.name);
+
+      final condition =
+          '${_defaultValue(isNullable: p.isNullable)} == ${p.name}';
+
+      final thisProperty = thisPropertyFor(
+        propertyGetterForCopyWithParameter: propertyGetterForCopyWithParameter,
+        to: p,
+      );
+
+      return '$condition ? $thisProperty : ${parameterAssignmentFor(p)},';
     }
 
     final constructorParameters = StringBuffer()
@@ -245,40 +300,13 @@ $constructorParameters
 }''';
   }
 
-  String _concreteCopyWithPrototype({
-    required List<Property> properties,
-    required String methodName,
-  }) {
-    final parameters = properties.map((p) {
-      return 'Object? ${p.name} = ${_defaultValue(isNullable: p.isNullable)},';
-    }).join();
-
-    return '\$Res $methodName({$parameters})';
-  }
-
   String get _implClassName => '_${_abstractClassName}Impl';
-
-  /// The implementation of the callable class that contains both the copyWith
-  /// and the cloneable properties.
-  String concreteImpl(ParametersTemplate parametersTemplate) {
-    return '''
-/// @nodoc
-class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._implClassName}${genericsParameter.append('\$Res').append('$clonedClassName$genericsParameter')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
-  $_implClassName($clonedClassName$genericsParameter _value, \$Res Function($clonedClassName$genericsParameter) _then)
-      : super(_value, _then);
-
-
-${_copyWithMethod(parametersTemplate)}
-
-${_deepCopyMethods(isConcrete: true).join()}
-}''';
-  }
 
   Iterable<String> _deepCopyMethods({required bool isConcrete}) sync* {
     final toGenerateProperties = parent == null
-        ? cloneableProperties
-        : cloneableProperties.where((property) {
-            return !parent!.cloneableProperties
+        ? deepCloneableProperties
+        : deepCloneableProperties.where((property) {
+            return !parent!.deepCloneableProperties
                 .any((p) => p.name == property.name);
           });
 
@@ -311,7 +339,7 @@ $returnType get ${cloneableProperty.name} {
     }
   }
 
-  String _clonerInterfaceFor(CloneableProperty cloneableProperty) {
+  String _clonerInterfaceFor(DeepCloneableProperty cloneableProperty) {
     final name = interfaceNameFrom(cloneableProperty.typeName);
     return '$name${cloneableProperty.genericParameters.append('\$Res')}';
   }
