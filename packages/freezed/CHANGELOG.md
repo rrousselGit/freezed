@@ -1,4 +1,4 @@
-# [Unreleased minor]
+# 2.3.0
 
 - Union types now expose properties with the same name but different type on the
   shared interface. (Thanks to @DevNico)
