@@ -102,11 +102,9 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
               showDefaultValue: false,
               isRequired: false,
               defaultValueSource: '',
-              type: e.commonSupertype ?? e.type,
+              type: e.type,
               doc: e.doc,
               isPossiblyDartCollection: e.isPossiblyDartCollection,
-              commonSupertype: e.commonSupertype,
-              commonSubtype: e.commonSubtype,
               parameterElement: null,
             );
           }).toList(),

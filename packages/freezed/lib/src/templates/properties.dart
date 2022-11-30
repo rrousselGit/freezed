@@ -32,8 +32,6 @@ class Property {
     required this.isDartMap,
     required this.isDartSet,
     required this.isPossiblyDartCollection,
-    required this.commonSupertype,
-    required this.commonSubtype,
   }) : type = type ?? 'dynamic';
 
   Property.fromParameter(Parameter p)
@@ -51,8 +49,6 @@ class Property {
           isPossiblyDartCollection: p.isPossiblyDartCollection,
           // TODO: support hasJsonKey
           hasJsonKey: false,
-          commonSupertype: p.commonSupertype,
-          commonSubtype: p.commonSubtype,
         );
 
   static Future<Property> fromParameterElement(
@@ -82,8 +78,6 @@ class Property {
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
       isPossiblyDartCollection: element.type.isPossiblyDartCollection,
-      commonSupertype: null,
-      commonSubtype: null,
     );
   }
 
@@ -99,15 +93,6 @@ class Property {
   final bool hasJsonKey;
   final String doc;
   final bool isPossiblyDartCollection;
-  final String? commonSupertype;
-  final String? commonSubtype;
-
-  /// When a property is shared between union cases, this boolean
-  /// presents whether the union cases define a property within the same name
-  /// but different type.
-  ///
-  /// In that scenario, the abstract class uses a downcasted version of the property.
-  bool get isDowncastedAsCommonProperty => commonSupertype == commonSubtype;
 
   @override
   String toString() {
@@ -117,7 +102,7 @@ class Property {
 
   Getter get unimplementedGetter => Getter(
         name: name,
-        type: commonSupertype ?? type,
+        type: type,
         decorators: decorators,
         doc: doc,
         body: ' => throw $privConstUsedErrorVarName;',
@@ -141,7 +126,7 @@ class Property {
 
   Setter get unimplementedSetter => Setter(
         name: name,
-        type: commonSubtype ?? type,
+        type: type,
         decorators: decorators,
         doc: doc,
         body: ' => throw $privConstUsedErrorVarName;',
@@ -168,8 +153,6 @@ class Property {
     bool? hasJsonKey,
     String? doc,
     bool? isPossiblyDartCollection,
-    String? commonSupertype,
-    String? commonSubtype,
     ParameterElement? parameterElement,
   }) {
     return Property(
@@ -186,8 +169,6 @@ class Property {
       isDartSet: isDartSet ?? this.isDartSet,
       isPossiblyDartCollection:
           isPossiblyDartCollection ?? this.isPossiblyDartCollection,
-      commonSupertype: commonSupertype ?? this.commonSupertype,
-      commonSubtype: commonSubtype ?? this.commonSubtype,
     );
   }
 }
