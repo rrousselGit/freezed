@@ -1,8 +1,29 @@
-# [Unreleased fix]
+# [Unreleased minor]
+
+- Union types now expose properties with the same name but different type on the
+  shared interface. (Thanks to @DevNico)
+
+  This allows doing:
+
+  ```dart
+  @freezed
+  class Union with _$Union {
+    factory Union.first(int value) = _UnionFirst;
+    factory Union.first(double value) = _UnionSecond;
+  }
+
+  void main() {
+    Union union;
+
+    num value = union.value;
+    // No need for casting as "num" is the shared interface between int/double
+  }
+  ```
 
 - Fixes copyWith not working with `null` on some scenarios.
 - Fixes a stackoverflow error when continuously passing unmodifiable collections as parameter to freezed classes
 - fix: Deep copy now correctly handles cases where a property is a Freezed class with disabled `copyWith`
+
 # 2.2.1
 
 Upgrade analyzer
