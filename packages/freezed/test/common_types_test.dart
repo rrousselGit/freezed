@@ -86,7 +86,7 @@ void main() {
     });
 
     test('Can clone properties with nullability difference', () {
-      const value = CommonSuperSubtype0(
+      const value = CommonSuperSubtype(
         nullabilityDifference: 42,
         typeDifference: 21,
       );
