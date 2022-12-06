@@ -20,7 +20,6 @@ mixin _$DeepCloneableProperty {
   String get typeName => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   bool get nullable => throw _privateConstructorUsedError;
-  bool get isDowncastedToNullable => throw _privateConstructorUsedError;
   GenericsParameterTemplate get genericParameters =>
       throw _privateConstructorUsedError;
 
@@ -40,7 +39,6 @@ abstract class $DeepCloneablePropertyCopyWith<$Res> {
       String typeName,
       String type,
       bool nullable,
-      bool isDowncastedToNullable,
       GenericsParameterTemplate genericParameters});
 }
 
@@ -62,7 +60,6 @@ class _$DeepCloneablePropertyCopyWithImpl<$Res,
     Object? typeName = null,
     Object? type = null,
     Object? nullable = null,
-    Object? isDowncastedToNullable = null,
     Object? genericParameters = null,
   }) {
     return _then(_value.copyWith(
@@ -81,10 +78,6 @@ class _$DeepCloneablePropertyCopyWithImpl<$Res,
       nullable: null == nullable
           ? _value.nullable
           : nullable // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isDowncastedToNullable: null == isDowncastedToNullable
-          ? _value.isDowncastedToNullable
-          : isDowncastedToNullable // ignore: cast_nullable_to_non_nullable
               as bool,
       genericParameters: null == genericParameters
           ? _value.genericParameters
@@ -107,7 +100,6 @@ abstract class _$$_DeepCloneablePropertyCopyWith<$Res>
       String typeName,
       String type,
       bool nullable,
-      bool isDowncastedToNullable,
       GenericsParameterTemplate genericParameters});
 }
 
@@ -126,7 +118,6 @@ class __$$_DeepCloneablePropertyCopyWithImpl<$Res>
     Object? typeName = null,
     Object? type = null,
     Object? nullable = null,
-    Object? isDowncastedToNullable = null,
     Object? genericParameters = null,
   }) {
     return _then(_$_DeepCloneableProperty(
@@ -146,10 +137,6 @@ class __$$_DeepCloneablePropertyCopyWithImpl<$Res>
           ? _value.nullable
           : nullable // ignore: cast_nullable_to_non_nullable
               as bool,
-      isDowncastedToNullable: null == isDowncastedToNullable
-          ? _value.isDowncastedToNullable
-          : isDowncastedToNullable // ignore: cast_nullable_to_non_nullable
-              as bool,
       genericParameters: null == genericParameters
           ? _value.genericParameters
           : genericParameters // ignore: cast_nullable_to_non_nullable
@@ -166,7 +153,6 @@ class _$_DeepCloneableProperty implements _DeepCloneableProperty {
       required this.typeName,
       required this.type,
       required this.nullable,
-      required this.isDowncastedToNullable,
       required this.genericParameters});
 
   @override
@@ -178,13 +164,11 @@ class _$_DeepCloneableProperty implements _DeepCloneableProperty {
   @override
   final bool nullable;
   @override
-  final bool isDowncastedToNullable;
-  @override
   final GenericsParameterTemplate genericParameters;
 
   @override
   String toString() {
-    return 'DeepCloneableProperty(name: $name, typeName: $typeName, type: $type, nullable: $nullable, isDowncastedToNullable: $isDowncastedToNullable, genericParameters: $genericParameters)';
+    return 'DeepCloneableProperty(name: $name, typeName: $typeName, type: $type, nullable: $nullable, genericParameters: $genericParameters)';
   }
 
   @override
@@ -198,15 +182,13 @@ class _$_DeepCloneableProperty implements _DeepCloneableProperty {
             (identical(other.type, type) || other.type == type) &&
             (identical(other.nullable, nullable) ||
                 other.nullable == nullable) &&
-            (identical(other.isDowncastedToNullable, isDowncastedToNullable) ||
-                other.isDowncastedToNullable == isDowncastedToNullable) &&
             (identical(other.genericParameters, genericParameters) ||
                 other.genericParameters == genericParameters));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, typeName, type, nullable,
-      isDowncastedToNullable, genericParameters);
+  int get hashCode => Object.hash(
+      runtimeType, name, typeName, type, nullable, genericParameters);
 
   @JsonKey(ignore: true)
   @override
@@ -222,7 +204,6 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
           required final String typeName,
           required final String type,
           required final bool nullable,
-          required final bool isDowncastedToNullable,
           required final GenericsParameterTemplate genericParameters}) =
       _$_DeepCloneableProperty;
 
@@ -234,8 +215,6 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
   String get type;
   @override
   bool get nullable;
-  @override
-  bool get isDowncastedToNullable;
   @override
   GenericsParameterTemplate get genericParameters;
   @override

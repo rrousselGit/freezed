@@ -308,11 +308,6 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         withNullability: true,
       );
 
-      if (constructorsNeedsGeneration.first.fullName == 'CommonSuperSubtype') {
-        print(
-            'hey ${commonTypeBetweenAllUnionConstructors} // ${didDowncast} // ${didNonNullDowncast}');
-      }
-
       final commonProperty = Property(
         isFinal: anyMatchingPropertyIsFinal || didDowncast,
         type: commonTypeString,
@@ -516,8 +511,6 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         type: type!,
         nullable: parameter.type.isNullable,
         typeName: typeElement.name,
-        // This is the concrete implementation. Properties are never downcasted here
-        isDowncastedToNullable: false,
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType)
               .typeArguments
@@ -535,22 +528,8 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     for (final cloneableProperty in constructors.first.cloneableProperties) {
       for (final commonProperty in commonProperties) {
         if (cloneableProperty.name == commonProperty.name) {
-          // If the property is nullable in one constructor but not another
-          // then it was downcasted to null.
-          final isDowncastedToNullable = commonProperty.isNullable &&
-              constructors
-                  .expand((e) => e.cloneableProperties)
-                  .where((e) => e.name == cloneableProperty.name)
-                  .any((e) => !e.nullable);
-
-          if (constructors.first.fullName == 'UnionDeepCopy.first') {
-            print(
-                'Oy // ${commonProperty.type} // ${commonProperty.isNullable} // $isDowncastedToNullable');
-          }
-
           yield cloneableProperty.copyWith(
-            nullable: commonProperty.isNullable || isDowncastedToNullable,
-            isDowncastedToNullable: isDowncastedToNullable,
+            nullable: commonProperty.isNullable,
           );
         }
       }
