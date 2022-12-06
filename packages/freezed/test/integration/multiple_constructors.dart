@@ -77,6 +77,7 @@ class Complex with _$Complex {
   const factory Complex.first(
     /// World
     String a, {
+
     /// B
     bool? b,
     double? d,
@@ -84,6 +85,7 @@ class Complex with _$Complex {
 
   const factory Complex.second(
     String a, [
+
     /// C
     int? c,
     double? d,
@@ -121,7 +123,11 @@ class RequiredParams with _$RequiredParams {
   const factory RequiredParams.second({required String a}) = RequiredParams1;
 }
 
-@freezed
+@Freezed(
+  // We're relying twice on the generated freezed types, which isn't supported.
+  // This breaks copyWith as it thinks both union cases have `children` as type `List<dynamic>`
+  copyWith: false,
+)
 class NestedList with _$NestedList {
   factory NestedList.shallow(List<LeafNestedListItem> children) =
       ShallowNestedList;
@@ -135,6 +141,11 @@ class NestedListItem with _$NestedListItem {
       InnerNestedListItem;
 }
 
+@Freezed(
+  // We're relying twice on the generated freezed types, which isn't supported.
+  // This breaks copyWith as it thinks both union cases have `children` as type `List<dynamic>`
+  copyWith: false,
+)
 @freezed
 class NestedMap with _$NestedMap {
   factory NestedMap.shallow(Map<String, LeafNestedMapItem> children) =

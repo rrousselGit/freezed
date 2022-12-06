@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'models.dart';
 
@@ -20,6 +20,7 @@ mixin _$DeepCloneableProperty {
   String get typeName => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   bool get nullable => throw _privateConstructorUsedError;
+  bool get isDowncastedToNullable => throw _privateConstructorUsedError;
   GenericsParameterTemplate get genericParameters =>
       throw _privateConstructorUsedError;
 
@@ -39,6 +40,7 @@ abstract class $DeepCloneablePropertyCopyWith<$Res> {
       String typeName,
       String type,
       bool nullable,
+      bool isDowncastedToNullable,
       GenericsParameterTemplate genericParameters});
 }
 
@@ -60,6 +62,7 @@ class _$DeepCloneablePropertyCopyWithImpl<$Res,
     Object? typeName = null,
     Object? type = null,
     Object? nullable = null,
+    Object? isDowncastedToNullable = null,
     Object? genericParameters = null,
   }) {
     return _then(_value.copyWith(
@@ -78,6 +81,10 @@ class _$DeepCloneablePropertyCopyWithImpl<$Res,
       nullable: null == nullable
           ? _value.nullable
           : nullable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDowncastedToNullable: null == isDowncastedToNullable
+          ? _value.isDowncastedToNullable
+          : isDowncastedToNullable // ignore: cast_nullable_to_non_nullable
               as bool,
       genericParameters: null == genericParameters
           ? _value.genericParameters
@@ -100,6 +107,7 @@ abstract class _$$_DeepCloneablePropertyCopyWith<$Res>
       String typeName,
       String type,
       bool nullable,
+      bool isDowncastedToNullable,
       GenericsParameterTemplate genericParameters});
 }
 
@@ -118,6 +126,7 @@ class __$$_DeepCloneablePropertyCopyWithImpl<$Res>
     Object? typeName = null,
     Object? type = null,
     Object? nullable = null,
+    Object? isDowncastedToNullable = null,
     Object? genericParameters = null,
   }) {
     return _then(_$_DeepCloneableProperty(
@@ -137,6 +146,10 @@ class __$$_DeepCloneablePropertyCopyWithImpl<$Res>
           ? _value.nullable
           : nullable // ignore: cast_nullable_to_non_nullable
               as bool,
+      isDowncastedToNullable: null == isDowncastedToNullable
+          ? _value.isDowncastedToNullable
+          : isDowncastedToNullable // ignore: cast_nullable_to_non_nullable
+              as bool,
       genericParameters: null == genericParameters
           ? _value.genericParameters
           : genericParameters // ignore: cast_nullable_to_non_nullable
@@ -153,6 +166,7 @@ class _$_DeepCloneableProperty implements _DeepCloneableProperty {
       required this.typeName,
       required this.type,
       required this.nullable,
+      required this.isDowncastedToNullable,
       required this.genericParameters});
 
   @override
@@ -164,11 +178,13 @@ class _$_DeepCloneableProperty implements _DeepCloneableProperty {
   @override
   final bool nullable;
   @override
+  final bool isDowncastedToNullable;
+  @override
   final GenericsParameterTemplate genericParameters;
 
   @override
   String toString() {
-    return 'DeepCloneableProperty(name: $name, typeName: $typeName, type: $type, nullable: $nullable, genericParameters: $genericParameters)';
+    return 'DeepCloneableProperty(name: $name, typeName: $typeName, type: $type, nullable: $nullable, isDowncastedToNullable: $isDowncastedToNullable, genericParameters: $genericParameters)';
   }
 
   @override
@@ -182,13 +198,15 @@ class _$_DeepCloneableProperty implements _DeepCloneableProperty {
             (identical(other.type, type) || other.type == type) &&
             (identical(other.nullable, nullable) ||
                 other.nullable == nullable) &&
+            (identical(other.isDowncastedToNullable, isDowncastedToNullable) ||
+                other.isDowncastedToNullable == isDowncastedToNullable) &&
             (identical(other.genericParameters, genericParameters) ||
                 other.genericParameters == genericParameters));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, name, typeName, type, nullable, genericParameters);
+  int get hashCode => Object.hash(runtimeType, name, typeName, type, nullable,
+      isDowncastedToNullable, genericParameters);
 
   @JsonKey(ignore: true)
   @override
@@ -204,6 +222,7 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
           required final String typeName,
           required final String type,
           required final bool nullable,
+          required final bool isDowncastedToNullable,
           required final GenericsParameterTemplate genericParameters}) =
       _$_DeepCloneableProperty;
 
@@ -215,6 +234,8 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
   String get type;
   @override
   bool get nullable;
+  @override
+  bool get isDowncastedToNullable;
   @override
   GenericsParameterTemplate get genericParameters;
   @override
@@ -537,6 +558,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final List<Property> _impliedProperties;
   @override
   List<Property> get impliedProperties {
+    if (_impliedProperties is EqualUnmodifiableListView)
+      return _impliedProperties;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_impliedProperties);
   }
@@ -554,6 +577,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final List<String> _withDecorators;
   @override
   List<String> get withDecorators {
+    if (_withDecorators is EqualUnmodifiableListView) return _withDecorators;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_withDecorators);
   }
@@ -561,6 +585,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final List<String> _implementsDecorators;
   @override
   List<String> get implementsDecorators {
+    if (_implementsDecorators is EqualUnmodifiableListView)
+      return _implementsDecorators;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_implementsDecorators);
   }
@@ -568,6 +594,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final List<String> _decorators;
   @override
   List<String> get decorators {
+    if (_decorators is EqualUnmodifiableListView) return _decorators;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_decorators);
   }
@@ -575,6 +602,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final List<DeepCloneableProperty> _cloneableProperties;
   @override
   List<DeepCloneableProperty> get cloneableProperties {
+    if (_cloneableProperties is EqualUnmodifiableListView)
+      return _cloneableProperties;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_cloneableProperties);
   }
@@ -582,6 +611,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   final List<AssertTemplate> _asserts;
   @override
   List<AssertTemplate> get asserts {
+    if (_asserts is EqualUnmodifiableListView) return _asserts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_asserts);
   }
@@ -1361,6 +1391,8 @@ class _$_Data implements _Data {
   final List<String> _concretePropertiesName;
   @override
   List<String> get concretePropertiesName {
+    if (_concretePropertiesName is EqualUnmodifiableListView)
+      return _concretePropertiesName;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_concretePropertiesName);
   }
@@ -1368,6 +1400,7 @@ class _$_Data implements _Data {
   final List<ConstructorDetails> _constructors;
   @override
   List<ConstructorDetails> get constructors {
+    if (_constructors is EqualUnmodifiableListView) return _constructors;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_constructors);
   }

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 
@@ -303,14 +304,28 @@ $constructorParameters
   String get _implClassName => '_${_abstractClassName}Impl';
 
   Iterable<String> _deepCopyMethods({required bool isConcrete}) sync* {
-    final toGenerateProperties = parent == null
+    /// Get the list of deep cloneable properties that should be implemented.
+    /// This is for unions, to avoid overriding a property on the concrete
+    /// copyWith class. if the shared interface already defines it. But at the
+    /// same time, still define the properties that aren't part of the shared
+    /// interface.
+    /// Also, sometimes the shared interface uses a nullable property but the
+    /// concrete class doesn't. Such as with {FreezedClass a} | {FreezedClass? b}
+    /// In this case even though the shared interface already defines the property,
+    /// we need to override the copyWith on the concrete interface to override the
+    /// properties nullability.
+    final propertiesToOverride = parent == null
         ? deepCloneableProperties
         : deepCloneableProperties.where((property) {
-            return !parent!.deepCloneableProperties
-                .any((p) => p.name == property.name);
+            final superProperty = parent!.deepCloneableProperties
+                .firstWhereOrNull((p) => p.name == property.name);
+
+            // Either the property wasn't defined in the super type, or it was downcasted
+            return superProperty == null ||
+                superProperty.nullable && !property.nullable;
           });
 
-    for (final cloneableProperty in toGenerateProperties) {
+    for (final cloneableProperty in propertiesToOverride) {
       final earlyReturn = cloneableProperty.nullable
           ? '''
   if (_value.${cloneableProperty.name} == null) {

@@ -247,11 +247,14 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         in constructorsNeedsGeneration.first.parameters.allParameters) {
       final library = parameter.parameterElement!.library!;
 
+      // Whether a property was downcasted other than through a nullability change.
+      // Such as changing int -> num, but not int -> int?
+      var didNonNullDowncast = false;
+      var didDowncast = false;
       var anyMatchingPropertyIsFinal = parameter.isFinal;
       var commonTypeBetweenAllUnionConstructors =
           parameter.parameterElement!.type;
 
-      // skip(1) as "parameter" is from the first constructor.
       for (final constructor in constructorsNeedsGeneration) {
         final matchingParameter = constructor.parameters.allParameters
             .firstWhereOrNull((p) => p.name == parameter.name);
@@ -259,14 +262,44 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         // be present in the abstract class.
         if (matchingParameter == null) continue parameterLoop;
 
+        final parameterType = matchingParameter.parameterElement!.type;
+
         anyMatchingPropertyIsFinal =
             anyMatchingPropertyIsFinal || matchingParameter.isFinal;
 
+        final previousCommonType = commonTypeBetweenAllUnionConstructors;
         commonTypeBetweenAllUnionConstructors =
             library.typeSystem.leastUpperBound(
           commonTypeBetweenAllUnionConstructors,
-          matchingParameter.parameterElement!.type,
+          parameterType,
         );
+
+        // Checking the previous vs new common type isn't enough to determine
+        // whether a property was downcasted.
+        // Depending on the constructor order, the common type could already
+        // be low enough to apply too all properties.
+        // For example:
+        // factory Example.first(Object? a);
+        // factory Example.second(int a);
+
+        // At the same time, we can't just check the current property type with
+        // the current common type, as when the common type changes, it may
+        // match the current property type. For example:
+        // factory Example.first(int a);
+        // factory Example.second(Object? a);
+        if (previousCommonType != commonTypeBetweenAllUnionConstructors ||
+            parameterType != commonTypeBetweenAllUnionConstructors) {
+          didDowncast = true;
+
+          final nonNullCommonType = library.typeSystem
+              .promoteToNonNull(commonTypeBetweenAllUnionConstructors);
+
+          didNonNullDowncast = didNonNullDowncast ||
+              (previousCommonType != commonTypeBetweenAllUnionConstructors &&
+                  previousCommonType != nonNullCommonType) ||
+              (parameterType != commonTypeBetweenAllUnionConstructors &&
+                  parameterType != nonNullCommonType);
+        }
       }
 
       final commonTypeString = resolveFullTypeStringFrom(
@@ -275,12 +308,26 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         withNullability: true,
       );
 
-      final commonProperty = Property.fromParameter(parameter).copyWith(
-        isFinal: anyMatchingPropertyIsFinal ||
-            // The field was downcasted because some union cases use a
-            // different type for that field. As such, there is no valid setter
-            parameter.type != commonTypeString,
+      if (constructorsNeedsGeneration.first.fullName == 'CommonSuperSubtype') {
+        print(
+            'hey ${commonTypeBetweenAllUnionConstructors} // ${didDowncast} // ${didNonNullDowncast}');
+      }
+
+      final commonProperty = Property(
+        isFinal: anyMatchingPropertyIsFinal || didDowncast,
         type: commonTypeString,
+        isNullable: commonTypeBetweenAllUnionConstructors.isNullable,
+        isDartList: commonTypeBetweenAllUnionConstructors.isDartCoreList,
+        isDartMap: commonTypeBetweenAllUnionConstructors.isDartCoreMap,
+        isDartSet: commonTypeBetweenAllUnionConstructors.isDartCoreSet,
+        isPossiblyDartCollection:
+            commonTypeBetweenAllUnionConstructors.isPossiblyDartCollection,
+        name: parameter.name,
+        decorators: parameter.decorators,
+        defaultValueSource: parameter.defaultValueSource,
+        doc: parameter.doc,
+        // TODO support JsonKey
+        hasJsonKey: false,
       );
 
       result.readableProperties.add(commonProperty);
@@ -290,8 +337,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       // - int? b is not allowed because `null` is not compatible with the
       //   first union case.
       // - num c is not allowed because num is not assignable int/double
-      if (parameter.type == commonProperty.type ||
-          '${parameter.type}?' == commonProperty.type) {
+      if (!didNonNullDowncast) {
         result.cloneableProperties.add(
           // Let's not downcast copyWith parameters
           commonProperty.copyWith(type: parameter.type),
@@ -468,9 +514,10 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       yield DeepCloneableProperty(
         name: parameter.name,
         type: type!,
-        nullable:
-            parameter.type.nullabilitySuffix == NullabilitySuffix.question,
+        nullable: parameter.type.isNullable,
         typeName: typeElement.name,
+        // This is the concrete implementation. Properties are never downcasted here
+        isDowncastedToNullable: false,
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType)
               .typeArguments
@@ -488,7 +535,23 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     for (final cloneableProperty in constructors.first.cloneableProperties) {
       for (final commonProperty in commonProperties) {
         if (cloneableProperty.name == commonProperty.name) {
-          yield cloneableProperty;
+          // If the property is nullable in one constructor but not another
+          // then it was downcasted to null.
+          final isDowncastedToNullable = commonProperty.isNullable &&
+              constructors
+                  .expand((e) => e.cloneableProperties)
+                  .where((e) => e.name == cloneableProperty.name)
+                  .any((e) => !e.nullable);
+
+          if (constructors.first.fullName == 'UnionDeepCopy.first') {
+            print(
+                'Oy // ${commonProperty.type} // ${commonProperty.isNullable} // $isDowncastedToNullable');
+          }
+
+          yield cloneableProperty.copyWith(
+            nullable: commonProperty.isNullable || isDowncastedToNullable,
+            isDowncastedToNullable: isDowncastedToNullable,
+          );
         }
       }
     }

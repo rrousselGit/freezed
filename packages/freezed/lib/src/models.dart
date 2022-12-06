@@ -21,6 +21,7 @@ class DeepCloneableProperty with _$DeepCloneableProperty {
     required String typeName,
     required String type,
     required bool nullable,
+    required bool isDowncastedToNullable,
     required GenericsParameterTemplate genericParameters,
   }) = _DeepCloneableProperty;
 }
