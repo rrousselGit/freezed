@@ -1,3 +1,7 @@
+# 2.3.1
+
+Fix various issues with `copyWith`
+
 # 2.3.0
 
 - Union types now expose properties with the same name but different type on the
