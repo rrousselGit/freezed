@@ -21,6 +21,28 @@ class Union3 with _$Union3 {
 }
 
 @freezed
+class Union4 with _$Union4 {
+  factory Union4.eventOne({
+    required int count,
+    required String? id,
+    required String? name,
+  }) = Union4One;
+
+  factory Union4.eventTwo({
+    required int? count,
+    required String id,
+    required String name,
+  }) = Union4Two;
+}
+
+@freezed
+class Union5 with _$Union5 {
+  factory Union5.first(int value) = _Union5First;
+  factory Union5.second(double? value) = _Union5Second;
+  factory Union5.third(String value) = _Union5Third;
+}
+
+@freezed
 class UnionDeepCopy with _$UnionDeepCopy {
   factory UnionDeepCopy.first(CommonSuperSubtype value42) = _UnionWrapperFirst;
   factory UnionDeepCopy.second(CommonSuperSubtype? value42) =
