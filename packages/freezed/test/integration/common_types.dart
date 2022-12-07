@@ -3,9 +3,28 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'common_types.freezed.dart';
 
 @freezed
+class Union with _$Union {
+  factory Union.foo({int? arg}) = _UnionFoo;
+  factory Union.bar({required int arg}) = _UnionBar;
+}
+
+@freezed
+class Union2 with _$Union2 {
+  factory Union2.foo({required int arg}) = _Union2Foo;
+  factory Union2.bar({double? arg}) = _Union2Bar;
+}
+
+@freezed
+class Union3 with _$Union3 {
+  factory Union3.bar({double? arg}) = _Union3Bar;
+  factory Union3.foo({required int arg}) = _Union3Foo;
+}
+
+@freezed
 class UnionDeepCopy with _$UnionDeepCopy {
-  factory UnionDeepCopy.first(CommonSuperSubtype value) = _UnionWrapperFirst;
-  factory UnionDeepCopy.second(CommonSuperSubtype? value) = _UnionWrapperSecond;
+  factory UnionDeepCopy.first(CommonSuperSubtype value42) = _UnionWrapperFirst;
+  factory UnionDeepCopy.second(CommonSuperSubtype? value42) =
+      _UnionWrapperSecond;
 }
 
 @freezed
