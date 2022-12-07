@@ -247,11 +247,6 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         in constructorsNeedsGeneration.first.parameters.allParameters) {
       final library = parameter.parameterElement!.library!;
 
-      // Whether a property was downcasted other than through a nullability change.
-      // Such as changing int -> num, but not int -> int?
-      var didNonNullDowncast = false;
-      var didDowncast = false;
-      var anyMatchingPropertyIsFinal = parameter.isFinal;
       var commonTypeBetweenAllUnionConstructors =
           parameter.parameterElement!.type;
 
@@ -262,45 +257,40 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
         // be present in the abstract class.
         if (matchingParameter == null) continue parameterLoop;
 
-        final parameterType = matchingParameter.parameterElement!.type;
-
-        anyMatchingPropertyIsFinal =
-            anyMatchingPropertyIsFinal || matchingParameter.isFinal;
-
-        final previousCommonType = commonTypeBetweenAllUnionConstructors;
         commonTypeBetweenAllUnionConstructors =
             library.typeSystem.leastUpperBound(
           commonTypeBetweenAllUnionConstructors,
-          parameterType,
+          matchingParameter.parameterElement!.type,
         );
-
-        // Checking the previous vs new common type isn't enough to determine
-        // whether a property was downcasted.
-        // Depending on the constructor order, the common type could already
-        // be low enough to apply too all properties.
-        // For example:
-        // factory Example.first(Object? a);
-        // factory Example.second(int a);
-
-        // At the same time, we can't just check the current property type with
-        // the current common type, as when the common type changes, it may
-        // match the current property type. For example:
-        // factory Example.first(int a);
-        // factory Example.second(Object? a);
-        if (previousCommonType != commonTypeBetweenAllUnionConstructors ||
-            parameterType != commonTypeBetweenAllUnionConstructors) {
-          didDowncast = true;
-
-          final nonNullCommonType = library.typeSystem
-              .promoteToNonNull(commonTypeBetweenAllUnionConstructors);
-
-          didNonNullDowncast = didNonNullDowncast ||
-              (previousCommonType != commonTypeBetweenAllUnionConstructors &&
-                  previousCommonType != nonNullCommonType) ||
-              (parameterType != commonTypeBetweenAllUnionConstructors &&
-                  parameterType != nonNullCommonType);
-        }
       }
+
+      final matchingParameters = constructorsNeedsGeneration
+          .expand((element) => element.parameters.allParameters)
+          .where((element) => element.name == parameter.name)
+          .toList();
+
+      final isFinal = matchingParameters.any(
+        (element) =>
+            element.isFinal ||
+            element.parameterElement?.type !=
+                commonTypeBetweenAllUnionConstructors,
+      );
+
+      final nonNullableCommonType = library.typeSystem
+          .promoteToNonNull(commonTypeBetweenAllUnionConstructors);
+
+      final didDowncast = matchingParameters.any(
+        (element) =>
+            element.parameterElement?.type !=
+            commonTypeBetweenAllUnionConstructors,
+      );
+      final didNonNullDowncast = matchingParameters.any(
+        (element) =>
+            element.parameterElement?.type !=
+                commonTypeBetweenAllUnionConstructors &&
+            element.parameterElement?.type != nonNullableCommonType,
+      );
+      final didNullDowncast = !didNonNullDowncast && didDowncast;
 
       final commonTypeString = resolveFullTypeStringFrom(
         library,
@@ -309,7 +299,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       );
 
       final commonProperty = Property(
-        isFinal: anyMatchingPropertyIsFinal || didDowncast,
+        isFinal: isFinal,
         type: commonTypeString,
         isNullable: commonTypeBetweenAllUnionConstructors.isNullable,
         isDartList: commonTypeBetweenAllUnionConstructors.isDartCoreList,
@@ -333,9 +323,30 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       //   first union case.
       // - num c is not allowed because num is not assignable int/double
       if (!didNonNullDowncast) {
+        final copyWithType = didNullDowncast
+            ? nonNullableCommonType
+            : commonTypeBetweenAllUnionConstructors;
+
         result.cloneableProperties.add(
-          // Let's not downcast copyWith parameters
-          commonProperty.copyWith(type: parameter.type),
+          Property(
+            isFinal: isFinal,
+            type: resolveFullTypeStringFrom(
+              library,
+              copyWithType,
+              withNullability: true,
+            ),
+            isNullable: copyWithType.isNullable,
+            isDartList: copyWithType.isDartCoreList,
+            isDartMap: copyWithType.isDartCoreMap,
+            isDartSet: copyWithType.isDartCoreSet,
+            isPossiblyDartCollection: copyWithType.isPossiblyDartCollection,
+            name: parameter.name,
+            decorators: parameter.decorators,
+            defaultValueSource: parameter.defaultValueSource,
+            doc: parameter.doc,
+            // TODO support JsonKey
+            hasJsonKey: false,
+          ),
         );
       }
     }
@@ -523,16 +534,21 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
 
   Iterable<DeepCloneableProperty> _getCommonDeepCloneableProperties(
     List<ConstructorDetails> constructors,
-    List<Property> commonProperties,
+    CommonProperties commonProperties,
   ) sync* {
-    for (final cloneableProperty in constructors.first.cloneableProperties) {
-      for (final commonProperty in commonProperties) {
-        if (cloneableProperty.name == commonProperty.name) {
-          yield cloneableProperty.copyWith(
-            nullable: commonProperty.isNullable,
-          );
-        }
-      }
+    for (final commonProperty in commonProperties.cloneableProperties) {
+      final commonGetter = commonProperties.readableProperties
+          .firstWhereOrNull((e) => e.name == commonProperty.name);
+      final deepCopyProperty = constructors.first.cloneableProperties
+          .firstWhereOrNull((e) => e.name == commonProperty.name);
+
+      if (deepCopyProperty == null || commonGetter == null) continue;
+
+      yield deepCopyProperty.copyWith(
+        nullable: deepCopyProperty.nullable ||
+            commonProperty.isNullable ||
+            commonGetter.isNullable,
+      );
     }
   }
 
@@ -691,7 +707,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
             cloneableProperties: commonProperties.cloneableProperties,
             deepCloneableProperties: _getCommonDeepCloneableProperties(
               data.constructors,
-              commonProperties.cloneableProperties,
+              commonProperties,
             ).toList(),
             genericsDefinition: data.genericsDefinitionTemplate,
             genericsParameter: data.genericsParameterTemplate,
