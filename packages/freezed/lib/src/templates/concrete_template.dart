@@ -439,7 +439,8 @@ ${whenOrNullPrototype(data.constructors)} {
         : '';
 
     final properties = [
-      for (final p in constructor.impliedProperties) '${p.name}: \$${p.name}',
+      for (final p in constructor.impliedProperties)
+        '${encodeVariable(p.name)}: ${variable(p.name)}',
     ];
 
     return '''

@@ -12,6 +12,32 @@ List<String> parseDecorators(List<ElementAnnotation> metadata) {
   ];
 }
 
+String variable(String name) {
+  return name.contains(r'$') ? '\${$name}' : '\$$name';
+}
+
+String encodeVariable(String name) {
+  final buffer = StringBuffer();
+
+  for (final char in name.codeUnits) {
+    if (char == r'$'.codeUnitAt(0)) {
+      // Whether the previous character was a `\` and if so skip it.
+      if (buffer.isNotEmpty &&
+          buffer.toString().substring(buffer.length - 1) == r'\') {
+        buffer.write(char);
+        continue;
+      }
+
+      buffer.write(r'\$');
+      continue;
+    }
+
+    buffer.writeCharCode(char);
+  }
+
+  return buffer.toString();
+}
+
 extension FreezedElementAnnotation on ElementAnnotation {
   /// if the element is decorated with `@Default(value)`
   bool get isDefault {
