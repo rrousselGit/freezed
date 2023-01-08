@@ -101,5 +101,33 @@ class Const with _$Const {
 class Dollar with _$Dollar {
   const factory Dollar({
     required String $test,
-  }) = _Dollar;
+  }) = _DollarStartWithDollar;
+}
+
+/// Middle with $
+@freezed
+class DollarMiddle with _$DollarMiddle {
+  const factory DollarMiddle({
+    required String te$st,
+  }) = _DollarMiddleMiddleWithDollar;
+}
+
+/// End with $
+@freezed
+class DollarEnd with _$DollarEnd {
+  const factory DollarEnd({
+    required String test$,
+  }) = _DollarEndEndWithDollar;
+}
+
+/// class with $
+@freezed
+class $DollarClass with _$$DollarClass {
+  const factory $DollarClass() = _DollarClassWithDollar;
+}
+
+/// class contructor with $
+@freezed
+class DollarFactory with _$DollarFactory {
+  const factory DollarFactory.$() = _DollarFactoryWithDollar;
 }
