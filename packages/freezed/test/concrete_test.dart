@@ -34,5 +34,6 @@ void main() {
     expect(CustomToString().toString(), '42');
     expect(MixedInToString().toString(), '42');
     expect(BaseToString().toString(), '42');
+    expect(const Dollar($test: 'demo').toString(), r'Dollar($test: demo)');
   });
 }

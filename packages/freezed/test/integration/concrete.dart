@@ -96,3 +96,10 @@ class Const with _$Const {
   const Const._();
   const factory Const(int a) = _Const;
 }
+
+@freezed
+class Dollar with _$Dollar {
+  const factory Dollar({
+    required String $test,
+  }) = _Dollar;
+}
