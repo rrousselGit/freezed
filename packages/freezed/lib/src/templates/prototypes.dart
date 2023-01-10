@@ -33,10 +33,6 @@ String encodeClassOrField(String name) {
     buffer.writeCharCode(char);
   }
 
-  if (name.contains('\$')) {
-    print(buffer.toString());
-  }
-
   return buffer.toString();
 }
 
