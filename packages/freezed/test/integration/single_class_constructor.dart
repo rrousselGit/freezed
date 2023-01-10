@@ -273,7 +273,7 @@ class Product with _$Product {
 
 @freezed
 class Test with _$Test {
-  const factory Test.something(Completer completer) = TestSomething;
+  const factory Test.something(Completer<void> completer) = TestSomething;
 }
 
 @freezed

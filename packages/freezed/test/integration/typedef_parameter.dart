@@ -4,7 +4,7 @@ import 'external_typedef_two.dart' as two;
 
 part 'typedef_parameter.freezed.dart';
 
-typedef MyTypedef = Function(String);
+typedef MyTypedef = Object? Function(String);
 typedef GenericTypedef<T, S> = S Function(T);
 
 @freezed

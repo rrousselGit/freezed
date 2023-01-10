@@ -34,13 +34,13 @@ void main() {
     (value as Diagnosticable).debugFillProperties(properties);
 
     expect(properties.properties, [
-      isA<DiagnosticsProperty>()
+      isA<DiagnosticsProperty<void>>()
           .having((d) => d.name, 'name', 'type')
           .having((d) => d.value, 'value', 'Example<int>'),
-      isA<DiagnosticsProperty>()
+      isA<DiagnosticsProperty<void>>()
           .having((d) => d.name, 'name', 'a')
           .having((d) => d.value, 'value', 42),
-      isA<DiagnosticsProperty>()
+      isA<DiagnosticsProperty<void>>()
           .having((d) => d.name, 'name', 'b')
           .having((d) => d.value, 'value', '21'),
     ]);

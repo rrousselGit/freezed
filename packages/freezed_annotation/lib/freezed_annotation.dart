@@ -530,7 +530,7 @@ class Default {
 /// constructor of the union type. Keep in mind that if the interface defines a
 /// method or a getter, that you implement in the class, you need to use the
 /// [Custom getters and methods](#custom-getters-and-methods) instructions.
-class Implements<T> {
+class Implements<T extends Object?> {
   /// Marks a union type to implement the interface T.
   const Implements() : stringType = null;
 
@@ -565,7 +565,7 @@ class Implements<T> {
 /// constructor of the union type. Keep in mind that if the mixin defines a
 /// method or a getter, that you implement in the class, you need to use the
 /// [Custom getters and methods](#custom-getters-and-methods) instructions.
-class With<T> {
+class With<T extends Object?> {
   /// Marks a union type to mixin the interface T.
   const With() : stringType = null;
 
