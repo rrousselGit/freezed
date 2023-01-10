@@ -449,13 +449,13 @@ class Decorator with _$Decorator {
 
 @freezed
 class Generic<T> with _$Generic<T> {
-  factory Generic(@DataConverter<T>() T a) = _Generic<T>;
+  factory Generic(@DataConverter() T a) = _Generic<T>;
 
   factory Generic.fromJson(Map<String, dynamic> json) =>
       _$GenericFromJson<T>(json);
 }
 
-class DataConverter<T> implements JsonConverter<T, Object?> {
+class DataConverter<T extends Object?> implements JsonConverter<T, Object?> {
   const DataConverter();
 
   @override
