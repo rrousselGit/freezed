@@ -16,26 +16,6 @@ String wrapClassField(String name) {
   return name.contains(r'$') ? '\${$name}' : '\$$name';
 }
 
-String encodeClassOrField(String name) {
-  final buffer = StringBuffer();
-
-  for (final char in name.codeUnits) {
-    // Skio '\'
-    if (char == r'\'.codeUnitAt(0)) {
-      continue;
-    }
-
-    if (char == r'$'.codeUnitAt(0)) {
-      buffer.write(r'\$');
-      continue;
-    }
-
-    buffer.writeCharCode(char);
-  }
-
-  return buffer.toString();
-}
-
 extension FreezedElementAnnotation on ElementAnnotation {
   /// if the element is decorated with `@Default(value)`
   bool get isDefault {

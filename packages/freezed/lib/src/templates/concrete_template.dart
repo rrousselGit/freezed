@@ -440,13 +440,13 @@ ${whenOrNullPrototype(data.constructors)} {
 
     final properties = [
       for (final p in constructor.impliedProperties)
-        '${encodeClassOrField(p.name)}: ${wrapClassField(p.name)}',
+        '${p.name.replaceAll(r'$', r'\$')}: ${wrapClassField(p.name)}',
     ];
 
     return '''
 @override
 String toString($parameters) {
-  return '${encodeClassOrField(constructor.escapedName)}(${properties.join(', ')})';
+  return '${constructor.escapedName}(${properties.join(', ')})';
 }
 ''';
   }
