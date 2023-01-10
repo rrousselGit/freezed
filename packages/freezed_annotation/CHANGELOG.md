@@ -1,3 +1,7 @@
+# Unreleased minor
+
+The generic type of `@With`/`@Implements` now defaults to `Object?` instead of `dynamic`
+
 # 2.2.0
 
 - Re-introduced `@With.fromString` and `@Implements.fromString` to allow unions
