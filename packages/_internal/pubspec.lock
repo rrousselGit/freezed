@@ -7,14 +7,14 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "50.0.0"
+    version: "52.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.2.0"
+    version: "5.4.0"
   args:
     dependency: transitive
     description:
@@ -63,7 +63,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   build_runner_core:
     dependency: transitive
     description:
@@ -91,14 +91,14 @@ packages:
       name: checked_yaml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   code_builder:
     dependency: transitive
     description:
       name: code_builder
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.3.0"
+    version: "4.4.0"
   collection:
     dependency: transitive
     description:
@@ -147,7 +147,7 @@ packages:
       name: freezed
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.2"
   freezed_annotation:
     dependency: "direct main"
     description:
@@ -224,7 +224,7 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.13"
+    version: "0.12.14"
   meta:
     dependency: transitive
     description:

@@ -1,7 +1,30 @@
 version: 2
 enable-beta-ecosystems: true
 updates:
-  - package-ecosystem: "pub"
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "rrousselGit"
+
+  - package-ecosystem: "pub"
+    directory: "/packages/_internal"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "rrousselGit"
+
+  - package-ecosystem: "pub"
+    directory: "/packages/freezed"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "rrousselGit"
+
+  - package-ecosystem: "pub"
+    directory: "/packages/freezed_annotations"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "rrousselGit"
