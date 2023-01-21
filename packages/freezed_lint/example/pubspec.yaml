@@ -1,0 +1,23 @@
+# The pubspec.yaml of an application using our lints
+name: example_app
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+
+dependencies:
+  freezed_annotation: any
+
+dev_dependencies:
+  build_runner: any
+  custom_lint: any
+  freezed: any
+  freezed_lint:
+    path: ../
+
+dependency_overrides:
+
+  freezed:
+    path: ../../freezed
+  freezed_annotation:
+    path: ../../freezed_annotation
+
+
