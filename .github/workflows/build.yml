@@ -8,6 +8,7 @@ on:
   schedule:
     # runs the CI everyday at 10AM
     - cron: "0 10 * * *"
+  workflow_dispatch:
 
 jobs:
   freezed:
@@ -18,6 +19,7 @@ jobs:
         package:
           - packages/freezed
           - packages/freezed_annotation
+          - packages/freezed_lint
         channel:
           - master
           - stable
@@ -36,8 +38,9 @@ jobs:
           channel: ${{ matrix.channel }}
           cache: ${{ matrix.channel == 'stable' }}
 
-      # It is executed separately
+      # Retain example for lint golden test
       - name: Removing example folder
+        if: matrix.package != 'packages/freezed_lint'
         run: rm -rf example
         working-directory: ${{ matrix.package }}
 
@@ -47,9 +50,9 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Check format
-        # Check format only on master
+        # Check dart format only on master
         if: matrix.channel == 'master'
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
         working-directory: ${{ matrix.package }}
 
       - name: Generate
@@ -71,3 +74,11 @@ jobs:
             dart test
           fi
         working-directory: ${{ matrix.package }}
+
+      - name: Lint golden test
+        if: matrix.package != 'packages/freezed_lint'
+        run: |
+          dart pub get
+          dart analyze
+          dart run custom_lint
+        working-directory: 'packages/freezed_lint/example'
