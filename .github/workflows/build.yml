@@ -8,7 +8,6 @@ on:
   schedule:
     # runs the CI everyday at 10AM
     - cron: "0 10 * * *"
-  workflow_dispatch:
 
 jobs:
   freezed:
@@ -63,6 +62,7 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Analyze
+        if: matrix.package != 'packages/freezed_lint'
         run: flutter analyze
         working-directory: ${{ matrix.package }}
 
