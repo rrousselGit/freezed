@@ -77,7 +77,7 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Lint golden test
-        if: matrix.package != 'packages/freezed_lint'
+        if: matrix.package == 'packages/freezed_lint'
         run: |
           dart pub get
           dart analyze
