@@ -17,7 +17,6 @@ class HasPrivateCtor with _$HasPrivateCtor {
   const HasPrivateCtor._();
   const factory HasPrivateCtor() = _HasPrivateCtor;
 
-
   void method() {
     print('hello world');
   }
