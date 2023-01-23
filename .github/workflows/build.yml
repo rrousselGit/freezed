@@ -28,6 +28,8 @@ jobs:
         exclude:
           - channel: master
             dependencies: downgrade
+          - package: packages/freezed_lint
+            channel: stable
 
     steps:
       - uses: actions/checkout@v3
@@ -62,7 +64,6 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Analyze
-        if: matrix.package != 'packages/freezed_lint'
         run: flutter analyze
         working-directory: ${{ matrix.package }}
 
