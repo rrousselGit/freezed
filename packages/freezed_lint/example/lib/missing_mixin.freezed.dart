@@ -31,7 +31,6 @@ class _$MissingMixinCopyWithImpl<$Res, $Val extends MissingMixin>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 }
@@ -92,7 +91,6 @@ class _$WithMixinCopyWithImpl<$Res, $Val extends WithMixin>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 }
