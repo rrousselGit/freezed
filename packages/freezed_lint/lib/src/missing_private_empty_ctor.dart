@@ -40,6 +40,7 @@ class MissingPrivateEmptyCtor extends DartLintRule {
             ctor.name == '_';
       });
       if (ctors.isNotEmpty) return;
+
       reporter.reportErrorForElement(code, element);
     });
   }
