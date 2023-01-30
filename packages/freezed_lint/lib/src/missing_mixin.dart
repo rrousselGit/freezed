@@ -22,6 +22,7 @@ class MissingMixin extends DartLintRule {
     context.registry.addClassDeclaration((node) {
       final element = node.declaredElement;
       if (element == null) return;
+
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
