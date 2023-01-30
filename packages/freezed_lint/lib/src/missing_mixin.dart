@@ -24,11 +24,14 @@ class MissingMixin extends DartLintRule {
       if (element == null) return;
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
+
       final mixins = element.mixins;
       final name = '_\$${element.name}';
       if (mixins.any((e) => e.hasName(name))) return;
+
       final src = element.source.contents.data;
       if (src.contains(name)) return;
+
       reporter.reportErrorForElement(code, element);
     });
   }
