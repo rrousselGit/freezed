@@ -134,3 +134,235 @@ class _$_WithMixin implements _WithMixin {
 abstract class _WithMixin implements WithMixin {
   const factory _WithMixin() = _$_WithMixin;
 }
+
+/// @nodoc
+mixin _$FooModel {
+  int get id => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $FooModelCopyWith<FooModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FooModelCopyWith<$Res> {
+  factory $FooModelCopyWith(FooModel value, $Res Function(FooModel) then) =
+      _$FooModelCopyWithImpl<$Res, FooModel>;
+  @useResult
+  $Res call({int id});
+}
+
+/// @nodoc
+class _$FooModelCopyWithImpl<$Res, $Val extends FooModel>
+    implements $FooModelCopyWith<$Res> {
+  _$FooModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_FooModelCopyWith<$Res> implements $FooModelCopyWith<$Res> {
+  factory _$$_FooModelCopyWith(
+          _$_FooModel value, $Res Function(_$_FooModel) then) =
+      __$$_FooModelCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int id});
+}
+
+/// @nodoc
+class __$$_FooModelCopyWithImpl<$Res>
+    extends _$FooModelCopyWithImpl<$Res, _$_FooModel>
+    implements _$$_FooModelCopyWith<$Res> {
+  __$$_FooModelCopyWithImpl(
+      _$_FooModel _value, $Res Function(_$_FooModel) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_$_FooModel(
+      null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_FooModel extends _FooModel {
+  const _$_FooModel(this.id) : super._();
+
+  @override
+  final int id;
+
+  @override
+  String toString() {
+    return 'FooModel(id: $id)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_FooModel &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_FooModelCopyWith<_$_FooModel> get copyWith =>
+      __$$_FooModelCopyWithImpl<_$_FooModel>(this, _$identity);
+}
+
+abstract class _FooModel extends FooModel {
+  const factory _FooModel(final int id) = _$_FooModel;
+  const _FooModel._() : super._();
+
+  @override
+  int get id;
+  @override
+  @JsonKey(ignore: true)
+  _$$_FooModelCopyWith<_$_FooModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$BarModel {
+  int get id => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $BarModelCopyWith<BarModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $BarModelCopyWith<$Res> {
+  factory $BarModelCopyWith(BarModel value, $Res Function(BarModel) then) =
+      _$BarModelCopyWithImpl<$Res, BarModel>;
+  @useResult
+  $Res call({int id});
+}
+
+/// @nodoc
+class _$BarModelCopyWithImpl<$Res, $Val extends BarModel>
+    implements $BarModelCopyWith<$Res> {
+  _$BarModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_BarModelCopyWith<$Res> implements $BarModelCopyWith<$Res> {
+  factory _$$_BarModelCopyWith(
+          _$_BarModel value, $Res Function(_$_BarModel) then) =
+      __$$_BarModelCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int id});
+}
+
+/// @nodoc
+class __$$_BarModelCopyWithImpl<$Res>
+    extends _$BarModelCopyWithImpl<$Res, _$_BarModel>
+    implements _$$_BarModelCopyWith<$Res> {
+  __$$_BarModelCopyWithImpl(
+      _$_BarModel _value, $Res Function(_$_BarModel) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_$_BarModel(
+      null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_BarModel extends _BarModel {
+  const _$_BarModel(this.id) : super._();
+
+  @override
+  final int id;
+
+  @override
+  String toString() {
+    return 'BarModel(id: $id)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_BarModel &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_BarModelCopyWith<_$_BarModel> get copyWith =>
+      __$$_BarModelCopyWithImpl<_$_BarModel>(this, _$identity);
+}
+
+abstract class _BarModel extends BarModel {
+  const factory _BarModel(final int id) = _$_BarModel;
+  const _BarModel._() : super._();
+
+  @override
+  int get id;
+  @override
+  @JsonKey(ignore: true)
+  _$$_BarModelCopyWith<_$_BarModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}

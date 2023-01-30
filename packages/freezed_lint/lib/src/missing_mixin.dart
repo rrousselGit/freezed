@@ -1,6 +1,7 @@
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+import 'package:freezed_lint/src/tools/dart_type_ext.dart';
 import 'package:freezed_lint/src/tools/freezed_annotation_checker.dart';
 
 class MissingMixin extends DartLintRule {
@@ -23,7 +24,11 @@ class MissingMixin extends DartLintRule {
       if (element == null) return;
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
-      if (element.mixins.isNotEmpty) return;
+      final mixins = element.mixins;
+      final name = '_\$${element.name}';
+      if (mixins.any((e) => e.hasName(name))) return;
+      final src = element.source.contents.data;
+      if (src.contains(name)) return;
       reporter.reportErrorForElement(code, element);
     });
   }
@@ -51,10 +56,17 @@ class _AddMixinFreezedClassFix extends DartFix {
         final element = node.declaredElement;
         if (element == null) return;
         final name = element.displayName;
-        builder.addSimpleInsertion(
-          element.nameOffset + element.nameLength,
-          ' with _\$$name',
-        );
+        if (element.mixins.isEmpty) {
+          builder.addSimpleInsertion(
+            element.nameOffset + element.nameLength,
+            ' with _\$$name',
+          );
+        } else {
+          builder.addSimpleInsertion(
+            element.nameOffset + element.nameLength + 5,
+            ' _\$$name,',
+          );
+        }
       });
     });
   }

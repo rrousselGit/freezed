@@ -53,8 +53,8 @@ class __$$_RequiresPrivateCtorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RequiresPrivateCtor extends _RequiresPrivateCtor {
-  const _$_RequiresPrivateCtor() : super._();
+class _$_RequiresPrivateCtor implements _RequiresPrivateCtor {
+  const _$_RequiresPrivateCtor();
 
   @override
   String toString() {
@@ -71,9 +71,8 @@ class _$_RequiresPrivateCtor extends _RequiresPrivateCtor {
   int get hashCode => runtimeType.hashCode;
 }
 
-abstract class _RequiresPrivateCtor extends RequiresPrivateCtor {
+abstract class _RequiresPrivateCtor implements RequiresPrivateCtor {
   const factory _RequiresPrivateCtor() = _$_RequiresPrivateCtor;
-  const _RequiresPrivateCtor._() : super._();
 }
 
 /// @nodoc
