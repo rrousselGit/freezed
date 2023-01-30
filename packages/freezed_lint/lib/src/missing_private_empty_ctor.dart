@@ -24,12 +24,15 @@ class MissingPrivateEmptyCtor extends DartLintRule {
     context.registry.addClassDeclaration((node) {
       final element = node.declaredElement;
       if (element == null) return;
+
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
+
       final methods = element.methods;
       final fields = element.fields;
       final accessors = element.accessors;
       if (methods.isEmpty && fields.isEmpty && accessors.isEmpty) return;
+
       final ctors = element.constructors.where((ctor) {
         return ctor.isConst &&
             ctor.isPrivate &&
