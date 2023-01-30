@@ -1,6 +1,8 @@
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
+import 'package:freezed_lint/src/tools/dart_type_ext.dart';
 import 'package:freezed_lint/src/tools/freezed_annotation_checker.dart';
 
 class MissingPrivateEmptyCtor extends DartLintRule {
@@ -37,8 +39,8 @@ class MissingPrivateEmptyCtor extends DartLintRule {
           ctor.isPrivate && ctor.parameters.isEmpty && ctor.name == '_');
       if (ctors.isNotEmpty) return;
 
-      final needConst = element.constructors.any((ctor) => ctor.isConst);
-      final name = '${needConst ? 'const ' : ''}${element.displayName}._();';
+      final constToken = element.constToken();
+      final name = '${constToken}${element.displayName}._();';
       reporter.reportErrorForElement(code, element, [name]);
     });
   }
@@ -61,9 +63,9 @@ class _AddPrivateEmptyCtorFix extends DartFix {
       final element = node.declaredElement;
       if (element == null) return;
       final name = element.displayName;
-      final needConst = element.constructors.any((ctor) => ctor.isConst);
+      final constToken = element.constToken();
       final changeBuilder = reporter.createChangeBuilder(
-        message: 'Add ${needConst ? 'const ' : ''}$name._();',
+        message: 'Add ${constToken}${name}._();',
         priority: 2,
       );
       changeBuilder.addDartFileEdit((builder) {
@@ -71,7 +73,7 @@ class _AddPrivateEmptyCtorFix extends DartFix {
             resolver.lineInfo.getOffsetOfLineAfter(node.leftBracket.offset);
         builder.addSimpleInsertion(
           nextLine,
-          '  ${needConst ? 'const ' : ''}${name}._();\n',
+          '  ${constToken}${name}._();\n',
         );
       });
     });

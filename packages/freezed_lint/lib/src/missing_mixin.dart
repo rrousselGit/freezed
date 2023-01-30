@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
@@ -25,13 +26,15 @@ class MissingMixin extends DartLintRule {
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final mixins = element.mixins;
       final name = '_\$${element.name}';
-      if (mixins.any((e) => e.hasName(name))) return;
+      final withClause = node.withClause;
+      if (withClause == null) {
+        reporter.reportErrorForElement(code, element, [name]);
+        return;
+      }
 
-      final src = element.source.contents.data;
-      if (src.contains(name)) return;
-
+      final mixins = withClause.mixinTypes;
+      if (mixins.any((m) => name == m.name.name)) return;
       reporter.reportErrorForElement(code, element, [name]);
     });
   }
@@ -58,17 +61,13 @@ class _AddMixinFreezedClassFix extends DartFix {
       changeBuilder.addDartFileEdit((builder) {
         final element = node.declaredElement;
         if (element == null) return;
+
         final name = element.displayName;
-        if (element.mixins.isEmpty) {
-          builder.addSimpleInsertion(
-            element.nameOffset + element.nameLength,
-            ' with _\$$name',
-          );
+        final offset = node.leftBracket.offset - 1;
+        if (node.withClause != null) {
+          builder.addSimpleInsertion(offset, ', _\$$name');
         } else {
-          builder.addSimpleInsertion(
-            element.nameOffset + element.nameLength + 5,
-            ' _\$$name,',
-          );
+          builder.addSimpleInsertion(offset, ' with _\$$name');
         }
       });
     });
