@@ -1,8 +1,7 @@
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:freezed_lint/src/tools/dart_type_ext.dart';
+import 'package:freezed_lint/src/tools/element_extensions.dart';
 import 'package:freezed_lint/src/tools/freezed_annotation_checker.dart';
 
 class MissingPrivateEmptyCtor extends DartLintRule {

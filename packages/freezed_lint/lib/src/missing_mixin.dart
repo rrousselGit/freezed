@@ -1,8 +1,6 @@
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:freezed_lint/src/tools/dart_type_ext.dart';
 import 'package:freezed_lint/src/tools/freezed_annotation_checker.dart';
 
 class MissingMixin extends DartLintRule {
