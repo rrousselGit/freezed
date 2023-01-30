@@ -39,8 +39,9 @@ jobs:
           channel: ${{ matrix.channel }}
           cache: ${{ matrix.channel == 'stable' }}
 
-      # Retain example for lint golden test
+      # It is executed separately
       - name: Removing example folder
+        # Retain example for lint golden test
         if: matrix.package != 'packages/freezed_lint'
         run: rm -rf example
         working-directory: ${{ matrix.package }}
