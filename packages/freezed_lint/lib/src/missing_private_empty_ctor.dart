@@ -11,8 +11,8 @@ class MissingPrivateEmptyCtor extends DartLintRule {
     problemMessage: 'Private empty constructor required',
     correctionMessage:
         'Freezed classes containing methods, fields or accessors,'
-        'require a const <className>._()',
-    errorSeverity: ErrorSeverity.WARNING,
+        'requires a {0}',
+    errorSeverity: ErrorSeverity.ERROR,
   );
 
   @override
@@ -33,15 +33,13 @@ class MissingPrivateEmptyCtor extends DartLintRule {
       final accessors = element.accessors;
       if (methods.isEmpty && fields.isEmpty && accessors.isEmpty) return;
 
-      final ctors = element.constructors.where((ctor) {
-        return ctor.isConst &&
-            ctor.isPrivate &&
-            ctor.parameters.isEmpty &&
-            ctor.name == '_';
-      });
+      final ctors = element.constructors.where((ctor) =>
+          ctor.isPrivate && ctor.parameters.isEmpty && ctor.name == '_');
       if (ctors.isNotEmpty) return;
 
-      reporter.reportErrorForElement(code, element);
+      final needConst = element.constructors.any((ctor) => ctor.isConst);
+      final name = '${needConst ? 'const ' : ''}${element.displayName}._();';
+      reporter.reportErrorForElement(code, element, [name]);
     });
   }
 
@@ -60,19 +58,20 @@ class _AddPrivateEmptyCtorFix extends DartFix {
   ) {
     context.registry.addClassDeclaration((node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
+      final element = node.declaredElement;
+      if (element == null) return;
+      final name = element.displayName;
+      final needConst = element.constructors.any((ctor) => ctor.isConst);
       final changeBuilder = reporter.createChangeBuilder(
-        message: 'Add const ${node.name}._();',
+        message: 'Add ${needConst ? 'const ' : ''}$name._();',
         priority: 2,
       );
       changeBuilder.addDartFileEdit((builder) {
-        final element = node.declaredElement;
-        if (element == null) return;
-        final name = element.displayName;
         final nextLine =
-            resolver.lineInfo.getOffsetOfLineAfter(element.nameOffset);
+            resolver.lineInfo.getOffsetOfLineAfter(node.leftBracket.offset);
         builder.addSimpleInsertion(
           nextLine,
-          '  const ${name}._();\n',
+          '  ${needConst ? 'const ' : ''}${name}._();\n',
         );
       });
     });

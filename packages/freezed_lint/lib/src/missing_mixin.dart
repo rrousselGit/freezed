@@ -9,8 +9,7 @@ class MissingMixin extends DartLintRule {
 
   static const _code = LintCode(
     name: 'freezed_missing_mixin',
-    problemMessage: 'Freezed class should mixin with _\$<className>',
-    errorSeverity: ErrorSeverity.WARNING,
+    problemMessage: 'Freezed class should mixin with {0}',
   );
 
   @override
@@ -33,7 +32,7 @@ class MissingMixin extends DartLintRule {
       final src = element.source.contents.data;
       if (src.contains(name)) return;
 
-      reporter.reportErrorForElement(code, element);
+      reporter.reportErrorForElement(code, element, [name]);
     });
   }
 
