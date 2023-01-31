@@ -18,6 +18,7 @@ jobs:
         package:
           - packages/freezed
           - packages/freezed_annotation
+          - packages/freezed_lint
         channel:
           - master
           - stable
@@ -27,6 +28,8 @@ jobs:
         exclude:
           - channel: master
             dependencies: downgrade
+          - package: packages/freezed_lint
+            channel: stable
 
     steps:
       - uses: actions/checkout@v3
@@ -38,6 +41,8 @@ jobs:
 
       # It is executed separately
       - name: Removing example folder
+        # Retain example for lint golden test
+        if: matrix.package != 'packages/freezed_lint'
         run: rm -rf example
         working-directory: ${{ matrix.package }}
 
@@ -47,9 +52,9 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Check format
-        # Check format only on master
+        # Check dart format only on master
         if: matrix.channel == 'master'
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
         working-directory: ${{ matrix.package }}
 
       - name: Generate
@@ -71,3 +76,11 @@ jobs:
             dart test
           fi
         working-directory: ${{ matrix.package }}
+
+      - name: Lint golden test
+        if: matrix.package == 'packages/freezed_lint'
+        run: |
+          dart pub get
+          dart analyze
+          dart run custom_lint
+        working-directory: 'packages/freezed_lint/example'
