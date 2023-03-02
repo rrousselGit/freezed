@@ -17,7 +17,7 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
 - 생성자 + 속성 정의하기
 - `toString`, `operator ==`, `hashCode` 오버라이드
 - 객체를 복제하기 위한 `copyWith` 메서드 구현
-- 역/직열화 처리
+- 역/직렬화 처리
 
 게다가 Dart에는 `union types` 및 `pattern-matching`와 같은 기능이 없습니다.
 
