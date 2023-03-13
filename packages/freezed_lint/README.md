@@ -23,7 +23,7 @@ You might need to restart your IDE for it to pick up the new lints
 
 ## List of supported lint
 
-- `freezed_nissing_mixin` ✅
+- `freezed_missing_mixin` ✅
 - `freezed_missing_private_empty_constructor` ✅
 
 [freezed]: https://pub.dev/packages/freezed
