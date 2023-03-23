@@ -86,6 +86,7 @@ ${copyWith?.commonConcreteImpl ?? ''}
   }
 
   String get _nameof {
+    if (!data.generateNameOf) return '';
     return '  // ignore: unused_field\n static late final _\$${data.name}NameOf nameOf = _\$${data.name}NameOf();';
   }
 }

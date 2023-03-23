@@ -1051,6 +1051,7 @@ mixin _$Data {
       throw _privateConstructorUsedError;
   bool get shouldUseExtends => throw _privateConstructorUsedError;
   bool get genericArgumentFactories => throw _privateConstructorUsedError;
+  bool get generateNameOf => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
@@ -1077,7 +1078,8 @@ abstract class $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool genericArgumentFactories});
+      bool genericArgumentFactories,
+      bool generateNameOf});
 
   $MapConfigCopyWith<$Res> get map;
   $WhenConfigCopyWith<$Res> get when;
@@ -1112,6 +1114,7 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
     Object? genericsParameterTemplate = null,
     Object? shouldUseExtends = null,
     Object? genericArgumentFactories = null,
+    Object? generateNameOf = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -1178,6 +1181,10 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
           ? _value.genericArgumentFactories
           : genericArgumentFactories // ignore: cast_nullable_to_non_nullable
               as bool,
+      generateNameOf: null == generateNameOf
+          ? _value.generateNameOf
+          : generateNameOf // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -1220,7 +1227,8 @@ abstract class _$$_DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool genericArgumentFactories});
+      bool genericArgumentFactories,
+      bool generateNameOf});
 
   @override
   $MapConfigCopyWith<$Res> get map;
@@ -1253,6 +1261,7 @@ class __$$_DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res, _$_Data>
     Object? genericsParameterTemplate = null,
     Object? shouldUseExtends = null,
     Object? genericArgumentFactories = null,
+    Object? generateNameOf = null,
   }) {
     return _then(_$_Data(
       name: null == name
@@ -1319,6 +1328,10 @@ class __$$_DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res, _$_Data>
           ? _value.genericArgumentFactories
           : genericArgumentFactories // ignore: cast_nullable_to_non_nullable
               as bool,
+      generateNameOf: null == generateNameOf
+          ? _value.generateNameOf
+          : generateNameOf // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -1342,7 +1355,8 @@ class _$_Data implements _Data {
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
       required this.shouldUseExtends,
-      required this.genericArgumentFactories})
+      required this.genericArgumentFactories,
+      required this.generateNameOf})
       : assert(constructors.isNotEmpty),
         _concretePropertiesName = concretePropertiesName,
         _constructors = constructors;
@@ -1392,10 +1406,12 @@ class _$_Data implements _Data {
   final bool shouldUseExtends;
   @override
   final bool genericArgumentFactories;
+  @override
+  final bool generateNameOf;
 
   @override
   String toString() {
-    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, genericArgumentFactories: $genericArgumentFactories)';
+    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, genericArgumentFactories: $genericArgumentFactories, generateNameOf: $generateNameOf)';
   }
 
   @override
@@ -1436,7 +1452,9 @@ class _$_Data implements _Data {
                 other.shouldUseExtends == shouldUseExtends) &&
             (identical(
                     other.genericArgumentFactories, genericArgumentFactories) ||
-                other.genericArgumentFactories == genericArgumentFactories));
+                other.genericArgumentFactories == genericArgumentFactories) &&
+            (identical(other.generateNameOf, generateNameOf) ||
+                other.generateNameOf == generateNameOf));
   }
 
   @override
@@ -1457,7 +1475,8 @@ class _$_Data implements _Data {
       genericsDefinitionTemplate,
       genericsParameterTemplate,
       shouldUseExtends,
-      genericArgumentFactories);
+      genericArgumentFactories,
+      generateNameOf);
 
   @JsonKey(ignore: true)
   @override
@@ -1483,7 +1502,8 @@ abstract class _Data implements Data {
       required final GenericsDefinitionTemplate genericsDefinitionTemplate,
       required final GenericsParameterTemplate genericsParameterTemplate,
       required final bool shouldUseExtends,
-      required final bool genericArgumentFactories}) = _$_Data;
+      required final bool genericArgumentFactories,
+      required final bool generateNameOf}) = _$_Data;
 
   @override
   String get name;
@@ -1517,6 +1537,8 @@ abstract class _Data implements Data {
   bool get shouldUseExtends;
   @override
   bool get genericArgumentFactories;
+  @override
+  bool get generateNameOf;
   @override
   @JsonKey(ignore: true)
   _$$_DataCopyWith<_$_Data> get copyWith => throw _privateConstructorUsedError;

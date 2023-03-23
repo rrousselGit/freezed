@@ -41,6 +41,7 @@ Freezed _$FreezedFromJson(Map json) => Freezed(
       addImplicitFinal: json['add_implicit_final'] as bool? ?? true,
       genericArgumentFactories:
           json['generic_argument_factories'] as bool? ?? false,
+      nameOf: json['name_of'] as bool? ?? false,
     );
 
 const _$FreezedUnionCaseEnumMap = {
