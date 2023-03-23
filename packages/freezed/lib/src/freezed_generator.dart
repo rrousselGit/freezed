@@ -7,6 +7,7 @@ import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
+import 'package:freezed/src/templates/nameof_template.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
@@ -713,6 +714,11 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
             genericsParameter: data.genericsParameterTemplate,
             data: data,
           );
+
+    yield NameOf(
+      data: data,
+      commonProperties: commonProperties.readableProperties,
+    );
 
     yield Abstract(
       data: data,

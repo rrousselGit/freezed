@@ -1,4 +1,5 @@
 import 'package:freezed/src/models.dart';
+import 'package:freezed/src/templates/nameof_template.dart';
 
 import 'copy_with.dart';
 import 'properties.dart';
@@ -29,6 +30,7 @@ class Abstract {
 mixin _\$${data.name}${data.genericsDefinitionTemplate} {
 
 $abstractProperties
+$_nameof
 $_when
 $_whenOrNull
 $_maybeWhen
@@ -81,5 +83,9 @@ ${copyWith?.commonConcreteImpl ?? ''}
   String get _maybeMap {
     if (!data.map.maybeMap) return '';
     return '${maybeMapPrototype(data.constructors, data.genericsParameterTemplate)} => throw $privConstUsedErrorVarName;';
+  }
+
+  String get _nameof {
+    return '  // ignore: unused_field\n static late final _\$${data.name}NameOf nameOf = _\$${data.name}NameOf();';
   }
 }
