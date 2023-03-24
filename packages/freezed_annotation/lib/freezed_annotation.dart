@@ -433,14 +433,12 @@ class Freezed {
   /// ```
   final bool genericArgumentFactories;
 
-  
   /// Whether to generate a `nameOf` class or not
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// If that value is null too, defaults to false.
   @JsonKey(defaultValue: false)
   final bool? nameOf;
-
 
   /// Options for customizing the generation of `map` functions
   ///
