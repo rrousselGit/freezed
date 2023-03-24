@@ -28,5 +28,4 @@ $properties
   String get className {
     return '_\$${data.name}NameOf';
   }
-
 }
