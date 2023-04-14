@@ -307,7 +307,7 @@ class Freezed {
   /// [
   ///   {
   ///     "runtimeType": "special",
-  ///     "a": "This JSON object will use constructor MyResponse.special()"
+  ///     "a": "This JSON object will use constructor MyResponse.special()",
   ///     "b": 42
   ///   },
   ///   {
