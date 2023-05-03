@@ -34,5 +34,12 @@ void main() {
     expect(CustomToString().toString(), '42');
     expect(MixedInToString().toString(), '42');
     expect(BaseToString().toString(), '42');
+    expect(const Dollar($test: 'demo').toString(), r'Dollar($test: demo)');
+    expect(const DollarMiddle(te$st: 'demo').toString(),
+        r'DollarMiddle(te$st: demo)');
+    expect(
+        const DollarEnd(test$: 'demo').toString(), r'DollarEnd(test$: demo)');
+    expect(const $DollarClass().toString(), r'$DollarClass()');
+    expect(const DollarFactory.$().toString(), r'DollarFactory.$()');
   });
 }

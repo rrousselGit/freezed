@@ -12,6 +12,10 @@ List<String> parseDecorators(List<ElementAnnotation> metadata) {
   ];
 }
 
+String wrapClassField(String name) {
+  return name.contains(r'$') ? '\${$name}' : '\$$name';
+}
+
 extension FreezedElementAnnotation on ElementAnnotation {
   /// if the element is decorated with `@Default(value)`
   bool get isDefault {
