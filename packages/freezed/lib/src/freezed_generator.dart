@@ -805,10 +805,11 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
     }
 
     final escapedElementName = element.name.replaceAll(r'$', r'\$');
+    final escapedConstructorName = constructor.name.replaceAll(r'$', r'\$');
 
-    return constructor.name.isEmpty
+    return escapedConstructorName.isEmpty
         ? '$escapedElementName$generics'
-        : '$escapedElementName$generics.${constructor.name}';
+        : '$escapedElementName$generics.$escapedConstructorName';
   }
 
   /// For:
