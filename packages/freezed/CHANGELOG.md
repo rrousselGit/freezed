@@ -1,4 +1,4 @@
-## Unreleased fix
+## 2.3.3
 
 - Fixed an issue with the generated code when classes contains a `$` in
   their property/constructor/class name (thanks to @medz)
