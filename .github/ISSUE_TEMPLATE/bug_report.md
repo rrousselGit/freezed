@@ -1,8 +1,10 @@
 ---
 name: Bug report
-about: There is a problem in how Freezed behaves
+about: There is a problem in how provider behaves
 title: ""
 labels: bug, needs triage
+assignees:
+  - rrousselGit
 ---
 
 **Describe the bug**
