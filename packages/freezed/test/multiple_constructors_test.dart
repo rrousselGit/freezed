@@ -29,7 +29,7 @@ Future<void> main() async {
   test('recursive class does not generate dynamic', () async {
     final recursiveClass = _getClassElement('_RecursiveNext');
 
-    expect(recursiveClass.getField('value')!.type is DynamicType, isFalse);
+    expect(recursiveClass.getField('value')!.type, isA<InterfaceType>());
   });
 
   test('Regression358', () {
