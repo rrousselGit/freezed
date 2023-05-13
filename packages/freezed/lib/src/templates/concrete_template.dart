@@ -565,10 +565,10 @@ String? parseTypeSource(VariableElement element) {
         element.source!.contents.data.substring(0, element.nameOffset);
     final eleType = element.type;
     if (eleType is DynamicType) {
-      final match = RegExp(r'(\w+\??)\s+$').firstMatch(source);
+      final match = RegExp(r'([$\w]+\??)\s+$').firstMatch(source);
       return match?.group(1);
     } else if (eleType is InterfaceType) {
-      final match = RegExp(r'(\w+<.+?>\??)\s+$').firstMatch(source);
+      final match = RegExp(r'([$\w]+<.+?>\??)\s+$').firstMatch(source);
       return match?.group(1) ?? type;
     }
   }

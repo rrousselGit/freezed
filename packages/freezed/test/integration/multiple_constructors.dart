@@ -116,6 +116,13 @@ class Recursive with _$Recursive {
 }
 
 @freezed
+class RecursiveWith$Dollar with _$RecursiveWith$Dollar {
+  factory RecursiveWith$Dollar() = RecursiveWith$DollarImpl;
+  factory RecursiveWith$Dollar.next(RecursiveWith$DollarImpl value) =
+      _RecursiveWith$DollarNext;
+}
+
+@freezed
 class RequiredParams with _$RequiredParams {
   const factory RequiredParams({required String a}) = RequiredParams0;
   const factory RequiredParams.second({required String a}) = RequiredParams1;

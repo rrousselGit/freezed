@@ -32,6 +32,18 @@ Future<void> main() async {
     expect(recursiveClass.getField('value')!.type, isA<InterfaceType>());
   });
 
+  test('recursive class with dollar generates correctly', () async {
+    final recursiveClass = _getClassElement('_RecursiveWith\$DollarNext');
+
+    expect(
+      recursiveClass
+          .getField('value')!
+          .type
+          .getDisplayString(withNullability: true),
+      'RecursiveWith\$DollarImpl',
+    );
+  });
+
   test('Regression358', () {
     expect(
       Regression358.withSpecificColor(),
