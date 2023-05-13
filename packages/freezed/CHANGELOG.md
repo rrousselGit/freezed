@@ -1,6 +1,7 @@
 ## Unreleased fix
 
-- Fix deprecated warning with analyzer 5.12.0
+- Fix allow dollar ($) in recursive class names (thanks to @andreasgangso)
+- Fix deprecated warning with analyzer 5.12.0 (thanks to @SunlightBro)
 
 ## 2.3.3
 
