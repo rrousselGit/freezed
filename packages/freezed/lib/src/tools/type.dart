@@ -6,12 +6,16 @@ import 'package:collection/collection.dart';
 import 'imports.dart';
 
 extension DartTypeX on DartType {
+  bool get isDynamic2 {
+    return this is DynamicType || this is InvalidType;
+  }
+
   bool get isNullable {
     final that = this;
     if (that is TypeParameterType) {
       return that.bound.isNullable;
     }
-    return isDynamic || nullabilitySuffix == NullabilitySuffix.question;
+    return isDynamic2 || nullabilitySuffix == NullabilitySuffix.question;
   }
 }
 

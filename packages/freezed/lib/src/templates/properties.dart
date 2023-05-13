@@ -223,7 +223,7 @@ extension IsDartCollection on DartType {
     final interface = safeCast<InterfaceType>();
 
     return _isDartCollectionType ||
-        isDynamic ||
+        isDynamic2 ||
         isDartCoreObject ||
         this is TypeParameterType ||
         (interface != null &&

@@ -167,7 +167,7 @@ Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/C
       if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
           parameter.isOptional &&
           parameter.defaultValue == null &&
-          !parameter.type.isDynamic) {
+          !parameter.type.isDynamic2) {
         final ctorName =
             constructor.isDefaultConstructor ? '' : '.${constructor.name}';
 

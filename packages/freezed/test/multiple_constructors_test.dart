@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -28,7 +29,7 @@ Future<void> main() async {
   test('recursive class does not generate dynamic', () async {
     final recursiveClass = _getClassElement('_RecursiveNext');
 
-    expect(recursiveClass.getField('value')!.type.isDynamic, isFalse);
+    expect(recursiveClass.getField('value')!.type, isA<InterfaceType>());
   });
 
   test('Regression358', () {

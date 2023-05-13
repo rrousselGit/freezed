@@ -442,7 +442,7 @@ class DefaultNonLitteralAlreadyConst with _$DefaultNonLitteralAlreadyConst {
       // ignore: unnecessary_const
       const Object(),
     )
-        Object listObject,
+    Object listObject,
   }) = _DefaultNonLitteralAlreadyConst;
 }
 

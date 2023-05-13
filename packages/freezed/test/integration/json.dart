@@ -529,7 +529,7 @@ class EnumJson with _$EnumJson {
       required: true,
       unknownEnumValue: JsonKey.nullForUndefinedEnumValue,
     )
-        Enum? status,
+    Enum? status,
   }) = _EnumJson;
 
   factory EnumJson.fromJson(Map<String, dynamic> json) =>
