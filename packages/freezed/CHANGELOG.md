@@ -2,6 +2,7 @@
 
 - Fix allow dollar ($) in recursive class names (thanks to @andreasgangso)
 - Fix deprecated warning with analyzer 5.12.0 (thanks to @SunlightBro)
+- Remove warning when marking a class as `abstract`
 
 ## 2.3.3
 

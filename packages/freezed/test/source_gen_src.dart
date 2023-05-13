@@ -214,12 +214,7 @@ class Mixed0 implements Mixed {
 @ShouldGenerate(
   '',
   contains: true,
-  expectedLogItems: [
-    '''
-The class AstractClass was declared as abstract, but it is not needed anymore.
-Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/CHANGELOG.md#0140
-''',
-  ],
+  expectedLogItems: [],
 )
 @freezed
 abstract class AstractClass {

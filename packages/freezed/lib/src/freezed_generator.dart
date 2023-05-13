@@ -76,7 +76,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
     final configs = _parseConfig(element);
 
-    _assertValidClassUsage(element);
     for (final field in element.fields) {
       _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
     }
@@ -131,18 +130,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       genericsParameterTemplate:
           GenericsParameterTemplate.fromGenericElement(element.typeParameters),
     );
-  }
-
-  void _assertValidClassUsage(ClassElement element) {
-    // TODO: verify _$name is mixed-in
-    if (element.isAbstract) {
-      log.warning(
-        '''
-The class ${element.name} was declared as abstract, but it is not needed anymore.
-Read here: https://github.com/rrousselGit/freezed/blob/master/packages/freezed/CHANGELOG.md#0140
-''',
-      );
-    }
   }
 
   void _assertValidNormalConstructorUsage(
