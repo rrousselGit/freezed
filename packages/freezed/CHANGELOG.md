@@ -1,4 +1,4 @@
-## Unreleased fix
+## 2.3.4 - 2023-05-13
 
 - Fix allow dollar ($) in recursive class names (thanks to @andreasgangso)
 - Fix deprecated warning with analyzer 5.12.0 (thanks to @SunlightBro)
