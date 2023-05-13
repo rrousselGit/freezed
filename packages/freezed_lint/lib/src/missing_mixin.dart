@@ -32,7 +32,7 @@ class MissingMixin extends DartLintRule {
       }
 
       final mixins = withClause.mixinTypes;
-      if (mixins.any((m) => name == m.name.name)) return;
+      if (mixins.any((m) => name == m.name2.lexeme)) return;
       reporter.reportErrorForElement(code, element, [name]);
     });
   }
