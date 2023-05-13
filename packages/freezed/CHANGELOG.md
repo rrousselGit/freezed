@@ -1,3 +1,7 @@
+## Unreleased fix
+
+- Fix deprecated warning with analyzer 5.12.0
+
 ## 2.3.3
 
 - Fixed an issue with the generated code when classes contains a `$` in
