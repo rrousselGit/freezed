@@ -560,11 +560,12 @@ extension DefaultValue on ParameterElement {
 String? parseTypeSource(VariableElement element) {
   String? type = element.type.getDisplayString(withNullability: true);
 
-  if (type.contains('dynamic') && element.nameOffset > 0) {
+  if (type.contains('dynamic') ||
+      type.contains('InvalidType') && element.nameOffset > 0) {
     final source =
         element.source!.contents.data.substring(0, element.nameOffset);
     final eleType = element.type;
-    if (eleType is DynamicType) {
+    if (eleType is DynamicType || eleType is InvalidType) {
       final match = RegExp(r'([$\w]+\??)\s+$').firstMatch(source);
       return match?.group(1);
     } else if (eleType is InterfaceType) {

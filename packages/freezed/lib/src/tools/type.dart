@@ -73,6 +73,10 @@ String resolveFullTypeStringFrom(
     }
   }
 
+  if (displayType.contains('InvalidType')) {
+    displayType = displayType.replaceAll('InvalidType', 'dynamic');
+  }
+
   if (owner != null) {
     return '${owner.name}.$displayType';
   }
