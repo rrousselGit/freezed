@@ -1232,7 +1232,11 @@ Example:
 
 ### DartJ 
 
-[DartJ](https://dartj.web.app/#/) is Flutter application, which will generate the Freezed classes from a JSON payload.
+[DartJ](https://dartj.web.app/#/) is Flutter application, maked by @ttpho, which will generate the Freezed classes from a JSON payload. 
+
+DartJ is third party. It isn't an official tool.
+
+Example:
 
 https://github.com/ttpho/freezed/assets/3994863/6d15845a-52a8-4b7f-85be-182561862dae
 
