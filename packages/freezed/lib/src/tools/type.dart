@@ -1,10 +1,10 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:analyzer/src/dart/element/type.dart';
+// DynamicTypeImpl is imported directly from source as it's not exposed by analyzer
+// ignore: implementation_imports
+import 'package:analyzer/src/dart/element/type.dart' show DynamicTypeImpl;
 import 'package:collection/collection.dart';
-import 'package:freezed/src/templates/concrete_template.dart';
-import 'package:freezed/src/templates/properties.dart';
 
 import 'imports.dart';
 
