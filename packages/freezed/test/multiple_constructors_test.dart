@@ -598,29 +598,33 @@ void main() {
       final nestedMapClass = _getClassElement('_UsesGenerated');
 
       expect(
-          nestedMapClass
-              .getField('value')!
-              .type
-              .getDisplayString(withNullability: true),
-          'CodeGenerated');
+        nestedMapClass
+            .getField('value')!
+            .type
+            .getDisplayString(withNullability: true),
+        'CodeGenerated',
+      );
       expect(
-          nestedMapClass
-              .getField('list')!
-              .type
-              .getDisplayString(withNullability: true),
-          'List<CodeGenerated>');
+        nestedMapClass
+            .getField('list')!
+            .type
+            .getDisplayString(withNullability: true),
+        'List<CodeGenerated>',
+      );
       expect(
-          nestedMapClass
-              .getField('nestedList')!
-              .type
-              .getDisplayString(withNullability: true),
-          'List<List<CodeGenerated>>');
+        nestedMapClass
+            .getField('nestedList')!
+            .type
+            .getDisplayString(withNullability: true),
+        'List<List<CodeGenerated>>',
+      );
       expect(
-          nestedMapClass
-              .getField('map')!
-              .type
-              .getDisplayString(withNullability: true),
-          'Map<int, CodeGenerated>');
+        nestedMapClass
+            .getField('map')!
+            .type
+            .getDisplayString(withNullability: true),
+        'Map<int, CodeGenerated>',
+      );
     });
   });
 }

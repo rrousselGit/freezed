@@ -1,6 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/type_provider.dart';
+import 'package:analyzer/dart/element/type_system.dart';
 
 // DynamicTypeImpl is imported directly from source as it's not exposed by analyzer
 // ignore: implementation_imports
@@ -89,7 +91,7 @@ String resolveFullTypeStringFrom(
   //
   // This a regression in analyzer 5.13.0
   if (type is InterfaceType &&
-      type.typeArguments.contains(InvalidTypeImpl.instance)) {
+      type.typeArguments.any((e) => e is InvalidType)) {
     var modified = type;
     modified.typeArguments
       ..replaceWhere(

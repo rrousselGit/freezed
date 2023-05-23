@@ -565,7 +565,7 @@ String? parseTypeSource(VariableElement element) {
     final source =
         element.source!.contents.data.substring(0, element.nameOffset);
     final eleType = element.type;
-    if (eleType is DynamicType || eleType is InvalidType) {
+    if (eleType.isDynamic2) {
       final match = RegExp(r'([$\w]+\??)\s+$').firstMatch(source);
       return match?.group(1);
     } else if (eleType is InterfaceType) {
