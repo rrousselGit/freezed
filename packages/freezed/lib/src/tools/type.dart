@@ -1,13 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:analyzer/dart/element/type_provider.dart';
-import 'package:analyzer/dart/element/type_system.dart';
-
-// DynamicTypeImpl is imported directly from source as it's not exposed by analyzer
-// ignore: implementation_imports
-import 'package:analyzer/src/dart/element/type.dart'
-    show DynamicTypeImpl, InvalidTypeImpl;
 import 'package:collection/collection.dart';
 
 import 'imports.dart';
@@ -92,13 +85,13 @@ String resolveFullTypeStringFrom(
   // This a regression in analyzer 5.13.0
   if (type is InterfaceType &&
       type.typeArguments.any((e) => e is InvalidType)) {
+    final dynamicType = type.element.library.typeProvider.dynamicType;
     var modified = type;
     modified.typeArguments
       ..replaceWhere(
         (t) => t is InvalidType,
-        DynamicTypeImpl.instance,
+        dynamicType,
       );
-
     displayType = modified.getDisplayString(withNullability: withNullability);
   }
 
