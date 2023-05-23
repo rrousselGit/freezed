@@ -1230,11 +1230,13 @@ Example:
   factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
   ```
 
+## Third-party tools
+
+This part contains community-made tools which integrate with Freezed.
+
 ### DartJ 
 
 [DartJ](https://dartj.web.app/#/) is Flutter application, maked by @ttpho, which will generate the Freezed classes from a JSON payload. 
-
-DartJ is third party. It isn't an official tool.
 
 Example:
 
