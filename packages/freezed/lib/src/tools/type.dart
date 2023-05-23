@@ -89,10 +89,11 @@ String resolveFullTypeStringFrom(
   if (type is InterfaceType &&
       type.typeArguments.contains(InvalidTypeImpl.instance)) {
     var modified = type;
-    modified.typeArguments..replaceWhere(
-      (t) => t is InvalidType,
-      DynamicTypeImpl.instance,
-    );
+    modified.typeArguments
+      ..replaceWhere(
+        (t) => t is InvalidType,
+        DynamicTypeImpl.instance,
+      );
 
     displayType = modified.getDisplayString(withNullability: withNullability);
   }
