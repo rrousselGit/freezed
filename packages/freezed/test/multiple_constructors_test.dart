@@ -592,6 +592,7 @@ void main() {
           'Map<String, LeafNestedMapItem>');
     });
   });
+
   group('GeneratedCode', () {
     test('generates Map of correct type', () async {
       final nestedMapClass = _getClassElement('_UsesGenerated');
