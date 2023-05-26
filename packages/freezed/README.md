@@ -17,8 +17,6 @@ Dart is awesome, but defining a "model" can be tedious. We may have to:
 - implement a `copyWith` method to clone the object
 - handling de/serialization
 
-On top of that, Dart is also missing features such as union types and pattern-matching.
-
 Implementing all of this can take hundreds of lines, which are error-prone
 and affect the readability of your model significantly.
 
@@ -46,22 +44,23 @@ to focus on the definition of your model.
     - [Asserts](#asserts)
     - [Default values](#default-values)
     - [Decorators and comments](#decorators-and-comments)
-  - [Union types and Sealed classes](#union-types-and-sealed-classes)
-    - [Shared properties](#shared-properties)
-    - [Using pattern matching to read non-shared properties](#using-pattern-matching-to-read-non-shared-properties)
-      - [When](#when)
-      - [Map](#map)
-      - [Using is/as to read the content of a Freezed class](#using-isas-to-read-the-content-of-a-freezed-class)
     - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
     - [Deserializing generic classes](#deserializing-generic-classes)
+  - [(Legacy) Union types and Sealed classes](#legacy-union-types-and-sealed-classes)
+    - [Shared properties](#shared-properties)
+    - [Using pattern matching to read non-shared properties](#using-pattern-matching-to-read-non-shared-properties)
+      - [When](#when)
+      - [Map](#map)
   - [Configurations](#configurations)
     - [Changing the behavior for a specific model](#changing-the-behavior-for-a-specific-model)
     - [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)
 - [Utilities](#utilities)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
+  - [Third-party tools](#third-party-tools)
+    - [DartJ](#dartj)
   - [Sponsors](#sponsors)
 
 # How to use
@@ -559,266 +558,6 @@ class Person with _$Person {
 }
 ```
 
-## Union types and Sealed classes
-
-Coming from other languages, you may be used to features like "union types"/"sealed classes"/pattern matching.  
-These are powerful tools in combination with a type system, but Dart currently does not support them.
-
-But fear not, [Freezed] supports them, generating a few utilities to help you with those.
-
-Long story short, in any Freezed class, you can write multiple constructors:
-
-```dart
-@freezed
-sealed class Union with _$Union {
-  const factory Union.data(int value) = Data;
-  const factory Union.loading() = Loading;
-  const factory Union.error([String? message]) = Error;
-}
-```
-
-By doing this, our model now can be in different mutually exclusive states.
-
-In particular, this snippet defines a model `Union`, and that model has 3 possible states:
-
-- data
-- loading
-- error
-
-Note how we gave meaningful names to the right hand of the factory constructors we defined.
-They will come in handy later.
-
-One thing you may also notice is that with this example, then we can no-longer
-write code such as:
-
-```dart
-void main() {
-  Union union = Union.data(42);
-
-  print(union.value); // compilation error: property value does not exist
-}
-```
-
-Let's see why that is the case in the following section.
-
-### Shared properties
-
-When defining multiple constructors, you will lose the ability to read properties that are not common to all constructors:
-
-For example, if you write:
-
-```dart
-@freezed
-sealed class Example with _$Example {
-  const factory Example.person(String name, int age) = Person;
-  const factory Example.city(String name, int population) = City;
-}
-```
-
-Then you will be unable to read `age` and `population` directly:
-
-```dart
-var example = Example.person('Remi', 24);
-print(example.age); // does not compile!
-```
-
-On the other hand, you **can** read properties that are defined on all constructors.\
-For example, the `name` variable is common to both `Example.person` and `Example.city` constructors.
-
-As such we can write:
-
-```dart
-var example = Example.person('Remi', 24);
-print(example.name); // Remi
-example = Example.city('London', 8900000);
-print(example.name); // London
-```
-
-The same logic can be applied to `copyWith` too.  
-We can use `copyWith` with properties defined on all constructors:
-
-```dart
-var example = Example.person('Remi', 24);
-print(example.copyWith(name: 'Dash')); // Example.person(name: Dash, age: 24)
-
-example = Example.city('London', 8900000);
-print(example.copyWith(name: 'Paris')); // Example.city(name: Paris, population: 8900000)
-```
-
-On the other hand, properties that are unique to a specific constructor aren't available:
-
-```dart
-var example = Example.person('Remi', 24);
-
-example.copyWith(age: 42); // compilation error, parameter `age` does not exist
-```
-
-To solve this problem, we need check the state of our object using what we call "pattern matching".
-
-### Using pattern matching to read non-shared properties
-
-For this section, let's consider the following union:
-
-```dart
-@freezed
-sealed class Example with _$Example {
-  const factory Example.person(String name, int age) = Person;
-  const factory Example.city(String name, int population) = City;
-}
-```
-
-Let's see how we can use pattern matching to read the content of an `Example` instance.
-
-For this, we have a few solutions:
-
-- (preferred) Use Dart 3's built-in pattern matching using `switch`:
-  ```dart
-  switch (example) {
-    Person(:final name) => print('Person $name'),
-    City(:final population) => print('City ($population)'),
-  }
-  ```
-- (legacy) If using Dart 2, you can use utilities ([when]/[map]) generated by Freezed to inspect the content of our object
-- (discouraged) Using `is`/`as` to cast an `Example` variable into either a `Person` or a `City`
-
-#### When
-
-The [when] method is the equivalent to pattern matching with destructing.  
-The prototype of the method depends on the constructors defined.
-
-For example, with:
-
-```dart
-@freezed
-sealed class Union with _$Union {
-  const factory Union(int value) = Data;
-  const factory Union.loading() = Loading;
-  const factory Union.error([String? message]) = ErrorDetails;
-}
-```
-
-Then [when] will be:
-
-```dart
-var union = Union(42);
-
-print(
-  union.when(
-    (int value) => 'Data $value',
-    loading: () => 'loading',
-    error: (String? message) => 'Error: $message',
-  ),
-); // Data 42
-```
-
-Whereas if we defined:
-
-```dart
-@freezed
-sealed class Model with _$Model {
-  factory Model.first(String a) = First;
-  factory Model.second(int b, bool c) = Second;
-}
-```
-
-Then [when] will be:
-
-```dart
-var model = Model.first('42');
-
-print(
-  model.when(
-    first: (String a) => 'first $a',
-    second: (int b, bool c) => 'second $b $c'
-  ),
-); // first 42
-```
-
-Notice how each callback matches with a constructor's name and prototype.
-
-**NOTE**:\
-All callbacks are required and must not be `null`.\
-If that is not what you want, consider using [maybeWhen].
-
-#### Map
-
-The [map] methods are equivalent to [when], but **without** destructuring.
-
-Consider this class:
-
-```dart
-@freezed
-sealed class Model with _$Model {
-  factory Model.first(String a) = First;
-  factory Model.second(int b, bool c) = Second;
-}
-```
-
-With such class, while [when] will be:
-
-```dart
-var model = Model.first('42');
-
-print(
-  model.when(
-    first: (String a) => 'first $a',
-    second: (int b, bool c) => 'second $b $c'
-  ),
-); // first 42
-```
-
-[map] will instead be:
-
-```dart
-var model = Model.first('42');
-
-print(
-  model.map(
-    first: (First value) => 'first ${value.a}',
-    second: (Second value) => 'second ${value.b} ${value.c}'
-  ),
-); // first 42
-```
-
-This can be useful if you want to do complex operations, like [copyWith]/`toString` for example:
-
-```dart
-var model = Model.second(42, false)
-print(
-  model.map(
-    first: (value) => value,
-    second: (value) => value.copyWith(c: true),
-  )
-); // Model.second(b: 42, c: true)
-```
-
-#### Using is/as to read the content of a Freezed class
-
-Alternatively, one (less desirable) solution is to use the `is`/`as` keywords.  
-More specifically, you can write:
-
-```dart
-void main() {
-  Example value;
-
-  if (value is Person) {
-    // By using `is`, this allows the compiler to know that "value" is a Person instance
-    // and therefore allows us to read all of its properties.
-    print(value.age);
-    value = value.copyWith(age: 42);
-  }
-
-  // Alternatively we can use `as` if we are certain of type of an object:
-  Person person = value as Person;
-  print(person.age);
-}
-```
-
-**Note**:  
-Using `is` and `as`, while possible, is discouraged.
-
-The reasoning is that they are not "exhaustive". See https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/
-
 ### Mixins and Interfaces for individual classes for union types
 
 When you have multiple types in the same class you might want one of those
@@ -1143,6 +882,249 @@ If you want to define some custom json_serializable flags for all the classes (e
 
 See also the [decorators](#decorators-and-comments) section
 
+## (Legacy) Union types and Sealed classes
+
+**Edit**: As of Dart 3, Dart now has built-in pattern-matching using sealed classes.  
+As such, you no-longer need to rely on Freezed's generated methods for pattern
+matching. Instead of using `when`/`map`, the official Dart syntax.
+
+The following docs are left unedited and kept for the Dart users who have yet to
+migrate to Dart 3.  
+But in the long term, you should stop relying on `when`/`map`.
+
+____
+
+Coming from other languages, you may be used to features like "union types"/"sealed classes"/pattern matching.  
+These are powerful tools in combination with a type system, but Dart currently does not support them.
+
+But fear not, [Freezed] supports them, generating a few utilities to help you with those.
+
+Long story short, in any Freezed class, you can write multiple constructors:
+
+```dart
+@freezed
+sealed class Union with _$Union {
+  const factory Union.data(int value) = Data;
+  const factory Union.loading() = Loading;
+  const factory Union.error([String? message]) = Error;
+}
+```
+
+By doing this, our model now can be in different mutually exclusive states.
+
+In particular, this snippet defines a model `Union`, and that model has 3 possible states:
+
+- data
+- loading
+- error
+
+Note how we gave meaningful names to the right hand of the factory constructors we defined.
+They will come in handy later.
+
+One thing you may also notice is that with this example, then we can no-longer
+write code such as:
+
+```dart
+void main() {
+  Union union = Union.data(42);
+
+  print(union.value); // compilation error: property value does not exist
+}
+```
+
+Let's see why that is the case in the following section.
+
+### Shared properties
+
+When defining multiple constructors, you will lose the ability to read properties that are not common to all constructors:
+
+For example, if you write:
+
+```dart
+@freezed
+sealed class Example with _$Example {
+  const factory Example.person(String name, int age) = Person;
+  const factory Example.city(String name, int population) = City;
+}
+```
+
+Then you will be unable to read `age` and `population` directly:
+
+```dart
+var example = Example.person('Remi', 24);
+print(example.age); // does not compile!
+```
+
+On the other hand, you **can** read properties that are defined on all constructors.\
+For example, the `name` variable is common to both `Example.person` and `Example.city` constructors.
+
+As such we can write:
+
+```dart
+var example = Example.person('Remi', 24);
+print(example.name); // Remi
+example = Example.city('London', 8900000);
+print(example.name); // London
+```
+
+The same logic can be applied to `copyWith` too.  
+We can use `copyWith` with properties defined on all constructors:
+
+```dart
+var example = Example.person('Remi', 24);
+print(example.copyWith(name: 'Dash')); // Example.person(name: Dash, age: 24)
+
+example = Example.city('London', 8900000);
+print(example.copyWith(name: 'Paris')); // Example.city(name: Paris, population: 8900000)
+```
+
+On the other hand, properties that are unique to a specific constructor aren't available:
+
+```dart
+var example = Example.person('Remi', 24);
+
+example.copyWith(age: 42); // compilation error, parameter `age` does not exist
+```
+
+To solve this problem, we need check the state of our object using what we call "pattern matching".
+
+### Using pattern matching to read non-shared properties
+
+For this section, let's consider the following union:
+
+```dart
+@freezed
+sealed class Example with _$Example {
+  const factory Example.person(String name, int age) = Person;
+  const factory Example.city(String name, int population) = City;
+}
+```
+
+Let's see how we can use pattern matching to read the content of an `Example` instance.
+
+For this, we have a few solutions:
+
+- (preferred) Use Dart 3's built-in pattern matching using `switch`:
+  ```dart
+  switch (example) {
+    Person(:final name) => print('Person $name'),
+    City(:final population) => print('City ($population)'),
+  }
+  ```
+- (legacy) If using Dart 2, you can use utilities ([when]/[map]) generated by Freezed to inspect the content of our object
+- (discouraged) Using `is`/`as` to cast an `Example` variable into either a `Person` or a `City`
+
+#### When
+
+The [when] method is the equivalent to pattern matching with destructing.  
+The prototype of the method depends on the constructors defined.
+
+For example, with:
+
+```dart
+@freezed
+sealed class Union with _$Union {
+  const factory Union(int value) = Data;
+  const factory Union.loading() = Loading;
+  const factory Union.error([String? message]) = ErrorDetails;
+}
+```
+
+Then [when] will be:
+
+```dart
+var union = Union(42);
+
+print(
+  union.when(
+    (int value) => 'Data $value',
+    loading: () => 'loading',
+    error: (String? message) => 'Error: $message',
+  ),
+); // Data 42
+```
+
+Whereas if we defined:
+
+```dart
+@freezed
+sealed class Model with _$Model {
+  factory Model.first(String a) = First;
+  factory Model.second(int b, bool c) = Second;
+}
+```
+
+Then [when] will be:
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.when(
+    first: (String a) => 'first $a',
+    second: (int b, bool c) => 'second $b $c'
+  ),
+); // first 42
+```
+
+Notice how each callback matches with a constructor's name and prototype.
+
+**NOTE**:\
+All callbacks are required and must not be `null`.\
+If that is not what you want, consider using [maybeWhen].
+
+#### Map
+
+The [map] methods are equivalent to [when], but **without** destructuring.
+
+Consider this class:
+
+```dart
+@freezed
+sealed class Model with _$Model {
+  factory Model.first(String a) = First;
+  factory Model.second(int b, bool c) = Second;
+}
+```
+
+With such class, while [when] will be:
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.when(
+    first: (String a) => 'first $a',
+    second: (int b, bool c) => 'second $b $c'
+  ),
+); // first 42
+```
+
+[map] will instead be:
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.map(
+    first: (First value) => 'first ${value.a}',
+    second: (Second value) => 'second ${value.b} ${value.c}'
+  ),
+); // first 42
+```
+
+This can be useful if you want to do complex operations, like [copyWith]/`toString` for example:
+
+```dart
+var model = Model.second(42, false)
+print(
+  model.map(
+    first: (value) => value,
+    second: (value) => value.copyWith(c: true),
+  )
+); // Model.second(b: 42, c: true)
+```
+
 ## Configurations
 
 Freezed offers various options to customize the generated code. For example, you
@@ -1234,14 +1216,13 @@ Example:
 
 This part contains community-made tools which integrate with Freezed.
 
-### DartJ 
+### DartJ
 
-[DartJ](https://dartj.web.app/#/) is Flutter application, maked by @ttpho, which will generate the Freezed classes from a JSON payload. 
+[DartJ](https://dartj.web.app/#/) is Flutter application, maked by @ttpho, which will generate the Freezed classes from a JSON payload.
 
 Example:
 
 https://github.com/ttpho/freezed/assets/3994863/6d15845a-52a8-4b7f-85be-182561862dae
-
 
 ## Sponsors
 
