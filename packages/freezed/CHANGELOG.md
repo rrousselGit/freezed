@@ -28,7 +28,7 @@ Fix various issues with `copyWith`
   @freezed
   class Union with _$Union {
     factory Union.first(int value) = _UnionFirst;
-    factory Union.first(double value) = _UnionSecond;
+    factory Union.second(double value) = _UnionSecond;
   }
 
   void main() {
