@@ -86,9 +86,8 @@ Update warning message when using abstract freezed classes
 
 ## 2.0.3
 
-– fix: performance regression with ==/hashCode/copyWith due to immutable collections (#653)
-– fix: build.yaml decoding crash
-
+- fix: performance regression with ==/hashCode/copyWith due to immutable collections (#653)
+- fix: build.yaml decoding crash
 - fix: remove annotations on internal properties related to immutable collections (#659)
 
 ## 2.0.2
