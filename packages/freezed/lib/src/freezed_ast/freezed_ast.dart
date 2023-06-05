@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/type_system.dart';
 import 'package:freezed/src/freezed_ast/registry.dart';
 
 extension StringUtils on String {
@@ -131,57 +132,40 @@ sealed class CustomDartType {
 
   bool get isPossiblyDartCollection;
 
-  List<CustomDartType> get typeArguments;
-
   String encode();
 
-  CustomDartType computeCommonType(CustomDartType other);
+  /// Obtains the common type between this type and [other].
+  ///
+  /// If the computation of such type is not possible, returns null.
+  /// This typically happens when [UnresolvedCustomDartType]s are involved.
+  CustomDartType? leastUpperBound(CustomDartType other);
 }
 
-class _TypeParameterType implements CustomDartType {
-  _TypeParameterType(this.type, this.bound);
-
-  final TypeParameter type;
-  final CustomDartType bound;
-}
-
-class _NamedCustomType implements CustomDartType {
-  _NamedCustomType(this.type);
-  final NamedType type;
-}
-
-class _FreezedType implements CustomDartType {
+sealed class ResolvedCustomDartType implements CustomDartType {
+  // Resolved types should always resolve to a new type.
+  // If they receive a non-resolved type, they should return null.
   @override
-  bool operator ==(Object other) {
-    if (other is! _TypeFromDartType) return false;
-    // TODO handle classes with the same name but from different places
-    // TODO handle generics
-    return encode() == other.encode();
-  }
-
-  @override
-  int get hashCode => encode().hashCode;
+  ResolvedCustomDartType? leastUpperBound(CustomDartType other);
 }
 
-class _UnresolvedType implements CustomDartType {
-  _UnresolvedType(this._type);
+final class UnresolvedCustomDartType implements CustomDartType {
+  UnresolvedCustomDartType(this._type);
   // TODO do not consider freezed classes as unresolved.
 
   final TypeAnnotation _type;
 
   @override
   // TODO: implement isPossiblyDartCollection
-  bool get isPossiblyDartCollection => throw UnimplementedError();
+  bool get isPossiblyDartCollection => true;
 
   @override
-  CustomDartType computeCommonType(CustomDartType other) {
+  CustomDartType? leastUpperBound(CustomDartType other) {
     if (other == this) return this;
 
     // The current type is not resolved, so there is no way to compute
     // a common type. At the same time, the current type and the input types
     // are not equal.
-    // TODO use proper exception
-    throw UnimplementedError();
+    return null;
   }
 
   @override
@@ -194,6 +178,7 @@ class _UnresolvedType implements CustomDartType {
     // TODO handle comments in the source (such as inside generics)
     // TODO handle classes with the same name but from different places
     // TODO handle generics
+    // TODO handle same source in different librairies
     return encode() == other.encode();
   }
 
@@ -201,10 +186,40 @@ class _UnresolvedType implements CustomDartType {
   int get hashCode => encode().hashCode;
 }
 
-class _TypeFromDartType implements CustomDartType {
-  _TypeFromDartType(this._type, {this.typeAnnotation});
+class _TypeParameterType extends ResolvedCustomDartType {
+  _TypeParameterType(this.type, this.bound);
 
-  final DartType _type;
+  final TypeParameter type;
+  final CustomDartType bound;
+}
+
+class _NamedCustomType extends ResolvedCustomDartType {
+  _NamedCustomType(this.type);
+  final NamedType type;
+}
+
+class _FreezedType extends ResolvedCustomDartType {
+  @override
+  bool operator ==(Object other) {
+    if (other is! _TypeFromDartType) return false;
+    // TODO handle classes with the same name but from different places
+    // TODO handle generics
+    return encode() == other.encode();
+  }
+
+  @override
+  int get hashCode => encode().hashCode;
+}
+
+class _TypeFromDartType extends ResolvedCustomDartType {
+  _TypeFromDartType(
+    this.type, {
+    this.typeAnnotation,
+    required this.typeSystem,
+  });
+
+  final TypeSystem typeSystem;
+  final DartType type;
   final TypeAnnotation? typeAnnotation;
 
   @override
@@ -216,21 +231,25 @@ class _TypeFromDartType implements CustomDartType {
     // TODO be careful when writing the type, as it might be coming from an
     // import with a type alias.
     return typeAnnotation?.toSource() ??
-        _type.getDisplayString(withNullability: true);
+        type.getDisplayString(withNullability: true);
   }
 
   @override
   CustomDartType computeCommonType(CustomDartType other) {
     switch (other) {
-      case _UnresolvedType():
+      case UnresolvedCustomDartType():
         // Contains generated types. Since the current type does not contain
         // generated types, then they are different.
         // TODO use proper exception
         throw UnimplementedError();
-      case _TypeFromDartType():
+      case ResolvedCustomDartType():
         // No generated types in the DartType and it is fully resolved.
-        final typeSystem = _type.element!.library!.typeSystem;
-        final commonType = typeSystem.leastUpperBound(_type, other._type);
+        final typeSystem = type.element!.library!.typeSystem;
+        // TODO remove cast
+        final commonType = typeSystem.leastUpperBound(
+          type,
+          (other as _TypeFromDartType).type,
+        );
 
         return CustomDartType._fromDartType(commonType);
     }
