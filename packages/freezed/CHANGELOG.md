@@ -28,7 +28,7 @@ Fix various issues with `copyWith`
   @freezed
   class Union with _$Union {
     factory Union.first(int value) = _UnionFirst;
-    factory Union.first(double value) = _UnionSecond;
+    factory Union.second(double value) = _UnionSecond;
   }
 
   void main() {
@@ -86,9 +86,8 @@ Update warning message when using abstract freezed classes
 
 ## 2.0.3
 
-– fix: performance regression with ==/hashCode/copyWith due to immutable collections (#653)
-– fix: build.yaml decoding crash
-
+- fix: performance regression with ==/hashCode/copyWith due to immutable collections (#653)
+- fix: build.yaml decoding crash
 - fix: remove annotations on internal properties related to immutable collections (#659)
 
 ## 2.0.2
