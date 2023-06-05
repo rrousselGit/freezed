@@ -165,3 +165,18 @@ class NestedMapItem with _$NestedMapItem {
   factory NestedMapItem.inner(Map<String, LeafNestedMapItem> children) =
       InnerNestedMapItem;
 }
+
+@freezed
+class ToBeGenerated with _$ToBeGenerated {
+  const factory ToBeGenerated.generated() = CodeGenerated;
+}
+
+@freezed
+class UsesGenerated with _$UsesGenerated {
+  factory UsesGenerated(
+    CodeGenerated value,
+    List<CodeGenerated> list,
+    List<List<CodeGenerated>> nestedList,
+    Map<int, CodeGenerated> map,
+  ) = _UsesGenerated;
+}

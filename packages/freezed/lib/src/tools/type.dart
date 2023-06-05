@@ -73,9 +73,41 @@ String resolveFullTypeStringFrom(
     }
   }
 
+  // The parameter is a Interface with a Type Argument that is not yet generated
+  // In this case analyzer would set its type to InvalidType
+  //
+  // For example for:
+  // List<ToBeGenerated> values,
+  //
+  // it would generate:  List<InvalidType>
+  // instead of          List<dynamic>
+  //
+  // This a regression in analyzer 5.13.0
+  if (type is InterfaceType &&
+      type.typeArguments.any((e) => e is InvalidType)) {
+    final dynamicType = type.element.library.typeProvider.dynamicType;
+    var modified = type;
+    modified.typeArguments
+      ..replaceWhere(
+        (t) => t is InvalidType,
+        dynamicType,
+      );
+    displayType = modified.getDisplayString(withNullability: withNullability);
+  }
+
   if (owner != null) {
     return '${owner.name}.$displayType';
   }
 
   return displayType;
+}
+
+extension ReplaceWhereExtension<T> on List<T> {
+  void replaceWhere(bool Function(T element) test, T replacement) {
+    for (var index = 0; index < length; index++) {
+      if (test(this[index])) {
+        this[index] = replacement;
+      }
+    }
+  }
 }
