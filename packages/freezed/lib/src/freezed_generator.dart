@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
@@ -5,11 +8,14 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
+import 'package:freezed/src/freezed_ast/parse.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
+import 'package:freezed/src/templates/enclosing_type_mixin.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
+import 'package:freezed/src/templates/union_case.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:freezed/src/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart'
@@ -51,11 +57,259 @@ class CommonProperties {
   final List<Property> cloneableProperties = [];
 }
 
+class FreezedField {
+  FreezedField(
+    this._parameter, {
+    required this.typeSource,
+  });
+
+  static FreezedField parse(
+    FormalParameter parameter,
+  ) {
+    switch (parameter) {
+      case DefaultFormalParameter():
+        return parse(parameter.parameter);
+      case NormalFormalParameter(isExplicitlyTyped: false):
+        return FreezedField(
+          parameter,
+          typeSource: 'dynamic',
+        );
+
+      // We ignore FieldFormalParameter(), as we cannot use this.field
+      // in a redirecting factory constructor.
+
+      // Handle "void foo()", even if generally discouraged.
+      case FunctionTypedFormalParameter():
+        return FreezedField(
+          parameter,
+          typeSource: '${parameter.returnType ?? 'dynamic'} '
+              'Function${parameter.typeParameters ?? ''}${parameter.parameters}',
+        );
+
+      case SimpleFormalParameter(:final type?):
+        return FreezedField(
+          parameter,
+          typeSource: type.toSource(),
+        );
+
+      default:
+        // TODO can/shuld we not throw?
+        throw ArgumentError.value(
+          parameter.runtimeType,
+          parameter.toSource(),
+        );
+    }
+  }
+
+  bool get isPositional => _parameter.isPositional;
+  bool get isNamed => _parameter.isNamed;
+  bool get isOptional => _parameter.isOptional;
+  bool get isRequired => _parameter.isRequired;
+
+  String get name => _parameter.name!.lexeme;
+
+  final NormalFormalParameter _parameter;
+  final String typeSource;
+}
+
+class FreezedConstructorDefinition {
+  FreezedConstructorDefinition({
+    required this.declaration,
+    required this.factoryKeyword,
+    required this.redirectedConstructor,
+    required this.fields,
+  });
+
+  static FreezedConstructorDefinition? parse(
+    ConstructorDeclaration constructor,
+  ) {
+    final factoryKeyword = constructor.factoryKeyword;
+    final redirectedConstructor = constructor.redirectedConstructor;
+
+    if (factoryKeyword == null || redirectedConstructor == null) return null;
+
+    return FreezedConstructorDefinition(
+      declaration: constructor,
+      factoryKeyword: factoryKeyword,
+      redirectedConstructor: redirectedConstructor,
+      fields: constructor.parameters.parameters
+          .map(FreezedField.parse)
+          .whereNotNull()
+          .toList(),
+    );
+  }
+
+  String get name => redirectedConstructor.type.name2.lexeme;
+
+  final ConstructorDeclaration declaration;
+  final Token factoryKeyword;
+  final ConstructorName redirectedConstructor;
+  final List<FreezedField> fields;
+}
+
+class _AnnotatedFreezedClass {
+  _AnnotatedFreezedClass({
+    required this.annotation,
+    required this.declaration,
+    required this.constructors,
+  });
+
+  static _AnnotatedFreezedClass? parse(ClassDeclaration declaration) {
+    final element = declaration.declaredElement;
+    if (element == null) return null;
+
+    final annotation =
+        const TypeChecker.fromRuntime(Freezed).firstAnnotationOfExact(element);
+    if (annotation == null) return null;
+
+    final constructors = declaration.members
+        .whereType<ConstructorDeclaration>()
+        .map(FreezedConstructorDefinition.parse)
+        .whereNotNull()
+        .toList();
+
+    return _AnnotatedFreezedClass(
+      annotation: annotation,
+      declaration: declaration,
+      constructors: constructors,
+    );
+  }
+
+  final DartObject annotation;
+  final ClassDeclaration declaration;
+  final List<FreezedConstructorDefinition> constructors;
+}
+
+class FreezedClassDefinition {
+  FreezedClassDefinition({
+    required this.canBeExtended,
+    required this.canBeConst,
+    required this.annotation,
+    required this.declaration,
+    required this.constructors,
+  });
+
+  static FreezedClassDefinition? parse(ClassDeclaration declaration) {
+    final element = declaration.declaredElement;
+    if (element == null) return null;
+
+    final annotation =
+        const TypeChecker.fromRuntime(Freezed).firstAnnotationOfExact(element);
+    if (annotation == null) return null;
+
+    final defaultCtor = declaration.members
+        .whereType<ConstructorDeclaration>()
+        .firstWhereOrNull(
+          (e) => e.factoryKeyword == null && e.name?.lexeme == '_',
+        );
+
+    final constructors = declaration.members
+        .whereType<ConstructorDeclaration>()
+        .map(FreezedConstructorDefinition.parse)
+        .whereNotNull()
+        .toList();
+
+    return FreezedClassDefinition(
+      canBeExtended: defaultCtor != null,
+      canBeConst: defaultCtor != null && defaultCtor.constKeyword != null,
+      annotation: annotation,
+      declaration: declaration,
+      constructors: constructors,
+    );
+  }
+
+  final bool canBeExtended;
+  final bool canBeConst;
+  final DartObject annotation;
+  final ClassDeclaration declaration;
+  final List<FreezedConstructorDefinition> constructors;
+
+  late final List<FreezedField> commonFields = _computeCommonFields();
+
+  List<FreezedField> _computeCommonFields() {
+    final commonFields = <FreezedField>[];
+
+    for (final constructor in constructors) {
+      for (final field in constructor.fields) {
+        final existingField = commonFields.firstWhereOrNull(
+          (e) => e._parameter.name == field._parameter.name,
+        );
+
+        // TODO handle exposing shared interfaces as type.
+        // TODO if invalid type is present in property or shared type, reject the common field
+        // TODO handle `Freezed1|Freezed2 a` as `Freezed a`.
+        // TODO Same with List<Freezed1|Freezed2>
+        // TODO Same with alias.Freezed1|alias2.Freezed2
+        // TODO Be careful with generics. Check index and extends clause.
+        if (existingField != null &&
+            field.typeSource == existingField.typeSource) {
+          commonFields.add(field);
+        }
+      }
+    }
+
+    return commonFields;
+  }
+}
+
+typedef ConstructorPair = ({
+  FreezedConstructorDefinition constructor,
+  FreezedClassDefinition clazz,
+});
+
 @immutable
-class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
+class FreezedGenerator extends ParserGenerator<Freezed> {
   FreezedGenerator(this._buildYamlConfigs);
 
   final Freezed _buildYamlConfigs;
+
+  @override
+  FutureOr<String> generateForUnit(List<CompilationUnit> compilationUnits) {
+    final buffer = StringBuffer();
+
+    for (final template in parseAst(compilationUnits)) {
+      template.run(buffer);
+    }
+
+    // final classDefinitions = compilationUnits
+    //     .expand((e) => e.declarations)
+    //     .whereType<ClassDeclaration>()
+    //     .toList();
+    // // TODO assert that the freezed mixin is used on the class
+    // // TODO throw if "const" is used on mutable classes
+
+    // /// Find all the Freezed-owned classes defined in the library.
+    // final generatedClassesRegistry = <String, List<ConstructorPair>>{};
+
+    // for (final clazz in classDefinitions) {
+    //   // Compute all the generated Freezed types for the current library.
+    //   // This enables knowing if two Freezed definitions within the same library
+    //   // use the same generated type. In which case the generated type
+    //   // will have to implement both Freezed classes.
+    //   for (final constructor in clazz.constructors) {
+    //     // TODO assert that the imports don't contain any class with the redirected name
+    //     final list = generatedClassesRegistry[constructor.name] ??= [];
+    //     // TODO assert that if the generated type is associated with different Freezed classes,
+    //     // then all associated classes are marked as "mixin".
+    //     // If (length == 1) assert(first.mixin == true);
+    //     // assert(clazz.mixin == true);
+
+    //     // TODO assert that all the fields are matching.
+
+    //     list.add((constructor: constructor, clazz: clazz));
+    //   }
+    // }
+
+    // for (final clazz in classDefinitions) {
+    //   EnclosingClassMixin(clazz).generate(buffer);
+    // }
+
+    // for (final pairs in generatedClassesRegistry.values) {
+    //   UnionCaseTemplate(pairs).generate(buffer);
+    // }
+
+    return buffer.toString();
+  }
 
   @override
   Future<Data> parseElement(

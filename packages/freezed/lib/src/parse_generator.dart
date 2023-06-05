@@ -1,62 +1,44 @@
 import 'dart:async';
 
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
-abstract class ParserGenerator<GlobalData, Data, Annotation>
-    extends GeneratorForAnnotation<Annotation> {
+/// Forked from build_resolvers
+String assetPath(AssetId assetId) {
+  return p.posix.join('/${assetId.package}', assetId.path);
+}
+
+abstract class ParserGenerator<AnnotationT>
+    extends GeneratorForAnnotation<AnnotationT> {
   @override
-  FutureOr<String> generate(
-    LibraryReader oldLibrary,
+  Future<String> generate(
+    LibraryReader library,
     BuildStep buildStep,
   ) async {
-    final assetId =
-        await buildStep.resolver.assetIdForElement(oldLibrary.element);
-    if (await buildStep.resolver.isLibrary(assetId).then((value) => !value)) {
-      return '';
+    final firstAnnotatedElementFromUniqueSource = <Uri, Element>{};
+
+    for (final annotated in library.annotatedWithExact(typeChecker)) {
+      firstAnnotatedElementFromUniqueSource.putIfAbsent(
+        annotated.element.source!.uri,
+        () => annotated.element,
+      );
     }
 
-    final library = await buildStep.resolver.libraryFor(assetId);
+    final ast = await Future.wait(
+      firstAnnotatedElementFromUniqueSource.values.map(
+        (e) => buildStep.resolver
+            .astNodeFor(e, resolve: true)
+            .then((value) => value!.root as CompilationUnit),
+      ),
+    );
 
-    final values = StringBuffer();
-
-    final globalData = parseGlobalData(library);
-
-    var hasGeneratedGlobalCode = false;
-
-    for (var element
-        in library.topLevelElements.where(typeChecker.hasAnnotationOf)) {
-      if (!hasGeneratedGlobalCode) {
-        hasGeneratedGlobalCode = true;
-        for (final value
-            in generateForAll(globalData).map((e) => e.toString())) {
-          values.writeln(value);
-        }
-      }
-
-      final data = await parseElement(buildStep, globalData, element);
-      if (data == null) continue;
-      for (final value
-          in generateForData(globalData, data).map((e) => e.toString())) {
-        values.writeln(value);
-      }
-    }
-
-    return values.toString();
+    return generateForUnit(ast);
   }
 
-  Iterable<Object> generateForAll(GlobalData globalData) sync* {}
-
-  GlobalData parseGlobalData(LibraryElement library);
-
-  FutureOr<Data> parseElement(
-    BuildStep buildStep,
-    GlobalData globalData,
-    Element element,
-  );
-
-  Iterable<Object> generateForData(GlobalData globalData, Data data);
+  FutureOr<String> generateForUnit(List<CompilationUnit> compilationUnits);
 
   @override
   Stream<String> generateForAnnotatedElement(
@@ -64,14 +46,13 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     ConstantReader annotation,
     BuildStep buildStep,
   ) async* {
-    // implemented for source_gen_test – otherwise unused
-    final globalData = parseGlobalData(element.library!);
-    final data = parseElement(buildStep, globalData, element);
+    final ast = await buildStep.resolver
+        .astNodeFor(element, resolve: true)
+        .then((value) => value?.root);
 
-    if (data == null) return;
+    ast as CompilationUnit?;
+    if (ast == null) return;
 
-    for (final value in generateForData(globalData, await data)) {
-      yield value.toString();
-    }
+    yield await generateForUnit([ast]);
   }
 }
