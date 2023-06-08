@@ -1222,7 +1222,7 @@ This part contains community-made tools which integrate with Freezed.
 
 Example:
 
-https://github.com/ttpho/freezed/assets/3994863/6d15845a-52a8-4b7f-85be-182561862dae
+https://github.com/ttpho/ttpho/assets/3994863/5d529258-c02c-4066-925e-ca2ffc68a804
 
 ## Sponsors
 
