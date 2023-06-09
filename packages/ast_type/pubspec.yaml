@@ -1,0 +1,18 @@
+name: ast_type
+description: >
+  A library to manipulate Dart types in a simple manner, designed for code-generators.
+version: 1.0.0-dev
+repository: https://github.com/rrousselGit/freezed
+issue_tracker: https://github.com/rrousselGit/freezed/issues
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  analyzer: ^5.12.0
+  meta: ^1.7.0
+
+dev_dependencies:
+  test: ^1.21.0
+  matcher: ^0.12.14
+  path: ^1.8.3
