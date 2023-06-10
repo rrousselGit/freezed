@@ -19,6 +19,7 @@ jobs:
           - packages/freezed
           - packages/freezed_annotation
           - packages/freezed_lint
+          - packages/freezed/format_integration_test
         channel:
           - master
           - stable
@@ -53,8 +54,14 @@ jobs:
 
       - name: Check format
         # Check dart format only on master
-        if: matrix.channel == 'master'
+        if: matrix.channel == 'master' && matrix.package != 'packages/freezed/format_integration_test'
         run: dart format --set-exit-if-changed .
+        working-directory: ${{ matrix.package }}
+
+      - name: Check format
+        # Check dart format only on master
+        if: matrix.channel == 'master' && matrix.package == 'packages/freezed/format_integration_test'
+        run: dart format --set-exit-if-changed --line-length=120 .
         working-directory: ${{ matrix.package }}
 
       - name: Generate

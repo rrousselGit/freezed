@@ -1,0 +1,19 @@
+name: format_integration_test
+description: Format integration project
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  freezed_annotation: ^2.2.0
+
+dev_dependencies:
+  build_runner: ^2.4.5
+  freezed: ^2.3.5
+  test: ^1.24.3
+
+dependency_overrides:
+  freezed:
+    path: ../
