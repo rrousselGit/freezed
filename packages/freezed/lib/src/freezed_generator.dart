@@ -8,7 +8,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
-import 'package:freezed/src/freezed_ast/parse.dart';
+import 'package:freezed/src/freezed_ast/parse_ast.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/enclosing_type_mixin.dart';
@@ -267,7 +267,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   FutureOr<String> generateForUnit(List<CompilationUnit> compilationUnits) {
     final buffer = StringBuffer();
 
-    for (final template in parseAst(compilationUnits)) {
+    for (final template in parseFreezedAst(compilationUnits)) {
       template.run(buffer);
     }
 

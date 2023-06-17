@@ -168,10 +168,10 @@ final class UnresolvedAstType implements AstType {
   bool operator ==(Object other) {
     if (other is! UnresolvedAstType) return false;
 
-    // TODO handle comments in the source (such as inside generics)
-    // TODO handle classes with the same name but from different places
-    // TODO handle generics
-    // TODO handle same source in different librairies
+    // TODO should they even ever override ==? Because even if the source is the
+    // same, in the same library, they could be referencing different types.
+    // Like Person.name vs City.name. Both could be in the same library,
+    // but #name points to two different variables dependent on the context.
     return encode() == other.encode();
   }
 
