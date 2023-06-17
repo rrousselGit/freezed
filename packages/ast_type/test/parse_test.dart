@@ -7,15 +7,55 @@ import 'package:ast_type/src/ast_type.dart';
 import 'package:test/test.dart';
 import 'package:path/path.dart' as p;
 
-sealed class Sealed {
-  int get offset;
+class MyCustomType extends CustomResolvedAstType {
+  MyCustomType(this.name, this.typeArguments);
+
+  final String name;
+  final List<AstType> typeArguments;
+
+  @override
+  String encode() => name;
 }
 
-abstract class A implements Sealed {}
-
-abstract class B implements Sealed {}
-
 void main() {
+  test('throws if passing non-resolved AST', () {
+    final result = parseString(content: 'int simple = 0;');
+
+    final variable =
+        result.unit.declarations.single as TopLevelVariableDeclaration;
+    final type = variable.variables.type!;
+
+    expect(
+      () => AstType.fromTypeAnnotation(type),
+      throwsArgumentError,
+    );
+  });
+
+  test('Unables manually resolving UnresolvedTypes with custom type', () async {
+    final result = await resolveString('''
+List<Unknown<MyUnknown<MyUnknown2<Unknown2>>>> value;
+''');
+
+    final list = AstType.fromTypeAnnotation(
+      result.unit.declarations.typeAnnotations.single.type,
+      tryParseUnresolvedType: (type) {
+        if (!type.encode().startsWith('My')) return null;
+        return MyCustomType(type.encode(), type.typeArguments);
+      },
+    ) as NamedAstType;
+
+    final unknwon = list.typeArguments.single as UnresolvedAstType;
+    final myUnknown = unknwon.typeArguments.single as MyCustomType;
+    final myUnknown2 = myUnknown.typeArguments.single as MyCustomType;
+    final unknown2 = myUnknown2.typeArguments.single as UnresolvedAstType;
+
+    expect(list.encode(), 'List<Unknown<MyUnknown<MyUnknown2<Unknown2>>>>');
+    expect(unknwon.encode(), 'Unknown<MyUnknown<MyUnknown2<Unknown2>>>');
+    expect(myUnknown.encode(), 'MyUnknown<MyUnknown2<Unknown2>>');
+    expect(myUnknown2.encode(), 'MyUnknown2<Unknown2>');
+    expect(unknown2.encode(), 'Unknown2');
+  });
+
   test('parse', () async {
     final result = await resolveString('''
 int simple;
@@ -28,46 +68,39 @@ List<List<int>> nestedList;
 List<List<Generated>> nestedUnresolvedList;
 ''');
 
-    for (final Object variable in result.unit.declarations) {
-      variable as TopLevelVariableDeclaration;
-      final type = variable.variables.type!;
-      final name = variable.variables.variables.single.name.lexeme;
-      final resolved = AstType.fromTypeAnnotation(
-        type,
-        tryParseUnresolvedType: (type) => null,
-      );
-
+    for (final (:type, :name) in result.unit.declarations.typeAnnotations) {
+      final astType = AstType.fromTypeAnnotation(type);
       switch (name) {
         case 'simple':
-          resolved as NamedAstType;
-          expect(resolved.encode(), 'int');
+          astType as NamedAstType;
+          expect(astType.encode(), 'int');
 
         case 'simpleUnresolved':
-          resolved as UnresolvedAstType;
-          expect(resolved.encode(), 'Generated');
+          astType as UnresolvedAstType;
+          expect(astType.encode(), 'Generated');
 
         case 'list':
-          resolved as NamedAstType;
-          expect(resolved.encode(), 'List<int>');
-          expect(resolved.typeArguments.single, isA<NamedAstType>());
+          astType as NamedAstType;
+          expect(astType.encode(), 'List<int>');
+          expect(astType.typeArguments.single, isA<NamedAstType>());
 
         case 'unresolvedList':
-          resolved as NamedAstType;
-          expect(resolved.encode(), 'List<Generated>');
-          expect(resolved.typeArguments.single, isA<UnresolvedAstType>());
+          astType as NamedAstType;
+          expect(astType.encode(), 'List<Generated>');
+          expect(astType.typeArguments.single, isA<UnresolvedAstType>());
 
         case 'nestedList':
-          resolved as NamedAstType;
-          expect(resolved.encode(), 'List<List<int>>');
+          astType as NamedAstType;
+          expect(astType.encode(), 'List<List<int>>');
 
-          final child = resolved.typeArguments.single as NamedAstType;
+          final child = astType.typeArguments.single as NamedAstType;
           expect(child.typeArguments.single, isA<NamedAstType>());
 
         case 'nestedUnresolvedList':
-          resolved as NamedAstType;
-          expect(resolved.encode(), 'List<List<Generated>>');
+          astType as NamedAstType;
+          expect(astType.encode(), 'List<List<Generated>>');
 
-          final child = resolved.typeArguments.single as NamedAstType;
+          final child = astType.typeArguments.single as NamedAstType;
           expect(child.typeArguments.single, isA<UnresolvedAstType>());
 
         default:
@@ -88,4 +121,14 @@ Future<ResolvedUnitResult> resolveString(String content) async {
     path: p.normalize(file.absolute.path),
   );
   return result as ResolvedUnitResult;
+}
+
+extension on NodeList<CompilationUnitMember> {
+  Iterable<({TypeAnnotation type, String name})> get typeAnnotations {
+    return whereType<TopLevelVariableDeclaration>().map((variable) {
+      final type = variable.variables.type!;
+      final name = variable.variables.variables.single.name.lexeme;
+      return (type: type, name: name);
+    });
+  }
 }

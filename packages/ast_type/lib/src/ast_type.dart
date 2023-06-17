@@ -11,8 +11,7 @@ typedef TryParseUnresolvedType = CustomResolvedAstType? Function(
 sealed class AstType {
   factory AstType.fromTypeAnnotation(
     TypeAnnotation type, {
-    // TODO make optional
-    required TryParseUnresolvedType? tryParseUnresolvedType,
+    TryParseUnresolvedType? tryParseUnresolvedType,
   }) {
     switch (type) {
       case NamedType():
@@ -49,7 +48,7 @@ sealed class AstType {
       case null:
         throw ArgumentError.value(type, 'type', 'The AST must be "resolved".');
       case InvalidType():
-        final unresolvedType = UnresolvedAstType(type);
+        final unresolvedType = UnresolvedAstType(type, typeArgs);
         return tryParseUnresolvedType?.call(unresolvedType) ?? unresolvedType;
       case _:
         return NamedAstType(type, typeArgs);
@@ -157,9 +156,10 @@ class NamedAstType extends ResolvedAstType {
 }
 
 final class UnresolvedAstType implements AstType {
-  UnresolvedAstType(this._type);
+  UnresolvedAstType(this._type, this.typeArguments);
 
   final TypeAnnotation _type;
+  final List<AstType> typeArguments;
 
   @override
   String encode() => _type.toSource();
