@@ -3,6 +3,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/freezed_ast/freezed_ast.dart';
 import 'package:freezed/src/freezed_ast/generation_backlog.dart';
+import 'package:freezed/src/freezed_ast/string_utils.dart';
 import 'package:freezed/src/freezed_generator.dart' show FreezedField;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';

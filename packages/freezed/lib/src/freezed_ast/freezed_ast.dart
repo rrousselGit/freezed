@@ -1,24 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:freezed/src/ast_type.dart';
 
-extension StringUtils on String {
-  bool get isPublic => !startsWith('_');
-
-  String get public {
-    if (startsWith('_')) return substring(1);
-    return this;
-  }
-
-  String get generated => '_\$$public';
-
-  String get titled {
-    return replaceFirstMapped(
-      RegExp('[a-zA-Z]'),
-      (match) => match.group(0)!.toLowerCase(),
-    );
-  }
-}
-
 class FreezedAnnotation {}
 
 typedef FreezedClassID = ({String className, String? constructorName});
