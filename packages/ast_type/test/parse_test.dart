@@ -15,6 +15,12 @@ class MyCustomType extends CustomResolvedAstType {
 
   @override
   String encode() => name;
+
+  @override
+  bool operator ==(Object other) => super == other;
+
+  @override
+  int get hashCode => super.hashCode;
 }
 
 void main() {
