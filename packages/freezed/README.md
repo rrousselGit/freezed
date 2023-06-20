@@ -886,7 +886,7 @@ See also the [decorators](#decorators-and-comments) section
 
 **Edit**: As of Dart 3, Dart now has built-in pattern-matching using sealed classes.  
 As such, you no-longer need to rely on Freezed's generated methods for pattern
-matching. Instead of using `when`/`map`, the official Dart syntax.
+matching. Instead of using `when`/`map`, use the official Dart syntax.
 
 The following docs are left unedited and kept for the Dart users who have yet to
 migrate to Dart 3.  
