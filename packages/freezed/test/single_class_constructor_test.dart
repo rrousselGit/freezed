@@ -7,7 +7,6 @@ import 'package:test/test.dart';
 import 'common.dart';
 // import 'integration/alias.dart';
 import 'integration/single_class_constructor.dart';
-import 'matchers.dart';
 // import 'nullable_test.dart';
 
 class MyObject {

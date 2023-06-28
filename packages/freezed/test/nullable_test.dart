@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 
 import 'common.dart';
-import 'integration/nullable.dart';
 
 void main() {
   test('RequiredPositional', () async {

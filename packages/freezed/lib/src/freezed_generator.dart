@@ -29,14 +29,13 @@ import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'default.dart';
 import 'models.dart';
 import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
 import 'tools/recursive_import_locator.dart';
-
-import 'default.dart';
 
 extension on DartObject {
   T decodeField<T>(

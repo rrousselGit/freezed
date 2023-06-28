@@ -113,13 +113,13 @@ class GeneratedFreezedClass implements GeneratorBacklog {
 
     if (typeParameters != null) buffer.write(typeParameters);
 
-    buffer.writeClassPrototype(
-      extend: extendClause,
-      implements: implementList,
-      withs: mixins,
-    );
-
-    buffer.writeln(' {');
+    buffer
+      ..writeClassPrototype(
+        extend: extendClause,
+        implements: implementList,
+        withs: mixins,
+      )
+      ..writeln(' {');
 
     _writeConstructor(buffer);
   }

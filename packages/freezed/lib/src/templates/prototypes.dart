@@ -4,7 +4,6 @@ import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-import '../models.dart';
 import 'parameter_template.dart';
 
 typedef ParameterDefinition = (String, {String? defaultValue});
@@ -103,14 +102,13 @@ String buildParamInvocationQuery(
   Map<ParameterElement, String> parameters, {
   bool asThisParameter = false,
 }) {
-  final buffer = StringBuffer();
-
-  buffer.writeAll(
-    parameters.entries.map((e) {
-      if (e.key.isNamed) return '${e.key.name}: ${e.value}';
-      return e.value;
-    }).expand((e) => [e, ',']),
-  );
+  final buffer = StringBuffer()
+    ..writeAll(
+      parameters.entries.map((e) {
+        if (e.key.isNamed) return '${e.key.name}: ${e.value}';
+        return e.value;
+      }).expand((e) => [e, ',']),
+    );
 
   return buffer.toString();
 }
