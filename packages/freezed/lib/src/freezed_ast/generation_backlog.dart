@@ -78,6 +78,7 @@ class GeneratedFreezedClass implements GeneratorBacklog {
     _writeProperties(buffer);
     _writeEqual(buffer);
     _writeHashCode(buffer);
+    _writeToString(buffer);
 
     buffer.writeln('}');
   }
@@ -209,6 +210,27 @@ int get hashCode => Object.hash(${hashedProperties.join(',')});
 ''',
       },
     );
+  }
+
+  void _writeToString(StringBuffer buffer) {
+    // TODO handle disabling toString
+    // TODO support diagnostics
+
+    // final parameters = globalData.hasDiagnostics
+    //     ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
+    //     : '';
+
+    final properties = [
+      for (final field in fields)
+        '${field.name.replaceAll(r'$', r'\$')}: ${wrapClassField(field.name)}',
+    ];
+
+    buffer.write('''
+@override
+String toString() {
+  return '$name(${properties.join(', ')})';
+}
+''');
   }
 
   void _writeDocs(StringBuffer buffer) {

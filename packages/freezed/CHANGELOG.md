@@ -1,3 +1,7 @@
+## Unreleased major
+
+- **breaking**: `toString` now reflects the generated class name instead of the annotated class name.
+
 ## 2.3.4 - 2023-05-13
 
 - Fix allow dollar ($) in recursive class names (thanks to @andreasgangso)
