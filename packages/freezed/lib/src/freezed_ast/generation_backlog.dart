@@ -107,7 +107,6 @@ class GeneratedFreezedClass implements GeneratorBacklog {
       ..writeArguments(
         optionalNamed: fields
             .where((e) => e.isOptional && e.isNamed)
-            // TODO default value
             .map((e) => ('this.${e.name}', defaultValue: e.defaultValueSource)),
         requiredNamed: fields
             .where((e) => e.isRequired && e.isNamed)

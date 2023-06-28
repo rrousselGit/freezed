@@ -40,6 +40,8 @@ import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
 import 'tools/recursive_import_locator.dart';
 
+import 'default.dart';
+
 extension on DartObject {
   T decodeField<T>(
     String fieldName, {
@@ -70,9 +72,10 @@ class FreezedField {
   static FreezedField parse(
     FormalParameter parameter,
   ) {
-    // TODO: throw if multiple default are used
-    // TODO throw if @default annotation is used in a non-explicit way (ie "const value = Default('str'); .. @value")
     try {
+      final defaultValueSource =
+          parameter.declaredElement?.computeDefaultValue();
+
       // final defaultValueAnnotation = parameter //
       //     .metadata
       //     .firstWhereOrNull((e) => e.toSource().startsWith('@Default('));
@@ -85,14 +88,6 @@ class FreezedField {
       //     ? null
       //     // TODO handle errors
       //     : reviveInstance(defaultValueObject).toString();
-
-      final defaultValueSource = parameter.metadata
-          .map((e) => e.toSource())
-          .where((e) => e.startsWith('@Default('))
-          // TODO: throw if multiple default are used
-          // TODO throw if @default annotation is used in a non-explicit way (ie "const value = Default('str'); .. @value")
-          .map((e) => e.substring('@Default('.length, e.length - 1))
-          .firstOrNull;
 
       switch (parameter) {
         case DefaultFormalParameter():
