@@ -224,6 +224,7 @@ class FreezedClassTreeNode {
         yield (
           name: redirectedConstructorName(node),
           fields: node.fields,
+          redirectedName: node.id.className,
         );
       }
     }

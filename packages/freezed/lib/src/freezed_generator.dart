@@ -279,7 +279,11 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
   @override
   FutureOr<String> generateForUnit(List<CompilationUnit> compilationUnits) {
-    final buffer = StringBuffer();
+    final buffer = StringBuffer()
+      // TODO disable the generation of this variable if no "when" is generated
+      ..writeln(
+        '\n\nfinal $privConstUsedErrorVarName = UnsupportedError(\'$privConstUsedErrorString\');\n',
+      );
 
     final ast = parseFreezedAst(compilationUnits);
     for (final node in resolveFreezedElement(ast).nodes) {

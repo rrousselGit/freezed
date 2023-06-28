@@ -183,7 +183,7 @@ void maybeWhenPrototype(
 void mapPrototype(
   StringBuffer buffer,
   List<UnionCaseMeta> allConstructors,
-  GenericsParameterTemplate genericParameters,
+  List<String> genericParameters,
 ) {
   return _mapPrototype(
     buffer,
@@ -198,7 +198,7 @@ void mapPrototype(
 void mapOrNullPrototype(
   StringBuffer buffer,
   List<UnionCaseMeta> allConstructors,
-  GenericsParameterTemplate genericParameters,
+  List<String> genericParameters,
 ) {
   return _mapPrototype(
     buffer,
@@ -213,7 +213,7 @@ void mapOrNullPrototype(
 void maybeMapPrototype(
   StringBuffer buffer,
   List<UnionCaseMeta> allConstructors,
-  GenericsParameterTemplate genericParameters,
+  List<String> genericParameters,
 ) {
   _mapPrototype(
     buffer,
@@ -228,7 +228,7 @@ void maybeMapPrototype(
 void _mapPrototype(
   StringBuffer buffer,
   List<UnionCaseMeta> allConstructors,
-  GenericsParameterTemplate genericParameters, {
+  List<String> generics, {
   required bool areCallbacksRequired,
   required bool isReturnTypeNullable,
   required String name,
@@ -240,25 +240,14 @@ void _mapPrototype(
     isReturnTypeNullable: isReturnTypeNullable,
     name: name,
     writeParameter: (buffer, constructor) {
-      // return ParametersTemplate([
-      //   Parameter(
-      //     name: 'value',
-      //     type: '${constructor.redirectedName}$genericParameters',
-      //     isRequired: false,
-      //     isNullable: false,
-      //     isFinal: false,
-      //     isDartList: false,
-      //     isDartSet: false,
-      //     isDartMap: false,
-      //     decorators: const [],
-      //     defaultValueSource: '',
-      //     doc: '',
-      //     // TODO: do we want to support freezed classes that implements MapView/ListView?
-      //     isPossiblyDartCollection: false,
-      //     showDefaultValue: false,
-      //     parameterElement: null,
-      //   ),
-      // ]);
+      buffer
+        ..write('TResult Function(')
+        ..write(constructor.redirectedName)
+        ..writeGenericUsage(generics)
+        ..write(' ')
+        ..write(constructorNameToCallbackName(constructor.name))
+        ..write(areCallbacksRequired ? ') ' : ')? ')
+        ..write(constructorNameToCallbackName(constructor.name));
     },
   );
 }
@@ -274,6 +263,7 @@ typedef UnionFieldMeta = ({
 
 typedef UnionCaseMeta = ({
   String? name,
+  String redirectedName,
   List<FreezedField> fields,
 });
 
