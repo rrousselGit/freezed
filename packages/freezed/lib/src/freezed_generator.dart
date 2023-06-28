@@ -285,7 +285,10 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
         '\n\nfinal $privConstUsedErrorVarName = UnsupportedError(\'$privConstUsedErrorString\');\n',
       );
 
-    final ast = parseFreezedAst(compilationUnits);
+    final ast = parseFreezedAst(
+      compilationUnits,
+      buildYamlConfigs: _buildYamlConfigs,
+    );
     for (final node in resolveFreezedElement(ast).nodes) {
       final tasks = node.asGeneratorBacklog();
       for (final task in tasks) task.run(buffer);

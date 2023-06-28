@@ -21,8 +21,9 @@ _AnnotatedClass? _findAnnotatedClasses(
 }
 
 List<FreezedClassDefinition> parseFreezedAst(
-  Iterable<CompilationUnit> units,
-) {
+  Iterable<CompilationUnit> units, {
+  required Freezed buildYamlConfigs,
+}) {
   final annotatedClasses = units
       .expand((e) => e.declarations)
       .whereType<ClassDeclaration>()
@@ -32,7 +33,10 @@ List<FreezedClassDefinition> parseFreezedAst(
 
   return [
     for (final annotatedClass in annotatedClasses)
-      _parseAnnotatedClass(annotatedClass),
+      _parseAnnotatedClass(
+        annotatedClass,
+        buildYamlConfigs: buildYamlConfigs,
+      ),
   ];
 
   // TODO assert that the freezed mixin is used on the class
@@ -41,8 +45,9 @@ List<FreezedClassDefinition> parseFreezedAst(
 }
 
 FreezedClassDefinition _parseAnnotatedClass(
-  _AnnotatedClass annotatedClass,
-) {
+  _AnnotatedClass annotatedClass, {
+  required Freezed buildYamlConfigs,
+}) {
   final children = annotatedClass.node.members
       .whereType<ConstructorDeclaration>()
       .map(
@@ -61,12 +66,134 @@ FreezedClassDefinition _parseAnnotatedClass(
 
   return FreezedClassDefinition(
     annotatedClass.node,
-    annotation: _parseAnnotation(annotatedClass.annotation),
+    annotation: _parseAnnotation(
+      annotatedClass.annotation,
+      buildYamlConfigs: buildYamlConfigs,
+    ),
     children: children,
   );
 }
 
-FreezedAnnotation _parseAnnotation(DartObject annotation) {
-  // TODO
-  return FreezedAnnotation();
+extension on DartObject {
+  T decodeField<T>(
+    String fieldName, {
+    required T Function(DartObject obj) decode,
+    required T Function() orElse,
+  }) {
+    final field = getField(fieldName);
+    if (field == null || field.isNull) return orElse();
+    return decode(field);
+  }
+}
+
+Freezed _parseAnnotation(
+  DartObject annotation, {
+  required Freezed buildYamlConfigs,
+}) {
+  return Freezed(
+    copyWith: annotation.decodeField(
+      'copyWith',
+      decode: (obj) => obj.toBoolValue(),
+      orElse: () => buildYamlConfigs.copyWith,
+    ),
+    makeCollectionsUnmodifiable: annotation.decodeField(
+      'makeCollectionsUnmodifiable',
+      decode: (obj) => obj.toBoolValue(),
+      orElse: () => buildYamlConfigs.makeCollectionsUnmodifiable,
+    ),
+    equal: annotation.decodeField(
+      'equal',
+      decode: (obj) => obj.toBoolValue(),
+      orElse: () => buildYamlConfigs.equal,
+    ),
+    fallbackUnion: annotation.decodeField(
+      'fallbackUnion',
+      decode: (obj) => obj.toStringValue(),
+      orElse: () => buildYamlConfigs.fallbackUnion,
+    ),
+    fromJson: annotation.decodeField(
+      'fromJson',
+      decode: (obj) => obj.toBoolValue(),
+      orElse: () => buildYamlConfigs.fromJson,
+    ),
+    addImplicitFinal: annotation.getField('addImplicitFinal')!.toBoolValue()!,
+    map: annotation.decodeField(
+      'map',
+      decode: (obj) {
+        return FreezedMapOptions(
+          map: obj.decodeField(
+            'map',
+            decode: (obj) => obj.toBoolValue(),
+            orElse: () => buildYamlConfigs.map?.map,
+          ),
+          maybeMap: obj.decodeField(
+            'maybeMap',
+            decode: (obj) => obj.toBoolValue(),
+            orElse: () => buildYamlConfigs.map?.maybeMap,
+          ),
+          mapOrNull: obj.decodeField(
+            'mapOrNull',
+            decode: (obj) => obj.toBoolValue(),
+            orElse: () => buildYamlConfigs.map?.mapOrNull,
+          ),
+        );
+      },
+      orElse: () => buildYamlConfigs.map,
+    ),
+    toJson: annotation.decodeField(
+      'toJson',
+      decode: (obj) => obj.toBoolValue(),
+      orElse: () => buildYamlConfigs.toJson,
+    ),
+    genericArgumentFactories: annotation.decodeField(
+      'genericArgumentFactories',
+      decode: (obj) => obj.toBoolValue()!,
+      orElse: () => buildYamlConfigs.genericArgumentFactories,
+    ),
+    toStringOverride: annotation.decodeField(
+      'toStringOverride',
+      decode: (obj) => obj.toBoolValue(),
+      orElse: () => buildYamlConfigs.toStringOverride,
+    ),
+    unionKey: annotation
+        .decodeField(
+          'unionKey',
+          decode: (obj) => obj.toStringValue(),
+          orElse: () => buildYamlConfigs.unionKey,
+        )
+        ?.replaceAll("'", r"\'")
+        .replaceAll(r'$', r'\$'),
+    unionValueCase: annotation.decodeField(
+      'unionValueCase',
+      decode: (obj) {
+        final enumIndex = obj.getField('index')?.toIntValue();
+        if (enumIndex == null) return null;
+        return FreezedUnionCase.values[enumIndex];
+      },
+      orElse: () => buildYamlConfigs.unionValueCase,
+    ),
+    when: annotation.decodeField(
+      'when',
+      decode: (obj) {
+        return FreezedWhenOptions(
+          when: obj.decodeField(
+            'when',
+            decode: (obj) => obj.toBoolValue(),
+            orElse: () => buildYamlConfigs.when?.when,
+          ),
+          maybeWhen: obj.decodeField(
+            'maybeWhen',
+            decode: (obj) => obj.toBoolValue(),
+            orElse: () => buildYamlConfigs.when?.maybeWhen,
+          ),
+          whenOrNull: obj.decodeField(
+            'whenOrNull',
+            decode: (obj) => obj.toBoolValue(),
+            orElse: () => buildYamlConfigs.when?.whenOrNull,
+          ),
+        );
+      },
+      orElse: () => buildYamlConfigs.when,
+    ),
+  );
 }

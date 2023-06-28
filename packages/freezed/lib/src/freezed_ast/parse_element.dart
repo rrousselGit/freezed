@@ -7,6 +7,8 @@ import 'package:freezed/src/freezed_generator.dart' show FreezedField;
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../models.dart';
+
 FreezedClassRegistry resolveFreezedElement(
   List<FreezedClassDefinition> ast,
 ) {
@@ -268,12 +270,29 @@ class FreezedClassTreeNode {
 
       final generatedName = _generatedClassNameForConstructor(id);
 
+      final unionCases = [
+        for (final parent in parents) ...nodesToUnionMeta(parent.children),
+      ];
+
+      final shouldGenerateUnions = unionCases.length > 1;
+      // TODO if a generated class is associated with multiple annotated classes, which annotation should be used?
+      final annotation = parents.single._userDefinedClass!.annotation;
+
+      final mapConfigs = MapConfig(
+        map: annotation.map?.map ?? shouldGenerateUnions,
+        mapOrNull: annotation.map?.mapOrNull ?? shouldGenerateUnions,
+        maybeMap: annotation.map?.maybeMap ?? shouldGenerateUnions,
+      );
+      final whenConfigs = WhenConfig(
+        when: annotation.when?.when ?? shouldGenerateUnions,
+        whenOrNull: annotation.when?.whenOrNull ?? shouldGenerateUnions,
+        maybeWhen: annotation.when?.maybeWhen ?? shouldGenerateUnions,
+      );
+
       yield GeneratedFreezedClass(
         name: generatedName,
         redirectedName: redirectedConstructorName(this),
-        unionCases: [
-          for (final parent in parents) ...nodesToUnionMeta(parent.children),
-        ],
+        unionCases: unionCases,
         // TODO check that all classes have compatible type parameters
         // TODO normalize type parameter names to support two reference to the class with different generic names
         typeParameters: typeParameters,
@@ -283,10 +302,26 @@ class FreezedClassTreeNode {
         implementList: implementList,
         extendClause: extendClause,
         fields: fields,
+        mapConfigs: mapConfigs,
+        whenConfigs: whenConfigs,
       );
     } else {
       // One annotated class is associated, so this is a user-defined class.
       // Let's generate a mixin for it.
+
+      final annotation = userDefinedClass.annotation;
+      final shouldGenerateUnions = children.length > 1;
+
+      final mapConfigs = MapConfig(
+        map: annotation.map?.map ?? shouldGenerateUnions,
+        mapOrNull: annotation.map?.mapOrNull ?? shouldGenerateUnions,
+        maybeMap: annotation.map?.maybeMap ?? shouldGenerateUnions,
+      );
+      final whenConfigs = WhenConfig(
+        when: annotation.when?.when ?? shouldGenerateUnions,
+        whenOrNull: annotation.when?.whenOrNull ?? shouldGenerateUnions,
+        maybeWhen: annotation.when?.maybeWhen ?? shouldGenerateUnions,
+      );
 
       yield UserDefinedClassMixin(
         typeParameters: userDefinedClass.declaration.typeParameters,
@@ -294,6 +329,8 @@ class FreezedClassTreeNode {
         mixinName: userDefinedClass.declaration.name.lexeme.generated,
         fields: fields,
         unionCases: nodesToUnionMeta(children).toList(),
+        mapConfigs: mapConfigs,
+        whenConfigs: whenConfigs,
       );
     }
   }

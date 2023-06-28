@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:freezed/src/freezed_generator.dart' show FreezedField;
+import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 
 import '../templates/properties.dart';
@@ -15,6 +16,8 @@ class UserDefinedClassMixin implements GeneratorBacklog {
     required this.mixinName,
     required this.fields,
     required this.unionCases,
+    required this.mapConfigs,
+    required this.whenConfigs,
   });
 
   final TypeParameterList? typeParameters;
@@ -22,6 +25,8 @@ class UserDefinedClassMixin implements GeneratorBacklog {
   final String mixinName;
   final List<FreezedField> fields;
   final List<UnionCaseMeta> unionCases;
+  final MapConfig mapConfigs;
+  final WhenConfig whenConfigs;
 
   late final generics = typeParameters?.typeParameters
           .map((e) => e.name.lexeme)
@@ -56,25 +61,30 @@ mixin $mixinName${typeParameters ?? ''} {
   }
 
   void _writePatterns(StringBuffer buffer) {
-    if (unionCases.length < 2) return;
-
-    whenPrototype(buffer, unionCases);
-    buffer.writeln('=> throw $privConstUsedErrorVarName;');
-
-    whenOrNullPrototype(buffer, unionCases);
-    buffer.writeln('=> throw $privConstUsedErrorVarName;');
-
-    maybeWhenPrototype(buffer, unionCases);
-    buffer.writeln('=> throw $privConstUsedErrorVarName;');
-
-    mapPrototype(buffer, unionCases, generics);
-    buffer.writeln('=> throw $privConstUsedErrorVarName;');
-
-    mapOrNullPrototype(buffer, unionCases, generics);
-    buffer.writeln('=> throw $privConstUsedErrorVarName;');
-
-    maybeMapPrototype(buffer, unionCases, generics);
-    buffer.writeln('=> throw $privConstUsedErrorVarName;');
+    if (whenConfigs.when) {
+      whenPrototype(buffer, unionCases);
+      buffer.writeln('=> throw $privConstUsedErrorVarName;');
+    }
+    if (whenConfigs.whenOrNull) {
+      whenOrNullPrototype(buffer, unionCases);
+      buffer.writeln('=> throw $privConstUsedErrorVarName;');
+    }
+    if (whenConfigs.maybeWhen) {
+      maybeWhenPrototype(buffer, unionCases);
+      buffer.writeln('=> throw $privConstUsedErrorVarName;');
+    }
+    if (mapConfigs.map) {
+      mapPrototype(buffer, unionCases, generics);
+      buffer.writeln('=> throw $privConstUsedErrorVarName;');
+    }
+    if (mapConfigs.mapOrNull) {
+      mapOrNullPrototype(buffer, unionCases, generics);
+      buffer.writeln('=> throw $privConstUsedErrorVarName;');
+    }
+    if (mapConfigs.maybeMap) {
+      maybeMapPrototype(buffer, unionCases, generics);
+      buffer.writeln('=> throw $privConstUsedErrorVarName;');
+    }
   }
 }
 
@@ -89,6 +99,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
     required this.implementList,
     required this.extendClause,
     required this.fields,
+    required this.mapConfigs,
+    required this.whenConfigs,
   });
 
   final String name;
@@ -100,6 +112,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   final List<String> implementList;
   final String? extendClause;
   final List<FreezedField> fields;
+  final MapConfig mapConfigs;
+  final WhenConfig whenConfigs;
 
   late final generics = typeParameters?.typeParameters
           .map((e) => e.name.lexeme)
@@ -178,8 +192,6 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   }
 
   void _writePatterns(StringBuffer buffer) {
-    if (unionCases.length < 2) return;
-
     _when(buffer);
     _whenOrNull(buffer);
     _maybeWhen(buffer);
@@ -190,6 +202,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   }
 
   void _maybeWhen(StringBuffer buffer) {
+    if (!whenConfigs.maybeWhen) return;
+
     var callbackParameters = fields.map((e) {
       //  TODO refactor logic between all the callbacks
       if (unionCases.any((c) => c.name == e.name)) {
@@ -209,6 +223,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   }
 
   void _when(StringBuffer buffer) {
+    if (!whenConfigs.when) return;
+
     var callbackParameters = fields.map((e) {
       if (unionCases.any((c) => c.name == e.name)) {
         return 'this.${e.name}';
@@ -224,6 +240,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   }
 
   void _whenOrNull(StringBuffer buffer) {
+    if (!whenConfigs.whenOrNull) return;
+
     var callbackParameters = fields.map((e) {
       if (unionCases.any((c) => c.name == e.name)) {
         return 'this.${e.name}';
@@ -239,6 +257,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   }
 
   void _maybeMap(StringBuffer buffer) {
+    if (!mapConfigs.maybeMap) return;
+
     buffer.writeln('@override');
     maybeMapPrototype(buffer, unionCases, generics);
 
@@ -251,6 +271,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   }
 
   void _map(StringBuffer buffer) {
+    if (!mapConfigs.map) return;
+
     buffer.writeln('@override');
     mapPrototype(buffer, unionCases, generics);
 
@@ -260,6 +282,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   }
 
   void _mapOrNull(StringBuffer buffer) {
+    if (!mapConfigs.mapOrNull) return;
+
     buffer.writeln('@override');
     mapOrNullPrototype(buffer, unionCases, generics);
 
@@ -361,7 +385,8 @@ int get hashCode => Object.hash(${hashedProperties.join(',')});
     buffer.write('''
 @override
 String toString() {
-  return '$name(${properties.join(', ')})';
+  const runtimeType = r'$name';
+  return '\$runtimeType(${properties.join(', ')})';
 }
 ''');
   }

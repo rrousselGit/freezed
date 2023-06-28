@@ -1,7 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:freezed/src/ast_type.dart';
-
-class FreezedAnnotation {}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 typedef FreezedClassID = ({String className, String? constructorName});
 
@@ -25,7 +24,7 @@ class FreezedClassDefinition implements FreezedAst {
     );
   }
 
-  final FreezedAnnotation annotation;
+  final Freezed annotation;
   final ClassDeclaration declaration;
   final List<FreezedConstructorIdentifier> children;
 }
