@@ -12,12 +12,14 @@ class UserDefinedClassMixin implements GeneratorBacklog {
     required this.annotatedClassName,
     required this.mixinName,
     required this.fields,
+    required this.unionCases,
   });
 
   final TypeParameterList? typeParameters;
   final String annotatedClassName;
   final String mixinName;
   final List<FreezedField> fields;
+  final List<UnionCaseMeta> unionCases;
 
   @override
   void run(StringBuffer buffer) {
@@ -33,6 +35,7 @@ mixin $mixinName${typeParameters ?? ''} {
 ''');
 
     _writeProperties(buffer);
+    _writePatterns(buffer);
 
     buffer.writeln('}');
   }
@@ -44,21 +47,42 @@ mixin $mixinName${typeParameters ?? ''} {
       );
     }
   }
+
+  void _writePatterns(StringBuffer buffer) {
+    if (unionCases.length < 2) return;
+
+    whenPrototype(buffer, unionCases);
+    buffer.writeln(';');
+
+    whenOrNullPrototype(buffer, unionCases);
+    buffer.writeln(';');
+
+    maybeWhenPrototype(buffer, unionCases);
+    buffer.writeln(';');
+
+    // whenPrototype(unionCases);
+    // whenOrNullPrototype(unionCases);
+    // maybeWhenPrototype(unionCases);
+  }
 }
 
 class GeneratedFreezedClass implements GeneratorBacklog {
   GeneratedFreezedClass({
+    required this.name,
+    required this.redirectedName,
+    required this.unionCases,
     required this.typeParameters,
     required this.hasConstConstructor,
-    required this.name,
     required this.mixins,
     required this.implementList,
     required this.extendClause,
     required this.fields,
   });
 
-  final bool hasConstConstructor;
   final String name;
+  final String? redirectedName;
+  final List<UnionCaseMeta> unionCases;
+  final bool hasConstConstructor;
   final TypeParameterList? typeParameters;
   final List<String> mixins;
   final List<String> implementList;
@@ -79,6 +103,7 @@ class GeneratedFreezedClass implements GeneratorBacklog {
     _writeEqual(buffer);
     _writeHashCode(buffer);
     _writeToString(buffer);
+    _writePatterns(buffer);
 
     buffer.writeln('}');
   }
@@ -133,6 +158,67 @@ class GeneratedFreezedClass implements GeneratorBacklog {
     for (final parameter in fields) {
       buffer.writeln('  final ${parameter.typeSource} ${parameter.name};');
     }
+  }
+
+  void _writePatterns(StringBuffer buffer) {
+    if (unionCases.length < 2) return;
+
+    _when(buffer);
+    _whenOrNull(buffer);
+    _maybeWhen(buffer);
+
+    // whenPrototype(unionCases);
+    // whenOrNullPrototype(unionCases);
+    // maybeWhenPrototype(unionCases);
+  }
+
+  void _maybeWhen(StringBuffer buffer) {
+    var callbackParameters = fields.map((e) {
+      //  TODO refactor logic between all the callbacks
+      if (unionCases.any((c) => c.name == e.name)) {
+        return 'this.${e.name}';
+      }
+      return e.name;
+    }).join(',');
+
+    buffer.writeln('@override');
+    maybeWhenPrototype(buffer, unionCases);
+    buffer.write(''' {
+  if (${constructorNameToCallbackName(redirectedName)} != null) {
+    return ${constructorNameToCallbackName(redirectedName)}($callbackParameters);
+  }
+  return orElse();
+}''');
+  }
+
+  void _when(StringBuffer buffer) {
+    var callbackParameters = fields.map((e) {
+      if (unionCases.any((c) => c.name == e.name)) {
+        return 'this.${e.name}';
+      }
+      return e.name;
+    }).join(',');
+
+    buffer.writeln('@override');
+    whenPrototype(buffer, unionCases);
+    buffer.write(''' {
+  return ${constructorNameToCallbackName(redirectedName)}($callbackParameters);
+}''');
+  }
+
+  void _whenOrNull(StringBuffer buffer) {
+    var callbackParameters = fields.map((e) {
+      if (unionCases.any((c) => c.name == e.name)) {
+        return 'this.${e.name}';
+      }
+      return e.name;
+    }).join(',');
+
+    buffer.writeln('@override');
+    whenOrNullPrototype(buffer, unionCases);
+    buffer.write(''' {
+  return ${constructorNameToCallbackName(redirectedName)}?.call($callbackParameters);
+}''');
   }
 
   void _writeEqual(StringBuffer buffer) {

@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed/src/freezed_ast/ast.dart';
 import 'package:freezed/src/freezed_ast/generation_backlog.dart';
 import 'package:freezed/src/freezed_ast/string_utils.dart';
@@ -94,6 +95,11 @@ class FreezedClassTreeNode {
   final parents = <FreezedClassTreeNode>[];
   final children = <FreezedClassTreeNode>[];
 
+  /// The redirecting constructors associated with this node.
+  /// To not confuse with "children".
+  ///
+  /// Generally, this is a list of one element, but it can be more if the
+  /// same class is referenced multiple times in the same file.
   final _classes = <FreezedConstructorIdentifier>[];
 
   late final fields = _computeFields();
@@ -201,6 +207,27 @@ class FreezedClassTreeNode {
   }
 
   Iterable<GeneratorBacklog> asGeneratorBacklog() sync* {
+    String? redirectedConstructorName(FreezedClassTreeNode node) {
+      return node
+          ._classes
+          // TODO what name to pick in case a generated class is associated with multiple redirecting factories using different names?
+          .first
+          .constructor
+          .name
+          ?.lexeme;
+    }
+
+    Iterable<UnionCaseMeta> nodesToUnionMeta(
+      Iterable<FreezedClassTreeNode> nodes,
+    ) sync* {
+      for (final node in nodes) {
+        yield (
+          name: redirectedConstructorName(node),
+          fields: node.fields,
+        );
+      }
+    }
+
     final userDefinedClass = this.userDefinedClass;
 
     if (userDefinedClass == null) {
@@ -238,20 +265,19 @@ class FreezedClassTreeNode {
           throw StateError('Expected at most one extendable parent'),
       };
 
-      // final siblings = parents //
-      //     .expand((e) => e.children)
-      //     .where((e) => e != this)
-      //     .toSet();
-
       final generatedName = _generatedClassNameForConstructor(id);
 
       yield GeneratedFreezedClass(
+        name: generatedName,
+        redirectedName: redirectedConstructorName(this),
+        unionCases: [
+          for (final parent in parents) ...nodesToUnionMeta(parent.children),
+        ],
         // TODO check that all classes have compatible type parameters
         // TODO normalize type parameter names to support two reference to the class with different generic names
         typeParameters: typeParameters,
         hasConstConstructor:
             _classes.any((e) => e.constructor.constKeyword != null),
-        name: generatedName,
         mixins: mixins,
         implementList: implementList,
         extendClause: extendClause,
@@ -266,6 +292,7 @@ class FreezedClassTreeNode {
         annotatedClassName: userDefinedClass.declaration.name.lexeme,
         mixinName: userDefinedClass.declaration.name.lexeme.generated,
         fields: fields,
+        unionCases: nodesToUnionMeta(children).toList(),
       );
     }
   }

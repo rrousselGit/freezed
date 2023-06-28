@@ -1,4 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:collection/collection.dart';
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -144,17 +146,22 @@ extension FreezedElementAnnotation on ElementAnnotation {
   }
 }
 
-String whenPrototype(List<ConstructorDetails> allConstructors) {
+void whenPrototype(StringBuffer buffer, List<UnionCaseMeta> unionCases) {
   return _whenPrototype(
-    allConstructors,
+    buffer,
+    unionCases,
+    name: 'when',
     areCallbacksRequired: true,
     isReturnTypeNullable: false,
-    name: 'when',
   );
 }
 
-String whenOrNullPrototype(List<ConstructorDetails> allConstructors) {
+void whenOrNullPrototype(
+  StringBuffer buffer,
+  List<UnionCaseMeta> allConstructors,
+) {
   return _whenPrototype(
+    buffer,
     allConstructors,
     areCallbacksRequired: false,
     isReturnTypeNullable: true,
@@ -162,8 +169,12 @@ String whenOrNullPrototype(List<ConstructorDetails> allConstructors) {
   );
 }
 
-String maybeWhenPrototype(List<ConstructorDetails> allConstructors) {
-  return _whenPrototype(
+void maybeWhenPrototype(
+  StringBuffer buffer,
+  List<UnionCaseMeta> allConstructors,
+) {
+  _whenPrototype(
+    buffer,
     allConstructors,
     areCallbacksRequired: false,
     isReturnTypeNullable: false,
@@ -171,11 +182,13 @@ String maybeWhenPrototype(List<ConstructorDetails> allConstructors) {
   );
 }
 
-String mapPrototype(
-  List<ConstructorDetails> allConstructors,
+void mapPrototype(
+  StringBuffer buffer,
+  List<UnionCaseMeta> allConstructors,
   GenericsParameterTemplate genericParameters,
 ) {
   return _mapPrototype(
+    buffer,
     allConstructors,
     genericParameters,
     areCallbacksRequired: true,
@@ -184,11 +197,13 @@ String mapPrototype(
   );
 }
 
-String mapOrNullPrototype(
-  List<ConstructorDetails> allConstructors,
+void mapOrNullPrototype(
+  StringBuffer buffer,
+  List<UnionCaseMeta> allConstructors,
   GenericsParameterTemplate genericParameters,
 ) {
   return _mapPrototype(
+    buffer,
     allConstructors,
     genericParameters,
     areCallbacksRequired: false,
@@ -197,11 +212,13 @@ String mapOrNullPrototype(
   );
 }
 
-String maybeMapPrototype(
-  List<ConstructorDetails> allConstructors,
+void maybeMapPrototype(
+  StringBuffer buffer,
+  List<UnionCaseMeta> allConstructors,
   GenericsParameterTemplate genericParameters,
 ) {
-  return _mapPrototype(
+  _mapPrototype(
+    buffer,
     allConstructors,
     genericParameters,
     areCallbacksRequired: false,
@@ -210,138 +227,140 @@ String maybeMapPrototype(
   );
 }
 
-String _mapPrototype(
-  List<ConstructorDetails> allConstructors,
+void _mapPrototype(
+  StringBuffer buffer,
+  List<UnionCaseMeta> allConstructors,
   GenericsParameterTemplate genericParameters, {
   required bool areCallbacksRequired,
   required bool isReturnTypeNullable,
   required String name,
 }) {
   return _unionPrototype(
+    buffer,
     allConstructors,
     areCallbacksRequired: areCallbacksRequired,
     isReturnTypeNullable: isReturnTypeNullable,
     name: name,
-    ctor2parameters: (constructor) {
-      return ParametersTemplate([
-        Parameter(
-          name: 'value',
-          type: '${constructor.redirectedName}$genericParameters',
-          isRequired: false,
-          isNullable: false,
-          isFinal: false,
-          isDartList: false,
-          isDartSet: false,
-          isDartMap: false,
-          decorators: const [],
-          defaultValueSource: '',
-          doc: '',
-          // TODO: do we want to support freezed classes that implements MapView/ListView?
-          isPossiblyDartCollection: false,
-          showDefaultValue: false,
-          parameterElement: null,
-        ),
-      ]);
+    writeParameter: (buffer, constructor) {
+      // return ParametersTemplate([
+      //   Parameter(
+      //     name: 'value',
+      //     type: '${constructor.redirectedName}$genericParameters',
+      //     isRequired: false,
+      //     isNullable: false,
+      //     isFinal: false,
+      //     isDartList: false,
+      //     isDartSet: false,
+      //     isDartMap: false,
+      //     decorators: const [],
+      //     defaultValueSource: '',
+      //     doc: '',
+      //     // TODO: do we want to support freezed classes that implements MapView/ListView?
+      //     isPossiblyDartCollection: false,
+      //     showDefaultValue: false,
+      //     parameterElement: null,
+      //   ),
+      // ]);
     },
   );
 }
 
-String _whenPrototype(
-  List<ConstructorDetails> allConstructors, {
+typedef UnionFieldMeta = ({
+  bool isFinal,
+  bool isOptional,
+  bool isNamed,
+  String leading,
+  String name,
+  String? defaultValueSource,
+});
+
+typedef UnionCaseMeta = ({
+  String? name,
+  List<FreezedField> fields,
+});
+
+void _whenPrototype(
+  StringBuffer buffer,
+  List<UnionCaseMeta> allConstructors, {
   required bool areCallbacksRequired,
   required bool isReturnTypeNullable,
   required String name,
 }) {
-  return _unionPrototype(
+  _unionPrototype(
+    buffer,
     allConstructors,
     areCallbacksRequired: areCallbacksRequired,
     isReturnTypeNullable: isReturnTypeNullable,
     name: name,
-    ctor2parameters: (constructor) {
-      return ParametersTemplate([
-        ...constructor.parameters.requiredPositionalParameters
-            .map((e) => e.copyWith(isFinal: false)),
-        ...constructor.parameters.optionalPositionalParameters
-            .map((e) => e.copyWith(
-                  isFinal: false,
-                  showDefaultValue: false,
-                )),
-        ...constructor.parameters.namedParameters.map((e) => e.copyWith(
-              isRequired: false,
-              isFinal: false,
-              showDefaultValue: false,
-            )),
-      ]);
+    writeParameter: (buffer, constructor) {
+      buffer
+        ..write('TResult Function(')
+        ..writeAll(
+          constructor.fields.map((e) => '${e.typeSource} ${e.name}'),
+          ',',
+        )
+        ..write(areCallbacksRequired ? ') ' : ')? ')
+        ..write(constructorNameToCallbackName(constructor.name));
     },
   );
 }
 
-String _unionPrototype(
-  List<ConstructorDetails> allConstructors, {
+void _unionPrototype(
+  StringBuffer buffer,
+  List<UnionCaseMeta> allConstructors, {
+  required String name,
   required bool areCallbacksRequired,
   required bool isReturnTypeNullable,
-  required String name,
-  required ParametersTemplate Function(ConstructorDetails) ctor2parameters,
+  required void Function(StringBuffer buffer, UnionCaseMeta) writeParameter,
 }) {
   final returnType = isReturnTypeNullable ? 'TResult?' : 'TResult';
 
-  final buffer = StringBuffer(
-      '@optionalTypeArgs $returnType $name<TResult extends Object?>(');
+  buffer.write(
+    '@optionalTypeArgs $returnType $name<TResult extends Object?>(',
+  );
 
-  final parameters = <CallbackParameter>[];
-  for (final constructor in allConstructors) {
-    var template = CallbackParameter(
-      name: constructorNameToCallbackName(constructor.name),
-      type: returnType,
-      isFinal: false,
-      isDartList: false,
-      isDartMap: false,
-      isDartSet: false,
-      isRequired: !constructor.isDefault && areCallbacksRequired,
-      isNullable: !areCallbacksRequired,
-      parameters: ctor2parameters(constructor),
-      decorators: const [],
-      defaultValueSource: '',
-      doc: '',
-      isPossiblyDartCollection: false,
-      parameterElement: null,
-    );
+  final defaultCase = allConstructors.firstWhereOrNull((e) => e.name == null);
+  if (defaultCase != null) {
+    writeParameter(buffer, defaultCase);
+    buffer.write(', ');
+  }
 
-    if (constructor.isDefault) {
-      buffer
-        ..write(template)
-        ..write(',');
-    } else {
-      parameters.add(template);
+  var didWriteOpeningBracket = false;
+  void maybeWriteOpeningBracket() {
+    if (!didWriteOpeningBracket) {
+      buffer.write('{');
+      didWriteOpeningBracket = true;
     }
+  }
+
+  for (final constructor in allConstructors) {
+    if (constructor.name == null) continue;
+
+    maybeWriteOpeningBracket();
+
+    if (areCallbacksRequired) buffer.write('required ');
+
+    writeParameter(buffer, constructor);
+    buffer.write(', ');
   }
 
   final hasOrElse = !areCallbacksRequired && !isReturnTypeNullable;
-
-  if (parameters.isNotEmpty || hasOrElse) {
-    buffer.write('{');
-    if (parameters.isNotEmpty) {
-      buffer
-        ..writeAll(parameters, ',')
-        ..write(',');
-    }
-
-    if (hasOrElse) {
-      buffer.write('required $returnType orElse(),');
-    }
-
-    buffer.write('}');
+  if (hasOrElse) {
+    maybeWriteOpeningBracket();
+    buffer.write('required TResult Function() orElse,');
   }
-  buffer.write(')');
-  return buffer.toString();
+
+  if (didWriteOpeningBracket) buffer.write('}');
+
+  buffer.writeln(')');
 }
 
 bool isDefaultConstructor(ConstructorElement constructor) {
   return constructor.name.isEmpty;
 }
 
-String constructorNameToCallbackName(String constructorName) {
-  return constructorName.isEmpty ? '\$default' : constructorName;
+String constructorNameToCallbackName(String? constructorName) {
+  return constructorName == null ? r'$default' : constructorName;
 }
 
 String toJsonParameters(
