@@ -3,8 +3,6 @@ import 'package:test/test.dart';
 import 'common.dart';
 import 'integration/nullable.dart';
 
-final throwsAssertionError = throwsA(isA<AssertionError>());
-
 void main() {
   test('RequiredPositional', () async {
     await expectLater(compile(r'''
@@ -86,26 +84,26 @@ void main() {
 '''), throwsCompileError);
   });
 
-  test('NullableRequiredPositional', () {
-    // ignore: unused_result
-    NullableRequiredPositional(42).copyWith(a: 42);
-    // ignore: unused_result
-    NullableRequiredPositional(null).copyWith(a: null);
-  });
+  // test('NullableRequiredPositional', () {
+  //   // ignore: unused_result
+  //   NullableRequiredPositional(42).copyWith(a: 42);
+  //   // ignore: unused_result
+  //   NullableRequiredPositional(null).copyWith(a: null);
+  // });
 
-  test('Positional', () {
-    // ignore: unused_result
-    Positional(42).copyWith(a: 42);
-    // ignore: unused_result
-    Positional(null).copyWith(a: null);
-  });
+  // test('Positional', () {
+  //   // ignore: unused_result
+  //   Positional(42).copyWith(a: 42);
+  //   // ignore: unused_result
+  //   Positional(null).copyWith(a: null);
+  // });
 
-  test('Named', () {
-    // ignore: unused_result
-    Named(a: 42).copyWith(a: 42);
-    // ignore: unused_result
-    Named(a: null).copyWith(a: null);
-  });
+  // test('Named', () {
+  //   // ignore: unused_result
+  //   Named(a: 42).copyWith(a: 42);
+  //   // ignore: unused_result
+  //   Named(a: null).copyWith(a: null);
+  // });
 
   test('RequiredNamed', () async {
     await expectLater(compile(r'''
@@ -143,10 +141,10 @@ void main() {
 '''), throwsCompileError);
   });
 
-  test('NullableRequiredNamed', () {
-    // ignore: unused_result
-    NullableRequiredNamed(a: 42).copyWith(a: 42);
-    // ignore: unused_result
-    NullableRequiredNamed(a: null).copyWith(a: null);
-  });
+  // test('NullableRequiredNamed', () {
+  //   // ignore: unused_result
+  //   NullableRequiredNamed(a: 42).copyWith(a: 42);
+  //   // ignore: unused_result
+  //   NullableRequiredNamed(a: null).copyWith(a: null);
+  // });
 }

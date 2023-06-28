@@ -88,7 +88,7 @@ extension TypeHelpers on StringBuffer {
     write('>');
   }
 
-  void writeGenericUsage(List<String> generics) {
+  void writeGenericUsage(Iterable<String> generics) {
     if (generics.isEmpty) return;
 
     write('<');

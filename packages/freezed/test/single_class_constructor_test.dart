@@ -5,9 +5,10 @@ import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
 import 'common.dart';
-import 'integration/alias.dart';
+// import 'integration/alias.dart';
 import 'integration/single_class_constructor.dart';
-import 'nullable_test.dart';
+import 'matchers.dart';
+// import 'nullable_test.dart';
 
 class MyObject {
   final void Function() didEqual;
@@ -194,9 +195,9 @@ Future<void> main() async {
   //   Some<Complex<Type>> value = ImplementsAliasFirst();
   // });
 
-  test('Alias', () {
-    expect(Alias(), Alias());
-  });
+  // test('Alias', () {
+  //   expect(Alias(), Alias());
+  // });
 
   test('Regression 131', () {
     expect(

@@ -76,6 +76,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
     _writeDocs(buffer);
     _writeClassPrototype(buffer);
     _writeProperties(buffer);
+    _writeEqual(buffer);
+    _writeHashCode(buffer);
 
     buffer.writeln('}');
   }
@@ -130,6 +132,83 @@ class GeneratedFreezedClass implements GeneratorBacklog {
     for (final parameter in fields) {
       buffer.writeln('  final ${parameter.typeSource} ${parameter.name};');
     }
+  }
+
+  void _writeEqual(StringBuffer buffer) {
+    // TODO handle disabling ==
+
+    final generics = StringBuffer()
+      ..writeGenericUsage(
+        typeParameters?.typeParameters.map((e) => e.name.lexeme) ?? const [],
+      );
+
+    final comparisons = [
+      'other.runtimeType == runtimeType',
+      'other is $name$generics',
+      ...fields.map((field) {
+        var name = field.name;
+        // if (p.isPossiblyDartCollection) {
+        //   if (data.makeCollectionsImmutable &&
+        //       (p.isDartList || p.isDartMap || p.isDartSet)) {
+        //     name = '_$name';
+        //   }
+        // }
+        final target = field.name == 'other' ? 'this.' : '';
+
+        // if (p.isPossiblyDartCollection) {
+        // TODO optimize DeepCollectionEquality away when possible
+        // no need to check `identical` as `DeepCollectionEquality` already does it
+        return 'const DeepCollectionEquality().equals(other.$name, $target$name)';
+        // }
+        // return '(identical(other.${p.name}, $target$name) || other.$name == $target$name)';
+      }),
+    ];
+
+    buffer.write('''
+@override
+bool operator ==(dynamic other) {
+  return identical(this, other) || (${comparisons.join('&&')});
+}
+''');
+  }
+
+  void _writeHashCode(StringBuffer buffer) {
+    // TODO Add an annotation parameter to enable hashCode without ==
+    // TODO handle disabling hashCode
+
+    // TODO add JsonKey(ignore: true)
+
+    final hashedProperties = [
+      /// TODO: can we omit "runtimeType" for non-generic sealed classes?
+      'runtimeType',
+      for (final field in fields)
+        // TODO optimize DeepCollectionEquality away when possible
+        // if (property.isPossiblyDartCollection)
+        // if (data.makeCollectionsImmutable &&
+        //     (property.isDartList || property.isDartMap || property.isDartSet))
+        //   'const DeepCollectionEquality().hash(_${property.name})'
+        // else
+        'const DeepCollectionEquality().hash(${field.name})'
+      // else
+      // property.name,
+    ];
+
+    buffer.write(
+      switch (hashedProperties.length) {
+        1 => '''
+@override
+int get hashCode => ${hashedProperties.first}.hashCode;
+''',
+        >= 20 => '''
+@override
+int get hashCode => Object.hashAll([${hashedProperties.join(',')}]);
+''',
+        _ => '''
+@override
+int get hashCode => Object.hash(${hashedProperties.join(',')});
+''',
+      },
+    );
   }
 
   void _writeDocs(StringBuffer buffer) {
