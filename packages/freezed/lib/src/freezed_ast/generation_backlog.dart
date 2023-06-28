@@ -118,8 +118,13 @@ class GeneratedFreezedClass implements GeneratorBacklog {
         requiredPositionals: fields
             .where((e) => e.isRequired && e.isPositional)
             .map((e) => ('this.${e.name}', defaultValue: null)),
-      )
-      ..writeln(';');
+      );
+
+    if (extendClause != null) {
+      buffer.write(' : super._()');
+    }
+
+    buffer.writeln(';');
   }
 
   void _writeProperties(StringBuffer buffer) {

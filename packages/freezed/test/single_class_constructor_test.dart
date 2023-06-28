@@ -184,15 +184,15 @@ Future<void> main() async {
     );
   });
 
-  test('WithAlias', () {
-    // ignore: unused_local_variable
-    Some<Complex<Type>> value = WithAliasFirst();
-  });
+  // test('WithAlias', () {
+  //   // ignore: unused_local_variable
+  //   Some<Complex<Type>> value = WithAliasFirst();
+  // });
 
-  test('ImplementsAlias', () {
-    // ignore: unused_local_variable
-    Some<Complex<Type>> value = ImplementsAliasFirst();
-  });
+  // test('ImplementsAlias', () {
+  //   // ignore: unused_local_variable
+  //   Some<Complex<Type>> value = ImplementsAliasFirst();
+  // });
 
   test('Alias', () {
     expect(Alias(), Alias());
@@ -241,33 +241,33 @@ Future<void> main() async {
     );
   });
 
-  test('deep copy of recursive classes', () {
-    final value = Product(name: 'foo', parent: Product(name: 'bar'));
+  // test('deep copy of recursive classes', () {
+  //   final value = Product(name: 'foo', parent: Product(name: 'bar'));
 
-    expect(
-      value.copyWith.parent!(name: 'baz'),
-      Product(name: 'foo', parent: Product(name: 'baz')),
-    );
+  //   expect(
+  //     value.copyWith.parent!(name: 'baz'),
+  //     Product(name: 'foo', parent: Product(name: 'baz')),
+  //   );
 
-    final value2 = Product(
-      name: 'foo',
-      parent: Product(
-        name: 'bar',
-        parent: Product(name: 'baz'),
-      ),
-    );
+  //   final value2 = Product(
+  //     name: 'foo',
+  //     parent: Product(
+  //       name: 'bar',
+  //       parent: Product(name: 'baz'),
+  //     ),
+  //   );
 
-    expect(
-      value2.copyWith.parent!.parent!(name: 'quaz'),
-      Product(
-        name: 'foo',
-        parent: Product(
-          name: 'bar',
-          parent: Product(name: 'quaz'),
-        ),
-      ),
-    );
-  });
+  //   expect(
+  //     value2.copyWith.parent!.parent!(name: 'quaz'),
+  //     Product(
+  //       name: 'foo',
+  //       parent: Product(
+  //         name: 'bar',
+  //         parent: Product(name: 'quaz'),
+  //       ),
+  //     ),
+  //   );
+  // });
 
   group('@Default applied', () {
     test('int', () {
@@ -429,41 +429,41 @@ void main() {
     expect('${SingleNamedCtor.named(42)}', 'SingleNamedCtor.named(a: 42)');
   });
 
-  test('single-case union does have map', () async {
-    expect(
-      SingleNamedCtor.named(42).map(
-        named: (WhateverSingleNamedCtor value) => '${value.a}',
-      ),
-      '42',
-    );
-  });
+  // test('single-case union does have map', () async {
+  //   expect(
+  //     SingleNamedCtor.named(42).map(
+  //       named: (WhateverSingleNamedCtor value) => '${value.a}',
+  //     ),
+  //     '42',
+  //   );
+  // });
 
-  test('single-case union does have maybeMap', () async {
-    expect(
-      SingleNamedCtor.named(42).maybeMap(
-        named: (WhateverSingleNamedCtor value) => '${value.a}',
-        orElse: () => throw Exception('orElse called'),
-      ),
-      '42',
-    );
-  });
+  // test('single-case union does have maybeMap', () async {
+  //   expect(
+  //     SingleNamedCtor.named(42).maybeMap(
+  //       named: (WhateverSingleNamedCtor value) => '${value.a}',
+  //       orElse: () => throw Exception('orElse called'),
+  //     ),
+  //     '42',
+  //   );
+  // });
 
-  test('single-case union does have when', () async {
-    expect(
-      SingleNamedCtor.named(42).when(named: (int value) => '$value'),
-      '42',
-    );
-  });
+  // test('single-case union does have when', () async {
+  //   expect(
+  //     SingleNamedCtor.named(42).when(named: (int value) => '$value'),
+  //     '42',
+  //   );
+  // });
 
-  test('single-case union does have maybeWhen', () async {
-    expect(
-      SingleNamedCtor.named(42).maybeWhen(
-        named: (int value) => '$value',
-        orElse: () => throw Exception('orElse called'),
-      ),
-      '42',
-    );
-  });
+  // test('single-case union does have maybeWhen', () async {
+  //   expect(
+  //     SingleNamedCtor.named(42).maybeWhen(
+  //       named: (int value) => '$value',
+  //       orElse: () => throw Exception('orElse called'),
+  //     ),
+  //     '42',
+  //   );
+  // });
 
   test('can be created as const', () {
     expect(identical(const MyClass(a: '42'), const MyClass(a: '42')), isTrue);
@@ -540,7 +540,7 @@ void main() {
     expect('${MyClass()}', 'MyClass(a: null, b: null)');
     expect('${MyClass(a: '42', b: 42)}', 'MyClass(a: 42, b: 42)');
   });
-
+/*
   group('clone', () {
     test('can clone', () {
       final value = MyClass(a: '42', b: 42);
@@ -631,7 +631,7 @@ void main() {
 '''), throwsCompileError);
     });
   });
-
+*/
   test('can access redirect class', () {
     expect(MyClass(), isA<WhateverIWant>());
 

@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:freezed/src/freezed_ast/ast.dart';
 import 'package:freezed/src/freezed_ast/generation_backlog.dart';
 import 'package:freezed/src/freezed_ast/string_utils.dart';
@@ -105,6 +106,25 @@ class FreezedClassTreeNode {
     return _computeCommonUserDefinedFields().toList();
   }
 
+  bool canBeExtended() {
+    final userDefinedClass = this.userDefinedClass;
+    if (userDefinedClass == null) {
+      return false;
+    }
+
+    /// Check whether a private constructor is present.
+    // Whether the associated user-defined class has an empty private constructor.
+    return userDefinedClass.declaration.members
+        .whereType<ConstructorDeclaration>()
+        .any(
+          (constructor) =>
+              // TODO throw if factory
+              // TODO throw if non-empty
+              // TODO throw if non-const but expected to be const
+              constructor.name?.lexeme == '_',
+        );
+  }
+
   Iterable<FreezedField> _computeCommonUserDefinedFields() sync* {
     final allFields = children.expand((e) => e.fields);
 
@@ -184,6 +204,10 @@ class FreezedClassTreeNode {
     final userDefinedClass = this.userDefinedClass;
 
     if (userDefinedClass == null) {
+      if (_classes.isEmpty) {
+        // TODO better error message
+        throw StateError('Expected at least one class');
+      }
       // No associated annotated class, so this is a generated class.
 
       // Search for all the siblings of this node, filtering duplicates.
@@ -193,13 +217,26 @@ class FreezedClassTreeNode {
       final interfaceTypeArguments =
           typeParameters?.typeParameters.map((e) => e.name.lexeme).toList();
 
+      String writeParent(FreezedClassTreeNode parent) {
+        final buffer = StringBuffer(parent.id.className)
+          ..writeGenericUsage(interfaceTypeArguments ?? []);
+
+        return buffer.toString();
+      }
+
       final implementList = <String>[
         for (final parent in parents)
-          (StringBuffer(parent.id.className)
-                ..writeGenericUsage(interfaceTypeArguments ?? []))
-              .toString(),
+          if (!parent.canBeExtended()) writeParent(parent),
       ];
-      String? extendClause;
+
+      final extendClause =
+          switch (parents.where((e) => e.canBeExtended()).toList()) {
+        [] => null,
+        [final FreezedClassTreeNode parent] => writeParent(parent),
+        [_, ...] =>
+          // TODO better error message
+          throw StateError('Expected at most one extendable parent'),
+      };
 
       // final siblings = parents //
       //     .expand((e) => e.children)
