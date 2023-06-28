@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
@@ -9,16 +8,13 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
-import 'package:freezed/src/freezed_ast/ast.dart';
 import 'package:freezed/src/freezed_ast/parse_ast.dart';
 import 'package:freezed/src/freezed_ast/parse_element.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
-import 'package:freezed/src/templates/enclosing_type_mixin.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
-import 'package:freezed/src/templates/union_case.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:freezed/src/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart'
@@ -75,19 +71,6 @@ class FreezedField {
     try {
       final defaultValueSource =
           parameter.declaredElement?.computeDefaultValue();
-
-      // final defaultValueAnnotation = parameter //
-      //     .metadata
-      //     .firstWhereOrNull((e) => e.toSource().startsWith('@Default('));
-
-      // final defaultValueObject = defaultValueAnnotation?.elementAnnotation
-      //     ?.computeConstantValue()
-      //     ?.getField('defaultValue');
-
-      // final defaultValueSource = defaultValueObject == null
-      //     ? null
-      //     // TODO handle errors
-      //     : reviveInstance(defaultValueObject).toString();
 
       switch (parameter) {
         case DefaultFormalParameter():
