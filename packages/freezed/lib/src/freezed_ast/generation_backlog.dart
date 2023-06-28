@@ -108,16 +108,16 @@ class GeneratedFreezedClass implements GeneratorBacklog {
         optionalNamed: fields
             .where((e) => e.isOptional && e.isNamed)
             // TODO default value
-            .map((e) => ('this.${e.name}', defaultValue: null)),
+            .map((e) => ('this.${e.name}', defaultValue: e.defaultValueSource)),
         requiredNamed: fields
             .where((e) => e.isRequired && e.isNamed)
-            .map((e) => ('this.${e.name}', defaultValue: null)),
+            .map((e) => ('this.${e.name}', defaultValue: e.defaultValueSource)),
         optionalPositionals: fields
             .where((e) => e.isOptional && e.isPositional)
-            .map((e) => ('this.${e.name}', defaultValue: null)),
+            .map((e) => ('this.${e.name}', defaultValue: e.defaultValueSource)),
         requiredPositionals: fields
             .where((e) => e.isRequired && e.isPositional)
-            .map((e) => ('this.${e.name}', defaultValue: null)),
+            .map((e) => ('this.${e.name}', defaultValue: e.defaultValueSource)),
       );
 
     if (extendClause != null) {

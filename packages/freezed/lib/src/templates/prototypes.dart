@@ -48,7 +48,7 @@ extension TypeHelpers on StringBuffer {
 
       write(argument.$1);
       if (argument.defaultValue != null) {
-        write(' ');
+        write(' = ');
         write(argument.defaultValue);
       }
       write(', ');

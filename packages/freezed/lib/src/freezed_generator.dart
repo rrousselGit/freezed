@@ -64,43 +64,76 @@ class FreezedField {
   FreezedField(
     this._parameter, {
     required this.typeSource,
+    required this.defaultValueSource,
   });
 
   static FreezedField parse(
     FormalParameter parameter,
   ) {
-    switch (parameter) {
-      case DefaultFormalParameter():
-        return parse(parameter.parameter);
-      case NormalFormalParameter(isExplicitlyTyped: false):
-        return FreezedField(
-          parameter,
-          typeSource: 'dynamic',
-        );
+    // TODO: throw if multiple default are used
+    // TODO throw if @default annotation is used in a non-explicit way (ie "const value = Default('str'); .. @value")
+    try {
+      // final defaultValueAnnotation = parameter //
+      //     .metadata
+      //     .firstWhereOrNull((e) => e.toSource().startsWith('@Default('));
 
-      // We ignore FieldFormalParameter(), as we cannot use this.field
-      // in a redirecting factory constructor.
+      // final defaultValueObject = defaultValueAnnotation?.elementAnnotation
+      //     ?.computeConstantValue()
+      //     ?.getField('defaultValue');
 
-      // Handle "void foo()", even if generally discouraged.
-      case FunctionTypedFormalParameter():
-        return FreezedField(
-          parameter,
-          typeSource: '${parameter.returnType ?? 'dynamic'} '
-              'Function${parameter.typeParameters ?? ''}${parameter.parameters}',
-        );
+      // final defaultValueSource = defaultValueObject == null
+      //     ? null
+      //     // TODO handle errors
+      //     : reviveInstance(defaultValueObject).toString();
 
-      case SimpleFormalParameter(:final type?):
-        return FreezedField(
-          parameter,
-          typeSource: type.toSource(),
-        );
+      final defaultValueSource = parameter.metadata
+          .map((e) => e.toSource())
+          .where((e) => e.startsWith('@Default('))
+          // TODO: throw if multiple default are used
+          // TODO throw if @default annotation is used in a non-explicit way (ie "const value = Default('str'); .. @value")
+          .map((e) => e.substring('@Default('.length, e.length - 1))
+          .firstOrNull;
 
-      default:
-        // TODO can/shuld we not throw?
-        throw ArgumentError.value(
-          parameter.runtimeType,
-          parameter.toSource(),
-        );
+      switch (parameter) {
+        case DefaultFormalParameter():
+          return parse(parameter.parameter);
+        case NormalFormalParameter(isExplicitlyTyped: false):
+          return FreezedField(
+            parameter,
+            typeSource: 'dynamic',
+            defaultValueSource: defaultValueSource,
+          );
+
+        // We ignore FieldFormalParameter(), as we cannot use this.field
+        // in a redirecting factory constructor.
+
+        // Handle "void foo()", even if generally discouraged.
+        case FunctionTypedFormalParameter():
+          return FreezedField(
+            parameter,
+            typeSource: '${parameter.returnType ?? 'dynamic'} '
+                'Function${parameter.typeParameters ?? ''}${parameter.parameters}',
+            defaultValueSource: defaultValueSource,
+          );
+
+        case SimpleFormalParameter(:final type?):
+          return FreezedField(
+            parameter,
+            typeSource: type.toSource(),
+            defaultValueSource: defaultValueSource,
+          );
+
+        default:
+          // TODO can/shuld we not throw?
+          throw ArgumentError.value(
+            parameter.runtimeType,
+            parameter.toSource(),
+          );
+      }
+    } catch (e, s) {
+      print(e);
+      print(s);
+      rethrow;
     }
   }
 
@@ -113,6 +146,7 @@ class FreezedField {
 
   final NormalFormalParameter _parameter;
   final String typeSource;
+  final String? defaultValueSource;
 }
 
 class FreezedConstructorDefinition {
