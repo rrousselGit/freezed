@@ -51,8 +51,12 @@ extension DefaultUtils on Element {
         // case DartType(isDartCoreEnum: true):
         // TODO handle manual const Symbol() vs #symbol
         case DartType(isDartCoreSymbol: true):
-        case _ when !defaultSource.contains('('):
         case DartType(isDartCoreType: true):
+        // Exclude constructors and collection litterals
+        case _
+            when !defaultSource.contains('(') &&
+                !defaultSource.contains('[') &&
+                !defaultSource.contains('{'):
           // case DartType(isDartCoreFunction: true):
           needsConstModifier = false;
         default:
