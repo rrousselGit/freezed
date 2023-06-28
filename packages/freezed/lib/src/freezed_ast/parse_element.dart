@@ -1,57 +1,25 @@
-import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/constant/value.dart';
-import 'package:collection/collection.dart';
-import 'package:freezed/src/freezed_ast/freezed_ast.dart';
+import 'package:freezed/src/freezed_ast/ast.dart';
 import 'package:freezed/src/freezed_ast/generation_backlog.dart';
 import 'package:freezed/src/freezed_ast/string_utils.dart';
 import 'package:freezed/src/freezed_generator.dart' show FreezedField;
+import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:source_gen/source_gen.dart';
 
-typedef _AnnotatedClass = ({DartObject annotation, ClassDeclaration node});
-
-_AnnotatedClass? _findAnnotatedClasses(
-  ClassDeclaration node,
+FreezedClassRegistry resolveFreezedElement(
+  List<FreezedClassDefinition> ast,
 ) {
-  final element = node.declaredElement;
-  if (element == null) return null;
+  final result = FreezedClassRegistry._parse(ast);
 
-  final annotation =
-      const TypeChecker.fromRuntime(Freezed).firstAnnotationOfExact(element);
-  if (annotation == null) return null;
-
-  return (annotation: annotation, node: node);
+  return result;
 }
 
-Iterable<GeneratorBacklog> parseFreezedAst(Iterable<CompilationUnit> units) {
-  final annotatedClasses = units
-      .expand((e) => e.declarations)
-      .whereType<ClassDeclaration>()
-      .map(_findAnnotatedClasses)
-      .whereNotNull()
-      .toList();
+class FreezedClassRegistry {
+  FreezedClassRegistry._(this._astRoots);
 
-  final registry = _FreezedClassRegistry.parse(annotatedClasses);
+  factory FreezedClassRegistry._parse(List<FreezedClassDefinition> ast) {
+    final result = FreezedClassRegistry._(ast);
 
-  // TODO assert that the freezed mixin is used on the class
-  // TODO assert that unions are sealed classes.
-  // TODO throw if "const" is used on mutable classes
-
-  return registry._allNodesByID.values.expand((e) => e.asGeneratorBacklog());
-}
-
-class _FreezedClassRegistry {
-  _FreezedClassRegistry._(this.roots);
-
-  factory _FreezedClassRegistry.parse(List<_AnnotatedClass> annotatedClasses) {
-    final roots = [
-      for (final annotatedClass in annotatedClasses)
-        _parseAnnotatedClass(annotatedClass),
-    ];
-
-    final result = _FreezedClassRegistry._(roots);
-
-    for (final root in roots) {
+    for (final root in ast) {
       final rootNode = result._upsertNode(root);
 
       for (final child in root.children) {
@@ -65,43 +33,18 @@ class _FreezedClassRegistry {
     return result;
   }
 
-  static FreezedClassDefinition _parseAnnotatedClass(
-    _AnnotatedClass annotatedClass,
-  ) {
-    final children = annotatedClass.node.members
-        .whereType<ConstructorDeclaration>()
-        .map(
-          (e) => switch (e) {
-            ConstructorDeclaration(:final redirectedConstructor?) =>
-              FreezedConstructorIdentifier(redirectedConstructor, e),
-            _ => null,
-          },
-        )
-        .whereNotNull()
-        .toList();
+  Iterable<FreezedClassTreeNode> get nodes => _allNodesByID.values;
 
-    return FreezedClassDefinition(
-      annotatedClass.node,
-      annotation: _parseAnnotation(annotatedClass.annotation),
-      children: children,
-    );
-  }
+  final List<FreezedClassDefinition> _astRoots;
+  final Map<FreezedClassID, FreezedClassTreeNode> _allNodesByID = {};
 
-  static FreezedAnnotation _parseAnnotation(DartObject annotation) {
-    // TODO
-    return FreezedAnnotation();
-  }
-
-  final List<FreezedClassDefinition> roots;
-  final Map<FreezedClassID, _FreezedClassTreeNode> _allNodesByID = {};
-
-  _FreezedClassTreeNode _upsertNode(
+  FreezedClassTreeNode _upsertNode(
     FreezedAst astNode, {
-    _FreezedClassTreeNode? parent,
+    FreezedClassTreeNode? parent,
   }) {
     var treeNode = _allNodesByID[astNode.id];
     if (treeNode == null) {
-      treeNode = _allNodesByID[astNode.id] = _FreezedClassTreeNode(
+      treeNode = _allNodesByID[astNode.id] = FreezedClassTreeNode._(
         astNode,
         parent: parent,
       );
@@ -135,20 +78,21 @@ String _generatedClassNameForConstructor(
 ///
 /// This is to represent the fact that the same Freezed class might be
 /// defined/referenced multiple times in the same file.
-class _FreezedClassTreeNode {
-  _FreezedClassTreeNode(FreezedAst initial, {_FreezedClassTreeNode? parent})
+class FreezedClassTreeNode {
+  FreezedClassTreeNode._(FreezedAst initial, {FreezedClassTreeNode? parent})
       : id = initial.id {
     addClass(initial, parent: parent);
   }
 
-  FreezedClassDefinition? userDefinedClass;
+  /// The user-defined annotated class, if any.
+  FreezedClassDefinition? get userDefinedClass => _userDefinedClass;
+  FreezedClassDefinition? _userDefinedClass;
 
   final FreezedClassID id;
 
-  final parents = <_FreezedClassTreeNode>[];
-  final children = <_FreezedClassTreeNode>[];
+  final parents = <FreezedClassTreeNode>[];
+  final children = <FreezedClassTreeNode>[];
 
-  @protected
   final _classes = <FreezedConstructorIdentifier>[];
 
   late final fields = _computeFields();
@@ -206,7 +150,7 @@ class _FreezedClassTreeNode {
   }
 
   @internal
-  void addClass(FreezedAst node, {_FreezedClassTreeNode? parent}) {
+  void addClass(FreezedAst node, {FreezedClassTreeNode? parent}) {
     if (node.id != id) {
       throw StateError('Expected ${node.id} to be $id');
     }
@@ -219,7 +163,7 @@ class _FreezedClassTreeNode {
         // There cannot be an ID conflict between two annotated classes, as they
         // would cause a compile-time error.
         // As such, a node can only be associated with a single annotated class at most.
-        userDefinedClass = node;
+        _userDefinedClass = node;
 
       case FreezedConstructorIdentifier():
         _classes.add(node);
@@ -245,9 +189,15 @@ class _FreezedClassTreeNode {
       // Search for all the siblings of this node, filtering duplicates.
 
       final mixins = <String>[];
+      final typeParameters = _classes.first.classDeclaration.typeParameters;
+      final interfaceTypeArguments =
+          typeParameters?.typeParameters.map((e) => e.name.lexeme).toList();
 
       final implementList = <String>[
-        for (final parent in parents) parent.id.className,
+        for (final parent in parents)
+          (StringBuffer(parent.id.className)
+                ..writeGenericUsage(interfaceTypeArguments ?? []))
+              .toString(),
       ];
       String? extendClause;
 
@@ -259,6 +209,11 @@ class _FreezedClassTreeNode {
       final generatedName = _generatedClassNameForConstructor(id);
 
       yield GeneratedFreezedClass(
+        // TODO check that all classes have compatible type parameters
+        // TODO normalize type parameter names to support two reference to the class with different generic names
+        typeParameters: typeParameters,
+        hasConstConstructor:
+            _classes.any((e) => e.constructor.constKeyword != null),
         name: generatedName,
         mixins: mixins,
         implementList: implementList,
@@ -270,6 +225,7 @@ class _FreezedClassTreeNode {
       // Let's generate a mixin for it.
 
       yield UserDefinedClassMixin(
+        typeParameters: userDefinedClass.declaration.typeParameters,
         annotatedClassName: userDefinedClass.declaration.name.lexeme,
         mixinName: userDefinedClass.declaration.name.lexeme.generated,
         fields: fields,

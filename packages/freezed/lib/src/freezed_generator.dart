@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
@@ -8,6 +9,8 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
+import 'package:freezed/src/freezed_ast/ast.dart';
+import 'package:freezed/src/freezed_ast/parse_ast.dart';
 import 'package:freezed/src/freezed_ast/parse_element.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
@@ -267,8 +270,10 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   FutureOr<String> generateForUnit(List<CompilationUnit> compilationUnits) {
     final buffer = StringBuffer();
 
-    for (final template in parseFreezedAst(compilationUnits)) {
-      template.run(buffer);
+    final ast = parseFreezedAst(compilationUnits);
+    for (final node in resolveFreezedElement(ast).nodes) {
+      final tasks = node.asGeneratorBacklog();
+      for (final task in tasks) task.run(buffer);
     }
 
     // final classDefinitions = compilationUnits

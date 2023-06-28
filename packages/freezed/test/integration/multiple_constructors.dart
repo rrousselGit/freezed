@@ -1,6 +1,31 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'single_class_constructor.dart';
+
 part 'multiple_constructors.freezed.dart';
+
+@freezed
+class FunctionParameter with _$FunctionParameter {
+  factory FunctionParameter(
+    int? Function(int?, {required int a, int b})? simpleNamed,
+    int? Function(int?, [int b])? simplePositional,
+    T? Function<T extends num>(T?)? generic,
+    // Contains generated types from a different library
+    List<ImplementsAliasFirst> Function(ImplementsAliasFirst a)?
+        externalGenerated,
+    // Contains generated  types from the same library
+    List<ImplementsAliasFirst> Function(ImplementsAliasFirst a)? generated,
+  ) = _FunctionParameter;
+
+  factory FunctionParameter.second(
+    int? simpleNamed(int? a, {required int b, int c})?,
+    int? simplePositional(int? a, [int b]),
+    T? generic<T extends num>(T? a)?,
+    // Eternal genereration
+    List<ImplementsAliasFirst> externalGenerated(ImplementsAliasFirst a)?,
+    List<Something> generated(Something a)?,
+  ) = _FunctionParameter2;
+}
 
 @unfreezed
 class UnfreezedImmutableUnion with _$UnfreezedImmutableUnion {

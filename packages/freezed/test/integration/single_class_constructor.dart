@@ -8,23 +8,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'single_class_constructor.freezed.dart';
 
 @freezed
-class FunctionParameter with _$FunctionParameter {
-  factory FunctionParameter(
-    int? Function(int?, {required int a, int b})? simpleNamed,
-    int? Function(int?, [int b])? simplePositional,
-    T? Function<T extends num>(T?)? generic,
-    List<ImplementsAliasFirst> Function(ImplementsAliasFirst a)? generated,
-  ) = _FunctionParameter;
-
-  factory FunctionParameter.second(
-    int? simpleNamed(int? a, {required int b, int c})?,
-    int? simplePositional(int? a, [int b]),
-    T? generic<T extends num>(T? a)?,
-    List<ImplementsAliasFirst> generated(ImplementsAliasFirst a)?,
-  ) = _FunctionParameter2;
-}
-
-@freezed
 class Dynamic with _$Dynamic {
   factory Dynamic({
     dynamic foo,

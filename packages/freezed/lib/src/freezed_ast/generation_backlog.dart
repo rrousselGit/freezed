@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:freezed/src/freezed_generator.dart' show FreezedField;
 import 'package:freezed/src/templates/prototypes.dart';
 
@@ -7,11 +8,13 @@ sealed class GeneratorBacklog {
 
 class UserDefinedClassMixin implements GeneratorBacklog {
   UserDefinedClassMixin({
+    required this.typeParameters,
     required this.annotatedClassName,
     required this.mixinName,
     required this.fields,
   });
 
+  final TypeParameterList? typeParameters;
   final String annotatedClassName;
   final String mixinName;
   final List<FreezedField> fields;
@@ -26,7 +29,7 @@ class UserDefinedClassMixin implements GeneratorBacklog {
 
     buffer.write('''
 /// The mixin for [$annotatedClassName].
-mixin $mixinName {
+mixin $mixinName${typeParameters ?? ''} {
 ''');
 
     _writeProperties(buffer);
@@ -45,6 +48,8 @@ mixin $mixinName {
 
 class GeneratedFreezedClass implements GeneratorBacklog {
   GeneratedFreezedClass({
+    required this.typeParameters,
+    required this.hasConstConstructor,
     required this.name,
     required this.mixins,
     required this.implementList,
@@ -52,7 +57,9 @@ class GeneratedFreezedClass implements GeneratorBacklog {
     required this.fields,
   });
 
+  final bool hasConstConstructor;
   final String name;
+  final TypeParameterList? typeParameters;
   final List<String> mixins;
   final List<String> implementList;
   final String? extendClause;
@@ -76,6 +83,8 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   void _writeClassPrototype(StringBuffer buffer) {
     buffer.write('class $name ');
 
+    if (typeParameters != null) buffer.write(typeParameters);
+
     buffer.writeClassPrototype(
       extend: extendClause,
       implements: implementList,
@@ -88,8 +97,13 @@ class GeneratedFreezedClass implements GeneratorBacklog {
   }
 
   void _writeConstructor(StringBuffer buffer) {
+    buffer.write('  ');
+    if (hasConstConstructor) {
+      buffer.writeln('const ');
+    }
+
     buffer
-      ..write('  $name')
+      ..write(name)
       ..writeArguments(
         optionalNamed: fields
             .where((e) => e.isOptional && e.isNamed)

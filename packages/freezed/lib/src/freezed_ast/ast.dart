@@ -35,7 +35,11 @@ class FreezedClassDefinition implements FreezedAst {
 ///
 /// They are declared through a redirecting factory constructor on a [FreezedClassDefinition].
 class FreezedConstructorIdentifier implements FreezedAst {
-  FreezedConstructorIdentifier(this.redirectConstructor, this.constructor);
+  FreezedConstructorIdentifier(
+    this.redirectConstructor,
+    this.constructor,
+    this.classDeclaration,
+  );
 
   @override
   FreezedClassID get id {
@@ -47,6 +51,7 @@ class FreezedConstructorIdentifier implements FreezedAst {
 
   final ConstructorDeclaration constructor;
   final ConstructorName redirectConstructor;
+  final ClassDeclaration classDeclaration;
 }
 
 class GeneratedField {
