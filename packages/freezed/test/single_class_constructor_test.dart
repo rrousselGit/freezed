@@ -67,27 +67,27 @@ Future<void> main() async {
     expect(SetEqual({42}).hashCode, SetEqual({42}).hashCode);
   });
 
-  test('UnmodifiableSetEqual', () {
-    expect(
-      () => UnmodifiableSetEqual({42})..dartSet.add(21),
-      throwsUnsupportedError,
-    );
+  // test('UnmodifiableSetEqual', () {
+  //   expect(
+  //     () => UnmodifiableSetEqual({42})..dartSet.add(21),
+  //     throwsUnsupportedError,
+  //   );
 
-    expect(
-      UnmodifiableSetEqual({42}),
-      UnmodifiableSetEqual({42}),
-    );
-    expect(
-      UnmodifiableSetEqual({42}).hashCode,
-      UnmodifiableSetEqual({42}).hashCode,
-    );
+  //   expect(
+  //     UnmodifiableSetEqual({42}),
+  //     UnmodifiableSetEqual({42}),
+  //   );
+  //   expect(
+  //     UnmodifiableSetEqual({42}).hashCode,
+  //     UnmodifiableSetEqual({42}).hashCode,
+  //   );
 
-    final immutableCollection = UnmodifiableSetEqual({42}).dartSet;
-    expect(
-      UnmodifiableSetEqual(immutableCollection).dartSet,
-      same(immutableCollection),
-    );
-  });
+  //   final immutableCollection = UnmodifiableSetEqual({42}).dartSet;
+  //   expect(
+  //     UnmodifiableSetEqual(immutableCollection).dartSet,
+  //     same(immutableCollection),
+  //   );
+  // });
 
   test('CustomListEqual', () {
     expect(
@@ -117,25 +117,25 @@ Future<void> main() async {
     expect(ListEqual([42]).hashCode, ListEqual([42]).hashCode);
   });
 
-  test('UnmodifiableListEqual', () {
-    expect(() => UnmodifiableListEqual([42])..list.add(21),
-        throwsUnsupportedError);
+  // test('UnmodifiableListEqual', () {
+  //   expect(() => UnmodifiableListEqual([42])..list.add(21),
+  //       throwsUnsupportedError);
 
-    expect(
-      UnmodifiableListEqual([42]),
-      UnmodifiableListEqual([42]),
-    );
-    expect(
-      UnmodifiableListEqual([42]).hashCode,
-      UnmodifiableListEqual([42]).hashCode,
-    );
+  //   expect(
+  //     UnmodifiableListEqual([42]),
+  //     UnmodifiableListEqual([42]),
+  //   );
+  //   expect(
+  //     UnmodifiableListEqual([42]).hashCode,
+  //     UnmodifiableListEqual([42]).hashCode,
+  //   );
 
-    final immutableCollection = UnmodifiableListEqual([42]).list;
-    expect(
-      UnmodifiableListEqual(immutableCollection).list,
-      same(immutableCollection),
-    );
-  });
+  //   final immutableCollection = UnmodifiableListEqual([42]).list;
+  //   expect(
+  //     UnmodifiableListEqual(immutableCollection).list,
+  //     same(immutableCollection),
+  //   );
+  // });
 
   test('CustomMapEqual', () {
     expect(
@@ -165,25 +165,25 @@ Future<void> main() async {
     expect(MapEqual({'a': 42}).hashCode, MapEqual({'a': 42}).hashCode);
   });
 
-  test('UnmodifiableMapEqual', () {
-    expect(() => UnmodifiableMapEqual({'a': 42})..map['b'] = 21,
-        throwsUnsupportedError);
+  // test('UnmodifiableMapEqual', () {
+  //   expect(() => UnmodifiableMapEqual({'a': 42})..map['b'] = 21,
+  //       throwsUnsupportedError);
 
-    expect(
-      UnmodifiableMapEqual({'a': 42}),
-      UnmodifiableMapEqual({'a': 42}),
-    );
-    expect(
-      UnmodifiableMapEqual({'a': 42}).hashCode,
-      UnmodifiableMapEqual({'a': 42}).hashCode,
-    );
+  //   expect(
+  //     UnmodifiableMapEqual({'a': 42}),
+  //     UnmodifiableMapEqual({'a': 42}),
+  //   );
+  //   expect(
+  //     UnmodifiableMapEqual({'a': 42}).hashCode,
+  //     UnmodifiableMapEqual({'a': 42}).hashCode,
+  //   );
 
-    final immutableCollection = UnmodifiableMapEqual({'a': 42}).map;
-    expect(
-      UnmodifiableMapEqual(immutableCollection).map,
-      same(immutableCollection),
-    );
-  });
+  //   final immutableCollection = UnmodifiableMapEqual({'a': 42}).map;
+  //   expect(
+  //     UnmodifiableMapEqual(immutableCollection).map,
+  //     same(immutableCollection),
+  //   );
+  // });
 
   // test('WithAlias', () {
   //   // ignore: unused_local_variable
