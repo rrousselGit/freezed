@@ -157,22 +157,15 @@ class _FreezedWhenOptionsConverter
 
   @override
   FreezedWhenOptions? fromJson(Object? json) {
-    switch (json) {
-      case true || 'all':
-        return FreezedWhenOptions.all;
-      case false || 'none':
-        return FreezedWhenOptions.none;
-      case null:
-        return null;
-      case final Map whenOptions:
-        return FreezedWhenOptions.fromJson(whenOptions);
-      default:
-        throw ArgumentError.value(
-          json,
-          'json',
-          'Expected a bool or a Map, got ${json.runtimeType}',
-        );
-    }
+    if (json == true || json == 'all') return FreezedWhenOptions.all;
+    if (json == false || json == 'none') return FreezedWhenOptions.none;
+    if (json == null) return null;
+    if (json is Map) return FreezedWhenOptions.fromJson(json);
+    throw ArgumentError.value(
+      json,
+      'json',
+      'Expected a bool, \"all\", \"none\" or a Map, got ${json.runtimeType}',
+    );
   }
 
   @override
@@ -185,22 +178,15 @@ class _FreezedMapOptionsConverter
 
   @override
   FreezedMapOptions? fromJson(Object? json) {
-    switch (json) {
-      case true || 'all':
-        return FreezedMapOptions.all;
-      case false || 'none':
-        return FreezedMapOptions.none;
-      case null:
-        return null;
-      case final Map mapOptions:
-        return FreezedMapOptions.fromJson(mapOptions);
-      default:
-        throw ArgumentError.value(
-          json,
-          'json',
-          'Expected a bool or a Map, got ${json.runtimeType}',
-        );
-    }
+    if (json == true || json == 'all') return FreezedMapOptions.all;
+    if (json == false || json == 'none') return FreezedMapOptions.none;
+    if (json == null) return null;
+    if (json is Map) return FreezedMapOptions.fromJson(json);
+    throw ArgumentError.value(
+      json,
+      'json',
+      'Expected a bool, \"all\", \"none\" or a Map, got ${json.runtimeType}',
+    );
   }
 
   @override
