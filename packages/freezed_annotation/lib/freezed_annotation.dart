@@ -151,6 +151,62 @@ class FreezedWhenOptions {
   final bool? maybeWhen;
 }
 
+class _FreezedWhenOptionsConverter
+    implements JsonConverter<FreezedWhenOptions?, Object?> {
+  const _FreezedWhenOptionsConverter();
+
+  @override
+  FreezedWhenOptions? fromJson(Object? json) {
+    switch (json) {
+      case true || 'all':
+        return FreezedWhenOptions.all;
+      case false || 'none':
+        return FreezedWhenOptions.none;
+      case null:
+        return null;
+      case final Map whenOptions:
+        return FreezedWhenOptions.fromJson(whenOptions);
+      default:
+        throw ArgumentError.value(
+          json,
+          'json',
+          'Expected a bool or a Map, got ${json.runtimeType}',
+        );
+    }
+  }
+
+  @override
+  Object? toJson(FreezedWhenOptions? object) => null;
+}
+
+class _FreezedMapOptionsConverter
+    implements JsonConverter<FreezedMapOptions?, Object?> {
+  const _FreezedMapOptionsConverter();
+
+  @override
+  FreezedMapOptions? fromJson(Object? json) {
+    switch (json) {
+      case true || 'all':
+        return FreezedMapOptions.all;
+      case false || 'none':
+        return FreezedMapOptions.none;
+      case null:
+        return null;
+      case final Map mapOptions:
+        return FreezedMapOptions.fromJson(mapOptions);
+      default:
+        throw ArgumentError.value(
+          json,
+          'json',
+          'Expected a bool or a Map, got ${json.runtimeType}',
+        );
+    }
+  }
+
+  @override
+  Object? toJson(FreezedMapOptions? object) => null;
+}
+
 /// {@template freezed_annotation.freezed}
 /// Flags a class as needing to be processed by Freezed and allows passing options.
 /// {@endtemplate}
@@ -436,12 +492,14 @@ class Freezed {
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// If that value is null too, defaults to [FreezedMapOptions.all].
+  @_FreezedMapOptionsConverter()
   final FreezedMapOptions? map;
 
   /// Options for customizing the generation of `when` functions
   ///
   /// If null, picks up the default values from the project's `build.yaml`
   /// If that value is null too, defaults to [FreezedWhenOptions.all].
+  @_FreezedWhenOptionsConverter()
   final FreezedWhenOptions? when;
 }
 
