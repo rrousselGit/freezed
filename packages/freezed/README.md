@@ -1184,6 +1184,13 @@ targets:
           # Disable the generation of copyWith/== for the entire project
           copy_with: false
           equal: false
+          # `when` and `map` can be enabled/disabled entirely by setting them to `true`/`false`
+          map: false
+          # We can also enable/disable specific variants of `when`/`map` by setting them to `true`/`false`:
+          when: 
+            when: true
+            maybe_when: true
+            when_or_null: false
 ```
 
 # Utilities
