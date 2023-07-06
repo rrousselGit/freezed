@@ -161,6 +161,7 @@ class _FreezedWhenOptionsConverter
     if (json == false || json == 'none') return FreezedWhenOptions.none;
     if (json == null) return null;
     if (json is Map) return FreezedWhenOptions.fromJson(json);
+
     throw ArgumentError.value(
       json,
       'json',
