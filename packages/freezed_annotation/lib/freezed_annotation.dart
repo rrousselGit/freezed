@@ -182,6 +182,7 @@ class _FreezedMapOptionsConverter
     if (json == false || json == 'none') return FreezedMapOptions.none;
     if (json == null) return null;
     if (json is Map) return FreezedMapOptions.fromJson(json);
+
     throw ArgumentError.value(
       json,
       'json',
