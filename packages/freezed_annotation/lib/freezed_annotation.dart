@@ -192,7 +192,7 @@ class _FreezedMapOptionsConverter
   }
 
   @override
-  Object? toJson(FreezedMapOptions? object) => null;
+  Object? toJson(FreezedMapOptions? object) => throw UnimplementedError();
 }
 
 /// {@template freezed_annotation.freezed}
