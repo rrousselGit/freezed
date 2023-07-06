@@ -155,9 +155,7 @@ void main() {
 
     test('.fromJson({map: x})', () {
       expect(Freezed.fromJson({'map': false}).map, FreezedMapOptions.none);
-      expect(Freezed.fromJson({'map': 'none'}).map, FreezedMapOptions.none);
       expect(Freezed.fromJson({'map': true}).map, FreezedMapOptions.all);
-      expect(Freezed.fromJson({'map': 'all'}).map, FreezedMapOptions.all);
 
       expect(
         Freezed.fromJson({
@@ -188,9 +186,7 @@ void main() {
 
     test('.fromJson({when: x})', () {
       expect(Freezed.fromJson({'when': false}).when, FreezedWhenOptions.none);
-      expect(Freezed.fromJson({'when': 'none'}).when, FreezedWhenOptions.none);
       expect(Freezed.fromJson({'when': true}).when, FreezedWhenOptions.all);
-      expect(Freezed.fromJson({'when': 'all'}).when, FreezedWhenOptions.all);
 
       expect(
         Freezed.fromJson({
