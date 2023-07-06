@@ -152,6 +152,72 @@ void main() {
       expect(defaultValue.when, isNull);
       expect(defaultValue.makeCollectionsUnmodifiable, isTrue);
     });
+
+    test('.fromJson({map: x})', () {
+      expect(Freezed.fromJson({'map': false}).map, FreezedMapOptions.none);
+      expect(Freezed.fromJson({'map': 'none'}).map, FreezedMapOptions.none);
+      expect(Freezed.fromJson({'map': true}).map, FreezedMapOptions.all);
+      expect(Freezed.fromJson({'map': 'all'}).map, FreezedMapOptions.all);
+
+      expect(
+        Freezed.fromJson({
+          'map': {
+            'map': true,
+            'maybe_map': false,
+            'map_or_null': true,
+          }
+        }).map,
+        isA<FreezedMapOptions>()
+            .having(
+              (e) => e.map,
+              'map',
+              isTrue,
+            )
+            .having(
+              (e) => e.maybeMap,
+              'maybeMap',
+              isFalse,
+            )
+            .having(
+              (e) => e.mapOrNull,
+              'mapOrNull',
+              isTrue,
+            ),
+      );
+    });
+
+    test('.fromJson({when: x})', () {
+      expect(Freezed.fromJson({'when': false}).when, FreezedWhenOptions.none);
+      expect(Freezed.fromJson({'when': 'none'}).when, FreezedWhenOptions.none);
+      expect(Freezed.fromJson({'when': true}).when, FreezedWhenOptions.all);
+      expect(Freezed.fromJson({'when': 'all'}).when, FreezedWhenOptions.all);
+
+      expect(
+        Freezed.fromJson({
+          'when': {
+            'when': true,
+            'maybe_when': false,
+            'when_or_null': true,
+          }
+        }).when,
+        isA<FreezedWhenOptions>()
+            .having(
+              (e) => e.when,
+              'when',
+              isTrue,
+            )
+            .having(
+              (e) => e.maybeWhen,
+              'maybeWhen',
+              isFalse,
+            )
+            .having(
+              (e) => e.whenOrNull,
+              'whenOrNull',
+              isTrue,
+            ),
+      );
+    });
   });
 
   test('unfreezed', () {
