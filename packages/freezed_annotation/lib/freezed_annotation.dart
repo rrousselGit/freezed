@@ -151,6 +151,50 @@ class FreezedWhenOptions {
   final bool? maybeWhen;
 }
 
+class _FreezedWhenOptionsConverter
+    implements JsonConverter<FreezedWhenOptions?, Object?> {
+  const _FreezedWhenOptionsConverter();
+
+  @override
+  FreezedWhenOptions? fromJson(Object? json) {
+    if (json == true) return FreezedWhenOptions.all;
+    if (json == false) return FreezedWhenOptions.none;
+    if (json == null) return null;
+    if (json is Map) return FreezedWhenOptions.fromJson(json);
+
+    throw ArgumentError.value(
+      json,
+      'json',
+      'Expected a bool a Map, got ${json.runtimeType}',
+    );
+  }
+
+  @override
+  Object? toJson(FreezedWhenOptions? object) => null;
+}
+
+class _FreezedMapOptionsConverter
+    implements JsonConverter<FreezedMapOptions?, Object?> {
+  const _FreezedMapOptionsConverter();
+
+  @override
+  FreezedMapOptions? fromJson(Object? json) {
+    if (json == true) return FreezedMapOptions.all;
+    if (json == false) return FreezedMapOptions.none;
+    if (json == null) return null;
+    if (json is Map) return FreezedMapOptions.fromJson(json);
+
+    throw ArgumentError.value(
+      json,
+      'json',
+      'Expected a bool or a Map, got ${json.runtimeType}',
+    );
+  }
+
+  @override
+  Object? toJson(FreezedMapOptions? object) => throw UnimplementedError();
+}
+
 /// {@template freezed_annotation.freezed}
 /// Flags a class as needing to be processed by Freezed and allows passing options.
 /// {@endtemplate}
@@ -436,12 +480,14 @@ class Freezed {
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// If that value is null too, defaults to [FreezedMapOptions.all].
+  @_FreezedMapOptionsConverter()
   final FreezedMapOptions? map;
 
   /// Options for customizing the generation of `when` functions
   ///
   /// If null, picks up the default values from the project's `build.yaml`
   /// If that value is null too, defaults to [FreezedWhenOptions.all].
+  @_FreezedWhenOptionsConverter()
   final FreezedWhenOptions? when;
 }
 

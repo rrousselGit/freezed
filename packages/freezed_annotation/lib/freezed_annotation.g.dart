@@ -30,12 +30,8 @@ Freezed _$FreezedFromJson(Map json) => Freezed(
       toStringOverride: json['to_string_override'] as bool?,
       fromJson: json['from_json'] as bool?,
       toJson: json['to_json'] as bool?,
-      map: json['map'] == null
-          ? null
-          : FreezedMapOptions.fromJson(json['map'] as Map),
-      when: json['when'] == null
-          ? null
-          : FreezedWhenOptions.fromJson(json['when'] as Map),
+      map: const _FreezedMapOptionsConverter().fromJson(json['map']),
+      when: const _FreezedWhenOptionsConverter().fromJson(json['when']),
       makeCollectionsUnmodifiable:
           json['make_collections_unmodifiable'] as bool? ?? true,
       addImplicitFinal: json['add_implicit_final'] as bool? ?? true,
