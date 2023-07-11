@@ -182,6 +182,9 @@ void main() {
               isTrue,
             ),
       );
+
+      expect(
+          () => Freezed.fromJson({'map': 42}), throwsA(isA<ArgumentError>()));
     });
 
     test('.fromJson({when: x})', () {
@@ -213,6 +216,9 @@ void main() {
               isTrue,
             ),
       );
+
+      expect(
+          () => Freezed.fromJson({'when': 42}), throwsA(isA<ArgumentError>()));
     });
   });
 
