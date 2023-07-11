@@ -1,3 +1,7 @@
+## Unreleased minor
+
+- Allow enabling/disabling all `when`/`map` variants at once (thanks to @gaetschwartz)
+
 ## 2.3.5 - 2023-06-05
 
 - Fix regression in analyzer 5.13.0 (thanks to @SunlightBro)
