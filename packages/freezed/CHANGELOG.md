@@ -1,4 +1,4 @@
-## Unreleased minor
+## 2.4.0 - 2023-07-11
 
 - Allow enabling/disabling all `when`/`map` variants at once (thanks to @gaetschwartz)
 
