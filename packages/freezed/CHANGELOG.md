@@ -1,3 +1,7 @@
+## 2.4.1 - 2023-07-12
+
+- `freezed_annotation` upgraded to `2.3.0`
+
 ## 2.4.0 - 2023-07-11
 
 - Allow enabling/disabling all `when`/`map` variants at once (thanks to @gaetschwartz)

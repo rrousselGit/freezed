@@ -1,28 +1,28 @@
-# Unreleased minor
+## 2.4.1 - 2023-07-12
 
 - The generic type of `@With`/`@Implements` now defaults to `Object?` instead of `dynamic`
 - Allow enabling/disabling all `when`/`map` variants at once (thanks to @gaetschwartz)
 
-# 2.2.0
+## 2.2.0
 
 - Re-introduced `@With.fromString` and `@Implements.fromString` to allow unions
   to implement generic types. (thanks to @rorystephenson)
 
-# 2.1.0
+## 2.1.0
 
 - Add support for de/serializing generic Freezed classes (Thanks to @TimWhiting)
 
-# 2.0.3
+## 2.0.3
 
 – fix: build.yaml decoding crash
 
-# 2.0.1
+## 2.0.1
 
 - Fixed a bug where the generated when/map methods were potentially invalid when
   using default values
 - Fixed a bug where when/map methods were generated even when not necessary
 
-# 2.0.0
+## 2.0.0
 
 - **Breaking**: freezed_annotation no-longer exports the entire package:collection
 - **Breaking** Removed `@Freezed(maybeMap: )` & `@Freezed(maybeWhen: )` in favor of a separate:
@@ -34,15 +34,15 @@
 - Feat: Add screaming snake union case type (#617) (thanks to @zbarbuto)
 - Added `@unfreezed` as a variant to `@freezed`, for mutable classes
 
-# 1.1.0
+## 1.1.0
 
 Added support for disabling the generation of `maybeMap`/`maybeWhen` (thanks to @Lyokone)
 
-# 1.0.0
+## 1.0.0
 
 freezed_annotation is now stable
 
-# 0.15.0
+## 0.15.0
 
 - **Breaking** Changed the syntax for `@With` and `@Implements` to use a generic annotation.
   Before:
@@ -59,19 +59,19 @@ freezed_annotation is now stable
   @With<Generic<int>>()
   ```
 
-# 0.14.3
+## 0.14.3
 
 Upgraded to support last json_annotation version
 
-# 0.14.2
+## 0.14.2
 
 - Added the ability to specify a fallback constructor when deserializing unions (thanks to @Brazol)
 
-# 0.14.1
+## 0.14.1
 
 - Added the ability to customise the JSON value of a union. See https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors for more information (Thanks to @ookami-kb)
 
-# 0.14.0
+## 0.14.0
 
 - Stable null safety release
 - removed `@nullable`.
@@ -112,7 +112,7 @@ Upgraded to support last json_annotation version
   }
   ```
 
-# 0.13.0-nullsafety.0
+## 0.13.0-nullsafety.0
 
 - Migrated to null safety
 - removed `@nullable`.
@@ -153,7 +153,7 @@ Upgraded to support last json_annotation version
   }
   ```
 
-# 0.12.0
+## 0.12.0
 
 - Added `Assert` decorator to generate `assert(...)` statements on Freezed classes:
 
@@ -173,7 +173,7 @@ Upgraded to support last json_annotation version
 
   See also https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors
 
-# 0.11.0
+## 0.11.0
 
 - Added `@With` and `@Implements` decorators to allow only a specific constructor
   of a union type to implement an interface:
@@ -190,26 +190,26 @@ Upgraded to support last json_annotation version
 
   Thanks to @long1eu~
 
-# 0.7.1
+## 0.7.1
 
 Minor change to `@Default` to fix an issue with complex default values.
 
-# 0.7.0
+## 0.7.0
 
 Add `@Default` annotation
 
-# 0.6.0
+## 0.6.0
 
 Added `@late` annotation.
 
-# 0.4.0
+## 0.4.0
 
 Added a `@nullable` annotation.
 
-# 0.3.1
+## 0.3.1
 
 Change version of `collection` to work with `flutter_test`.
 
-# 0.3.0
+## 0.3.0
 
 Initial release of the annotation package.
