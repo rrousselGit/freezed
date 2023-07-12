@@ -1,6 +1,5 @@
 name: freezed_lint
 version: 0.0.1-dev
-publish_to: none
 environment:
   sdk: ">=2.16.0 <3.0.0"
 
