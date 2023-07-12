@@ -1,6 +1,7 @@
 # Unreleased minor
 
-The generic type of `@With`/`@Implements` now defaults to `Object?` instead of `dynamic`
+- The generic type of `@With`/`@Implements` now defaults to `Object?` instead of `dynamic`
+- Allow enabling/disabling all `when`/`map` variants at once (thanks to @gaetschwartz)
 
 # 2.2.0
 
