@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Support analyzer 6.0.0
+
 ## 2.4.1 - 2023-07-12
 
 - `freezed_annotation` upgraded to `2.3.0`
