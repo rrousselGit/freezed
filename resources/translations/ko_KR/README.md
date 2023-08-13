@@ -380,7 +380,7 @@ Company company = Company(name: 'Google', director: Director(assistant: null));
 Company newCompany = company.copyWith.director.assistant(name: 'John');
 ```
 
-말도 안돼는 이야기이죠. 의미 없습니다.
+말도 안 되는 이야기이죠. 의미 없습니다.
 처음부터 assistant가 없으면 assistant의 이름을 변경할 수 없습니다.
 
 이 상황에서 `company.copyWith.director.assistant`는 `null`을 반환하여 코드를 컴파일하지 못하게 합니다.
@@ -655,7 +655,7 @@ class Example with _$Example {
 
 #### When
 
-[when] 메서드는 '구조 분해(destructing)'를 사용한 패턴 비교와 동일합니다.  
+[when] 메서드는 '구조 분해(destructuring)'를 사용한 패턴 비교와 동일합니다.  
 when 메서드의 프로토타입은 생성자가 정의된 방식에 따라 다릅니다.
 
 아래의 예시를 보면
