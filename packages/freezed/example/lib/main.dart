@@ -114,6 +114,6 @@ void main() {
   // COMPILE ERROR
   // print(example.age);
   // print(example.population);
-  final temp = WithDoubleQuotes();
+  final temp = const WithDoubleQuotes();
   print(temp);
 }

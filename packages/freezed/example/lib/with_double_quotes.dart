@@ -4,6 +4,6 @@ part 'with_double_quotes.freezed.dart';
 
 @freezed
 class WithDoubleQuotes with _$WithDoubleQuotes {
-  @Assert('false', "This assertion isn't really useful!")
+  @Assert('true', "This assertion isn't really useful!")
   const factory WithDoubleQuotes() = _WithDoubleQuotes;
 }
