@@ -1,4 +1,3 @@
-import 'package:example/with_double_quotes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -114,6 +113,4 @@ void main() {
   // COMPILE ERROR
   // print(example.age);
   // print(example.population);
-  final temp = const WithDoubleQuotes();
-  print(temp);
 }
