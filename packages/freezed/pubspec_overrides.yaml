@@ -11,3 +11,5 @@ dependency_overrides:
   # expect_error 1.0.4 => pubspec 2.0.1 => uri 1.0.0 => quiver 3.0.0
   # freezed requires quiver: ^3.2.0
   quiver: ^3.2.0
+  # watcher 1.0.0 extends, implements, or mixens sealed class 'FileSystemEvent'
+  watcher: ^1.1.0
