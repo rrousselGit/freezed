@@ -9,3 +9,5 @@ dependency_overrides:
   # build_runner 2.3.3 => pub_semver 2.0.0
   # freezed requires pub_semver: ^2.1.3
   pub_semver: ^2.1.3
+  # watcher 1.0.0 extends, implements, or mixens sealed class 'FileSystemEvent'
+  watcher: ^1.1.0
