@@ -1200,7 +1200,7 @@ targets:
 The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed) extension might help you work faster with freezed. For example :
 
 - Use <kbd>Ctrl+Shift+B</kbd> (<kbd>Cmd+Shift+B</kbd> on Mac) to quickly build using `build_runner`.
-- Quickly generate a Freezed class by using <kbd>Ctrl+Shift+P</kbd> > `Generate Freezed class`.
+- Quickly generate a Freezed class by using <kbd>Ctrl+Shift+P</kbd> (<kbd>Cmd+Shift+P</kbd> on Mac)> `Generate Freezed class`.
 
 ### Freezed extension for IntelliJ/Android Studio
 
