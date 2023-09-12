@@ -121,12 +121,6 @@ To run the code generator, execute the following command:
 dart run build_runner build
 ```
 
-For Flutter projects, you can also run:
-
-```
-flutter pub run build_runner build
-```
-
 Note that like most code-generators, [Freezed] will need you to both import the annotation ([freezed_annotation])
 and use the `part` keyword on the top of your files.
 
