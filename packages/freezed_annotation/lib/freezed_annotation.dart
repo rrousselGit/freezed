@@ -204,7 +204,7 @@ class _FreezedMapOptionsConverter
   anyMap: true,
 )
 class Freezed {
-  /// {@template freezed_annotation.freezed}
+  /// {@macro freezed_annotation.freezed}
   const Freezed({
     this.unionKey,
     this.unionValueCase,
