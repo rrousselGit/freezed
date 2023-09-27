@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/tools/type.dart';
@@ -26,11 +27,11 @@ class Concrete {
   final CopyWith? copyWith;
 
   String get concreteName {
-    return '_\$${constructor.redirectedName}';
+    return '_\$${constructor.redirectedName.public}Impl';
   }
 
   String get nonPrivateConcreteName {
-    return '\$${constructor.redirectedName}';
+    return '\$${constructor.redirectedName.public}Impl';
   }
 
   late final bool _hasUnionKeyProperty =

@@ -31,7 +31,7 @@ class Union with _$Union {
 }
 
 @freezed
-class _Private with _$_Private {
+class _Private with _$Private {
   factory _Private(Assistant assistant) = __Private;
 }
 

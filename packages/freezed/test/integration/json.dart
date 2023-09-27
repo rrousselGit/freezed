@@ -12,6 +12,11 @@ class NoWhen with _$NoWhen {
 
 abstract class Base {}
 
+const unionMixin = _$UnionJsonWithExtends;
+const unionFirstBase = _$UnionJsonFirstWithExtendsImpl;
+const unionSecondBase = _$UnionJsonSecondWithExtendsImpl;
+const unionJson = _$UnionJsonWithExtendsFromJson;
+
 @freezed
 class UnionJsonWithExtends extends Base with _$UnionJsonWithExtends {
   UnionJsonWithExtends._();
@@ -22,6 +27,27 @@ class UnionJsonWithExtends extends Base with _$UnionJsonWithExtends {
 
   factory UnionJsonWithExtends.fromJson(Map<String, dynamic> json) =>
       _$UnionJsonWithExtendsFromJson(json);
+}
+
+const pUnionMixin = _$PUnionJsonWithExtends;
+const pUnionFirstBase = _$PUnionJsonFirstWithExtendsImpl;
+const pUnionSecondBase = _$PUnionJsonSecondWithExtendsImpl;
+const pUnionJson = _$PUnionJsonWithExtendsFromJson;
+
+@freezed
+class _PUnionJsonWithExtends extends Base with _$PUnionJsonWithExtends {
+  _PUnionJsonWithExtends._();
+
+  // ignore: unused_element
+  factory _PUnionJsonWithExtends.first({int? first}) =
+      _PUnionJsonFirstWithExtends;
+  // ignore: unused_element
+  factory _PUnionJsonWithExtends.second({int? second}) =
+      _PUnionJsonSecondWithExtends;
+
+  // ignore: unused_element
+  factory _PUnionJsonWithExtends.fromJson(Map<String, dynamic> json) =>
+      _$PUnionJsonWithExtendsFromJson(json);
 }
 
 // regression test for https://github.com/rrousselGit/freezed/issues/409
