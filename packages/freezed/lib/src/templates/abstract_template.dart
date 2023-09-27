@@ -1,3 +1,4 @@
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 
 import 'copy_with.dart';
@@ -26,7 +27,7 @@ class Abstract {
 
     return '''
 /// @nodoc
-mixin _\$${data.name}${data.genericsDefinitionTemplate} {
+mixin _\$${data.name.public}${data.genericsDefinitionTemplate} {
 
 $abstractProperties
 $_when

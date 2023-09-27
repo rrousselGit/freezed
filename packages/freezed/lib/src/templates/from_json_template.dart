@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 
 import '../models.dart';
@@ -61,7 +62,7 @@ class FromJson {
     }
 
     return '''
-$name$genericParameters _\$${name}FromJson$genericDefinitions(Map<String, dynamic> json${fromJsonParameters(genericParameters, genericArgumentFactories)}) {
+$name$genericParameters _\$${name.public}FromJson$genericDefinitions(Map<String, dynamic> json${fromJsonParameters(genericParameters, genericArgumentFactories)}) {
 $content
 }
 ''';

@@ -1,3 +1,7 @@
+## Unreleased fix
+
+- Fix lowercase warning on generated objects.
+
 ## 2.4.2 - 2023-08-03
 
 - Support analyzer 6.0.0

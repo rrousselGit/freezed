@@ -31,6 +31,13 @@ import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
 import 'tools/recursive_import_locator.dart';
 
+extension StringX on String {
+  String get public {
+    if (startsWith('_')) return substring(1);
+    return this;
+  }
+}
+
 extension on DartObject {
   T decodeField<T>(
     String fieldName, {
@@ -716,7 +723,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         copyWith: !data.generateCopyWith
             ? null
             : CopyWith(
-                clonedClassName: '_\$${constructor.redirectedName}',
+                clonedClassName: '_\$${constructor.redirectedName.public}Impl',
                 cloneableProperties: constructor.impliedProperties,
                 readableProperties: constructor.impliedProperties,
                 deepCloneableProperties: constructor.cloneableProperties,
