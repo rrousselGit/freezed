@@ -1,4 +1,4 @@
-## Unreleased fix
+## 2.4.3 - 2023-09-27
 
 - Fix lowercase warning on generated objects.
 
