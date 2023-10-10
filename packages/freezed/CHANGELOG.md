@@ -1,3 +1,7 @@
+## Unreleased fix
+
+Loosened `analyzer` version to support both ^5.13.0 and ^6.0.0 (thanks to @SunlightBro)
+
 ## 2.4.4 - 2023-10-10
 
 Do not throw on unresolved annotations.
