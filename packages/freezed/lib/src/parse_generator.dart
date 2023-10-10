@@ -25,8 +25,8 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
     var hasGeneratedGlobalCode = false;
 
-    for (var element
-        in library.topLevelElements.where(typeChecker.hasAnnotationOf)) {
+    for (var element in library.topLevelElements.where(
+        (e) => typeChecker.hasAnnotationOf(e, throwOnUnresolved: false))) {
       if (!hasGeneratedGlobalCode) {
         hasGeneratedGlobalCode = true;
         for (final value
