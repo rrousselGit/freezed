@@ -1,4 +1,4 @@
-## Unreleased fix
+## 2.4.4 - 2023-10-10
 
 Do not throw on unresolved annotations.
 
