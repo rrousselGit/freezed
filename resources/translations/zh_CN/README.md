@@ -76,22 +76,22 @@ For a Flutter project:
 
 ```console
 flutter pub add freezed_annotation
-flutter pub add --dev build_runner
-flutter pub add --dev freezed
+flutter pub add dev:build_runner
+flutter pub add dev:freezed
 # 如果你要使用 freezed 来生成 fromJson/toJson，则执行：
 flutter pub add json_annotation
-flutter pub add --dev json_serializable
+flutter pub add dev:json_serializable
 ```
 
 对于 Dart 项目:
 
 ```console
 dart pub add freezed_annotation
-dart pub add --dev build_runner
-dart pub add --dev freezed
+dart pub add dev:build_runner
+dart pub add dev:freezed
 # 如果你要使用 freezed 来生成 fromJson/toJson，则执行：
 dart pub add json_annotation
-dart pub add --dev json_serializable
+dart pub add dev:json_serializable
 ```
 
 以上代码安装了三个包:
