@@ -7,8 +7,8 @@ Written with [custom_lint] to help with miss-typed/configured freezed classes.
 Add freezed_lint and custom_lint to your projects `pubspec.yaml`.
 
 ```console
-flutter pub add --dev custom_lint
-flutter pub add --dev freezed_lint
+flutter pub add dev:custom_lint
+flutter pub add dev:freezed_lint
 ```
 
 And add custom_lint as a plugin in the `analysis_options.yaml`

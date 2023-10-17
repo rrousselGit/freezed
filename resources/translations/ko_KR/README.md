@@ -76,22 +76,22 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
 
 ```console
 flutter pub add freezed_annotation
-flutter pub add --dev build_runner
-flutter pub add --dev freezed
+flutter pub add dev:build_runner
+flutter pub add dev:freezed
 # fromJson/toJson 생성도 사용하려면 아래를 추가하세요:
 flutter pub add json_annotation
-flutter pub add --dev json_serializable
+flutter pub add dev:json_serializable
 ```
 
 만약에 `Dart`프로젝트를 생성하는 경우에는 아래와 같이 진행합니다.
 
 ```console
 dart pub add freezed_annotation
-dart pub add --dev build_runner
-dart pub add --dev freezed
+dart pub add dev:build_runner
+dart pub add dev:freezed
 # fromJson/toJson 생성도 사용하려면 아래를 추가하세요:
 dart pub add json_annotation
-dart pub add --dev json_serializable
+dart pub add dev:json_serializable
 ```
 
 이렇게 하면 3개의 패키지(freezed_annotation, build_runner, freezed)가 설치됩니다.
