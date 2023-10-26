@@ -555,7 +555,7 @@ class Default {
 }
 
 /// Marks a union type to implement the interface [stringType] or type T.
-/// In the case below `City` will implement `AdministrativeArea<Hoouse>`.
+/// In the case below `City` will implement `AdministrativeArea<House>`.
 /// ```dart
 /// @freezed
 /// abstract class Example with _$Example {
@@ -567,7 +567,7 @@ class Default {
 /// ```
 ///
 /// If interface is generic the `Implements.fromString` constructor must be used
-/// otherwise freezed will generate correct codee but dart will throw a load
+/// otherwise freezed will generate correct code but dart will throw a load
 /// error on the annotation declaration.
 ///
 /// Note: You need to make sure that you comply with the interface requirements
