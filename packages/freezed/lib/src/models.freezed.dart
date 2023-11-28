@@ -88,11 +88,12 @@ class _$DeepCloneablePropertyCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_DeepCloneablePropertyCopyWith<$Res>
+abstract class _$$DeepCloneablePropertyImplCopyWith<$Res>
     implements $DeepCloneablePropertyCopyWith<$Res> {
-  factory _$$_DeepCloneablePropertyCopyWith(_$_DeepCloneableProperty value,
-          $Res Function(_$_DeepCloneableProperty) then) =
-      __$$_DeepCloneablePropertyCopyWithImpl<$Res>;
+  factory _$$DeepCloneablePropertyImplCopyWith(
+          _$DeepCloneablePropertyImpl value,
+          $Res Function(_$DeepCloneablePropertyImpl) then) =
+      __$$DeepCloneablePropertyImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -104,11 +105,12 @@ abstract class _$$_DeepCloneablePropertyCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_DeepCloneablePropertyCopyWithImpl<$Res>
-    extends _$DeepCloneablePropertyCopyWithImpl<$Res, _$_DeepCloneableProperty>
-    implements _$$_DeepCloneablePropertyCopyWith<$Res> {
-  __$$_DeepCloneablePropertyCopyWithImpl(_$_DeepCloneableProperty _value,
-      $Res Function(_$_DeepCloneableProperty) _then)
+class __$$DeepCloneablePropertyImplCopyWithImpl<$Res>
+    extends _$DeepCloneablePropertyCopyWithImpl<$Res,
+        _$DeepCloneablePropertyImpl>
+    implements _$$DeepCloneablePropertyImplCopyWith<$Res> {
+  __$$DeepCloneablePropertyImplCopyWithImpl(_$DeepCloneablePropertyImpl _value,
+      $Res Function(_$DeepCloneablePropertyImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -120,7 +122,7 @@ class __$$_DeepCloneablePropertyCopyWithImpl<$Res>
     Object? nullable = null,
     Object? genericParameters = null,
   }) {
-    return _then(_$_DeepCloneableProperty(
+    return _then(_$DeepCloneablePropertyImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -147,8 +149,8 @@ class __$$_DeepCloneablePropertyCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_DeepCloneableProperty implements _DeepCloneableProperty {
-  _$_DeepCloneableProperty(
+class _$DeepCloneablePropertyImpl implements _DeepCloneableProperty {
+  _$DeepCloneablePropertyImpl(
       {required this.name,
       required this.typeName,
       required this.type,
@@ -175,7 +177,7 @@ class _$_DeepCloneableProperty implements _DeepCloneableProperty {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DeepCloneableProperty &&
+            other is _$DeepCloneablePropertyImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.typeName, typeName) ||
                 other.typeName == typeName) &&
@@ -193,9 +195,9 @@ class _$_DeepCloneableProperty implements _DeepCloneableProperty {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DeepCloneablePropertyCopyWith<_$_DeepCloneableProperty> get copyWith =>
-      __$$_DeepCloneablePropertyCopyWithImpl<_$_DeepCloneableProperty>(
-          this, _$identity);
+  _$$DeepCloneablePropertyImplCopyWith<_$DeepCloneablePropertyImpl>
+      get copyWith => __$$DeepCloneablePropertyImplCopyWithImpl<
+          _$DeepCloneablePropertyImpl>(this, _$identity);
 }
 
 abstract class _DeepCloneableProperty implements DeepCloneableProperty {
@@ -205,7 +207,7 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
           required final String type,
           required final bool nullable,
           required final GenericsParameterTemplate genericParameters}) =
-      _$_DeepCloneableProperty;
+      _$DeepCloneablePropertyImpl;
 
   @override
   String get name;
@@ -219,8 +221,8 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
   GenericsParameterTemplate get genericParameters;
   @override
   @JsonKey(ignore: true)
-  _$$_DeepCloneablePropertyCopyWith<_$_DeepCloneableProperty> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DeepCloneablePropertyImplCopyWith<_$DeepCloneablePropertyImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -373,11 +375,11 @@ class _$ConstructorDetailsCopyWithImpl<$Res, $Val extends ConstructorDetails>
 }
 
 /// @nodoc
-abstract class _$$_ConstructorDetailsCopyWith<$Res>
+abstract class _$$ConstructorDetailsImplCopyWith<$Res>
     implements $ConstructorDetailsCopyWith<$Res> {
-  factory _$$_ConstructorDetailsCopyWith(_$_ConstructorDetails value,
-          $Res Function(_$_ConstructorDetails) then) =
-      __$$_ConstructorDetailsCopyWithImpl<$Res>;
+  factory _$$ConstructorDetailsImplCopyWith(_$ConstructorDetailsImpl value,
+          $Res Function(_$ConstructorDetailsImpl) then) =
+      __$$ConstructorDetailsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -400,11 +402,11 @@ abstract class _$$_ConstructorDetailsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ConstructorDetailsCopyWithImpl<$Res>
-    extends _$ConstructorDetailsCopyWithImpl<$Res, _$_ConstructorDetails>
-    implements _$$_ConstructorDetailsCopyWith<$Res> {
-  __$$_ConstructorDetailsCopyWithImpl(
-      _$_ConstructorDetails _value, $Res Function(_$_ConstructorDetails) _then)
+class __$$ConstructorDetailsImplCopyWithImpl<$Res>
+    extends _$ConstructorDetailsCopyWithImpl<$Res, _$ConstructorDetailsImpl>
+    implements _$$ConstructorDetailsImplCopyWith<$Res> {
+  __$$ConstructorDetailsImplCopyWithImpl(_$ConstructorDetailsImpl _value,
+      $Res Function(_$ConstructorDetailsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -427,7 +429,7 @@ class __$$_ConstructorDetailsCopyWithImpl<$Res>
     Object? cloneableProperties = null,
     Object? asserts = null,
   }) {
-    return _then(_$_ConstructorDetails(
+    return _then(_$ConstructorDetailsImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -498,8 +500,8 @@ class __$$_ConstructorDetailsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ConstructorDetails extends _ConstructorDetails {
-  _$_ConstructorDetails(
+class _$ConstructorDetailsImpl extends _ConstructorDetails {
+  _$ConstructorDetailsImpl(
       {required this.name,
       required this.unionValue,
       required this.isConst,
@@ -604,7 +606,7 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ConstructorDetails &&
+            other is _$ConstructorDetailsImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.unionValue, unionValue) ||
                 other.unionValue == unionValue) &&
@@ -659,8 +661,8 @@ class _$_ConstructorDetails extends _ConstructorDetails {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ConstructorDetailsCopyWith<_$_ConstructorDetails> get copyWith =>
-      __$$_ConstructorDetailsCopyWithImpl<_$_ConstructorDetails>(
+  _$$ConstructorDetailsImplCopyWith<_$ConstructorDetailsImpl> get copyWith =>
+      __$$ConstructorDetailsImplCopyWithImpl<_$ConstructorDetailsImpl>(
           this, _$identity);
 }
 
@@ -681,7 +683,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
       required final List<String> implementsDecorators,
       required final List<String> decorators,
       required final List<DeepCloneableProperty> cloneableProperties,
-      required final List<AssertTemplate> asserts}) = _$_ConstructorDetails;
+      required final List<AssertTemplate> asserts}) = _$ConstructorDetailsImpl;
   _ConstructorDetails._() : super._();
 
   @override
@@ -718,7 +720,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   List<AssertTemplate> get asserts;
   @override
   @JsonKey(ignore: true)
-  _$$_ConstructorDetailsCopyWith<_$_ConstructorDetails> get copyWith =>
+  _$$ConstructorDetailsImplCopyWith<_$ConstructorDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -776,21 +778,22 @@ class _$MapConfigCopyWithImpl<$Res, $Val extends MapConfig>
 }
 
 /// @nodoc
-abstract class _$$_MapConfigCopyWith<$Res> implements $MapConfigCopyWith<$Res> {
-  factory _$$_MapConfigCopyWith(
-          _$_MapConfig value, $Res Function(_$_MapConfig) then) =
-      __$$_MapConfigCopyWithImpl<$Res>;
+abstract class _$$MapConfigImplCopyWith<$Res>
+    implements $MapConfigCopyWith<$Res> {
+  factory _$$MapConfigImplCopyWith(
+          _$MapConfigImpl value, $Res Function(_$MapConfigImpl) then) =
+      __$$MapConfigImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool map, bool mapOrNull, bool maybeMap});
 }
 
 /// @nodoc
-class __$$_MapConfigCopyWithImpl<$Res>
-    extends _$MapConfigCopyWithImpl<$Res, _$_MapConfig>
-    implements _$$_MapConfigCopyWith<$Res> {
-  __$$_MapConfigCopyWithImpl(
-      _$_MapConfig _value, $Res Function(_$_MapConfig) _then)
+class __$$MapConfigImplCopyWithImpl<$Res>
+    extends _$MapConfigCopyWithImpl<$Res, _$MapConfigImpl>
+    implements _$$MapConfigImplCopyWith<$Res> {
+  __$$MapConfigImplCopyWithImpl(
+      _$MapConfigImpl _value, $Res Function(_$MapConfigImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -800,7 +803,7 @@ class __$$_MapConfigCopyWithImpl<$Res>
     Object? mapOrNull = null,
     Object? maybeMap = null,
   }) {
-    return _then(_$_MapConfig(
+    return _then(_$MapConfigImpl(
       map: null == map
           ? _value.map
           : map // ignore: cast_nullable_to_non_nullable
@@ -819,8 +822,8 @@ class __$$_MapConfigCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_MapConfig implements _MapConfig {
-  _$_MapConfig(
+class _$MapConfigImpl implements _MapConfig {
+  _$MapConfigImpl(
       {required this.map, required this.mapOrNull, required this.maybeMap});
 
   @override
@@ -839,7 +842,7 @@ class _$_MapConfig implements _MapConfig {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MapConfig &&
+            other is _$MapConfigImpl &&
             (identical(other.map, map) || other.map == map) &&
             (identical(other.mapOrNull, mapOrNull) ||
                 other.mapOrNull == mapOrNull) &&
@@ -853,15 +856,15 @@ class _$_MapConfig implements _MapConfig {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MapConfigCopyWith<_$_MapConfig> get copyWith =>
-      __$$_MapConfigCopyWithImpl<_$_MapConfig>(this, _$identity);
+  _$$MapConfigImplCopyWith<_$MapConfigImpl> get copyWith =>
+      __$$MapConfigImplCopyWithImpl<_$MapConfigImpl>(this, _$identity);
 }
 
 abstract class _MapConfig implements MapConfig {
   factory _MapConfig(
       {required final bool map,
       required final bool mapOrNull,
-      required final bool maybeMap}) = _$_MapConfig;
+      required final bool maybeMap}) = _$MapConfigImpl;
 
   @override
   bool get map;
@@ -871,7 +874,7 @@ abstract class _MapConfig implements MapConfig {
   bool get maybeMap;
   @override
   @JsonKey(ignore: true)
-  _$$_MapConfigCopyWith<_$_MapConfig> get copyWith =>
+  _$$MapConfigImplCopyWith<_$MapConfigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -930,22 +933,22 @@ class _$WhenConfigCopyWithImpl<$Res, $Val extends WhenConfig>
 }
 
 /// @nodoc
-abstract class _$$_WhenConfigCopyWith<$Res>
+abstract class _$$WhenConfigImplCopyWith<$Res>
     implements $WhenConfigCopyWith<$Res> {
-  factory _$$_WhenConfigCopyWith(
-          _$_WhenConfig value, $Res Function(_$_WhenConfig) then) =
-      __$$_WhenConfigCopyWithImpl<$Res>;
+  factory _$$WhenConfigImplCopyWith(
+          _$WhenConfigImpl value, $Res Function(_$WhenConfigImpl) then) =
+      __$$WhenConfigImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool when, bool whenOrNull, bool maybeWhen});
 }
 
 /// @nodoc
-class __$$_WhenConfigCopyWithImpl<$Res>
-    extends _$WhenConfigCopyWithImpl<$Res, _$_WhenConfig>
-    implements _$$_WhenConfigCopyWith<$Res> {
-  __$$_WhenConfigCopyWithImpl(
-      _$_WhenConfig _value, $Res Function(_$_WhenConfig) _then)
+class __$$WhenConfigImplCopyWithImpl<$Res>
+    extends _$WhenConfigCopyWithImpl<$Res, _$WhenConfigImpl>
+    implements _$$WhenConfigImplCopyWith<$Res> {
+  __$$WhenConfigImplCopyWithImpl(
+      _$WhenConfigImpl _value, $Res Function(_$WhenConfigImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -955,7 +958,7 @@ class __$$_WhenConfigCopyWithImpl<$Res>
     Object? whenOrNull = null,
     Object? maybeWhen = null,
   }) {
-    return _then(_$_WhenConfig(
+    return _then(_$WhenConfigImpl(
       when: null == when
           ? _value.when
           : when // ignore: cast_nullable_to_non_nullable
@@ -974,8 +977,8 @@ class __$$_WhenConfigCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_WhenConfig implements _WhenConfig {
-  _$_WhenConfig(
+class _$WhenConfigImpl implements _WhenConfig {
+  _$WhenConfigImpl(
       {required this.when, required this.whenOrNull, required this.maybeWhen});
 
   @override
@@ -994,7 +997,7 @@ class _$_WhenConfig implements _WhenConfig {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WhenConfig &&
+            other is _$WhenConfigImpl &&
             (identical(other.when, when) || other.when == when) &&
             (identical(other.whenOrNull, whenOrNull) ||
                 other.whenOrNull == whenOrNull) &&
@@ -1008,15 +1011,15 @@ class _$_WhenConfig implements _WhenConfig {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WhenConfigCopyWith<_$_WhenConfig> get copyWith =>
-      __$$_WhenConfigCopyWithImpl<_$_WhenConfig>(this, _$identity);
+  _$$WhenConfigImplCopyWith<_$WhenConfigImpl> get copyWith =>
+      __$$WhenConfigImplCopyWithImpl<_$WhenConfigImpl>(this, _$identity);
 }
 
 abstract class _WhenConfig implements WhenConfig {
   factory _WhenConfig(
       {required final bool when,
       required final bool whenOrNull,
-      required final bool maybeWhen}) = _$_WhenConfig;
+      required final bool maybeWhen}) = _$WhenConfigImpl;
 
   @override
   bool get when;
@@ -1026,7 +1029,7 @@ abstract class _WhenConfig implements WhenConfig {
   bool get maybeWhen;
   @override
   @JsonKey(ignore: true)
-  _$$_WhenConfigCopyWith<_$_WhenConfig> get copyWith =>
+  _$$WhenConfigImplCopyWith<_$WhenConfigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1051,6 +1054,7 @@ mixin _$Data {
       throw _privateConstructorUsedError;
   bool get shouldUseExtends => throw _privateConstructorUsedError;
   bool get genericArgumentFactories => throw _privateConstructorUsedError;
+  String? get firebasePath => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
@@ -1077,7 +1081,8 @@ abstract class $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool genericArgumentFactories});
+      bool genericArgumentFactories,
+      String? firebasePath});
 
   $MapConfigCopyWith<$Res> get map;
   $WhenConfigCopyWith<$Res> get when;
@@ -1112,6 +1117,7 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
     Object? genericsParameterTemplate = null,
     Object? shouldUseExtends = null,
     Object? genericArgumentFactories = null,
+    Object? firebasePath = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -1178,6 +1184,10 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
           ? _value.genericArgumentFactories
           : genericArgumentFactories // ignore: cast_nullable_to_non_nullable
               as bool,
+      firebasePath: freezed == firebasePath
+          ? _value.firebasePath
+          : firebasePath // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -1199,9 +1209,10 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
 }
 
 /// @nodoc
-abstract class _$$_DataCopyWith<$Res> implements $DataCopyWith<$Res> {
-  factory _$$_DataCopyWith(_$_Data value, $Res Function(_$_Data) then) =
-      __$$_DataCopyWithImpl<$Res>;
+abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
+  factory _$$DataImplCopyWith(
+          _$DataImpl value, $Res Function(_$DataImpl) then) =
+      __$$DataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1220,7 +1231,8 @@ abstract class _$$_DataCopyWith<$Res> implements $DataCopyWith<$Res> {
       GenericsDefinitionTemplate genericsDefinitionTemplate,
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
-      bool genericArgumentFactories});
+      bool genericArgumentFactories,
+      String? firebasePath});
 
   @override
   $MapConfigCopyWith<$Res> get map;
@@ -1229,9 +1241,10 @@ abstract class _$$_DataCopyWith<$Res> implements $DataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res, _$_Data>
-    implements _$$_DataCopyWith<$Res> {
-  __$$_DataCopyWithImpl(_$_Data _value, $Res Function(_$_Data) _then)
+class __$$DataImplCopyWithImpl<$Res>
+    extends _$DataCopyWithImpl<$Res, _$DataImpl>
+    implements _$$DataImplCopyWith<$Res> {
+  __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1253,8 +1266,9 @@ class __$$_DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res, _$_Data>
     Object? genericsParameterTemplate = null,
     Object? shouldUseExtends = null,
     Object? genericArgumentFactories = null,
+    Object? firebasePath = freezed,
   }) {
-    return _then(_$_Data(
+    return _then(_$DataImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -1319,14 +1333,18 @@ class __$$_DataCopyWithImpl<$Res> extends _$DataCopyWithImpl<$Res, _$_Data>
           ? _value.genericArgumentFactories
           : genericArgumentFactories // ignore: cast_nullable_to_non_nullable
               as bool,
+      firebasePath: freezed == firebasePath
+          ? _value.firebasePath
+          : firebasePath // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_Data implements _Data {
-  _$_Data(
+class _$DataImpl implements _Data {
+  _$DataImpl(
       {required this.name,
       required this.unionKey,
       required this.generateCopyWith,
@@ -1342,7 +1360,8 @@ class _$_Data implements _Data {
       required this.genericsDefinitionTemplate,
       required this.genericsParameterTemplate,
       required this.shouldUseExtends,
-      required this.genericArgumentFactories})
+      required this.genericArgumentFactories,
+      required this.firebasePath})
       : assert(constructors.isNotEmpty),
         _concretePropertiesName = concretePropertiesName,
         _constructors = constructors;
@@ -1392,17 +1411,19 @@ class _$_Data implements _Data {
   final bool shouldUseExtends;
   @override
   final bool genericArgumentFactories;
+  @override
+  final String? firebasePath;
 
   @override
   String toString() {
-    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, genericArgumentFactories: $genericArgumentFactories)';
+    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, genericArgumentFactories: $genericArgumentFactories, firebasePath: $firebasePath)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Data &&
+            other is _$DataImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.unionKey, unionKey) ||
                 other.unionKey == unionKey) &&
@@ -1436,7 +1457,9 @@ class _$_Data implements _Data {
                 other.shouldUseExtends == shouldUseExtends) &&
             (identical(
                     other.genericArgumentFactories, genericArgumentFactories) ||
-                other.genericArgumentFactories == genericArgumentFactories));
+                other.genericArgumentFactories == genericArgumentFactories) &&
+            (identical(other.firebasePath, firebasePath) ||
+                other.firebasePath == firebasePath));
   }
 
   @override
@@ -1457,13 +1480,14 @@ class _$_Data implements _Data {
       genericsDefinitionTemplate,
       genericsParameterTemplate,
       shouldUseExtends,
-      genericArgumentFactories);
+      genericArgumentFactories,
+      firebasePath);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DataCopyWith<_$_Data> get copyWith =>
-      __$$_DataCopyWithImpl<_$_Data>(this, _$identity);
+  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
+      __$$DataImplCopyWithImpl<_$DataImpl>(this, _$identity);
 }
 
 abstract class _Data implements Data {
@@ -1483,7 +1507,8 @@ abstract class _Data implements Data {
       required final GenericsDefinitionTemplate genericsDefinitionTemplate,
       required final GenericsParameterTemplate genericsParameterTemplate,
       required final bool shouldUseExtends,
-      required final bool genericArgumentFactories}) = _$_Data;
+      required final bool genericArgumentFactories,
+      required final String? firebasePath}) = _$DataImpl;
 
   @override
   String get name;
@@ -1518,8 +1543,11 @@ abstract class _Data implements Data {
   @override
   bool get genericArgumentFactories;
   @override
+  String? get firebasePath;
+  @override
   @JsonKey(ignore: true)
-  _$$_DataCopyWith<_$_Data> get copyWith => throw _privateConstructorUsedError;
+  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1571,22 +1599,22 @@ class _$GlobalDataCopyWithImpl<$Res, $Val extends GlobalData>
 }
 
 /// @nodoc
-abstract class _$$_GlobalDataCopyWith<$Res>
+abstract class _$$GlobalDataImplCopyWith<$Res>
     implements $GlobalDataCopyWith<$Res> {
-  factory _$$_GlobalDataCopyWith(
-          _$_GlobalData value, $Res Function(_$_GlobalData) then) =
-      __$$_GlobalDataCopyWithImpl<$Res>;
+  factory _$$GlobalDataImplCopyWith(
+          _$GlobalDataImpl value, $Res Function(_$GlobalDataImpl) then) =
+      __$$GlobalDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool hasJson, bool hasDiagnostics});
 }
 
 /// @nodoc
-class __$$_GlobalDataCopyWithImpl<$Res>
-    extends _$GlobalDataCopyWithImpl<$Res, _$_GlobalData>
-    implements _$$_GlobalDataCopyWith<$Res> {
-  __$$_GlobalDataCopyWithImpl(
-      _$_GlobalData _value, $Res Function(_$_GlobalData) _then)
+class __$$GlobalDataImplCopyWithImpl<$Res>
+    extends _$GlobalDataCopyWithImpl<$Res, _$GlobalDataImpl>
+    implements _$$GlobalDataImplCopyWith<$Res> {
+  __$$GlobalDataImplCopyWithImpl(
+      _$GlobalDataImpl _value, $Res Function(_$GlobalDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1595,7 +1623,7 @@ class __$$_GlobalDataCopyWithImpl<$Res>
     Object? hasJson = null,
     Object? hasDiagnostics = null,
   }) {
-    return _then(_$_GlobalData(
+    return _then(_$GlobalDataImpl(
       hasJson: null == hasJson
           ? _value.hasJson
           : hasJson // ignore: cast_nullable_to_non_nullable
@@ -1610,8 +1638,8 @@ class __$$_GlobalDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_GlobalData implements _GlobalData {
-  _$_GlobalData({required this.hasJson, required this.hasDiagnostics});
+class _$GlobalDataImpl implements _GlobalData {
+  _$GlobalDataImpl({required this.hasJson, required this.hasDiagnostics});
 
   @override
   final bool hasJson;
@@ -1627,7 +1655,7 @@ class _$_GlobalData implements _GlobalData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GlobalData &&
+            other is _$GlobalDataImpl &&
             (identical(other.hasJson, hasJson) || other.hasJson == hasJson) &&
             (identical(other.hasDiagnostics, hasDiagnostics) ||
                 other.hasDiagnostics == hasDiagnostics));
@@ -1639,14 +1667,14 @@ class _$_GlobalData implements _GlobalData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GlobalDataCopyWith<_$_GlobalData> get copyWith =>
-      __$$_GlobalDataCopyWithImpl<_$_GlobalData>(this, _$identity);
+  _$$GlobalDataImplCopyWith<_$GlobalDataImpl> get copyWith =>
+      __$$GlobalDataImplCopyWithImpl<_$GlobalDataImpl>(this, _$identity);
 }
 
 abstract class _GlobalData implements GlobalData {
   factory _GlobalData(
       {required final bool hasJson,
-      required final bool hasDiagnostics}) = _$_GlobalData;
+      required final bool hasDiagnostics}) = _$GlobalDataImpl;
 
   @override
   bool get hasJson;
@@ -1654,6 +1682,6 @@ abstract class _GlobalData implements GlobalData {
   bool get hasDiagnostics;
   @override
   @JsonKey(ignore: true)
-  _$$_GlobalDataCopyWith<_$_GlobalData> get copyWith =>
+  _$$GlobalDataImplCopyWith<_$GlobalDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

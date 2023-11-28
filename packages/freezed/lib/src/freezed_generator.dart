@@ -115,6 +115,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       generateEqual: configs.equal ?? !_hasCustomEquals(element),
       generateFromJson: configs.fromJson ?? await needsJsonSerializable,
       generateToJson: configs.toJson ?? await needsJsonSerializable,
+      firebasePath: configs.firebasePath,
       genericArgumentFactories: configs.genericArgumentFactories,
       map: MapConfig(
         map: configs.map?.map ?? shouldGenerateUnions,
@@ -577,6 +578,11 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         orElse: () => _buildYamlConfigs.fromJson,
       ),
       addImplicitFinal: annotation.getField('addImplicitFinal')!.toBoolValue()!,
+      firebasePath: annotation.decodeField(
+        'firebasePath',
+        decode: (obj) => obj.toStringValue(),
+        orElse: () => null,
+      ),
       map: annotation.decodeField(
         'map',
         decode: (obj) {

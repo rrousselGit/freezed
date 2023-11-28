@@ -40,6 +40,10 @@ $_toJson
 ${copyWith?.abstractCopyWithGetter ?? ''}
 }
 
+$_firebaseCollectionReference
+
+$_firebaseDocumentReference
+
 ${copyWith?.commonInterface ?? ''}
 
 ${copyWith?.commonConcreteImpl ?? ''}
@@ -82,5 +86,27 @@ ${copyWith?.commonConcreteImpl ?? ''}
   String get _maybeMap {
     if (!data.map.maybeMap) return '';
     return '${maybeMapPrototype(data.constructors, data.genericsParameterTemplate)} => throw $privConstUsedErrorVarName;';
+  }
+
+  String get _firebaseCollectionReference {
+    if (data.firebasePath == null) return '';
+    return '''
+      CollectionReference<${data.name.public}> ${data.name.public[0].toLowerCase() + data.name.public.substring(1)}Collection([String path = '${data.firebasePath}']) {
+        return FirebaseFirestore.instance.collection(path).withConverter<${data.name.public}>(
+            fromFirestore: (snapshot, _) => _\$${data.name.public}FromJson(snapshot.data()!),
+            toFirestore: (instance, _) => instance.toJson());
+      }
+    ''';
+  }
+
+  String get _firebaseDocumentReference {
+    if (data.firebasePath == null) return '';
+    return '''
+      DocumentReference<${data.name.public}> ${data.name.public[0].toLowerCase() + data.name.public.substring(1)}Doc({String path = '${data.firebasePath}', required String docId}) {
+        return FirebaseFirestore.instance.doc('\$path/\$docId').withConverter<${data.name.public}>(
+            fromFirestore: (snapshot, _) => _\$${data.name.public}FromJson(snapshot.data()!),
+            toFirestore: (instance, _) => instance.toJson());
+      }
+    ''';
   }
 }

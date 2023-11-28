@@ -102,6 +102,7 @@ class Data with _$Data {
     required GenericsParameterTemplate genericsParameterTemplate,
     required bool shouldUseExtends,
     required bool genericArgumentFactories,
+    required String? firebasePath,
   }) = _Data;
 }
 
