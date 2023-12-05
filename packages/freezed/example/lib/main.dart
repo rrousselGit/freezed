@@ -84,7 +84,7 @@ void main() {
   ); // 42
 
   print(
-    // maybeWhen allows some callbacks to be missing, but requires an `orElse` callback
+    // maybeMap allows some callbacks to be missing, but requires an `orElse` callback
     unionExample.maybeMap(
       null,
       error: (ErrorDetails value) => value.message,
