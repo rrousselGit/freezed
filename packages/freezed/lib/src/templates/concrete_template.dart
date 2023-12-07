@@ -478,7 +478,7 @@ String toString($parameters) {
 
     return '''
 @override
-bool operator ==(dynamic other) {
+bool operator ==(Object other) {
   return identical(this, other) || (${comparisons.join('&&')});
 }
 ''';
