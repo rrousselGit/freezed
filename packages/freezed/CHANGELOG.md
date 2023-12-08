@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Have the `==` implementation use `Object` as parameter instead of `dynamic`
+
 ## 2.4.5 - 2023-10-10
 
 Loosened `analyzer` version to support both ^5.13.0 and ^6.0.0 (thanks to @SunlightBro)
