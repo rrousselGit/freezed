@@ -174,7 +174,7 @@ class _$DeepCloneablePropertyImpl implements _DeepCloneableProperty {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DeepCloneablePropertyImpl &&
@@ -603,7 +603,7 @@ class _$ConstructorDetailsImpl extends _ConstructorDetails {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConstructorDetailsImpl &&
@@ -839,7 +839,7 @@ class _$MapConfigImpl implements _MapConfig {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MapConfigImpl &&
@@ -994,7 +994,7 @@ class _$WhenConfigImpl implements _WhenConfig {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$WhenConfigImpl &&
@@ -1404,7 +1404,7 @@ class _$DataImpl implements _Data {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DataImpl &&
@@ -1630,7 +1630,7 @@ class _$GlobalDataImpl implements _GlobalData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GlobalDataImpl &&
