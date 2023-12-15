@@ -142,7 +142,7 @@ class _LibraryKey {
   final String librarySource;
 
   @override
-  bool operator ==(Object? other) {
+  bool operator ==(Object other) {
     return other is _LibraryKey &&
         librarySource == other.librarySource &&
         const SetEquality<String>()
