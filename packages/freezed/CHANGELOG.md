@@ -1,3 +1,7 @@
+## Unreleased fix
+
+- Fixed broken link in docs (thanks to @iDevOrz)
+
 ## 2.4.6 - 2023-12-15
 
 - Have the `==` implementation use `Object` as parameter instead of `dynamic`
