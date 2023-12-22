@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: "0 0 * * *"
   push:
-    branches: [master]
+    # branches: [master]
 
 jobs:
   update-sponsors:
@@ -30,11 +30,11 @@ jobs:
       - run: ls
       - run: ls sponsorkit
 
-      - name: Commit
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: "chore: update sponsors.svg"
-          add: "./sponsorkit/sponsors.*"
-          default_author: github_actions
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Commit
+      #   uses: EndBug/add-and-commit@v9
+        # with:
+        #   message: "chore: update sponsors.svg"
+        #   add: "./sponsorkit/sponsors.*"
+        #   default_author: github_actions
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
