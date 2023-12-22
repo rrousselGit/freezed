@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 16.x
 
-      - run: npx pnpm i
+      - run: npx yarn i
 
       - name: Update sponsors
         run: npm run build
