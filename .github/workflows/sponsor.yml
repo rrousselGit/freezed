@@ -18,7 +18,8 @@ jobs:
         with:
           node-version: 16.x
 
-      - run: npx pnpm i
+      - run: npm install yarn --global
+      - run: yarn
 
       - name: Update sponsors
         run: npm run build
