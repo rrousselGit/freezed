@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Support latest custom_lint version.
+
 ## 0.0.1-dev+1
 
 Upgrade analyzer and custom_lint versions
