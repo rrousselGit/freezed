@@ -1,7 +1,7 @@
 # The pubspec.yaml of an application using our lints
 name: example_app
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 publish_to: none
 
 dependencies:
