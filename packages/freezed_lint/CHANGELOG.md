@@ -1,4 +1,4 @@
-## Unreleased patch
+## 0.0.1 - 2024-02-04
 
 - Support latest custom_lint version.
 
