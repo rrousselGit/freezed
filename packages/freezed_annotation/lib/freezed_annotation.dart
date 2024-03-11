@@ -471,7 +471,7 @@ class Freezed {
   /// class Example<T> with _$Example<T> {
   ///   factory Example<T>(T a) = _Example;
   ///
-  ///   factory Example.fromJson(Map<String, Object?> json, T Function(Object?) fromJsonT) => _$ExampleFromJson(json, fromJsonT)`
+  ///   factory Example.fromJson(Map<String, Object?> json, T Function(Object?) fromJsonT) => _$ExampleFromJson(json, fromJsonT);
   /// }
   /// ```
   final bool genericArgumentFactories;
