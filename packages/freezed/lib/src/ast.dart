@@ -79,9 +79,9 @@ extension ConstructorX on ConstructorDeclaration {
     }
 
     final escapedElementName = classElement.name.replaceAll(r'$', r'\$');
-    final escapedConstructorName = classElement.name.replaceAll(r'$', r'\$');
+    final escapedConstructorName = name?.lexeme.replaceAll(r'$', r'\$');
 
-    return escapedConstructorName.isEmpty
+    return escapedConstructorName == null
         ? '$escapedElementName$generics'
         : '$escapedElementName$generics.$escapedConstructorName';
   }
