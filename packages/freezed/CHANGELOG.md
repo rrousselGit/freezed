@@ -1,3 +1,7 @@
+## 2.4.8
+
+- Fixed a performance problem
+
 ## 2.4.7 - 2024-02-04
 
 - Fixed broken link in docs (thanks to @iDevOrz)
