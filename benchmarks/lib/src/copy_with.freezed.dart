@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'copy_with.dart';
 
@@ -55,18 +55,21 @@ class _$ModelCopyWithImpl<$Res, $Val extends Model>
 }
 
 /// @nodoc
-abstract class _$$_ModelCopyWith<$Res> implements $ModelCopyWith<$Res> {
-  factory _$$_ModelCopyWith(_$_Model value, $Res Function(_$_Model) then) =
-      __$$_ModelCopyWithImpl<$Res>;
+abstract class _$$ModelImplCopyWith<$Res> implements $ModelCopyWith<$Res> {
+  factory _$$ModelImplCopyWith(
+          _$ModelImpl value, $Res Function(_$ModelImpl) then) =
+      __$$ModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int counter});
 }
 
 /// @nodoc
-class __$$_ModelCopyWithImpl<$Res> extends _$ModelCopyWithImpl<$Res, _$_Model>
-    implements _$$_ModelCopyWith<$Res> {
-  __$$_ModelCopyWithImpl(_$_Model _value, $Res Function(_$_Model) _then)
+class __$$ModelImplCopyWithImpl<$Res>
+    extends _$ModelCopyWithImpl<$Res, _$ModelImpl>
+    implements _$$ModelImplCopyWith<$Res> {
+  __$$ModelImplCopyWithImpl(
+      _$ModelImpl _value, $Res Function(_$ModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -74,7 +77,7 @@ class __$$_ModelCopyWithImpl<$Res> extends _$ModelCopyWithImpl<$Res, _$_Model>
   $Res call({
     Object? counter = null,
   }) {
-    return _then(_$_Model(
+    return _then(_$ModelImpl(
       counter: null == counter
           ? _value.counter
           : counter // ignore: cast_nullable_to_non_nullable
@@ -85,44 +88,43 @@ class __$$_ModelCopyWithImpl<$Res> extends _$ModelCopyWithImpl<$Res, _$_Model>
 
 /// @nodoc
 
-class _$_Model implements _Model {
-  _$_Model({required this.counter});
+class _$ModelImpl implements _Model {
+  _$ModelImpl({required this.counter});
 
   @override
   final int counter;
 
   @override
   String toString() {
-    return 'Model(counter: $counter)';
+    return 'Model.Model(counter: $counter)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Model &&
-            const DeepCollectionEquality().equals(other.counter, counter));
+            other is _$ModelImpl &&
+            (identical(other.counter, counter) || other.counter == counter));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(counter));
+  int get hashCode => Object.hash(runtimeType, counter);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ModelCopyWith<_$_Model> get copyWith =>
-      __$$_ModelCopyWithImpl<_$_Model>(this, _$identity);
+  _$$ModelImplCopyWith<_$ModelImpl> get copyWith =>
+      __$$ModelImplCopyWithImpl<_$ModelImpl>(this, _$identity);
 }
 
 abstract class _Model implements Model {
-  factory _Model({required final int counter}) = _$_Model;
+  factory _Model({required final int counter}) = _$ModelImpl;
 
   @override
   int get counter;
   @override
   @JsonKey(ignore: true)
-  _$$_ModelCopyWith<_$_Model> get copyWith =>
+  _$$ModelImplCopyWith<_$ModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -179,11 +181,11 @@ class _$ModelWrapperCopyWithImpl<$Res, $Val extends ModelWrapper>
 }
 
 /// @nodoc
-abstract class _$$_ModelWrapperCopyWith<$Res>
+abstract class _$$ModelWrapperImplCopyWith<$Res>
     implements $ModelWrapperCopyWith<$Res> {
-  factory _$$_ModelWrapperCopyWith(
-          _$_ModelWrapper value, $Res Function(_$_ModelWrapper) then) =
-      __$$_ModelWrapperCopyWithImpl<$Res>;
+  factory _$$ModelWrapperImplCopyWith(
+          _$ModelWrapperImpl value, $Res Function(_$ModelWrapperImpl) then) =
+      __$$ModelWrapperImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({Model model});
@@ -193,11 +195,11 @@ abstract class _$$_ModelWrapperCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ModelWrapperCopyWithImpl<$Res>
-    extends _$ModelWrapperCopyWithImpl<$Res, _$_ModelWrapper>
-    implements _$$_ModelWrapperCopyWith<$Res> {
-  __$$_ModelWrapperCopyWithImpl(
-      _$_ModelWrapper _value, $Res Function(_$_ModelWrapper) _then)
+class __$$ModelWrapperImplCopyWithImpl<$Res>
+    extends _$ModelWrapperCopyWithImpl<$Res, _$ModelWrapperImpl>
+    implements _$$ModelWrapperImplCopyWith<$Res> {
+  __$$ModelWrapperImplCopyWithImpl(
+      _$ModelWrapperImpl _value, $Res Function(_$ModelWrapperImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -205,7 +207,7 @@ class __$$_ModelWrapperCopyWithImpl<$Res>
   $Res call({
     Object? model = null,
   }) {
-    return _then(_$_ModelWrapper(
+    return _then(_$ModelWrapperImpl(
       model: null == model
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
@@ -216,43 +218,42 @@ class __$$_ModelWrapperCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ModelWrapper implements _ModelWrapper {
-  _$_ModelWrapper({required this.model});
+class _$ModelWrapperImpl implements _ModelWrapper {
+  _$ModelWrapperImpl({required this.model});
 
   @override
   final Model model;
 
   @override
   String toString() {
-    return 'ModelWrapper(model: $model)';
+    return 'ModelWrapper.ModelWrapper(model: $model)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ModelWrapper &&
-            const DeepCollectionEquality().equals(other.model, model));
+            other is _$ModelWrapperImpl &&
+            (identical(other.model, model) || other.model == model));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(model));
+  int get hashCode => Object.hash(runtimeType, model);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ModelWrapperCopyWith<_$_ModelWrapper> get copyWith =>
-      __$$_ModelWrapperCopyWithImpl<_$_ModelWrapper>(this, _$identity);
+  _$$ModelWrapperImplCopyWith<_$ModelWrapperImpl> get copyWith =>
+      __$$ModelWrapperImplCopyWithImpl<_$ModelWrapperImpl>(this, _$identity);
 }
 
 abstract class _ModelWrapper implements ModelWrapper {
-  factory _ModelWrapper({required final Model model}) = _$_ModelWrapper;
+  factory _ModelWrapper({required final Model model}) = _$ModelWrapperImpl;
 
   @override
   Model get model;
   @override
   @JsonKey(ignore: true)
-  _$$_ModelWrapperCopyWith<_$_ModelWrapper> get copyWith =>
+  _$$ModelWrapperImplCopyWith<_$ModelWrapperImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

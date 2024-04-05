@@ -1,11 +1,12 @@
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
+import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:source_gen/source_gen.dart';
 
-import '../utils.dart';
 import 'concrete_template.dart';
 import 'prototypes.dart';
 
@@ -51,11 +52,13 @@ class Property {
           hasJsonKey: false,
         );
 
-  static Future<Property> fromParameterElement(
-    ParameterElement element,
+  static Future<Property> fromFormalParameter(
+    FormalParameter parameter,
     BuildStep buildStep, {
     required bool addImplicitFinal,
   }) async {
+    final element = parameter.declaredElement!;
+
     final defaultValue = element.defaultValue;
     if (defaultValue != null &&
         (element.hasRequired || element.isRequiredPositional)) {
@@ -72,7 +75,7 @@ class Property {
       isDartMap: element.type.isDartCoreMap,
       isDartSet: element.type.isDartCoreSet,
       isFinal: addImplicitFinal || element.isFinal,
-      doc: await documentationOfParameter(element, buildStep),
+      doc: parameter.documentation,
       type: parseTypeSource(element),
       decorators: parseDecorators(element.metadata),
       defaultValueSource: defaultValue,

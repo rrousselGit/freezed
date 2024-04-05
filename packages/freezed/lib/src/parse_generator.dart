@@ -1,7 +1,12 @@
 import 'dart:async';
 
+import 'package:analyzer/dart/analysis/results.dart';
+import 'package:analyzer/dart/analysis/session.dart';
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
 
 abstract class ParserGenerator<GlobalData, Data, Annotation>
@@ -11,34 +16,52 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     LibraryReader oldLibrary,
     BuildStep buildStep,
   ) async {
-    final assetId =
-        await buildStep.resolver.assetIdForElement(oldLibrary.element);
-    if (await buildStep.resolver.isLibrary(assetId).then((value) => !value)) {
-      return '';
+    late SomeResolvedUnitResult unit;
+    for (var i = 0; i < 10; i++) {
+      try {
+        unit = await oldLibrary.element.session.getResolvedUnit(
+          oldLibrary.element.source.fullName,
+        );
+        break;
+      } on InconsistentAnalysisException {
+        // retry
+      }
     }
 
-    final library = await buildStep.resolver.libraryFor(assetId);
+    if (unit is! ResolvedUnitResult) return '';
 
     final values = StringBuffer();
-
-    final globalData = parseGlobalData(library);
+    final globalData = parseGlobalData(unit.unit);
 
     var hasGeneratedGlobalCode = false;
 
-    for (var element in library.topLevelElements.where(
-        (e) => typeChecker.hasAnnotationOf(e, throwOnUnresolved: false))) {
+    for (var declaration in unit.unit.declarations) {
+      final declaredElement = declaration.declaredElement;
+      if (declaredElement == null) continue;
+
+      final annotation = typeChecker.firstAnnotationOf(
+        declaredElement,
+        throwOnUnresolved: false,
+      );
+
+      if (annotation == null) continue;
+
       if (!hasGeneratedGlobalCode) {
         hasGeneratedGlobalCode = true;
-        for (final value
-            in generateForAll(globalData).map((e) => e.toString())) {
+        for (final value in generateForAll(globalData)) {
           values.writeln(value);
         }
       }
 
-      final data = await parseElement(buildStep, globalData, element);
+      final data = await parseDeclaration(
+        buildStep,
+        globalData,
+        declaration,
+        annotation,
+      );
       if (data == null) continue;
-      for (final value
-          in generateForData(globalData, data).map((e) => e.toString())) {
+
+      for (final value in generateForData(globalData, data)) {
         values.writeln(value);
       }
     }
@@ -48,12 +71,13 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
   Iterable<Object> generateForAll(GlobalData globalData) sync* {}
 
-  GlobalData parseGlobalData(LibraryElement library);
+  GlobalData parseGlobalData(CompilationUnit unit);
 
-  FutureOr<Data> parseElement(
+  FutureOr<Data> parseDeclaration(
     BuildStep buildStep,
     GlobalData globalData,
-    Element element,
+    Declaration declaration,
+    DartObject annotation,
   );
 
   Iterable<Object> generateForData(GlobalData globalData, Data data);
@@ -64,9 +88,32 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     ConstantReader annotation,
     BuildStep buildStep,
   ) async* {
+    final annotation = typeChecker.firstAnnotationOf(
+      element,
+      throwOnUnresolved: false,
+    );
+    if (annotation == null) return;
+
+    final unit = await element.session!.getResolvedUnit(
+      element.source!.fullName,
+    );
+    unit as ResolvedUnitResult;
+    final Object? ast = unit.unit.declarations.firstWhereOrNull(
+      (declaration) => declaration.declaredElement?.name == element.name!,
+    );
+    if (ast == null) {
+      throw InvalidGenerationSourceError('Ast not found', element: element);
+    }
+    if (ast is! Declaration) {
+      throw InvalidGenerationSourceError(
+        'Ast is not a Declaration',
+        element: element,
+      );
+    }
+
     // implemented for source_gen_test – otherwise unused
-    final globalData = parseGlobalData(element.library!);
-    final data = parseElement(buildStep, globalData, element);
+    final globalData = parseGlobalData(unit.unit);
+    final data = parseDeclaration(buildStep, globalData, ast, annotation);
 
     if (data == null) return;
 
