@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/analysis/results.dart';
-import 'package:analyzer/dart/analysis/session.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
@@ -16,26 +15,19 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     LibraryReader oldLibrary,
     BuildStep buildStep,
   ) async {
-    late SomeResolvedUnitResult unit;
-    for (var i = 0; i < 10; i++) {
-      try {
-        unit = await oldLibrary.element.session.getResolvedUnit(
-          oldLibrary.element.source.fullName,
-        );
-        break;
-      } on InconsistentAnalysisException {
-        // retry
-      }
-    }
+    final firstClass = oldLibrary.classes.firstOrNull;
+    if (firstClass == null) return '';
 
-    if (unit is! ResolvedUnitResult) return '';
+    final ast = await buildStep.resolver.astNodeFor(firstClass, resolve: true);
+    final unit = ast?.root as CompilationUnit?;
+    if (unit == null) return '';
 
     final values = StringBuffer();
-    final globalData = parseGlobalData(unit.unit);
+    final globalData = parseGlobalData(unit);
 
     var hasGeneratedGlobalCode = false;
 
-    for (var declaration in unit.unit.declarations) {
+    for (var declaration in unit.declarations) {
       final declaredElement = declaration.declaredElement;
       if (declaredElement == null) continue;
 
