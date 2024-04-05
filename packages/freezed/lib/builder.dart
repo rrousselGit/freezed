@@ -8,6 +8,7 @@ import 'src/freezed_generator.dart';
 Builder freezed(BuilderOptions options) {
   return PartBuilder(
     [FreezedGenerator(Freezed.fromJson(options.config))],
+    formatOutput: options.config['format'] == false ? (str) => str : null,
     '.freezed.dart',
     header: '''
 // coverage:ignore-file

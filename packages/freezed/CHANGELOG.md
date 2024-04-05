@@ -1,3 +1,11 @@
+## 2.5.0
+
+- Added `format: false` flag in the `build.yaml`, to disable formatting
+  in generated files.
+  This can significantly improve performance, but may require updating your
+  CI to not check that generated files are formatted.
+- Fixed an `InconsistentAnalysisException`
+
 ## 2.4.8
 
 - Fixed a performance problem

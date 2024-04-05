@@ -886,7 +886,7 @@ The following docs are left unedited and kept for the Dart users who have yet to
 migrate to Dart 3.  
 But in the long term, you should stop relying on `when`/`map`.
 
-____
+---
 
 Coming from other languages, you may be used to features like "union types"/"sealed classes"/pattern matching.  
 These are powerful tools in combination with a type system, but Dart currently does not support them.
@@ -1175,13 +1175,16 @@ targets:
     builders:
       freezed:
         options:
+          # Tells Freezed not to format .freezed.dart files.
+          # This can significantly speed up code-generation.
+          format: false
           # Disable the generation of copyWith/== for the entire project
           copy_with: false
           equal: false
           # `when` and `map` can be enabled/disabled entirely by setting them to `true`/`false`
           map: false
           # We can also enable/disable specific variants of `when`/`map` by setting them to `true`/`false`:
-          when: 
+          when:
             when: true
             maybe_when: true
             when_or_null: false
