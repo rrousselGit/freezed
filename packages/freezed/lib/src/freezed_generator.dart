@@ -1,17 +1,18 @@
-import 'package:analyzer/dart/ast/token.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
+import 'package:freezed/src/ast.dart';
+import 'package:freezed/src/string.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/tools/type.dart';
-import 'package:freezed/src/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart'
     show
         Assert,
@@ -58,6 +59,12 @@ class CommonProperties {
   final List<Property> cloneableProperties = [];
 }
 
+extension on ClassDeclaration {
+  Iterable<ConstructorDeclaration> get constructors {
+    return members.whereType<ConstructorDeclaration>();
+  }
+}
+
 @immutable
 class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   FreezedGenerator(this._buildYamlConfigs);
@@ -65,31 +72,32 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   final Freezed _buildYamlConfigs;
 
   @override
-  Future<Data> parseElement(
+  Future<Data> parseDeclaration(
     BuildStep buildStep,
     GlobalData globalData,
-    Element element,
+    Declaration declaration,
+    DartObject annotation,
   ) async {
-    if (element is! ClassElement) {
+    if (declaration is! ClassDeclaration) {
       throw InvalidGenerationSourceError(
-        '@freezed can only be applied on classes. Failing element: ${element.name}',
-        element: element,
+        '@freezed can only be applied on classes.',
+        node: declaration,
       );
     }
 
-    final shouldUseExtends = element.constructors.any((ctor) {
-      return ctor.name == '_' && !ctor.isFactory && !ctor.isAbstract;
+    final shouldUseExtends = declaration.constructors.any((ctor) {
+      return ctor.name?.lexeme == '_' && ctor.factoryKeyword == null;
     });
 
-    final configs = _parseConfig(element);
+    final configs = _parseConfig(annotation);
 
-    for (final field in element.fields) {
+    for (final field in declaration.declaredElement!.fields) {
       _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
     }
 
     final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
       buildStep,
-      element,
+      declaration,
       configs,
     );
 
@@ -102,17 +110,17 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     late final needsJsonSerializable = _needsJsonSerializable(
       buildStep,
       globalData,
-      element,
+      declaration,
     );
 
     return Data(
-      name: element.name,
+      name: declaration.name.lexeme,
       shouldUseExtends: shouldUseExtends,
       unionKey: configs.unionKey!,
       generateToString:
-          configs.toStringOverride ?? !_hasCustomToString(element),
+          configs.toStringOverride ?? !declaration.hasCustomToString,
       generateCopyWith: configs.copyWith!,
-      generateEqual: configs.equal ?? !_hasCustomEquals(element),
+      generateEqual: configs.equal ?? !declaration.hasCustomEquals,
       generateFromJson: configs.fromJson ?? await needsJsonSerializable,
       generateToJson: configs.toJson ?? await needsJsonSerializable,
       genericArgumentFactories: configs.genericArgumentFactories,
@@ -129,45 +137,51 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       makeCollectionsImmutable: configs.makeCollectionsUnmodifiable!,
       constructors: constructorsNeedsGeneration,
       concretePropertiesName: [
-        for (final p in element.fields)
+        for (final p in declaration.declaredElement!.fields)
           if (!p.isStatic) p.name,
       ],
-      genericsDefinitionTemplate:
-          GenericsDefinitionTemplate.fromGenericElement(element.typeParameters),
-      genericsParameterTemplate:
-          GenericsParameterTemplate.fromGenericElement(element.typeParameters),
+      genericsDefinitionTemplate: GenericsDefinitionTemplate.fromGenericElement(
+        declaration.declaredElement!.typeParameters,
+      ),
+      genericsParameterTemplate: GenericsParameterTemplate.fromGenericElement(
+        declaration.declaredElement!.typeParameters,
+      ),
     );
   }
 
   void _assertValidNormalConstructorUsage(
-    ConstructorElement constructor, {
+    ConstructorDeclaration constructor, {
     required String className,
   }) {
-    if (!constructor.isFactory &&
-        (constructor.name != '_' || constructor.parameters.isNotEmpty)) {
+    if (constructor.factoryKeyword == null &&
+        (constructor.name?.lexeme != '_' ||
+            constructor.parameters.parameters.isNotEmpty)) {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed can only have a single non-factory'
         ', without parameters, and named MyClass._()',
-        element: constructor,
+        node: constructor,
       );
     }
   }
 
   void _assertValidFreezedConstructorUsage(
-    ConstructorElement constructor, {
+    ConstructorDeclaration constructor, {
     required String className,
   }) {
-    for (final parameter in constructor.parameters) {
-      if (parameter.type.nullabilitySuffix != NullabilitySuffix.question &&
-          parameter.isOptional &&
-          parameter.defaultValue == null &&
-          !parameter.type.isDynamic2) {
-        final ctorName =
-            constructor.isDefaultConstructor ? '' : '.${constructor.name}';
+    for (final parameter in constructor.parameters.parameters) {
+      final parameterElement = parameter.declaredElement;
+      if (parameterElement == null) continue;
+
+      if (parameterElement.type.nullabilitySuffix !=
+              NullabilitySuffix.question &&
+          parameterElement.isOptional &&
+          parameterElement.defaultValue == null &&
+          !parameterElement.type.isDynamic2) {
+        final ctorName = constructor.name == null ? '' : '.${constructor.name}';
 
         throw InvalidGenerationSourceError(
           'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
-          element: parameter,
+          node: parameter,
         );
       }
     }
@@ -209,14 +223,14 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   Future<bool> _needsJsonSerializable(
     BuildStep buildStep,
     GlobalData globalData,
-    ClassElement element,
+    ClassDeclaration declaration,
   ) async {
     if (!globalData.hasJson) return false;
 
-    for (final constructor in element.constructors) {
-      if (constructor.isFactory && constructor.name == 'fromJson') {
-        final ast = await tryGetAstNodeForElement(constructor, buildStep);
-        return ast.endToken.stringValue == ';';
+    for (final constructor in declaration.constructors) {
+      if (constructor.factoryKeyword != null &&
+          constructor.name?.lexeme == 'fromJson') {
+        return constructor.body is ExpressionFunctionBody;
       }
     }
 
@@ -350,43 +364,49 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
     BuildStep buildStep,
-    ClassElement element,
+    ClassDeclaration declaration,
     Freezed options,
   ) async {
     final result = <ConstructorDetails>[];
-    for (final constructor in element.constructors) {
-      if (!constructor.isFactory || constructor.name == 'fromJson') {
+    for (final constructor in declaration.constructors) {
+      if (constructor.factoryKeyword == null ||
+          constructor.name?.lexeme == 'fromJson') {
         _assertValidNormalConstructorUsage(
           constructor,
-          className: element.name,
+          className: declaration.name.lexeme,
         );
         continue;
       }
 
       final redirectedName =
-          await _getConstructorRedirectedName(constructor, buildStep);
+          constructor.redirectedConstructor?.type.name2.lexeme;
 
       if (redirectedName == null) {
         _assertValidNormalConstructorUsage(
           constructor,
-          className: element.name,
+          className: declaration.name.lexeme,
         );
         continue;
       }
 
-      _assertValidFreezedConstructorUsage(constructor, className: element.name);
+      _assertValidFreezedConstructorUsage(
+        constructor,
+        className: declaration.name.lexeme,
+      );
 
       result.add(
         ConstructorDetails(
           asserts: _parseAsserts(constructor).toList(),
-          name: constructor.name,
-          unionValue: constructor.unionValue(options.unionValueCase),
-          isConst: constructor.isConst,
-          fullName: _fullName(element, constructor),
-          escapedName: _escapedName(element, constructor),
+          name: constructor.name?.lexeme ?? '',
+          unionValue: constructor.declaredElement!.unionValue(
+            options.unionValueCase,
+          ),
+          isConst: constructor.constKeyword != null,
+          fullName: constructor.fullName,
+          escapedName: constructor.escapedName,
           impliedProperties: [
-            for (final parameter in constructor.parameters)
-              await Property.fromParameterElement(
+            for (final parameter in constructor.parameters.parameters)
+              await Property.fromFormalParameter(
                 parameter,
                 buildStep,
                 addImplicitFinal: options.addImplicitFinal,
@@ -406,18 +426,23 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
               })
               .map((e) => e.toSource())
               .toList(),
-          withDecorators: _withDecorationTypes(constructor).toSet().toList(),
+          withDecorators: _withDecorationTypes(constructor.declaredElement!)
+              .toSet()
+              .toList(),
           implementsDecorators:
-              _implementsDecorationTypes(constructor).toSet().toList(),
-          isDefault: isDefaultConstructor(constructor),
-          hasJsonSerializable: constructor.hasJsonSerializable,
-          isFallback: constructor.isFallbackUnion(options.fallbackUnion),
+              _implementsDecorationTypes(constructor.declaredElement!)
+                  .toSet()
+                  .toList(),
+          isDefault: isDefaultConstructor(constructor.declaredElement!),
+          hasJsonSerializable: constructor.declaredElement!.hasJsonSerializable,
+          isFallback: constructor.declaredElement!
+              .isFallbackUnion(options.fallbackUnion),
           cloneableProperties: _cloneableProperties(
             buildStep,
-            element,
-            constructor,
+            declaration.declaredElement!,
+            constructor.declaredElement!,
           ).toList(),
-          parameters: await ParametersTemplate.fromParameterElements(
+          parameters: await ParametersTemplate.fromParameterList(
             buildStep,
             constructor.parameters,
             addImplicitFinal: options.addImplicitFinal,
@@ -429,22 +454,22 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
     if (result.isEmpty) {
       throw InvalidGenerationSourceError(
-        'Marked ${element.name} with @freezed, but freezed has nothing to generate',
-        element: element,
+        'Marked ${declaration.name} with @freezed, but freezed has nothing to generate',
+        node: declaration,
       );
     }
 
     if (result.length > 1 && result.any((c) => c.name.startsWith('_'))) {
       throw InvalidGenerationSourceError(
         'A freezed union cannot have private constructors',
-        element: element,
+        node: declaration,
       );
     }
 
     if (options.fallbackUnion != null && result.none((c) => c.isFallback)) {
       throw InvalidGenerationSourceError(
         'Fallback union was specified but no ${options.fallbackUnion} constructor exists.',
-        element: element,
+        node: declaration,
       );
     }
 
@@ -502,12 +527,15 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       final typeElement = parameterType.element;
       if (typeElement is! ClassElement) continue;
 
-      final freezedAnnotation = typeChecker.firstAnnotationOf(typeElement);
+      final freezedAnnotation = typeChecker.firstAnnotationOf(
+        typeElement,
+        throwOnUnresolved: false,
+      );
 
       /// Handles classes annotated with Freezed
       if (freezedAnnotation == null) continue;
 
-      final configs = _parseConfig(typeElement);
+      final configs = _parseConfig(freezedAnnotation);
       // copyWith not enabled, so the property is not cloneable
       if (configs.copyWith != true) continue;
 
@@ -546,10 +574,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     }
   }
 
-  Freezed _parseConfig(Element element) {
-    final annotation = const TypeChecker.fromRuntime(Freezed)
-        .firstAnnotationOf(element, throwOnUnresolved: false)!;
-
+  Freezed _parseConfig(DartObject annotation) {
     return Freezed(
       copyWith: annotation.decodeField(
         'copyWith',
@@ -658,9 +683,12 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     );
   }
 
-  Iterable<AssertTemplate> _parseAsserts(ConstructorElement constructor) sync* {
-    for (final meta
-        in const TypeChecker.fromRuntime(Assert).annotationsOf(constructor)) {
+  Iterable<AssertTemplate> _parseAsserts(
+    ConstructorDeclaration constructor,
+  ) sync* {
+    for (final meta in const TypeChecker.fromRuntime(Assert).annotationsOf(
+      constructor.declaredElement!,
+    )) {
       yield AssertTemplate(
         eval: meta.getField('eval')!.toStringValue(),
         message: meta.getField('message')!.toStringValue(),
@@ -737,118 +765,13 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   }
 
   @override
-  GlobalData parseGlobalData(LibraryElement library) {
+  GlobalData parseGlobalData(CompilationUnit unit) {
+    final library = unit.declaredElement!.library;
+
     return GlobalData(
       hasJson: library.importsJsonSerializable,
       hasDiagnostics: library.importsDiagnosticable,
     );
-  }
-
-  bool _hasCustomToString(ClassElement element) {
-    for (final type in [
-      element,
-      ...element.allSupertypes
-          .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element)
-    ]) {
-      for (final method in type.methods) {
-        if (method.name == 'toString') {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  bool _hasCustomEquals(ClassElement element) {
-    for (final type in [
-      element,
-      ...element.allSupertypes
-          .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element)
-    ]) {
-      for (final method in type.methods.where((e) => e.isOperator)) {
-        if (method.name == '==') {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  String _fullName(ClassElement element, ConstructorElement constructor) {
-    var generics = element.typeParameters.map((e) {
-      return '\$${e.name}';
-    }).join(', ');
-    if (generics.isNotEmpty) {
-      generics = '<$generics>';
-    }
-
-    return constructor.name.isEmpty
-        ? '${element.name}$generics'
-        : '${element.name}$generics.${constructor.name}';
-  }
-
-  String _escapedName(ClassElement element, ConstructorElement constructor) {
-    var generics = element.typeParameters.map((e) {
-      return '\$${e.name}';
-    }).join(', ');
-    if (generics.isNotEmpty) {
-      generics = '<$generics>';
-    }
-
-    final escapedElementName = element.name.replaceAll(r'$', r'\$');
-    final escapedConstructorName = constructor.name.replaceAll(r'$', r'\$');
-
-    return escapedConstructorName.isEmpty
-        ? '$escapedElementName$generics'
-        : '$escapedElementName$generics.$escapedConstructorName';
-  }
-
-  /// For:
-  ///
-  /// ```dart
-  /// Constructor.named() = _Redirection<T>;
-  /// ```
-  ///
-  /// returns `_Redirection`;
-  Future<String?> _getConstructorRedirectedName(
-    ConstructorElement constructor,
-    BuildStep buildStep,
-  ) async {
-    final ast = await tryGetAstNodeForElement(constructor, buildStep);
-
-    if (ast.endToken.stringValue != ';') return null;
-
-    Token? equalToken = ast.endToken;
-    while (true) {
-      if (equalToken == null ||
-          equalToken.charOffset < constructor.nameOffset) {
-        return null;
-      }
-      if (equalToken.stringValue == '=>') return null;
-      if (equalToken.stringValue == '=') {
-        break;
-      }
-
-      equalToken = equalToken.previous;
-    }
-
-    var genericOrEndToken = equalToken;
-    while (genericOrEndToken.stringValue != '<' &&
-        genericOrEndToken.stringValue != ';') {
-      genericOrEndToken = genericOrEndToken.next!;
-    }
-
-    final source = constructor.source.contents.data;
-    final redirectedName = source
-        .substring(equalToken.charOffset + 1, genericOrEndToken.charOffset)
-        .trim();
-
-    if (redirectedName.isEmpty) return null;
-
-    return redirectedName;
   }
 }
 
@@ -896,13 +819,13 @@ extension on ConstructorElement {
       case FreezedUnionCase.none:
         return constructorName;
       case FreezedUnionCase.kebab:
-        return kebabCase(constructorName);
+        return constructorName.kebabCase;
       case FreezedUnionCase.pascal:
-        return pascalCase(constructorName);
+        return constructorName.pascalCase;
       case FreezedUnionCase.snake:
-        return snakeCase(constructorName);
+        return constructorName.snakeCase;
       case FreezedUnionCase.screamingSnake:
-        return screamingSnake(constructorName);
+        return constructorName.screamingSnake;
     }
   }
 }

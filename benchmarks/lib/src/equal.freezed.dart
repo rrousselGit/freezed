@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'equal.dart';
 
@@ -63,22 +63,22 @@ class _$ModelWithListCopyWithImpl<$Res, $Val extends ModelWithList>
 }
 
 /// @nodoc
-abstract class _$$_ModelWithListCopyWith<$Res>
+abstract class _$$ModelWithListImplCopyWith<$Res>
     implements $ModelWithListCopyWith<$Res> {
-  factory _$$_ModelWithListCopyWith(
-          _$_ModelWithList value, $Res Function(_$_ModelWithList) then) =
-      __$$_ModelWithListCopyWithImpl<$Res>;
+  factory _$$ModelWithListImplCopyWith(
+          _$ModelWithListImpl value, $Res Function(_$ModelWithListImpl) then) =
+      __$$ModelWithListImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<int> someList, int counter});
 }
 
 /// @nodoc
-class __$$_ModelWithListCopyWithImpl<$Res>
-    extends _$ModelWithListCopyWithImpl<$Res, _$_ModelWithList>
-    implements _$$_ModelWithListCopyWith<$Res> {
-  __$$_ModelWithListCopyWithImpl(
-      _$_ModelWithList _value, $Res Function(_$_ModelWithList) _then)
+class __$$ModelWithListImplCopyWithImpl<$Res>
+    extends _$ModelWithListCopyWithImpl<$Res, _$ModelWithListImpl>
+    implements _$$ModelWithListImplCopyWith<$Res> {
+  __$$ModelWithListImplCopyWithImpl(
+      _$ModelWithListImpl _value, $Res Function(_$ModelWithListImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -87,7 +87,7 @@ class __$$_ModelWithListCopyWithImpl<$Res>
     Object? someList = null,
     Object? counter = null,
   }) {
-    return _then(_$_ModelWithList(
+    return _then(_$ModelWithListImpl(
       someList: null == someList
           ? _value._someList
           : someList // ignore: cast_nullable_to_non_nullable
@@ -102,14 +102,16 @@ class __$$_ModelWithListCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ModelWithList implements _ModelWithList {
-  _$_ModelWithList({final List<int> someList = const <int>[], this.counter = 0})
+class _$ModelWithListImpl implements _ModelWithList {
+  _$ModelWithListImpl(
+      {final List<int> someList = const <int>[], this.counter = 0})
       : _someList = someList;
 
   final List<int> _someList;
   @override
   @JsonKey()
   List<int> get someList {
+    if (_someList is EqualUnmodifiableListView) return _someList;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_someList);
   }
@@ -120,34 +122,32 @@ class _$_ModelWithList implements _ModelWithList {
 
   @override
   String toString() {
-    return 'ModelWithList(someList: $someList, counter: $counter)';
+    return 'ModelWithList.ModelWithList(someList: $someList, counter: $counter)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ModelWithList &&
+            other is _$ModelWithListImpl &&
             const DeepCollectionEquality().equals(other._someList, _someList) &&
-            const DeepCollectionEquality().equals(other.counter, counter));
+            (identical(other.counter, counter) || other.counter == counter));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_someList),
-      const DeepCollectionEquality().hash(counter));
+      runtimeType, const DeepCollectionEquality().hash(_someList), counter);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ModelWithListCopyWith<_$_ModelWithList> get copyWith =>
-      __$$_ModelWithListCopyWithImpl<_$_ModelWithList>(this, _$identity);
+  _$$ModelWithListImplCopyWith<_$ModelWithListImpl> get copyWith =>
+      __$$ModelWithListImplCopyWithImpl<_$ModelWithListImpl>(this, _$identity);
 }
 
 abstract class _ModelWithList implements ModelWithList {
   factory _ModelWithList({final List<int> someList, final int counter}) =
-      _$_ModelWithList;
+      _$ModelWithListImpl;
 
   @override
   List<int> get someList;
@@ -155,6 +155,6 @@ abstract class _ModelWithList implements ModelWithList {
   int get counter;
   @override
   @JsonKey(ignore: true)
-  _$$_ModelWithListCopyWith<_$_ModelWithList> get copyWith =>
+  _$$ModelWithListImplCopyWith<_$ModelWithListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
