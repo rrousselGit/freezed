@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/analysis/results.dart';
+import 'package:analyzer/dart/analysis/session.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
@@ -15,9 +16,17 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     LibraryReader oldLibrary,
     BuildStep buildStep,
   ) async {
-    final unit = await oldLibrary.element.session.getResolvedUnit(
-      oldLibrary.element.source.fullName,
-    );
+    late SomeResolvedUnitResult unit;
+    for (var i = 0; i < 10; i++) {
+      try {
+        unit = await oldLibrary.element.session.getResolvedUnit(
+          oldLibrary.element.source.fullName,
+        );
+        break;
+      } on InconsistentAnalysisException {
+        // retry
+      }
+    }
 
     if (unit is! ResolvedUnitResult) return '';
 
