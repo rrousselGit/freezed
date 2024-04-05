@@ -5,6 +5,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
 
 abstract class ParserGenerator<GlobalData, Data, Annotation>
@@ -84,7 +85,13 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     );
     if (annotation == null) return;
 
-    final ast = await buildStep.resolver.astNodeFor(element);
+    final unit = await element.session!.getResolvedUnit(
+      element.source!.fullName,
+    );
+    unit as ResolvedUnitResult;
+    final Object? ast = unit.unit.declarations.firstWhereOrNull(
+      (declaration) => declaration.declaredElement?.name == element.name!,
+    );
     if (ast == null) {
       throw InvalidGenerationSourceError('Ast not found', element: element);
     }
@@ -95,10 +102,8 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
       );
     }
 
-    final unit = ast.root as CompilationUnit;
-
     // implemented for source_gen_test – otherwise unused
-    final globalData = parseGlobalData(unit);
+    final globalData = parseGlobalData(unit.unit);
     final data = parseDeclaration(buildStep, globalData, ast, annotation);
 
     if (data == null) return;

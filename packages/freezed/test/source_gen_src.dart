@@ -3,9 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
-@ShouldThrow('@freezed can only be applied on classes. Failing element: foo')
+@ShouldThrow('@freezed can only be applied on classes.')
 @freezed
-Object? foo;
+enum Foo { a }
 
 @ShouldThrow(
   'Getters require a MyClass._() constructor',

@@ -81,7 +81,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     if (declaration is! ClassDeclaration) {
       throw InvalidGenerationSourceError(
         '@freezed can only be applied on classes.',
-        node: declaration,
+        element: declaration.declaredElement,
       );
     }
 
@@ -159,7 +159,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed can only have a single non-factory'
         ', without parameters, and named MyClass._()',
-        node: constructor,
+        element: constructor.declaredElement,
       );
     }
   }
@@ -181,7 +181,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
         throw InvalidGenerationSourceError(
           'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
-          node: parameter,
+          element: parameter.declaredElement,
         );
       }
     }
@@ -455,21 +455,21 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     if (result.isEmpty) {
       throw InvalidGenerationSourceError(
         'Marked ${declaration.name} with @freezed, but freezed has nothing to generate',
-        node: declaration,
+        element: declaration.declaredElement,
       );
     }
 
     if (result.length > 1 && result.any((c) => c.name.startsWith('_'))) {
       throw InvalidGenerationSourceError(
         'A freezed union cannot have private constructors',
-        node: declaration,
+        element: declaration.declaredElement,
       );
     }
 
     if (options.fallbackUnion != null && result.none((c) => c.isFallback)) {
       throw InvalidGenerationSourceError(
         'Fallback union was specified but no ${options.fallbackUnion} constructor exists.',
-        node: declaration,
+        element: declaration.declaredElement,
       );
     }
 
