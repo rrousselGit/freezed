@@ -15,46 +15,55 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     LibraryReader oldLibrary,
     BuildStep buildStep,
   ) async {
-    final firstClass = oldLibrary.classes.firstOrNull;
-    if (firstClass == null) return '';
+    final classesForUniqueSource = <Uri, ClassElement>{
+      for (final clazz in oldLibrary.classes) clazz.source.uri: clazz
+    };
+    if (classesForUniqueSource.isEmpty) return '';
 
-    final ast = await buildStep.resolver.astNodeFor(firstClass, resolve: true);
-    final unit = ast?.root as CompilationUnit?;
-    if (unit == null) return '';
+    final units = await Stream.fromFutures(
+      classesForUniqueSource.values.map(
+        (e) => buildStep.resolver.astNodeFor(e, resolve: true),
+      ),
+    )
+        .where((e) => e != null)
+        .map((e) => e!.root)
+        .cast<CompilationUnit>()
+        .toList();
 
     final values = StringBuffer();
-    final globalData = parseGlobalData(unit);
-
+    final globalData = parseGlobalData(units);
     var hasGeneratedGlobalCode = false;
 
-    for (var declaration in unit.declarations) {
-      final declaredElement = declaration.declaredElement;
-      if (declaredElement == null) continue;
+    for (final unit in units) {
+      for (var declaration in unit.declarations) {
+        final declaredElement = declaration.declaredElement;
+        if (declaredElement == null) continue;
 
-      final annotation = typeChecker.firstAnnotationOf(
-        declaredElement,
-        throwOnUnresolved: false,
-      );
+        final annotation = typeChecker.firstAnnotationOf(
+          declaredElement,
+          throwOnUnresolved: false,
+        );
 
-      if (annotation == null) continue;
+        if (annotation == null) continue;
 
-      if (!hasGeneratedGlobalCode) {
-        hasGeneratedGlobalCode = true;
-        for (final value in generateForAll(globalData)) {
+        if (!hasGeneratedGlobalCode) {
+          hasGeneratedGlobalCode = true;
+          for (final value in generateForAll(globalData)) {
+            values.writeln(value);
+          }
+        }
+
+        final data = await parseDeclaration(
+          buildStep,
+          globalData,
+          declaration,
+          annotation,
+        );
+        if (data == null) continue;
+
+        for (final value in generateForData(globalData, data)) {
           values.writeln(value);
         }
-      }
-
-      final data = await parseDeclaration(
-        buildStep,
-        globalData,
-        declaration,
-        annotation,
-      );
-      if (data == null) continue;
-
-      for (final value in generateForData(globalData, data)) {
-        values.writeln(value);
       }
     }
 
@@ -63,7 +72,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
 
   Iterable<Object> generateForAll(GlobalData globalData) sync* {}
 
-  GlobalData parseGlobalData(CompilationUnit unit);
+  GlobalData parseGlobalData(List<CompilationUnit> unit);
 
   FutureOr<Data> parseDeclaration(
     BuildStep buildStep,
@@ -104,7 +113,7 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     }
 
     // implemented for source_gen_test – otherwise unused
-    final globalData = parseGlobalData(unit.unit);
+    final globalData = parseGlobalData([unit.unit]);
     final data = parseDeclaration(buildStep, globalData, ast, annotation);
 
     if (data == null) return;

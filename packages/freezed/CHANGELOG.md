@@ -1,3 +1,7 @@
+## Unreleased fix
+
+- Fixed `@freezed` no-longer working inside `part of` files.
+
 ## 2.5.0
 
 - Added `format: false` flag in the `build.yaml`, to disable formatting

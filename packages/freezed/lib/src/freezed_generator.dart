@@ -765,12 +765,14 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   }
 
   @override
-  GlobalData parseGlobalData(CompilationUnit unit) {
-    final library = unit.declaredElement!.library;
-
+  GlobalData parseGlobalData(List<CompilationUnit> units) {
     return GlobalData(
-      hasJson: library.importsJsonSerializable,
-      hasDiagnostics: library.importsDiagnosticable,
+      hasJson: units.any(
+        (unit) => unit.declaredElement!.library.importsJsonSerializable,
+      ),
+      hasDiagnostics: units.any(
+        (unit) => unit.declaredElement!.library.importsDiagnosticable,
+      ),
     );
   }
 }
