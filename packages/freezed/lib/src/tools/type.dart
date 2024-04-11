@@ -11,11 +11,14 @@ extension DartTypeX on DartType {
   }
 
   bool get isNullable {
-    final that = this;
-    if (that is TypeParameterType) {
-      return that.bound.isNullable;
+    if (isDynamic2 || nullabilitySuffix == NullabilitySuffix.question) {
+      return true;
     }
-    return isDynamic2 || nullabilitySuffix == NullabilitySuffix.question;
+
+    final that = this;
+    if (that is TypeParameterType) return that.bound.isNullable;
+
+    return false;
   }
 }
 

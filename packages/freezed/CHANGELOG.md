@@ -1,3 +1,7 @@
+## Unreleased path
+
+- Fixed `copyWith(value: null)` when using nullable generics
+
 ## 2.5.1 - 2024-04-08
 
 - Fixed `@freezed` no-longer working inside `part of` files.

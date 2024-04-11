@@ -23,6 +23,11 @@ class NonNullableGeneric<T extends Object> with _$NonNullableGeneric<T> {
 }
 
 @freezed
+class GenericOrNull<T extends Object> with _$GenericOrNull<T> {
+  factory GenericOrNull(T? value) = _GenericOrNull<T>;
+}
+
+@freezed
 class Generic<T extends Model<dynamic>> with _$Generic<T> {
   factory Generic(T model) = _Generic<T>;
 }
