@@ -109,6 +109,26 @@ void main() {
     expect(generic2.model.value, 24);
   });
 
+  test('supports copyWith(value: null) vs copyWith() on nullable generics', () {
+    expect(
+      GenericOrNull<int>(42).copyWith(value: null),
+      GenericOrNull<int>(null),
+    );
+    expect(
+      GenericOrNull<int>(42).copyWith(),
+      GenericOrNull<int>(42),
+    );
+
+    expect(
+      NullableGeneric<int?>(42).copyWith(value: null),
+      NullableGeneric<int?>(null),
+    );
+    expect(
+      NullableGeneric<int?>(42).copyWith(),
+      NullableGeneric<int?>(42),
+    );
+  });
+
   test('did pass generic constraints', () async {
     await expectLater(compile(r'''
 import 'generic.dart';
