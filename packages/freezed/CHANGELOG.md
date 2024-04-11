@@ -1,4 +1,4 @@
-## Unreleased path
+## 2.5.2 - 2024-04-11
 
 - Fixed `copyWith(value: null)` when using nullable generics
 
