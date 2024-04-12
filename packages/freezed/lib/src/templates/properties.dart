@@ -193,7 +193,7 @@ class Getter {
 
   @override
   String toString({bool shouldOverride = false}) {
-    final finalDecorators = [if(shouldOverride)'@override', ...decorators];
+    final finalDecorators = [if (shouldOverride) '@override', ...decorators];
     return '$doc${finalDecorators.join()} $type get $name$body';
   }
 }
