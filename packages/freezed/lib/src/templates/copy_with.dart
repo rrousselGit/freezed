@@ -61,17 +61,19 @@ ${_abstractDeepCopyMethods().join()}
   String get abstractCopyWithGetter {
     if (cloneableProperties.isEmpty) return '';
 
-    return _maybeOverride(
-      '''
-@JsonKey(ignore: true)
+    return '''
+/// Create a copy of ${data.name}
+/// with the given fields replaced by the non-null parameter values.
+${_hasSuperClass ? '@override\n' : ''}@JsonKey(ignore: true)
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
-''',
-    );
+''';
   }
 
   String get concreteCopyWithGetter {
     if (cloneableProperties.isEmpty) return '';
     return '''
+/// Create a copy of ${data.name}
+/// with the given fields replaced by the non-null parameter values.
 @JsonKey(ignore: true)
 @override
 @pragma('vm:prefer-inline')

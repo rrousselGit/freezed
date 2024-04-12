@@ -50,7 +50,8 @@ ${copyWith?.commonConcreteImpl ?? ''}
       data.genericsParameterTemplate, data.genericArgumentFactories);
   String get _toJson {
     if (!data.generateToJson) return '';
-    return 'Map<String, dynamic> toJson($_toJsonParams)'
+    return '/// Serializes this ${data.name} to a JSON map.\n' 
+        'Map<String, dynamic> toJson($_toJsonParams)'
         ' => throw $privConstUsedErrorVarName;';
   }
 
