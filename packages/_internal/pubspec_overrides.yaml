@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: freezed,freezed_annotation
+dependency_overrides:
+  freezed:
+    path: ..\\freezed
+  freezed_annotation:
+    path: ..\\freezed_annotation

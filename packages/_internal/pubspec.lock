@@ -172,18 +172,16 @@ packages:
   freezed:
     dependency: "direct dev"
     description:
-      name: freezed
-      sha256: "91bce569d4805ea5bad6619a3e8690df8ad062a235165af4c0c5d928dda15eaf"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.1"
+      path: "../freezed"
+      relative: true
+    source: path
+    version: "2.5.2"
   freezed_annotation:
     dependency: "direct main"
     description:
-      name: freezed_annotation
-      sha256: c3fd9336eb55a38cc1bbd79ab17573113a8deccd0ecbbf926cca3c62803b5c2d
-      url: "https://pub.dev"
-    source: hosted
+      path: "../freezed_annotation"
+      relative: true
+    source: path
     version: "2.4.1"
   frontend_server_client:
     dependency: transitive
