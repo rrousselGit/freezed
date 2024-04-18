@@ -1,0 +1,6 @@
+name: freezed
+
+# dart run melos bs
+packages:
+  - packages/*
+  - benchmarks
