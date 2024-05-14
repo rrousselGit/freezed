@@ -18,6 +18,8 @@ dependencies:
   source_gen: ^1.4.0
   freezed_annotation: ^2.4.1
   json_annotation: ^4.6.0
+  # Indirect dependency, but fixes a compiler error when using `pub downgrade`
+  dart_style: ^2.3.6
 
 dev_dependencies:
   json_serializable: ^6.3.2
