@@ -39,9 +39,8 @@ Element? _getElementForType(DartType type) {
 /// Renders a type based on its string + potential import alias
 String resolveFullTypeStringFrom(
   LibraryElement originLibrary,
-  DartType type, {
-  required bool withNullability,
-}) {
+  DartType type,
+) {
   final owner = originLibrary.prefixes.firstWhereOrNull(
     (e) {
       return e.imports.any((l) {
@@ -52,7 +51,7 @@ String resolveFullTypeStringFrom(
     },
   );
 
-  String? displayType = type.getDisplayString(withNullability: withNullability);
+  String? displayType = type.getDisplayString();
 
   // The parameter is a typedef in the form of
   // SomeTypedef typedef
@@ -95,7 +94,7 @@ String resolveFullTypeStringFrom(
         (t) => t is InvalidType,
         dynamicType,
       );
-    displayType = modified.getDisplayString(withNullability: withNullability);
+    displayType = modified.getDisplayString();
   }
 
   if (owner != null) {

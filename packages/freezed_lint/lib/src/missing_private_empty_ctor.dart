@@ -40,7 +40,7 @@ class MissingPrivateEmptyCtor extends DartLintRule {
 
       final constToken = element.constToken();
       final name = '${constToken}${element.displayName}._();';
-      reporter.reportErrorForElement(code, element, [name]);
+      reporter.atElement(element, code, arguments: [name]);
     });
   }
 
