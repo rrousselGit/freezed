@@ -13,7 +13,7 @@ class GenericsDefinitionTemplate {
   factory GenericsDefinitionTemplate.fromGenericElement(
       List<TypeParameterElement> generics) {
     return GenericsDefinitionTemplate(
-      generics.map((e) => e.getDisplayString(withNullability: true)).toList(),
+      generics.map((e) => e.getDisplayString()).toList(),
     );
   }
 

@@ -2,9 +2,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
 extension DartTypeExt on DartType {
-  bool hasName(String name) {
-    return getDisplayString(withNullability: false) == name;
-  }
+  bool hasName(String name) => getDisplayString() == name;
 }
 
 extension ClassElementExt on ClassElement {
