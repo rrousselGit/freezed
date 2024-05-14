@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Support analyzer 6.5.0
+
 ## 0.0.1 - 2024-02-04
 
 - Support latest custom_lint version.
