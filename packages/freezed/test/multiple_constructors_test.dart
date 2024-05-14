@@ -36,10 +36,7 @@ Future<void> main() async {
     final recursiveClass = _getClassElement('_RecursiveWith\$DollarNext');
 
     expect(
-      recursiveClass
-          .getField('value')!
-          .type
-          .getDisplayString(withNullability: true),
+      recursiveClass.getField('value')!.type.getDisplayString(),
       'RecursiveWith\$DollarImpl',
     );
   });
@@ -532,31 +529,19 @@ void main() {
     test('generates List of correct type', () async {
       final nestedListClass = _getClassElement('ShallowNestedList');
 
-      expect(
-          nestedListClass
-              .getField('children')!
-              .type
-              .getDisplayString(withNullability: true),
+      expect(nestedListClass.getField('children')!.type.getDisplayString(),
           'List<LeafNestedListItem>');
     });
 
     test('generates List of correct type for deeply nested case', () async {
       final nestedListClass = _getClassElement('DeepNestedList');
 
-      expect(
-          nestedListClass
-              .getField('children')!
-              .type
-              .getDisplayString(withNullability: true),
+      expect(nestedListClass.getField('children')!.type.getDisplayString(),
           'List<InnerNestedListItem>');
 
       final nestedListItemClass = _getClassElement('InnerNestedListItem');
 
-      expect(
-          nestedListItemClass
-              .getField('children')!
-              .type
-              .getDisplayString(withNullability: true),
+      expect(nestedListItemClass.getField('children')!.type.getDisplayString(),
           'List<LeafNestedListItem>');
     });
   });
@@ -564,31 +549,19 @@ void main() {
     test('generates Map of correct type', () async {
       final nestedMapClass = _getClassElement('ShallowNestedMap');
 
-      expect(
-          nestedMapClass
-              .getField('children')!
-              .type
-              .getDisplayString(withNullability: true),
+      expect(nestedMapClass.getField('children')!.type.getDisplayString(),
           'Map<String, LeafNestedMapItem>');
     });
 
     test('generates Map of correct type for deeply nested case', () async {
       final nestedMapClass = _getClassElement('DeepNestedMap');
 
-      expect(
-          nestedMapClass
-              .getField('children')!
-              .type
-              .getDisplayString(withNullability: true),
+      expect(nestedMapClass.getField('children')!.type.getDisplayString(),
           'Map<String, InnerNestedMapItem>');
 
       final nestedMapItemClass = _getClassElement('InnerNestedMapItem');
 
-      expect(
-          nestedMapItemClass
-              .getField('children')!
-              .type
-              .getDisplayString(withNullability: true),
+      expect(nestedMapItemClass.getField('children')!.type.getDisplayString(),
           'Map<String, LeafNestedMapItem>');
     });
   });
@@ -598,31 +571,19 @@ void main() {
       final nestedMapClass = _getClassElement('_UsesGenerated');
 
       expect(
-        nestedMapClass
-            .getField('value')!
-            .type
-            .getDisplayString(withNullability: true),
+        nestedMapClass.getField('value')!.type.getDisplayString(),
         'CodeGenerated',
       );
       expect(
-        nestedMapClass
-            .getField('list')!
-            .type
-            .getDisplayString(withNullability: true),
+        nestedMapClass.getField('list')!.type.getDisplayString(),
         'List<CodeGenerated>',
       );
       expect(
-        nestedMapClass
-            .getField('nestedList')!
-            .type
-            .getDisplayString(withNullability: true),
+        nestedMapClass.getField('nestedList')!.type.getDisplayString(),
         'List<List<CodeGenerated>>',
       );
       expect(
-        nestedMapClass
-            .getField('map')!
-            .type
-            .getDisplayString(withNullability: true),
+        nestedMapClass.getField('map')!.type.getDisplayString(),
         'Map<int, CodeGenerated>',
       );
     });

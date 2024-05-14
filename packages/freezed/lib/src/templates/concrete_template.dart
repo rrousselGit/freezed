@@ -559,7 +559,7 @@ extension DefaultValue on ParameterElement {
 }
 
 String? parseTypeSource(VariableElement element) {
-  String? type = element.type.getDisplayString(withNullability: true);
+  String? type = element.type.getDisplayString();
 
   if ((type.contains('dynamic') || type.contains('InvalidType')) &&
       element.nameOffset > 0) {
@@ -578,6 +578,5 @@ String? parseTypeSource(VariableElement element) {
   return resolveFullTypeStringFrom(
     element.library!,
     element.type,
-    withNullability: true,
   );
 }

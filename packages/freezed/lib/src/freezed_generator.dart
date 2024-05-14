@@ -303,7 +303,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       final commonTypeString = resolveFullTypeStringFrom(
         library,
         commonTypeBetweenAllUnionConstructors,
-        withNullability: true,
       );
 
       final commonProperty = Property(
@@ -341,7 +340,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
             type: resolveFullTypeStringFrom(
               library,
               copyWithType,
-              withNullability: true,
             ),
             isNullable: copyWithType.isNullable,
             isDartList: copyWithType.isDartCoreList,
@@ -488,7 +486,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         yield resolveFullTypeStringFrom(
           constructor.library,
           (object.type! as InterfaceType).typeArguments.single,
-          withNullability: false,
         );
       }
     }
@@ -508,7 +505,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         yield resolveFullTypeStringFrom(
           constructor.library,
           (object.type! as InterfaceType).typeArguments.single,
-          withNullability: false,
         );
       }
     }
@@ -547,7 +543,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType)
               .typeArguments
-              .map((e) => e.getDisplayString(withNullability: true))
+              .map((e) => e.getDisplayString())
               .toList(),
         ),
       );
