@@ -9,6 +9,7 @@
 Welcome to the Macro version of [Freezed]!  
 Freezed is a tool that generates `toString`, `copyWith` (including `copyWith(field: null)`), `hashCode`, `==`
 and more.
+For the sake of letting people experiment with macros while still be able to use a stable Freezed version in their apps, the macro PoC has been renamed to `data_class`.
 
 This is a very early proof of concept about what Freezed would look like when macros land in Dart.
 Beware: Due to many missing Macro features, lots of Freezed features are
@@ -63,7 +64,7 @@ To use the constructor-first syntax, define a class with a constructor,
 but no fields:
 
 ```dart
-@Freezed()
+@Data()
 class Example {
   Example({required int foo, required String bar});
 }
@@ -83,10 +84,10 @@ void main() {
 
 Naturally, the macro expects that you use the default constructor.
 If you wish to generate fields based on a named constructor instead,
-specify `@Freezed(constructor: '<constructor name>')`.
+specify `@Data(constructor: '<constructor name>')`.
 
 ```dart
-@Freezed(constructor: 'custom')
+@Data(constructor: 'custom')
 class Example {
  Example.custom({required int foo, required String bar});
 }
@@ -100,7 +101,7 @@ The macro will then generate a constructor for you, along
 with the various methods.
 
 ```dart
-@Freezed()
+@Data()
 class Example {
  final int foo;
  final String bar;
@@ -119,10 +120,10 @@ void main() {
 #### Specifying the constructor name
 
 If you wish to generate a non-default constructor,
-you can specify `@Freezed(constructor: '<constructor name>')`.
+you can specify `@Data(constructor: '<constructor name>')`.
 
 ```dart
-@Freezed(constructor: 'custom')
+@Data(constructor: 'custom')
 class Example {
   final int foo;
 }

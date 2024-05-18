@@ -3,8 +3,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:freezed/src/macros.dart';
-import 'package:freezed/src/part_utils.dart';
+import 'package:data_class/src/macros.dart';
+import 'package:data_class/src/part_utils.dart';
 import 'package:macros/macros.dart';
 import 'package:meta/meta.dart';
 
@@ -175,7 +175,7 @@ class _FreezedField {
 /// but no fields:
 ///
 /// ```dart
-/// @Freezed()
+/// @Data()
 /// class Example {
 ///   Example({required int foo, required String bar});
 /// }
@@ -195,10 +195,10 @@ class _FreezedField {
 ///
 /// Naturally, the macro expects that you use the default constructor.
 /// If you wish to generate fields based on a named constructor instead,
-/// specify `@Freezed(constructor: '<constructor name>')`.
+/// specify `@Data(constructor: '<constructor name>')`.
 ///
 /// ```dart
-/// @Freezed(constructor: 'custom')
+/// @Data(constructor: 'custom')
 /// class Example {
 ///  Example.custom({required int foo, required String bar});
 /// }
@@ -212,7 +212,7 @@ class _FreezedField {
 /// with the various methods.
 ///
 /// ```dart
-/// @Freezed()
+/// @Data()
 /// class Example {
 ///  final int foo;
 ///  final String bar;
@@ -231,10 +231,10 @@ class _FreezedField {
 /// ### Specifying the constructor name
 ///
 /// If you wish to generate a non-default constructor,
-/// you can specify `@Freezed(constructor: '<constructor name>')`.
+/// you can specify `@Data(constructor: '<constructor name>')`.
 ///
 /// ```dart
-/// @Freezed(constructor: 'custom')
+/// @Data(constructor: 'custom')
 /// class Example {
 ///   final int foo;
 /// }
@@ -243,8 +243,8 @@ class _FreezedField {
 ///   final example = Example.custom(foo: 42);
 /// }
 /// ```
-macro class Freezed implements ClassDeclarationsMacro {
-  const Freezed({
+macro class Data implements ClassDeclarationsMacro {
+  const Data({
     this.constructor,
     this.makeCollectionsUnmodifiable = true,
     this.superCtor,
@@ -530,7 +530,7 @@ macro class Freezed implements ClassDeclarationsMacro {
       'List',
     );
     final unmodifiableList = await builder.resolveIdentifier(
-      Uri.parse('package:freezed/freezed.dart'),
+      Uri.parse('package:data_class/data_class.dart'),
       'EqualUnmodifiableListView',
     );
     final map = await builder.resolveIdentifier(
@@ -538,7 +538,7 @@ macro class Freezed implements ClassDeclarationsMacro {
       'Map',
     );
     final unmodifiableMap = await builder.resolveIdentifier(
-      Uri.parse('package:freezed/freezed.dart'),
+      Uri.parse('package:data_class/data_class.dart'),
       'EqualUnmodifiableMapView',
     );
     final hashSet = await builder.resolveIdentifier(
@@ -546,7 +546,7 @@ macro class Freezed implements ClassDeclarationsMacro {
       'Set',
     );
     final unmodifiableSet = await builder.resolveIdentifier(
-      Uri.parse('package:freezed/freezed.dart'),
+      Uri.parse('package:data_class/data_class.dart'),
       'EqualUnmodifiableSetView',
     );
 
@@ -717,7 +717,7 @@ macro class Freezed implements ClassDeclarationsMacro {
         await builder.resolveIdentifier(Uri.parse('dart:core'), 'Object');
     final sentinel = await builder
         .parts(
-          '{{package:freezed/freezed.dart#Sentinel}}',
+          '{{package:data_class/data_class.dart#Sentinel}}',
         )
         .asDeclarationCode();
 

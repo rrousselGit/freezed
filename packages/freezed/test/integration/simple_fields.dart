@@ -1,13 +1,13 @@
-import 'package:freezed/freezed.dart';
+import 'package:data_class/data_class.dart';
 
-@Freezed()
+@Data()
 class Simple {
   final int foo;
   final String bar;
   final double initialized = 42;
 }
 
-@Freezed(constructor: 'custom')
+@Data(constructor: 'custom')
 class Named {
   final int foo;
 }
@@ -17,29 +17,29 @@ class SuperBase {
   final int value;
 }
 
-@Freezed(superCtor: 'custom')
+@Data(superCtor: 'custom')
 class Super extends SuperBase {
   final int foo;
 }
 
 // TODO uncomment once "super.field" works in augmentation constructors.
-// @Freezed()
+// @Data()
 // sealed class ExtendsBase {
 //   final int a;
 // }
 
-// @Freezed()
+// @Data()
 // class Extends extends ExtendsBase {
 //   final int b;
 // }
 
 // TODO augmentations are confused once again
-// @Freezed()
+// @Data()
 // sealed class ImplementsBase {
 //   final int a;
 // }
 
-// @Freezed()
+// @Data()
 // class Implements implements ImplementsBase {
 //   final int b;
 // }

@@ -173,14 +173,14 @@ Fixed invalid generated code when defining nullable collections.
 
 - **Breaking**: freezed_annotation no-longer exports the entire package:collection
 - **Breaking**: Freezed no-longer generates `$MyClassTearOff`. This feature is now available in Dart
-- **Breaking** Removed `@Freezed(maybeMap: )` & `@Freezed(maybeWhen: )` in favor of a separate:
+- **Breaking** Removed `@Data(maybeMap: )` & `@Data(maybeWhen: )` in favor of a separate:
 
   ```Dart
-  @Freezed(map: FreezedMap(...), when: FreezedWhenOptions(...))
+  @Data(map: FreezedMap(...), when: FreezedWhenOptions(...))
   ```
 
 - **Breaking**: Freezed now converts Lists/Maps/Sets into UnmodifiableListView/UnmodifiableMapView/UnmodifiableSetView.
-  This can be disabled for one class by specifying `@Freezed(makeCollectionsUnmodifiable: false)`.
+  This can be disabled for one class by specifying `@Data(makeCollectionsUnmodifiable: false)`.
   Alternatively, this can be configured inside the `build.yaml` file
 
 - Added parameters of `@Freezed` to customize the generated code.
@@ -275,7 +275,7 @@ of properties. (#531)
 ## 0.14.5
 
 - fixed a bug when using alias imports, potentially using the prefix on every variables.
-- When `@Freezed(fallback: '...')` is specified and using `fromJson`, now
+- When `@Data(fallback: '...')` is specified and using `fromJson`, now
   support cases where the JSON does not contain the "key".
 
 ## 0.14.4
@@ -511,7 +511,7 @@ Migrated to null safety
   ```
 
 - Added a way to customize the de/serialization of union types using the
-  `@Freezed(unionKey: 'my-key')` decorator.
+  `@Data(unionKey: 'my-key')` decorator.
 
   See also https://github.com/rrousselGit/freezed#fromjson---classes-with-multiple-constructors
 
