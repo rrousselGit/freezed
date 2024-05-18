@@ -20,13 +20,24 @@ To get started with the macro version of Freezed:
 
 - Make sure that you use a Dart version >= 3.5.0-dev
 - Enable `macros` in your `analysis_options.yaml` as followed:
+  ```yaml
+  # analysis_options.yaml
+  analyzer:
+    enable-experiment:
+      - macros
+  ```
+- Install Freezed >= 3.0.0:
 
-```yaml
-# analysis_options.yaml
-analyzer:
-  enable-experiment:
-    - macros
-```
+  ```yaml
+  name: your_app
+  environment:
+    sdk: ">=3.5.0-0.0-dev <4.0.0"
+
+  dependencies:
+    # Freezed is now a "dependencies".
+    # freezed_annotation is no-longer needed
+    freezed: ^3.0.0-0.0.dev
+  ```
 
 ## Usage
 
