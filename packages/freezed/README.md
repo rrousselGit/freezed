@@ -8,6 +8,10 @@
 
 Welcome to [Freezed], yet another code generator for data-classes/unions/pattern-matching/cloning.
 
+> [!NOTE]
+> An early preview of Freezed using macro is available.
+> To learn more, go to https://github.com/rrousselGit/freezed/tree/macros.
+
 # Motivation
 
 Dart is awesome, but defining a "model" can be tedious. We may have to:
