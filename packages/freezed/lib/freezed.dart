@@ -125,6 +125,7 @@ class _FreezedField {
     required this.isRequired,
     required this.isNamed,
     required this.isInherited,
+    required this.needsDeclaration,
   });
 
   final TypeAnnotation type;
@@ -132,6 +133,7 @@ class _FreezedField {
   final bool isNamed;
   final bool isRequired;
   final bool isInherited;
+  final bool needsDeclaration;
 
   bool get isPositional => !isNamed;
   bool get isOptional => !isRequired;
@@ -273,6 +275,8 @@ macro class Freezed implements ClassDeclarationsMacro {
 
     if (targetConstructor == null) {
       for (final field in await builder.fieldsOf(clazz)) {
+        if (field.hasInitializer) continue;
+
         fields.add(
           _FreezedField(
             type: field.type,
@@ -280,9 +284,12 @@ macro class Freezed implements ClassDeclarationsMacro {
             name: field.identifier.name,
             isRequired: true,
             isInherited: false,
+            needsDeclaration: false,
           ),
         );
       }
+
+      // TODO once augmentation libraries work properly, automatically add fields coming from Freezed interfaces.
     } else {
       if (superCtor != null) {
         builder.report(
@@ -304,6 +311,7 @@ macro class Freezed implements ClassDeclarationsMacro {
             isNamed: field.isNamed,
             isRequired: field.isRequired,
             isInherited: false,
+            needsDeclaration: true,
           ),
         );
       }
@@ -320,6 +328,7 @@ macro class Freezed implements ClassDeclarationsMacro {
             isNamed: field.isNamed,
             isRequired: field.isRequired,
             isInherited: true,
+            needsDeclaration: false,
           ),
         );
       }
@@ -327,7 +336,9 @@ macro class Freezed implements ClassDeclarationsMacro {
 
     builder.declareInLibrary(
       DeclarationCode.fromParts([
-        'augment class ${clazz.identifier.name}',
+        'augment ',
+        if (clazz.hasSealed) 'sealed ',
+        'class ${clazz.identifier.name}',
         if (clazz.superclass case final superClass?) ...[
           ' extends ',
           superClass.code,
@@ -343,15 +354,15 @@ macro class Freezed implements ClassDeclarationsMacro {
       hasConstructor: targetConstructor != null,
       targetSuperCtor: targetSuperCtor,
     );
-    if (targetConstructor != null) {
-      await _generateFields(fields, builder, clazz);
-    }
+    await _generateFields(fields, builder, clazz);
     await _generateCopyWith(fields, builder, clazz);
     await _generateToString(fields, builder, clazz);
 
-    // TODO generate equal/hash only if fields are final: https://github.com/dart-lang/sdk/issues/55764
-    await _generateEqual(fields, builder, clazz);
-    await _generateHash(fields, builder, clazz);
+    if (!clazz.hasSealed) {
+      // TODO generate equal/hash only if fields are final: https://github.com/dart-lang/sdk/issues/55764
+      await _generateEqual(fields, builder, clazz);
+      await _generateHash(fields, builder, clazz);
+    }
 
     builder.declareInLibrary(
       DeclarationCode.fromParts([
@@ -364,11 +375,8 @@ macro class Freezed implements ClassDeclarationsMacro {
     ClassDeclaration clazz,
     MemberDeclarationBuilder builder,
   ) async {
-    final superCtor = this.superCtor;
-    if (superCtor == null) return null;
-
     final superClass = clazz.superclass;
-    if (superClass == null) {
+    if (superClass == null && superCtor != null) {
       builder.report(
         Diagnostic(
           DiagnosticMessage(
@@ -379,15 +387,16 @@ macro class Freezed implements ClassDeclarationsMacro {
       );
       return null;
     }
+    if (superClass == null) return null;
 
     final superDeclaration =
         await builder.typeDeclarationOf(superClass.identifier);
     final superCtors = await builder.constructorsOf(superDeclaration);
     final targetCtor = superCtors.firstWhereOrNull(
-      (e) => e.identifier.name == superCtor,
+      (e) => e.identifier.name == (superCtor ?? ''),
     );
 
-    if (targetCtor == null) {
+    if (targetCtor == null && superCtor != null) {
       builder.report(
         Diagnostic(
           DiagnosticMessage(
@@ -600,7 +609,7 @@ macro class Freezed implements ClassDeclarationsMacro {
           else
             'this.',
           param.name,
-          ', ',
+          ',',
         ];
       }
 
@@ -636,7 +645,8 @@ macro class Freezed implements ClassDeclarationsMacro {
 
       return [
         'super',
-        if (superCtor!.isNotEmpty) '.$superCtor',
+        if (targetSuperCtor.identifier.name.isNotEmpty)
+          '.${targetSuperCtor.identifier.name}',
         '()',
       ];
     }
@@ -649,7 +659,8 @@ macro class Freezed implements ClassDeclarationsMacro {
       '(',
       ...parameters(),
       ')',
-      if (superCtor != null || (hasConstructor && fields.isNotEmpty)) ' : ',
+      if (targetSuperCtor != null || (hasConstructor && fields.isNotEmpty))
+        ' : ',
       if (fields.isNotEmpty && hasConstructor) ...await initializers(),
       ...await superParts(),
       ';',
@@ -664,13 +675,14 @@ macro class Freezed implements ClassDeclarationsMacro {
     ClassDeclaration clazz,
   ) async {
     final fieldsCode = DeclarationCode.fromParts([
-      for (final field in fields) ...[
-        '\n  final ',
-        field.type.code,
-        ' ',
-        field.name,
-        ';',
-      ],
+      for (final field in fields)
+        if (field.needsDeclaration) ...[
+          '\n  final ',
+          field.type.code,
+          ' ',
+          field.name,
+          ';',
+        ],
     ]);
 
     builder.declareInLibrary(fieldsCode);
@@ -708,6 +720,17 @@ macro class Freezed implements ClassDeclarationsMacro {
           '{{package:freezed/freezed.dart#Sentinel}}',
         )
         .asDeclarationCode();
+
+    if (clazz.hasSealed) {
+      builder.declareInLibrary(
+        DeclarationCode.fromParts([
+          '  ',
+          copyWithPrototype,
+          ' get copyWith;',
+        ]),
+      );
+      return;
+    }
 
     builder.declareInLibrary(
       await builder.parts(args: {

@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'integration/simple_fields_test.dart';
+import 'integration/simple_fields.dart';
 
 void main() {
   group('Simple', () {

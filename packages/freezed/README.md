@@ -134,16 +134,16 @@ void main() {
 
 ## Features
 
-| features        | status | comment                                                                  |
-| --------------- | ------ | ------------------------------------------------------------------------ |
-| copyWith        | ok     |                                                                          |
-| toString        | ok     |                                                                          |
-| ==/hashCode     | ok     |                                                                          |
-| unions          | ok     | Supported, but macros are a bit bugged with regards to class inheritance |
-| json support    | wip    |                                                                          |
-| default values  | ko     | Requires macros to be more developed                                     |
-| deep copy       | ko     | Requires macros to be more developed                                     |
-| generic classes | ko     | Requires macros to be more developed                                     |
+| features        | status | comment                                                                   |
+| --------------- | ------ | ------------------------------------------------------------------------- |
+| copyWith        | ok     |                                                                           |
+| toString        | ok     |                                                                           |
+| ==/hashCode     | ok     |                                                                           |
+| unions          | wip    | Supported, but macros are a bit bugged with regards to class inheritance. |
+| json support    | wip    |                                                                           |
+| default values  | ko     | Requires macros to be more developed                                      |
+| deep copy       | ko     | Requires macros to be more developed                                      |
+| generic classes | ko     | Requires macros to be more developed                                      |
 
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
