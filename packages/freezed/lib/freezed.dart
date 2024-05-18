@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, unused_element
 
 import 'dart:async';
 
@@ -138,20 +138,20 @@ class _FreezedField {
 }
 
 /// A data-class macro.
-/// 
+///
 /// **Warning**: Macros are still an experimental feature of Dart.
 /// Lots of features are missing, so expect bugs.
-/// 
+///
 /// This macro generates a `toString`, `copyWith`, `==`, and `hashCode`
 /// implementation for a class.
-/// 
+///
 /// **Note**:
 /// `copyWith` supper` `class.copyWith(field: null)`. This
 /// will clone the object with `field` set to `null`.
-/// 
+///
 /// `hashCode`, `==` and `toString` won't be generated if the class
 /// already possesses an implementation of those methods.
-/// 
+///
 /// Two possible syntaxes are supported:
 /// - Constructor-first.
 ///   You define a class with a constructor, and the macro will
@@ -166,49 +166,49 @@ class _FreezedField {
 ///   This is the most stable syntax.
 ///   But it is less flexible, and not very dart-like.
 ///   If you want full control over constructors, you'll have to use the constructor-first syntax.
-/// 
+///
 /// ## Constructor-first usage
-/// 
+///
 /// To use the constructor-first syntax, define a class with a constructor,
 /// but no fields:
-/// 
+///
 /// ```dart
 /// @Freezed()
 /// class Example {
 ///   Example({required int foo, required String bar});
 /// }
 /// ```
-/// 
+///
 /// The macro will generate the fields for you, along with
 /// the various methods.
-/// 
+///
 /// ```dart
 /// void main() {
 ///   final example = Example(foo: 42, bar: '42');
 ///   print(example.foo); // 42
 /// }
 /// ```
-/// 
+///
 /// ### Using named constructors.
-/// 
+///
 /// Naturally, the macro expects that you use the default constructor.
 /// If you wish to generate fields based on a named constructor instead,
 /// specify `@Freezed(constructor: '<constructor name>')`.
-/// 
+///
 /// ```dart
 /// @Freezed(constructor: 'custom')
 /// class Example {
 ///  Example.custom({required int foo, required String bar});
 /// }
 /// ```
-/// 
+///
 /// ## Field-first usage
-/// 
+///
 /// To use the field-first syntax, define a class with fields
 /// but default constructor.
 /// The macro will then generate a constructor for you, along
 /// with the various methods.
-/// 
+///
 /// ```dart
 /// @Freezed()
 /// class Example {
@@ -216,27 +216,27 @@ class _FreezedField {
 ///  final String bar;
 /// }
 /// ```
-/// 
+///
 /// Currently, all fields are "named" parameters, and they are optional if they are nullable.
-/// 
+///
 /// ```dart
 /// void main() {
 ///  final example = Example(foo: 42, bar: '42');
 ///  print(example.foo); // 42
 /// }
 /// ```
-/// 
+///
 /// ### Specifying the constructor name
-/// 
+///
 /// If you wish to generate a non-default constructor,
 /// you can specify `@Freezed(constructor: '<constructor name>')`.
-/// 
+///
 /// ```dart
 /// @Freezed(constructor: 'custom')
 /// class Example {
 ///   final int foo;
 /// }
-/// 
+///
 /// void main() {
 ///   final example = Example.custom(foo: 42);
 /// }
@@ -249,7 +249,7 @@ macro class Freezed implements ClassDeclarationsMacro {
   });
 
   /// The name of the constructor to use.
-  /// 
+  ///
   /// If not provided, the default constructor will be used.
   final String? constructor;
 
@@ -562,8 +562,9 @@ macro class Freezed implements ClassDeclarationsMacro {
       final result = <Object>[];
 
       for (final (index, field) in fields.indexed) {
-        result.add('${field.name} = ');
-        result.addAll(await initializerForField(field));
+        result
+          ..add('${field.name} = ')
+          ..addAll(initializerForField(field));
 
         if (index != fields.length - 1) result.add(',\n      ');
       }
@@ -618,7 +619,7 @@ macro class Freezed implements ClassDeclarationsMacro {
 
       return [
         'super',
-        if (superCtor!.isNotEmpty) '.${superCtor}',
+        if (superCtor!.isNotEmpty) '.$superCtor',
         '()',
       ];
     }
@@ -627,7 +628,7 @@ macro class Freezed implements ClassDeclarationsMacro {
       '  ',
       if (hasConstructor) 'augment ',
       clazz.identifier.name,
-      if (constructor != null) '.${constructor}',
+      if (constructor != null) '.$constructor',
       '(',
       ...parameters(),
       ')',
@@ -709,7 +710,7 @@ macro class Freezed implements ClassDeclarationsMacro {
         ]),
         'Instance': DeclarationCode.fromParts([
           clazz.identifier,
-          if (constructor != null) '.${constructor}',
+          if (constructor != null) '.$constructor',
           '(',
           for (final field in fields) ...[
             '\n        ',

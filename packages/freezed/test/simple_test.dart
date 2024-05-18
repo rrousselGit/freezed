@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types, deprecated_member_use_from_same_package
-import 'package:analyzer/dart/element/element.dart';
-import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
 import 'integration/simple_constructor.dart';
@@ -23,18 +21,18 @@ class MyObject {
 final throwsAssertionError = throwsA(isA<AssertionError>());
 
 Future<void> main() async {
-  Future<LibraryElement> analyze() {
-    return resolveSources(
-      {
-        'freezed|test/integration/single_class_constructor.dart':
-            useAssetReader,
-      },
-      (r) => r.libraries.firstWhere((e) {
-        return e.source.fullName ==
-            '/freezed/test/integration/single_class_constructor.dart';
-      }),
-    );
-  }
+  // Future<LibraryElement> analyze() {
+  //   return resolveSources(
+  //     {
+  //       'freezed|test/integration/single_class_constructor.dart':
+  //           useAssetReader,
+  //     },
+  //     (r) => r.libraries.firstWhere((e) {
+  //       return e.source.fullName ==
+  //           '/freezed/test/integration/single_class_constructor.dart';
+  //     }),
+  //   );
+  // }
 
   // test('CustomSetEqual', () {
   //   expect(
