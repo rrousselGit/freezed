@@ -1,3 +1,12 @@
+## Unreleased 3.0.0-0.0.dev
+
+Initial macro attempt!
+
+Lots of macro features are missing or bugged, so this is a very early
+project.
+
+See the readme for information on how to use.
+
 ## 2.5.3 - 2024-05-14
 
 - Support analyzer 6.5.0

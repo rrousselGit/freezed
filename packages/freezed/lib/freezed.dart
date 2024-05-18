@@ -325,6 +325,17 @@ macro class Freezed implements ClassDeclarationsMacro {
       }
     }
 
+    builder.declareInLibrary(
+      DeclarationCode.fromParts([
+        'augment class ${clazz.identifier.name}',
+        if (clazz.superclass case final superClass?) ...[
+          ' extends ',
+          superClass.code,
+        ],
+        ' {',
+      ]),
+    );
+
     await _generateConstructor(
       fields,
       builder,
@@ -341,6 +352,12 @@ macro class Freezed implements ClassDeclarationsMacro {
     // TODO generate equal/hash only if fields are final: https://github.com/dart-lang/sdk/issues/55764
     await _generateEqual(fields, builder, clazz);
     await _generateHash(fields, builder, clazz);
+
+    builder.declareInLibrary(
+      DeclarationCode.fromParts([
+        '}',
+      ]),
+    );
   }
 
   Future<ConstructorDeclaration?> _computeSuperCtor(
@@ -404,7 +421,7 @@ macro class Freezed implements ClassDeclarationsMacro {
       ],
     ]);
 
-    builder.declareInType(
+    builder.declareInLibrary(
       DeclarationCode.fromParts(
         await builder.parts(args: {'fields': fieldsCode}, '''
 
@@ -427,7 +444,7 @@ macro class Freezed implements ClassDeclarationsMacro {
         methods.where((e) => e.identifier.name == 'operator==').firstOrNull;
     if (equal != null) return;
 
-    builder.declareInType(
+    builder.declareInLibrary(
       DeclarationCode.fromParts(
         await builder.parts(
           args: {
@@ -459,7 +476,7 @@ macro class Freezed implements ClassDeclarationsMacro {
     if (hash != null) return;
 
     if (fields.isEmpty) {
-      builder.declareInType(
+      builder.declareInLibrary(
         DeclarationCode.fromParts(
           await builder.parts('''
 
@@ -471,7 +488,7 @@ macro class Freezed implements ClassDeclarationsMacro {
     }
 
     if (fields.length >= 19) {
-      builder.declareInType(
+      builder.declareInLibrary(
         DeclarationCode.fromParts(
           await builder.parts('''
 
@@ -482,7 +499,7 @@ macro class Freezed implements ClassDeclarationsMacro {
       return;
     }
 
-    builder.declareInType(
+    builder.declareInLibrary(
       DeclarationCode.fromParts(
         await builder.parts('''
 
@@ -638,7 +655,7 @@ macro class Freezed implements ClassDeclarationsMacro {
       ';',
     ]);
 
-    builder.declareInType(constructorCode);
+    builder.declareInLibrary(constructorCode);
   }
 
   Future<void> _generateFields(
@@ -656,7 +673,7 @@ macro class Freezed implements ClassDeclarationsMacro {
       ],
     ]);
 
-    builder.declareInType(fieldsCode);
+    builder.declareInLibrary(fieldsCode);
   }
 
   Future<void> _generateCopyWith(
@@ -692,7 +709,7 @@ macro class Freezed implements ClassDeclarationsMacro {
         )
         .asDeclarationCode();
 
-    builder.declareInType(
+    builder.declareInLibrary(
       await builder.parts(args: {
         'CopyWithPrototype': copyWithPrototype,
         'CopyWithParameters': DeclarationCode.fromParts([
