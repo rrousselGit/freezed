@@ -10,7 +10,7 @@ Welcome to [Freezed], yet another code generator for data-classes/unions/pattern
 
 > [!NOTE]
 > An early preview of Freezed using macro is available.
-> To learn more, go to https://github.com/rrousselGit/freezed/tree/macros.
+> To learn more, go to <https://github.com/rrousselGit/freezed/tree/macros>.
 
 # Motivation
 
@@ -37,7 +37,7 @@ to focus on the definition of your model.
 - [Index](#index)
 - [How to use](#how-to-use)
   - [Install](#install)
-    - [Disabling invalid\_annotation\_target warning and warning in generates files.](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
+    - [Disabling invalid\_annotation\_target warning and warning in generates files](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
   - [Run the generator](#run-the-generator)
   - [Creating a Model using Freezed](#creating-a-model-using-freezed)
     - [Defining a mutable class instead of an immutable one](#defining-a-mutable-class-instead-of-an-immutable-one)
@@ -62,6 +62,7 @@ to focus on the definition of your model.
     - [Changing the behavior for a specific model](#changing-the-behavior-for-a-specific-model)
     - [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)
 - [Utilities](#utilities)
+  - [IDE Extensions](#ide-extensions)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
   - [Third-party tools](#third-party-tools)
@@ -103,7 +104,7 @@ This installs three packages:
 - [freezed], the code generator
 - [freezed_annotation](https://pub.dev/packages/freezed_annotation), a package containing annotations for [freezed].
 
-### Disabling invalid_annotation_target warning and warning in generates files.
+### Disabling invalid_annotation_target warning and warning in generates files
 
 If you plan on using [Freezed] in combination with `json_serializable`, recent
 versions of `json_serializable` and `meta` may require you to disable the
@@ -1157,7 +1158,7 @@ By doing so, you can now pass various parameters to `@Freezed` to change the out
 class Person with _$Person {...}
 ```
 
-To view all the possibilities, see the documentation of `@Freezed`: https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html
+To view all the possibilities, see the documentation of `@Freezed`: <https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html>
 
 ### Changing the behavior for the entire project
 
@@ -1200,6 +1201,8 @@ targets:
 
 # Utilities
 
+## IDE Extensions
+
 ### Freezed extension for VSCode
 
 The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed) extension might help you work faster with freezed. For example :
@@ -1230,11 +1233,11 @@ This part contains community-made tools which integrate with Freezed.
 
 ### DartJ
 
-[DartJ](https://dartj.web.app/#/) is Flutter application, maked by @ttpho, which will generate the Freezed classes from a JSON payload.
+[DartJ](https://dartj.web.app/#/) is Flutter application, made by [**@ttpho**](https://github.com/ttpho), which will generate the Freezed classes from a JSON payload.
 
 Example:
 
-https://github.com/ttpho/ttpho/assets/3994863/5d529258-c02c-4066-925e-ca2ffc68a804
+<https://github.com/ttpho/ttpho/assets/3994863/5d529258-c02c-4066-925e-ca2ffc68a804>
 
 ## Sponsors
 
