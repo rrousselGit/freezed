@@ -14,12 +14,12 @@ Welcome to [Freezed], yet another code generator for data classes, unions, and c
 
 # Motivation
 
-Dart is awesome, but defining a "model" can be tedious. We may have to:
+Dart is awesome, but defining a "model" can be tedious. You have to:
 
-- define a constructor + the properties
+- define a constructor + properties
 - override `toString`, `operator ==`, `hashCode`
 - implement a `copyWith` method to clone the object
-- handling de/serialization
+- handle (de)serialization
 
 Implementing all of this can take hundreds of lines, which are error-prone
 and affect the readability of your model significantly.
