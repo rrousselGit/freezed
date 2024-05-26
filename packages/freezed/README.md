@@ -6,7 +6,7 @@
 
 [<img src="https://raw.githubusercontent.com/rrousselGit/provider/master/resources/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
 
-Welcome to [Freezed], yet another code generator for data-classes/unions/pattern-matching/cloning.
+Welcome to [Freezed], yet another code generator for data classes, unions, and cloning.
 
 > [!NOTE]
 > An early preview of Freezed using macro is available.
