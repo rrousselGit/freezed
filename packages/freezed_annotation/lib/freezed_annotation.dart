@@ -499,7 +499,7 @@ const freezed = Freezed();
 /// Defines a potentially mutable data-class.
 ///
 /// As opposed to [freezed], properties of the object can be mutable.
-/// On the other hand, a data class will not implement ==.
+/// On the other hand, they will not implement ==.
 const unfreezed = Freezed(
   equal: false,
   addImplicitFinal: false,
