@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_unused_constructor_parameters
 
-import 'package:freezed/freezed.dart';
+import 'package:dataclass/dataclass.dart';
 
 // The usual syntax, based on constructors.
 // We no-longer use "factory" constructors.
-@Freezed()
+@Data()
 class Person {
   Person(
     String name, {
@@ -14,7 +14,7 @@ class Person {
 
 // Alternatively, you can define classes using fields:
 
-@Freezed()
+@Data()
 class Person2 {
   final String name;
   final int age;
@@ -36,12 +36,12 @@ void main() {
 
 class Engine {}
 
-@Freezed()
+@Data()
 sealed class Vehicle {
   final Engine engine;
 }
 
-@Freezed()
+@Data()
 class Plane implements Vehicle {
   final Wing wing;
 
@@ -53,7 +53,7 @@ class Plane implements Vehicle {
 
 class Wing {}
 
-@Freezed()
+@Data()
 class Car implements Vehicle {
   final Wheel wheel;
 

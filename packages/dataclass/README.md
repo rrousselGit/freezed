@@ -1,13 +1,10 @@
-[English](https://github.com/rrousselGit/freezed/blob/master/packages/freezed/README.md) | [한국어](https://github.com/rrousselGit/freezed/blob/master/resources/translations/ko_KR/README.md) | [简体中文](https://github.com/rrousselGit/freezed/blob/master/resources/translations/zh_CN/README.md)
-
-![Build](https://github.com/rrousselGit/freezed/workflows/Build/badge.svg)
-[![pub package](https://img.shields.io/pub/v/freezed.svg)](https://pub.dartlang.org/packages/freezed)
 <a href="https://discord.gg/Bbumvej"><img src="https://img.shields.io/discord/765557403865186374.svg?logo=discord&color=blue" alt="Discord"></a>
 
-[<img src="https://raw.githubusercontent.com/rrousselGit/provider/master/resources/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
-
 Welcome to the Macro version of [Freezed]!  
-Freezed is a tool that generates `toString`, `copyWith` (including `copyWith(field: null)`), `hashCode`, `==`
+It has been renamed to `dataclass`, for the sake of enabling users to
+temporarily use both `build_runner` and macros.
+
+This is a tool that generates `toString`, `copyWith` (including `copyWith(field: null)`), `hashCode`, `==`
 and more.
 
 This is a very early proof of concept about what Freezed would look like when macros land in Dart.
@@ -36,7 +33,7 @@ To get started with the macro version of Freezed:
   dependencies:
     # Freezed is now a "dependencies".
     # freezed_annotation is no-longer needed
-    freezed: ^3.0.0-0.0.dev
+    dataclass: ^3.0.0-0.0.dev
   ```
 
 ## Usage
@@ -63,7 +60,7 @@ To use the constructor-first syntax, define a class with a constructor,
 but no fields:
 
 ```dart
-@Freezed()
+@Data()
 class Example {
   Example({required int foo, required String bar});
 }
@@ -83,10 +80,10 @@ void main() {
 
 Naturally, the macro expects that you use the default constructor.
 If you wish to generate fields based on a named constructor instead,
-specify `@Freezed(constructor: '<constructor name>')`.
+specify `@Data(constructor: '<constructor name>')`.
 
 ```dart
-@Freezed(constructor: 'custom')
+@Data(constructor: 'custom')
 class Example {
  Example.custom({required int foo, required String bar});
 }
@@ -100,7 +97,7 @@ The macro will then generate a constructor for you, along
 with the various methods.
 
 ```dart
-@Freezed()
+@Data()
 class Example {
  final int foo;
  final String bar;
@@ -119,10 +116,10 @@ void main() {
 #### Specifying the constructor name
 
 If you wish to generate a non-default constructor,
-you can specify `@Freezed(constructor: '<constructor name>')`.
+you can specify `@Data(constructor: '<constructor name>')`.
 
 ```dart
-@Freezed(constructor: 'custom')
+@Data(constructor: 'custom')
 class Example {
   final int foo;
 }

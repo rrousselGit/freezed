@@ -1,4 +1,4 @@
-name: freezed
+name: dataclass
 description: >
   Code generation for immutable classes that has a simple syntax/API without
   compromising on the features.

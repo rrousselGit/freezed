@@ -175,7 +175,7 @@ class _FreezedField {
 /// but no fields:
 ///
 /// ```dart
-/// @Freezed()
+/// @Data()
 /// class Example {
 ///   Example({required int foo, required String bar});
 /// }
@@ -195,10 +195,10 @@ class _FreezedField {
 ///
 /// Naturally, the macro expects that you use the default constructor.
 /// If you wish to generate fields based on a named constructor instead,
-/// specify `@Freezed(constructor: '<constructor name>')`.
+/// specify `@Data(constructor: '<constructor name>')`.
 ///
 /// ```dart
-/// @Freezed(constructor: 'custom')
+/// @Data(constructor: 'custom')
 /// class Example {
 ///  Example.custom({required int foo, required String bar});
 /// }
@@ -212,7 +212,7 @@ class _FreezedField {
 /// with the various methods.
 ///
 /// ```dart
-/// @Freezed()
+/// @Data()
 /// class Example {
 ///  final int foo;
 ///  final String bar;
@@ -231,10 +231,10 @@ class _FreezedField {
 /// ### Specifying the constructor name
 ///
 /// If you wish to generate a non-default constructor,
-/// you can specify `@Freezed(constructor: '<constructor name>')`.
+/// you can specify `@Data(constructor: '<constructor name>')`.
 ///
 /// ```dart
-/// @Freezed(constructor: 'custom')
+/// @Data(constructor: 'custom')
 /// class Example {
 ///   final int foo;
 /// }
@@ -243,8 +243,8 @@ class _FreezedField {
 ///   final example = Example.custom(foo: 42);
 /// }
 /// ```
-macro class Freezed implements ClassDeclarationsMacro {
-  const Freezed({
+macro class Data implements ClassDeclarationsMacro {
+  const Data({
     this.constructor,
     this.makeCollectionsUnmodifiable = true,
     this.superCtor,
