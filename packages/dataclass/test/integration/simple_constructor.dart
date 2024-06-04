@@ -3,9 +3,9 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:freezed/freezed.dart';
+import 'package:dataclass/dataclass.dart';
 
-@Freezed()
+@Data()
 class Dynamic {
   Dynamic({
     dynamic foo,
@@ -79,67 +79,67 @@ class CustomList<T> extends ListBase<T?> {
   void operator []=(int index, T? value) => _source[index] = value;
 }
 
-@Freezed()
+@Data()
 class ObjectEqual {
   ObjectEqual(Object obj);
 }
 
-@Freezed()
+@Data()
 class CustomListEqual {
   CustomListEqual(CustomList<int> list);
 }
 
-@Freezed(makeCollectionsUnmodifiable: false)
+@Data(makeCollectionsUnmodifiable: false)
 class ListEqual {
   ListEqual(List<Object> list);
 }
 
-@Freezed()
+@Data()
 class UnmodifiableListEqual {
   UnmodifiableListEqual(List<int> list);
 }
 
-@Freezed()
+@Data()
 class NullUnmodifiableListEqual {
   NullUnmodifiableListEqual(List<int>? list);
 }
 
-@Freezed()
+@Data()
 class CustomSetEqual {
   CustomSetEqual(CustomSet<int> dartSet);
 }
 
-@Freezed(makeCollectionsUnmodifiable: false)
+@Data(makeCollectionsUnmodifiable: false)
 class SetEqual {
   SetEqual(Set<int> dartSet);
 }
 
-@Freezed()
+@Data()
 class UnmodifiableSetEqual {
   UnmodifiableSetEqual(Set<int> dartSet);
 }
 
-@Freezed()
+@Data()
 class NullUnmodifiableSetEqual {
   NullUnmodifiableSetEqual(Set<int>? dartSet);
 }
 
-@Freezed()
+@Data()
 class CustomMapEqual {
   CustomMapEqual(CustomMap<String, Object?> map);
 }
 
-@Freezed(makeCollectionsUnmodifiable: false)
+@Data(makeCollectionsUnmodifiable: false)
 class MapEqual {
   MapEqual(Map<String, Object?> map);
 }
 
-@Freezed()
+@Data()
 class UnmodifiableMapEqual {
   UnmodifiableMapEqual(Map<String, Object?> map);
 }
 
-@Freezed()
+@Data()
 class NullUnmodifiableMapEqual {
   NullUnmodifiableMapEqual(Map<String, Object?>? map);
 }
@@ -153,7 +153,7 @@ mixin Complex<T> {
 
 abstract class DataEvent {}
 
-// @Freezed()
+// @Data()
 // class Large {
 //   factory Large({
 //     @Default(0) int? a0,
@@ -190,12 +190,12 @@ abstract class DataEvent {}
 // }
 
 // Regression test for https://github.com/rrousselGit/Freezed(/issues/131
-@Freezed()
+@Data()
 class Regression131 extends DataEvent {
   Regression131(String versionName);
 }
 
-// @Freezed()
+// @Data()
 // class UnimplementedGetter {
 //   UnimplementedGetter(int value);
 
@@ -203,7 +203,7 @@ class Regression131 extends DataEvent {
 //   int get value;
 // }
 
-@Freezed()
+@Data()
 class Assertion {
   Assertion(int a, int b)
       : assert(a > 0),
@@ -211,7 +211,7 @@ class Assertion {
 }
 
 // // Regression test for https://github.com/rrousselGit/Freezed(/issues/326
-// @Freezed()
+// @Data()
 // class Doc326 with _$Doc326 {
 //   /// Hello world
 //   factory Doc326({
@@ -220,7 +220,7 @@ class Assertion {
 // }
 
 // // Regression test for https://github.com/rrousselGit/Freezed(/issues/317
-// @Freezed()
+// @Data()
 // class Doc317 with _$Doc317 {
 //   factory Doc317({
 //     /// )
@@ -228,7 +228,7 @@ class Assertion {
 //   }) = _Doc317;
 // }
 
-// @Freezed()
+// @Data()
 // class Doc with _$Doc {
 //   factory Doc(
 //     /// Multi
@@ -244,7 +244,7 @@ class Assertion {
 // }
 
 /// Regression test for https://github.com/rrousselGit/Freezed(/issues/213
-@Freezed()
+@Data()
 class Product {
   const Product({
     String? name,
@@ -252,12 +252,12 @@ class Product {
   });
 }
 
-@Freezed(constructor: 'something')
+@Data(constructor: 'something')
 class Test {
   const Test.something(Completer<void> completer);
 }
 
-@Freezed(constructor: '_internal')
+@Data(constructor: '_internal')
 class Private {
   // This is the (private) Freezed( constructor
   const Private._internal(
@@ -265,47 +265,47 @@ class Private {
   );
 }
 
-@Freezed()
+@Data()
 class MyClass {
   MyClass({String? a, int? b});
 }
 
-@Freezed()
+@Data()
 class MixedParam {
   const MixedParam(String a, {int? b});
 }
 
-@Freezed()
+@Data()
 class PositionalMixedParam {
   const PositionalMixedParam(String a, [int? b]);
 }
 
-@Freezed()
+@Data()
 class Required {
   const Required({required String? a});
 }
 
-@Freezed()
+@Data()
 class Empty {
   const Empty();
 }
 
-@Freezed()
+@Data()
 class Empty2 {
   const Empty2();
 }
 
-@Freezed(constructor: 'named')
+@Data(constructor: 'named')
 class SingleNamedCtor {
   const SingleNamedCtor.named(int a);
 }
 
-// @Freezed()
+// @Data()
 // class Generic<T> with _$Generic<T> {
 //   const Generic(T value) = A<T>;
 // }
 
-// @Freezed()
+// @Data()
 // class Example {
 //   const Example(String a, {int? b});
 
@@ -314,13 +314,13 @@ class SingleNamedCtor {
 //   }
 // }
 
-@Freezed()
+@Data()
 class NoConst {
   NoConst();
 }
 
 // Regression test for https://github.com/rrousselGit/Freezed(/issues/40
-@Freezed()
+@Data()
 class SecondState {
   const SecondState({
     String? dateTime,
@@ -329,7 +329,7 @@ class SecondState {
 }
 
 // Regression test for https://github.com/rrousselGit/Freezed(/issues/44
-@Freezed()
+@Data()
 class Static {
   const Static();
 
@@ -340,7 +340,7 @@ class Static {
   static int staticMethod() => 0;
 }
 
-@Freezed()
+@Data()
 class Late {
   Late(int value);
 
@@ -358,7 +358,7 @@ class LateContainer {
   }
 }
 
-@Freezed()
+@Data()
 class AllProperties {
   AllProperties(int value);
 
@@ -367,14 +367,14 @@ class AllProperties {
   final c = 3;
 }
 
-@Freezed()
+@Data()
 class Late2 {
   Late2(int? Function() cb);
 
   late final int? first = cb();
 }
 
-@Freezed()
+@Data()
 class ComplexLate {
   ComplexLate(List<int> values);
 
@@ -386,24 +386,24 @@ class ComplexLate {
   }).toList();
 }
 
-// @Freezed()
+// @Data()
 // class IntDefault {
 //   factory IntDefault([@Default(42) int value]) = _IntDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class StringDefault with _$StringDefault {
 //   factory StringDefault([@Default('42') String value]) = _StringDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class SpecialStringDefault with _$SpecialStringDefault {
 //   factory SpecialStringDefault([@Default('(1)[2]{3}') String value]) =
 //       _SpecialStringDefault;
 // }
 
 // /// Adds `const` to default non-literal values
-// @Freezed()
+// @Data()
 // class DefaultNonLiteralConst with _$DefaultNonLiteralConst {
 //   factory DefaultNonLiteralConst({
 //     @Default(Object()) Object listObject,
@@ -411,7 +411,7 @@ class ComplexLate {
 // }
 
 // /// Does not add `const` to non-literal values if already present
-// @Freezed()
+// @Data()
 // class DefaultNonLiteralAlreadyConst with _$DefaultNonLiteralAlreadyConst {
 //   factory DefaultNonLiteralAlreadyConst({
 //     @Default(
@@ -422,50 +422,50 @@ class ComplexLate {
 //   }) = _DefaultNonLiteralAlreadyConst;
 // }
 
-// @Freezed()
+// @Data()
 // class DoubleDefault with _$DoubleDefault {
 //   factory DoubleDefault([@Default(42.0) double value]) = _DoubleDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class TypeDefault with _$TypeDefault {
 //   factory TypeDefault([@Default(TypeDefault) Type value]) = _TypeDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class ListDefault with _$ListDefault {
 //   factory ListDefault([@Default(<int>[42]) List<int> value]) = _ListDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class SetDefault with _$SetDefault {
 //   factory SetDefault([@Default(<int>{42}) Set<int> value]) = _SetDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class MapDefault with _$MapDefault {
 //   factory MapDefault([@Default(<int, int>{42: 42}) Map<int, int> value]) =
 //       _MapDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class BoolDefault with _$BoolDefault {
 //   factory BoolDefault([@Default(false) bool value]) = _BoolDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class NullDefault with _$NullDefault {
 //   factory NullDefault([@Default(null) bool? value]) = _NullDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class ExplicitConstDefault with _$ExplicitConstDefault {
 //   factory ExplicitConstDefault(
 //       //ignore: unnecessary_const
 //       [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
 // }
 
-// @Freezed()
+// @Data()
 // class StaticConstDefault with _$StaticConstDefault {
 //   factory StaticConstDefault([@Default(Duration.zero) Duration value]) =
 //       _StaticConstDefault;
@@ -473,7 +473,7 @@ class ComplexLate {
 
 // enum _Enum { a }
 
-// @Freezed()
+// @Data()
 // class EnumDefault with _$EnumDefault {
 //   factory EnumDefault([@Default(_Enum.a) _Enum value]) = _EnumDefault;
 // }

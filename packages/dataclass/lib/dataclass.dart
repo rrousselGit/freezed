@@ -3,8 +3,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:freezed/src/macros.dart';
-import 'package:freezed/src/part_utils.dart';
+import 'package:dataclass/src/macros.dart';
+import 'package:dataclass/src/part_utils.dart';
 import 'package:macros/macros.dart';
 import 'package:meta/meta.dart';
 
@@ -530,7 +530,7 @@ macro class Data implements ClassDeclarationsMacro {
       'List',
     );
     final unmodifiableList = await builder.resolveIdentifier(
-      Uri.parse('package:freezed/freezed.dart'),
+      Uri.parse('package:dataclass/dataclass.dart'),
       'EqualUnmodifiableListView',
     );
     final map = await builder.resolveIdentifier(
@@ -538,7 +538,7 @@ macro class Data implements ClassDeclarationsMacro {
       'Map',
     );
     final unmodifiableMap = await builder.resolveIdentifier(
-      Uri.parse('package:freezed/freezed.dart'),
+      Uri.parse('package:dataclass/dataclass.dart'),
       'EqualUnmodifiableMapView',
     );
     final hashSet = await builder.resolveIdentifier(
@@ -546,7 +546,7 @@ macro class Data implements ClassDeclarationsMacro {
       'Set',
     );
     final unmodifiableSet = await builder.resolveIdentifier(
-      Uri.parse('package:freezed/freezed.dart'),
+      Uri.parse('package:dataclass/dataclass.dart'),
       'EqualUnmodifiableSetView',
     );
 
@@ -717,7 +717,7 @@ macro class Data implements ClassDeclarationsMacro {
         await builder.resolveIdentifier(Uri.parse('dart:core'), 'Object');
     final sentinel = await builder
         .parts(
-          '{{package:freezed/freezed.dart#Sentinel}}',
+          '{{package:dataclass/dataclass.dart#Sentinel}}',
         )
         .asDeclarationCode();
 
