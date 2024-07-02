@@ -6,20 +6,20 @@
 
 [<img src="https://raw.githubusercontent.com/rrousselGit/provider/master/resources/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
 
-Welcome to [Freezed], yet another code generator for data-classes/unions/pattern-matching/cloning.
+Welcome to [Freezed], yet another code generator for data classes, unions, and cloning.
 
 > [!NOTE]
 > An early preview of Freezed using macro is available.
-> To learn more, go to https://github.com/rrousselGit/freezed/tree/macros.
+> To learn more, go to <https://github.com/rrousselGit/freezed/tree/macros>.
 
 # Motivation
 
-Dart is awesome, but defining a "model" can be tedious. We may have to:
+Dart is awesome, but defining a "model" can be tedious. You have to:
 
-- define a constructor + the properties
+- define a constructor + properties
 - override `toString`, `operator ==`, `hashCode`
 - implement a `copyWith` method to clone the object
-- handling de/serialization
+- handle (de)serialization
 
 Implementing all of this can take hundreds of lines, which are error-prone
 and affect the readability of your model significantly.
@@ -37,7 +37,7 @@ to focus on the definition of your model.
 - [Index](#index)
 - [How to use](#how-to-use)
   - [Install](#install)
-    - [Disabling invalid\_annotation\_target warning and warning in generates files.](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
+    - [Disabling invalid\_annotation\_target warning and warning in generates files](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
   - [Run the generator](#run-the-generator)
   - [Creating a Model using Freezed](#creating-a-model-using-freezed)
     - [Defining a mutable class instead of an immutable one](#defining-a-mutable-class-instead-of-an-immutable-one)
@@ -52,15 +52,17 @@ to focus on the definition of your model.
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - classes with multiple constructors](#fromjson---classes-with-multiple-constructors)
     - [Deserializing generic classes](#deserializing-generic-classes)
-  - [(Legacy) Union types and Sealed classes](#legacy-union-types-and-sealed-classes)
+  - [Union types](#union-types)
     - [Shared properties](#shared-properties)
     - [Using pattern matching to read non-shared properties](#using-pattern-matching-to-read-non-shared-properties)
-      - [When](#when)
-      - [Map](#map)
+      - [(Legacy) Pattern matching utilities](#legacy-pattern-matching-utilities)
+        - [When](#when)
+        - [Map](#map)
   - [Configurations](#configurations)
     - [Changing the behavior for a specific model](#changing-the-behavior-for-a-specific-model)
     - [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)
 - [Utilities](#utilities)
+  - [IDE Extensions](#ide-extensions)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
   - [Third-party tools](#third-party-tools)
@@ -102,7 +104,7 @@ This installs three packages:
 - [freezed], the code generator
 - [freezed_annotation](https://pub.dev/packages/freezed_annotation), a package containing annotations for [freezed].
 
-### Disabling invalid_annotation_target warning and warning in generates files.
+### Disabling invalid_annotation_target warning and warning in generates files
 
 If you plan on using [Freezed] in combination with `json_serializable`, recent
 versions of `json_serializable` and `meta` may require you to disable the
@@ -880,22 +882,14 @@ If you want to define some custom json_serializable flags for all the classes (e
 
 See also the [decorators](#decorators-and-comments) section
 
-## (Legacy) Union types and Sealed classes
+## Union types
 
-**Edit**: As of Dart 3, Dart now has built-in pattern-matching using sealed classes.  
-As such, you no-longer need to rely on Freezed's generated methods for pattern
-matching. Instead of using `when`/`map`, use the official Dart syntax.
+Coming from other languages, you may be used to features like "union types," "sealed classes," and pattern matching.
 
-The following docs are left unedited and kept for the Dart users who have yet to
-migrate to Dart 3.  
-But in the long term, you should stop relying on `when`/`map`.
+These are powerful tools in combination with a type system, but Dart 2 does not support them.
+Dart 3 does support them, but it isn't particularly ergonomic to use them.
 
----
-
-Coming from other languages, you may be used to features like "union types"/"sealed classes"/pattern matching.  
-These are powerful tools in combination with a type system, but Dart currently does not support them.
-
-But fear not, [Freezed] supports them, generating a few utilities to help you with those.
+But fear not, [Freezed] supports them, generating a few utilities to help you!
 
 Long story short, in any Freezed class, you can write multiple constructors:
 
@@ -908,6 +902,11 @@ sealed class Union with _$Union {
 }
 ```
 
+> [!NOTE]
+> This example uses the `sealed` keyword, which was introduced in Dart 3.
+> If you're on Dart 3, you should always use the sealed keyword when defining Freezed unions.
+> If you're still on Dart 2, you can safely ignore this, but upgrading to Dart 3 is reccomended for native pattern matching.
+
 By doing this, our model now can be in different mutually exclusive states.
 
 In particular, this snippet defines a model `Union`, and that model has 3 possible states:
@@ -919,8 +918,7 @@ In particular, this snippet defines a model `Union`, and that model has 3 possib
 Note how we gave meaningful names to the right hand of the factory constructors we defined.
 They will come in handy later.
 
-One thing you may also notice is that with this example, then we can no-longer
-write code such as:
+One thing you may also notice is that with this example, we can no longer write code such as:
 
 ```dart
 void main() {
@@ -930,7 +928,7 @@ void main() {
 }
 ```
 
-Let's see why that is the case in the following section.
+We'll see why in the following section.
 
 ### Shared properties
 
@@ -953,7 +951,7 @@ var example = Example.person('Remi', 24);
 print(example.age); // does not compile!
 ```
 
-On the other hand, you **can** read properties that are defined on all constructors.\
+On the other hand, you **can** read properties that are defined on all constructors.
 For example, the `name` variable is common to both `Example.person` and `Example.city` constructors.
 
 As such we can write:
@@ -1000,19 +998,30 @@ sealed class Example with _$Example {
 
 Let's see how we can use pattern matching to read the content of an `Example` instance.
 
-For this, we have a few solutions:
+For this, you should use Dart 3's built-in pattern matching using `switch`:
 
-- (preferred) Use Dart 3's built-in pattern matching using `switch`:
-  ```dart
-  switch (example) {
-    Person(:final name) => print('Person $name'),
-    City(:final population) => print('City ($population)'),
-  }
-  ```
-- (legacy) If using Dart 2, you can use utilities ([when]/[map]) generated by Freezed to inspect the content of our object
-- (discouraged) Using `is`/`as` to cast an `Example` variable into either a `Person` or a `City`
+```dart
+switch (example) {
+  Person(:final name) => print('Person $name'),
+  City(:final population) => print('City ($population)'),
+}
+```
 
-#### When
+If using Dart 2, you can use also use the [legacy pattern matching utilities](#legacy-pattern-matching-utilities) generated by Freezed to inspect the content of our object.
+You could also using `is`/`as` to cast an `Example` variable into either a `Person` or a `City`, but this is heavily discouraged. Use one of the other two options.
+
+#### (Legacy) Pattern matching utilities
+
+> [!WARNING]
+> As of Dart 3, Dart now has built-in pattern-matching using sealed classes.
+> As such, you no-longer need to rely on Freezed's generated methods for pattern matching.
+> Instead of using `when`/`map`, use the official Dart syntax.
+>
+> The references to `when`/`map` are kept for users who have yet to
+> migrate to Dart 3.
+> But in the long term, you should stop relying on them and migrate to `switch` expressions.
+
+##### When
 
 The [when] method is the equivalent to pattern matching with destructing.  
 The prototype of the method depends on the constructors defined.
@@ -1067,11 +1076,7 @@ print(
 
 Notice how each callback matches with a constructor's name and prototype.
 
-**NOTE**:\
-All callbacks are required and must not be `null`.\
-If that is not what you want, consider using [maybeWhen].
-
-#### Map
+##### Map
 
 The [map] methods are equivalent to [when], but **without** destructuring.
 
@@ -1153,7 +1158,7 @@ By doing so, you can now pass various parameters to `@Freezed` to change the out
 class Person with _$Person {...}
 ```
 
-To view all the possibilities, see the documentation of `@Freezed`: https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html
+To view all the possibilities, see the documentation of `@Freezed`: <https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html>
 
 ### Changing the behavior for the entire project
 
@@ -1196,6 +1201,8 @@ targets:
 
 # Utilities
 
+## IDE Extensions
+
 ### Freezed extension for VSCode
 
 The [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed) extension might help you work faster with freezed. For example :
@@ -1226,11 +1233,11 @@ This part contains community-made tools which integrate with Freezed.
 
 ### DartJ
 
-[DartJ](https://dartj.web.app/#/) is Flutter application, maked by @ttpho, which will generate the Freezed classes from a JSON payload.
+[DartJ](https://dartj.web.app/#/) is Flutter application, made by [**@ttpho**](https://github.com/ttpho), which will generate the Freezed classes from a JSON payload.
 
 Example:
 
-https://github.com/ttpho/ttpho/assets/3994863/5d529258-c02c-4066-925e-ca2ffc68a804
+<https://github.com/ttpho/ttpho/assets/3994863/5d529258-c02c-4066-925e-ca2ffc68a804>
 
 ## Sponsors
 
@@ -1245,7 +1252,5 @@ https://github.com/ttpho/ttpho/assets/3994863/5d529258-c02c-4066-925e-ca2ffc68a8
 [freezed_annotation]: https://pub.dartlang.org/packages/freezed_annotation
 [copywith]: #how-copywith-works
 [when]: #when
-[maybewhen]: #maybeWhen
 [map]: #map
-[maybemap]: #mapMaybeMap
 [json_serializable]: https://pub.dev/packages/json_serializable
