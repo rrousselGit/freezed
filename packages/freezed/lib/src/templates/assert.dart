@@ -10,7 +10,9 @@ class AssertTemplate {
   @override
   String toString() {
     if (message != null) {
-      return "assert($eval, '$message')";
+      final newMessage = message!.replaceAll('"', '\\"').replaceAll("'", "\\'");
+
+      return "assert($eval, '$newMessage')";
     }
     return 'assert($eval)';
   }

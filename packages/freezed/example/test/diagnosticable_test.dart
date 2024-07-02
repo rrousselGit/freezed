@@ -1,6 +1,7 @@
 import 'package:example/diagnosticable.dart' as diagnosticable;
 import 'package:example/non_diagnosticable.dart' as non_diagnosticable;
 import 'package:example/time_slot.dart';
+import 'package:example/with_double_quotes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,5 +65,10 @@ void main() {
     );
 
     expect(timeslot, isNot(isA<DiagnosticableTree>()));
+  });
+
+  test('with double quotes', () {
+    final temp = const WithDoubleQuotes();
+    expect(temp, isNot(isA<DiagnosticableTree>()));
   });
 }
