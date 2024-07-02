@@ -62,6 +62,10 @@ ${_abstractDeepCopyMethods().join()}
     if (cloneableProperties.isEmpty) return '';
 
     return _maybeOverride(
+      doc: '''
+/// Create a copy of ${data.name}
+/// with the given fields replaced by the non-null parameter values.
+''',
       '''
 @JsonKey(ignore: true)
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
@@ -72,6 +76,8 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   String get concreteCopyWithGetter {
     if (cloneableProperties.isEmpty) return '';
     return '''
+/// Create a copy of ${data.name}
+/// with the given fields replaced by the non-null parameter values.
 @JsonKey(ignore: true)
 @override
 @pragma('vm:prefer-inline')
@@ -359,8 +365,11 @@ $returnType get ${cloneableProperty.name} {
     return '$name${cloneableProperty.genericParameters.append('\$Res')}';
   }
 
-  String _maybeOverride(String res) {
-    return _hasSuperClass ? '@override $res' : res;
+  String _maybeOverride(
+    String res, {
+    String doc = '',
+  }) {
+    return _hasSuperClass ? '$doc@override $res' : '$doc$res';
   }
 
   String get _abstractClassName => interfaceNameFrom(clonedClassName);

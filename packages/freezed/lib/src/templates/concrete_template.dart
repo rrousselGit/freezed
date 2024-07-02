@@ -424,7 +424,7 @@ ${whenOrNullPrototype(data.constructors)} {
     return constructor.impliedProperties.expand((p) {
       return [
         if (commonProperties.any((element) => element.name == p.name))
-          '@override ${p.abstractGetter}'
+          p.abstractGetter.toString(shouldOverride: true)
         else
           '${p.abstractGetter}',
         if (!p.isFinal) p.abstractSetter,
