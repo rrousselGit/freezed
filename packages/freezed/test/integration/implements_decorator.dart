@@ -70,6 +70,6 @@ mixin AdministrativeArea<T> {
   T method(T value) => value;
 }
 
-class House {}
+mixin class House {}
 
-class Shop {}
+mixin class Shop {}

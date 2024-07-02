@@ -20,7 +20,6 @@ linter:
     # - avoid_renaming_method_parameters
     - use_function_type_syntax_for_parameters
     - avoid_return_types_on_setters
-    - avoid_returning_null
     - avoid_types_as_parameter_names
     - avoid_unused_constructor_parameters
     - await_only_futures
@@ -57,7 +56,6 @@ linter:
     - prefer_conditional_assignment
     - prefer_const_constructors
     - prefer_contains
-    - prefer_equal_for_default_values
     - prefer_final_fields
     - prefer_initializing_formals
     - prefer_interpolation_to_compose_strings

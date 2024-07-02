@@ -1,3 +1,8 @@
+## Unreleased patch
+
+- Require Dart >=3.0.0
+- Support latest `collection`
+
 ## 2.5.3 - 2024-05-14
 
 - Support analyzer 6.5.0

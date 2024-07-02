@@ -1,3 +1,8 @@
+## Unreleased patch
+
+- Require Dart >=3.0.0
+- Support latest `collection`
+
 ## 2.4.1 - 2023-07-12
 
 - The generic type of `@With`/`@Implements` now defaults to `Object?` instead of `dynamic`
