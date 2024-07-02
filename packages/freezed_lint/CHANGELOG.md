@@ -1,3 +1,7 @@
+## 0.0.3 - 2024-07-02
+
+- `freezed_annotation` upgraded to `2.4.2`
+
 ## 0.0.2 - 2024-05-14
 
 - Support analyzer 6.5.0

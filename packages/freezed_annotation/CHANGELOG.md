@@ -1,4 +1,4 @@
-## Unreleased patch
+## 2.4.2 - 2024-07-02
 
 - Require Dart >=3.0.0
 - Support latest `collection`
