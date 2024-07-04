@@ -7,7 +7,7 @@
 
 [<img src="https://raw.githubusercontent.com/rrousselGit/provider/master/resources/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
 
-[Freezed] 세계에 오신걸 환영합니다. [Freezed]는 data-classes/unions/pattern-matching/cloning를 위한 코드 생성기입니다.
+[Freezed] 세계에 오신걸 환영합니다. [Freezed]는 data-classes/unions/cloning를 위한 코드 생성기입니다.
 
 # Freezed를 만들게된 이유
 
