@@ -1147,6 +1147,8 @@ targets:
 
 # Utilities
 
+## IDE Extensions
+
 ### VSCode전용 Freezed extension
 
 [Freezed](https://marketplace.visualstudio.com/items?itemName=blaxou.freezed)확장 프로그램을 사용하면 Freezed를 더 빠르게 작업할 수 있도록 도와줍니다.
@@ -1173,6 +1175,18 @@ targets:
   ```dart
   factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
   ```
+
+## Third-party tools
+
+이 단락에서는 `freezed`를 사용한 여러 툴들을 소개합니다.
+
+### DartJ
+
+[DartJ](https://dartj.web.app/#/)는 =[**@ttpho**](https://github.com/ttpho)님이 만든 플러터 어플리케이션입니다. JSON 데이터를 통해 Freezed 클래스를 생성할 수 있습니다.
+
+시연 영상:
+
+<https://github.com/ttpho/ttpho/assets/3994863/5d529258-c02c-4066-925e-ca2ffc68a804>
 
 ## Sponsors
 
