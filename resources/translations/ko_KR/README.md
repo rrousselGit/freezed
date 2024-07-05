@@ -53,9 +53,9 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
   - [Union types과 Sealed classes](#Union-types과-Sealed-classes)
     - [공유속성 Shared properties](#공유속성-Shared-properties)
     - [패턴매칭(pattern-matching)을 사용하여 비공유 속성 읽기](#패턴매칭pattern-matching을-사용하여-비공유-속성읽기)
-      - [When](#when)
-      - [Map](#map)
-      - [is/as를 사용하여 Freezed 클래스의 내용 읽기](#isas를-사용하여-freezed-클래스의-내용읽기)
+      - [권장하지 않는 패턴매칭 메소드](#)
+        - [When](#when)
+        - [Map](#map)
   - [환경설정](#환경설정)
     - [특정 모델의 동작변경](#특정-모델의-동작변경)
     - [전체 프로젝트의 동작변경](#전체-프로젝트의-동작변경)
@@ -924,13 +924,17 @@ switch (example) {
 
 만약 Dart 2를 사용하고 있다면, freezed의 [legacy pattern matching utilities](https://github.com/rrousselGit/freezed?tab=readme-ov-file#legacy-pattern-matching-utilities)를 사용해서 객체의 내용을 검사할 수 있습니다. 또한 `is` / `as` 를 사용하여 `Example` 변수를 `Person` 이나 `city`로 cast할 수 있지만, 권장하지 않습니다. `when` / `map` 옵션을 사용하세요.
 
+
+#### 권장하지 않는 패턴매칭 메소드
+
 > [!WARNING]
 > Dart 3부터는 sealed class를 사용한 patten matching이 도입되었습니다.
 > 따라서 더 이상 freezed가 생성하는 pattern matching 메소드를 사용할 필요가 없습니다. 
 > `when`/`map` 대신 Dart 공식 문법을 사용하세요.
+>
 > 당장은 문제없지만, Dart 3으로 업그레이드를 고려한다면 `switch` 구문으로 마이그레이션하는 것을 권장합니다.
 
-#### When
+##### When
 
 [when] 메서드는 '구조 분해(destructuring)'를 사용한 패턴 비교와 동일합니다.  
 when 메서드의 프로토타입은 생성자가 정의된 방식에 따라 다릅니다.
@@ -989,7 +993,7 @@ print(
 모든 콜백이 필수이며 `null` 이 아니어야 합니다.\
 원하는 방식이 아니라면 [maybeWhen] 사용을 고려해보세요.
 
-#### Map
+##### Map
 
 [map] 메서드는 [when]와 동일하지만 **구조분해(destructing)를 하지 않**습니다.
 
@@ -1040,88 +1044,6 @@ print(
   )
 ); // Model.second(b: 42, c: true)
 ```
-
-#### is/as를 사용하여 Freezed 클래스의 내용읽기
-
-대안으로, (덜 권장하는) 해결책은 `is`/`as` 키워드를 사용하는 것입니다. 
-더 구체적으로 다음과 같이 작성할 수 있습니다.
-
-```dart
-void main() {
-  Example value;
-
-  if (value is Person) {
-    // `is`를 사용하면 컴파일러가 "value"이 Person 인스턴스임을 알 수 있습니다.
-    // 따라서 모든 속성을 읽을 수 있습니다.
-    print(value.age);
-    value = value.copyWith(age: 42);
-  }
-
-  // 또는 객체 유형이 확실하면 `as`를 사용할 수 있습니다.
-  Person person = value as Person;
-  print(person.age);
-}
-```
-
-**Note**:  
-가능하면 `is`와 `as`를 사용하지 않는 것이 좋습니다.
-그 이유는 그것들이 "완전하지(exhaustive)"는 않기 때문입니다. https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/ 를 확인해보세요.
-
-### union type일 때 개별 클래스를 이용하여 mixin과 interface 만들기
-
-동일한 클래스에 여러 타입이 있을 경우(union type) 해당 타입 중 하나를 만들어 인터페이스를 구현하거나 믹스인을 써서 클래스에 혼합할 수 있습니다.
-각각 `@Implements` 데코레이터 또는 `@With`를 사용하여 이를 수행할 수 있습니다.
-아래 코드의 경우 `City`는 `GeographicArea`로 구현됩니다.
-
-
-```dart
-abstract class GeographicArea {
-  int get population;
-  String get name;
-}
-
-@freezed
-class Example with _$Example {
-  const factory Example.person(String name, int age) = Person;
-
-  @Implements<GeographicArea>()
-  const factory Example.city(String name, int population) = City;
-}
-```
-
-`AdministrativeArea<House>`같은 제네릭 클래스에서 구현하거나 믹스인을 혼합해서 쓸 때도 마찬가지입니다.
-`AdministrativeArea<T>`처럼 제네릭 타입 파라미터를 가지는 클래스는 빼고요.
-이 경우에 freezed는 올바른 코드를 만들지만 다트가 어노테이션 선언을 컴파일할 때 load 에러를 일으킵니다.
-이를 피하기 위해서는 아래와 같이 `@Implements.fromString`과 `@With.fromString`를 사용해야 합니다:
-
-```dart
-abstract class GeographicArea {}
-abstract class House {}
-abstract class Shop {}
-abstract class AdministrativeArea<T> {}
-
-@freezed
-class Example<T> with _$Example<T> {
-  const factory Example.person(String name, int age) = Person<T>;
-  
-  @With.fromString('AdministrativeArea<T>')
-  const factory Example.street(String name) = Street<T>;
-  
-  @With<House>()
-  @Implements<Shop>()
-  @Implements<GeographicArea>()
-  @Implements.fromString('AdministrativeArea<T>')
-  const factory Example.city(String name, int population) = City<T>;
-```
-
-**Note**: 
-모든 추상 멤버를 구현하여 인터페이스 요구사항을 준수하는지 확인해야 합니다.
-인터페이스에 멤버가 없거나 필드만 있는 경우 공용체 유형의 생성자에 추가하여 the interface contract를 이행할 수 있습니다. 인터페이스가 클래스에서 구현하는 메서드 또는 getter를 정의하는 경우 [모델에 getters와 메서드 추가하기](#모델에-getters와-메서드-추가하기) 내용을 확인해 보세요.
-
-
-**Note 2**: 
-Freezed 클래스에는 `@With`/`@Implements`를 사용할 수 없습니다.
-Freezed 클래스를 확장하거나 구현할 수는 없습니다.
 
 ## 환경설정
 
