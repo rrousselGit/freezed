@@ -46,16 +46,16 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
     - [Asserts](#asserts)
     - [기본 값](#기본-값)
     - [데코레이터와 코멘트](#데코레이터와-코멘트)
+    - [union type일 때 개별 클래스를 이용하여 mixin과 interface 만들기](#union-type일-때-개별-클래스를-이용하여-mixin과-interface-만들기)
+  - [FromJson/ToJson](#fromjsontojson)
+    - [fromJSON - 복수의 생성자가 있는 클래스](#fromjson---복수의-생성자가-있는-클래스)
+    - [제네릭 클래스 역직렬화하기](#제네릭-클래스-역직렬화하기)
   - [Union types과 Sealed classes](#Union-types과-Sealed-classes)
     - [공유속성 Shared properties](#공유속성-Shared-properties)
     - [패턴매칭(pattern-matching)을 사용하여 비공유 속성 읽기](#패턴매칭pattern-matching을-사용하여-비공유-속성읽기)
       - [When](#when)
       - [Map](#map)
       - [is/as를 사용하여 Freezed 클래스의 내용 읽기](#isas를-사용하여-freezed-클래스의-내용읽기)
-    - [union type일 때 개별 클래스를 이용하여 mixin과 interface 만들기](#union-type일-때-개별-클래스를-이용하여-mixin과-interface-만들기)
-  - [FromJson/ToJson](#fromjsontojson)
-    - [fromJSON - 복수의 생성자가 있는 클래스](#fromjson---복수의-생성자가-있는-클래스)
-    - [제네릭 클래스 역직렬화하기](#제네릭-클래스-역직렬화하기)
   - [환경설정](#환경설정)
     - [특정 모델의 동작변경](#특정-모델의-동작변경)
     - [전체 프로젝트의 동작변경](#전체-프로젝트의-동작변경)
@@ -540,311 +540,9 @@ class Person with _$Person {
 }
 ```
 
-## Union types과 Sealed classes
+### Union Type에서 Mixin 및 Interface 사용하기
 
-
-만약 다른 언어를 쓰다 오셨다면 "union types"/"sealed classes"/pattern matching과 같은 기능을 사용한 적이 있을 겁니다.
-이 기능들은 타입 시스템에서 타입을 조합해내는 강력한 도구이지만 현재 Dart에서는 이 기능들을 지원하지 않습니다.
-하지만 걱정마세요. [Freezed]가 몇 가지 유틸리티를 만들어서 이 기능들을 지원하니까요.
-간단히 말해서 모든 Freezed 클래스에서 복수의 생성자를 작성할 수 있습니다.
-
-```dart
-@freezed
-class Union with _$Union {
-  const factory Union.data(int value) = Data;
-  const factory Union.loading() = Loading;
-  const factory Union.error([String? message]) = Error;
-}
-```
-
-이렇게 하면 우리의 모델이 이제 상호 배타적인 상태가 될 수 있습니다.
-구체적으로 말하자면, 이 snippet은 `Union` 모델을 정의하며 해당 모델은 3가지 상태를 가집니다.
-
-- data
-- loading
-- error
-
-정의한 팩토리 생성자의 오른쪽에 의미 있는 이름을 부여하는 방법을 주목하세요.
-나중에 유용하게 사용할 수 있습니다.
-
-또 주목해야 할 점은 이 예시에서 다음과 같은 코드는 더 이상 쓸 수 없다는 것입니다.
-
-```dart
-void main() {
-  Union union = Union.data(42);
-
-  print(union.value); // 컴파일 오류: 속성 값이 존재하지 않습니다
-}
-```
-
-다음 섹션에서 그 이유를 살펴보겠습니다.
-
-### 공유속성 Shared properties
-
-여러 생성자를 정의하면 모든 생성자들이 공통적으로 가지고 있지 않은 속성을 읽을 수 없게 됩니다.
-
-예를 들어 다음과 같이 작성하는 경우:
-
-```dart
-@freezed
-class Example with _$Example {
-  const factory Example.person(String name, int age) = Person;
-  const factory Example.city(String name, int population) = City;
-}
-```
-
-`age`와 `population` 속성은 직접 읽을 수 없습니다.
-
-```dart
-var example = Example.person('Remi', 24);
-print(example.age); // 컴파일되지 않습니다!
-```
-
-반면에 모든 생성자에 정의된 속성은 **읽을 수** 있습니다.
-
-예를 들어 `name` 변수는 `Example.person` 및 `Example.city` 생성자 모두 공통으로 가지고 있는 속성입니다.
-
-따라서 다음과 같이 코드를 쓸 수 있습니다.
-
-```dart
-var example = Example.person('Remi', 24);
-print(example.name); // Remi
-example = Example.city('London', 8900000);
-print(example.name); // London
-```
-
-같은 논리를 `copyWith`에도 적용할 수 있습니다.
-모든 생성자에 정의된 속성에는 `copyWith`를 사용할 수 있습니다.
-
-```dart
-var example = Example.person('Remi', 24);
-print(example.copyWith(name: 'Dash')); // Example.person(name: Dash, age: 24)
-
-example = Example.city('London', 8900000);
-print(example.copyWith(name: 'Paris')); // Example.city(name: Paris, population: 8900000)
-```
-
-반면에 특정 생성자에만 있는 속성에는 사용할 수 없습니다.
-
-```dart
-var example = Example.person('Remi', 24);
-
-example.copyWith(age: 42); // 컴파일 오류, 매개변수 `age`가 존재하지 않습니다
-```
-
-이 문제를 해결하려면 "pattern matching"을 사용하여 객체의 상태를 확인해야 합니다.
-
-### 패턴매칭(pattern-matching)을 사용하여 비공유 속성읽기
-
-이번 섹션에서는 다음에 나오는 union을 한 번 봅시다.
-
-```dart
-@freezed
-class Example with _$Example {
-  const factory Example.person(String name, int age) = Person;
-  const factory Example.city(String name, int population) = City;
-}
-```
-
-이제 패턴 비교(pattern matching)를 사용하여 `Example` 인스턴스의 내용을 읽는 방법을 살펴보겠습니다.
-
-여기 몇 가지 해결방법이 있습니다.
-
-- (선호) Freezed에 의해 생성된 유틸리티([when]/[map])를 사용하여 객체의 내용을 검사합니다.
-- (비추천) `is`/`as`를 사용하여 `Example` 변수를 `Person` 또는 `City`로 캐스팅
-
-#### When
-
-[when] 메서드는 '구조 분해(destructuring)'를 사용한 패턴 비교와 동일합니다.  
-when 메서드의 프로토타입은 생성자가 정의된 방식에 따라 다릅니다.
-
-아래의 예시를 보면
-
-```dart
-@freezed
-class Union with _$Union {
-  const factory Union(int value) = Data;
-  const factory Union.loading() = Loading;
-  const factory Union.error([String? message]) = ErrorDetails;
-}
-```
-
-[when]은 아래와 같이 사용할 수 있습니다.
-
-```dart
-var union = Union(42);
-
-print(
-  union.when(
-    (int value) => 'Data $value',
-    loading: () => 'loading',
-    error: (String? message) => 'Error: $message',
-  ),
-); // Data 42
-```
-
-반면에 다음과 같이 정의하면
-
-```dart
-@freezed
-class Model with _$Model {
-  factory Model.first(String a) = First;
-  factory Model.second(int b, bool c) = Second;
-}
-```
-
-[when]은 아래와 같이 사용할 수 있습니다.
-
-```dart
-var model = Model.first('42');
-
-print(
-  model.when(
-    first: (String a) => 'first $a',
-    second: (int b, bool c) => 'second $b $c'
-  ),
-); // first 42
-```
-
-각 콜백이 생성자의 이름 및 프로토타입과 어떻게 일치하는지 확인하십시오.
-
-**NOTE**:\
-모든 콜백이 필수이며 `null` 이 아니어야 합니다.\
-원하는 방식이 아니라면 [maybeWhen] 사용을 고려해보세요.
-
-#### Map
-
-[map] 메서드는 [when]와 동일하지만 **구조분해(destructing)를 하지 않**습니다.
-
-아래에 정의된 클래스를 생각해봅시다.
-
-```dart
-@freezed
-class Model with _$Model {
-  factory Model.first(String a) = First;
-  factory Model.second(int b, bool c) = Second;
-}
-```
-
-이러한 클래스를 사용하면 [when] 메서드를 다음과 같이 쓸 수 있습니다.
-
-```dart
-var model = Model.first('42');
-
-print(
-  model.when(
-    first: (String a) => 'first $a',
-    second: (int b, bool c) => 'second $b $c'
-  ),
-); // first 42
-```
-
-[map] 메서드을 사용하면 다음과 같습니다. 
-
-```dart
-var model = Model.first('42');
-
-print(
-  model.map(
-    first: (First value) => 'first ${value.a}',
-    second: (Second value) => 'second ${value.b} ${value.c}'
-  ),
-); // first 42
-```
-
-예를 들어 [copyWith]/`toString`과 같은 복잡한 작업을 수행하려는 경우에 유용할 수 있습니다.
-
-```dart
-var model = Model.second(42, false)
-print(
-  model.map(
-    first: (value) => value,
-    second: (value) => value.copyWith(c: true),
-  )
-); // Model.second(b: 42, c: true)
-```
-
-#### is/as를 사용하여 Freezed 클래스의 내용읽기
-
-대안으로, (덜 권장하는) 해결책은 `is`/`as` 키워드를 사용하는 것입니다. 
-더 구체적으로 다음과 같이 작성할 수 있습니다.
-
-```dart
-void main() {
-  Example value;
-
-  if (value is Person) {
-    // `is`를 사용하면 컴파일러가 "value"이 Person 인스턴스임을 알 수 있습니다.
-    // 따라서 모든 속성을 읽을 수 있습니다.
-    print(value.age);
-    value = value.copyWith(age: 42);
-  }
-
-  // 또는 객체 유형이 확실하면 `as`를 사용할 수 있습니다.
-  Person person = value as Person;
-  print(person.age);
-}
-```
-
-**Note**:  
-가능하면 `is`와 `as`를 사용하지 않는 것이 좋습니다.
-그 이유는 그것들이 "완전하지(exhaustive)"는 않기 때문입니다. https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/ 를 확인해보세요.
-
-### union type일 때 개별 클래스를 이용하여 mixin과 interface 만들기
-
-동일한 클래스에 여러 타입이 있을 경우(union type) 해당 타입 중 하나를 만들어 인터페이스를 구현하거나 믹스인을 써서 클래스에 혼합할 수 있습니다.
-각각 `@Implements` 데코레이터 또는 `@With`를 사용하여 이를 수행할 수 있습니다.
-아래 코드의 경우 `City`는 `GeographicArea`로 구현됩니다.
-
-
-```dart
-abstract class GeographicArea {
-  int get population;
-  String get name;
-}
-
-@freezed
-class Example with _$Example {
-  const factory Example.person(String name, int age) = Person;
-
-  @Implements<GeographicArea>()
-  const factory Example.city(String name, int population) = City;
-}
-```
-
-`AdministrativeArea<House>`같은 제네릭 클래스에서 구현하거나 믹스인을 혼합해서 쓸 때도 마찬가지입니다.
-`AdministrativeArea<T>`처럼 제네릭 타입 파라미터를 가지는 클래스는 빼고요.
-이 경우에 freezed는 올바른 코드를 만들지만 다트가 어노테이션 선언을 컴파일할 때 load 에러를 일으킵니다.
-이를 피하기 위해서는 아래와 같이 `@Implements.fromString`과 `@With.fromString`를 사용해야 합니다:
-
-```dart
-abstract class GeographicArea {}
-abstract class House {}
-abstract class Shop {}
-abstract class AdministrativeArea<T> {}
-
-@freezed
-class Example<T> with _$Example<T> {
-  const factory Example.person(String name, int age) = Person<T>;
-  
-  @With.fromString('AdministrativeArea<T>')
-  const factory Example.street(String name) = Street<T>;
-  
-  @With<House>()
-  @Implements<Shop>()
-  @Implements<GeographicArea>()
-  @Implements.fromString('AdministrativeArea<T>')
-  const factory Example.city(String name, int population) = City<T>;
-```
-
-**Note**: 
-모든 추상 멤버를 구현하여 인터페이스 요구사항을 준수하는지 확인해야 합니다.
-인터페이스에 멤버가 없거나 필드만 있는 경우 공용체 유형의 생성자에 추가하여 the interface contract를 이행할 수 있습니다. 인터페이스가 클래스에서 구현하는 메서드 또는 getter를 정의하는 경우 [모델에 getters와 메서드 추가하기](#모델에-getters와-메서드-추가하기) 내용을 확인해 보세요.
-
-
-**Note 2**: 
-Freezed 클래스에는 `@With`/`@Implements`를 사용할 수 없습니다.
-Freezed 클래스를 확장하거나 구현할 수는 없습니다.
+`Sealed class` 
 
 ## FromJson/ToJson
 
@@ -1103,6 +801,327 @@ class Example with _$Example {
 
 
 [데코레이터와 코멘트](#데코레이터와-코멘트) 섹션을 참고해보세요.
+
+
+## Union types과 Sealed classes
+
+만약 다른 언어를 쓰다 오셨다면 "union types"/"sealed classes"/pattern matching과 같은 기능을 사용한 적이 있을 겁니다.
+이 기능들은 Dart 3부터 도입되어 타입 시스템에서 타입을 조합해내는 강력한 도구지만, 기본적인 사용 방법은 생산적이지 않습니다.
+하지만 걱정마세요. [Freezed]가 몇 가지 유틸리티를 만들어서 이 기능들을 지원하니까요.
+간단히 말해서 모든 Freezed 클래스에서 복수의 생성자를 작성할 수 있습니다.
+
+```dart
+@freezed
+class Union with _$Union {
+  const factory Union.data(int value) = Data;
+  const factory Union.loading() = Loading;
+  const factory Union.error([String? message]) = Error;
+}
+```
+
+> [!메모]
+> 이 예제에서는 Dart 3에서 도입된 키워드를 사용합니다. Dart 3를 사용하는 경우 Freezed 객체를 정의할 때 항상 `sealed` 키워드를 사용해야 합니다. 아직 Dart 2를 사용 중이라면 무시해도 되지만, 기본적인 pattern matching을 사용하려면 Dart 3으로 업그레이드해야 합니다.
+
+이렇게 하면 우리의 모델이 이제 상호 배타적인 상태가 될 수 있습니다.
+구체적으로 말하자면, 이 snippet은 `Union` 모델을 정의하며 해당 모델은 3가지 상태를 가집니다.
+
+- data
+- loading
+- error
+
+정의한 팩토리 생성자의 오른쪽에 의미 있는 이름을 부여하는 방법을 주목하세요.
+나중에 유용하게 사용할 수 있습니다.
+
+또 주목해야 할 점은 이 예시에서 다음과 같은 코드는 더 이상 쓸 수 없다는 것입니다.
+
+```dart
+void main() {
+  Union union = Union.data(42);
+
+  print(union.value); // 컴파일 오류: 속성 값이 존재하지 않습니다
+}
+```
+
+다음 섹션에서 그 이유를 살펴보겠습니다.
+
+### 공유속성 Shared properties
+
+여러 생성자를 정의하면 모든 생성자들이 공통적으로 가지고 있지 않은 속성을 읽을 수 없게 됩니다.
+
+예를 들어 다음과 같이 작성하는 경우:
+
+```dart
+@freezed
+class Example with _$Example {
+  const factory Example.person(String name, int age) = Person;
+  const factory Example.city(String name, int population) = City;
+}
+```
+
+`age`와 `population` 속성은 직접 읽을 수 없습니다.
+
+```dart
+var example = Example.person('Remi', 24);
+print(example.age); // 컴파일되지 않습니다!
+```
+
+반면에 모든 생성자에 정의된 속성은 **읽을 수** 있습니다.
+
+예를 들어 `name` 변수는 `Example.person` 및 `Example.city` 생성자 모두 공통으로 가지고 있는 속성입니다.
+
+따라서 다음과 같이 코드를 쓸 수 있습니다.
+
+```dart
+var example = Example.person('Remi', 24);
+print(example.name); // Remi
+example = Example.city('London', 8900000);
+print(example.name); // London
+```
+
+같은 논리를 `copyWith`에도 적용할 수 있습니다.
+모든 생성자에 정의된 속성에는 `copyWith`를 사용할 수 있습니다.
+
+```dart
+var example = Example.person('Remi', 24);
+print(example.copyWith(name: 'Dash')); // Example.person(name: Dash, age: 24)
+
+example = Example.city('London', 8900000);
+print(example.copyWith(name: 'Paris')); // Example.city(name: Paris, population: 8900000)
+```
+
+반면에 특정 생성자에만 있는 속성에는 사용할 수 없습니다.
+
+```dart
+var example = Example.person('Remi', 24);
+
+example.copyWith(age: 42); // 컴파일 오류, 매개변수 `age`가 존재하지 않습니다
+```
+
+이 문제를 해결하려면 "pattern matching"을 사용하여 객체의 상태를 확인해야 합니다.
+
+### 패턴매칭(pattern-matching)을 사용하여 비공유 속성읽기
+
+이번 섹션에서는 다음에 나오는 union을 한 번 봅시다.
+
+```dart
+@freezed
+class Example with _$Example {
+  const factory Example.person(String name, int age) = Person;
+  const factory Example.city(String name, int population) = City;
+}
+```
+
+이제 패턴 비교(pattern matching)를 사용하여 `Example` 인스턴스의 내용을 읽는 방법을 살펴보겠습니다.
+
+이 경우에는 `switch`를 사용하여 Dart 3의 기본 pattern matching을 사용해야합니다.
+
+```dart
+switch (example) {
+  Person(:final name) => print('Person $name'),
+  City(:final population) => print('City ($population)'),
+}
+```
+
+만약 Dart 2를 사용하고 있다면, freezed의 [legacy pattern matching utilities](https://github.com/rrousselGit/freezed?tab=readme-ov-file#legacy-pattern-matching-utilities)를 사용해서 객체의 내용을 검사할 수 있습니다. 또한 `is` / `as` 를 사용하여 `Example` 변수를 `Person` 이나 `city`로 cast할 수 있지만, 권장하지 않습니다. `when` / `map` 옵션을 사용하세요.
+
+> [!WARNING]
+> Dart 3부터는 sealed class를 사용한 patten matching이 도입되었습니다.
+> 따라서 더 이상 freezed가 생성하는 pattern matching 메소드를 사용할 필요가 없습니다. 
+> `when`/`map` 대신 Dart 공식 문법을 사용하세요.
+> 당장은 문제없지만, Dart 3으로 업그레이드를 고려한다면 `switch` 구문으로 마이그레이션하는 것을 권장합니다.
+
+#### When
+
+[when] 메서드는 '구조 분해(destructuring)'를 사용한 패턴 비교와 동일합니다.  
+when 메서드의 프로토타입은 생성자가 정의된 방식에 따라 다릅니다.
+
+아래의 예시를 보면
+
+```dart
+@freezed
+class Union with _$Union {
+  const factory Union(int value) = Data;
+  const factory Union.loading() = Loading;
+  const factory Union.error([String? message]) = ErrorDetails;
+}
+```
+
+[when]은 아래와 같이 사용할 수 있습니다.
+
+```dart
+var union = Union(42);
+
+print(
+  union.when(
+    (int value) => 'Data $value',
+    loading: () => 'loading',
+    error: (String? message) => 'Error: $message',
+  ),
+); // Data 42
+```
+
+반면에 다음과 같이 정의하면
+
+```dart
+@freezed
+class Model with _$Model {
+  factory Model.first(String a) = First;
+  factory Model.second(int b, bool c) = Second;
+}
+```
+
+[when]은 아래와 같이 사용할 수 있습니다.
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.when(
+    first: (String a) => 'first $a',
+    second: (int b, bool c) => 'second $b $c'
+  ),
+); // first 42
+```
+
+각 콜백이 생성자의 이름 및 프로토타입과 어떻게 일치하는지 확인하십시오.
+
+**NOTE**:\
+모든 콜백이 필수이며 `null` 이 아니어야 합니다.\
+원하는 방식이 아니라면 [maybeWhen] 사용을 고려해보세요.
+
+#### Map
+
+[map] 메서드는 [when]와 동일하지만 **구조분해(destructing)를 하지 않**습니다.
+
+아래에 정의된 클래스를 생각해봅시다.
+
+```dart
+@freezed
+class Model with _$Model {
+  factory Model.first(String a) = First;
+  factory Model.second(int b, bool c) = Second;
+}
+```
+
+이러한 클래스를 사용하면 [when] 메서드를 다음과 같이 쓸 수 있습니다.
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.when(
+    first: (String a) => 'first $a',
+    second: (int b, bool c) => 'second $b $c'
+  ),
+); // first 42
+```
+
+[map] 메서드을 사용하면 다음과 같습니다. 
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.map(
+    first: (First value) => 'first ${value.a}',
+    second: (Second value) => 'second ${value.b} ${value.c}'
+  ),
+); // first 42
+```
+
+예를 들어 [copyWith]/`toString`과 같은 복잡한 작업을 수행하려는 경우에 유용할 수 있습니다.
+
+```dart
+var model = Model.second(42, false)
+print(
+  model.map(
+    first: (value) => value,
+    second: (value) => value.copyWith(c: true),
+  )
+); // Model.second(b: 42, c: true)
+```
+
+#### is/as를 사용하여 Freezed 클래스의 내용읽기
+
+대안으로, (덜 권장하는) 해결책은 `is`/`as` 키워드를 사용하는 것입니다. 
+더 구체적으로 다음과 같이 작성할 수 있습니다.
+
+```dart
+void main() {
+  Example value;
+
+  if (value is Person) {
+    // `is`를 사용하면 컴파일러가 "value"이 Person 인스턴스임을 알 수 있습니다.
+    // 따라서 모든 속성을 읽을 수 있습니다.
+    print(value.age);
+    value = value.copyWith(age: 42);
+  }
+
+  // 또는 객체 유형이 확실하면 `as`를 사용할 수 있습니다.
+  Person person = value as Person;
+  print(person.age);
+}
+```
+
+**Note**:  
+가능하면 `is`와 `as`를 사용하지 않는 것이 좋습니다.
+그 이유는 그것들이 "완전하지(exhaustive)"는 않기 때문입니다. https://www.fullstory.com/blog/discriminated-unions-and-exhaustiveness-checking-in-typescript/ 를 확인해보세요.
+
+### union type일 때 개별 클래스를 이용하여 mixin과 interface 만들기
+
+동일한 클래스에 여러 타입이 있을 경우(union type) 해당 타입 중 하나를 만들어 인터페이스를 구현하거나 믹스인을 써서 클래스에 혼합할 수 있습니다.
+각각 `@Implements` 데코레이터 또는 `@With`를 사용하여 이를 수행할 수 있습니다.
+아래 코드의 경우 `City`는 `GeographicArea`로 구현됩니다.
+
+
+```dart
+abstract class GeographicArea {
+  int get population;
+  String get name;
+}
+
+@freezed
+class Example with _$Example {
+  const factory Example.person(String name, int age) = Person;
+
+  @Implements<GeographicArea>()
+  const factory Example.city(String name, int population) = City;
+}
+```
+
+`AdministrativeArea<House>`같은 제네릭 클래스에서 구현하거나 믹스인을 혼합해서 쓸 때도 마찬가지입니다.
+`AdministrativeArea<T>`처럼 제네릭 타입 파라미터를 가지는 클래스는 빼고요.
+이 경우에 freezed는 올바른 코드를 만들지만 다트가 어노테이션 선언을 컴파일할 때 load 에러를 일으킵니다.
+이를 피하기 위해서는 아래와 같이 `@Implements.fromString`과 `@With.fromString`를 사용해야 합니다:
+
+```dart
+abstract class GeographicArea {}
+abstract class House {}
+abstract class Shop {}
+abstract class AdministrativeArea<T> {}
+
+@freezed
+class Example<T> with _$Example<T> {
+  const factory Example.person(String name, int age) = Person<T>;
+  
+  @With.fromString('AdministrativeArea<T>')
+  const factory Example.street(String name) = Street<T>;
+  
+  @With<House>()
+  @Implements<Shop>()
+  @Implements<GeographicArea>()
+  @Implements.fromString('AdministrativeArea<T>')
+  const factory Example.city(String name, int population) = City<T>;
+```
+
+**Note**: 
+모든 추상 멤버를 구현하여 인터페이스 요구사항을 준수하는지 확인해야 합니다.
+인터페이스에 멤버가 없거나 필드만 있는 경우 공용체 유형의 생성자에 추가하여 the interface contract를 이행할 수 있습니다. 인터페이스가 클래스에서 구현하는 메서드 또는 getter를 정의하는 경우 [모델에 getters와 메서드 추가하기](#모델에-getters와-메서드-추가하기) 내용을 확인해 보세요.
+
+
+**Note 2**: 
+Freezed 클래스에는 `@With`/`@Implements`를 사용할 수 없습니다.
+Freezed 클래스를 확장하거나 구현할 수는 없습니다.
 
 ## 환경설정
 
