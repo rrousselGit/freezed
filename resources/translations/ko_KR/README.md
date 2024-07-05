@@ -540,9 +540,50 @@ class Person with _$Person {
 }
 ```
 
-### Union Type에서 Mixin 및 Interface 사용하기
+### Union Types에서 Mixin 및 Interface 사용하기
 
-`Sealed class` 
+Union Type 클래스는 `@implements` 또는 `@with` decarator를 사용하여 `Mixin` 또는 `Interface`를 구현할 수 있습니다. 아래 예제에서는 `City` 클래스가 `GeographicArea` 추상 클래스를 구현합니다.
+
+```dart
+abstract class GeographicArea {
+  int get population;
+  String get name;
+}
+
+@freezed
+sealed class Example with _$Example {
+  const factory Example.person(String name, int age) = Person;
+
+  @Implements<GeographicArea>()
+  const factory Example.city(String name, int population) = City;
+}
+```
+이 방법은 제네릭 클래스, 예를 들어 `AdministrativeArea<House>`를 구현하는 경우에도 동작합니다. 그러나 `AdministrativeArea<T>`처럼 제네릭 타입을 받는 클래스일 때는 문제가 발생합니다. 이 경우에는 `freezed`가 올바른 코드를 생성하는 것처럼 보이지만, Dart 컴파일 과정에서 `Load` 에러가 발생합니다. 따라서 `@Implements.fromSring` 또는 `@With.fromString` decorator를 사용해야 합니다.
+
+```dart
+abstract class GeographicArea {}
+abstract class House {}
+abstract class Shop {}
+abstract class AdministrativeArea<T> {}
+
+@freezed
+sealed class Example<T> with _$Example<T> {
+  const factory Example.person(String name, int age) = Person<T>;
+
+  @With.fromString('AdministrativeArea<T>')
+  const factory Example.street(String name) = Street<T>;
+
+  @With<House>()
+  @Implements<Shop>()
+  @Implements<GeographicArea>()
+  @Implements.fromString('AdministrativeArea<T>')
+  const factory Example.city(String name, int population) = City<T>;
+}
+```
+
+**Note**: 인터페이스를 완벽하게 준수하는지 확인해야 합니다. 만약 인터페이스가 `method`나 `getter`를 정의하지 않고, `filed`만을 정의한다면, Union Type의 생성자에서 이를 초기화해야 합니다. 반면에 `method`, `getter`를 정의한다면 반드시 이를 구현해야합니다. [모델에 getters 와 메서드 추가하기](#모델에-getters와-메서드-추가하기)를 참고하세요.
+
+**Note**: `freezed` 클래스에는 `@With` / `@Implements`를 사용할 수 없습니다. `extension`을 사용하거나 직접 구현하세요.
 
 ## FromJson/ToJson
 
@@ -803,7 +844,7 @@ class Example with _$Example {
 [데코레이터와 코멘트](#데코레이터와-코멘트) 섹션을 참고해보세요.
 
 
-## Union types과 Sealed classes
+## Union types
 
 만약 다른 언어를 쓰다 오셨다면 "union types"/"sealed classes"/pattern matching과 같은 기능을 사용한 적이 있을 겁니다.
 이 기능들은 Dart 3부터 도입되어 타입 시스템에서 타입을 조합해내는 강력한 도구지만, 기본적인 사용 방법은 생산적이지 않습니다.
@@ -812,7 +853,7 @@ class Example with _$Example {
 
 ```dart
 @freezed
-class Union with _$Union {
+sealed class Union with _$Union {
   const factory Union.data(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String? message]) = Error;
@@ -905,7 +946,7 @@ example.copyWith(age: 42); // 컴파일 오류, 매개변수 `age`가 존재하�
 
 ```dart
 @freezed
-class Example with _$Example {
+sealed class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
   const factory Example.city(String name, int population) = City;
 }
