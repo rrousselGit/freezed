@@ -133,6 +133,8 @@ class $_implClassName${genericsDefinition.append('\$Res').append('\$Val extends 
   // ignore: unused_field
   final \$Res Function(\$Val) _then;
 
+  /// Create a copy of ${data.name}
+  /// with the given fields replaced by the non-null parameter values.
 $copyWith
 ${_deepCopyMethods(isConcrete: false).join()}
 }
@@ -149,6 +151,8 @@ class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._im
       : super(_value, _then);
 
 
+  /// Create a copy of ${data.name}
+  /// with the given fields replaced by the non-null parameter values.
 ${_copyWithMethod(parametersTemplate)}
 
 ${_deepCopyMethods(isConcrete: true).join()}
@@ -349,6 +353,8 @@ $constructorParameters
       final cast = isConcrete ? '' : 'as \$Val';
 
       yield '''
+/// Create a copy of ${data.name}
+/// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
 $returnType get ${cloneableProperty.name} {
