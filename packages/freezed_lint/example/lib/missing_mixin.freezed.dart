@@ -139,7 +139,7 @@ abstract class _WithMixin implements WithMixin {
 mixin _$FooModel {
   int get id => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FooModelCopyWith<FooModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -232,7 +232,7 @@ class _$_FooModel extends _FooModel {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$_FooModelCopyWith<_$_FooModel> get copyWith =>
@@ -246,7 +246,7 @@ abstract class _FooModel extends FooModel {
   @override
   int get id;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$_FooModelCopyWith<_$_FooModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -255,7 +255,7 @@ abstract class _FooModel extends FooModel {
 mixin _$BarModel {
   int get id => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BarModelCopyWith<BarModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -348,7 +348,7 @@ class _$_BarModel extends _BarModel {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$_BarModelCopyWith<_$_BarModel> get copyWith =>
@@ -362,7 +362,7 @@ abstract class _BarModel extends BarModel {
   @override
   int get id;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$_BarModelCopyWith<_$_BarModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

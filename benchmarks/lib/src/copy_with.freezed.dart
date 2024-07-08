@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Model {
   int get counter => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ModelCopyWith<Model> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -110,7 +110,7 @@ class _$ModelImpl implements _Model {
   @override
   int get hashCode => Object.hash(runtimeType, counter);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ModelImplCopyWith<_$ModelImpl> get copyWith =>
@@ -123,7 +123,7 @@ abstract class _Model implements Model {
   @override
   int get counter;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ModelImplCopyWith<_$ModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -132,7 +132,7 @@ abstract class _Model implements Model {
 mixin _$ModelWrapper {
   Model get model => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ModelWrapperCopyWith<ModelWrapper> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -240,7 +240,7 @@ class _$ModelWrapperImpl implements _ModelWrapper {
   @override
   int get hashCode => Object.hash(runtimeType, model);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ModelWrapperImplCopyWith<_$ModelWrapperImpl> get copyWith =>
@@ -253,7 +253,7 @@ abstract class _ModelWrapper implements ModelWrapper {
   @override
   Model get model;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ModelWrapperImplCopyWith<_$ModelWrapperImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
