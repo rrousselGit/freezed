@@ -63,7 +63,7 @@ ${_abstractDeepCopyMethods().join()}
 
     return _maybeOverride(
       '''
-@JsonKey(ignore: true)
+@JsonKey(includeFromJson: false, includeToJson: false)
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
 ''',
     );
@@ -72,7 +72,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   String get concreteCopyWithGetter {
     if (cloneableProperties.isEmpty) return '';
     return '''
-@JsonKey(ignore: true)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 @pragma('vm:prefer-inline')
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);

@@ -142,7 +142,7 @@ abstract class _HasPrivateCtor extends HasPrivateCtor {
 mixin _$HasAccessor {
   int get id => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $HasAccessorCopyWith<HasAccessor> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -237,7 +237,7 @@ class _$_HasAccessor extends _HasAccessor {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$_HasAccessorCopyWith<_$_HasAccessor> get copyWith =>
@@ -251,7 +251,7 @@ abstract class _HasAccessor extends HasAccessor {
   @override
   int get id;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$_HasAccessorCopyWith<_$_HasAccessor> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -260,7 +260,7 @@ abstract class _HasAccessor extends HasAccessor {
 mixin _$WithIdMixin {
   int get id => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $WithIdMixinCopyWith<WithIdMixin> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -355,7 +355,7 @@ class _$_WithIdMixin implements _WithIdMixin {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$_WithIdMixinCopyWith<_$_WithIdMixin> get copyWith =>
@@ -368,7 +368,7 @@ abstract class _WithIdMixin implements WithIdMixin {
   @override
   int get id;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$_WithIdMixinCopyWith<_$_WithIdMixin> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -377,7 +377,7 @@ abstract class _WithIdMixin implements WithIdMixin {
 mixin _$ExtendsIdClass {
   int get id => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ExtendsIdClassCopyWith<ExtendsIdClass> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -472,7 +472,7 @@ class _$_ExtendsIdClass extends _ExtendsIdClass {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$_ExtendsIdClassCopyWith<_$_ExtendsIdClass> get copyWith =>
@@ -486,7 +486,7 @@ abstract class _ExtendsIdClass extends ExtendsIdClass {
   @override
   int get id;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$_ExtendsIdClassCopyWith<_$_ExtendsIdClass> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -23,7 +23,7 @@ mixin _$DeepCloneableProperty {
   GenericsParameterTemplate get genericParameters =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DeepCloneablePropertyCopyWith<DeepCloneableProperty> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -192,7 +192,7 @@ class _$DeepCloneablePropertyImpl implements _DeepCloneableProperty {
   int get hashCode => Object.hash(
       runtimeType, name, typeName, type, nullable, genericParameters);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DeepCloneablePropertyImplCopyWith<_$DeepCloneablePropertyImpl>
@@ -220,7 +220,7 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
   @override
   GenericsParameterTemplate get genericParameters;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DeepCloneablePropertyImplCopyWith<_$DeepCloneablePropertyImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -245,7 +245,7 @@ mixin _$ConstructorDetails {
       throw _privateConstructorUsedError;
   List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConstructorDetailsCopyWith<ConstructorDetails> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -658,7 +658,7 @@ class _$ConstructorDetailsImpl extends _ConstructorDetails {
       const DeepCollectionEquality().hash(_cloneableProperties),
       const DeepCollectionEquality().hash(_asserts));
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConstructorDetailsImplCopyWith<_$ConstructorDetailsImpl> get copyWith =>
@@ -719,7 +719,7 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   @override
   List<AssertTemplate> get asserts;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConstructorDetailsImplCopyWith<_$ConstructorDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -730,7 +730,7 @@ mixin _$MapConfig {
   bool get mapOrNull => throw _privateConstructorUsedError;
   bool get maybeMap => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MapConfigCopyWith<MapConfig> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -853,7 +853,7 @@ class _$MapConfigImpl implements _MapConfig {
   @override
   int get hashCode => Object.hash(runtimeType, map, mapOrNull, maybeMap);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MapConfigImplCopyWith<_$MapConfigImpl> get copyWith =>
@@ -873,7 +873,7 @@ abstract class _MapConfig implements MapConfig {
   @override
   bool get maybeMap;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MapConfigImplCopyWith<_$MapConfigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -884,7 +884,7 @@ mixin _$WhenConfig {
   bool get whenOrNull => throw _privateConstructorUsedError;
   bool get maybeWhen => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $WhenConfigCopyWith<WhenConfig> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1008,7 +1008,7 @@ class _$WhenConfigImpl implements _WhenConfig {
   @override
   int get hashCode => Object.hash(runtimeType, when, whenOrNull, maybeWhen);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$WhenConfigImplCopyWith<_$WhenConfigImpl> get copyWith =>
@@ -1028,7 +1028,7 @@ abstract class _WhenConfig implements WhenConfig {
   @override
   bool get maybeWhen;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$WhenConfigImplCopyWith<_$WhenConfigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1055,7 +1055,7 @@ mixin _$Data {
   bool get shouldUseExtends => throw _privateConstructorUsedError;
   bool get genericArgumentFactories => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1464,7 +1464,7 @@ class _$DataImpl implements _Data {
       shouldUseExtends,
       genericArgumentFactories);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -1523,7 +1523,7 @@ abstract class _Data implements Data {
   @override
   bool get genericArgumentFactories;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1533,7 +1533,7 @@ mixin _$GlobalData {
   bool get hasJson => throw _privateConstructorUsedError;
   bool get hasDiagnostics => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GlobalDataCopyWith<GlobalData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1642,7 +1642,7 @@ class _$GlobalDataImpl implements _GlobalData {
   @override
   int get hashCode => Object.hash(runtimeType, hasJson, hasDiagnostics);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GlobalDataImplCopyWith<_$GlobalDataImpl> get copyWith =>
@@ -1659,7 +1659,7 @@ abstract class _GlobalData implements GlobalData {
   @override
   bool get hasDiagnostics;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GlobalDataImplCopyWith<_$GlobalDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

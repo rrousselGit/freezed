@@ -488,7 +488,7 @@ bool operator ==(Object other) {
     if (!data.generateEqual) return '';
 
     final jsonKey = data.generateFromJson || data.generateToJson
-        ? '@JsonKey(ignore: true)'
+        ? '@JsonKey(includeFromJson: false, includeToJson: false)'
         : '';
 
     final hashedProperties = [
