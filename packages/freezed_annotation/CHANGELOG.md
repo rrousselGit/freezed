@@ -1,3 +1,8 @@
+## Unreleased patch
+
+- Stop using `JsonKey(ignore: true)` in favour of `JsonKey(includeFromJson: false, includeToJson: false)`
+  (thanks to @lrsvmb)
+
 ## 2.4.2 - 2024-07-02
 
 - Require Dart >=3.0.0
