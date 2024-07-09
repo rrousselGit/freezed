@@ -23,6 +23,12 @@ class CopyWith {
     return '\$${name}CopyWith';
   }
 
+  String _copyWithDocs(String name) {
+    return '''
+/// Create a copy of $name
+/// with the given fields replaced by the non-null parameter values.''';
+  }
+
   final String clonedClassName;
   final GenericsDefinitionTemplate genericsDefinition;
   final GenericsParameterTemplate genericsParameter;
@@ -37,6 +43,7 @@ class CopyWith {
   bool get canAccessRawCollection => parent != null;
 
   String get interface => _deepCopyInterface(appendGenericToFactory: false);
+
   String get commonInterface =>
       _deepCopyInterface(appendGenericToFactory: true);
 
@@ -62,6 +69,9 @@ ${_abstractDeepCopyMethods().join()}
     if (cloneableProperties.isEmpty) return '';
 
     return _maybeOverride(
+      doc: '''
+${_copyWithDocs(data.name)}
+''',
       '''
 @JsonKey(includeFromJson: false, includeToJson: false)
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
@@ -72,6 +82,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   String get concreteCopyWithGetter {
     if (cloneableProperties.isEmpty) return '';
     return '''
+${_copyWithDocs(data.name)}
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 @pragma('vm:prefer-inline')
@@ -127,6 +138,7 @@ class $_implClassName${genericsDefinition.append('\$Res').append('\$Val extends 
   // ignore: unused_field
   final \$Res Function(\$Val) _then;
 
+${_copyWithDocs(data.name)}
 $copyWith
 ${_deepCopyMethods(isConcrete: false).join()}
 }
@@ -143,6 +155,7 @@ class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._im
       : super(_value, _then);
 
 
+${_copyWithDocs(data.name)}
 ${_copyWithMethod(parametersTemplate)}
 
 ${_deepCopyMethods(isConcrete: true).join()}
@@ -343,6 +356,7 @@ $constructorParameters
       final cast = isConcrete ? '' : 'as \$Val';
 
       yield '''
+${_copyWithDocs(data.name)}
 @override
 @pragma('vm:prefer-inline')
 $returnType get ${cloneableProperty.name} {
@@ -359,8 +373,11 @@ $returnType get ${cloneableProperty.name} {
     return '$name${cloneableProperty.genericParameters.append('\$Res')}';
   }
 
-  String _maybeOverride(String res) {
-    return _hasSuperClass ? '@override $res' : res;
+  String _maybeOverride(
+    String res, {
+    String doc = '',
+  }) {
+    return _hasSuperClass ? '$doc@override $res' : '$doc$res';
   }
 
   String get _abstractClassName => interfaceNameFrom(clonedClassName);
