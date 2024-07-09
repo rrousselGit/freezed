@@ -19,7 +19,7 @@ mixin _$ModelWithList {
   List<int> get someList => throw _privateConstructorUsedError;
   int get counter => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ModelWithListCopyWith<ModelWithList> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -138,7 +138,7 @@ class _$ModelWithListImpl implements _ModelWithList {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_someList), counter);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ModelWithListImplCopyWith<_$ModelWithListImpl> get copyWith =>
@@ -154,7 +154,7 @@ abstract class _ModelWithList implements ModelWithList {
   @override
   int get counter;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ModelWithListImplCopyWith<_$ModelWithListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

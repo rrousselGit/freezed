@@ -31,8 +31,8 @@ extension FindAllAvailableTopLevelElements on LibraryElement {
     yield* topLevelElements;
 
     final librariesToCheck = checkExports
-        ? libraryExports.map(_LibraryDirectives.fromExport).whereNotNull()
-        : libraryImports.map(_LibraryDirectives.fromImport).whereNotNull();
+        ? libraryExports.map(_LibraryDirectives.fromExport).nonNulls
+        : libraryImports.map(_LibraryDirectives.fromImport).nonNulls;
 
     for (final directive in librariesToCheck) {
       if (!visitedLibraryPaths.add(directive.key)) {

@@ -1,5 +1,5 @@
 name: freezed_lint
-version: 0.0.1
+version: 0.0.4
 description: >
   Linter rules for freezed.
 repository: https://github.com/rrousselGit/freezed
@@ -12,7 +12,7 @@ dependencies:
   analyzer: ^6.5.0
   analyzer_plugin: ^0.11.2
   custom_lint_builder: ^0.6.0
-  freezed_annotation: ^2.3.0
+  freezed_annotation: ^2.4.3
 
 dev_dependencies:
   custom_lint: ^0.6.0

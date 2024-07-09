@@ -1,3 +1,14 @@
+## 2.4.3 - 2024-07-09
+
+- Stop using `JsonKey(ignore: true)` in favour of `JsonKey(includeFromJson: false, includeToJson: false)`
+  (thanks to @lrsvmb)
+- Require json_annotation ^6.8.0
+
+## 2.4.2 - 2024-07-02
+
+- Require Dart >=3.0.0
+- Support latest `collection`
+
 ## 2.4.1 - 2023-07-12
 
 - The generic type of `@With`/`@Implements` now defaults to `Object?` instead of `dynamic`

@@ -2,12 +2,12 @@ name: freezed_annotation
 description: >
   Annotations for the freezed code-generator.
   This package does nothing without freezed too.
-version: 2.4.1
+version: 2.4.3
 repository: https://github.com/rrousselGit/freezed
 issue_tracker: https://github.com/rrousselGit/freezed/issues
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   collection: ^1.15.0

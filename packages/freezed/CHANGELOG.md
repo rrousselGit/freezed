@@ -1,4 +1,15 @@
-## Unreleased patch
+## 2.5.5 - 2024-07-09
+
+- Stop using `JsonKey(ignore: true)` in favour of `JsonKey(includeFromJson: false, includeToJson: false)`
+  (thanks to @lrsvmb)
+- Require json_annotation ^6.8.0
+
+## 2.5.4 - 2024-07-02
+
+- Require Dart >=3.0.0
+- Support latest `collection`
+
+## 2.5.3 - 2024-05-14
 
 - Support analyzer 6.5.0
 
