@@ -9,12 +9,12 @@ dependencies:
     sdk: flutter
   freezed_annotation:
     path: ../packages/freezed_annotation
-  json_annotation: ^4.4.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   freezed:
     path: ../packages/freezed
-  json_serializable: ^6.1.3
+  json_serializable: ^6.8.0
   build_runner:
   flutter_test:
     sdk: flutter
