@@ -23,6 +23,11 @@ class CopyWith {
     return '\$${name}CopyWith';
   }
 
+  static String _generateDataDocs(String name, {String indent = ''}) {
+    return '$indent/// Create a copy of $name\n$indent'
+        '/// with the given fields replaced by the non-null parameter values.';
+  }
+
   final String clonedClassName;
   final GenericsDefinitionTemplate genericsDefinition;
   final GenericsParameterTemplate genericsParameter;
@@ -37,6 +42,7 @@ class CopyWith {
   bool get canAccessRawCollection => parent != null;
 
   String get interface => _deepCopyInterface(appendGenericToFactory: false);
+
   String get commonInterface =>
       _deepCopyInterface(appendGenericToFactory: true);
 
@@ -63,8 +69,7 @@ ${_abstractDeepCopyMethods().join()}
 
     return _maybeOverride(
       doc: '''
-/// Create a copy of ${data.name}
-/// with the given fields replaced by the non-null parameter values.
+${_generateDataDocs(data.name)}
 ''',
       '''
 @JsonKey(ignore: true)
@@ -76,8 +81,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   String get concreteCopyWithGetter {
     if (cloneableProperties.isEmpty) return '';
     return '''
-/// Create a copy of ${data.name}
-/// with the given fields replaced by the non-null parameter values.
+${_generateDataDocs(data.name)}
 @JsonKey(ignore: true)
 @override
 @pragma('vm:prefer-inline')
@@ -133,8 +137,7 @@ class $_implClassName${genericsDefinition.append('\$Res').append('\$Val extends 
   // ignore: unused_field
   final \$Res Function(\$Val) _then;
 
-  /// Create a copy of ${data.name}
-  /// with the given fields replaced by the non-null parameter values.
+${_generateDataDocs(data.name, indent: '  ')}
 $copyWith
 ${_deepCopyMethods(isConcrete: false).join()}
 }
@@ -151,8 +154,7 @@ class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._im
       : super(_value, _then);
 
 
-  /// Create a copy of ${data.name}
-  /// with the given fields replaced by the non-null parameter values.
+${_generateDataDocs(data.name, indent: '  ')}
 ${_copyWithMethod(parametersTemplate)}
 
 ${_deepCopyMethods(isConcrete: true).join()}
@@ -353,8 +355,7 @@ $constructorParameters
       final cast = isConcrete ? '' : 'as \$Val';
 
       yield '''
-/// Create a copy of ${data.name}
-/// with the given fields replaced by the non-null parameter values.
+${_generateDataDocs(data.name)}
 @override
 @pragma('vm:prefer-inline')
 $returnType get ${cloneableProperty.name} {
