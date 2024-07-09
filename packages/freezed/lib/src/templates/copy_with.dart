@@ -23,9 +23,10 @@ class CopyWith {
     return '\$${name}CopyWith';
   }
 
-  static String _generateDataDocs(String name, {String indent = ''}) {
-    return '$indent/// Create a copy of $name\n$indent'
-        '/// with the given fields replaced by the non-null parameter values.';
+  String _copyWithDocs(String name) {
+    return '''
+/// Create a copy of $name
+/// with the given fields replaced by the non-null parameter values.''';
   }
 
   final String clonedClassName;
@@ -69,7 +70,7 @@ ${_abstractDeepCopyMethods().join()}
 
     return _maybeOverride(
       doc: '''
-${_generateDataDocs(data.name)}
+${_copyWithDocs(data.name)}
 ''',
       '''
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -81,7 +82,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   String get concreteCopyWithGetter {
     if (cloneableProperties.isEmpty) return '';
     return '''
-${_generateDataDocs(data.name)}
+${_copyWithDocs(data.name)}
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 @pragma('vm:prefer-inline')
@@ -137,7 +138,7 @@ class $_implClassName${genericsDefinition.append('\$Res').append('\$Val extends 
   // ignore: unused_field
   final \$Res Function(\$Val) _then;
 
-${_generateDataDocs(data.name, indent: '  ')}
+${_copyWithDocs(data.name)}
 $copyWith
 ${_deepCopyMethods(isConcrete: false).join()}
 }
@@ -154,7 +155,7 @@ class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._im
       : super(_value, _then);
 
 
-${_generateDataDocs(data.name, indent: '  ')}
+${_copyWithDocs(data.name)}
 ${_copyWithMethod(parametersTemplate)}
 
 ${_deepCopyMethods(isConcrete: true).join()}
@@ -355,7 +356,7 @@ $constructorParameters
       final cast = isConcrete ? '' : 'as \$Val';
 
       yield '''
-${_generateDataDocs(data.name)}
+${_copyWithDocs(data.name)}
 @override
 @pragma('vm:prefer-inline')
 $returnType get ${cloneableProperty.name} {
