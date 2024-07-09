@@ -2,6 +2,7 @@
 
 - Stop using `JsonKey(ignore: true)` in favour of `JsonKey(includeFromJson: false, includeToJson: false)`
   (thanks to @lrsvmb)
+- Require json_annotation ^6.8.0
 
 ## 2.4.2 - 2024-07-02
 
