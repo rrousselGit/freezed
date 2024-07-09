@@ -1,4 +1,4 @@
-## Unreleased patch
+## 2.5.6 - 2024-07-09
 
 - Generate documentation for `copyWith` (thanks to @rekire)
 
