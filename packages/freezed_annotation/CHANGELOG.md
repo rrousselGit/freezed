@@ -1,4 +1,4 @@
-## Unreleased patch
+## 2.4.3 - 2024-07-09
 
 - Stop using `JsonKey(ignore: true)` in favour of `JsonKey(includeFromJson: false, includeToJson: false)`
   (thanks to @lrsvmb)
