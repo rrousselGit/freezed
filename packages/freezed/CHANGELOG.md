@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Generate documentation for `copyWith` (thanks to @rekire)
+
 ## 2.5.5 - 2024-07-09
 
 - Stop using `JsonKey(ignore: true)` in favour of `JsonKey(includeFromJson: false, includeToJson: false)`
