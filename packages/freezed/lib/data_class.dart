@@ -6,94 +6,6 @@ import 'package:collection/collection.dart';
 import 'package:data_class/src/macros.dart';
 import 'package:data_class/src/part_utils.dart';
 import 'package:macros/macros.dart';
-import 'package:meta/meta.dart';
-
-/// An [UnmodifiableListView] which overrides ==
-// ignore: invalid_internal_annotation
-@internal
-class EqualUnmodifiableListView<T> extends UnmodifiableListView<T> {
-  /// An [UnmodifiableListView] which overrides ==
-  EqualUnmodifiableListView(this._source) : super(_source);
-
-  final Iterable<T> _source;
-
-  @override
-  bool operator ==(Object other) {
-    return other is EqualUnmodifiableListView<T> &&
-        other.runtimeType == runtimeType &&
-        other._source == _source;
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, _source);
-}
-
-/// An [UnmodifiableSetView] which overrides ==
-// ignore: invalid_internal_annotation
-@internal
-class EqualUnmodifiableSetView<T> extends UnmodifiableSetView<T> {
-  /// An [UnmodifiableSetView] which overrides ==
-  EqualUnmodifiableSetView(this._source) : super(_source);
-
-  final Set<T> _source;
-
-  @override
-  bool operator ==(Object other) {
-    return other is EqualUnmodifiableSetView<T> &&
-        other.runtimeType == runtimeType &&
-        other._source == _source;
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, _source);
-}
-
-/// An [UnmodifiableMapView] which overrides ==
-// ignore: invalid_internal_annotation
-@internal
-class EqualUnmodifiableMapView<Key, Value>
-    extends UnmodifiableMapView<Key, Value> {
-  /// An [UnmodifiableMapView] which overrides ==
-  EqualUnmodifiableMapView(this._source) : super(_source) {
-    print('Hello world');
-  }
-
-  final Map<Key, Value> _source;
-
-  @override
-  bool operator ==(Object other) {
-    return other is EqualUnmodifiableMapView<Key, Value> &&
-        other.runtimeType == runtimeType &&
-        other._source == _source;
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, _source);
-}
-
-// ignore: invalid_internal_annotation
-@internal
-class Sentinel {
-  const Sentinel();
-}
-
-// extension on DeclarationPhaseIntrospector {
-//   Stream<ClassDeclaration> parents(ClassDeclaration clazz) async* {
-//     final allClasses = await typesOf(clazz.library);
-
-//     for (final possibleParent in allClasses.whereType<ClassDeclaration>()) {
-//       if (clazz.isChildOf(possibleParent)) yield possibleParent;
-//     }
-//   }
-
-//   Stream<ClassDeclaration> children(ClassDeclaration clazz) async* {
-//     final allClasses = await typesOf(clazz.library);
-
-//     for (final possibleChild in allClasses.whereType<ClassDeclaration>()) {
-//       if (possibleChild.isChildOf(clazz)) yield possibleChild;
-//     }
-//   }
-// }
 
 extension on String {
   String get escaped => replaceAll(r'$', r'\$');
@@ -266,6 +178,17 @@ macro class Data implements ClassDeclarationsMacro {
     ClassDeclaration clazz,
     MemberDeclarationBuilder builder,
   ) async {
+    final methods = await builder.methodsOf(clazz);
+
+
+    // builder.declareInLibrary(
+    //   DeclarationCode.fromString(
+    //     'augment class Person { /* foo */ }',
+    //   ),
+    // );
+
+     
+
     final constructors = await builder.constructorsOf(clazz);
     final targetConstructor = constructors.firstWhereOrNull(
       (e) => e.identifier.name == (constructor ?? ''),
@@ -530,7 +453,7 @@ macro class Data implements ClassDeclarationsMacro {
       'List',
     );
     final unmodifiableList = await builder.resolveIdentifier(
-      Uri.parse('package:data_class/data_class.dart'),
+      Uri.parse('package:data_class/src/collection.dart'),
       'EqualUnmodifiableListView',
     );
     final map = await builder.resolveIdentifier(
@@ -538,7 +461,7 @@ macro class Data implements ClassDeclarationsMacro {
       'Map',
     );
     final unmodifiableMap = await builder.resolveIdentifier(
-      Uri.parse('package:data_class/data_class.dart'),
+      Uri.parse('package:data_class/src/collection.dart'),
       'EqualUnmodifiableMapView',
     );
     final hashSet = await builder.resolveIdentifier(
@@ -546,7 +469,7 @@ macro class Data implements ClassDeclarationsMacro {
       'Set',
     );
     final unmodifiableSet = await builder.resolveIdentifier(
-      Uri.parse('package:data_class/data_class.dart'),
+      Uri.parse('package:data_class/src/collection.dart'),
       'EqualUnmodifiableSetView',
     );
 
@@ -717,7 +640,7 @@ macro class Data implements ClassDeclarationsMacro {
         await builder.resolveIdentifier(Uri.parse('dart:core'), 'Object');
     final sentinel = await builder
         .parts(
-          '{{package:data_class/data_class.dart#Sentinel}}',
+          '{{package:data_class/src/sentinel.dart#Sentinel}}',
         )
         .asDeclarationCode();
 
