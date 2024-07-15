@@ -1,3 +1,7 @@
+## 0.0.5 - 2024-07-15
+
+- `freezed_annotation` upgraded to `2.4.4`
+
 ## 0.0.4 - 2024-07-09
 
 - `freezed_annotation` upgraded to `2.4.3`

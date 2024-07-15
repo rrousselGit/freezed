@@ -1,3 +1,7 @@
+## 2.5.7 - 2024-07-15
+
+- `freezed_annotation` upgraded to `2.4.4`
+
 ## 2.5.6 - 2024-07-09
 
 - Generate documentation for `copyWith` (thanks to @rekire)

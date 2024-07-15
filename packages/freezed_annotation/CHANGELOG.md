@@ -1,4 +1,4 @@
-## Unreleased patch
+## 2.4.4 - 2024-07-15
 
 - Require json_annotation ^4.8.0
 
