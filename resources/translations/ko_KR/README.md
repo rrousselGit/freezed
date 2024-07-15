@@ -46,7 +46,7 @@ Dart는 훌륭합니다. 그런데 우리가 "모델"을 정의하는 것은 지
     - [Asserts](#asserts)
     - [기본 값](#기본-값)
     - [데코레이터와 코멘트](#데코레이터와-코멘트)
-    - [union type일 때 개별 클래스를 이용하여 mixin과 interface 만들기](#union-type일-때-개별-클래스를-이용하여-mixin과-interface-만들기)
+    - [Union Types에서 Mixin 및 Interface 사용하기](#Union-Types에서-Mixin-및-Interface-사용하기)
   - [FromJson/ToJson](#fromjsontojson)
     - [fromJSON - 복수의 생성자가 있는 클래스](#fromjson---복수의-생성자가-있는-클래스)
     - [제네릭 클래스 역직렬화하기](#제네릭-클래스-역직렬화하기)
