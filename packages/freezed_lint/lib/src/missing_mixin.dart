@@ -1,5 +1,5 @@
-import 'package:analyzer/error/error.dart';
-import 'package:analyzer/error/listener.dart';
+import 'package:analyzer/error/error.dart' hide LintCode;
+import 'package:analyzer/error/listener.dart' show ErrorReporter;
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:freezed_lint/src/tools/freezed_annotation_checker.dart';
 
