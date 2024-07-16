@@ -1,6 +1,6 @@
 ## Unreleased fix
 
-- fix false positive `freezed_missing_private_empty_constructor` if accessor/method/field is static
+- fix false positive `freezed_missing_private_empty_constructor` if accessor/method/field is static (thanks to @SunlightBro)
 
 ## 0.0.5 - 2024-07-15
 
