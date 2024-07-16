@@ -33,28 +33,34 @@ class _$RequiresPrivateCtorCopyWithImpl<$Res, $Val extends RequiresPrivateCtor>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of RequiresPrivateCtor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$_RequiresPrivateCtorCopyWith<$Res> {
-  factory _$$_RequiresPrivateCtorCopyWith(_$_RequiresPrivateCtor value,
-          $Res Function(_$_RequiresPrivateCtor) then) =
-      __$$_RequiresPrivateCtorCopyWithImpl<$Res>;
+abstract class _$$RequiresPrivateCtorImplCopyWith<$Res> {
+  factory _$$RequiresPrivateCtorImplCopyWith(_$RequiresPrivateCtorImpl value,
+          $Res Function(_$RequiresPrivateCtorImpl) then) =
+      __$$RequiresPrivateCtorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_RequiresPrivateCtorCopyWithImpl<$Res>
-    extends _$RequiresPrivateCtorCopyWithImpl<$Res, _$_RequiresPrivateCtor>
-    implements _$$_RequiresPrivateCtorCopyWith<$Res> {
-  __$$_RequiresPrivateCtorCopyWithImpl(_$_RequiresPrivateCtor _value,
-      $Res Function(_$_RequiresPrivateCtor) _then)
+class __$$RequiresPrivateCtorImplCopyWithImpl<$Res>
+    extends _$RequiresPrivateCtorCopyWithImpl<$Res, _$RequiresPrivateCtorImpl>
+    implements _$$RequiresPrivateCtorImplCopyWith<$Res> {
+  __$$RequiresPrivateCtorImplCopyWithImpl(_$RequiresPrivateCtorImpl _value,
+      $Res Function(_$RequiresPrivateCtorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of RequiresPrivateCtor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$_RequiresPrivateCtor extends _RequiresPrivateCtor {
-  const _$_RequiresPrivateCtor() : super._();
+class _$RequiresPrivateCtorImpl extends _RequiresPrivateCtor {
+  const _$RequiresPrivateCtorImpl() : super._();
 
   @override
   String toString() {
@@ -62,9 +68,10 @@ class _$_RequiresPrivateCtor extends _RequiresPrivateCtor {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_RequiresPrivateCtor);
+        (other.runtimeType == runtimeType &&
+            other is _$RequiresPrivateCtorImpl);
   }
 
   @override
@@ -72,7 +79,7 @@ class _$_RequiresPrivateCtor extends _RequiresPrivateCtor {
 }
 
 abstract class _RequiresPrivateCtor extends RequiresPrivateCtor {
-  const factory _RequiresPrivateCtor() = _$_RequiresPrivateCtor;
+  const factory _RequiresPrivateCtor() = _$RequiresPrivateCtorImpl;
   const _RequiresPrivateCtor._() : super._();
 }
 
@@ -95,28 +102,34 @@ class _$HasPrivateCtorCopyWithImpl<$Res, $Val extends HasPrivateCtor>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of HasPrivateCtor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$_HasPrivateCtorCopyWith<$Res> {
-  factory _$$_HasPrivateCtorCopyWith(
-          _$_HasPrivateCtor value, $Res Function(_$_HasPrivateCtor) then) =
-      __$$_HasPrivateCtorCopyWithImpl<$Res>;
+abstract class _$$HasPrivateCtorImplCopyWith<$Res> {
+  factory _$$HasPrivateCtorImplCopyWith(_$HasPrivateCtorImpl value,
+          $Res Function(_$HasPrivateCtorImpl) then) =
+      __$$HasPrivateCtorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_HasPrivateCtorCopyWithImpl<$Res>
-    extends _$HasPrivateCtorCopyWithImpl<$Res, _$_HasPrivateCtor>
-    implements _$$_HasPrivateCtorCopyWith<$Res> {
-  __$$_HasPrivateCtorCopyWithImpl(
-      _$_HasPrivateCtor _value, $Res Function(_$_HasPrivateCtor) _then)
+class __$$HasPrivateCtorImplCopyWithImpl<$Res>
+    extends _$HasPrivateCtorCopyWithImpl<$Res, _$HasPrivateCtorImpl>
+    implements _$$HasPrivateCtorImplCopyWith<$Res> {
+  __$$HasPrivateCtorImplCopyWithImpl(
+      _$HasPrivateCtorImpl _value, $Res Function(_$HasPrivateCtorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HasPrivateCtor
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$_HasPrivateCtor extends _HasPrivateCtor {
-  const _$_HasPrivateCtor() : super._();
+class _$HasPrivateCtorImpl extends _HasPrivateCtor {
+  const _$HasPrivateCtorImpl() : super._();
 
   @override
   String toString() {
@@ -124,9 +137,9 @@ class _$_HasPrivateCtor extends _HasPrivateCtor {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_HasPrivateCtor);
+        (other.runtimeType == runtimeType && other is _$HasPrivateCtorImpl);
   }
 
   @override
@@ -134,7 +147,7 @@ class _$_HasPrivateCtor extends _HasPrivateCtor {
 }
 
 abstract class _HasPrivateCtor extends HasPrivateCtor {
-  const factory _HasPrivateCtor() = _$_HasPrivateCtor;
+  const factory _HasPrivateCtor() = _$HasPrivateCtorImpl;
   const _HasPrivateCtor._() : super._();
 }
 
@@ -142,6 +155,8 @@ abstract class _HasPrivateCtor extends HasPrivateCtor {
 mixin _$HasAccessor {
   int get id => throw _privateConstructorUsedError;
 
+  /// Create a copy of HasAccessor
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $HasAccessorCopyWith<HasAccessor> get copyWith =>
       throw _privateConstructorUsedError;
@@ -166,6 +181,8 @@ class _$HasAccessorCopyWithImpl<$Res, $Val extends HasAccessor>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of HasAccessor
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -181,30 +198,32 @@ class _$HasAccessorCopyWithImpl<$Res, $Val extends HasAccessor>
 }
 
 /// @nodoc
-abstract class _$$_HasAccessorCopyWith<$Res>
+abstract class _$$HasAccessorImplCopyWith<$Res>
     implements $HasAccessorCopyWith<$Res> {
-  factory _$$_HasAccessorCopyWith(
-          _$_HasAccessor value, $Res Function(_$_HasAccessor) then) =
-      __$$_HasAccessorCopyWithImpl<$Res>;
+  factory _$$HasAccessorImplCopyWith(
+          _$HasAccessorImpl value, $Res Function(_$HasAccessorImpl) then) =
+      __$$HasAccessorImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id});
 }
 
 /// @nodoc
-class __$$_HasAccessorCopyWithImpl<$Res>
-    extends _$HasAccessorCopyWithImpl<$Res, _$_HasAccessor>
-    implements _$$_HasAccessorCopyWith<$Res> {
-  __$$_HasAccessorCopyWithImpl(
-      _$_HasAccessor _value, $Res Function(_$_HasAccessor) _then)
+class __$$HasAccessorImplCopyWithImpl<$Res>
+    extends _$HasAccessorCopyWithImpl<$Res, _$HasAccessorImpl>
+    implements _$$HasAccessorImplCopyWith<$Res> {
+  __$$HasAccessorImplCopyWithImpl(
+      _$HasAccessorImpl _value, $Res Function(_$HasAccessorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HasAccessor
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$_HasAccessor(
+    return _then(_$HasAccessorImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -215,8 +234,8 @@ class __$$_HasAccessorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_HasAccessor extends _HasAccessor {
-  const _$_HasAccessor(this.id) : super._();
+class _$HasAccessorImpl extends _HasAccessor {
+  const _$HasAccessorImpl(this.id) : super._();
 
   @override
   final int id;
@@ -227,32 +246,37 @@ class _$_HasAccessor extends _HasAccessor {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_HasAccessor &&
+            other is _$HasAccessorImpl &&
             (identical(other.id, id) || other.id == id));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
+  /// Create a copy of HasAccessor
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_HasAccessorCopyWith<_$_HasAccessor> get copyWith =>
-      __$$_HasAccessorCopyWithImpl<_$_HasAccessor>(this, _$identity);
+  _$$HasAccessorImplCopyWith<_$HasAccessorImpl> get copyWith =>
+      __$$HasAccessorImplCopyWithImpl<_$HasAccessorImpl>(this, _$identity);
 }
 
 abstract class _HasAccessor extends HasAccessor {
-  const factory _HasAccessor(final int id) = _$_HasAccessor;
+  const factory _HasAccessor(final int id) = _$HasAccessorImpl;
   const _HasAccessor._() : super._();
 
   @override
   int get id;
+
+  /// Create a copy of HasAccessor
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$_HasAccessorCopyWith<_$_HasAccessor> get copyWith =>
+  _$$HasAccessorImplCopyWith<_$HasAccessorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -260,6 +284,8 @@ abstract class _HasAccessor extends HasAccessor {
 mixin _$WithIdMixin {
   int get id => throw _privateConstructorUsedError;
 
+  /// Create a copy of WithIdMixin
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $WithIdMixinCopyWith<WithIdMixin> get copyWith =>
       throw _privateConstructorUsedError;
@@ -284,6 +310,8 @@ class _$WithIdMixinCopyWithImpl<$Res, $Val extends WithIdMixin>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of WithIdMixin
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -299,30 +327,32 @@ class _$WithIdMixinCopyWithImpl<$Res, $Val extends WithIdMixin>
 }
 
 /// @nodoc
-abstract class _$$_WithIdMixinCopyWith<$Res>
+abstract class _$$WithIdMixinImplCopyWith<$Res>
     implements $WithIdMixinCopyWith<$Res> {
-  factory _$$_WithIdMixinCopyWith(
-          _$_WithIdMixin value, $Res Function(_$_WithIdMixin) then) =
-      __$$_WithIdMixinCopyWithImpl<$Res>;
+  factory _$$WithIdMixinImplCopyWith(
+          _$WithIdMixinImpl value, $Res Function(_$WithIdMixinImpl) then) =
+      __$$WithIdMixinImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id});
 }
 
 /// @nodoc
-class __$$_WithIdMixinCopyWithImpl<$Res>
-    extends _$WithIdMixinCopyWithImpl<$Res, _$_WithIdMixin>
-    implements _$$_WithIdMixinCopyWith<$Res> {
-  __$$_WithIdMixinCopyWithImpl(
-      _$_WithIdMixin _value, $Res Function(_$_WithIdMixin) _then)
+class __$$WithIdMixinImplCopyWithImpl<$Res>
+    extends _$WithIdMixinCopyWithImpl<$Res, _$WithIdMixinImpl>
+    implements _$$WithIdMixinImplCopyWith<$Res> {
+  __$$WithIdMixinImplCopyWithImpl(
+      _$WithIdMixinImpl _value, $Res Function(_$WithIdMixinImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WithIdMixin
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$_WithIdMixin(
+    return _then(_$WithIdMixinImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -333,8 +363,8 @@ class __$$_WithIdMixinCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_WithIdMixin implements _WithIdMixin {
-  const _$_WithIdMixin(this.id);
+class _$WithIdMixinImpl extends _WithIdMixin {
+  const _$WithIdMixinImpl(this.id) : super._();
 
   @override
   final int id;
@@ -345,31 +375,37 @@ class _$_WithIdMixin implements _WithIdMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WithIdMixin &&
+            other is _$WithIdMixinImpl &&
             (identical(other.id, id) || other.id == id));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
+  /// Create a copy of WithIdMixin
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WithIdMixinCopyWith<_$_WithIdMixin> get copyWith =>
-      __$$_WithIdMixinCopyWithImpl<_$_WithIdMixin>(this, _$identity);
+  _$$WithIdMixinImplCopyWith<_$WithIdMixinImpl> get copyWith =>
+      __$$WithIdMixinImplCopyWithImpl<_$WithIdMixinImpl>(this, _$identity);
 }
 
-abstract class _WithIdMixin implements WithIdMixin {
-  const factory _WithIdMixin(final int id) = _$_WithIdMixin;
+abstract class _WithIdMixin extends WithIdMixin {
+  const factory _WithIdMixin(final int id) = _$WithIdMixinImpl;
+  const _WithIdMixin._() : super._();
 
   @override
   int get id;
+
+  /// Create a copy of WithIdMixin
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$_WithIdMixinCopyWith<_$_WithIdMixin> get copyWith =>
+  _$$WithIdMixinImplCopyWith<_$WithIdMixinImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -377,6 +413,8 @@ abstract class _WithIdMixin implements WithIdMixin {
 mixin _$ExtendsIdClass {
   int get id => throw _privateConstructorUsedError;
 
+  /// Create a copy of ExtendsIdClass
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $ExtendsIdClassCopyWith<ExtendsIdClass> get copyWith =>
       throw _privateConstructorUsedError;
@@ -401,6 +439,8 @@ class _$ExtendsIdClassCopyWithImpl<$Res, $Val extends ExtendsIdClass>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ExtendsIdClass
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -416,30 +456,32 @@ class _$ExtendsIdClassCopyWithImpl<$Res, $Val extends ExtendsIdClass>
 }
 
 /// @nodoc
-abstract class _$$_ExtendsIdClassCopyWith<$Res>
+abstract class _$$ExtendsIdClassImplCopyWith<$Res>
     implements $ExtendsIdClassCopyWith<$Res> {
-  factory _$$_ExtendsIdClassCopyWith(
-          _$_ExtendsIdClass value, $Res Function(_$_ExtendsIdClass) then) =
-      __$$_ExtendsIdClassCopyWithImpl<$Res>;
+  factory _$$ExtendsIdClassImplCopyWith(_$ExtendsIdClassImpl value,
+          $Res Function(_$ExtendsIdClassImpl) then) =
+      __$$ExtendsIdClassImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id});
 }
 
 /// @nodoc
-class __$$_ExtendsIdClassCopyWithImpl<$Res>
-    extends _$ExtendsIdClassCopyWithImpl<$Res, _$_ExtendsIdClass>
-    implements _$$_ExtendsIdClassCopyWith<$Res> {
-  __$$_ExtendsIdClassCopyWithImpl(
-      _$_ExtendsIdClass _value, $Res Function(_$_ExtendsIdClass) _then)
+class __$$ExtendsIdClassImplCopyWithImpl<$Res>
+    extends _$ExtendsIdClassCopyWithImpl<$Res, _$ExtendsIdClassImpl>
+    implements _$$ExtendsIdClassImplCopyWith<$Res> {
+  __$$ExtendsIdClassImplCopyWithImpl(
+      _$ExtendsIdClassImpl _value, $Res Function(_$ExtendsIdClassImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ExtendsIdClass
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$_ExtendsIdClass(
+    return _then(_$ExtendsIdClassImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -450,8 +492,8 @@ class __$$_ExtendsIdClassCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ExtendsIdClass extends _ExtendsIdClass {
-  const _$_ExtendsIdClass(this.id) : super._();
+class _$ExtendsIdClassImpl extends _ExtendsIdClass {
+  const _$ExtendsIdClassImpl(this.id) : super._();
 
   @override
   final int id;
@@ -462,31 +504,104 @@ class _$_ExtendsIdClass extends _ExtendsIdClass {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ExtendsIdClass &&
+            other is _$ExtendsIdClassImpl &&
             (identical(other.id, id) || other.id == id));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
+  /// Create a copy of ExtendsIdClass
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExtendsIdClassCopyWith<_$_ExtendsIdClass> get copyWith =>
-      __$$_ExtendsIdClassCopyWithImpl<_$_ExtendsIdClass>(this, _$identity);
+  _$$ExtendsIdClassImplCopyWith<_$ExtendsIdClassImpl> get copyWith =>
+      __$$ExtendsIdClassImplCopyWithImpl<_$ExtendsIdClassImpl>(
+          this, _$identity);
 }
 
 abstract class _ExtendsIdClass extends ExtendsIdClass {
-  const factory _ExtendsIdClass(final int id) = _$_ExtendsIdClass;
+  const factory _ExtendsIdClass(final int id) = _$ExtendsIdClassImpl;
   const _ExtendsIdClass._() : super._();
 
   @override
   int get id;
+
+  /// Create a copy of ExtendsIdClass
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$_ExtendsIdClassCopyWith<_$_ExtendsIdClass> get copyWith =>
+  _$$ExtendsIdClassImplCopyWith<_$ExtendsIdClassImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$WithStaticElements {}
+
+/// @nodoc
+abstract class $WithStaticElementsCopyWith<$Res> {
+  factory $WithStaticElementsCopyWith(
+          WithStaticElements value, $Res Function(WithStaticElements) then) =
+      _$WithStaticElementsCopyWithImpl<$Res, WithStaticElements>;
+}
+
+/// @nodoc
+class _$WithStaticElementsCopyWithImpl<$Res, $Val extends WithStaticElements>
+    implements $WithStaticElementsCopyWith<$Res> {
+  _$WithStaticElementsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of WithStaticElements
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$WithStaticElementsImplCopyWith<$Res> {
+  factory _$$WithStaticElementsImplCopyWith(_$WithStaticElementsImpl value,
+          $Res Function(_$WithStaticElementsImpl) then) =
+      __$$WithStaticElementsImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$WithStaticElementsImplCopyWithImpl<$Res>
+    extends _$WithStaticElementsCopyWithImpl<$Res, _$WithStaticElementsImpl>
+    implements _$$WithStaticElementsImplCopyWith<$Res> {
+  __$$WithStaticElementsImplCopyWithImpl(_$WithStaticElementsImpl _value,
+      $Res Function(_$WithStaticElementsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of WithStaticElements
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$WithStaticElementsImpl implements _WithStaticElements {
+  const _$WithStaticElementsImpl();
+
+  @override
+  String toString() {
+    return 'WithStaticElements()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$WithStaticElementsImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class _WithStaticElements implements WithStaticElements {
+  const factory _WithStaticElements() = _$WithStaticElementsImpl;
 }

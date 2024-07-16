@@ -1,3 +1,7 @@
+## 0.0.6 - 2024-07-16
+
+- fix false positive `freezed_missing_private_empty_constructor` if accessor/method/field is static
+
 ## 0.0.5 - 2024-07-15
 
 - `freezed_annotation` upgraded to `2.4.4`

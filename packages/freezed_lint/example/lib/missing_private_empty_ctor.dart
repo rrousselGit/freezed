@@ -56,3 +56,14 @@ class ExtendsIdClass extends IdClass with _$ExtendsIdClass {
   @override
   int get id => id;
 }
+
+@freezed
+class WithStaticElements with _$WithStaticElements {
+  static String field = 'field';
+
+  static String get accessor => 'accessor';
+
+  static String method() => 'method';
+
+  const factory WithStaticElements() = _WithStaticElements;
+}

@@ -1,5 +1,5 @@
 name: freezed_lint
-version: 0.0.5
+version: 0.0.6
 description: >
   Linter rules for freezed.
 repository: https://github.com/rrousselGit/freezed

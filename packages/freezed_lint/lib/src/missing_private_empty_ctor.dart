@@ -29,9 +29,10 @@ class MissingPrivateEmptyCtor extends DartLintRule {
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final methods = element.methods;
-      final fields = element.fields;
-      final accessors = element.accessors;
+      final methods = element.methods.where((method) => !method.isStatic);
+      final fields = element.fields.where((field) => !field.isStatic);
+      final accessors =
+          element.accessors.where((accessor) => !accessor.isStatic);
       if (methods.isEmpty && fields.isEmpty && accessors.isEmpty) return;
 
       final ctors = element.constructors.where((ctor) =>
