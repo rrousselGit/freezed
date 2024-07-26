@@ -423,7 +423,7 @@ class Person with _$Person {
 
 then it will fail with the error `The non-abstract class _$_Person is missing implementations for these members:`.
 
-For that to work, we need to define a private empty constructor, which will signal the generated code to *extend/subclass* our class, instead of *implementing* it (which is the default, and only inherits type, and not properties or methods):
+For that to work, we need to define a private empty constructor. That will enable the generated code to *extend/subclass* our class, instead of *implementing* it (which is the default, and only inherits type, and not properties or methods):
 
 ```dart
 @freezed
