@@ -27,13 +27,13 @@ class MissingMixin extends DartLintRule {
       final name = '_\$${element.name}';
       final withClause = node.withClause;
       if (withClause == null) {
-        reporter.atElement(element, code, arguments: [name]);
+        reporter.atElement(element, _code, arguments: [name]);
         return;
       }
 
       final mixins = withClause.mixinTypes;
       if (mixins.any((m) => name == m.name2.lexeme)) return;
-      reporter.atElement(element, code, arguments: [name]);
+      reporter.atElement(element, _code, arguments: [name]);
     });
   }
 
