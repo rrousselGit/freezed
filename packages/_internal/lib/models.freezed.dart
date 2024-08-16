@@ -23,6 +23,8 @@ mixin _$DeepCloneableProperty {
   GenericsParameterTemplate get genericParameters =>
       throw _privateConstructorUsedError;
 
+  /// Create a copy of DeepCloneableProperty
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $DeepCloneablePropertyCopyWith<DeepCloneableProperty> get copyWith =>
       throw _privateConstructorUsedError;
@@ -53,6 +55,8 @@ class _$DeepCloneablePropertyCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DeepCloneableProperty
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -113,6 +117,8 @@ class __$$DeepCloneablePropertyImplCopyWithImpl<$Res>
       $Res Function(_$DeepCloneablePropertyImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DeepCloneableProperty
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -192,6 +198,8 @@ class _$DeepCloneablePropertyImpl implements _DeepCloneableProperty {
   int get hashCode => Object.hash(
       runtimeType, name, typeName, type, nullable, genericParameters);
 
+  /// Create a copy of DeepCloneableProperty
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
@@ -219,6 +227,9 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
   bool get nullable;
   @override
   GenericsParameterTemplate get genericParameters;
+
+  /// Create a copy of DeepCloneableProperty
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DeepCloneablePropertyImplCopyWith<_$DeepCloneablePropertyImpl>
@@ -245,6 +256,8 @@ mixin _$ConstructorDetails {
       throw _privateConstructorUsedError;
   List<AssertTemplate> get asserts => throw _privateConstructorUsedError;
 
+  /// Create a copy of ConstructorDetails
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $ConstructorDetailsCopyWith<ConstructorDetails> get copyWith =>
       throw _privateConstructorUsedError;
@@ -285,6 +298,8 @@ class _$ConstructorDetailsCopyWithImpl<$Res, $Val extends ConstructorDetails>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConstructorDetails
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -409,6 +424,8 @@ class __$$ConstructorDetailsImplCopyWithImpl<$Res>
       $Res Function(_$ConstructorDetailsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConstructorDetails
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -658,6 +675,8 @@ class _$ConstructorDetailsImpl extends _ConstructorDetails {
       const DeepCollectionEquality().hash(_cloneableProperties),
       const DeepCollectionEquality().hash(_asserts));
 
+  /// Create a copy of ConstructorDetails
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
@@ -718,6 +737,9 @@ abstract class _ConstructorDetails extends ConstructorDetails {
   List<DeepCloneableProperty> get cloneableProperties;
   @override
   List<AssertTemplate> get asserts;
+
+  /// Create a copy of ConstructorDetails
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConstructorDetailsImplCopyWith<_$ConstructorDetailsImpl> get copyWith =>
@@ -730,6 +752,8 @@ mixin _$MapConfig {
   bool get mapOrNull => throw _privateConstructorUsedError;
   bool get maybeMap => throw _privateConstructorUsedError;
 
+  /// Create a copy of MapConfig
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $MapConfigCopyWith<MapConfig> get copyWith =>
       throw _privateConstructorUsedError;
@@ -753,6 +777,8 @@ class _$MapConfigCopyWithImpl<$Res, $Val extends MapConfig>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MapConfig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -796,6 +822,8 @@ class __$$MapConfigImplCopyWithImpl<$Res>
       _$MapConfigImpl _value, $Res Function(_$MapConfigImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MapConfig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -853,6 +881,8 @@ class _$MapConfigImpl implements _MapConfig {
   @override
   int get hashCode => Object.hash(runtimeType, map, mapOrNull, maybeMap);
 
+  /// Create a copy of MapConfig
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
@@ -872,6 +902,9 @@ abstract class _MapConfig implements MapConfig {
   bool get mapOrNull;
   @override
   bool get maybeMap;
+
+  /// Create a copy of MapConfig
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MapConfigImplCopyWith<_$MapConfigImpl> get copyWith =>
@@ -884,6 +917,8 @@ mixin _$WhenConfig {
   bool get whenOrNull => throw _privateConstructorUsedError;
   bool get maybeWhen => throw _privateConstructorUsedError;
 
+  /// Create a copy of WhenConfig
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $WhenConfigCopyWith<WhenConfig> get copyWith =>
       throw _privateConstructorUsedError;
@@ -908,6 +943,8 @@ class _$WhenConfigCopyWithImpl<$Res, $Val extends WhenConfig>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of WhenConfig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -951,6 +988,8 @@ class __$$WhenConfigImplCopyWithImpl<$Res>
       _$WhenConfigImpl _value, $Res Function(_$WhenConfigImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WhenConfig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1008,6 +1047,8 @@ class _$WhenConfigImpl implements _WhenConfig {
   @override
   int get hashCode => Object.hash(runtimeType, when, whenOrNull, maybeWhen);
 
+  /// Create a copy of WhenConfig
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
@@ -1027,6 +1068,9 @@ abstract class _WhenConfig implements WhenConfig {
   bool get whenOrNull;
   @override
   bool get maybeWhen;
+
+  /// Create a copy of WhenConfig
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$WhenConfigImplCopyWith<_$WhenConfigImpl> get copyWith =>
@@ -1055,6 +1099,8 @@ mixin _$Data {
   bool get shouldUseExtends => throw _privateConstructorUsedError;
   bool get genericArgumentFactories => throw _privateConstructorUsedError;
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
@@ -1096,6 +1142,8 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1184,6 +1232,8 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
     ) as $Val);
   }
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MapConfigCopyWith<$Res> get map {
@@ -1192,6 +1242,8 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
     });
   }
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $WhenConfigCopyWith<$Res> get when {
@@ -1239,6 +1291,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1464,6 +1518,8 @@ class _$DataImpl implements _Data {
       shouldUseExtends,
       genericArgumentFactories);
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
@@ -1522,6 +1578,9 @@ abstract class _Data implements Data {
   bool get shouldUseExtends;
   @override
   bool get genericArgumentFactories;
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -1533,6 +1592,8 @@ mixin _$GlobalData {
   bool get hasJson => throw _privateConstructorUsedError;
   bool get hasDiagnostics => throw _privateConstructorUsedError;
 
+  /// Create a copy of GlobalData
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $GlobalDataCopyWith<GlobalData> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1557,6 +1618,8 @@ class _$GlobalDataCopyWithImpl<$Res, $Val extends GlobalData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GlobalData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1595,6 +1658,8 @@ class __$$GlobalDataImplCopyWithImpl<$Res>
       _$GlobalDataImpl _value, $Res Function(_$GlobalDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GlobalData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1642,6 +1707,8 @@ class _$GlobalDataImpl implements _GlobalData {
   @override
   int get hashCode => Object.hash(runtimeType, hasJson, hasDiagnostics);
 
+  /// Create a copy of GlobalData
+  /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
@@ -1658,6 +1725,9 @@ abstract class _GlobalData implements GlobalData {
   bool get hasJson;
   @override
   bool get hasDiagnostics;
+
+  /// Create a copy of GlobalData
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GlobalDataImplCopyWith<_$GlobalDataImpl> get copyWith =>
