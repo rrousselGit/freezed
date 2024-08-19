@@ -1,0 +1,8 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        enabled: true
+        generate_for:
+          exclude:
+            - lib/missing_private_empty_ctor.dart

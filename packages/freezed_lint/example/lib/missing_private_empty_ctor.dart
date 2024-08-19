@@ -1,11 +1,10 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+// ignore_for_file: unused_element
 
-part 'missing_private_empty_ctor.freezed.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 @freezed
 // expect_lint: freezed_missing_private_empty_constructor
 class RequiresPrivateCtor with _$RequiresPrivateCtor {
-  // const RequiresPrivateCtor._();
   const factory RequiresPrivateCtor() = _RequiresPrivateCtor;
 
   void method() {
@@ -27,7 +26,6 @@ class HasPrivateCtor with _$HasPrivateCtor {
 @freezed
 // expect_lint: freezed_missing_private_empty_constructor
 class HasAccessor with _$HasAccessor {
-  // const HasAccessor._();
   const factory HasAccessor(int id) = _HasAccessor;
 
   String get idString => id.toString();
@@ -43,7 +41,6 @@ mixin IdMixin {
 
 @freezed
 class WithIdMixin with _$WithIdMixin, IdMixin {
-  // const WithIdMixin._();
   const factory WithIdMixin(int id) = _WithIdMixin;
 }
 
@@ -66,4 +63,52 @@ class WithStaticElements with _$WithStaticElements {
   static String method() => 'method';
 
   const factory WithStaticElements() = _WithStaticElements;
+}
+
+// fake generated code:
+
+mixin _$RequiresPrivateCtor {}
+mixin _$HasPrivateCtor {}
+mixin _$HasAccessor {
+  int get id => throw UnimplementedError();
+}
+mixin _$WithIdMixin {
+  int get id => throw UnimplementedError();
+}
+mixin _$ExtendsIdClass {}
+mixin _$WithStaticElements {}
+
+class _RequiresPrivateCtor implements RequiresPrivateCtor {
+  const _RequiresPrivateCtor();
+  @override
+  void method() {}
+}
+
+class _HasPrivateCtor implements HasPrivateCtor {
+  const _HasPrivateCtor();
+  @override
+  void method() {}
+}
+
+class _HasAccessor implements HasAccessor {
+  const _HasAccessor(this.id);
+  final int id;
+  @override
+  String get idString => throw UnimplementedError();
+}
+
+class _WithIdMixin implements WithIdMixin {
+  const _WithIdMixin(int id);
+  @override
+  int get id => throw UnimplementedError();
+}
+
+class _ExtendsIdClass implements ExtendsIdClass {
+  const _ExtendsIdClass(int id);
+  @override
+  int get id => throw UnimplementedError();
+}
+
+class _WithStaticElements implements WithStaticElements {
+  const _WithStaticElements();
 }
