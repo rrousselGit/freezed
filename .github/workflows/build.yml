@@ -60,7 +60,7 @@ jobs:
       - name: Generate
         run: |
           if grep -q build_runner "pubspec.yaml"; then
-            flutter pub run build_runner build --delete-conflicting-outputs
+            dart pub run build_runner build --delete-conflicting-outputs
           fi
         working-directory: ${{ matrix.package }}
 
