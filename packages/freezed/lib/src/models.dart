@@ -504,6 +504,7 @@ class Class {
     required this.superCall,
     required this.properties,
     required this.copyWithTarget,
+    required this.isSealed,
   }) : assert(constructors.isNotEmpty);
 
   final String name;
@@ -516,6 +517,7 @@ class Class {
   final CopyWithTarget? copyWithTarget;
   final PropertyList properties;
   final List<Class> parents = [];
+  final bool isSealed;
 
   static Class _from(
     ClassDeclaration declaration,
@@ -597,6 +599,7 @@ class Class {
       genericsParameterTemplate: GenericsParameterTemplate.fromGenericElement(
         declaration.declaredElement!.typeParameters,
       ),
+      isSealed: declaration.declaredElement!.isSealed,
     );
   }
 

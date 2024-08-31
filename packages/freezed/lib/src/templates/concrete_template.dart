@@ -49,7 +49,7 @@ class Concrete {
 /// @nodoc
 $jsonSerializable
 ${constructor.decorators.join('\n')}
-class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_concreteSuper {
+${data.isSealed ? 'final ' : ''}class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_concreteSuper {
   $_concreteConstructor
   $_concreteFromJsonConstructor
 
