@@ -13,3 +13,11 @@ dependency_overrides:
   quiver: ^3.2.0
   # watcher 1.0.0 extends, implements, or mixens sealed class 'FileSystemEvent'
   watcher: ^1.1.0
+  # There seems to be a regression with Flutter ^3.24.0
+  # that causes an error when generating sources using the build_runner
+  # after running `flutter pub downgrade` in GitHub actions,
+  # because it then installs frontend_server_client: ^3.0.0:
+  #  Could not find a command named
+  #  "/path/to/flutter/stable-3.24.0-x64/bin/cache/dart-sdk/bin/snapshots/frontend_server.dart.snapshot".
+  # see https://github.com/dart-lang/build/issues/3733#issuecomment-2272082820
+  frontend_server_client: ^4.0.0
