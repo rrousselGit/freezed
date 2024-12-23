@@ -64,7 +64,7 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
 /// @nodoc
 $jsonSerializable
 ${constructor.decorators.join('\n')}
-class $concreteName${data.genericsDefinitionTemplate} $_concreteSuper {
+final class $concreteName${data.genericsDefinitionTemplate} $_concreteSuper {
   $_concreteConstructor
 
   $_concreteFromJsonConstructor
@@ -86,7 +86,7 @@ $_toJson
 }
 
 
-abstract class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_superKeyword ${data.name}${data.genericsParameterTemplate}$interfaces {
+sealed class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_superKeyword ${data.name}${data.genericsParameterTemplate}$interfaces {
   $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName${data.genericsParameterTemplate};
   $_privateConcreteConstructor
 
