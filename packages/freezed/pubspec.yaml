@@ -10,16 +10,16 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  analyzer: ">=6.5.0 <7.0.0"
+  analyzer: ">=6.5.0 <8.0.0"
   build: ^2.3.1
   build_config: ^1.1.0
   collection: ^1.15.0
   meta: ^1.9.1
-  source_gen: ^1.4.0
+  source_gen: ^2.0.0
   freezed_annotation: ^2.4.4
   json_annotation: ^4.8.0
   # Indirect dependency, but fixes a compiler error when using `pub downgrade`
-  dart_style: ^2.3.6
+  dart_style: ^3.0.0
 
 dev_dependencies:
   json_serializable: ^6.3.2
