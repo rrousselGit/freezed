@@ -21,7 +21,8 @@ jobs:
           - packages/freezed_lint
         channel:
           - master
-          - stable
+          # BLocked by https://github.com/dart-lang/source_gen/issues/739
+          # - stable
         dependencies:
           - get
           - downgrade
