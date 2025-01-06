@@ -38,10 +38,10 @@ const pUnionJson = _$PUnionJsonWithExtendsFromJson;
 class _PUnionJsonWithExtends extends Base with _$PUnionJsonWithExtends {
   _PUnionJsonWithExtends._();
 
-  // ignore: unused_element
+  // ignore: unused_element, unused_element_parameter
   factory _PUnionJsonWithExtends.first({int? first}) =
       _PUnionJsonFirstWithExtends;
-  // ignore: unused_element
+  // ignore: unused_element, unused_element_parameter
   factory _PUnionJsonWithExtends.second({int? second}) =
       _PUnionJsonSecondWithExtends;
 

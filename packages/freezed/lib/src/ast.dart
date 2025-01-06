@@ -57,7 +57,7 @@ extension ClassX on ClassDeclaration {
 extension ConstructorX on ConstructorDeclaration {
   String get fullName {
     // ignore: deprecated_member_use, latest analyzer with enclosingElement3 not available in stable channel
-    final classElement = declaredElement!.enclosingElement;
+    final classElement = declaredElement!.enclosingElement3;
 
     var generics =
         classElement.typeParameters.map((e) => '\$${e.name}').join(', ');
@@ -66,14 +66,14 @@ extension ConstructorX on ConstructorDeclaration {
     }
 
     // ignore: deprecated_member_use, latest analyzer with enclosingElement3 not available in stable channel
-    final className = classElement.enclosingElement.name;
+    final className = classElement.enclosingElement3.name;
 
     return name == null ? '$className$generics' : '$className$generics.$name';
   }
 
   String get escapedName {
     // ignore: deprecated_member_use, latest analyzer with enclosingElement3 not available in stable channel
-    final classElement = declaredElement!.enclosingElement;
+    final classElement = declaredElement!.enclosingElement3;
 
     var generics =
         classElement.typeParameters.map((e) => '\$${e.name}').join(', ');
