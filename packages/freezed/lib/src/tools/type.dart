@@ -41,7 +41,9 @@ String resolveFullTypeStringFrom(
   LibraryElement originLibrary,
   DartType type,
 ) {
-  final owner = originLibrary.prefixes.firstWhereOrNull(
+  final owner = originLibrary.units
+      .expand((e) => e.libraryImportPrefixes)
+      .firstWhereOrNull(
     (e) {
       return e.imports.any((l) {
         return l.importedLibrary!.anyTransitiveExport((library) {
