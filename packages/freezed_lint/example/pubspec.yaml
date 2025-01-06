@@ -14,11 +14,5 @@ dev_dependencies:
   freezed_lint: any
 
 dependency_overrides:
-  freezed:
-    path: ../../freezed
-  freezed_annotation:
-    path: ../../freezed_annotation
   freezed_lint:
     path: ../
-
-
