@@ -1,4 +1,4 @@
-## Unreleased path
+## 2.5.8 - 2025-01-06
 
 Support analyzer 7.0.0
 
