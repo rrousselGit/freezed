@@ -1,3 +1,7 @@
+## 0.0.7 - 2025-01-08
+
+Bump analyzer version
+
 ## 0.0.6 - 2025-01-06
 
 - fix false positive `freezed_missing_private_empty_constructor` if accessor/method/field is static (thanks to @SunlightBro)
