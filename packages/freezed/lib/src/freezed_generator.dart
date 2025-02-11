@@ -14,13 +14,7 @@ import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart'
-    show
-        Assert,
-        Freezed,
-        FreezedMapOptions,
-        FreezedUnionCase,
-        FreezedUnionValue,
-        FreezedWhenOptions;
+    show Assert, Freezed, FreezedUnionCase, FreezedUnionValue;
 import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -101,12 +95,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       configs,
     );
 
-    final shouldGenerateUnions = constructorsNeedsGeneration
-        .where(
-          (element) => element.name.isNotEmpty && !element.name.startsWith('_'),
-        )
-        .isNotEmpty;
-
     late final needsJsonSerializable = _needsJsonSerializable(
       buildStep,
       globalData,
@@ -124,16 +112,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       generateFromJson: configs.fromJson ?? await needsJsonSerializable,
       generateToJson: configs.toJson ?? await needsJsonSerializable,
       genericArgumentFactories: configs.genericArgumentFactories,
-      map: MapConfig(
-        map: configs.map?.map ?? shouldGenerateUnions,
-        mapOrNull: configs.map?.mapOrNull ?? shouldGenerateUnions,
-        maybeMap: configs.map?.maybeMap ?? shouldGenerateUnions,
-      ),
-      when: WhenConfig(
-        when: configs.when?.when ?? shouldGenerateUnions,
-        whenOrNull: configs.when?.whenOrNull ?? shouldGenerateUnions,
-        maybeWhen: configs.when?.maybeWhen ?? shouldGenerateUnions,
-      ),
       makeCollectionsImmutable: configs.makeCollectionsUnmodifiable!,
       constructors: constructorsNeedsGeneration,
       concretePropertiesName: [
@@ -153,15 +131,15 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     ConstructorDeclaration constructor, {
     required String className,
   }) {
-    if (constructor.factoryKeyword == null &&
-        (constructor.name?.lexeme != '_' ||
-            constructor.parameters.parameters.isNotEmpty)) {
-      throw InvalidGenerationSourceError(
-        'Classes decorated with @freezed can only have a single non-factory'
-        ', without parameters, and named MyClass._()',
-        element: constructor.declaredElement,
-      );
-    }
+    // if (constructor.factoryKeyword == null &&
+    //     (constructor.name?.lexeme != '_' ||
+    //         constructor.parameters.parameters.isNotEmpty)) {
+    //   throw InvalidGenerationSourceError(
+    //     'Classes decorated with @freezed can only have a single non-factory'
+    //     ', without parameters, and named MyClass._()',
+    //     element: constructor.declaredElement,
+    //   );
+    // }
   }
 
   void _assertValidFreezedConstructorUsage(
@@ -399,6 +377,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           unionValue: constructor.declaredElement!.unionValue(
             options.unionValueCase,
           ),
+          isExternal: false,
           isConst: constructor.constKeyword != null,
           fullName: constructor.fullName,
           escapedName: constructor.escapedName,
@@ -598,29 +577,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         orElse: () => _buildYamlConfigs.fromJson,
       ),
       addImplicitFinal: annotation.getField('addImplicitFinal')!.toBoolValue()!,
-      map: annotation.decodeField(
-        'map',
-        decode: (obj) {
-          return FreezedMapOptions(
-            map: obj.decodeField(
-              'map',
-              decode: (obj) => obj.toBoolValue(),
-              orElse: () => _buildYamlConfigs.map?.map,
-            ),
-            maybeMap: obj.decodeField(
-              'maybeMap',
-              decode: (obj) => obj.toBoolValue(),
-              orElse: () => _buildYamlConfigs.map?.maybeMap,
-            ),
-            mapOrNull: obj.decodeField(
-              'mapOrNull',
-              decode: (obj) => obj.toBoolValue(),
-              orElse: () => _buildYamlConfigs.map?.mapOrNull,
-            ),
-          );
-        },
-        orElse: () => _buildYamlConfigs.map,
-      ),
       toJson: annotation.decodeField(
         'toJson',
         decode: (obj) => obj.toBoolValue(),
@@ -652,29 +608,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           return FreezedUnionCase.values[enumIndex];
         },
         orElse: () => _buildYamlConfigs.unionValueCase,
-      ),
-      when: annotation.decodeField(
-        'when',
-        decode: (obj) {
-          return FreezedWhenOptions(
-            when: obj.decodeField(
-              'when',
-              decode: (obj) => obj.toBoolValue(),
-              orElse: () => _buildYamlConfigs.when?.when,
-            ),
-            maybeWhen: obj.decodeField(
-              'maybeWhen',
-              decode: (obj) => obj.toBoolValue(),
-              orElse: () => _buildYamlConfigs.when?.maybeWhen,
-            ),
-            whenOrNull: obj.decodeField(
-              'whenOrNull',
-              decode: (obj) => obj.toBoolValue(),
-              orElse: () => _buildYamlConfigs.when?.whenOrNull,
-            ),
-          );
-        },
-        orElse: () => _buildYamlConfigs.when,
       ),
     );
   }
