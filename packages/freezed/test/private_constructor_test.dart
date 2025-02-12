@@ -7,6 +7,6 @@ void main() {
     final c = PrivateConstructor.illegal();
     expect(c, isA<PrivateConstructor>());
 
-    expect(() => c..name, throwsUnsupportedError);
+    expect(() => c.name, throwsUnsupportedError);
   });
 }
