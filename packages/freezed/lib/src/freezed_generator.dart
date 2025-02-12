@@ -131,15 +131,15 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     ConstructorDeclaration constructor, {
     required String className,
   }) {
-    // if (constructor.factoryKeyword == null &&
-    //     (constructor.name?.lexeme != '_' ||
-    //         constructor.parameters.parameters.isNotEmpty)) {
-    //   throw InvalidGenerationSourceError(
-    //     'Classes decorated with @freezed can only have a single non-factory'
-    //     ', without parameters, and named MyClass._()',
-    //     element: constructor.declaredElement,
-    //   );
-    // }
+    if (constructor.factoryKeyword == null &&
+        (constructor.name?.lexeme != '_' ||
+            constructor.parameters.parameters.isNotEmpty)) {
+      throw InvalidGenerationSourceError(
+        'Classes decorated with @freezed can only have a single non-factory'
+        ', without parameters, and named MyClass._()',
+        element: constructor.declaredElement,
+      );
+    }
   }
 
   void _assertValidFreezedConstructorUsage(
@@ -377,7 +377,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
           unionValue: constructor.declaredElement!.unionValue(
             options.unionValueCase,
           ),
-          isExternal: false,
           isConst: constructor.constKeyword != null,
           fullName: constructor.fullName,
           escapedName: constructor.escapedName,

@@ -239,7 +239,6 @@ abstract class _DeepCloneableProperty implements DeepCloneableProperty {
 /// @nodoc
 mixin _$ConstructorDetails {
   String get name => throw _privateConstructorUsedError;
-  bool get isExternal => throw _privateConstructorUsedError;
   String get unionValue => throw _privateConstructorUsedError;
   bool get isConst => throw _privateConstructorUsedError;
   String get redirectedName => throw _privateConstructorUsedError;
@@ -272,7 +271,6 @@ abstract class $ConstructorDetailsCopyWith<$Res> {
   @useResult
   $Res call(
       {String name,
-      bool isExternal,
       String unionValue,
       bool isConst,
       String redirectedName,
@@ -306,7 +304,6 @@ class _$ConstructorDetailsCopyWithImpl<$Res, $Val extends ConstructorDetails>
   @override
   $Res call({
     Object? name = null,
-    Object? isExternal = null,
     Object? unionValue = null,
     Object? isConst = null,
     Object? redirectedName = null,
@@ -328,10 +325,6 @@ class _$ConstructorDetailsCopyWithImpl<$Res, $Val extends ConstructorDetails>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      isExternal: null == isExternal
-          ? _value.isExternal
-          : isExternal // ignore: cast_nullable_to_non_nullable
-              as bool,
       unionValue: null == unionValue
           ? _value.unionValue
           : unionValue // ignore: cast_nullable_to_non_nullable
@@ -406,7 +399,6 @@ abstract class _$$ConstructorDetailsImplCopyWith<$Res>
   @useResult
   $Res call(
       {String name,
-      bool isExternal,
       String unionValue,
       bool isConst,
       String redirectedName,
@@ -438,7 +430,6 @@ class __$$ConstructorDetailsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
-    Object? isExternal = null,
     Object? unionValue = null,
     Object? isConst = null,
     Object? redirectedName = null,
@@ -460,10 +451,6 @@ class __$$ConstructorDetailsImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      isExternal: null == isExternal
-          ? _value.isExternal
-          : isExternal // ignore: cast_nullable_to_non_nullable
-              as bool,
       unionValue: null == unionValue
           ? _value.unionValue
           : unionValue // ignore: cast_nullable_to_non_nullable
@@ -533,7 +520,6 @@ class __$$ConstructorDetailsImplCopyWithImpl<$Res>
 class _$ConstructorDetailsImpl extends _ConstructorDetails {
   _$ConstructorDetailsImpl(
       {required this.name,
-      required this.isExternal,
       required this.unionValue,
       required this.isConst,
       required this.redirectedName,
@@ -559,8 +545,6 @@ class _$ConstructorDetailsImpl extends _ConstructorDetails {
 
   @override
   final String name;
-  @override
-  final bool isExternal;
   @override
   final String unionValue;
   @override
@@ -632,7 +616,7 @@ class _$ConstructorDetailsImpl extends _ConstructorDetails {
 
   @override
   String toString() {
-    return 'ConstructorDetails(name: $name, isExternal: $isExternal, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, escapedName: $escapedName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, asserts: $asserts)';
+    return 'ConstructorDetails(name: $name, unionValue: $unionValue, isConst: $isConst, redirectedName: $redirectedName, parameters: $parameters, impliedProperties: $impliedProperties, isDefault: $isDefault, isFallback: $isFallback, hasJsonSerializable: $hasJsonSerializable, fullName: $fullName, escapedName: $escapedName, withDecorators: $withDecorators, implementsDecorators: $implementsDecorators, decorators: $decorators, cloneableProperties: $cloneableProperties, asserts: $asserts)';
   }
 
   @override
@@ -641,8 +625,6 @@ class _$ConstructorDetailsImpl extends _ConstructorDetails {
         (other.runtimeType == runtimeType &&
             other is _$ConstructorDetailsImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.isExternal, isExternal) ||
-                other.isExternal == isExternal) &&
             (identical(other.unionValue, unionValue) ||
                 other.unionValue == unionValue) &&
             (identical(other.isConst, isConst) || other.isConst == isConst) &&
@@ -677,7 +659,6 @@ class _$ConstructorDetailsImpl extends _ConstructorDetails {
   int get hashCode => Object.hash(
       runtimeType,
       name,
-      isExternal,
       unionValue,
       isConst,
       redirectedName,
@@ -707,7 +688,6 @@ class _$ConstructorDetailsImpl extends _ConstructorDetails {
 abstract class _ConstructorDetails extends ConstructorDetails {
   factory _ConstructorDetails(
       {required final String name,
-      required final bool isExternal,
       required final String unionValue,
       required final bool isConst,
       required final String redirectedName,
@@ -727,8 +707,6 @@ abstract class _ConstructorDetails extends ConstructorDetails {
 
   @override
   String get name;
-  @override
-  bool get isExternal;
   @override
   String get unionValue;
   @override

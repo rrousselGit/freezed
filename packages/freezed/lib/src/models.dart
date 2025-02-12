@@ -32,7 +32,6 @@ class DeepCloneableProperty with _$DeepCloneableProperty {
 class ConstructorDetails with _$ConstructorDetails {
   factory ConstructorDetails({
     required String name,
-    required bool isExternal,
     required String unionValue,
     required bool isConst,
     required String redirectedName,
