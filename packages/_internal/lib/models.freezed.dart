@@ -747,345 +747,12 @@ abstract class _ConstructorDetails extends ConstructorDetails {
 }
 
 /// @nodoc
-mixin _$MapConfig {
-  bool get map => throw _privateConstructorUsedError;
-  bool get mapOrNull => throw _privateConstructorUsedError;
-  bool get maybeMap => throw _privateConstructorUsedError;
-
-  /// Create a copy of MapConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $MapConfigCopyWith<MapConfig> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $MapConfigCopyWith<$Res> {
-  factory $MapConfigCopyWith(MapConfig value, $Res Function(MapConfig) then) =
-      _$MapConfigCopyWithImpl<$Res, MapConfig>;
-  @useResult
-  $Res call({bool map, bool mapOrNull, bool maybeMap});
-}
-
-/// @nodoc
-class _$MapConfigCopyWithImpl<$Res, $Val extends MapConfig>
-    implements $MapConfigCopyWith<$Res> {
-  _$MapConfigCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of MapConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? map = null,
-    Object? mapOrNull = null,
-    Object? maybeMap = null,
-  }) {
-    return _then(_value.copyWith(
-      map: null == map
-          ? _value.map
-          : map // ignore: cast_nullable_to_non_nullable
-              as bool,
-      mapOrNull: null == mapOrNull
-          ? _value.mapOrNull
-          : mapOrNull // ignore: cast_nullable_to_non_nullable
-              as bool,
-      maybeMap: null == maybeMap
-          ? _value.maybeMap
-          : maybeMap // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$MapConfigImplCopyWith<$Res>
-    implements $MapConfigCopyWith<$Res> {
-  factory _$$MapConfigImplCopyWith(
-          _$MapConfigImpl value, $Res Function(_$MapConfigImpl) then) =
-      __$$MapConfigImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({bool map, bool mapOrNull, bool maybeMap});
-}
-
-/// @nodoc
-class __$$MapConfigImplCopyWithImpl<$Res>
-    extends _$MapConfigCopyWithImpl<$Res, _$MapConfigImpl>
-    implements _$$MapConfigImplCopyWith<$Res> {
-  __$$MapConfigImplCopyWithImpl(
-      _$MapConfigImpl _value, $Res Function(_$MapConfigImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of MapConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? map = null,
-    Object? mapOrNull = null,
-    Object? maybeMap = null,
-  }) {
-    return _then(_$MapConfigImpl(
-      map: null == map
-          ? _value.map
-          : map // ignore: cast_nullable_to_non_nullable
-              as bool,
-      mapOrNull: null == mapOrNull
-          ? _value.mapOrNull
-          : mapOrNull // ignore: cast_nullable_to_non_nullable
-              as bool,
-      maybeMap: null == maybeMap
-          ? _value.maybeMap
-          : maybeMap // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$MapConfigImpl implements _MapConfig {
-  _$MapConfigImpl(
-      {required this.map, required this.mapOrNull, required this.maybeMap});
-
-  @override
-  final bool map;
-  @override
-  final bool mapOrNull;
-  @override
-  final bool maybeMap;
-
-  @override
-  String toString() {
-    return 'MapConfig(map: $map, mapOrNull: $mapOrNull, maybeMap: $maybeMap)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$MapConfigImpl &&
-            (identical(other.map, map) || other.map == map) &&
-            (identical(other.mapOrNull, mapOrNull) ||
-                other.mapOrNull == mapOrNull) &&
-            (identical(other.maybeMap, maybeMap) ||
-                other.maybeMap == maybeMap));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, map, mapOrNull, maybeMap);
-
-  /// Create a copy of MapConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$MapConfigImplCopyWith<_$MapConfigImpl> get copyWith =>
-      __$$MapConfigImplCopyWithImpl<_$MapConfigImpl>(this, _$identity);
-}
-
-abstract class _MapConfig implements MapConfig {
-  factory _MapConfig(
-      {required final bool map,
-      required final bool mapOrNull,
-      required final bool maybeMap}) = _$MapConfigImpl;
-
-  @override
-  bool get map;
-  @override
-  bool get mapOrNull;
-  @override
-  bool get maybeMap;
-
-  /// Create a copy of MapConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MapConfigImplCopyWith<_$MapConfigImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$WhenConfig {
-  bool get when => throw _privateConstructorUsedError;
-  bool get whenOrNull => throw _privateConstructorUsedError;
-  bool get maybeWhen => throw _privateConstructorUsedError;
-
-  /// Create a copy of WhenConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $WhenConfigCopyWith<WhenConfig> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $WhenConfigCopyWith<$Res> {
-  factory $WhenConfigCopyWith(
-          WhenConfig value, $Res Function(WhenConfig) then) =
-      _$WhenConfigCopyWithImpl<$Res, WhenConfig>;
-  @useResult
-  $Res call({bool when, bool whenOrNull, bool maybeWhen});
-}
-
-/// @nodoc
-class _$WhenConfigCopyWithImpl<$Res, $Val extends WhenConfig>
-    implements $WhenConfigCopyWith<$Res> {
-  _$WhenConfigCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of WhenConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? when = null,
-    Object? whenOrNull = null,
-    Object? maybeWhen = null,
-  }) {
-    return _then(_value.copyWith(
-      when: null == when
-          ? _value.when
-          : when // ignore: cast_nullable_to_non_nullable
-              as bool,
-      whenOrNull: null == whenOrNull
-          ? _value.whenOrNull
-          : whenOrNull // ignore: cast_nullable_to_non_nullable
-              as bool,
-      maybeWhen: null == maybeWhen
-          ? _value.maybeWhen
-          : maybeWhen // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$WhenConfigImplCopyWith<$Res>
-    implements $WhenConfigCopyWith<$Res> {
-  factory _$$WhenConfigImplCopyWith(
-          _$WhenConfigImpl value, $Res Function(_$WhenConfigImpl) then) =
-      __$$WhenConfigImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({bool when, bool whenOrNull, bool maybeWhen});
-}
-
-/// @nodoc
-class __$$WhenConfigImplCopyWithImpl<$Res>
-    extends _$WhenConfigCopyWithImpl<$Res, _$WhenConfigImpl>
-    implements _$$WhenConfigImplCopyWith<$Res> {
-  __$$WhenConfigImplCopyWithImpl(
-      _$WhenConfigImpl _value, $Res Function(_$WhenConfigImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of WhenConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? when = null,
-    Object? whenOrNull = null,
-    Object? maybeWhen = null,
-  }) {
-    return _then(_$WhenConfigImpl(
-      when: null == when
-          ? _value.when
-          : when // ignore: cast_nullable_to_non_nullable
-              as bool,
-      whenOrNull: null == whenOrNull
-          ? _value.whenOrNull
-          : whenOrNull // ignore: cast_nullable_to_non_nullable
-              as bool,
-      maybeWhen: null == maybeWhen
-          ? _value.maybeWhen
-          : maybeWhen // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$WhenConfigImpl implements _WhenConfig {
-  _$WhenConfigImpl(
-      {required this.when, required this.whenOrNull, required this.maybeWhen});
-
-  @override
-  final bool when;
-  @override
-  final bool whenOrNull;
-  @override
-  final bool maybeWhen;
-
-  @override
-  String toString() {
-    return 'WhenConfig(when: $when, whenOrNull: $whenOrNull, maybeWhen: $maybeWhen)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$WhenConfigImpl &&
-            (identical(other.when, when) || other.when == when) &&
-            (identical(other.whenOrNull, whenOrNull) ||
-                other.whenOrNull == whenOrNull) &&
-            (identical(other.maybeWhen, maybeWhen) ||
-                other.maybeWhen == maybeWhen));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, when, whenOrNull, maybeWhen);
-
-  /// Create a copy of WhenConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$WhenConfigImplCopyWith<_$WhenConfigImpl> get copyWith =>
-      __$$WhenConfigImplCopyWithImpl<_$WhenConfigImpl>(this, _$identity);
-}
-
-abstract class _WhenConfig implements WhenConfig {
-  factory _WhenConfig(
-      {required final bool when,
-      required final bool whenOrNull,
-      required final bool maybeWhen}) = _$WhenConfigImpl;
-
-  @override
-  bool get when;
-  @override
-  bool get whenOrNull;
-  @override
-  bool get maybeWhen;
-
-  /// Create a copy of WhenConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$WhenConfigImplCopyWith<_$WhenConfigImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
 mixin _$Data {
   String get name => throw _privateConstructorUsedError;
   String get unionKey => throw _privateConstructorUsedError;
   bool get generateCopyWith => throw _privateConstructorUsedError;
   bool get generateEqual => throw _privateConstructorUsedError;
   bool get generateToString => throw _privateConstructorUsedError;
-  MapConfig get map => throw _privateConstructorUsedError;
-  WhenConfig get when => throw _privateConstructorUsedError;
   bool get generateFromJson => throw _privateConstructorUsedError;
   bool get generateToJson => throw _privateConstructorUsedError;
   bool get makeCollectionsImmutable => throw _privateConstructorUsedError;
@@ -1116,8 +783,6 @@ abstract class $DataCopyWith<$Res> {
       bool generateCopyWith,
       bool generateEqual,
       bool generateToString,
-      MapConfig map,
-      WhenConfig when,
       bool generateFromJson,
       bool generateToJson,
       bool makeCollectionsImmutable,
@@ -1127,9 +792,6 @@ abstract class $DataCopyWith<$Res> {
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
       bool genericArgumentFactories});
-
-  $MapConfigCopyWith<$Res> get map;
-  $WhenConfigCopyWith<$Res> get when;
 }
 
 /// @nodoc
@@ -1152,8 +814,6 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
     Object? generateCopyWith = null,
     Object? generateEqual = null,
     Object? generateToString = null,
-    Object? map = null,
-    Object? when = null,
     Object? generateFromJson = null,
     Object? generateToJson = null,
     Object? makeCollectionsImmutable = null,
@@ -1185,14 +845,6 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
           ? _value.generateToString
           : generateToString // ignore: cast_nullable_to_non_nullable
               as bool,
-      map: null == map
-          ? _value.map
-          : map // ignore: cast_nullable_to_non_nullable
-              as MapConfig,
-      when: null == when
-          ? _value.when
-          : when // ignore: cast_nullable_to_non_nullable
-              as WhenConfig,
       generateFromJson: null == generateFromJson
           ? _value.generateFromJson
           : generateFromJson // ignore: cast_nullable_to_non_nullable
@@ -1231,26 +883,6 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
               as bool,
     ) as $Val);
   }
-
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $MapConfigCopyWith<$Res> get map {
-    return $MapConfigCopyWith<$Res>(_value.map, (value) {
-      return _then(_value.copyWith(map: value) as $Val);
-    });
-  }
-
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $WhenConfigCopyWith<$Res> get when {
-    return $WhenConfigCopyWith<$Res>(_value.when, (value) {
-      return _then(_value.copyWith(when: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -1266,8 +898,6 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
       bool generateCopyWith,
       bool generateEqual,
       bool generateToString,
-      MapConfig map,
-      WhenConfig when,
       bool generateFromJson,
       bool generateToJson,
       bool makeCollectionsImmutable,
@@ -1277,11 +907,6 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
       GenericsParameterTemplate genericsParameterTemplate,
       bool shouldUseExtends,
       bool genericArgumentFactories});
-
-  @override
-  $MapConfigCopyWith<$Res> get map;
-  @override
-  $WhenConfigCopyWith<$Res> get when;
 }
 
 /// @nodoc
@@ -1301,8 +926,6 @@ class __$$DataImplCopyWithImpl<$Res>
     Object? generateCopyWith = null,
     Object? generateEqual = null,
     Object? generateToString = null,
-    Object? map = null,
-    Object? when = null,
     Object? generateFromJson = null,
     Object? generateToJson = null,
     Object? makeCollectionsImmutable = null,
@@ -1334,14 +957,6 @@ class __$$DataImplCopyWithImpl<$Res>
           ? _value.generateToString
           : generateToString // ignore: cast_nullable_to_non_nullable
               as bool,
-      map: null == map
-          ? _value.map
-          : map // ignore: cast_nullable_to_non_nullable
-              as MapConfig,
-      when: null == when
-          ? _value.when
-          : when // ignore: cast_nullable_to_non_nullable
-              as WhenConfig,
       generateFromJson: null == generateFromJson
           ? _value.generateFromJson
           : generateFromJson // ignore: cast_nullable_to_non_nullable
@@ -1391,8 +1006,6 @@ class _$DataImpl implements _Data {
       required this.generateCopyWith,
       required this.generateEqual,
       required this.generateToString,
-      required this.map,
-      required this.when,
       required this.generateFromJson,
       required this.generateToJson,
       required this.makeCollectionsImmutable,
@@ -1416,10 +1029,6 @@ class _$DataImpl implements _Data {
   final bool generateEqual;
   @override
   final bool generateToString;
-  @override
-  final MapConfig map;
-  @override
-  final WhenConfig when;
   @override
   final bool generateFromJson;
   @override
@@ -1454,7 +1063,7 @@ class _$DataImpl implements _Data {
 
   @override
   String toString() {
-    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, map: $map, when: $when, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, genericArgumentFactories: $genericArgumentFactories)';
+    return 'Data(name: $name, unionKey: $unionKey, generateCopyWith: $generateCopyWith, generateEqual: $generateEqual, generateToString: $generateToString, generateFromJson: $generateFromJson, generateToJson: $generateToJson, makeCollectionsImmutable: $makeCollectionsImmutable, concretePropertiesName: $concretePropertiesName, constructors: $constructors, genericsDefinitionTemplate: $genericsDefinitionTemplate, genericsParameterTemplate: $genericsParameterTemplate, shouldUseExtends: $shouldUseExtends, genericArgumentFactories: $genericArgumentFactories)';
   }
 
   @override
@@ -1471,8 +1080,6 @@ class _$DataImpl implements _Data {
                 other.generateEqual == generateEqual) &&
             (identical(other.generateToString, generateToString) ||
                 other.generateToString == generateToString) &&
-            (identical(other.map, map) || other.map == map) &&
-            (identical(other.when, when) || other.when == when) &&
             (identical(other.generateFromJson, generateFromJson) ||
                 other.generateFromJson == generateFromJson) &&
             (identical(other.generateToJson, generateToJson) ||
@@ -1506,8 +1113,6 @@ class _$DataImpl implements _Data {
       generateCopyWith,
       generateEqual,
       generateToString,
-      map,
-      when,
       generateFromJson,
       generateToJson,
       makeCollectionsImmutable,
@@ -1534,8 +1139,6 @@ abstract class _Data implements Data {
       required final bool generateCopyWith,
       required final bool generateEqual,
       required final bool generateToString,
-      required final MapConfig map,
-      required final WhenConfig when,
       required final bool generateFromJson,
       required final bool generateToJson,
       required final bool makeCollectionsImmutable,
@@ -1556,10 +1159,6 @@ abstract class _Data implements Data {
   bool get generateEqual;
   @override
   bool get generateToString;
-  @override
-  MapConfig get map;
-  @override
-  WhenConfig get when;
   @override
   bool get generateFromJson;
   @override

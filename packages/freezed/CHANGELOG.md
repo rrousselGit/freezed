@@ -1,3 +1,7 @@
+## Unreleased 3.0.0
+
+- **Breaking**: Removed `map/when` and variants. These have been discouraged since Dart got pattern matching.
+
 ## 2.5.8 - 2025-01-06
 
 Support analyzer 7.0.0

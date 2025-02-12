@@ -65,24 +65,6 @@ class ConstructorDetails with _$ConstructorDetails {
 }
 
 @freezed
-class MapConfig with _$MapConfig {
-  factory MapConfig({
-    required bool map,
-    required bool mapOrNull,
-    required bool maybeMap,
-  }) = _MapConfig;
-}
-
-@freezed
-class WhenConfig with _$WhenConfig {
-  factory WhenConfig({
-    required bool when,
-    required bool whenOrNull,
-    required bool maybeWhen,
-  }) = _WhenConfig;
-}
-
-@freezed
 class Data with _$Data {
   @Assert('constructors.isNotEmpty')
   factory Data({
@@ -91,8 +73,6 @@ class Data with _$Data {
     required bool generateCopyWith,
     required bool generateEqual,
     required bool generateToString,
-    required MapConfig map,
-    required WhenConfig when,
     required bool generateFromJson,
     required bool generateToJson,
     required bool makeCollectionsImmutable,

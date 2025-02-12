@@ -104,7 +104,7 @@ class NoDefault with _$NoDefault {
 }
 
 @freezed
-class NameConflict with _$NameConflict {
+sealed class NameConflict with _$NameConflict {
   factory NameConflict.something(Error error) = Something;
   factory NameConflict.error(Error error) = SomeError;
 }

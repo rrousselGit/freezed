@@ -76,12 +76,6 @@ $_debugFillProperties
 $_operatorEqualMethod
 $_hashCodeMethod
 ${copyWith?.concreteCopyWithGetter ?? ''}
-$_when
-$_whenOrNull
-$_maybeWhen
-$_map
-$_mapOrNull
-$_maybeMap
 $_toJson
 }
 
@@ -331,93 +325,6 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     $diagnostics;
 }
 ''';
-  }
-
-  String get _maybeMap {
-    if (!data.map.maybeMap) return '';
-
-    return '''
-@override
-${maybeMapPrototype(data.constructors, data.genericsParameterTemplate)} {
-  if (${constructor.callbackName} != null) {
-    return ${constructor.callbackName}(this);
-  }
-  return orElse();
-}''';
-  }
-
-  String get _map {
-    if (!data.map.map) return '';
-
-    return '''
-@override
-${mapPrototype(data.constructors, data.genericsParameterTemplate)} {
-  return ${constructor.callbackName}(this);
-}''';
-  }
-
-  String get _mapOrNull {
-    if (!data.map.mapOrNull) return '';
-
-    return '''
-@override
-${mapOrNullPrototype(data.constructors, data.genericsParameterTemplate)} {
-  return ${constructor.callbackName}?.call(this);
-}''';
-  }
-
-  String get _maybeWhen {
-    if (!data.when.maybeWhen) return '';
-
-    var callbackParameters = constructor.impliedProperties.map((e) {
-      if (data.constructors.any((c) => c.callbackName == e.name)) {
-        return 'this.${e.name}';
-      }
-      return e.name;
-    }).join(',');
-
-    return '''
-@override
-${maybeWhenPrototype(data.constructors)} {
-  if (${constructor.callbackName} != null) {
-    return ${constructor.callbackName}($callbackParameters);
-  }
-  return orElse();
-}''';
-  }
-
-  String get _when {
-    if (!data.when.when) return '';
-
-    var callbackParameters = constructor.impliedProperties.map((e) {
-      if (data.constructors.any((c) => c.callbackName == e.name)) {
-        return 'this.${e.name}';
-      }
-      return e.name;
-    }).join(',');
-
-    return '''
-@override
-${whenPrototype(data.constructors)} {
-  return ${constructor.callbackName}($callbackParameters);
-}''';
-  }
-
-  String get _whenOrNull {
-    if (!data.when.whenOrNull) return '';
-
-    var callbackParameters = constructor.impliedProperties.map((e) {
-      if (data.constructors.any((c) => c.callbackName == e.name)) {
-        return 'this.${e.name}';
-      }
-      return e.name;
-    }).join(',');
-
-    return '''
-@override
-${whenOrNullPrototype(data.constructors)} {
-  return ${constructor.callbackName}?.call($callbackParameters);
-}''';
   }
 
   String get _abstractProperties {
