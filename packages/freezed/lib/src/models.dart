@@ -2,14 +2,13 @@
 // To start the generator, first copy this file to /packages/_internal/models.dart
 // Then run the generator for _internal, and copy the generated sources here.
 
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/tools/recursive_import_locator.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 const _sentinel = _Sentinel();
 
@@ -49,10 +48,10 @@ class DeepCloneableProperty {
   }
 }
 
-/// The information of a specific constructor of a class tagged with `@freezed`.
+/// The information of a specific constructor of a class tagged with ``.
 ///
 /// This only includes constructors where Freezed needs to generate something.
-@freezed
+
 class ConstructorDetails {
   ConstructorDetails({
     required this.name,
@@ -93,7 +92,6 @@ class ConstructorDetails {
   String get callbackName => constructorNameToCallbackName(name);
 }
 
-@freezed
 class Data {
   Data({
     required this.name,
@@ -128,7 +126,6 @@ class Data {
   final bool genericArgumentFactories;
 }
 
-@freezed
 class LibraryData {
   LibraryData({
     required this.hasJson,
