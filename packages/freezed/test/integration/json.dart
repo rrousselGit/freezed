@@ -132,12 +132,12 @@ abstract class FancyCustomKey with _$FancyCustomKey {
 }
 
 @freezed
-abstract class PositonalOptional with _$PositonalOptional {
-  const factory PositonalOptional.first([int? a]) = _PositonalOptionalFirst;
-  const factory PositonalOptional.second([int? a]) = _PositonalOptionalSecond;
+abstract class PositionalOptional with _$PositionalOptional {
+  const factory PositionalOptional.first([int? a]) = _PositionalOptionalFirst;
+  const factory PositionalOptional.second([int? a]) = _PositionalOptionalSecond;
 
-  factory PositonalOptional.fromJson(Map<String, dynamic> json) =>
-      _$PositonalOptionalFromJson(json);
+  factory PositionalOptional.fromJson(Map<String, dynamic> json) =>
+      _$PositionalOptionalFromJson(json);
 }
 
 @Freezed(unionKey: r'$type')
