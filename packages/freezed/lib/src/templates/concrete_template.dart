@@ -320,7 +320,6 @@ String toString($parameters) {
   }
 
   String get _operatorEqualMethod {
-    if (data.name == 'CommonSuperSubtype') print(data.options.equal);
     if (!data.options.equal) return '';
 
     final comparisons = [

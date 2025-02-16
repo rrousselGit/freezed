@@ -556,10 +556,6 @@ class ClassConfig {
     late final needsJsonSerializable =
         declaration.needsJsonSerializable(library);
 
-    if (declaration.name.lexeme == 'CommonSuperSubtype') {
-      print('Oy ${resolvedAnnotation.equal} // ${declaration.hasCustomEquals}');
-    }
-
     return ClassConfig(
       equal: resolvedAnnotation.equal ?? !declaration.hasCustomEquals,
       asString:
