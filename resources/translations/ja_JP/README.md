@@ -153,7 +153,7 @@ part 'main.freezed.dart';
 part 'main.g.dart';
 
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     required String firstName,
     required String lastName,
@@ -197,7 +197,7 @@ Freezedは、`@freezed`アノテーションを`@unfreezed`で置き換えるこ
 
 ```dart
 @unfreezed
-class Person with _$Person {
+abstract class Person with _$Person {
   factory Person({
     required String firstName,
     required String lastName,
@@ -244,7 +244,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   factory Example(List<int> list) = _Example;
 }
 
@@ -277,7 +277,7 @@ void main() {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   factory Person(String name, int? age) = _Person;
 }
 ```
@@ -305,17 +305,17 @@ Freezedは、`person.copyWith(age: null)`をサポートするということに
 
 ```dart
 @freezed
-class Company with _$Company {
+abstract class Company with _$Company {
   factory Company({String? name, required Director director}) = _Company;
 }
 
 @freezed
-class Director with _$Director {
+abstract class Director with _$Director {
   factory Director({String? name, Assistant? assistant}) = _Director;
 }
 
 @freezed
-class Assistant with _$Assistant {
+abstract class Assistant with _$Assistant {
   factory Assistant({String? name, int? age}) = _Assistant;
 }
 ```
@@ -393,7 +393,7 @@ Company? newCompany = company.copyWith.director.assistant?.call(name: 'John');
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person(String name, {int? age}) = _Person;
 
   void method() {
@@ -408,7 +408,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   // コンストラクタを追加。パラメータを持たせてはいけない
   const Person._();
 
@@ -459,7 +459,7 @@ class Example with _$Example {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     String? name,
     int? age,
@@ -472,7 +472,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     /// ユーザーの名前
     ///
@@ -488,7 +488,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     String? name,
     int? age,
@@ -524,7 +524,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   @deprecated
   const factory Person({
     String? name,
@@ -761,7 +761,7 @@ class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynam
 
 ```dart
 @freezed
-class MyModel with _$MyModel {
+abstract class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() MyResponse myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
@@ -774,7 +774,7 @@ class MyModel with _$MyModel {
 
 ```dart
 @freezed
-class MyModel with _$MyModel {
+abstract class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() List<MyResponse> myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
@@ -817,7 +817,7 @@ targets:
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   factory Example(@JsonKey(name: 'my_property') String myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
@@ -831,7 +831,7 @@ class Example with _$Example {
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   @JsonSerializable(explicitToJson: true)
   factory Example(@JsonKey(name: 'my_property') SomeOtherClass myProperty) = _Example;
 

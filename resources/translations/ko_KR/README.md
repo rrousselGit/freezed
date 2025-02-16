@@ -159,7 +159,7 @@ part 'main.freezed.dart';
 part 'main.g.dart';
 
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     required String firstName,
     required String lastName,
@@ -202,7 +202,7 @@ Freezed는 `@freezed` annotation을 `@unfreezed`로 대체하여 사용할 수 �
 
 ```dart
 @unfreezed
-class Person with _$Person {
+abstract class Person with _$Person {
   factory Person({
     required String firstName,
     required String lastName,
@@ -249,7 +249,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   factory Example(List<int> list) = _Example;
 }
 
@@ -281,7 +281,7 @@ void main() {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   factory Person(String name, int? age) = _Person;
 }
 ```
@@ -309,17 +309,17 @@ Freezed는 `person.copyWith(age: null)`을 지원하는것에 주목하세요.
  
 ```dart
 @freezed
-class Company with _$Company {
+abstract class Company with _$Company {
   factory Company({String? name, required Director director}) = _Company;
 }
 
 @freezed
-class Director with _$Director {
+abstract class Director with _$Director {
   factory Director({String? name, Assistant? assistant}) = _Director;
 }
 
 @freezed
-class Assistant with _$Assistant {
+abstract class Assistant with _$Assistant {
   factory Assistant({String? name, int? age}) = _Assistant;
 }
 ```
@@ -398,7 +398,7 @@ Company? newCompany = company.copyWith.director.assistant?.call(name: 'John');
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person(String name, {int? age}) = _Person;
 
   void method() {
@@ -414,7 +414,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   // 생성자를 추가했습니다. 매개변수가 없어야 합니다.
   const Person._();
 
@@ -464,7 +464,7 @@ class Example with _$Example {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     String? name,
     int? age,
@@ -477,7 +477,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     /// 사용자의 이름입니다.
     ///
@@ -493,7 +493,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     String? name,
     int? age,
@@ -530,7 +530,7 @@ class Person with _$Person {
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   @deprecated
   const factory Person({
     String? name,
@@ -599,7 +599,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'model.freezed.dart';
 
 @freezed
-class Model with _$Model {
+abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 }
@@ -619,7 +619,7 @@ part 'model.freezed.dart';
 part 'model.g.dart';
 
 @freezed
-class Model with _$Model {
+abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 
@@ -648,7 +648,7 @@ Freezed는 factory가 `=>`를 사용하는 경우에만 `fromJson`을 생성합�
 
 ```dart
 @freezed
-class MyResponse with _$MyResponse {
+abstract class MyResponse with _$MyResponse {
   const factory MyResponse(String a) = MyResponseData;
   const factory MyResponse.special(String a, int b) = MyResponseSpecial;
   const factory MyResponse.error(String message) = MyResponseError;
@@ -761,7 +761,7 @@ class MyResponseConverter implements JsonConverter<MyResponse, Map<String, dynam
 
 ```dart
 @freezed
-class MyModel with _$MyModel {
+abstract class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() MyResponse myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
@@ -773,7 +773,7 @@ class MyModel with _$MyModel {
 
 ```dart
 @freezed
-class MyModel with _$MyModel {
+abstract class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() List<MyResponse> myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
@@ -817,7 +817,7 @@ targets:
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   factory Example(@JsonKey(name: 'my_property') String myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
@@ -830,7 +830,7 @@ class Example with _$Example {
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   @JsonSerializable(explicitToJson: true)
   factory Example(@JsonKey(name: 'my_property') SomeOtherClass myProperty) = _Example;
 
@@ -893,7 +893,7 @@ void main() {
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   const factory Example.person(String name, int age) = Person;
   const factory Example.city(String name, int population) = City;
 }
@@ -984,7 +984,7 @@ when 메서드의 프로토타입은 생성자가 정의된 방식에 따라 다
 
 ```dart
 @freezed
-class Union with _$Union {
+abstract class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String? message]) = ErrorDetails;
@@ -1009,7 +1009,7 @@ print(
 
 ```dart
 @freezed
-class Model with _$Model {
+abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 }
@@ -1042,7 +1042,7 @@ print(
 
 ```dart
 @freezed
-class Model with _$Model {
+abstract class Model with _$Model {
   factory Model.first(String a) = First;
   factory Model.second(int b, bool c) = Second;
 }

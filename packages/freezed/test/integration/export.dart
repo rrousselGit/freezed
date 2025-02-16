@@ -5,7 +5,7 @@ part 'export.freezed.dart';
 part 'export.g.dart';
 
 @freezed
-class Export with _$Export {
+abstract class Export with _$Export {
   const factory Export(int a) = _Export;
 
   factory Export.fromJson(Map<String, dynamic> json) => _$ExportFromJson(json);

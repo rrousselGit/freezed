@@ -153,7 +153,7 @@ part 'main.freezed.dart';
 part 'main.g.dart';
 
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     required String firstName,
     required String lastName,
@@ -199,7 +199,7 @@ Freezed supports this, by replacing the `@freezed` annotation with `@unfreezed`:
 
 ```dart
 @unfreezed
-class Person with _$Person {
+abstract class Person with _$Person {
   factory Person({
     required String firstName,
     required String lastName,
@@ -249,7 +249,7 @@ This means that writing the following will cause a runtime exception:
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   factory Example(List<int> list) = _Example;
 }
 
@@ -283,7 +283,7 @@ For example if we define:
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   factory Person(String name, int? age) = _Person;
 }
 ```
@@ -311,17 +311,17 @@ Consider the following classes:
 
 ```dart
 @freezed
-class Company with _$Company {
+abstract class Company with _$Company {
   factory Company({String? name, required Director director}) = _Company;
 }
 
 @freezed
-class Director with _$Director {
+abstract class Director with _$Director {
   factory Director({String? name, Assistant? assistant}) = _Director;
 }
 
 @freezed
-class Assistant with _$Assistant {
+abstract class Assistant with _$Assistant {
   factory Assistant({String? name, int? age}) = _Assistant;
 }
 ```
@@ -405,7 +405,7 @@ But you will quickly notice that if you try to do:
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person(String name, {int? age}) = _Person;
 
   void method() {
@@ -420,7 +420,7 @@ For that to work, we need to define a private empty constructor. That will enabl
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   // Added constructor. Must not have any parameter
   const Person._();
 
@@ -475,7 +475,7 @@ Consider:
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     String? name,
     int? age,
@@ -488,7 +488,7 @@ If you want to document `name`, you can do:
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     /// The name of the user.
     ///
@@ -504,7 +504,7 @@ If you want to mark the property `gender` as `@deprecated`, then you can do:
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   const factory Person({
     String? name,
     int? age,
@@ -541,7 +541,7 @@ As such, to deprecate `_Person`, you could do:
 
 ```dart
 @freezed
-class Person with _$Person {
+abstract class Person with _$Person {
   @deprecated
   const factory Person({
     String? name,
@@ -791,7 +791,7 @@ To then apply your custom converter pass the decorator to a constructor paramete
 
 ```dart
 @freezed
-class MyModel with _$MyModel {
+abstract class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() MyResponse myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
@@ -804,7 +804,7 @@ You can also use a custom converter on a constructor parameter contained in a `L
 
 ```dart
 @freezed
-class MyModel with _$MyModel {
+abstract class MyModel with _$MyModel {
   const factory MyModel(@MyResponseConverter() List<MyResponse> myResponse) = MyModelData;
 
   factory MyModel.fromJson(Map<String, dynamic> json) => _$MyModelFromJson(json);
@@ -850,7 +850,7 @@ As such, you can write:
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   factory Example(@JsonKey(name: 'my_property') String myProperty) = _Example;
 
   factory Example.fromJson(Map<String, dynamic> json) => _$ExampleFromJson(json);
@@ -863,7 +863,7 @@ You can pass `@JsonSerializable` annotation by placing it over constructor e.g.:
 
 ```dart
 @freezed
-class Example with _$Example {
+abstract class Example with _$Example {
   @JsonSerializable(explicitToJson: true)
   factory Example(@JsonKey(name: 'my_property') SomeOtherClass myProperty) = _Example;
 
@@ -898,7 +898,7 @@ sealed class Union with _$Union {
 > [!NOTE]
 > This example uses the `sealed` keyword, which was introduced in Dart 3.
 > If you're on Dart 3, you should always use the sealed keyword when defining Freezed unions.
-> If you're still on Dart 2, you can safely ignore this, but upgrading to Dart 3 is reccomended for native pattern matching.
+> If you're still on Dart 2, you can safely ignore this, but upgrading to Dart 3 is recommended for native pattern matching.
 
 By doing this, our model now can be in different mutually exclusive states.
 

@@ -5,7 +5,7 @@ import 'deep_copy.dart';
 part 'deep_copy2.freezed.dart';
 
 @freezed
-class Country with _$Country {
+abstract class Country with _$Country {
   factory Country({
     String? name,
     Company? company,

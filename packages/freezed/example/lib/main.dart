@@ -5,12 +5,12 @@ part 'main.freezed.dart';
 part 'main.g.dart';
 
 @freezed
-class MyClass with _$MyClass {
+abstract class MyClass with _$MyClass {
   factory MyClass({String? a, int? b}) = _MyClass;
 }
 
 @freezed
-class Union with _$Union {
+abstract class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String? message]) = ErrorDetails;
@@ -20,7 +20,7 @@ class Union with _$Union {
 }
 
 @freezed
-class SharedProperty with _$SharedProperty {
+abstract class SharedProperty with _$SharedProperty {
   factory SharedProperty.person({
     String? name,
     int? age,

@@ -5,12 +5,12 @@ part 'copy_with.freezed.dart';
 const _kUseNaiveImpl = false;
 
 @freezed
-class Model with _$Model {
+abstract class Model with _$Model {
   factory Model({required int counter}) = _Model;
 }
 
 @freezed
-class ModelWrapper with _$ModelWrapper {
+abstract class ModelWrapper with _$ModelWrapper {
   factory ModelWrapper({
     required Model model,
   }) = _ModelWrapper;

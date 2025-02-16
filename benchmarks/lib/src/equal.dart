@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'equal.freezed.dart';
 
 @freezed
-class ModelWithList with _$ModelWithList {
+abstract class ModelWithList with _$ModelWithList {
   factory ModelWithList({
     @Default(<int>[]) List<int> someList,
     @Default(0) int counter,

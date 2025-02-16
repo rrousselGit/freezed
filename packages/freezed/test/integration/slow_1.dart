@@ -6,7 +6,7 @@ import 'slow_3.dart';
 part 'slow_1.freezed.dart';
 
 @freezed
-class Root with _$Root {
+abstract class Root with _$Root {
   const factory Root.a(A a) = _A;
   const factory Root.b(B b) = _B;
   const factory Root.c(A a) = _C;

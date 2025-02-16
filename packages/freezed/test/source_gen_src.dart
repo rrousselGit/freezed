@@ -11,7 +11,7 @@ enum Foo { a }
   'Getters require a MyClass._() constructor',
 )
 @freezed
-class Properties {
+abstract class Properties {
   factory Properties() = _Properties;
 
   int get regularProperty => 42;
@@ -26,7 +26,7 @@ class _Properties implements Properties {
   'The parameter `a` of `RequiredNamed.foo` is non-nullable but is neither required nor marked with @Default',
 )
 @freezed
-class RequiredNamed {
+abstract class RequiredNamed {
   factory RequiredNamed.foo({int a}) = _RequiredNamed;
 }
 
@@ -38,7 +38,7 @@ class _RequiredNamed implements RequiredNamed {
   'The parameter `a` of `RequiredPositional` is non-nullable but is neither required nor marked with @Default',
 )
 @freezed
-class RequiredPositional {
+abstract class RequiredPositional {
   factory RequiredPositional([int a]) = _RequiredPositional;
 }
 
@@ -50,7 +50,7 @@ class _RequiredPositional implements RequiredPositional {
   'The parameter `a` of `RequiredNamedDefault` is non-nullable but is neither required nor marked with @Default',
 )
 @freezed
-class RequiredNamedDefault {
+abstract class RequiredNamedDefault {
   factory RequiredNamedDefault({int a}) = _RequiredNamedDefault;
 }
 
@@ -60,7 +60,7 @@ class _RequiredNamedDefault implements RequiredNamedDefault {
 
 @ShouldThrow('Getters require a MyClass._() constructor')
 @freezed
-class Get {
+abstract class Get {
   factory Get() = _Get;
 
   int get regularProperty => 42;
@@ -73,7 +73,7 @@ class _Get implements Get {
 
 @ShouldThrow('Final variables require a MyClass._() constructor')
 @freezed
-class Final {
+abstract class Final {
   factory Final() = _Final;
 
   final int regularProperty = 42;
@@ -86,7 +86,7 @@ class _Final implements Final {
 
 @ShouldThrow('@Default cannot be used on non-optional parameters')
 @freezed
-class DefaultOnRequiredPositional {
+abstract class DefaultOnRequiredPositional {
   factory DefaultOnRequiredPositional(
     @Default(42) int a,
   ) = _DefaultOnRequiredPositional;
@@ -98,7 +98,7 @@ class _DefaultOnRequiredPositional implements DefaultOnRequiredPositional {
 
 @ShouldThrow('A freezed union cannot have private constructors')
 @freezed
-class Mixed {
+abstract class Mixed {
   factory Mixed._internal(String a) = Mixed0;
   factory Mixed.named(String b) = Mixed1;
 }
@@ -108,7 +108,7 @@ class Mixed {
   ', without parameters, and named MyClass._()',
 )
 @freezed
-class MultipleConcreteConstructors {
+abstract class MultipleConcreteConstructors {
   MultipleConcreteConstructors._();
   MultipleConcreteConstructors();
 }
@@ -118,7 +118,7 @@ class MultipleConcreteConstructors {
   ', without parameters, and named MyClass._()',
 )
 @freezed
-class SingleConcreteConstructorInvalidName {
+abstract class SingleConcreteConstructorInvalidName {
   SingleConcreteConstructorInvalidName();
 }
 
@@ -127,7 +127,7 @@ class SingleConcreteConstructorInvalidName {
   ', without parameters, and named MyClass._()',
 )
 @freezed
-class ConcreteConstructorWithParameters {
+abstract class ConcreteConstructorWithParameters {
   ConcreteConstructorWithParameters(int a);
 }
 
@@ -135,7 +135,7 @@ class ConcreteConstructorWithParameters {
   'Marked NothingToDo with @freezed, but freezed has nothing to generate',
 )
 @freezed
-class NothingToDo {
+abstract class NothingToDo {
   NothingToDo._();
 }
 
@@ -143,7 +143,7 @@ class NothingToDo {
   'Marked ManualFactory with @freezed, but freezed has nothing to generate',
 )
 @freezed
-class ManualFactory {
+abstract class ManualFactory {
   factory ManualFactory() => _Manual();
 }
 
@@ -173,7 +173,7 @@ class _Second implements FallbackUnionMissing {
   'Marked ManualFactory2 with @freezed, but freezed has nothing to generate',
 )
 @freezed
-class ManualFactory2 {
+abstract class ManualFactory2 {
   factory ManualFactory2({int? a}) => _Manual2(a: a ??= 42);
 }
 
@@ -190,7 +190,7 @@ class _Manual2 implements ManualFactory2 {
   'Classes decorated with @freezed cannot have mutable properties',
 )
 @freezed
-class MutableProperty {
+abstract class MutableProperty {
   MutableProperty._();
 
   factory MutableProperty() = _MutableProperty;

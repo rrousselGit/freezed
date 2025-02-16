@@ -4,7 +4,7 @@ part 'optional_maybe.freezed.dart';
 part 'optional_maybe.g.dart';
 
 @Freezed(copyWith: false)
-class OptionalCopyWith with _$OptionalCopyWith {
+abstract class OptionalCopyWith with _$OptionalCopyWith {
   const factory OptionalCopyWith([int? a]) = _OptionalCopyWith;
 }
 
@@ -27,6 +27,6 @@ class OptionalToJson with _$OptionalToJson {
 }
 
 @Freezed(toJson: true)
-class ForceToJson with _$ForceToJson {
+abstract class ForceToJson with _$ForceToJson {
   factory ForceToJson(int a) = _ForceToJson;
 }

@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'equals.freezed.dart';
 
 @freezed
-class Equals with _$Equals {
+abstract class Equals with _$Equals {
   Equals._();
   factory Equals({String? name, int? age}) = _Equals;
 

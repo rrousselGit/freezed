@@ -4,12 +4,12 @@ import 'b.dart';
 part 'a.freezed.dart';
 
 @freezed
-class Regression399A with _$Regression399A {
+abstract class Regression399A with _$Regression399A {
   const factory Regression399A({required Regression399B? b}) = _Regression399A;
 }
 
 @freezed
-class GenericRegression399A<T> with _$GenericRegression399A<T> {
+abstract class GenericRegression399A<T> with _$GenericRegression399A<T> {
   const factory GenericRegression399A({required GenericRegression399B<T>? b}) =
       _GenericRegression399A<T>;
 }

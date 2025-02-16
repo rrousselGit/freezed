@@ -9,7 +9,7 @@ class MissingMixin {
 }
 
 @freezed
-class WithMixin with _$WithMixin {
+abstract class WithMixin with _$WithMixin {
   const factory WithMixin() = _WithMixin;
 }
 
@@ -29,7 +29,7 @@ class FooModel with SomeMixin {
 }
 
 @freezed
-class BarModel with _$BarModel, SomeMixin {
+abstract class BarModel with _$BarModel, SomeMixin {
   const BarModel._();
 
   const factory BarModel(int id) = _BarModel;

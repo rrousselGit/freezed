@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'decorator.freezed.dart';
 
 @freezed
-class Decorator with _$Decorator {
+abstract class Decorator with _$Decorator {
   factory Decorator({
     @deprecated @_WeirdDecorator('a', b: 0.42) String? a,
   }) = Decorator0;
@@ -26,6 +26,6 @@ class Foo {
 }
 
 @freezed
-class ListDecorator with _$ListDecorator {
+abstract class ListDecorator with _$ListDecorator {
   factory ListDecorator(@Foo() List<int> a) = ListDecorator0;
 }

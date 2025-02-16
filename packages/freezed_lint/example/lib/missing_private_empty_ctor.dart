@@ -13,7 +13,7 @@ class RequiresPrivateCtor with _$RequiresPrivateCtor {
 }
 
 @freezed
-class HasPrivateCtor with _$HasPrivateCtor {
+abstract class HasPrivateCtor with _$HasPrivateCtor {
   const HasPrivateCtor._();
 
   const factory HasPrivateCtor() = _HasPrivateCtor;
@@ -40,7 +40,7 @@ mixin IdMixin {
 }
 
 @freezed
-class WithIdMixin with _$WithIdMixin, IdMixin {
+abstract class WithIdMixin with _$WithIdMixin, IdMixin {
   const factory WithIdMixin(int id) = _WithIdMixin;
 }
 
@@ -55,7 +55,7 @@ class ExtendsIdClass extends IdClass with _$ExtendsIdClass {
 }
 
 @freezed
-class WithStaticElements with _$WithStaticElements {
+abstract class WithStaticElements with _$WithStaticElements {
   static String field = 'field';
 
   static String get accessor => 'accessor';
