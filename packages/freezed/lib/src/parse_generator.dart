@@ -15,20 +15,13 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     LibraryReader oldLibrary,
     BuildStep buildStep,
   ) async {
-    final classesForUniqueSource = <Uri, ClassElement>{
-      for (final clazz in oldLibrary.classes) clazz.source.uri: clazz
-    };
-    if (classesForUniqueSource.isEmpty) return '';
+    if (oldLibrary.classes.isEmpty) return '';
 
     final units = await Stream.fromFutures(
-      classesForUniqueSource.values.map(
+      oldLibrary.element.units.map(
         (e) => buildStep.resolver.astNodeFor(e, resolve: true),
       ),
-    )
-        .where((e) => e != null)
-        .map((e) => e!.root)
-        .cast<CompilationUnit>()
-        .toList();
+    ).cast<CompilationUnit>().toList();
 
     final values = StringBuffer();
     final globalData = parseGlobalData(units);
