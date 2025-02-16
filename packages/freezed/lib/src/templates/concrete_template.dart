@@ -35,18 +35,19 @@ class Concrete {
   }
 
   late final bool _hasUnionKeyProperty =
-      (data.generateToJson || data.generateFromJson) &&
+      (data.options.toJson || data.options.fromJson) &&
           data.constructors.length > 1 &&
-          constructor.impliedProperties.every((e) => e.name != data.unionKey);
+          constructor.impliedProperties
+              .every((e) => e.name != data.options.unionKey);
 
   @override
   String toString() {
     var jsonSerializable = '';
     if (!constructor.hasJsonSerializable) {
-      if (data.generateFromJson || data.generateToJson) {
+      if (data.options.fromJson || data.options.toJson) {
         final params = [
-          if (data.generateToJson == false) 'createToJson: false',
-          if (data.generateFromJson == false) 'createFactory: false',
+          if (data.options.toJson == false) 'createToJson: false',
+          if (data.options.fromJson == false) 'createFactory: false',
           if (data.genericsParameterTemplate.typeParameters.isNotEmpty &&
               data.genericArgumentFactories == true)
             'genericArgumentFactories: true',
@@ -98,7 +99,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
     final trailingStrings = <String>[
       if (constructor.asserts.isNotEmpty)
         ...constructor.asserts.map((a) => a.toString()),
-      if (data.makeCollectionsImmutable)
+      if (data.options.asUnmodifiableCollections)
         ...constructor.impliedProperties
             .where((e) => e.isDartList || e.isDartMap || e.isDartSet)
             .map((e) => '_${e.name} = ${e.name}'),
@@ -108,7 +109,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
     ];
 
     var parameters = constructor.parameters.mapParameters((p) {
-      if (data.makeCollectionsImmutable &&
+      if (data.options.asUnmodifiableCollections &&
           (p.isDartList || p.isDartMap || p.isDartSet)) {
         return Parameter.fromParameter(p);
       }
@@ -161,8 +162,8 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
     }
 
     final interfaces = [
-      ...constructor.implementsDecorators,
-      ...constructor.withDecorators,
+      ...constructor.implementsDecorators.map((e) => e.type),
+      ...constructor.withDecorators.map((e) => e.type),
     ].join(', ');
 
     final buffer = StringBuffer();
@@ -196,9 +197,9 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
 
   String get _concreteSuper {
     final mixins = [
-      if (globalData.hasDiagnostics && data.generateToString)
+      if (globalData.hasDiagnostics && data.options.asString)
         'DiagnosticableTreeMixin',
-      ...constructor.withDecorators,
+      ...constructor.withDecorators.map((e) => e.type),
     ];
     final mixinsStr = mixins.isEmpty ? '' : ' with ${mixins.join(',')}';
 
@@ -219,7 +220,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
         ],
       );
 
-      if (data.makeCollectionsImmutable) {
+      if (data.options.asUnmodifiableCollections) {
         String? viewType;
 
         if (p.isDartList) {
@@ -262,7 +263,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
       return '''
 ${classProperties.join('\n')}
 
-@JsonKey(name: '${data.unionKey}')
+@JsonKey(name: '${data.options.unionKey}')
 final String \$type;
 ''';
     }
@@ -281,13 +282,13 @@ final String \$type;
       data.genericsParameterTemplate, data.genericArgumentFactories);
 
   String get _redirectedFromJsonConstructor {
-    if (!data.generateFromJson) return '';
+    if (!data.options.fromJson) return '';
     return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json$_fromJsonParams)'
         ' = $concreteName${data.genericsParameterTemplate}.fromJson;';
   }
 
   String get _concreteFromJsonConstructor {
-    if (!data.generateFromJson) return '';
+    if (!data.options.fromJson) return '';
     return 'factory $concreteName.fromJson(Map<String, dynamic> json$_fromJsonParams)'
         ' => _\$${nonPrivateConcreteName}FromJson(json$_fromJsonArgs);';
   }
@@ -299,7 +300,7 @@ final String \$type;
       data.genericsParameterTemplate, data.genericArgumentFactories);
 
   String get _toJson {
-    if (!data.generateToJson) return '';
+    if (!data.options.toJson) return '';
 
     return '''
 @override
@@ -309,7 +310,7 @@ Map<String, dynamic> toJson($_toJsonParams) {
   }
 
   String get _debugFillProperties {
-    if (!globalData.hasDiagnostics || !data.generateToString) return '';
+    if (!globalData.hasDiagnostics || !data.options.asString) return '';
 
     final diagnostics = [
       for (final e in constructor.impliedProperties)
@@ -340,7 +341,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   }
 
   String get _toStringMethod {
-    if (!data.generateToString) return '';
+    if (!data.options.asString) return '';
 
     final parameters = globalData.hasDiagnostics
         ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
@@ -360,7 +361,7 @@ String toString($parameters) {
   }
 
   String get _operatorEqualMethod {
-    if (!data.generateEqual) return '';
+    if (!data.options.equal) return '';
 
     final comparisons = [
       'other.runtimeType == runtimeType',
@@ -368,7 +369,7 @@ String toString($parameters) {
       ...constructor.impliedProperties.map((p) {
         var name = p.name;
         if (p.isPossiblyDartCollection) {
-          if (data.makeCollectionsImmutable &&
+          if (data.options.asUnmodifiableCollections &&
               (p.isDartList || p.isDartMap || p.isDartSet)) {
             name = '_$name';
           }
@@ -392,9 +393,9 @@ bool operator ==(Object other) {
   }
 
   String get _hashCodeMethod {
-    if (!data.generateEqual) return '';
+    if (!data.options.equal) return '';
 
-    final jsonKey = data.generateFromJson || data.generateToJson
+    final jsonKey = data.options.fromJson || data.options.toJson
         ? '@JsonKey(includeFromJson: false, includeToJson: false)'
         : '';
 
@@ -402,7 +403,7 @@ bool operator ==(Object other) {
       'runtimeType',
       for (final property in constructor.impliedProperties)
         if (property.isPossiblyDartCollection)
-          if (data.makeCollectionsImmutable &&
+          if (data.options.asUnmodifiableCollections &&
               (property.isDartList || property.isDartMap || property.isDartSet))
             'const DeepCollectionEquality().hash(_${property.name})'
           else

@@ -260,7 +260,7 @@ $s''';
       var propertyName = to.name;
       if (canAccessRawCollection &&
           (to.isDartList || to.isDartMap || to.isDartSet) &&
-          data.makeCollectionsImmutable) {
+          data.options.asUnmodifiableCollections) {
         propertyName = '_$propertyName';
       }
 
