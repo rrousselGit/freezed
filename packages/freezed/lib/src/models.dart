@@ -8,77 +8,130 @@ import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'models.freezed.dart';
+const _sentinel = _Sentinel();
+
+class _Sentinel {
+  const _Sentinel();
+}
 
 /// A generated property that has for type a class generated using Freezed
 ///
 /// This allows Freezed to support deep copy of the object.
 /// This does include primitives like [int] and [List].
-@freezed
-class DeepCloneableProperty with _$DeepCloneableProperty {
-  factory DeepCloneableProperty({
-    required String name,
-    required String typeName,
-    required String type,
-    required bool nullable,
-    required GenericsParameterTemplate genericParameters,
-  }) = _DeepCloneableProperty;
+class DeepCloneableProperty {
+  DeepCloneableProperty({
+    required this.name,
+    required this.typeName,
+    required this.type,
+    required this.nullable,
+    required this.genericParameters,
+  });
+
+  final String name;
+  final String typeName;
+  final String type;
+  final bool nullable;
+  final GenericsParameterTemplate genericParameters;
+
+  DeepCloneableProperty Function({bool nullable}) get copyWith {
+    return ({Object nullable = _sentinel}) {
+      return DeepCloneableProperty(
+        name: name,
+        typeName: typeName,
+        type: type,
+        nullable: nullable == _sentinel ? this.nullable : nullable as bool,
+        genericParameters: genericParameters,
+      );
+    };
+  }
 }
 
 /// The information of a specific constructor of a class tagged with `@freezed`.
 ///
 /// This only includes constructors where Freezed needs to generate something.
 @freezed
-class ConstructorDetails with _$ConstructorDetails {
-  factory ConstructorDetails({
-    required String name,
-    required String unionValue,
-    required bool isConst,
-    required String redirectedName,
-    required ParametersTemplate parameters,
-    required List<Property> impliedProperties,
-    required bool isDefault,
-    required bool isFallback,
-    required bool hasJsonSerializable,
-    required String fullName,
-    required String escapedName,
-    required List<String> withDecorators,
-    required List<String> implementsDecorators,
-    required List<String> decorators,
-    required List<DeepCloneableProperty> cloneableProperties,
-    required List<AssertTemplate> asserts,
-  }) = _ConstructorDetails;
+class ConstructorDetails {
+  ConstructorDetails({
+    required this.name,
+    required this.unionValue,
+    required this.isConst,
+    required this.redirectedName,
+    required this.parameters,
+    required this.impliedProperties,
+    required this.isDefault,
+    required this.isFallback,
+    required this.hasJsonSerializable,
+    required this.fullName,
+    required this.escapedName,
+    required this.withDecorators,
+    required this.implementsDecorators,
+    required this.decorators,
+    required this.cloneableProperties,
+    required this.asserts,
+  });
 
-  ConstructorDetails._();
+  final String name;
+  final String unionValue;
+  final bool isConst;
+  final String redirectedName;
+  final ParametersTemplate parameters;
+  final List<Property> impliedProperties;
+  final bool isDefault;
+  final bool isFallback;
+  final bool hasJsonSerializable;
+  final String fullName;
+  final String escapedName;
+  final List<String> withDecorators;
+  final List<String> implementsDecorators;
+  final List<String> decorators;
+  final List<DeepCloneableProperty> cloneableProperties;
+  final List<AssertTemplate> asserts;
 
   String get callbackName => constructorNameToCallbackName(name);
 }
 
 @freezed
-class Data with _$Data {
-  @Assert('constructors.isNotEmpty')
-  factory Data({
-    required String name,
-    required String unionKey,
-    required bool generateCopyWith,
-    required bool generateEqual,
-    required bool generateToString,
-    required bool generateFromJson,
-    required bool generateToJson,
-    required bool makeCollectionsImmutable,
-    required List<String> concretePropertiesName,
-    required List<ConstructorDetails> constructors,
-    required GenericsDefinitionTemplate genericsDefinitionTemplate,
-    required GenericsParameterTemplate genericsParameterTemplate,
-    required bool shouldUseExtends,
-    required bool genericArgumentFactories,
-  }) = _Data;
+class Data {
+  Data({
+    required this.name,
+    required this.unionKey,
+    required this.generateCopyWith,
+    required this.generateEqual,
+    required this.generateToString,
+    required this.generateFromJson,
+    required this.generateToJson,
+    required this.makeCollectionsImmutable,
+    required this.concretePropertiesName,
+    required this.constructors,
+    required this.genericsDefinitionTemplate,
+    required this.genericsParameterTemplate,
+    required this.shouldUseExtends,
+    required this.genericArgumentFactories,
+  }) : assert(constructors.isNotEmpty);
+
+  final String name;
+  final String unionKey;
+  final bool generateCopyWith;
+  final bool generateEqual;
+  final bool generateToString;
+  final bool generateFromJson;
+  final bool generateToJson;
+  final bool makeCollectionsImmutable;
+  final List<String> concretePropertiesName;
+  final List<ConstructorDetails> constructors;
+  final GenericsDefinitionTemplate genericsDefinitionTemplate;
+  final GenericsParameterTemplate genericsParameterTemplate;
+  final bool shouldUseExtends;
+  final bool genericArgumentFactories;
 }
 
 @freezed
-class GlobalData with _$GlobalData {
-  factory GlobalData({
-    required bool hasJson,
-    required bool hasDiagnostics,
-  }) = _GlobalData;
+class GlobalData {
+  GlobalData({
+    required this.hasJson,
+    required this.hasDiagnostics,
+  });
+
+  final bool hasJson;
+  final bool hasDiagnostics;
 }
