@@ -94,7 +94,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     );
 
     late final needsJsonSerializable = _needsJsonSerializable(
-      buildStep,
       globalData,
       declaration,
     );
@@ -197,7 +196,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   }
 
   Future<bool> _needsJsonSerializable(
-    BuildStep buildStep,
     LibraryData globalData,
     ClassDeclaration declaration,
   ) async {
