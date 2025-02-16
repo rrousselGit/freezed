@@ -43,17 +43,17 @@ abstract class ParserGenerator<Annotation>
       }
     }
 
-    await for (final value in generateAll(units, datas)) {
+    for (final value in generateAll(units, datas)) {
       values.writeln(value);
     }
 
     return values.toString();
   }
 
-  Stream<Object?> generateAll(
+  Iterable<Object?> generateAll(
     List<CompilationUnit> units,
     List<AnnotationMeta> annotatedElements,
-  ) async* {}
+  ) sync* {}
 
   @override
   Stream<String> generateForAnnotatedElement(
@@ -87,7 +87,7 @@ abstract class ParserGenerator<Annotation>
     }
 
     final datas = <AnnotationMeta>[(declaration: ast, annotation: annotation)];
-    await for (final value in generateAll([unit.unit], datas)) {
+    for (final value in generateAll([unit.unit], datas)) {
       yield value.toString();
     }
   }

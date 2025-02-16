@@ -51,10 +51,10 @@ class Property {
           hasJsonKey: false,
         );
 
-  static Future<Property> fromFormalParameter(
+  static Property fromFormalParameter(
     FormalParameter parameter, {
     required bool addImplicitFinal,
-  }) async {
+  }) {
     final element = parameter.declaredElement!;
 
     final defaultValue = element.defaultValue;

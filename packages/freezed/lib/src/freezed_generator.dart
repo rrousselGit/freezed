@@ -63,11 +63,11 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
   final Freezed _buildYamlConfigs;
 
-  Future<Data> parseDeclaration(
+  Data parseDeclaration(
     LibraryData globalData,
     Declaration declaration,
     DartObject annotation,
-  ) async {
+  ) {
     if (declaration is! ClassDeclaration) {
       throw InvalidGenerationSourceError(
         '@freezed can only be applied on classes.',
@@ -85,7 +85,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
     }
 
-    final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
+    final constructorsNeedsGeneration = _parseConstructorsNeedsGeneration(
       declaration,
       configs,
     );
@@ -103,8 +103,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
           configs.toStringOverride ?? !declaration.hasCustomToString,
       generateCopyWith: configs.copyWith!,
       generateEqual: configs.equal ?? !declaration.hasCustomEquals,
-      generateFromJson: configs.fromJson ?? await needsJsonSerializable,
-      generateToJson: configs.toJson ?? await needsJsonSerializable,
+      generateFromJson: configs.fromJson ?? needsJsonSerializable,
+      generateToJson: configs.toJson ?? needsJsonSerializable,
       genericArgumentFactories: configs.genericArgumentFactories,
       makeCollectionsImmutable: configs.makeCollectionsUnmodifiable!,
       constructors: constructorsNeedsGeneration,
@@ -192,10 +192,10 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     }
   }
 
-  Future<bool> _needsJsonSerializable(
+  bool _needsJsonSerializable(
     LibraryData globalData,
     ClassDeclaration declaration,
-  ) async {
+  ) {
     if (!globalData.hasJson) return false;
 
     for (final constructor in declaration.constructors) {
@@ -331,10 +331,10 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     return result;
   }
 
-  Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
+  List<ConstructorDetails> _parseConstructorsNeedsGeneration(
     ClassDeclaration declaration,
     Freezed options,
-  ) async {
+  ) {
     final result = <ConstructorDetails>[];
     for (final constructor in declaration.constructors) {
       if (constructor.factoryKeyword == null ||
@@ -374,7 +374,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
           escapedName: constructor.escapedName,
           impliedProperties: [
             for (final parameter in constructor.parameters.parameters)
-              await Property.fromFormalParameter(
+              Property.fromFormalParameter(
                 parameter,
                 addImplicitFinal: options.addImplicitFinal,
               ),
@@ -408,7 +408,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
             declaration.declaredElement!,
             constructor.declaredElement!,
           ).toList(),
-          parameters: await ParametersTemplate.fromParameterList(
+          parameters: ParametersTemplate.fromParameterList(
             constructor.parameters,
             addImplicitFinal: options.addImplicitFinal,
           ),
@@ -618,10 +618,10 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   }
 
   @override
-  Stream<Object> generateAll(
+  Iterable<Object> generateAll(
     List<CompilationUnit> units,
     List<AnnotationMeta> annotations,
-  ) async* {
+  ) sync* {
     if (annotations.isEmpty) return;
 
     final library = LibraryData.from(units);
@@ -629,13 +629,11 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       yield value;
     }
 
-    final datas = Stream.fromFutures(
-      annotations.map(
-        (e) => parseDeclaration(library, e.declaration, e.annotation),
-      ),
+    final datas = annotations.map(
+      (e) => parseDeclaration(library, e.declaration, e.annotation),
     );
 
-    await for (final data in datas) {
+    for (final data in datas) {
       for (final value in generateForData(library, data)) {
         yield value;
       }
