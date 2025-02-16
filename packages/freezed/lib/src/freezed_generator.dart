@@ -212,7 +212,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
   Iterable<Object> generateForAll(LibraryData globalData) sync* {
     yield r'T _$identity<T>(T value) => value;';
-    yield '\n\nfinal $privConstUsedErrorVarName = UnsupportedError(\'$privConstUsedErrorString\');\n';
   }
 
   @override

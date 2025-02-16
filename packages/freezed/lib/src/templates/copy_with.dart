@@ -74,7 +74,7 @@ ${_copyWithDocs(data.name)}
 ''',
       '''
 @JsonKey(includeFromJson: false, includeToJson: false)
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;
 ''',
     );
   }
