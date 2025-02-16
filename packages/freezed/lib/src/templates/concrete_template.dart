@@ -23,7 +23,7 @@ class Concrete {
   final ConstructorDetails constructor;
   final List<Property> commonProperties;
   final Data data;
-  final GlobalData globalData;
+  final LibraryData globalData;
   final CopyWith? copyWith;
 
   String get concreteName {

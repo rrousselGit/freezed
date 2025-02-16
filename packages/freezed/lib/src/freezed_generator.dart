@@ -24,7 +24,6 @@ import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
-import 'tools/recursive_import_locator.dart';
 
 extension StringX on String {
   String get public {
@@ -60,7 +59,7 @@ extension on ClassDeclaration {
 }
 
 @immutable
-class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
+class FreezedGenerator extends ParserGenerator<LibraryData, Data, Freezed> {
   FreezedGenerator(this._buildYamlConfigs);
 
   final Freezed _buildYamlConfigs;
@@ -68,7 +67,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   @override
   Future<Data> parseDeclaration(
     BuildStep buildStep,
-    GlobalData globalData,
+    LibraryData globalData,
     Declaration declaration,
     DartObject annotation,
   ) async {
@@ -200,7 +199,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
 
   Future<bool> _needsJsonSerializable(
     BuildStep buildStep,
-    GlobalData globalData,
+    LibraryData globalData,
     ClassDeclaration declaration,
   ) async {
     if (!globalData.hasJson) return false;
@@ -625,14 +624,14 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   }
 
   @override
-  Iterable<Object> generateForAll(GlobalData globalData) sync* {
+  Iterable<Object> generateForAll(LibraryData globalData) sync* {
     yield r'T _$identity<T>(T value) => value;';
     yield '\n\nfinal $privConstUsedErrorVarName = UnsupportedError(\'$privConstUsedErrorString\');\n';
   }
 
   @override
   Iterable<Object> generateForData(
-    GlobalData globalData,
+    LibraryData globalData,
     Data data,
   ) sync* {
     if (data.generateFromJson) {
@@ -693,32 +692,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
   }
 
   @override
-  GlobalData parseGlobalData(List<CompilationUnit> units) {
-    return GlobalData(
-      hasJson: units.any(
-        (unit) => unit.declaredElement!.library.importsJsonSerializable,
-      ),
-      hasDiagnostics: units.any(
-        (unit) => unit.declaredElement!.library.importsDiagnosticable,
-      ),
-    );
-  }
-}
-
-extension on LibraryElement {
-  bool get importsJsonSerializable {
-    return findAllAvailableTopLevelElements().any((element) {
-      return element.name == 'JsonSerializable' &&
-          (element.library?.isFromPackage('json_annotation') ?? false);
-    });
-  }
-
-  bool get importsDiagnosticable {
-    return findAllAvailableTopLevelElements().any((element) {
-      return element.name == 'DiagnosticableTreeMixin' &&
-          (element.library?.isFromPackage('flutter') ?? false);
-    });
-  }
+  LibraryData parseGlobalData(List<CompilationUnit> units) =>
+      LibraryData.from(units);
 }
 
 extension on Element {

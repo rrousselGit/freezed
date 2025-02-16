@@ -2,10 +2,13 @@
 // To start the generator, first copy this file to /packages/_internal/models.dart
 // Then run the generator for _internal, and copy the generated sources here.
 
+import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
+import 'package:freezed/src/tools/recursive_import_locator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 const _sentinel = _Sentinel();
@@ -126,12 +129,39 @@ class Data {
 }
 
 @freezed
-class GlobalData {
-  GlobalData({
+class LibraryData {
+  LibraryData({
     required this.hasJson,
     required this.hasDiagnostics,
   });
 
   final bool hasJson;
   final bool hasDiagnostics;
+
+  static LibraryData from(List<CompilationUnit> units) {
+    return LibraryData(
+      hasJson: units.any(
+        (unit) => unit.declaredElement!.library.importsJsonSerializable,
+      ),
+      hasDiagnostics: units.any(
+        (unit) => unit.declaredElement!.library.importsDiagnosticable,
+      ),
+    );
+  }
+}
+
+extension on LibraryElement {
+  bool get importsJsonSerializable {
+    return findAllAvailableTopLevelElements().any((element) {
+      return element.name == 'JsonSerializable' &&
+          (element.library?.isFromPackage('json_annotation') ?? false);
+    });
+  }
+
+  bool get importsDiagnosticable {
+    return findAllAvailableTopLevelElements().any((element) {
+      return element.name == 'DiagnosticableTreeMixin' &&
+          (element.library?.isFromPackage('flutter') ?? false);
+    });
+  }
 }
