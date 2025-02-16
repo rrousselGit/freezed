@@ -59,12 +59,11 @@ extension on ClassDeclaration {
 }
 
 @immutable
-class FreezedGenerator extends ParserGenerator<LibraryData, Data, Freezed> {
+class FreezedGenerator extends ParserGenerator<Freezed> {
   FreezedGenerator(this._buildYamlConfigs);
 
   final Freezed _buildYamlConfigs;
 
-  @override
   Future<Data> parseDeclaration(
     BuildStep buildStep,
     LibraryData globalData,
@@ -623,13 +622,38 @@ class FreezedGenerator extends ParserGenerator<LibraryData, Data, Freezed> {
     }
   }
 
-  @override
   Iterable<Object> generateForAll(LibraryData globalData) sync* {
     yield r'T _$identity<T>(T value) => value;';
     yield '\n\nfinal $privConstUsedErrorVarName = UnsupportedError(\'$privConstUsedErrorString\');\n';
   }
 
   @override
+  Stream<Object> generateAll(
+    BuildStep buildStep,
+    List<CompilationUnit> units,
+    List<AnnotationMeta> annotations,
+  ) async* {
+    if (annotations.isEmpty) return;
+
+    final library = LibraryData.from(units);
+    for (final value in generateForAll(library)) {
+      yield value;
+    }
+
+    final datas = Stream.fromFutures(
+      annotations.map(
+        (e) =>
+            parseDeclaration(buildStep, library, e.declaration, e.annotation),
+      ),
+    );
+
+    await for (final data in datas) {
+      for (final value in generateForData(library, data)) {
+        yield value;
+      }
+    }
+  }
+
   Iterable<Object> generateForData(
     LibraryData globalData,
     Data data,
@@ -690,10 +714,6 @@ class FreezedGenerator extends ParserGenerator<LibraryData, Data, Freezed> {
       );
     }
   }
-
-  @override
-  LibraryData parseGlobalData(List<CompilationUnit> units) =>
-      LibraryData.from(units);
 }
 
 extension on Element {
