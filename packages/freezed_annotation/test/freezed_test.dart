@@ -6,7 +6,7 @@ void main() {
     test('.fromJson', () {
       final defaultValue = Freezed.fromJson(<Object?, Object?>{});
 
-      expect(defaultValue.copyWith, isTrue);
+      expect(defaultValue.copyWith, isNull);
       expect(defaultValue.equal, isNull);
       expect(defaultValue.fallbackUnion, null);
       expect(defaultValue.fromJson, isNull);
