@@ -80,7 +80,6 @@ class DeepCloneableProperty {
   });
 
   static Iterable<DeepCloneableProperty> parseAll(
-    ClassElement element,
     ConstructorElement constructor,
     Freezed globalConfigs,
   ) sync* {
@@ -91,6 +90,11 @@ class DeepCloneableProperty {
       if (parameterType is! InterfaceType) continue;
       final typeElement = parameterType.element;
       if (typeElement is! ClassElement) continue;
+
+      // If the type is not defined in the same library, we skip it
+      if (typeElement.library.source.uri != constructor.library.source.uri) {
+        continue;
+      }
 
       final freezedAnnotation = freezedType.firstAnnotationOf(
         typeElement,
@@ -105,7 +109,7 @@ class DeepCloneableProperty {
         globalConfigs,
       );
       // copyWith not enabled, so the property is not cloneable
-      if (configs.copyWith != true) continue;
+      if (configs.copyWith == false) continue;
 
       yield DeepCloneableProperty(
         name: parameter.name,
@@ -161,7 +165,7 @@ class ConstructorDetails {
     required this.withDecorators,
     required this.implementsDecorators,
     required this.decorators,
-    required this.cloneableProperties,
+    required this.deepCloneableProperties,
     required this.asserts,
   });
 
@@ -277,8 +281,7 @@ class ConstructorDetails {
           hasJsonSerializable: constructor.declaredElement!.hasJsonSerializable,
           isFallback: constructor.declaredElement!
               .isFallbackUnion(configs.annotation.fallbackUnion),
-          cloneableProperties: DeepCloneableProperty.parseAll(
-            declaration.declaredElement!,
+          deepCloneableProperties: DeepCloneableProperty.parseAll(
             constructor.declaredElement!,
             globalConfigs,
           ).toList(),
@@ -330,7 +333,7 @@ class ConstructorDetails {
   final List<WithAnnotation> withDecorators;
   final List<ImplementsAnnotation> implementsDecorators;
   final List<String> decorators;
-  final List<DeepCloneableProperty> cloneableProperties;
+  final List<DeepCloneableProperty> deepCloneableProperties;
   final List<AssertAnnotation> asserts;
 
   String get callbackName => constructorNameToCallbackName(name);
@@ -441,7 +444,7 @@ class Data {
   static Data from(
     ClassDeclaration declaration,
     ClassConfig configs, {
-    required List<ConstructorDetails> constructors,
+    required Freezed globalConfigs,
   }) {
     final shouldUseExtends = declaration.constructors.any((ctor) {
       return ctor.name?.lexeme == '_' && ctor.factoryKeyword == null;
@@ -450,6 +453,12 @@ class Data {
     for (final field in declaration.declaredElement!.fields) {
       _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
     }
+
+    final constructors = ConstructorDetails.parseAll(
+      declaration,
+      configs,
+      globalConfigs: globalConfigs,
+    );
 
     return Data(
       name: declaration.name.lexeme,
@@ -527,8 +536,6 @@ class LibraryData {
 
 class ClassConfig {
   ClassConfig({
-    required this.unionKey,
-    required this.copyWith,
     required this.equal,
     required this.asString,
     required this.fromJson,
@@ -549,12 +556,14 @@ class ClassConfig {
     late final needsJsonSerializable =
         declaration.needsJsonSerializable(library);
 
+    if (declaration.name.lexeme == 'CommonSuperSubtype') {
+      print('Oy ${resolvedAnnotation.equal} // ${declaration.hasCustomEquals}');
+    }
+
     return ClassConfig(
-      unionKey: resolvedAnnotation.unionKey!,
-      copyWith: resolvedAnnotation.copyWith!,
-      equal: resolvedAnnotation.equal ?? declaration.hasCustomEquals,
+      equal: resolvedAnnotation.equal ?? !declaration.hasCustomEquals,
       asString:
-          resolvedAnnotation.toStringOverride ?? declaration.hasCustomToString,
+          resolvedAnnotation.toStringOverride ?? !declaration.hasCustomToString,
       fromJson: resolvedAnnotation.fromJson ?? needsJsonSerializable,
       toJson: resolvedAnnotation.toJson ?? needsJsonSerializable,
       asUnmodifiableCollections:
@@ -630,8 +639,6 @@ class ClassConfig {
     );
   }
 
-  final String unionKey;
-  final bool copyWith;
   final bool equal;
   final bool asString;
   final bool fromJson;

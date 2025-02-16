@@ -13,8 +13,8 @@ abstract class NoWhen with _$NoWhen {
 abstract class Base {}
 
 const unionMixin = _$UnionJsonWithExtends;
-const unionFirstBase = _$UnionJsonFirstWithExtendsImpl;
-const unionSecondBase = _$UnionJsonSecondWithExtendsImpl;
+const unionFirstBase = _UnionJsonFirstWithExtends;
+const unionSecondBase = _UnionJsonSecondWithExtends;
 const unionJson = _$UnionJsonWithExtendsFromJson;
 
 @freezed
@@ -30,8 +30,8 @@ abstract class UnionJsonWithExtends extends Base with _$UnionJsonWithExtends {
 }
 
 const pUnionMixin = _$PUnionJsonWithExtends;
-const pUnionFirstBase = _$PUnionJsonFirstWithExtendsImpl;
-const pUnionSecondBase = _$PUnionJsonSecondWithExtendsImpl;
+const pUnionFirstBase = _PUnionJsonFirstWithExtends;
+const pUnionSecondBase = _PUnionJsonSecondWithExtends;
 const pUnionJson = _$PUnionJsonWithExtendsFromJson;
 
 @freezed
@@ -180,24 +180,26 @@ abstract class UnionFallback with _$UnionFallback {
 }
 
 @Freezed(fallbackUnion: 'default')
-abstract class UnionDefaultFallback with _$UnionDefaultFallback {
-  const factory UnionDefaultFallback(int a) = _UnionDefaultFallback;
-  const factory UnionDefaultFallback.first(int a) = _UnionDefaultFallbackFirst;
-  const factory UnionDefaultFallback.second(int a) =
+abstract class UnionFallbackWithDefault with _$UnionFallbackWithDefault {
+  const factory UnionFallbackWithDefault(int a) = _UnionDefaultFallback;
+  const factory UnionFallbackWithDefault.first(int a) =
+      _UnionDefaultFallbackFirst;
+  const factory UnionFallbackWithDefault.second(int a) =
       _UnionDefaultFallbackSecond;
 
-  factory UnionDefaultFallback.fromJson(Map<String, dynamic> json) =>
-      _$UnionDefaultFallbackFromJson(json);
+  factory UnionFallbackWithDefault.fromJson(Map<String, dynamic> json) =>
+      _$UnionFallbackWithDefaultFromJson(json);
 }
 
 @Freezed(unionKey: 'key', fallbackUnion: 'default')
-abstract class UnionKeyDefaultFallback with _$UnionKeyDefaultFallback {
-  const factory UnionKeyDefaultFallback(String key) = _UnionKeyDefaultFallback;
-  const factory UnionKeyDefaultFallback.first(String key) =
+abstract class UnionKeyFallbackWithDefault with _$UnionKeyFallbackWithDefault {
+  const factory UnionKeyFallbackWithDefault(String key) =
+      _UnionKeyDefaultFallback;
+  const factory UnionKeyFallbackWithDefault.first(String key) =
       _UnionKeyDefaultFallbackFirst;
 
-  factory UnionKeyDefaultFallback.fromJson(Map<String, dynamic> json) =>
-      _$UnionKeyDefaultFallbackFromJson(json);
+  factory UnionKeyFallbackWithDefault.fromJson(Map<String, dynamic> json) =>
+      _$UnionKeyFallbackWithDefaultFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.pascal)
@@ -371,21 +373,21 @@ abstract class UnrecognizedKeysUnionFallback
 }
 
 @Freezed(fallbackUnion: 'default')
-abstract class UnrecognizedKeysUnionDefaultFallback
-    with _$UnrecognizedKeysUnionDefaultFallback {
+abstract class UnrecognizedKeysUnionFallbackWithDefault
+    with _$UnrecognizedKeysUnionFallbackWithDefault {
   @JsonSerializable(disallowUnrecognizedKeys: true)
-  const factory UnrecognizedKeysUnionDefaultFallback(int a) =
+  const factory UnrecognizedKeysUnionFallbackWithDefault(int a) =
       _UnrecognizedKeysUnionDefaultFallback;
   @JsonSerializable(disallowUnrecognizedKeys: true)
-  const factory UnrecognizedKeysUnionDefaultFallback.first(int a) =
+  const factory UnrecognizedKeysUnionFallbackWithDefault.first(int a) =
       _UnrecognizedKeysUnionDefaultFallbackFirst;
   @JsonSerializable(disallowUnrecognizedKeys: true)
-  const factory UnrecognizedKeysUnionDefaultFallback.second(int a) =
+  const factory UnrecognizedKeysUnionFallbackWithDefault.second(int a) =
       _UnrecognizedKeysUnionDefaultFallbackSecond;
 
-  factory UnrecognizedKeysUnionDefaultFallback.fromJson(
+  factory UnrecognizedKeysUnionFallbackWithDefault.fromJson(
           Map<String, dynamic> json) =>
-      _$UnrecognizedKeysUnionDefaultFallbackFromJson(json);
+      _$UnrecognizedKeysUnionFallbackWithDefaultFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.pascal)
@@ -605,7 +607,7 @@ abstract class GenericMultiCtorWithArgumentFactories<T, S>
     T first,
     S second,
     String another,
-  ) = _GenericMultiCtorWithArgumentFactories<T, S>;
+  ) = _GenericMultiCtorWithArgumentFactoriesDefault<T, S>;
 
   factory GenericMultiCtorWithArgumentFactories.first(T first, String another) =
       _GenericMultiCtorWithArgumentFactoriesVal<T, S>;

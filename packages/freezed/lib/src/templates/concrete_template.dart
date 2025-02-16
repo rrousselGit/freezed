@@ -26,19 +26,11 @@ class Concrete {
   final LibraryData globalData;
   final CopyWith? copyWith;
 
-  String get concreteName {
-    return '_\$${constructor.redirectedName.public}Impl';
-  }
-
-  String get nonPrivateConcreteName {
-    return '\$${constructor.redirectedName.public}Impl';
-  }
-
   late final bool _hasUnionKeyProperty =
       (data.options.toJson || data.options.fromJson) &&
           data.constructors.length > 1 &&
           constructor.impliedProperties
-              .every((e) => e.name != data.options.unionKey);
+              .every((e) => e.name != data.options.annotation.unionKey);
 
   @override
   String toString() {
@@ -59,38 +51,25 @@ class Concrete {
 
     return '''
 ${copyWith?.interface ?? ''}
-
 ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
 
 /// @nodoc
 $jsonSerializable
 ${constructor.decorators.join('\n')}
-class $concreteName${data.genericsDefinitionTemplate} $_concreteSuper {
+class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_concreteSuper {
   $_concreteConstructor
-
   $_concreteFromJsonConstructor
 
 $_properties
 
-$_toStringMethod
+${copyWith?.concreteCopyWithGetter ?? ''}
+$_toJson
 $_debugFillProperties
 $_operatorEqualMethod
 $_hashCodeMethod
-${copyWith?.concreteCopyWithGetter ?? ''}
-$_toJson
+$_toStringMethod
 }
-
-
-abstract class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_superKeyword ${data.name}${data.genericsParameterTemplate}$interfaces {
-  $_isConst factory ${constructor.redirectedName}(${constructor.parameters.asExpandedDefinition}) = $concreteName${data.genericsParameterTemplate};
-  $_privateConcreteConstructor
-
-  $_redirectedFromJsonConstructor
-
-$_abstractProperties
-${copyWith?.abstractCopyWithGetter ?? ''}
-}
-''';
+// ''';
   }
 
   String get _concreteConstructor {
@@ -152,7 +131,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
       trailing = ': ${trailingStrings.join(',')}';
     }
 
-    return '$_isConst $concreteName($parameters)$trailing;';
+    return '$_isConst ${constructor.redirectedName}($parameters)$trailing;';
   }
 
   String get interfaces {
@@ -185,36 +164,34 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
     return 'super._()';
   }
 
-  String get _privateConcreteConstructor {
-    if (!data.shouldUseExtends) return '';
-
-    return '$_isConst ${constructor.redirectedName}._(): super._();';
-  }
-
-  String get _superKeyword {
-    return data.shouldUseExtends ? 'extends' : 'implements';
-  }
-
   String get _concreteSuper {
-    final mixins = [
-      if (globalData.hasDiagnostics && data.options.asString)
-        'DiagnosticableTreeMixin',
-      ...constructor.withDecorators.map((e) => e.type),
-    ];
-    final mixinsStr = mixins.isEmpty ? '' : ' with ${mixins.join(',')}';
+    final interfaces = <String, List<String>>{
+      if (data.shouldUseExtends)
+        'extends': ['${data.name}${data.genericsParameterTemplate}'],
+      'with': [
+        if (globalData.hasDiagnostics && data.options.asString)
+          'DiagnosticableTreeMixin',
+        ...constructor.withDecorators.map((e) => e.type),
+      ],
+      'implements': [
+        if (!data.shouldUseExtends)
+          '${data.name}${data.genericsParameterTemplate}',
+        ...constructor.implementsDecorators.map((e) => e.type),
+      ],
+    };
 
-    if (data.shouldUseExtends) {
-      return 'extends ${constructor.redirectedName}${data.genericsParameterTemplate} $mixinsStr';
-    } else {
-      return '$mixinsStr implements ${constructor.redirectedName}${data.genericsParameterTemplate}';
-    }
+    return interfaces.entries
+        .where((e) => e.value.isNotEmpty)
+        .map((e) => '${e.key} ${e.value.join(', ')}')
+        .join(' ');
   }
 
   String get _properties {
     final classProperties = constructor.impliedProperties.expand((p) {
       final annotatedProperty = p.copyWith(
         decorators: [
-          '@override',
+          if (commonProperties.any((element) => element.name == p.name))
+            '@override',
           if (p.defaultValueSource != null && !p.hasJsonKey) '@JsonKey()',
           ...p.decorators,
         ],
@@ -263,7 +240,7 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
       return '''
 ${classProperties.join('\n')}
 
-@JsonKey(name: '${data.options.unionKey}')
+@JsonKey(name: '${data.options.annotation.unionKey}')
 final String \$type;
 ''';
     }
@@ -281,16 +258,10 @@ final String \$type;
   String get _fromJsonParams => fromJsonParameters(
       data.genericsParameterTemplate, data.genericArgumentFactories);
 
-  String get _redirectedFromJsonConstructor {
-    if (!data.options.fromJson) return '';
-    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json$_fromJsonParams)'
-        ' = $concreteName${data.genericsParameterTemplate}.fromJson;';
-  }
-
   String get _concreteFromJsonConstructor {
     if (!data.options.fromJson) return '';
-    return 'factory $concreteName.fromJson(Map<String, dynamic> json$_fromJsonParams)'
-        ' => _\$${nonPrivateConcreteName}FromJson(json$_fromJsonArgs);';
+    return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json$_fromJsonParams)'
+        ' => _\$${constructor.redirectedName.public}FromJson(json$_fromJsonArgs);';
   }
 
   String get _toJsonParams => toJsonParameters(
@@ -305,7 +276,7 @@ final String \$type;
     return '''
 @override
 Map<String, dynamic> toJson($_toJsonParams) {
-  return _\$${nonPrivateConcreteName}ToJson${data.genericsParameterTemplate}(this, $_toJsonArgs);
+  return _\$${constructor.redirectedName.public}ToJson${data.genericsParameterTemplate}(this, $_toJsonArgs);
 }''';
   }
 
@@ -326,18 +297,6 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     $diagnostics;
 }
 ''';
-  }
-
-  String get _abstractProperties {
-    return constructor.impliedProperties.expand((p) {
-      return [
-        if (commonProperties.any((element) => element.name == p.name))
-          p.abstractGetter.toString(shouldOverride: true)
-        else
-          '${p.abstractGetter}',
-        if (!p.isFinal) p.abstractSetter,
-      ];
-    }).join();
   }
 
   String get _toStringMethod {
@@ -361,11 +320,12 @@ String toString($parameters) {
   }
 
   String get _operatorEqualMethod {
+    if (data.name == 'CommonSuperSubtype') print(data.options.equal);
     if (!data.options.equal) return '';
 
     final comparisons = [
       'other.runtimeType == runtimeType',
-      'other is $concreteName${data.genericsParameterTemplate}',
+      'other is ${constructor.redirectedName}${data.genericsParameterTemplate}',
       ...constructor.impliedProperties.map((p) {
         var name = p.name;
         if (p.isPossiblyDartCollection) {

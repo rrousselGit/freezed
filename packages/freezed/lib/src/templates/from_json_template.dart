@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
+import 'package:source_gen/source_gen.dart';
 
 import '../models.dart';
 import 'prototypes.dart';
@@ -24,6 +25,19 @@ class FromJson {
 
   @override
   String toString() {
+    final conflictCtor = constructors
+        .where((c) => c.redirectedName.public == name.public)
+        .firstOrNull;
+
+    if (conflictCtor != null) {
+      if (constructors.length == 1) return '';
+
+      throw InvalidGenerationSourceError('''
+Could not generate _\$${name}FromJson because both $name and ${conflictCtor.redirectedName} would want to generate it.
+Rename one or the other, such that they don't conflict.
+''');
+    }
+
     String content;
 
     if (constructors.length == 1) {

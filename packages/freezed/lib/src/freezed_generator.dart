@@ -54,17 +54,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       library: globalData,
     );
 
-    final constructors = ConstructorDetails.parseAll(
-      declaration,
-      configs,
-      globalConfigs: _buildYamlConfigs,
-    );
-
-    return Data.from(
-      declaration,
-      configs,
-      constructors: constructors,
-    );
+    return Data.from(declaration, configs, globalConfigs: _buildYamlConfigs);
   }
 
   CommonProperties _commonParametersBetweenAllConstructors(
@@ -197,7 +187,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     for (final commonProperty in commonProperties.cloneableProperties) {
       final commonGetter = commonProperties.readableProperties
           .firstWhereOrNull((e) => e.name == commonProperty.name);
-      final deepCopyProperty = constructors.first.cloneableProperties
+      final deepCopyProperty = constructors.first.deepCloneableProperties
           .firstWhereOrNull((e) => e.name == commonProperty.name);
 
       if (deepCopyProperty == null || commonGetter == null) continue;
@@ -244,7 +234,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     if (data.options.fromJson) {
       yield FromJson(
         name: data.name,
-        unionKey: data.options.unionKey,
+        unionKey: data.options.annotation.unionKey!,
         constructors: data.constructors,
         genericParameters: data.genericsParameterTemplate,
         genericDefinitions: data.genericsDefinitionTemplate,
@@ -255,9 +245,9 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     final commonProperties =
         _commonParametersBetweenAllConstructors(data.constructors);
 
-    final commonCopyWith = !data.options.copyWith
-        ? null
-        : CopyWith(
+    final commonCopyWith = data.options.annotation.copyWith ??
+            commonProperties.cloneableProperties.isNotEmpty
+        ? CopyWith(
             clonedClassName: data.name,
             readableProperties: commonProperties.readableProperties,
             cloneableProperties: commonProperties.cloneableProperties,
@@ -268,7 +258,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
             genericsDefinition: data.genericsDefinitionTemplate,
             genericsParameter: data.genericsParameterTemplate,
             data: data,
-          );
+          )
+        : null;
 
     yield Abstract(
       data: data,
@@ -282,18 +273,19 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
         constructor: constructor,
         commonProperties: commonProperties.readableProperties,
         globalData: globalData,
-        copyWith: !data.options.copyWith
-            ? null
-            : CopyWith(
-                clonedClassName: '_\$${constructor.redirectedName.public}Impl',
+        copyWith: data.options.annotation.copyWith ??
+                constructor.parameters.allParameters.isNotEmpty
+            ? CopyWith(
+                clonedClassName: constructor.redirectedName,
                 cloneableProperties: constructor.impliedProperties,
                 readableProperties: constructor.impliedProperties,
-                deepCloneableProperties: constructor.cloneableProperties,
+                deepCloneableProperties: constructor.deepCloneableProperties,
                 genericsDefinition: data.genericsDefinitionTemplate,
                 genericsParameter: data.genericsParameterTemplate,
                 data: data,
                 parent: commonCopyWith,
-              ),
+              )
+            : null,
       );
     }
   }

@@ -251,7 +251,6 @@ class Freezed {
   ///
   /// If null, picks up the default values from the project's `build.yaml`.
   /// If that value is null too, defaults to true.
-  @JsonKey(defaultValue: true)
   final bool? copyWith;
 
   /// Whether to generate a `fromJson` or not
