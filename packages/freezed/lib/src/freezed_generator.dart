@@ -3,7 +3,6 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/string.dart';
@@ -65,7 +64,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   final Freezed _buildYamlConfigs;
 
   Future<Data> parseDeclaration(
-    BuildStep buildStep,
     LibraryData globalData,
     Declaration declaration,
     DartObject annotation,
@@ -88,7 +86,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     }
 
     final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
-      buildStep,
       declaration,
       configs,
     );
@@ -335,7 +332,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   }
 
   Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
-    BuildStep buildStep,
     ClassDeclaration declaration,
     Freezed options,
   ) async {
@@ -380,7 +376,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
             for (final parameter in constructor.parameters.parameters)
               await Property.fromFormalParameter(
                 parameter,
-                buildStep,
                 addImplicitFinal: options.addImplicitFinal,
               ),
           ],
@@ -410,12 +405,10 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
           isFallback: constructor.declaredElement!
               .isFallbackUnion(options.fallbackUnion),
           cloneableProperties: _cloneableProperties(
-            buildStep,
             declaration.declaredElement!,
             constructor.declaredElement!,
           ).toList(),
           parameters: await ParametersTemplate.fromParameterList(
-            buildStep,
             constructor.parameters,
             addImplicitFinal: options.addImplicitFinal,
           ),
@@ -485,7 +478,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   }
 
   Iterable<DeepCloneableProperty> _cloneableProperties(
-    BuildStep buildStep,
     ClassElement element,
     ConstructorElement constructor,
   ) sync* {
@@ -627,7 +619,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
   @override
   Stream<Object> generateAll(
-    BuildStep buildStep,
     List<CompilationUnit> units,
     List<AnnotationMeta> annotations,
   ) async* {
@@ -640,8 +631,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
     final datas = Stream.fromFutures(
       annotations.map(
-        (e) =>
-            parseDeclaration(buildStep, library, e.declaration, e.annotation),
+        (e) => parseDeclaration(library, e.declaration, e.annotation),
       ),
     );
 

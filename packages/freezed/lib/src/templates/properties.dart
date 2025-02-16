@@ -1,7 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:build/build.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/tools/type.dart';
@@ -53,8 +52,7 @@ class Property {
         );
 
   static Future<Property> fromFormalParameter(
-    FormalParameter parameter,
-    BuildStep buildStep, {
+    FormalParameter parameter, {
     required bool addImplicitFinal,
   }) async {
     final element = parameter.declaredElement!;

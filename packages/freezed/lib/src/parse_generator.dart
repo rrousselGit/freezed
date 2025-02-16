@@ -43,7 +43,7 @@ abstract class ParserGenerator<Annotation>
       }
     }
 
-    await for (final value in generateAll(buildStep, units, datas)) {
+    await for (final value in generateAll(units, datas)) {
       values.writeln(value);
     }
 
@@ -51,7 +51,6 @@ abstract class ParserGenerator<Annotation>
   }
 
   Stream<Object?> generateAll(
-    BuildStep buildStep,
     List<CompilationUnit> units,
     List<AnnotationMeta> annotatedElements,
   ) async* {}
@@ -88,7 +87,7 @@ abstract class ParserGenerator<Annotation>
     }
 
     final datas = <AnnotationMeta>[(declaration: ast, annotation: annotation)];
-    await for (final value in generateAll(buildStep, [unit.unit], datas)) {
+    await for (final value in generateAll([unit.unit], datas)) {
       yield value.toString();
     }
   }

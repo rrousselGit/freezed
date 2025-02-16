@@ -1,6 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:build/build.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -63,7 +62,6 @@ class ParametersTemplate {
   });
 
   static Future<ParametersTemplate> fromParameterList(
-    BuildStep buildStep,
     FormalParameterList parameters, {
     bool isAssignedToThis = false,
     required bool addImplicitFinal,
