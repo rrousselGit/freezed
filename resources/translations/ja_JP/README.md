@@ -1,4 +1,4 @@
-[English](https://github.com/rrousselGit/freezed/blob/master/packages/freezed/README.md) | [한국어](https://github.com/rrousselGit/freezed/blob/master/resources/translations/ko_KR/README.md) | [简体中文](https://github.com/rrousselGit/freezed/blob/master/resources/translations/zh_CN/README.md) | [日本語](https://github.com/rrousselGit/freezed/blob/master/resources/translations/ja_JP/README.md)
+[English](https://github.com/rrousselGit/freezed/blob/master/packages/freezed/README.md) | [한국어](https://github.com/rrousselGit/freezed/blob/master/resources/translations/ko_KR/README.md) | [简体中文](https://github.com/rrousselGit/freezed/blob/master/resources/translations/zh_CN/README.md) | [日本語](https://github.com/rrousselGit/freezed/blob/master/resources/translations/ja_JP/README.md) | [Tiếng Việt](https://github.com/rrousselGit/freezed/blob/master/resources/translations/vi_VN/README.md)
 
 ![Build](https://github.com/rrousselGit/freezed/workflows/Build/badge.svg)
 [![pub package](https://img.shields.io/pub/v/freezed.svg)](https://pub.dartlang.org/packages/freezed)
@@ -979,7 +979,7 @@ Dart 2を使用している場合、Freezedによって生成された[legacy pa
 > そのため、パターンマッチングのためにFreezedが生成するメソッドに依存する必要はなくなりました。
 > `when`や`map`の代わりに、公式のDart構文を使用してください。
 >
-> `when`や`map`に関する記述は、まだDart 3に移行していないユーザーのために残されています。 
+> `when`や`map`に関する記述は、まだDart 3に移行していないユーザーのために残されています。
 > しかし、長期的には、それらに依存することをやめて`switch`式に移行する必要があります。
 
 ##### When
