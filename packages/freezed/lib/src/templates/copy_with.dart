@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 
@@ -48,17 +47,14 @@ class CopyWith {
       _deepCopyInterface(appendGenericToFactory: true);
 
   String _deepCopyInterface({required bool appendGenericToFactory}) {
-    var implements = _hasSuperClass
+    var implements = parent != null
         ? 'implements ${parent!._abstractClassName}${genericsParameter.append('\$Res')}'
         : '';
-    var implGenerics = genericsParameter.append('\$Res');
-    if (appendGenericToFactory) {
-      implGenerics = implGenerics.append('$clonedClassName$genericsParameter');
-    }
+
     return '''
 /// @nodoc
-abstract class $_abstractClassName${genericsDefinition.append('\$Res')} $implements {
-  factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) then) = $_implClassName$implGenerics;
+abstract mixin class $_abstractClassName${genericsDefinition.append('\$Res')} $implements {
+  factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) _then) = $_implClassName;
 ${_copyWithPrototype('call')}
 
 ${_abstractDeepCopyMethods().join()}
@@ -74,20 +70,23 @@ ${_copyWithDocs(data.name)}
 ''',
       '''
 @JsonKey(includeFromJson: false, includeToJson: false)
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => throw $privConstUsedErrorVarName;
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;
 ''',
     );
   }
 
   String get concreteCopyWithGetter {
     if (cloneableProperties.isEmpty) return '';
-    return '''
+    return _maybeOverride(
+      doc: '''
 ${_copyWithDocs(data.name)}
+''',
+      '''
 @JsonKey(includeFromJson: false, includeToJson: false)
-@override
 @pragma('vm:prefer-inline')
 $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
-''';
+''',
+    );
   }
 
   String get commonConcreteImpl {
@@ -121,8 +120,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
             );
           }).toList(),
         ),
-        returnType: '_value.copyWith',
-        returnCast: 'as \$Val',
+        returnType: '_self.copyWith',
       );
 
       copyWith = '@pragma(\'vm:prefer-inline\') @override $prototype $body';
@@ -130,13 +128,12 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
 
     return '''
 /// @nodoc
-class $_implClassName${genericsDefinition.append('\$Res').append('\$Val extends $clonedClassName$genericsParameter')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
-  $_implClassName(this._value, this._then);
+class $_implClassName${genericsDefinition.append('\$Res')}
+    implements $_abstractClassName${genericsParameter.append('\$Res')} {
+  $_implClassName(this._self, this._then);
 
-  // ignore: unused_field
-  final \$Val _value;
-  // ignore: unused_field
-  final \$Res Function(\$Val) _then;
+  final $clonedClassName$genericsParameter _self;
+  final \$Res Function($clonedClassName$genericsParameter) _then;
 
 ${_copyWithDocs(data.name)}
 $copyWith
@@ -150,26 +147,23 @@ ${_deepCopyMethods(isConcrete: false).join()}
   String concreteImpl(ParametersTemplate parametersTemplate) {
     return '''
 /// @nodoc
-class $_implClassName${genericsDefinition.append('\$Res')} extends ${parent!._implClassName}${genericsParameter.append('\$Res').append('$clonedClassName$genericsParameter')} implements $_abstractClassName${genericsParameter.append('\$Res')} {
-  $_implClassName($clonedClassName$genericsParameter _value, \$Res Function($clonedClassName$genericsParameter) _then)
-      : super(_value, _then);
+class $_implClassName${genericsDefinition.append('\$Res')}
+    implements $_abstractClassName${genericsParameter.append('\$Res')} {
+  $_implClassName(this._self, this._then);
 
+  final $clonedClassName$genericsParameter _self;
+  final \$Res Function($clonedClassName$genericsParameter) _then;
 
-${_copyWithDocs(data.name)}
 ${_copyWithMethod(parametersTemplate)}
 
 ${_deepCopyMethods(isConcrete: true).join()}
 }''';
   }
 
-  bool get _hasSuperClass {
-    return parent != null && parent!.cloneableProperties.isNotEmpty;
-  }
-
   Iterable<String> _abstractDeepCopyMethods() sync* {
     for (final deepCloneableProperty in deepCloneableProperties) {
       var leading = '';
-      if (_hasSuperClass &&
+      if (parent != null &&
           parent!.deepCloneableProperties
               .any((c) => c.name == deepCloneableProperty.name)) {
         leading = '@override ';
@@ -184,7 +178,7 @@ ${_deepCopyMethods(isConcrete: true).join()}
   String _copyWithPrototype(String methodName) {
     if (cloneableProperties.isEmpty) return '';
 
-    return _copyWithProtypeFor(
+    return _copyWithPrototypeFor(
       methodName: methodName,
       properties: cloneableProperties,
     );
@@ -201,7 +195,7 @@ ${_deepCopyMethods(isConcrete: true).join()}
     return '\$Res $methodName({$parameters})';
   }
 
-  String _copyWithProtypeFor({
+  String _copyWithPrototypeFor({
     required String methodName,
     required List<Property> properties,
   }) {
@@ -230,7 +224,12 @@ $parameters
       returnType: '$clonedClassName$genericsParameter',
     );
 
-    return '@pragma(\'vm:prefer-inline\') @override $prototype $body';
+    return _maybeOverride(
+      doc: '''
+${_copyWithDocs(data.name)}
+''',
+      '@pragma(\'vm:prefer-inline\') $prototype $body',
+    );
   }
 
   String _ignoreLints(String s,
@@ -248,7 +247,7 @@ $s''';
   }
 
   String _copyWithMethodBody({
-    String accessor = '_value',
+    String accessor = '_self',
     required ParametersTemplate parametersTemplate,
     required String returnType,
     String returnCast = '',
@@ -260,7 +259,7 @@ $s''';
       var propertyName = to.name;
       if (canAccessRawCollection &&
           (to.isDartList || to.isDartMap || to.isDartSet) &&
-          data.makeCollectionsImmutable) {
+          data.options.asUnmodifiableCollections) {
         propertyName = '_$propertyName';
       }
 
@@ -317,31 +316,10 @@ $constructorParameters
   String get _implClassName => '_${_abstractClassName}Impl';
 
   Iterable<String> _deepCopyMethods({required bool isConcrete}) sync* {
-    /// Get the list of deep cloneable properties that should be implemented.
-    /// This is for unions, to avoid overriding a property on the concrete
-    /// copyWith class. if the shared interface already defines it. But at the
-    /// same time, still define the properties that aren't part of the shared
-    /// interface.
-    /// Also, sometimes the shared interface uses a nullable property but the
-    /// concrete class doesn't. Such as with {FreezedClass a} | {FreezedClass? b}
-    /// In this case even though the shared interface already defines the property,
-    /// we need to override the copyWith on the concrete interface to override the
-    /// properties nullability.
-    final propertiesToOverride = parent == null
-        ? deepCloneableProperties
-        : deepCloneableProperties.where((property) {
-            final superProperty = parent!.deepCloneableProperties
-                .firstWhereOrNull((p) => p.name == property.name);
-
-            // Either the property wasn't defined in the super type, or it was downcasted
-            return superProperty == null ||
-                superProperty.nullable && !property.nullable;
-          });
-
-    for (final cloneableProperty in propertiesToOverride) {
+    for (final cloneableProperty in deepCloneableProperties) {
       final earlyReturn = cloneableProperty.nullable
           ? '''
-  if (_value.${cloneableProperty.name} == null) {
+  if (_self.${cloneableProperty.name} == null) {
     return null;
   }
 '''
@@ -353,16 +331,14 @@ $constructorParameters
           ? '${_clonerInterfaceFor(cloneableProperty)}?'
           : '${_clonerInterfaceFor(cloneableProperty)}';
 
-      final cast = isConcrete ? '' : 'as \$Val';
-
       yield '''
 ${_copyWithDocs(data.name)}
 @override
 @pragma('vm:prefer-inline')
 $returnType get ${cloneableProperty.name} {
   $earlyReturn
-  return ${_clonerInterfaceFor(cloneableProperty)}(_value.${cloneableProperty.name}$nullabilitySuffix, (value) {
-    return _then(_value.copyWith(${cloneableProperty.name}: value) $cast);
+  return ${_clonerInterfaceFor(cloneableProperty)}(_self.${cloneableProperty.name}$nullabilitySuffix, (value) {
+    return _then(_self.copyWith(${cloneableProperty.name}: value));
   });
 }''';
     }
@@ -377,7 +353,7 @@ $returnType get ${cloneableProperty.name} {
     String res, {
     String doc = '',
   }) {
-    return _hasSuperClass ? '$doc@override $res' : '$doc$res';
+    return parent != null ? '$doc@override $res' : '$doc$res';
   }
 
   String get _abstractClassName => interfaceNameFrom(clonedClassName);

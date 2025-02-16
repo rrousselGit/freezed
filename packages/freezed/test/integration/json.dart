@@ -4,7 +4,7 @@ part 'json.freezed.dart';
 part 'json.g.dart';
 
 @freezed
-class NoWhen with _$NoWhen {
+abstract class NoWhen with _$NoWhen {
   factory NoWhen({int? first}) = _NoWhen;
 
   factory NoWhen.fromJson(Map<String, dynamic> json) => _$NoWhenFromJson(json);
@@ -13,12 +13,12 @@ class NoWhen with _$NoWhen {
 abstract class Base {}
 
 const unionMixin = _$UnionJsonWithExtends;
-const unionFirstBase = _$UnionJsonFirstWithExtendsImpl;
-const unionSecondBase = _$UnionJsonSecondWithExtendsImpl;
+const unionFirstBase = _UnionJsonFirstWithExtends;
+const unionSecondBase = _UnionJsonSecondWithExtends;
 const unionJson = _$UnionJsonWithExtendsFromJson;
 
 @freezed
-class UnionJsonWithExtends extends Base with _$UnionJsonWithExtends {
+abstract class UnionJsonWithExtends extends Base with _$UnionJsonWithExtends {
   UnionJsonWithExtends._();
 
   factory UnionJsonWithExtends.first({int? first}) = _UnionJsonFirstWithExtends;
@@ -30,12 +30,13 @@ class UnionJsonWithExtends extends Base with _$UnionJsonWithExtends {
 }
 
 const pUnionMixin = _$PUnionJsonWithExtends;
-const pUnionFirstBase = _$PUnionJsonFirstWithExtendsImpl;
-const pUnionSecondBase = _$PUnionJsonSecondWithExtendsImpl;
+const pUnionFirstBase = _PUnionJsonFirstWithExtends;
+const pUnionSecondBase = _PUnionJsonSecondWithExtends;
 const pUnionJson = _$PUnionJsonWithExtendsFromJson;
 
 @freezed
-class _PUnionJsonWithExtends extends Base with _$PUnionJsonWithExtends {
+abstract class _PUnionJsonWithExtends extends Base
+    with _$PUnionJsonWithExtends {
   _PUnionJsonWithExtends._();
 
   // ignore: unused_element, unused_element_parameter
@@ -52,7 +53,7 @@ class _PUnionJsonWithExtends extends Base with _$PUnionJsonWithExtends {
 
 // regression test for https://github.com/rrousselGit/freezed/issues/409
 @freezed
-class Regression409 with _$Regression409 {
+abstract class Regression409 with _$Regression409 {
   factory Regression409({
     dynamic totalResults,
   }) = _Regression409;
@@ -63,7 +64,7 @@ class Regression409 with _$Regression409 {
 
 // regression test for https://github.com/rrousselGit/freezed/issues/351
 @freezed
-class Regression351 with _$Regression351 {
+abstract class Regression351 with _$Regression351 {
   factory Regression351({
     @JsonKey(name: 'total_results') required int totalResults,
   }) = _Regression351;
@@ -74,7 +75,7 @@ class Regression351 with _$Regression351 {
 
 // regression test for https://github.com/rrousselGit/freezed/issues/323
 @freezed
-class Regression323 with _$Regression323 {
+abstract class Regression323 with _$Regression323 {
   const factory Regression323({
     required String id,
     required num amount,
@@ -91,7 +92,7 @@ class Regression323 with _$Regression323 {
 
 // regression test for https://github.com/rrousselGit/freezed/issues/280
 @freezed
-class Regression280 with _$Regression280 {
+abstract class Regression280 with _$Regression280 {
   const factory Regression280(String label) = _Regression280;
 
   factory Regression280.fromJson(Map<String, dynamic> val) {
@@ -100,7 +101,7 @@ class Regression280 with _$Regression280 {
 }
 
 @freezed
-class Regression280n2 with _$Regression280n2 {
+abstract class Regression280n2 with _$Regression280n2 {
   const factory Regression280n2(String label) = _Regression280n2;
 
   factory Regression280n2.fromJson(String val) {
@@ -115,14 +116,14 @@ CustomJson _fromJson(Map<String, dynamic> json) {
 }
 
 @freezed
-class CustomJson with _$CustomJson {
+abstract class CustomJson with _$CustomJson {
   const factory CustomJson(String label) = _CustomJson;
 
   factory CustomJson.fromJson(Map<String, dynamic> json) => _fromJson(json);
 }
 
 @Freezed(unionKey: 'ty"\'pe')
-class FancyCustomKey with _$FancyCustomKey {
+abstract class FancyCustomKey with _$FancyCustomKey {
   const factory FancyCustomKey.first(int a) = _FancyCustomKeyFirst;
   const factory FancyCustomKey.second(int a) = _FancyCustomKeySecond;
 
@@ -131,16 +132,16 @@ class FancyCustomKey with _$FancyCustomKey {
 }
 
 @freezed
-class PositonalOptional with _$PositonalOptional {
-  const factory PositonalOptional.first([int? a]) = _PositonalOptionalFirst;
-  const factory PositonalOptional.second([int? a]) = _PositonalOptionalSecond;
+abstract class PositionalOptional with _$PositionalOptional {
+  const factory PositionalOptional.first([int? a]) = _PositionalOptionalFirst;
+  const factory PositionalOptional.second([int? a]) = _PositionalOptionalSecond;
 
-  factory PositonalOptional.fromJson(Map<String, dynamic> json) =>
-      _$PositonalOptionalFromJson(json);
+  factory PositionalOptional.fromJson(Map<String, dynamic> json) =>
+      _$PositionalOptionalFromJson(json);
 }
 
 @Freezed(unionKey: r'$type')
-class RawCustomKey with _$RawCustomKey {
+abstract class RawCustomKey with _$RawCustomKey {
   const factory RawCustomKey.first(int a) = _RawCustomKeyFirst;
   const factory RawCustomKey.second(int a) = _RawCustomKeySecond;
 
@@ -149,7 +150,7 @@ class RawCustomKey with _$RawCustomKey {
 }
 
 @Freezed(unionKey: 'type')
-class CustomKey with _$CustomKey {
+abstract class CustomKey with _$CustomKey {
   const factory CustomKey.first(int a) = _CustomKeyFirst;
   const factory CustomKey.second(int a) = _CustomKeySecond;
 
@@ -158,7 +159,7 @@ class CustomKey with _$CustomKey {
 }
 
 @freezed
-class CustomUnionValue with _$CustomUnionValue {
+abstract class CustomUnionValue with _$CustomUnionValue {
   const factory CustomUnionValue.first(int a) = _CustomUnionValueFirst;
 
   @FreezedUnionValue('SECOND')
@@ -169,7 +170,7 @@ class CustomUnionValue with _$CustomUnionValue {
 }
 
 @Freezed(fallbackUnion: 'fallback')
-class UnionFallback with _$UnionFallback {
+abstract class UnionFallback with _$UnionFallback {
   const factory UnionFallback.first(int a) = _UnionFallbackFirst;
   const factory UnionFallback.second(int a) = _UnionFallbackSecond;
   const factory UnionFallback.fallback(int a) = _UnionFallbackFallback;
@@ -179,28 +180,30 @@ class UnionFallback with _$UnionFallback {
 }
 
 @Freezed(fallbackUnion: 'default')
-class UnionDefaultFallback with _$UnionDefaultFallback {
-  const factory UnionDefaultFallback(int a) = _UnionDefaultFallback;
-  const factory UnionDefaultFallback.first(int a) = _UnionDefaultFallbackFirst;
-  const factory UnionDefaultFallback.second(int a) =
+abstract class UnionFallbackWithDefault with _$UnionFallbackWithDefault {
+  const factory UnionFallbackWithDefault(int a) = _UnionDefaultFallback;
+  const factory UnionFallbackWithDefault.first(int a) =
+      _UnionDefaultFallbackFirst;
+  const factory UnionFallbackWithDefault.second(int a) =
       _UnionDefaultFallbackSecond;
 
-  factory UnionDefaultFallback.fromJson(Map<String, dynamic> json) =>
-      _$UnionDefaultFallbackFromJson(json);
+  factory UnionFallbackWithDefault.fromJson(Map<String, dynamic> json) =>
+      _$UnionFallbackWithDefaultFromJson(json);
 }
 
 @Freezed(unionKey: 'key', fallbackUnion: 'default')
-class UnionKeyDefaultFallback with _$UnionKeyDefaultFallback {
-  const factory UnionKeyDefaultFallback(String key) = _UnionKeyDefaultFallback;
-  const factory UnionKeyDefaultFallback.first(String key) =
+abstract class UnionKeyFallbackWithDefault with _$UnionKeyFallbackWithDefault {
+  const factory UnionKeyFallbackWithDefault(String key) =
+      _UnionKeyDefaultFallback;
+  const factory UnionKeyFallbackWithDefault.first(String key) =
       _UnionKeyDefaultFallbackFirst;
 
-  factory UnionKeyDefaultFallback.fromJson(Map<String, dynamic> json) =>
-      _$UnionKeyDefaultFallbackFromJson(json);
+  factory UnionKeyFallbackWithDefault.fromJson(Map<String, dynamic> json) =>
+      _$UnionKeyFallbackWithDefaultFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.pascal)
-class UnionValueCasePascal with _$UnionValueCasePascal {
+abstract class UnionValueCasePascal with _$UnionValueCasePascal {
   const factory UnionValueCasePascal.first(int a) = _UnionValueCasePascalFirst;
   const factory UnionValueCasePascal.secondValue(int a) =
       _UnionValueCasePascalSecondValue;
@@ -210,7 +213,7 @@ class UnionValueCasePascal with _$UnionValueCasePascal {
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.kebab)
-class UnionValueCaseKebab with _$UnionValueCaseKebab {
+abstract class UnionValueCaseKebab with _$UnionValueCaseKebab {
   const factory UnionValueCaseKebab.first(int a) = _UnionValueCaseKebabFirst;
   const factory UnionValueCaseKebab.secondValue(int a) =
       _UnionValueCaseKebabSecondValue;
@@ -220,7 +223,7 @@ class UnionValueCaseKebab with _$UnionValueCaseKebab {
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.snake)
-class UnionValueCaseSnake with _$UnionValueCaseSnake {
+abstract class UnionValueCaseSnake with _$UnionValueCaseSnake {
   const factory UnionValueCaseSnake.first(int a) = _UnionValueCaseSnakeFirst;
   const factory UnionValueCaseSnake.secondValue(int a) =
       _UnionValueCaseSnakeSecondValue;
@@ -230,7 +233,8 @@ class UnionValueCaseSnake with _$UnionValueCaseSnake {
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.screamingSnake)
-class UnionValueCaseScreamingSnake with _$UnionValueCaseScreamingSnake {
+abstract class UnionValueCaseScreamingSnake
+    with _$UnionValueCaseScreamingSnake {
   const factory UnionValueCaseScreamingSnake.first(int a) =
       _UnionValueCaseScreamingSnakeFirst;
   const factory UnionValueCaseScreamingSnake.secondValue(int a) =
@@ -241,7 +245,7 @@ class UnionValueCaseScreamingSnake with _$UnionValueCaseScreamingSnake {
 }
 
 @Freezed(unionKey: 'runtimeType')
-class RuntimeTypeKey with _$RuntimeTypeKey {
+abstract class RuntimeTypeKey with _$RuntimeTypeKey {
   const factory RuntimeTypeKey.first(int a) = _RuntimeTypeKeyFirst;
   const factory RuntimeTypeKey.second(int a) = _RuntimeTypeKeySecond;
 
@@ -250,7 +254,7 @@ class RuntimeTypeKey with _$RuntimeTypeKey {
 }
 
 @Freezed(unionKey: r'$runtimeType')
-class RawRuntimeTypeKey with _$RawRuntimeTypeKey {
+abstract class RawRuntimeTypeKey with _$RawRuntimeTypeKey {
   const factory RawRuntimeTypeKey.first(int a) = _RawRuntimeTypeKeyFirst;
   const factory RawRuntimeTypeKey.second(int a) = _RawRuntimeTypeKeySecond;
 
@@ -259,7 +263,7 @@ class RawRuntimeTypeKey with _$RawRuntimeTypeKey {
 }
 
 @Freezed(unionKey: 'run"\'timeType')
-class FancyRuntimeTypeKey with _$FancyRuntimeTypeKey {
+abstract class FancyRuntimeTypeKey with _$FancyRuntimeTypeKey {
   const factory FancyRuntimeTypeKey.first(int a) = _FancyRuntimeTypeKeyFirst;
   const factory FancyRuntimeTypeKey.second(int a) = _FancyRuntimeTypeKeySecond;
 
@@ -268,7 +272,7 @@ class FancyRuntimeTypeKey with _$FancyRuntimeTypeKey {
 }
 
 @Freezed(unionKey: 'runtimeType')
-class RuntimeTypeUnrecognizedKeys with _$RuntimeTypeUnrecognizedKeys {
+abstract class RuntimeTypeUnrecognizedKeys with _$RuntimeTypeUnrecognizedKeys {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory RuntimeTypeUnrecognizedKeys.first(int a) =
       _RuntimeTypeUnrecognizedKeysFirst;
@@ -281,7 +285,7 @@ class RuntimeTypeUnrecognizedKeys with _$RuntimeTypeUnrecognizedKeys {
 }
 
 @Freezed(unionKey: r'$runtimeType')
-class RuntimeTypeRawCustomKey with _$RuntimeTypeRawCustomKey {
+abstract class RuntimeTypeRawCustomKey with _$RuntimeTypeRawCustomKey {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory RuntimeTypeRawCustomKey.first(int a) =
       _RuntimeTypeRawCustomKeyFirst;
@@ -294,7 +298,8 @@ class RuntimeTypeRawCustomKey with _$RuntimeTypeRawCustomKey {
 }
 
 @Freezed(unionKey: 'ty"\'pe')
-class UnrecognizedKeysFancyCustomKey with _$UnrecognizedKeysFancyCustomKey {
+abstract class UnrecognizedKeysFancyCustomKey
+    with _$UnrecognizedKeysFancyCustomKey {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysFancyCustomKey.first(int a) =
       _UnrecognizedKeysFancyCustomKeyFirst;
@@ -307,7 +312,8 @@ class UnrecognizedKeysFancyCustomKey with _$UnrecognizedKeysFancyCustomKey {
 }
 
 @Freezed(unionKey: r'$type')
-class UnrecognizedKeysRawCustomKey with _$UnrecognizedKeysRawCustomKey {
+abstract class UnrecognizedKeysRawCustomKey
+    with _$UnrecognizedKeysRawCustomKey {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysRawCustomKey.first(int a) =
       _UnrecognizedKeysRawCustomKeyFirst;
@@ -320,7 +326,7 @@ class UnrecognizedKeysRawCustomKey with _$UnrecognizedKeysRawCustomKey {
 }
 
 @Freezed(unionKey: 'type')
-class UnrecognizedKeysCustomKey with _$UnrecognizedKeysCustomKey {
+abstract class UnrecognizedKeysCustomKey with _$UnrecognizedKeysCustomKey {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysCustomKey.first(int a) =
       _UnrecognizedKeysCustomKeyFirst;
@@ -333,7 +339,8 @@ class UnrecognizedKeysCustomKey with _$UnrecognizedKeysCustomKey {
 }
 
 @freezed
-class UnrecognizedKeysCustomUnionValue with _$UnrecognizedKeysCustomUnionValue {
+abstract class UnrecognizedKeysCustomUnionValue
+    with _$UnrecognizedKeysCustomUnionValue {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysCustomUnionValue.first(int a) =
       _UnrecognizedKeysCustomUnionValueFirst;
@@ -349,7 +356,8 @@ class UnrecognizedKeysCustomUnionValue with _$UnrecognizedKeysCustomUnionValue {
 }
 
 @Freezed(fallbackUnion: 'fallback')
-class UnrecognizedKeysUnionFallback with _$UnrecognizedKeysUnionFallback {
+abstract class UnrecognizedKeysUnionFallback
+    with _$UnrecognizedKeysUnionFallback {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysUnionFallback.first(int a) =
       _UnrecognizedKeysUnionFallbackFirst;
@@ -365,25 +373,25 @@ class UnrecognizedKeysUnionFallback with _$UnrecognizedKeysUnionFallback {
 }
 
 @Freezed(fallbackUnion: 'default')
-class UnrecognizedKeysUnionDefaultFallback
-    with _$UnrecognizedKeysUnionDefaultFallback {
+abstract class UnrecognizedKeysUnionFallbackWithDefault
+    with _$UnrecognizedKeysUnionFallbackWithDefault {
   @JsonSerializable(disallowUnrecognizedKeys: true)
-  const factory UnrecognizedKeysUnionDefaultFallback(int a) =
+  const factory UnrecognizedKeysUnionFallbackWithDefault(int a) =
       _UnrecognizedKeysUnionDefaultFallback;
   @JsonSerializable(disallowUnrecognizedKeys: true)
-  const factory UnrecognizedKeysUnionDefaultFallback.first(int a) =
+  const factory UnrecognizedKeysUnionFallbackWithDefault.first(int a) =
       _UnrecognizedKeysUnionDefaultFallbackFirst;
   @JsonSerializable(disallowUnrecognizedKeys: true)
-  const factory UnrecognizedKeysUnionDefaultFallback.second(int a) =
+  const factory UnrecognizedKeysUnionFallbackWithDefault.second(int a) =
       _UnrecognizedKeysUnionDefaultFallbackSecond;
 
-  factory UnrecognizedKeysUnionDefaultFallback.fromJson(
+  factory UnrecognizedKeysUnionFallbackWithDefault.fromJson(
           Map<String, dynamic> json) =>
-      _$UnrecognizedKeysUnionDefaultFallbackFromJson(json);
+      _$UnrecognizedKeysUnionFallbackWithDefaultFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.pascal)
-class UnrecognizedKeysUnionValueCasePascal
+abstract class UnrecognizedKeysUnionValueCasePascal
     with _$UnrecognizedKeysUnionValueCasePascal {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysUnionValueCasePascal.first(int a) =
@@ -398,7 +406,7 @@ class UnrecognizedKeysUnionValueCasePascal
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.kebab)
-class UnrecognizedKeysUnionValueCaseKebab
+abstract class UnrecognizedKeysUnionValueCaseKebab
     with _$UnrecognizedKeysUnionValueCaseKebab {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysUnionValueCaseKebab.first(int a) =
@@ -413,7 +421,7 @@ class UnrecognizedKeysUnionValueCaseKebab
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.snake)
-class UnrecognizedKeysUnionValueCaseSnake
+abstract class UnrecognizedKeysUnionValueCaseSnake
     with _$UnrecognizedKeysUnionValueCaseSnake {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysUnionValueCaseSnake.first(int a) =
@@ -428,7 +436,7 @@ class UnrecognizedKeysUnionValueCaseSnake
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.screamingSnake)
-class UnrecognizedKeysUnionValueCaseScreamingSnake
+abstract class UnrecognizedKeysUnionValueCaseScreamingSnake
     with _$UnrecognizedKeysUnionValueCaseScreamingSnake {
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysUnionValueCaseScreamingSnake.first(int a) =
@@ -443,14 +451,14 @@ class UnrecognizedKeysUnionValueCaseScreamingSnake
 }
 
 @freezed
-class Single with _$Single {
+abstract class Single with _$Single {
   const factory Single(int a) = _Single;
 
   factory Single.fromJson(Map<String, dynamic> json) => _$SingleFromJson(json);
 }
 
 @freezed
-class Json with _$Json {
+abstract class Json with _$Json {
   const factory Json() = JsonDefault;
   const factory Json.first(String a) = First;
   const factory Json.second(int b) = Second;
@@ -459,14 +467,14 @@ class Json with _$Json {
 }
 
 @freezed
-class NoJson with _$NoJson {
+abstract class NoJson with _$NoJson {
   const factory NoJson() = NoDefault;
   const factory NoJson.first(String a) = NoFirst;
   const factory NoJson.second(int b) = NoSecond;
 }
 
 @freezed
-class Decorator with _$Decorator {
+abstract class Decorator with _$Decorator {
   factory Decorator(@JsonKey(name: 'what') String a) = _Decorator;
 
   factory Decorator.fromJson(Map<String, dynamic> json) =>
@@ -474,7 +482,7 @@ class Decorator with _$Decorator {
 }
 
 @freezed
-class Generic<T> with _$Generic<T> {
+abstract class Generic<T> with _$Generic<T> {
   factory Generic(@DataConverter() T a) = _Generic<T>;
 
   factory Generic.fromJson(Map<String, dynamic> json) =>
@@ -496,7 +504,7 @@ class DataConverter<T extends Object?> implements JsonConverter<T, Object?> {
 }
 
 @freezed
-class DefaultValue with _$DefaultValue {
+abstract class DefaultValue with _$DefaultValue {
   factory DefaultValue([@Default(42) int value]) = _DefaultValue;
 
   factory DefaultValue.fromJson(Map<String, dynamic> json) =>
@@ -504,7 +512,7 @@ class DefaultValue with _$DefaultValue {
 }
 
 @freezed
-class DefaultValueJsonKey with _$DefaultValueJsonKey {
+abstract class DefaultValueJsonKey with _$DefaultValueJsonKey {
   factory DefaultValueJsonKey([
     @Default(42) @JsonKey(defaultValue: 21) int value,
   ]) = _DefaultValueJsonKey;
@@ -514,7 +522,7 @@ class DefaultValueJsonKey with _$DefaultValueJsonKey {
 }
 
 @freezed
-class ClassDecorator with _$ClassDecorator {
+abstract class ClassDecorator with _$ClassDecorator {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ClassDecorator(String complexName) = ClassDecoratorDefault;
 
@@ -523,7 +531,7 @@ class ClassDecorator with _$ClassDecorator {
 }
 
 @freezed
-class DurationValue with _$DurationValue {
+abstract class DurationValue with _$DurationValue {
   const factory DurationValue(Duration complexName) = DurationValueDefault;
 
   factory DurationValue.fromJson(Map<String, dynamic> json) =>
@@ -548,7 +556,7 @@ enum Enum {
 }
 
 @freezed
-class EnumJson with _$EnumJson {
+abstract class EnumJson with _$EnumJson {
   factory EnumJson({
     @JsonKey(
       disallowNullValue: true,
@@ -563,7 +571,8 @@ class EnumJson with _$EnumJson {
 }
 
 @Freezed(genericArgumentFactories: true)
-class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
+abstract class GenericWithArgumentFactories<T>
+    with _$GenericWithArgumentFactories<T> {
   factory GenericWithArgumentFactories(T value, String value2) =
       _GenericWithArgumentFactories<T>;
 
@@ -575,7 +584,7 @@ class GenericWithArgumentFactories<T> with _$GenericWithArgumentFactories<T> {
 }
 
 @Freezed(genericArgumentFactories: true)
-class GenericTupleWithArgumentFactories<T, S>
+abstract class GenericTupleWithArgumentFactories<T, S>
     with _$GenericTupleWithArgumentFactories<T, S> {
   factory GenericTupleWithArgumentFactories(
     T value1,
@@ -592,13 +601,13 @@ class GenericTupleWithArgumentFactories<T, S>
 }
 
 @Freezed(genericArgumentFactories: true)
-class GenericMultiCtorWithArgumentFactories<T, S>
+abstract class GenericMultiCtorWithArgumentFactories<T, S>
     with _$GenericMultiCtorWithArgumentFactories<T, S> {
   factory GenericMultiCtorWithArgumentFactories(
     T first,
     S second,
     String another,
-  ) = _GenericMultiCtorWithArgumentFactories<T, S>;
+  ) = _GenericMultiCtorWithArgumentFactoriesDefault<T, S>;
 
   factory GenericMultiCtorWithArgumentFactories.first(T first, String another) =
       _GenericMultiCtorWithArgumentFactoriesVal<T, S>;

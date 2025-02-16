@@ -37,7 +37,7 @@ import 'decorator.dart';
 
     final concrete = main.topLevelElements
         .whereType<ClassElement>()
-        .firstWhere((e) => e.name == r'_$ListDecorator0Impl');
+        .firstWhere((e) => e.name == r'ListDecorator0');
 
     expect(
       concrete.fields.firstWhere((element) => element.name == '_a').metadata,

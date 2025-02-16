@@ -65,36 +65,45 @@ Future<void> main() async {
           .having((e) => e.documentationComment, 'doc', '/// Hello'),
     );
 
-    expect(complex0.accessors.where((e) => e.name != 'copyWith'), [
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'a')
-          .having((e) => e.documentationComment, 'doc', '/// Hello'),
-    ]);
+    expect(
+        complex0.fields
+            .where((e) => e.name != 'copyWith' && e.name != 'hashCode'),
+        [
+          isA<FieldElement>()
+              .having((e) => e.name, 'name', 'a')
+              .having((e) => e.documentationComment, 'doc', '/// Hello'),
+        ]);
 
-    expect(complex1.accessors.where((e) => e.name != 'copyWith'), [
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'a')
-          .having((e) => e.documentationComment, 'doc', '/// World'),
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'b')
-          .having((e) => e.documentationComment, 'doc', '/// B'),
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'd')
-          .having((e) => e.documentationComment, 'doc', null),
-    ]);
+    expect(
+        complex1.fields
+            .where((e) => e.name != 'copyWith' && e.name != 'hashCode'),
+        [
+          isA<FieldElement>()
+              .having((e) => e.name, 'name', 'a')
+              .having((e) => e.documentationComment, 'doc', '/// World'),
+          isA<FieldElement>()
+              .having((e) => e.name, 'name', 'b')
+              .having((e) => e.documentationComment, 'doc', '/// B'),
+          isA<FieldElement>()
+              .having((e) => e.name, 'name', 'd')
+              .having((e) => e.documentationComment, 'doc', null),
+        ]);
 
-    expect(complex2.accessors.where((e) => e.name != 'copyWith'), [
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'a')
-          // The doc is inherited from `Complex`
-          .having((e) => e.documentationComment, 'doc', null),
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'c')
-          .having((e) => e.documentationComment, 'doc', '/// C'),
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'd')
-          .having((e) => e.documentationComment, 'doc', null),
-    ]);
+    expect(
+        complex2.fields
+            .where((e) => e.name != 'copyWith' && e.name != 'hashCode'),
+        [
+          isA<FieldElement>()
+              .having((e) => e.name, 'name', 'a')
+              // The doc is inherited from `Complex`
+              .having((e) => e.documentationComment, 'doc', null),
+          isA<FieldElement>()
+              .having((e) => e.name, 'name', 'c')
+              .having((e) => e.documentationComment, 'doc', '/// C'),
+          isA<FieldElement>()
+              .having((e) => e.name, 'name', 'd')
+              .having((e) => e.documentationComment, 'doc', null),
+        ]);
   });
 
   test('assert', () {

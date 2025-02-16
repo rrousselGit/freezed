@@ -1,6 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:build/build.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -62,13 +61,12 @@ class ParametersTemplate {
     this.namedParameters = const [],
   });
 
-  static Future<ParametersTemplate> fromParameterList(
-    BuildStep buildStep,
+  static ParametersTemplate fromParameterList(
     FormalParameterList parameters, {
     bool isAssignedToThis = false,
     required bool addImplicitFinal,
-  }) async {
-    Future<Parameter> asParameter(FormalParameter p) async {
+  }) {
+    Parameter asParameter(FormalParameter p) {
       final e = p.declaredElement!;
 
       final value = Parameter(
@@ -93,20 +91,18 @@ class ParametersTemplate {
     }
 
     return ParametersTemplate(
-      await Future.wait(
         parameters.parameters
             .where((p) => p.isRequiredPositional)
-            .map(asParameter),
-      ),
-      optionalPositionalParameters: await Future.wait(
-        parameters.parameters
+            .map(asParameter)
+            .toList(),
+        optionalPositionalParameters: parameters.parameters
             .where((p) => p.isOptionalPositional)
-            .map(asParameter),
-      ),
-      namedParameters: await Future.wait(
-        parameters.parameters.where((p) => p.isNamed).map(asParameter),
-      ),
-    );
+            .map(asParameter)
+            .toList(),
+        namedParameters: parameters.parameters
+            .where((p) => p.isNamed)
+            .map(asParameter)
+            .toList());
   }
 
   final List<Parameter> requiredPositionalParameters;

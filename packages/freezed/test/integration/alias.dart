@@ -5,7 +5,7 @@ import 'generic.dart' show Model;
 part 'alias.freezed.dart';
 
 @freezed
-class Alias with _$Alias {
+abstract class Alias with _$Alias {
   @With<concrete.Mixin>()
   @Implements<concrete.Empty>()
   factory Alias([

@@ -8,7 +8,7 @@ typedef MyTypedef = Object? Function(String);
 typedef GenericTypedef<T, S> = S Function(T);
 
 @freezed
-class ClassWithTypedef with _$ClassWithTypedef {
+abstract class ClassWithTypedef with _$ClassWithTypedef {
   ClassWithTypedef._();
   factory ClassWithTypedef(
     MyTypedef myTypedef,

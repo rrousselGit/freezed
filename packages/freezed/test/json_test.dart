@@ -256,39 +256,39 @@ void main() {
   group('FreezedUnionFallback default', () {
     test('fromJson', () {
       expect(
-        UnionDefaultFallback.fromJson(<String, dynamic>{
+        UnionFallbackWithDefault.fromJson(<String, dynamic>{
           'runtimeType': 'first',
           'a': 42,
         }),
-        UnionDefaultFallback.first(42),
+        UnionFallbackWithDefault.first(42),
       );
 
       expect(
-        UnionDefaultFallback.fromJson(<String, dynamic>{
+        UnionFallbackWithDefault.fromJson(<String, dynamic>{
           'runtimeType': 'third',
           'a': 10,
         }),
-        UnionDefaultFallback(10),
+        UnionFallbackWithDefault(10),
       );
 
       expect(
-        UnionDefaultFallback.fromJson(<String, dynamic>{
+        UnionFallbackWithDefault.fromJson(<String, dynamic>{
           'a': 55,
         }),
-        UnionDefaultFallback(55),
+        UnionFallbackWithDefault(55),
       );
     });
   });
 
   group('FreezedUnionKeyFallback default', () {
     test('concrete', () {
-      final first = UnionKeyDefaultFallback.fromJson(<String, dynamic>{
+      final first = UnionKeyFallbackWithDefault.fromJson(<String, dynamic>{
         'key': 'first',
       });
 
       expect(
         first,
-        UnionKeyDefaultFallback.first('first'),
+        UnionKeyFallbackWithDefault.first('first'),
       );
       expect(
         first.key,
@@ -297,13 +297,13 @@ void main() {
     });
 
     test('fallback', () {
-      final fallback = UnionKeyDefaultFallback.fromJson(<String, dynamic>{
+      final fallback = UnionKeyFallbackWithDefault.fromJson(<String, dynamic>{
         'key': 'fallback',
       });
 
       expect(
         fallback,
-        UnionKeyDefaultFallback('fallback'),
+        UnionKeyFallbackWithDefault('fallback'),
       );
       expect(
         fallback.key,
@@ -512,26 +512,26 @@ void main() {
     group('FreezedUnionFallback default', () {
       test('fromJson', () {
         expect(
-          UnrecognizedKeysUnionDefaultFallback.fromJson(<String, dynamic>{
+          UnrecognizedKeysUnionFallbackWithDefault.fromJson(<String, dynamic>{
             'runtimeType': 'first',
             'a': 42,
           }),
-          UnrecognizedKeysUnionDefaultFallback.first(42),
+          UnrecognizedKeysUnionFallbackWithDefault.first(42),
         );
 
         expect(
-          UnrecognizedKeysUnionDefaultFallback.fromJson(<String, dynamic>{
+          UnrecognizedKeysUnionFallbackWithDefault.fromJson(<String, dynamic>{
             'runtimeType': 'third',
             'a': 10,
           }),
-          UnrecognizedKeysUnionDefaultFallback(10),
+          UnrecognizedKeysUnionFallbackWithDefault(10),
         );
 
         expect(
-          UnrecognizedKeysUnionDefaultFallback.fromJson(<String, dynamic>{
+          UnrecognizedKeysUnionFallbackWithDefault.fromJson(<String, dynamic>{
             'a': 55,
           }),
-          UnrecognizedKeysUnionDefaultFallback(55),
+          UnrecognizedKeysUnionFallbackWithDefault(55),
         );
       });
     });

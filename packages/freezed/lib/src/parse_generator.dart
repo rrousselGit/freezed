@@ -8,31 +8,25 @@ import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
 
-abstract class ParserGenerator<GlobalData, Data, Annotation>
+typedef AnnotationMeta = ({Declaration declaration, DartObject annotation});
+
+abstract class ParserGenerator<Annotation>
     extends GeneratorForAnnotation<Annotation> {
   @override
   FutureOr<String> generate(
     LibraryReader oldLibrary,
     BuildStep buildStep,
   ) async {
-    final classesForUniqueSource = <Uri, ClassElement>{
-      for (final clazz in oldLibrary.classes) clazz.source.uri: clazz
-    };
-    if (classesForUniqueSource.isEmpty) return '';
+    if (oldLibrary.classes.isEmpty) return '';
 
     final units = await Stream.fromFutures(
-      classesForUniqueSource.values.map(
+      oldLibrary.element.units.map(
         (e) => buildStep.resolver.astNodeFor(e, resolve: true),
       ),
-    )
-        .where((e) => e != null)
-        .map((e) => e!.root)
-        .cast<CompilationUnit>()
-        .toList();
+    ).cast<CompilationUnit>().toList();
 
     final values = StringBuffer();
-    final globalData = parseGlobalData(units);
-    var hasGeneratedGlobalCode = false;
+    final datas = <AnnotationMeta>[];
 
     for (final unit in units) {
       for (var declaration in unit.declarations) {
@@ -43,45 +37,23 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
           declaredElement,
           throwOnUnresolved: false,
         );
-
         if (annotation == null) continue;
 
-        if (!hasGeneratedGlobalCode) {
-          hasGeneratedGlobalCode = true;
-          for (final value in generateForAll(globalData)) {
-            values.writeln(value);
-          }
-        }
-
-        final data = await parseDeclaration(
-          buildStep,
-          globalData,
-          declaration,
-          annotation,
-        );
-        if (data == null) continue;
-
-        for (final value in generateForData(globalData, data)) {
-          values.writeln(value);
-        }
+        datas.add((annotation: annotation, declaration: declaration));
       }
+    }
+
+    for (final value in generateAll(units, datas)) {
+      values.writeln(value);
     }
 
     return values.toString();
   }
 
-  Iterable<Object> generateForAll(GlobalData globalData) sync* {}
-
-  GlobalData parseGlobalData(List<CompilationUnit> unit);
-
-  FutureOr<Data> parseDeclaration(
-    BuildStep buildStep,
-    GlobalData globalData,
-    Declaration declaration,
-    DartObject annotation,
-  );
-
-  Iterable<Object> generateForData(GlobalData globalData, Data data);
+  Iterable<Object?> generateAll(
+    List<CompilationUnit> units,
+    List<AnnotationMeta> annotatedElements,
+  ) sync* {}
 
   @override
   Stream<String> generateForAnnotatedElement(
@@ -89,6 +61,8 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
     ConstantReader annotation,
     BuildStep buildStep,
   ) async* {
+    // implemented for source_gen_test – otherwise unused
+
     final annotation = typeChecker.firstAnnotationOf(
       element,
       throwOnUnresolved: false,
@@ -112,13 +86,8 @@ abstract class ParserGenerator<GlobalData, Data, Annotation>
       );
     }
 
-    // implemented for source_gen_test – otherwise unused
-    final globalData = parseGlobalData([unit.unit]);
-    final data = parseDeclaration(buildStep, globalData, ast, annotation);
-
-    if (data == null) return;
-
-    for (final value in generateForData(globalData, await data)) {
+    final datas = <AnnotationMeta>[(declaration: ast, annotation: annotation)];
+    for (final value in generateAll([unit.unit], datas)) {
       yield value.toString();
     }
   }

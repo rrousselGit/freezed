@@ -1,21 +1,10 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:analyzer/dart/element/type.dart';
-import 'package:build/build.dart';
 import 'package:collection/collection.dart';
-import 'package:freezed/src/ast.dart';
-import 'package:freezed/src/string.dart';
-import 'package:freezed/src/templates/assert.dart';
 import 'package:freezed/src/templates/copy_with.dart';
-import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
-import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/tools/type.dart';
-import 'package:freezed_annotation/freezed_annotation.dart'
-    show Assert, Freezed, FreezedUnionCase, FreezedUnionValue;
-import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
+import 'package:freezed_annotation/freezed_annotation.dart' show Freezed;
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -24,24 +13,11 @@ import 'parse_generator.dart';
 import 'templates/abstract_template.dart';
 import 'templates/concrete_template.dart';
 import 'templates/from_json_template.dart';
-import 'tools/recursive_import_locator.dart';
 
 extension StringX on String {
   String get public {
     if (startsWith('_')) return substring(1);
     return this;
-  }
-}
-
-extension on DartObject {
-  T decodeField<T>(
-    String fieldName, {
-    required T Function(DartObject obj) decode,
-    required T Function() orElse,
-  }) {
-    final field = getField(fieldName);
-    if (field == null || field.isNull) return orElse();
-    return decode(field);
   }
 }
 
@@ -53,25 +29,17 @@ class CommonProperties {
   final List<Property> cloneableProperties = [];
 }
 
-extension on ClassDeclaration {
-  Iterable<ConstructorDeclaration> get constructors {
-    return members.whereType<ConstructorDeclaration>();
-  }
-}
-
 @immutable
-class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
+class FreezedGenerator extends ParserGenerator<Freezed> {
   FreezedGenerator(this._buildYamlConfigs);
 
   final Freezed _buildYamlConfigs;
 
-  @override
-  Future<Data> parseDeclaration(
-    BuildStep buildStep,
-    GlobalData globalData,
+  Data parseDeclaration(
+    LibraryData globalData,
     Declaration declaration,
     DartObject annotation,
-  ) async {
+  ) {
     if (declaration is! ClassDeclaration) {
       throw InvalidGenerationSourceError(
         '@freezed can only be applied on classes.',
@@ -79,140 +47,14 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
       );
     }
 
-    final shouldUseExtends = declaration.constructors.any((ctor) {
-      return ctor.name?.lexeme == '_' && ctor.factoryKeyword == null;
-    });
-
-    final configs = _parseConfig(annotation);
-
-    for (final field in declaration.declaredElement!.fields) {
-      _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
-    }
-
-    final constructorsNeedsGeneration = await _parseConstructorsNeedsGeneration(
-      buildStep,
+    final configs = ClassConfig.from(
+      annotation,
       declaration,
-      configs,
+      _buildYamlConfigs,
+      library: globalData,
     );
 
-    late final needsJsonSerializable = _needsJsonSerializable(
-      buildStep,
-      globalData,
-      declaration,
-    );
-
-    return Data(
-      name: declaration.name.lexeme,
-      shouldUseExtends: shouldUseExtends,
-      unionKey: configs.unionKey!,
-      generateToString:
-          configs.toStringOverride ?? !declaration.hasCustomToString,
-      generateCopyWith: configs.copyWith!,
-      generateEqual: configs.equal ?? !declaration.hasCustomEquals,
-      generateFromJson: configs.fromJson ?? await needsJsonSerializable,
-      generateToJson: configs.toJson ?? await needsJsonSerializable,
-      genericArgumentFactories: configs.genericArgumentFactories,
-      makeCollectionsImmutable: configs.makeCollectionsUnmodifiable!,
-      constructors: constructorsNeedsGeneration,
-      concretePropertiesName: [
-        for (final p in declaration.declaredElement!.fields)
-          if (!p.isStatic) p.name,
-      ],
-      genericsDefinitionTemplate: GenericsDefinitionTemplate.fromGenericElement(
-        declaration.declaredElement!.typeParameters,
-      ),
-      genericsParameterTemplate: GenericsParameterTemplate.fromGenericElement(
-        declaration.declaredElement!.typeParameters,
-      ),
-    );
-  }
-
-  void _assertValidNormalConstructorUsage(
-    ConstructorDeclaration constructor, {
-    required String className,
-  }) {
-    if (constructor.factoryKeyword == null &&
-        (constructor.name?.lexeme != '_' ||
-            constructor.parameters.parameters.isNotEmpty)) {
-      throw InvalidGenerationSourceError(
-        'Classes decorated with @freezed can only have a single non-factory'
-        ', without parameters, and named MyClass._()',
-        element: constructor.declaredElement,
-      );
-    }
-  }
-
-  void _assertValidFreezedConstructorUsage(
-    ConstructorDeclaration constructor, {
-    required String className,
-  }) {
-    for (final parameter in constructor.parameters.parameters) {
-      final parameterElement = parameter.declaredElement;
-      if (parameterElement == null) continue;
-
-      if (parameterElement.type.nullabilitySuffix !=
-              NullabilitySuffix.question &&
-          parameterElement.isOptional &&
-          parameterElement.defaultValue == null &&
-          !parameterElement.type.isDynamic2) {
-        final ctorName = constructor.name == null ? '' : '.${constructor.name}';
-
-        throw InvalidGenerationSourceError(
-          'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
-          element: parameter.declaredElement,
-        );
-      }
-    }
-  }
-
-  void _assertValidFieldUsage(
-    FieldElement field, {
-    required bool shouldUseExtends,
-  }) {
-    if (field.isStatic) return;
-
-    if (field.setter != null) {
-      throw InvalidGenerationSourceError(
-        'Classes decorated with @freezed cannot have mutable properties',
-        element: field,
-      );
-    }
-
-    // The field is a "Type get name => "
-    if (!shouldUseExtends &&
-        field.getter != null &&
-        !field.getter!.isAbstract &&
-        !field.getter!.isSynthetic) {
-      throw InvalidGenerationSourceError(
-        'Getters require a MyClass._() constructor',
-        element: field,
-      );
-    }
-
-    // The field is a "final name = "
-    if (!shouldUseExtends && field.isFinal && field.hasInitializer) {
-      throw InvalidGenerationSourceError(
-        'Final variables require a MyClass._() constructor',
-        element: field,
-      );
-    }
-  }
-
-  Future<bool> _needsJsonSerializable(
-    BuildStep buildStep,
-    GlobalData globalData,
-    ClassDeclaration declaration,
-  ) async {
-    if (!globalData.hasJson) return false;
-
-    for (final constructor in declaration.constructors) {
-      if (constructor.factoryKeyword != null &&
-          constructor.name?.lexeme == 'fromJson') {
-        return constructor.body is ExpressionFunctionBody;
-      }
-    }
-
-    return false;
+    return Data.from(declaration, configs, globalConfigs: _buildYamlConfigs);
   }
 
   CommonProperties _commonParametersBetweenAllConstructors(
@@ -338,196 +180,6 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     return result;
   }
 
-  Future<List<ConstructorDetails>> _parseConstructorsNeedsGeneration(
-    BuildStep buildStep,
-    ClassDeclaration declaration,
-    Freezed options,
-  ) async {
-    final result = <ConstructorDetails>[];
-    for (final constructor in declaration.constructors) {
-      if (constructor.factoryKeyword == null ||
-          constructor.name?.lexeme == 'fromJson') {
-        _assertValidNormalConstructorUsage(
-          constructor,
-          className: declaration.name.lexeme,
-        );
-        continue;
-      }
-
-      final redirectedName =
-          constructor.redirectedConstructor?.type.name2.lexeme;
-
-      if (redirectedName == null) {
-        _assertValidNormalConstructorUsage(
-          constructor,
-          className: declaration.name.lexeme,
-        );
-        continue;
-      }
-
-      _assertValidFreezedConstructorUsage(
-        constructor,
-        className: declaration.name.lexeme,
-      );
-
-      result.add(
-        ConstructorDetails(
-          asserts: _parseAsserts(constructor).toList(),
-          name: constructor.name?.lexeme ?? '',
-          unionValue: constructor.declaredElement!.unionValue(
-            options.unionValueCase,
-          ),
-          isConst: constructor.constKeyword != null,
-          fullName: constructor.fullName,
-          escapedName: constructor.escapedName,
-          impliedProperties: [
-            for (final parameter in constructor.parameters.parameters)
-              await Property.fromFormalParameter(
-                parameter,
-                buildStep,
-                addImplicitFinal: options.addImplicitFinal,
-              ),
-          ],
-          decorators: constructor.metadata
-              .where((element) {
-                final elementSourceUri =
-                    element.element?.declaration?.librarySource?.uri;
-
-                final isFreezedAnnotation = elementSourceUri != null &&
-                    elementSourceUri.scheme == 'package' &&
-                    elementSourceUri.pathSegments.isNotEmpty &&
-                    elementSourceUri.pathSegments.first == 'freezed_annotation';
-
-                return !isFreezedAnnotation;
-              })
-              .map((e) => e.toSource())
-              .toList(),
-          withDecorators: _withDecorationTypes(constructor.declaredElement!)
-              .toSet()
-              .toList(),
-          implementsDecorators:
-              _implementsDecorationTypes(constructor.declaredElement!)
-                  .toSet()
-                  .toList(),
-          isDefault: isDefaultConstructor(constructor.declaredElement!),
-          hasJsonSerializable: constructor.declaredElement!.hasJsonSerializable,
-          isFallback: constructor.declaredElement!
-              .isFallbackUnion(options.fallbackUnion),
-          cloneableProperties: _cloneableProperties(
-            buildStep,
-            declaration.declaredElement!,
-            constructor.declaredElement!,
-          ).toList(),
-          parameters: await ParametersTemplate.fromParameterList(
-            buildStep,
-            constructor.parameters,
-            addImplicitFinal: options.addImplicitFinal,
-          ),
-          redirectedName: redirectedName,
-        ),
-      );
-    }
-
-    if (result.isEmpty) {
-      throw InvalidGenerationSourceError(
-        'Marked ${declaration.name} with @freezed, but freezed has nothing to generate',
-        element: declaration.declaredElement,
-      );
-    }
-
-    if (result.length > 1 && result.any((c) => c.name.startsWith('_'))) {
-      throw InvalidGenerationSourceError(
-        'A freezed union cannot have private constructors',
-        element: declaration.declaredElement,
-      );
-    }
-
-    if (options.fallbackUnion != null && result.none((c) => c.isFallback)) {
-      throw InvalidGenerationSourceError(
-        'Fallback union was specified but no ${options.fallbackUnion} constructor exists.',
-        element: declaration.declaredElement,
-      );
-    }
-
-    return result;
-  }
-
-  Iterable<String> _withDecorationTypes(ConstructorElement constructor) sync* {
-    for (final metadata in constructor.metadata) {
-      if (!metadata.isWith) continue;
-      final object = metadata.computeConstantValue()!;
-
-      final stringType = object.getField('stringType');
-      if (stringType?.isNull == false) {
-        yield stringType!.toStringValue()!;
-      } else {
-        yield resolveFullTypeStringFrom(
-          constructor.library,
-          (object.type! as InterfaceType).typeArguments.single,
-        );
-      }
-    }
-  }
-
-  Iterable<String> _implementsDecorationTypes(
-    ConstructorElement constructor,
-  ) sync* {
-    for (final metadata in constructor.metadata) {
-      if (!metadata.isImplements) continue;
-      final object = metadata.computeConstantValue()!;
-
-      final stringType = object.getField('stringType');
-      if (stringType?.isNull == false) {
-        yield stringType!.toStringValue()!;
-      } else {
-        yield resolveFullTypeStringFrom(
-          constructor.library,
-          (object.type! as InterfaceType).typeArguments.single,
-        );
-      }
-    }
-  }
-
-  Iterable<DeepCloneableProperty> _cloneableProperties(
-    BuildStep buildStep,
-    ClassElement element,
-    ConstructorElement constructor,
-  ) sync* {
-    for (final parameter in constructor.parameters) {
-      final type = parseTypeSource(parameter);
-
-      final parameterType = parameter.type;
-      if (parameterType is! InterfaceType) continue;
-      final typeElement = parameterType.element;
-      if (typeElement is! ClassElement) continue;
-
-      final freezedAnnotation = typeChecker.firstAnnotationOf(
-        typeElement,
-        throwOnUnresolved: false,
-      );
-
-      /// Handles classes annotated with Freezed
-      if (freezedAnnotation == null) continue;
-
-      final configs = _parseConfig(freezedAnnotation);
-      // copyWith not enabled, so the property is not cloneable
-      if (configs.copyWith != true) continue;
-
-      yield DeepCloneableProperty(
-        name: parameter.name,
-        type: type!,
-        nullable: parameter.type.isNullable,
-        typeName: typeElement.name,
-        genericParameters: GenericsParameterTemplate(
-          (parameter.type as InterfaceType)
-              .typeArguments
-              .map((e) => e.getDisplayString())
-              .toList(),
-        ),
-      );
-    }
-  }
-
   Iterable<DeepCloneableProperty> _getCommonDeepCloneableProperties(
     List<ConstructorDetails> constructors,
     CommonProperties commonProperties,
@@ -535,7 +187,7 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     for (final commonProperty in commonProperties.cloneableProperties) {
       final commonGetter = commonProperties.readableProperties
           .firstWhereOrNull((e) => e.name == commonProperty.name);
-      final deepCopyProperty = constructors.first.cloneableProperties
+      final deepCopyProperty = constructors.first.deepCloneableProperties
           .firstWhereOrNull((e) => e.name == commonProperty.name);
 
       if (deepCopyProperty == null || commonGetter == null) continue;
@@ -548,97 +200,41 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     }
   }
 
-  Freezed _parseConfig(DartObject annotation) {
-    return Freezed(
-      copyWith: annotation.decodeField(
-        'copyWith',
-        decode: (obj) => obj.toBoolValue(),
-        orElse: () => _buildYamlConfigs.copyWith,
-      ),
-      makeCollectionsUnmodifiable: annotation.decodeField(
-        'makeCollectionsUnmodifiable',
-        decode: (obj) => obj.toBoolValue(),
-        orElse: () => _buildYamlConfigs.makeCollectionsUnmodifiable,
-      ),
-      equal: annotation.decodeField(
-        'equal',
-        decode: (obj) => obj.toBoolValue(),
-        orElse: () => _buildYamlConfigs.equal,
-      ),
-      fallbackUnion: annotation.decodeField(
-        'fallbackUnion',
-        decode: (obj) => obj.toStringValue(),
-        orElse: () => _buildYamlConfigs.fallbackUnion,
-      ),
-      fromJson: annotation.decodeField(
-        'fromJson',
-        decode: (obj) => obj.toBoolValue(),
-        orElse: () => _buildYamlConfigs.fromJson,
-      ),
-      addImplicitFinal: annotation.getField('addImplicitFinal')!.toBoolValue()!,
-      toJson: annotation.decodeField(
-        'toJson',
-        decode: (obj) => obj.toBoolValue(),
-        orElse: () => _buildYamlConfigs.toJson,
-      ),
-      genericArgumentFactories: annotation.decodeField(
-        'genericArgumentFactories',
-        decode: (obj) => obj.toBoolValue()!,
-        orElse: () => _buildYamlConfigs.genericArgumentFactories,
-      ),
-      toStringOverride: annotation.decodeField(
-        'toStringOverride',
-        decode: (obj) => obj.toBoolValue(),
-        orElse: () => _buildYamlConfigs.toStringOverride,
-      ),
-      unionKey: annotation
-          .decodeField(
-            'unionKey',
-            decode: (obj) => obj.toStringValue(),
-            orElse: () => _buildYamlConfigs.unionKey,
-          )
-          ?.replaceAll("'", r"\'")
-          .replaceAll(r'$', r'\$'),
-      unionValueCase: annotation.decodeField(
-        'unionValueCase',
-        decode: (obj) {
-          final enumIndex = obj.getField('index')?.toIntValue();
-          if (enumIndex == null) return null;
-          return FreezedUnionCase.values[enumIndex];
-        },
-        orElse: () => _buildYamlConfigs.unionValueCase,
-      ),
-    );
+  Iterable<Object> generateForAll(LibraryData globalData) sync* {
+    yield r'T _$identity<T>(T value) => value;';
   }
 
-  Iterable<AssertTemplate> _parseAsserts(
-    ConstructorDeclaration constructor,
+  @override
+  Iterable<Object> generateAll(
+    List<CompilationUnit> units,
+    List<AnnotationMeta> annotations,
   ) sync* {
-    for (final meta in const TypeChecker.fromRuntime(Assert).annotationsOf(
-      constructor.declaredElement!,
-    )) {
-      yield AssertTemplate(
-        eval: meta.getField('eval')!.toStringValue(),
-        message: meta.getField('message')!.toStringValue(),
-      );
+    if (annotations.isEmpty) return;
+
+    final library = LibraryData.from(units);
+    for (final value in generateForAll(library)) {
+      yield value;
+    }
+
+    final datas = annotations.map(
+      (e) => parseDeclaration(library, e.declaration, e.annotation),
+    );
+
+    for (final data in datas) {
+      for (final value in generateForData(library, data)) {
+        yield value;
+      }
     }
   }
 
-  @override
-  Iterable<Object> generateForAll(GlobalData globalData) sync* {
-    yield r'T _$identity<T>(T value) => value;';
-    yield '\n\nfinal $privConstUsedErrorVarName = UnsupportedError(\'$privConstUsedErrorString\');\n';
-  }
-
-  @override
   Iterable<Object> generateForData(
-    GlobalData globalData,
+    LibraryData globalData,
     Data data,
   ) sync* {
-    if (data.generateFromJson) {
+    if (data.options.fromJson) {
       yield FromJson(
         name: data.name,
-        unionKey: data.unionKey,
+        unionKey: data.options.annotation.unionKey!,
         constructors: data.constructors,
         genericParameters: data.genericsParameterTemplate,
         genericDefinitions: data.genericsDefinitionTemplate,
@@ -649,9 +245,9 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
     final commonProperties =
         _commonParametersBetweenAllConstructors(data.constructors);
 
-    final commonCopyWith = !data.generateCopyWith
-        ? null
-        : CopyWith(
+    final commonCopyWith = data.options.annotation.copyWith ??
+            commonProperties.cloneableProperties.isNotEmpty
+        ? CopyWith(
             clonedClassName: data.name,
             readableProperties: commonProperties.readableProperties,
             cloneableProperties: commonProperties.cloneableProperties,
@@ -662,7 +258,8 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
             genericsDefinition: data.genericsDefinitionTemplate,
             genericsParameter: data.genericsParameterTemplate,
             data: data,
-          );
+          )
+        : null;
 
     yield Abstract(
       data: data,
@@ -676,86 +273,20 @@ class FreezedGenerator extends ParserGenerator<GlobalData, Data, Freezed> {
         constructor: constructor,
         commonProperties: commonProperties.readableProperties,
         globalData: globalData,
-        copyWith: !data.generateCopyWith
-            ? null
-            : CopyWith(
-                clonedClassName: '_\$${constructor.redirectedName.public}Impl',
+        copyWith: data.options.annotation.copyWith ??
+                constructor.parameters.allParameters.isNotEmpty
+            ? CopyWith(
+                clonedClassName: constructor.redirectedName,
                 cloneableProperties: constructor.impliedProperties,
                 readableProperties: constructor.impliedProperties,
-                deepCloneableProperties: constructor.cloneableProperties,
+                deepCloneableProperties: constructor.deepCloneableProperties,
                 genericsDefinition: data.genericsDefinitionTemplate,
                 genericsParameter: data.genericsParameterTemplate,
                 data: data,
                 parent: commonCopyWith,
-              ),
+              )
+            : null,
       );
-    }
-  }
-
-  @override
-  GlobalData parseGlobalData(List<CompilationUnit> units) {
-    return GlobalData(
-      hasJson: units.any(
-        (unit) => unit.declaredElement!.library.importsJsonSerializable,
-      ),
-      hasDiagnostics: units.any(
-        (unit) => unit.declaredElement!.library.importsDiagnosticable,
-      ),
-    );
-  }
-}
-
-extension on LibraryElement {
-  bool get importsJsonSerializable {
-    return findAllAvailableTopLevelElements().any((element) {
-      return element.name == 'JsonSerializable' &&
-          (element.library?.isFromPackage('json_annotation') ?? false);
-    });
-  }
-
-  bool get importsDiagnosticable {
-    return findAllAvailableTopLevelElements().any((element) {
-      return element.name == 'DiagnosticableTreeMixin' &&
-          (element.library?.isFromPackage('flutter') ?? false);
-    });
-  }
-}
-
-extension on Element {
-  bool get hasJsonSerializable {
-    return const TypeChecker.fromRuntime(JsonSerializable).hasAnnotationOf(
-      this,
-      throwOnUnresolved: false,
-    );
-  }
-}
-
-extension on ConstructorElement {
-  bool isFallbackUnion(String? fallbackConstructorName) {
-    final constructorName = isDefaultConstructor(this) ? 'default' : name;
-    return constructorName == fallbackConstructorName;
-  }
-
-  String unionValue(FreezedUnionCase? unionCase) {
-    final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
-        .firstAnnotationOf(this, throwOnUnresolved: false);
-    if (annotation != null) {
-      return annotation.getField('value')!.toStringValue()!;
-    }
-
-    final constructorName = isDefaultConstructor(this) ? 'default' : name;
-    switch (unionCase) {
-      case null:
-      case FreezedUnionCase.none:
-        return constructorName;
-      case FreezedUnionCase.kebab:
-        return constructorName.kebabCase;
-      case FreezedUnionCase.pascal:
-        return constructorName.pascalCase;
-      case FreezedUnionCase.snake:
-        return constructorName.snakeCase;
-      case FreezedUnionCase.screamingSnake:
-        return constructorName.screamingSnake;
     }
   }
 }

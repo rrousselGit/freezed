@@ -35,7 +35,7 @@ void main() {
   test('can disable toString', () {
     expect(
       const OptionalToString().toString(),
-      r"Instance of '_$OptionalToStringImpl'",
+      r"Instance of '_OptionalToString'",
     );
   });
 

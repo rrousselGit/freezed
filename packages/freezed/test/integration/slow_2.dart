@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'slow_2.freezed.dart';
 
 @freezed
-class A with _$A {
+abstract class A with _$A {
   const factory A.a() = _A;
   const factory A.b() = _B;
   const factory A.c() = _C;

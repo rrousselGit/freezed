@@ -5,6 +5,6 @@ export 'recursive.dart';
 part 'recursive2.freezed.dart';
 
 @freezed
-class B with _$B {
+abstract class B with _$B {
   factory B({A? parent}) = _B;
 }

@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'custom_equals.freezed.dart';
 
 @freezed
-class CustomEquals with _$CustomEquals {
+abstract class CustomEquals with _$CustomEquals {
   CustomEquals._();
   factory CustomEquals({String? name, int? id}) = _CustomEquals;
 
@@ -15,7 +15,7 @@ class CustomEquals with _$CustomEquals {
 }
 
 @freezed
-class CustomEqualsWithUnion with _$CustomEqualsWithUnion {
+abstract class CustomEqualsWithUnion with _$CustomEqualsWithUnion {
   CustomEqualsWithUnion._();
   factory CustomEqualsWithUnion.first({
     String? name,
@@ -43,7 +43,7 @@ mixin MyClass {
 }
 
 @freezed
-class EqualsWithUnionMixin with _$EqualsWithUnionMixin {
+abstract class EqualsWithUnionMixin with _$EqualsWithUnionMixin {
   EqualsWithUnionMixin._();
 
   @With<MyClass>()
@@ -59,7 +59,7 @@ class EqualsWithUnionMixin with _$EqualsWithUnionMixin {
 }
 
 @freezed
-class EqualsWithUnionExtends extends CustomExtends
+abstract class EqualsWithUnionExtends extends CustomExtends
     with _$EqualsWithUnionExtends {
   EqualsWithUnionExtends._();
 

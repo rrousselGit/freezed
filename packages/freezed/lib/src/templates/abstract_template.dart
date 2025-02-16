@@ -20,8 +20,8 @@ class Abstract {
   String toString() {
     final abstractProperties = commonProperties
         .expand((e) => [
-              e.unimplementedGetter,
-              if (!e.isFinal) e.unimplementedSetter,
+              e.abstractGetter,
+              if (!e.isFinal) e.abstractSetter,
             ])
         .join();
 
@@ -35,17 +35,20 @@ ${copyWith?.abstractCopyWithGetter ?? ''}
 }
 
 ${copyWith?.commonInterface ?? ''}
-
 ${copyWith?.commonConcreteImpl ?? ''}
 ''';
   }
 
   String get _toJsonParams => toJsonParameters(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+        data.genericsParameterTemplate,
+        data.genericArgumentFactories,
+      );
   String get _toJson {
-    if (!data.generateToJson) return '';
-    return '/// Serializes this ${data.name} to a JSON map.\n'
-        'Map<String, dynamic> toJson($_toJsonParams)'
-        ' => throw $privConstUsedErrorVarName;';
+    if (!data.options.toJson) return '';
+
+    return '''
+  /// Serializes this ${data.name} to a JSON map.
+  Map<String, dynamic> toJson($_toJsonParams);
+''';
   }
 }

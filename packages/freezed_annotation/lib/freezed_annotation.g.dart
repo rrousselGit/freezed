@@ -13,7 +13,7 @@ Freezed _$FreezedFromJson(Map json) => Freezed(
       unionValueCase: $enumDecodeNullable(
           _$FreezedUnionCaseEnumMap, json['union_value_case']),
       fallbackUnion: json['fallback_union'] as String?,
-      copyWith: json['copy_with'] as bool? ?? true,
+      copyWith: json['copy_with'] as bool?,
       equal: json['equal'] as bool?,
       toStringOverride: json['to_string_override'] as bool?,
       fromJson: json['from_json'] as bool?,

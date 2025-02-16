@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'concrete.freezed.dart';
 
 @freezed
-class EmptyExtends extends Empty with _$EmptyExtends {
+abstract class EmptyExtends extends Empty with _$EmptyExtends {
   factory EmptyExtends(int value) = _EmptyExtends;
 }
 
@@ -12,7 +12,7 @@ class Empty {
 }
 
 @freezed
-class Concrete extends A with _$Concrete {
+abstract class Concrete extends A with _$Concrete {
   Concrete._();
   factory Concrete(int value) = _Concrete;
 }
@@ -25,19 +25,19 @@ abstract class A {
 }
 
 @freezed
-class EmptyConcrete extends Empty with _$EmptyConcrete {
+abstract class EmptyConcrete extends Empty with _$EmptyConcrete {
   EmptyConcrete._();
   factory EmptyConcrete() = _EmptyConcrete;
 }
 
 @freezed
-class ConstConcrete extends Empty with _$ConstConcrete {
+abstract class ConstConcrete extends Empty with _$ConstConcrete {
   const ConstConcrete._();
   const factory ConstConcrete() = _ConstConcrete;
 }
 
 @freezed
-class MixedIn with _$MixedIn, Mixin {
+abstract class MixedIn with _$MixedIn, Mixin {
   MixedIn._();
   factory MixedIn() = _MixedIn;
 }
@@ -47,7 +47,7 @@ mixin Mixin {
 }
 
 @freezed
-class ConcreteGetter with _$ConcreteGetter {
+abstract class ConcreteGetter with _$ConcreteGetter {
   const ConcreteGetter._();
   const factory ConcreteGetter() = _ConcreteGetter;
 
@@ -55,7 +55,7 @@ class ConcreteGetter with _$ConcreteGetter {
 }
 
 @freezed
-class CustomToString with _$CustomToString {
+abstract class CustomToString with _$CustomToString {
   CustomToString._();
   factory CustomToString() = _CustomToString;
 
@@ -66,7 +66,7 @@ class CustomToString with _$CustomToString {
 }
 
 @freezed
-class MixedInToString with _$MixedInToString, ToStringMixin {
+abstract class MixedInToString with _$MixedInToString, ToStringMixin {
   MixedInToString._();
   factory MixedInToString() = _MixedInToString;
 }
@@ -79,7 +79,7 @@ mixin ToStringMixin {
 }
 
 @freezed
-class BaseToString extends AbstractToString with _$BaseToString {
+abstract class BaseToString extends AbstractToString with _$BaseToString {
   BaseToString._();
   factory BaseToString() = _BaseToString;
 }
@@ -92,13 +92,13 @@ abstract class AbstractToString {
 }
 
 @freezed
-class Const with _$Const {
+abstract class Const with _$Const {
   const Const._();
   const factory Const(int a) = _Const;
 }
 
 @freezed
-class Dollar with _$Dollar {
+abstract class Dollar with _$Dollar {
   const factory Dollar({
     required String $test,
   }) = _DollarStartWithDollar;
@@ -106,7 +106,7 @@ class Dollar with _$Dollar {
 
 /// Middle with $
 @freezed
-class DollarMiddle with _$DollarMiddle {
+abstract class DollarMiddle with _$DollarMiddle {
   const factory DollarMiddle({
     required String te$st,
   }) = _DollarMiddleMiddleWithDollar;
@@ -114,7 +114,7 @@ class DollarMiddle with _$DollarMiddle {
 
 /// End with $
 @freezed
-class DollarEnd with _$DollarEnd {
+abstract class DollarEnd with _$DollarEnd {
   const factory DollarEnd({
     required String test$,
   }) = _DollarEndEndWithDollar;
@@ -122,12 +122,12 @@ class DollarEnd with _$DollarEnd {
 
 /// class with $
 @freezed
-class $DollarClass with _$$DollarClass {
+abstract class $DollarClass with _$$DollarClass {
   const factory $DollarClass() = _DollarClassWithDollar;
 }
 
 /// class contructor with $
 @freezed
-class DollarFactory with _$DollarFactory {
+abstract class DollarFactory with _$DollarFactory {
   const factory DollarFactory.$() = _DollarFactoryWithDollar;
 }

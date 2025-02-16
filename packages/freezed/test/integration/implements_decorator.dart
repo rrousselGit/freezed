@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'implements_decorator.freezed.dart';
 
 @freezed
-class SimpleImplements with _$SimpleImplements {
+abstract class SimpleImplements with _$SimpleImplements {
   const factory SimpleImplements.person(String name, int age) = SimplePerson;
 
   @With<AdministrativeArea<House>>()
@@ -19,7 +19,7 @@ class SimpleImplements with _$SimpleImplements {
 }
 
 @freezed
-class CustomMethodImplements with _$CustomMethodImplements {
+abstract class CustomMethodImplements with _$CustomMethodImplements {
   const CustomMethodImplements._();
 
   const factory CustomMethodImplements.person(String name, int age) =
@@ -39,7 +39,7 @@ class CustomMethodImplements with _$CustomMethodImplements {
 }
 
 @freezed
-class GenericImplements<T> with _$GenericImplements<T> {
+abstract class GenericImplements<T> with _$GenericImplements<T> {
   const factory GenericImplements.person(String name, int age) =
       GenericPerson<T>;
 
