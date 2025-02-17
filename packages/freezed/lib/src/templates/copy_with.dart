@@ -39,7 +39,7 @@ class CopyWith {
 
   /// When collections are wrapped in an UnmodifiableView, this bool determines
   /// if the raw collection can be accessed instead.
-  bool get canAccessRawCollection => parent != null;
+  bool get _canAccessRawCollection => parent != null;
 
   String get interface => _deepCopyInterface(appendGenericToFactory: false);
 
@@ -257,7 +257,7 @@ $s''';
       required Parameter to,
     }) {
       var propertyName = to.name;
-      if (canAccessRawCollection &&
+      if (_canAccessRawCollection &&
           (to.isDartList || to.isDartMap || to.isDartSet) &&
           data.options.asUnmodifiableCollections) {
         propertyName = '_$propertyName';

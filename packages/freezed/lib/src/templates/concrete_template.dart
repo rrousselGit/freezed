@@ -34,20 +34,7 @@ class Concrete {
 
   @override
   String toString() {
-    var jsonSerializable = '';
-    if (!constructor.hasJsonSerializable) {
-      if (data.options.fromJson || data.options.toJson) {
-        final params = [
-          if (data.options.toJson == false) 'createToJson: false',
-          if (data.options.fromJson == false) 'createFactory: false',
-          if (data.genericsParameterTemplate.typeParameters.isNotEmpty &&
-              data.genericArgumentFactories == true)
-            'genericArgumentFactories: true',
-        ].join(',');
-
-        jsonSerializable = '@JsonSerializable($params)';
-      }
-    }
+    final jsonSerializable = _jsonSerializable();
 
     return '''
 ${copyWith?.interface ?? ''}
@@ -70,6 +57,24 @@ $_hashCodeMethod
 $_toStringMethod
 }
 // ''';
+  }
+
+  String _jsonSerializable() {
+    var jsonSerializable = '';
+    if (!constructor.hasJsonSerializable) {
+      if (data.options.fromJson || data.options.toJson) {
+        final params = [
+          if (data.options.toJson == false) 'createToJson: false',
+          if (data.options.fromJson == false) 'createFactory: false',
+          if (data.genericsParameterTemplate.typeParameters.isNotEmpty &&
+              data.genericArgumentFactories == true)
+            'genericArgumentFactories: true',
+        ].join(',');
+
+        jsonSerializable = '@JsonSerializable($params)';
+      }
+    }
+    return jsonSerializable;
   }
 
   String get _concreteConstructor {
@@ -132,31 +137,6 @@ $_toStringMethod
     }
 
     return '$_isConst ${constructor.redirectedName}($parameters)$trailing;';
-  }
-
-  String get interfaces {
-    if (constructor.withDecorators.isEmpty &&
-        constructor.implementsDecorators.isEmpty) {
-      return '';
-    }
-
-    final interfaces = [
-      ...constructor.implementsDecorators.map((e) => e.type),
-      ...constructor.withDecorators.map((e) => e.type),
-    ].join(', ');
-
-    final buffer = StringBuffer();
-
-    if (interfaces.isNotEmpty) {
-      if (data.shouldUseExtends) {
-        buffer.write(' implements ');
-      } else {
-        buffer.write(', ');
-      }
-      buffer.write(interfaces);
-    }
-
-    return buffer.toString();
   }
 
   String get _superConstructor {
