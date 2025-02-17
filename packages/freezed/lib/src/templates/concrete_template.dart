@@ -22,8 +22,8 @@ class Concrete {
 
   final ConstructorDetails constructor;
   final List<Property> commonProperties;
-  final Data data;
-  final LibraryData globalData;
+  final UserDefinedClass data;
+  final Library globalData;
   final CopyWith? copyWith;
 
   late final bool _hasUnionKeyProperty =
@@ -67,7 +67,7 @@ $_toStringMethod
           if (data.options.toJson == false) 'createToJson: false',
           if (data.options.fromJson == false) 'createFactory: false',
           if (data.genericsParameterTemplate.typeParameters.isNotEmpty &&
-              data.genericArgumentFactories == true)
+              data.options.genericArgumentFactories == true)
             'genericArgumentFactories: true',
         ].join(',');
 
@@ -233,10 +233,12 @@ final String \$type;
   }
 
   String get _fromJsonArgs => fromJsonArguments(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+        data.genericsParameterTemplate,
+        data.options.genericArgumentFactories,
+      );
 
   String get _fromJsonParams => fromJsonParameters(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+      data.genericsParameterTemplate, data.options.genericArgumentFactories);
 
   String get _concreteFromJsonConstructor {
     if (!data.options.fromJson) return '';
@@ -245,10 +247,10 @@ final String \$type;
   }
 
   String get _toJsonParams => toJsonParameters(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+      data.genericsParameterTemplate, data.options.genericArgumentFactories);
 
   String get _toJsonArgs => toJsonArguments(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+      data.genericsParameterTemplate, data.options.genericArgumentFactories);
 
   String get _toJson {
     if (!data.options.toJson) return '';

@@ -35,7 +35,7 @@ class CopyWith {
   final List<Property> readableProperties;
   final List<DeepCloneableProperty> deepCloneableProperties;
   final CopyWith? parent;
-  final Data data;
+  final UserDefinedClass data;
 
   /// When collections are wrapped in an UnmodifiableView, this bool determines
   /// if the raw collection can be accessed instead.

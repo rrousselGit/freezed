@@ -420,8 +420,8 @@ class AssertAnnotation {
   }
 }
 
-class Data {
-  Data({
+class UserDefinedClass {
+  UserDefinedClass({
     required this.name,
     required this.options,
     required this.concretePropertiesName,
@@ -429,7 +429,6 @@ class Data {
     required this.genericsDefinitionTemplate,
     required this.genericsParameterTemplate,
     required this.shouldUseExtends,
-    required this.genericArgumentFactories,
   }) : assert(constructors.isNotEmpty);
 
   final String name;
@@ -439,9 +438,8 @@ class Data {
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
   final bool shouldUseExtends;
-  final bool genericArgumentFactories;
 
-  static Data from(
+  static UserDefinedClass from(
     ClassDeclaration declaration,
     ClassConfig configs, {
     required Freezed globalConfigs,
@@ -460,11 +458,10 @@ class Data {
       globalConfigs: globalConfigs,
     );
 
-    return Data(
+    return UserDefinedClass(
       name: declaration.name.lexeme,
       shouldUseExtends: shouldUseExtends,
       options: configs,
-      genericArgumentFactories: configs.genericArgumentFactories,
       constructors: constructors,
       concretePropertiesName: [
         for (final p in declaration.declaredElement!.fields)
@@ -513,8 +510,8 @@ class Data {
   }
 }
 
-class LibraryData {
-  LibraryData({
+class Library {
+  Library({
     required this.hasJson,
     required this.hasDiagnostics,
   });
@@ -522,8 +519,8 @@ class LibraryData {
   final bool hasJson;
   final bool hasDiagnostics;
 
-  static LibraryData from(List<CompilationUnit> units) {
-    return LibraryData(
+  static Library from(List<CompilationUnit> units) {
+    return Library(
       hasJson: units.any(
         (unit) => unit.declaredElement!.library.importsJsonSerializable,
       ),
@@ -549,7 +546,7 @@ class ClassConfig {
     DartObject annotation,
     ClassDeclaration declaration,
     Freezed globalConfigs, {
-    required LibraryData library,
+    required Library library,
   }) {
     final resolvedAnnotation = parseAnnotation(annotation, globalConfigs);
 
@@ -649,7 +646,7 @@ extension ClassDeclarationX on ClassDeclaration {
     return members.whereType<ConstructorDeclaration>();
   }
 
-  bool needsJsonSerializable(LibraryData library) {
+  bool needsJsonSerializable(Library library) {
     if (!library.hasJson) return false;
 
     for (final constructor in constructors) {

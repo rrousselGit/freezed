@@ -35,8 +35,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
   final Freezed _buildYamlConfigs;
 
-  Data parseDeclaration(
-    LibraryData globalData,
+  UserDefinedClass _parseDeclaration(
+    Library globalData,
     Declaration declaration,
     DartObject annotation,
   ) {
@@ -54,7 +54,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       library: globalData,
     );
 
-    return Data.from(declaration, configs, globalConfigs: _buildYamlConfigs);
+    return UserDefinedClass.from(declaration, configs,
+        globalConfigs: _buildYamlConfigs);
   }
 
   CommonProperties _commonParametersBetweenAllConstructors(
@@ -200,7 +201,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     }
   }
 
-  Iterable<Object> generateForAll(LibraryData globalData) sync* {
+  Iterable<Object> _generateForAll(Library globalData) sync* {
     yield r'T _$identity<T>(T value) => value;';
   }
 
@@ -211,36 +212,29 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   ) sync* {
     if (annotations.isEmpty) return;
 
-    final library = LibraryData.from(units);
-    for (final value in generateForAll(library)) {
+    final library = Library.from(units);
+    for (final value in _generateForAll(library)) {
       yield value;
     }
 
-    final datas = annotations.map(
-      (e) => parseDeclaration(library, e.declaration, e.annotation),
-    );
+    final userDefinedClasses = annotations
+        .map(
+          (e) => _parseDeclaration(library, e.declaration, e.annotation),
+        )
+        .toList();
 
-    for (final data in datas) {
-      for (final value in generateForData(library, data)) {
+    for (final data in userDefinedClasses) {
+      for (final value in _generateForData(library, data)) {
         yield value;
       }
     }
   }
 
-  Iterable<Object> generateForData(
-    LibraryData globalData,
-    Data data,
+  Iterable<Object> _generateForData(
+    Library globalData,
+    UserDefinedClass data,
   ) sync* {
-    if (data.options.fromJson) {
-      yield FromJson(
-        name: data.name,
-        unionKey: data.options.annotation.unionKey!,
-        constructors: data.constructors,
-        genericParameters: data.genericsParameterTemplate,
-        genericDefinitions: data.genericsDefinitionTemplate,
-        genericArgumentFactories: data.genericArgumentFactories,
-      );
-    }
+    if (data.options.fromJson) yield FromJson(data);
 
     final commonProperties =
         _commonParametersBetweenAllConstructors(data.constructors);
