@@ -1102,6 +1102,25 @@ Example:
   factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
   ```
 
+## Linting
+
+You can add `freezed` specific linting rules that provide helpful utlilities and catch common mistakes when creating `freezed` classes.
+
+Add [`custom_lint`](https://pub.dev/packages/custom_lint) and `freezed_lint` to your `pubspec.yaml`:
+
+```console
+dart pub add dev:custom_lint
+dart pub add dev:freezed_lint
+```
+
+Also add `custom_lint` to your `analysis_options.yaml`:
+
+```yaml
+analyzer:
+  plugins:
+    - custom_lint
+```
+
 ## Third-party tools
 
 This part contains community-made tools which integrate with Freezed.
