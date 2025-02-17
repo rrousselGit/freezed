@@ -420,8 +420,8 @@ class AssertAnnotation {
   }
 }
 
-class UserDefinedClass {
-  UserDefinedClass({
+class Class {
+  Class({
     required this.name,
     required this.options,
     required this.concretePropertiesName,
@@ -439,7 +439,7 @@ class UserDefinedClass {
   final GenericsParameterTemplate genericsParameterTemplate;
   final bool shouldUseExtends;
 
-  static UserDefinedClass from(
+  static Class from(
     ClassDeclaration declaration,
     ClassConfig configs, {
     required Freezed globalConfigs,
@@ -458,7 +458,7 @@ class UserDefinedClass {
       globalConfigs: globalConfigs,
     );
 
-    return UserDefinedClass(
+    return Class(
       name: declaration.name.lexeme,
       shouldUseExtends: shouldUseExtends,
       options: configs,

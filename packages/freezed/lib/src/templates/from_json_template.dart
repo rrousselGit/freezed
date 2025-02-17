@@ -8,7 +8,7 @@ import 'prototypes.dart';
 class FromJson {
   FromJson(this.clazz);
 
-  final UserDefinedClass clazz;
+  final Class clazz;
 
   @override
   String toString() {

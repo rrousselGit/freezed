@@ -22,7 +22,7 @@ class Concrete {
 
   final ConstructorDetails constructor;
   final List<Property> commonProperties;
-  final UserDefinedClass data;
+  final Class data;
   final Library globalData;
   final CopyWith? copyWith;
 

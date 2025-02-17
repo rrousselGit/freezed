@@ -12,7 +12,7 @@ class Abstract {
     required this.commonProperties,
   });
 
-  final UserDefinedClass data;
+  final Class data;
   final CopyWith? copyWith;
   final List<Property> commonProperties;
 

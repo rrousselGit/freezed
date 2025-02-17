@@ -35,7 +35,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
   final Freezed _buildYamlConfigs;
 
-  UserDefinedClass _parseDeclaration(
+  Class _parseDeclaration(
     Library globalData,
     Declaration declaration,
     DartObject annotation,
@@ -54,8 +54,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       library: globalData,
     );
 
-    return UserDefinedClass.from(declaration, configs,
-        globalConfigs: _buildYamlConfigs);
+    return Class.from(declaration, configs, globalConfigs: _buildYamlConfigs);
   }
 
   CommonProperties _commonParametersBetweenAllConstructors(
@@ -232,7 +231,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
   Iterable<Object> _generateForData(
     Library globalData,
-    UserDefinedClass data,
+    Class data,
   ) sync* {
     if (data.options.fromJson) yield FromJson(data);
 
