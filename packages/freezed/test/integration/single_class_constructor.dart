@@ -7,6 +7,17 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+class Base {
+  const Base.named(this.value);
+  final int value;
+}
+
+@freezed
+abstract class Subclass extends Base with _$Subclass {
+  Subclass._(super.value) : super.named();
+  const factory Subclass(int value) = _Subclass;
+}
+
 @freezed
 abstract class Dynamic with _$Dynamic {
   factory Dynamic({

@@ -56,7 +56,7 @@ $_operatorEqualMethod
 $_hashCodeMethod
 $_toStringMethod
 }
-// ''';
+''';
   }
 
   String _jsonSerializable() {

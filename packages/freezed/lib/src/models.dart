@@ -7,6 +7,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/string.dart';
@@ -156,6 +157,7 @@ class ConstructorDetails {
     required this.isConst,
     required this.redirectedName,
     required this.parameters,
+    required this.properties,
     required this.impliedProperties,
     required this.isDefault,
     required this.isFallback,
@@ -173,12 +175,10 @@ class ConstructorDetails {
     ConstructorDeclaration constructor, {
     required String className,
   }) {
-    if (constructor.factoryKeyword == null &&
-        (constructor.name?.lexeme != '_' ||
-            constructor.parameters.parameters.isNotEmpty)) {
+    if (constructor.factoryKeyword == null && constructor.name?.lexeme != '_') {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed can only have a single non-factory'
-        ', without parameters, and named MyClass._()',
+        ', named MyClass._()',
         element: constructor.declaredElement,
       );
     }
@@ -213,6 +213,11 @@ class ConstructorDetails {
     required Freezed globalConfigs,
   }) {
     final result = <ConstructorDetails>[];
+
+    final manualConstructor = declaration.constructors
+        .where((e) => e.name?.lexeme == '_')
+        .firstOrNull;
+
     for (final constructor in declaration.constructors) {
       if (constructor.factoryKeyword == null ||
           constructor.name?.lexeme == 'fromJson') {
@@ -239,6 +244,23 @@ class ConstructorDetails {
         className: declaration.name.lexeme,
       );
 
+      final allProperties = [
+        for (final parameter in constructor.parameters.parameters)
+          Property.fromFormalParameter(
+            parameter,
+            addImplicitFinal: configs.annotation.addImplicitFinal,
+          ),
+      ];
+
+      final excludedProperties = manualConstructor?.parameters.parameters
+              .map((e) => e.declaredElement!.name)
+              .toSet() ??
+          <String>{};
+
+      final impliedProperties = allProperties
+          .where((e) => !excludedProperties.contains(e.name))
+          .toList();
+
       result.add(
         ConstructorDetails(
           asserts: AssertAnnotation.parseAll(constructor).toList(),
@@ -249,13 +271,8 @@ class ConstructorDetails {
           isConst: constructor.constKeyword != null,
           fullName: constructor.fullName,
           escapedName: constructor.escapedName,
-          impliedProperties: [
-            for (final parameter in constructor.parameters.parameters)
-              Property.fromFormalParameter(
-                parameter,
-                addImplicitFinal: configs.annotation.addImplicitFinal,
-              ),
-          ],
+          impliedProperties: impliedProperties,
+          properties: allProperties,
           decorators: constructor.metadata
               .where((element) {
                 final elementSourceUri =
@@ -324,6 +341,7 @@ class ConstructorDetails {
   final bool isConst;
   final String redirectedName;
   final ParametersTemplate parameters;
+  final List<Property> properties;
   final List<Property> impliedProperties;
   final bool isDefault;
   final bool isFallback;
@@ -345,18 +363,16 @@ class ImplementsAnnotation {
   static Iterable<ImplementsAnnotation> parseAll(
     ConstructorElement constructor,
   ) sync* {
-    for (final metadata in constructor.metadata) {
-      if (!metadata.isImplements) continue;
-      final object = metadata.computeConstantValue()!;
-
-      final stringType = object.getField('stringType');
+    for (final meta in const TypeChecker.fromRuntime(Implements)
+        .annotationsOf(constructor, throwOnUnresolved: false)) {
+      final stringType = meta.getField('stringType');
       if (stringType?.isNull == false) {
         yield ImplementsAnnotation(type: stringType!.toStringValue()!);
       } else {
         yield ImplementsAnnotation(
           type: resolveFullTypeStringFrom(
             constructor.library,
-            (object.type! as InterfaceType).typeArguments.single,
+            (meta.type! as InterfaceType).typeArguments.single,
           ),
         );
       }
