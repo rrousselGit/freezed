@@ -201,7 +201,7 @@ When specifying fields in MyClass._(), either:
 - the parameter should be named
 - or all constructors in the class should specify that parameter.
 ''',
-              node: ctor,
+              element: constructor.declaredElement,
             );
           }
         }

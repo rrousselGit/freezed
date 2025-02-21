@@ -105,7 +105,7 @@ abstract class Mixed {
 
 @ShouldThrow(
   'Classes decorated with @freezed can only have a single non-factory'
-  ', without parameters, and named MyClass._()',
+  ', and must be named MyClass._()',
 )
 @freezed
 abstract class MultipleConcreteConstructors {
@@ -115,20 +115,32 @@ abstract class MultipleConcreteConstructors {
 
 @ShouldThrow(
   'Classes decorated with @freezed can only have a single non-factory'
-  ', without parameters, and named MyClass._()',
+  ', and must be named MyClass._()',
 )
 @freezed
 abstract class SingleConcreteConstructorInvalidName {
   SingleConcreteConstructorInvalidName();
 }
 
-@ShouldThrow(
-  'Classes decorated with @freezed can only have a single non-factory'
-  ', without parameters, and named MyClass._()',
-)
+@ShouldThrow('''
+The constructor MyClass._() specified a positional parameter named a,
+but at least one constructor does not have a matching parameter.
+
+When specifying fields in MyClass._(), either:
+- the parameter should be named
+- or all constructors in the class should specify that parameter.
+''')
 @freezed
 abstract class ConcreteConstructorWithParameters {
-  ConcreteConstructorWithParameters(int a);
+  ConcreteConstructorWithParameters._(int a);
+
+  factory ConcreteConstructorWithParameters() =
+      _ConcreteConstructorWithParameters;
+}
+
+class _ConcreteConstructorWithParameters
+    implements ConcreteConstructorWithParameters {
+  _ConcreteConstructorWithParameters();
 }
 
 @ShouldThrow(
