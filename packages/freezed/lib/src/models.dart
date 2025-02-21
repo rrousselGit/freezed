@@ -156,7 +156,7 @@ class ConstructorDetails {
     required this.isConst,
     required this.redirectedName,
     required this.parameters,
-    required this.impliedProperties,
+    required this.properties,
     required this.isDefault,
     required this.isFallback,
     required this.hasJsonSerializable,
@@ -170,17 +170,42 @@ class ConstructorDetails {
   });
 
   static void _assertValidNormalConstructorUsage(
-    ConstructorDeclaration constructor, {
-    required String className,
-  }) {
-    if (constructor.factoryKeyword == null &&
-        (constructor.name?.lexeme != '_' ||
-            constructor.parameters.parameters.isNotEmpty)) {
+    ClassDeclaration declaration,
+    ConstructorDeclaration constructor,
+  ) {
+    if (constructor.factoryKeyword == null && constructor.name?.lexeme != '_') {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed can only have a single non-factory'
-        ', without parameters, and named MyClass._()',
+        ', and must be named MyClass._()',
         element: constructor.declaredElement,
       );
+    }
+
+    if (constructor.name?.lexeme == '_') {
+      for (final param in constructor.parameters.parameters) {
+        if (param.isPositional) {
+          final otherFreezedCtors = declaration.constructors.where((e) =>
+              e.factoryKeyword != null && e.redirectedConstructor != null);
+
+          for (final ctor in otherFreezedCtors) {
+            final hasMatchingParam = ctor.parameters.parameters
+                .any((e) => e.name?.lexeme == param.name?.lexeme);
+            if (hasMatchingParam) continue;
+
+            throw InvalidGenerationSourceError(
+              '''
+The constructor MyClass._() specified a positional parameter named ${param.name},
+but at least one constructor does not have a matching parameter.
+
+When specifying fields in MyClass._(), either:
+- the parameter should be named
+- or all constructors in the class should specify that parameter.
+''',
+              element: constructor.declaredElement,
+            );
+          }
+        }
+      }
     }
   }
 
@@ -213,13 +238,15 @@ class ConstructorDetails {
     required Freezed globalConfigs,
   }) {
     final result = <ConstructorDetails>[];
+
+    final manualConstructor = declaration.constructors
+        .where((e) => e.name?.lexeme == '_')
+        .firstOrNull;
+
     for (final constructor in declaration.constructors) {
       if (constructor.factoryKeyword == null ||
           constructor.name?.lexeme == 'fromJson') {
-        _assertValidNormalConstructorUsage(
-          constructor,
-          className: declaration.name.lexeme,
-        );
+        _assertValidNormalConstructorUsage(declaration, constructor);
         continue;
       }
 
@@ -227,10 +254,7 @@ class ConstructorDetails {
           constructor.redirectedConstructor?.type.name2.lexeme;
 
       if (redirectedName == null) {
-        _assertValidNormalConstructorUsage(
-          constructor,
-          className: declaration.name.lexeme,
-        );
+        _assertValidNormalConstructorUsage(declaration, constructor);
         continue;
       }
 
@@ -238,6 +262,22 @@ class ConstructorDetails {
         constructor,
         className: declaration.name.lexeme,
       );
+
+      final excludedProperties = manualConstructor?.parameters.parameters
+              .map((e) => e.declaredElement!.name)
+              .toSet() ??
+          <String>{};
+
+      final allProperties = [
+        for (final parameter in constructor.parameters.parameters)
+          (
+            isSynthetic: !excludedProperties.contains(parameter.name!.lexeme),
+            value: Property.fromFormalParameter(
+              parameter,
+              addImplicitFinal: configs.annotation.addImplicitFinal,
+            ),
+          ),
+      ];
 
       result.add(
         ConstructorDetails(
@@ -249,13 +289,7 @@ class ConstructorDetails {
           isConst: constructor.constKeyword != null,
           fullName: constructor.fullName,
           escapedName: constructor.escapedName,
-          impliedProperties: [
-            for (final parameter in constructor.parameters.parameters)
-              Property.fromFormalParameter(
-                parameter,
-                addImplicitFinal: configs.annotation.addImplicitFinal,
-              ),
-          ],
+          properties: allProperties,
           decorators: constructor.metadata
               .where((element) {
                 final elementSourceUri =
@@ -324,7 +358,7 @@ class ConstructorDetails {
   final bool isConst;
   final String redirectedName;
   final ParametersTemplate parameters;
-  final List<Property> impliedProperties;
+  final List<({Property value, bool isSynthetic})> properties;
   final bool isDefault;
   final bool isFallback;
   final bool hasJsonSerializable;
@@ -337,6 +371,13 @@ class ConstructorDetails {
   final List<AssertAnnotation> asserts;
 
   String get callbackName => constructorNameToCallbackName(name);
+
+  bool isSynthetic({required String param}) {
+    return properties
+        .where((element) => element.value.name == param)
+        .first
+        .isSynthetic;
+  }
 }
 
 class ImplementsAnnotation {
@@ -345,18 +386,16 @@ class ImplementsAnnotation {
   static Iterable<ImplementsAnnotation> parseAll(
     ConstructorElement constructor,
   ) sync* {
-    for (final metadata in constructor.metadata) {
-      if (!metadata.isImplements) continue;
-      final object = metadata.computeConstantValue()!;
-
-      final stringType = object.getField('stringType');
+    for (final meta in const TypeChecker.fromRuntime(Implements)
+        .annotationsOf(constructor, throwOnUnresolved: false)) {
+      final stringType = meta.getField('stringType');
       if (stringType?.isNull == false) {
         yield ImplementsAnnotation(type: stringType!.toStringValue()!);
       } else {
         yield ImplementsAnnotation(
           type: resolveFullTypeStringFrom(
             constructor.library,
-            (object.type! as InterfaceType).typeArguments.single,
+            (meta.type! as InterfaceType).typeArguments.single,
           ),
         );
       }
@@ -420,16 +459,26 @@ class AssertAnnotation {
   }
 }
 
-class Data {
-  Data({
+class SuperInvocation {
+  SuperInvocation({
+    required this.name,
+    required this.positional,
+    required this.named,
+  });
+  final String? name;
+  final List<String> positional;
+  final List<String> named;
+}
+
+class Class {
+  Class({
     required this.name,
     required this.options,
     required this.concretePropertiesName,
     required this.constructors,
     required this.genericsDefinitionTemplate,
     required this.genericsParameterTemplate,
-    required this.shouldUseExtends,
-    required this.genericArgumentFactories,
+    required this.superCall,
   }) : assert(constructors.isNotEmpty);
 
   final String name;
@@ -438,20 +487,19 @@ class Data {
   final List<ConstructorDetails> constructors;
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
-  final bool shouldUseExtends;
-  final bool genericArgumentFactories;
+  final SuperInvocation? superCall;
 
-  static Data from(
+  static Class from(
     ClassDeclaration declaration,
     ClassConfig configs, {
     required Freezed globalConfigs,
   }) {
-    final shouldUseExtends = declaration.constructors.any((ctor) {
+    final privateCtor = declaration.constructors.where((ctor) {
       return ctor.name?.lexeme == '_' && ctor.factoryKeyword == null;
-    });
+    }).firstOrNull;
 
     for (final field in declaration.declaredElement!.fields) {
-      _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
+      _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
     }
 
     final constructors = ConstructorDetails.parseAll(
@@ -460,11 +508,24 @@ class Data {
       globalConfigs: globalConfigs,
     );
 
-    return Data(
+    final superCall = privateCtor == null
+        ? null
+        : SuperInvocation(
+            name: '_',
+            positional: privateCtor.parameters.parameters
+                .where((e) => e.isPositional)
+                .map((e) => e.name!.lexeme)
+                .toList(),
+            named: privateCtor.parameters.parameters
+                .where((e) => e.isNamed)
+                .map((e) => e.name!.lexeme)
+                .toList(),
+          );
+
+    return Class(
       name: declaration.name.lexeme,
-      shouldUseExtends: shouldUseExtends,
+      superCall: superCall,
       options: configs,
-      genericArgumentFactories: configs.genericArgumentFactories,
       constructors: constructors,
       concretePropertiesName: [
         for (final p in declaration.declaredElement!.fields)
@@ -513,8 +574,8 @@ class Data {
   }
 }
 
-class LibraryData {
-  LibraryData({
+class Library {
+  Library({
     required this.hasJson,
     required this.hasDiagnostics,
   });
@@ -522,8 +583,8 @@ class LibraryData {
   final bool hasJson;
   final bool hasDiagnostics;
 
-  static LibraryData from(List<CompilationUnit> units) {
-    return LibraryData(
+  static Library from(List<CompilationUnit> units) {
+    return Library(
       hasJson: units.any(
         (unit) => unit.declaredElement!.library.importsJsonSerializable,
       ),
@@ -549,7 +610,7 @@ class ClassConfig {
     DartObject annotation,
     ClassDeclaration declaration,
     Freezed globalConfigs, {
-    required LibraryData library,
+    required Library library,
   }) {
     final resolvedAnnotation = parseAnnotation(annotation, globalConfigs);
 
@@ -649,7 +710,7 @@ extension ClassDeclarationX on ClassDeclaration {
     return members.whereType<ConstructorDeclaration>();
   }
 
-  bool needsJsonSerializable(LibraryData library) {
+  bool needsJsonSerializable(Library library) {
     if (!library.hasJson) return false;
 
     for (final constructor in constructors) {

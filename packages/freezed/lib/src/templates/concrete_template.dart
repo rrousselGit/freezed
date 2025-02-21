@@ -22,32 +22,19 @@ class Concrete {
 
   final ConstructorDetails constructor;
   final List<Property> commonProperties;
-  final Data data;
-  final LibraryData globalData;
+  final Class data;
+  final Library globalData;
   final CopyWith? copyWith;
 
   late final bool _hasUnionKeyProperty =
       (data.options.toJson || data.options.fromJson) &&
           data.constructors.length > 1 &&
-          constructor.impliedProperties
-              .every((e) => e.name != data.options.annotation.unionKey);
+          constructor.properties
+              .every((e) => e.value.name != data.options.annotation.unionKey);
 
   @override
   String toString() {
-    var jsonSerializable = '';
-    if (!constructor.hasJsonSerializable) {
-      if (data.options.fromJson || data.options.toJson) {
-        final params = [
-          if (data.options.toJson == false) 'createToJson: false',
-          if (data.options.fromJson == false) 'createFactory: false',
-          if (data.genericsParameterTemplate.typeParameters.isNotEmpty &&
-              data.genericArgumentFactories == true)
-            'genericArgumentFactories: true',
-        ].join(',');
-
-        jsonSerializable = '@JsonSerializable($params)';
-      }
-    }
+    final jsonSerializable = _jsonSerializable();
 
     return '''
 ${copyWith?.interface ?? ''}
@@ -69,31 +56,92 @@ $_operatorEqualMethod
 $_hashCodeMethod
 $_toStringMethod
 }
-// ''';
+''';
+  }
+
+  String _jsonSerializable() {
+    var jsonSerializable = '';
+    if (!constructor.hasJsonSerializable) {
+      if (data.options.fromJson || data.options.toJson) {
+        final params = [
+          if (data.options.toJson == false) 'createToJson: false',
+          if (data.options.fromJson == false) 'createFactory: false',
+          if (data.genericsParameterTemplate.typeParameters.isNotEmpty &&
+              data.options.genericArgumentFactories == true)
+            'genericArgumentFactories: true',
+        ].join(',');
+
+        jsonSerializable = '@JsonSerializable($params)';
+      }
+    }
+    return jsonSerializable;
   }
 
   String get _concreteConstructor {
-    final superConstructor = _superConstructor;
+    final superParameters = <String>{};
+
+    var parameters = constructor.parameters.mapParameters2((
+      p, {
+      required isNamed,
+      required isRequired,
+      required index,
+    }) {
+      if (data.options.asUnmodifiableCollections &&
+          (p.isDartList || p.isDartMap || p.isDartSet)) {
+        return (
+          Parameter.fromParameter(p),
+          isNamed: isNamed,
+          isRequired: isRequired,
+        );
+      }
+
+      final correspondingProperty = constructor.properties
+          .where((element) => element.value.name == p.name)
+          .first;
+      if (correspondingProperty.isSynthetic) {
+        return (
+          LocalParameter.fromParameter(p),
+          isNamed: isNamed,
+          isRequired: isRequired,
+        );
+      }
+
+      final superCall = data.superCall!;
+
+      // Attempt to use super.field when possible.
+      // For now, we only do so for named parameters as positional parameters
+      // are trickier.
+      if (isNamed && superCall.positional.contains(p.name)) {
+        superParameters.add(p.name);
+        return (
+          SuperParameter.fromParameter(p),
+          isNamed: isNamed,
+          isRequired: isRequired,
+        );
+      }
+
+      return (
+        Parameter.fromParameter(p),
+        isNamed: isNamed,
+        isRequired: isRequired,
+      );
+    });
+
+    final superConstructor = _superConstructor(superParameters);
 
     final trailingStrings = <String>[
       if (constructor.asserts.isNotEmpty)
         ...constructor.asserts.map((a) => a.toString()),
       if (data.options.asUnmodifiableCollections)
-        ...constructor.impliedProperties
+        ...constructor.properties
+            .where((e) => e.isSynthetic)
+            .map((e) => e.value)
             .where((e) => e.isDartList || e.isDartMap || e.isDartSet)
             .map((e) => '_${e.name} = ${e.name}'),
       if (_hasUnionKeyProperty)
         "\$type = \$type ?? '${constructor.unionValue}'",
       if (superConstructor.isNotEmpty) superConstructor,
     ];
-
-    var parameters = constructor.parameters.mapParameters((p) {
-      if (data.options.asUnmodifiableCollections &&
-          (p.isDartList || p.isDartMap || p.isDartSet)) {
-        return Parameter.fromParameter(p);
-      }
-      return LocalParameter.fromParameter(p);
-    });
 
     if (_hasUnionKeyProperty) {
       final typeProperty = Parameter(
@@ -134,39 +182,26 @@ $_toStringMethod
     return '$_isConst ${constructor.redirectedName}($parameters)$trailing;';
   }
 
-  String get interfaces {
-    if (constructor.withDecorators.isEmpty &&
-        constructor.implementsDecorators.isEmpty) {
-      return '';
-    }
+  String _superConstructor(Iterable<String> alreadySet) {
+    final superCall = data.superCall;
+    if (superCall == null) return '';
 
-    final interfaces = [
-      ...constructor.implementsDecorators.map((e) => e.type),
-      ...constructor.withDecorators.map((e) => e.type),
+    final params = [
+      for (final p in superCall.positional)
+        if (!alreadySet.contains(p)) p,
+      for (final p in superCall.named)
+        if (constructor.parameters.allParameters
+                .any((element) => element.name == p) &&
+            !alreadySet.contains(p))
+          '$p: $p',
     ].join(', ');
 
-    final buffer = StringBuffer();
-
-    if (interfaces.isNotEmpty) {
-      if (data.shouldUseExtends) {
-        buffer.write(' implements ');
-      } else {
-        buffer.write(', ');
-      }
-      buffer.write(interfaces);
-    }
-
-    return buffer.toString();
-  }
-
-  String get _superConstructor {
-    if (!data.shouldUseExtends) return '';
-    return 'super._()';
+    return 'super._($params)';
   }
 
   String get _concreteSuper {
     final interfaces = <String, List<String>>{
-      if (data.shouldUseExtends)
+      if (data.superCall != null)
         'extends': ['${data.name}${data.genericsParameterTemplate}'],
       'with': [
         if (globalData.hasDiagnostics && data.options.asString)
@@ -174,7 +209,7 @@ $_toStringMethod
         ...constructor.withDecorators.map((e) => e.type),
       ],
       'implements': [
-        if (!data.shouldUseExtends)
+        if (data.superCall == null)
           '${data.name}${data.genericsParameterTemplate}',
         ...constructor.implementsDecorators.map((e) => e.type),
       ],
@@ -187,7 +222,10 @@ $_toStringMethod
   }
 
   String get _properties {
-    final classProperties = constructor.impliedProperties.expand((p) {
+    final classProperties = constructor.properties
+        .where((e) => e.isSynthetic)
+        .map((e) => e.value)
+        .expand((p) {
       final annotatedProperty = p.copyWith(
         decorators: [
           if (commonProperties.any((element) => element.name == p.name))
@@ -253,10 +291,12 @@ final String \$type;
   }
 
   String get _fromJsonArgs => fromJsonArguments(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+        data.genericsParameterTemplate,
+        data.options.genericArgumentFactories,
+      );
 
   String get _fromJsonParams => fromJsonParameters(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+      data.genericsParameterTemplate, data.options.genericArgumentFactories);
 
   String get _concreteFromJsonConstructor {
     if (!data.options.fromJson) return '';
@@ -265,10 +305,10 @@ final String \$type;
   }
 
   String get _toJsonParams => toJsonParameters(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+      data.genericsParameterTemplate, data.options.genericArgumentFactories);
 
   String get _toJsonArgs => toJsonArguments(
-      data.genericsParameterTemplate, data.genericArgumentFactories);
+      data.genericsParameterTemplate, data.options.genericArgumentFactories);
 
   String get _toJson {
     if (!data.options.toJson) return '';
@@ -284,7 +324,7 @@ Map<String, dynamic> toJson($_toJsonParams) {
     if (!globalData.hasDiagnostics || !data.options.asString) return '';
 
     final diagnostics = [
-      for (final e in constructor.impliedProperties)
+      for (final e in constructor.properties.map((e) => e.value))
         "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
     ].join();
 
@@ -307,7 +347,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
         : '';
 
     final properties = [
-      for (final p in constructor.impliedProperties)
+      for (final p in constructor.properties.map((e) => e.value))
         '${p.name.replaceAll(r'$', r'\$')}: ${wrapClassField(p.name)}',
     ];
 
@@ -325,7 +365,7 @@ String toString($parameters) {
     final comparisons = [
       'other.runtimeType == runtimeType',
       'other is ${constructor.redirectedName}${data.genericsParameterTemplate}',
-      ...constructor.impliedProperties.map((p) {
+      ...constructor.properties.map((e) => e.value).map((p) {
         var name = p.name;
         if (p.isPossiblyDartCollection) {
           if (data.options.asUnmodifiableCollections &&
@@ -360,7 +400,7 @@ bool operator ==(Object other) {
 
     final hashedProperties = [
       'runtimeType',
-      for (final property in constructor.impliedProperties)
+      for (final property in constructor.properties.map((e) => e.value))
         if (property.isPossiblyDartCollection)
           if (data.options.asUnmodifiableCollections &&
               (property.isDartList || property.isDartMap || property.isDartSet))

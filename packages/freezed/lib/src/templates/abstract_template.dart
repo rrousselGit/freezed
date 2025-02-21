@@ -12,7 +12,7 @@ class Abstract {
     required this.commonProperties,
   });
 
-  final Data data;
+  final Class data;
   final CopyWith? copyWith;
   final List<Property> commonProperties;
 
@@ -41,7 +41,7 @@ ${copyWith?.commonConcreteImpl ?? ''}
 
   String get _toJsonParams => toJsonParameters(
         data.genericsParameterTemplate,
-        data.genericArgumentFactories,
+        data.options.genericArgumentFactories,
       );
   String get _toJson {
     if (!data.options.toJson) return '';

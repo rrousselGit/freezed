@@ -450,6 +450,15 @@ void main() {
     });
   });
 
+  test('DeepWithManualField', () {
+    final value = DeepWithManualField(ManualField(42));
+
+    expect(
+      value.copyWith.manual(value: 21),
+      DeepWithManualField(ManualField(21)),
+    );
+  });
+
   group('Company', () {
     group('From subclass, copyWith parameters are not typed as Object', () {
       test('Company.copyWith', () async {

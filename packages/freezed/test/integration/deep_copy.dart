@@ -3,6 +3,19 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'deep_copy.freezed.dart';
 
 @freezed
+abstract class DeepWithManualField with _$DeepWithManualField {
+  const factory DeepWithManualField(ManualField manual) = _DeepWithManualField;
+}
+
+@freezed
+abstract class ManualField with _$ManualField {
+  const ManualField._({required this.value});
+  const factory ManualField(int value) = _ManualField;
+
+  final int value;
+}
+
+@freezed
 abstract class Company with _$Company {
   factory Company({String? name, Director? director}) = CompanySubclass;
 }

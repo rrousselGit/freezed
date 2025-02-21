@@ -2,6 +2,37 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'multiple_constructors.freezed.dart';
 
+@freezed
+abstract class ManualPositionInAnyOrder with _$ManualPositionInAnyOrder {
+  const ManualPositionInAnyOrder._(this.a, this.b);
+  const factory ManualPositionInAnyOrder(String a, int b) =
+      _ManualPositionInAnyOrder;
+  const factory ManualPositionInAnyOrder.other(int b, String a) =
+      _ManualPositionInAnyOrder2;
+
+  final String a;
+  final int b;
+}
+
+@freezed
+abstract class ManualNamedOptionalProperty with _$ManualNamedOptionalProperty {
+  const ManualNamedOptionalProperty._({this.value = 0});
+  const factory ManualNamedOptionalProperty(int value) = _ManualNamedProperty;
+  const factory ManualNamedOptionalProperty.a() = _ManualNamedPropertyA;
+
+  final int value;
+}
+
+@freezed
+abstract class Subclass with _$Subclass {
+  const Subclass._({required this.value});
+  const factory Subclass.a(int value) = _SubclassA;
+  const factory Subclass.b(int value) = _SubclassB;
+
+  // Check that no @override is nu
+  final int value;
+}
+
 @unfreezed
 abstract class UnfreezedImmutableUnion with _$UnfreezedImmutableUnion {
   factory UnfreezedImmutableUnion(final String a) =
