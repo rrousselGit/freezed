@@ -8,13 +8,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'single_class_constructor.freezed.dart';
 
 class Base {
-  const Base.named(this.value);
+  const Base.named(this.value, {required this.named});
   final int value;
+  final String named;
 }
 
 @freezed
 abstract class Subclass extends Base with _$Subclass {
-  const Subclass._(super.value) : super.named();
+  const Subclass._(super.value, {super.named = ''}) : super.named();
   const factory Subclass(int value) = _Subclass;
 }
 

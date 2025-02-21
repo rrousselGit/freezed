@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -137,6 +138,51 @@ class ParametersTemplate {
       optionalPositionalParameters:
           optionalPositionalParameters.map(cb).toList(),
       namedParameters: namedParameters.map(cb).toList(),
+    );
+  }
+
+  ParametersTemplate mapParameters2(
+    (
+      Parameter, {
+      bool isNamed,
+      bool isRequired,
+    })
+        Function(
+      Parameter parameter, {
+      required bool isNamed,
+      required bool isRequired,
+      required int? index,
+    }) cb,
+  ) {
+    final parameters = [
+      ...requiredPositionalParameters.mapIndexed((index, e) => cb(
+            e,
+            isNamed: false,
+            isRequired: true,
+            index: index,
+          )),
+      ...optionalPositionalParameters.mapIndexed((index, e) => cb(
+            e,
+            isNamed: false,
+            isRequired: false,
+            index: index,
+          )),
+      ...namedParameters.map(
+        (e) => cb(e, isNamed: true, isRequired: e.isRequired, index: null),
+      ),
+    ];
+
+    return ParametersTemplate(
+      parameters
+          .where((e) => e.isNamed == false && e.isRequired == true)
+          .map((e) => e.$1)
+          .toList(),
+      optionalPositionalParameters: parameters
+          .where((e) => e.isNamed == false && e.isRequired == false)
+          .map((e) => e.$1)
+          .toList(),
+      namedParameters:
+          parameters.where((e) => e.isNamed == true).map((e) => e.$1).toList(),
     );
   }
 

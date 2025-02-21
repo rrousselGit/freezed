@@ -1,6 +1,34 @@
 ## Unreleased 3.0.0
 
 - **Breaking**: Removed `map/when` and variants. These have been discouraged since Dart got pattern matching.
+- **Breaking**: Freezed classes should now either be `abstract`, `sealed`, or manually implements `_$MyClass`.
+- Inheritance and dynamic default values are now supported by specifying them in the `MyClass._()` constructor.  
+  Inheritance example:
+  ```dart
+  class BaseClass {
+    BaseClass.name(this.value);
+    final int value;
+  }
+  @freezed
+  abstract class Example extends BaseClass with _$Example {
+    // We can pass super values through the ._ constructor.
+    Example._(super.value): super.name();
+
+    factory Example(int value, String name) = _Example;
+  }
+  ```
+  Dynamic default values example:
+  ```dart
+  @freezed
+  abstract class Example with _$Example {
+    Example._(Duration? duration)
+      : duration ??= DateTime.now();
+
+    factory Example({Duration? duration}) = _Example;
+
+    final Duration? duration;
+  }
+  ```
 
 ## 2.5.8 - 2025-01-06
 

@@ -170,15 +170,42 @@ class ConstructorDetails {
   });
 
   static void _assertValidNormalConstructorUsage(
-    ConstructorDeclaration constructor, {
-    required String className,
-  }) {
+    ClassDeclaration declaration,
+    ConstructorDeclaration constructor,
+  ) {
     if (constructor.factoryKeyword == null && constructor.name?.lexeme != '_') {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed can only have a single non-factory'
-        ', named MyClass._()',
+        ', and must be named MyClass._()',
         element: constructor.declaredElement,
       );
+    }
+
+    if (constructor.name?.lexeme == '_') {
+      for (final param in constructor.parameters.parameters) {
+        if (param.isPositional) {
+          final otherFreezedCtors = declaration.constructors.where((e) =>
+              e.factoryKeyword != null && e.redirectedConstructor != null);
+
+          for (final ctor in otherFreezedCtors) {
+            final hasMatchingParam = ctor.parameters.parameters
+                .any((e) => e.name?.lexeme == param.name?.lexeme);
+            if (hasMatchingParam) continue;
+
+            throw InvalidGenerationSourceError(
+              '''
+The constructor MyClass._() specified a positional parameter named ${param.name},
+but at least one constructor does not have a matching parameter.
+
+When specifying fields in MyClass._(), either:
+- the parameter should be named
+- or all constructors in the class should specify that parameter.
+''',
+              node: ctor,
+            );
+          }
+        }
+      }
     }
   }
 
@@ -219,10 +246,7 @@ class ConstructorDetails {
     for (final constructor in declaration.constructors) {
       if (constructor.factoryKeyword == null ||
           constructor.name?.lexeme == 'fromJson') {
-        _assertValidNormalConstructorUsage(
-          constructor,
-          className: declaration.name.lexeme,
-        );
+        _assertValidNormalConstructorUsage(declaration, constructor);
         continue;
       }
 
@@ -230,10 +254,7 @@ class ConstructorDetails {
           constructor.redirectedConstructor?.type.name2.lexeme;
 
       if (redirectedName == null) {
-        _assertValidNormalConstructorUsage(
-          constructor,
-          className: declaration.name.lexeme,
-        );
+        _assertValidNormalConstructorUsage(declaration, constructor);
         continue;
       }
 
@@ -438,6 +459,17 @@ class AssertAnnotation {
   }
 }
 
+class SuperInvocation {
+  SuperInvocation({
+    required this.name,
+    required this.positional,
+    required this.named,
+  });
+  final String? name;
+  final List<String> positional;
+  final List<String> named;
+}
+
 class Class {
   Class({
     required this.name,
@@ -446,7 +478,7 @@ class Class {
     required this.constructors,
     required this.genericsDefinitionTemplate,
     required this.genericsParameterTemplate,
-    required this.shouldUseExtends,
+    required this.superCall,
   }) : assert(constructors.isNotEmpty);
 
   final String name;
@@ -455,19 +487,19 @@ class Class {
   final List<ConstructorDetails> constructors;
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
-  final bool shouldUseExtends;
+  final SuperInvocation? superCall;
 
   static Class from(
     ClassDeclaration declaration,
     ClassConfig configs, {
     required Freezed globalConfigs,
   }) {
-    final shouldUseExtends = declaration.constructors.any((ctor) {
+    final privateCtor = declaration.constructors.where((ctor) {
       return ctor.name?.lexeme == '_' && ctor.factoryKeyword == null;
-    });
+    }).firstOrNull;
 
     for (final field in declaration.declaredElement!.fields) {
-      _assertValidFieldUsage(field, shouldUseExtends: shouldUseExtends);
+      _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
     }
 
     final constructors = ConstructorDetails.parseAll(
@@ -476,9 +508,23 @@ class Class {
       globalConfigs: globalConfigs,
     );
 
+    final superCall = privateCtor == null
+        ? null
+        : SuperInvocation(
+            name: '_',
+            positional: privateCtor.parameters.parameters
+                .where((e) => e.isPositional)
+                .map((e) => e.name!.lexeme)
+                .toList(),
+            named: privateCtor.parameters.parameters
+                .where((e) => e.isNamed)
+                .map((e) => e.name!.lexeme)
+                .toList(),
+          );
+
     return Class(
       name: declaration.name.lexeme,
-      shouldUseExtends: shouldUseExtends,
+      superCall: superCall,
       options: configs,
       constructors: constructors,
       concretePropertiesName: [

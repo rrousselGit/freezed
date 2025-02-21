@@ -78,7 +78,56 @@ $_toStringMethod
   }
 
   String get _concreteConstructor {
-    final superConstructor = _superConstructor;
+    final superParameters = <String>{};
+
+    var parameters = constructor.parameters.mapParameters2((
+      p, {
+      required isNamed,
+      required isRequired,
+      required index,
+    }) {
+      if (data.options.asUnmodifiableCollections &&
+          (p.isDartList || p.isDartMap || p.isDartSet)) {
+        return (
+          Parameter.fromParameter(p),
+          isNamed: isNamed,
+          isRequired: isRequired,
+        );
+      }
+
+      final correspondingProperty = constructor.properties
+          .where((element) => element.value.name == p.name)
+          .first;
+      if (correspondingProperty.isSynthetic) {
+        return (
+          LocalParameter.fromParameter(p),
+          isNamed: isNamed,
+          isRequired: isRequired,
+        );
+      }
+
+      final superCall = data.superCall!;
+
+      // Attempt to use super.field when possible.
+      // For now, we only do so for named parameters as positional parameters
+      // are trickier.
+      if (isNamed && superCall.positional.contains(p.name)) {
+        superParameters.add(p.name);
+        return (
+          SuperParameter.fromParameter(p),
+          isNamed: isNamed,
+          isRequired: isRequired,
+        );
+      }
+
+      return (
+        Parameter.fromParameter(p),
+        isNamed: isNamed,
+        isRequired: isRequired,
+      );
+    });
+
+    final superConstructor = _superConstructor(superParameters);
 
     final trailingStrings = <String>[
       if (constructor.asserts.isNotEmpty)
@@ -93,21 +142,6 @@ $_toStringMethod
         "\$type = \$type ?? '${constructor.unionValue}'",
       if (superConstructor.isNotEmpty) superConstructor,
     ];
-
-    var parameters = constructor.parameters.mapParameters((p) {
-      if (data.options.asUnmodifiableCollections &&
-          (p.isDartList || p.isDartMap || p.isDartSet)) {
-        return Parameter.fromParameter(p);
-      }
-
-      final correspondingProperty = constructor.properties
-          .where((element) => element.value.name == p.name)
-          .first;
-      if (correspondingProperty.isSynthetic)
-        return LocalParameter.fromParameter(p);
-      else
-        return SuperParameter.fromParameter(p);
-    });
 
     if (_hasUnionKeyProperty) {
       final typeProperty = Parameter(
@@ -148,14 +182,26 @@ $_toStringMethod
     return '$_isConst ${constructor.redirectedName}($parameters)$trailing;';
   }
 
-  String get _superConstructor {
-    if (!data.shouldUseExtends) return '';
-    return 'super._()';
+  String _superConstructor(Iterable<String> alreadySet) {
+    final superCall = data.superCall;
+    if (superCall == null) return '';
+
+    final params = [
+      for (final p in superCall.positional)
+        if (!alreadySet.contains(p)) p,
+      for (final p in superCall.named)
+        if (constructor.parameters.allParameters
+                .any((element) => element.name == p) &&
+            !alreadySet.contains(p))
+          '$p: $p',
+    ].join(', ');
+
+    return 'super._($params)';
   }
 
   String get _concreteSuper {
     final interfaces = <String, List<String>>{
-      if (data.shouldUseExtends)
+      if (data.superCall != null)
         'extends': ['${data.name}${data.genericsParameterTemplate}'],
       'with': [
         if (globalData.hasDiagnostics && data.options.asString)
@@ -163,7 +209,7 @@ $_toStringMethod
         ...constructor.withDecorators.map((e) => e.type),
       ],
       'implements': [
-        if (!data.shouldUseExtends)
+        if (data.superCall == null)
           '${data.name}${data.genericsParameterTemplate}',
         ...constructor.implementsDecorators.map((e) => e.type),
       ],

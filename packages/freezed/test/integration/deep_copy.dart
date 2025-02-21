@@ -9,7 +9,7 @@ abstract class DeepWithManualField with _$DeepWithManualField {
 
 @freezed
 abstract class ManualField with _$ManualField {
-  const ManualField._(this.value);
+  const ManualField._({required this.value});
   const factory ManualField(int value) = _ManualField;
 
   final int value;
