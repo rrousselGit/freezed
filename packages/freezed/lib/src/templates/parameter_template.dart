@@ -277,37 +277,72 @@ class Parameter {
   }
 }
 
+class SuperParameter extends Parameter {
+  SuperParameter({
+    required super.name,
+    required super.type,
+    required super.defaultValueSource,
+    required super.isFinal,
+    required super.isNullable,
+    required super.isRequired,
+    required super.isDartList,
+    required super.isDartMap,
+    required super.isDartSet,
+    required super.decorators,
+    required super.doc,
+    required super.isPossiblyDartCollection,
+    required super.parameterElement,
+  }) : super(showDefaultValue: true);
+
+  SuperParameter.fromParameter(Parameter p)
+      : this(
+          name: p.name,
+          type: p.type,
+          isNullable: p.isNullable,
+          defaultValueSource: p.defaultValueSource,
+          isFinal: p.isFinal,
+          isRequired: p.isRequired,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          decorators: p.decorators,
+          doc: p.doc,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
+          parameterElement: p.parameterElement,
+        );
+
+  @override
+  String toString() {
+    var res = 'super.$name';
+    if (isRequired) {
+      res = 'required $res';
+    }
+    if (decorators.isNotEmpty) {
+      res = '${decorators.join()} $res';
+    }
+    if (showDefaultValue && defaultValueSource != null) {
+      res = '$res = $defaultValueSource';
+    }
+    return res;
+  }
+}
+
 class LocalParameter extends Parameter {
   LocalParameter({
-    required String name,
-    required String? type,
-    required String? defaultValueSource,
-    required bool isFinal,
-    required bool isNullable,
-    required bool isRequired,
-    required bool isDartList,
-    required bool isDartMap,
-    required bool isDartSet,
-    required List<String> decorators,
-    required String doc,
-    required bool isPossiblyDartCollection,
-    required ParameterElement? parameterElement,
-  }) : super(
-          name: name,
-          type: type,
-          isFinal: isFinal,
-          isNullable: isNullable,
-          showDefaultValue: true,
-          isRequired: isRequired,
-          isDartList: isDartList,
-          isDartMap: isDartMap,
-          isDartSet: isDartSet,
-          decorators: decorators,
-          defaultValueSource: defaultValueSource,
-          doc: doc,
-          isPossiblyDartCollection: isPossiblyDartCollection,
-          parameterElement: parameterElement,
-        );
+    required super.name,
+    required super.type,
+    required super.defaultValueSource,
+    required super.isFinal,
+    required super.isNullable,
+    required super.isRequired,
+    required super.isDartList,
+    required super.isDartMap,
+    required super.isDartSet,
+    required super.decorators,
+    required super.doc,
+    required super.isPossiblyDartCollection,
+    required super.parameterElement,
+  }) : super(showDefaultValue: true);
 
   LocalParameter.fromParameter(Parameter p)
       : this(
@@ -344,36 +379,21 @@ class LocalParameter extends Parameter {
 
 class CallbackParameter extends Parameter {
   CallbackParameter({
-    required String name,
-    required String defaultValueSource,
-    required String type,
-    required bool isRequired,
-    required bool isFinal,
-    required bool isDartList,
-    required bool isDartMap,
-    required bool isDartSet,
-    required bool isNullable,
-    required List<String> decorators,
     required this.parameters,
-    required String doc,
-    required bool isPossiblyDartCollection,
-    required ParameterElement? parameterElement,
-  }) : super(
-          name: name,
-          type: type,
-          isNullable: isNullable,
-          showDefaultValue: false,
-          isRequired: isRequired,
-          isFinal: isFinal,
-          isDartList: isDartList,
-          isDartMap: isDartMap,
-          isDartSet: isDartSet,
-          decorators: decorators,
-          defaultValueSource: defaultValueSource,
-          doc: doc,
-          isPossiblyDartCollection: isPossiblyDartCollection,
-          parameterElement: parameterElement,
-        );
+    required super.name,
+    required super.defaultValueSource,
+    required super.type,
+    required super.isRequired,
+    required super.isFinal,
+    required super.isDartList,
+    required super.isDartMap,
+    required super.isDartSet,
+    required super.isNullable,
+    required super.decorators,
+    required super.doc,
+    required super.isPossiblyDartCollection,
+    required super.parameterElement,
+  }) : super(showDefaultValue: false);
 
   final ParametersTemplate parameters;
 

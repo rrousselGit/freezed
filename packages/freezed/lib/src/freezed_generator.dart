@@ -57,22 +57,26 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     return Class.from(declaration, configs, globalConfigs: _buildYamlConfigs);
   }
 
-  CommonProperties _commonParametersBetweenAllConstructors(
-    List<ConstructorDetails> constructorsNeedsGeneration,
-  ) {
+  CommonProperties _commonParametersBetweenAllConstructors(Class data) {
+    final constructorsNeedsGeneration = data.constructors;
+
     final result = CommonProperties();
-    if (constructorsNeedsGeneration.length == 1) {
-      result.readableProperties.addAll(
+    if (constructorsNeedsGeneration case [final ctor]) {
+      result.cloneableProperties.addAll(
         constructorsNeedsGeneration.first.parameters.allParameters
             .map(Property.fromParameter),
       );
-      result.cloneableProperties.addAll(result.readableProperties);
+      result.readableProperties.addAll(result.cloneableProperties
+          .where((p) => ctor.isSynthetic(param: p.name)));
       return result;
     }
 
     parameterLoop:
     for (final parameter
         in constructorsNeedsGeneration.first.parameters.allParameters) {
+      final isSynthetic =
+          constructorsNeedsGeneration.first.isSynthetic(param: parameter.name);
+
       final library = parameter.parameterElement!.library!;
 
       var commonTypeBetweenAllUnionConstructors =
@@ -142,7 +146,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
         hasJsonKey: false,
       );
 
-      result.readableProperties.add(commonProperty);
+      if (isSynthetic) result.readableProperties.add(commonProperty);
 
       // For {int a, int b, int c} | {int a, int? b, double c}, allows:
       // copyWith({int a, int b})
@@ -235,8 +239,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   ) sync* {
     if (data.options.fromJson) yield FromJson(data);
 
-    final commonProperties =
-        _commonParametersBetweenAllConstructors(data.constructors);
+    final commonProperties = _commonParametersBetweenAllConstructors(data);
 
     final commonCopyWith = data.options.annotation.copyWith ??
             commonProperties.cloneableProperties.isNotEmpty
@@ -270,8 +273,12 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
                 constructor.parameters.allParameters.isNotEmpty
             ? CopyWith(
                 clonedClassName: constructor.redirectedName,
-                cloneableProperties: constructor.impliedProperties,
-                readableProperties: constructor.impliedProperties,
+                cloneableProperties:
+                    constructor.properties.map((e) => e.value).toList(),
+                readableProperties: constructor.properties
+                    .where((e) => e.isSynthetic)
+                    .map((e) => e.value)
+                    .toList(),
                 deepCloneableProperties: constructor.deepCloneableProperties,
                 genericsDefinition: data.genericsDefinitionTemplate,
                 genericsParameter: data.genericsParameterTemplate,

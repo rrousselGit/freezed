@@ -7,7 +7,6 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/string.dart';
@@ -158,7 +157,6 @@ class ConstructorDetails {
     required this.redirectedName,
     required this.parameters,
     required this.properties,
-    required this.impliedProperties,
     required this.isDefault,
     required this.isFallback,
     required this.hasJsonSerializable,
@@ -244,22 +242,21 @@ class ConstructorDetails {
         className: declaration.name.lexeme,
       );
 
-      final allProperties = [
-        for (final parameter in constructor.parameters.parameters)
-          Property.fromFormalParameter(
-            parameter,
-            addImplicitFinal: configs.annotation.addImplicitFinal,
-          ),
-      ];
-
       final excludedProperties = manualConstructor?.parameters.parameters
               .map((e) => e.declaredElement!.name)
               .toSet() ??
           <String>{};
 
-      final impliedProperties = allProperties
-          .where((e) => !excludedProperties.contains(e.name))
-          .toList();
+      final allProperties = [
+        for (final parameter in constructor.parameters.parameters)
+          (
+            isSynthetic: !excludedProperties.contains(parameter.name!.lexeme),
+            value: Property.fromFormalParameter(
+              parameter,
+              addImplicitFinal: configs.annotation.addImplicitFinal,
+            ),
+          ),
+      ];
 
       result.add(
         ConstructorDetails(
@@ -271,7 +268,6 @@ class ConstructorDetails {
           isConst: constructor.constKeyword != null,
           fullName: constructor.fullName,
           escapedName: constructor.escapedName,
-          impliedProperties: impliedProperties,
           properties: allProperties,
           decorators: constructor.metadata
               .where((element) {
@@ -341,8 +337,7 @@ class ConstructorDetails {
   final bool isConst;
   final String redirectedName;
   final ParametersTemplate parameters;
-  final List<Property> properties;
-  final List<Property> impliedProperties;
+  final List<({Property value, bool isSynthetic})> properties;
   final bool isDefault;
   final bool isFallback;
   final bool hasJsonSerializable;
@@ -355,6 +350,13 @@ class ConstructorDetails {
   final List<AssertAnnotation> asserts;
 
   String get callbackName => constructorNameToCallbackName(name);
+
+  bool isSynthetic({required String param}) {
+    return properties
+        .where((element) => element.value.name == param)
+        .first
+        .isSynthetic;
+  }
 }
 
 class ImplementsAnnotation {

@@ -279,8 +279,11 @@ $s''';
     }
 
     String parameterToValue(Parameter p) {
-      final propertyGetterForCopyWithParameter =
-          readableProperties.firstWhere((element) => element.name == p.name);
+      final propertyGetterForCopyWithParameter = <Property>[]
+          .followedBy(readableProperties)
+          // Read this.p before cloneable properties, as they might have a different nullability
+          .followedBy(cloneableProperties)
+          .firstWhere((element) => element.name == p.name);
 
       final condition =
           '${_defaultValue(isNullable: p.isNullable)} == ${p.name}';

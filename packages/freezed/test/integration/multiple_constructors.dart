@@ -2,6 +2,16 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'multiple_constructors.freezed.dart';
 
+@freezed
+abstract class Subclass with _$Subclass {
+  const Subclass._(this.value);
+  const factory Subclass.a(int value) = _SubclassA;
+  const factory Subclass.b(int value) = _SubclassB;
+
+  // Check that no @override is needed
+  final int value;
+}
+
 @unfreezed
 abstract class UnfreezedImmutableUnion with _$UnfreezedImmutableUnion {
   factory UnfreezedImmutableUnion(final String a) =

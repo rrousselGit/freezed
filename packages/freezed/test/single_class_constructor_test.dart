@@ -184,6 +184,28 @@ Future<void> main() async {
     );
   });
 
+  test('Subclass', () {
+    expect(
+      Subclass(42),
+      Subclass(42),
+    );
+
+    expect(
+      Subclass(42).hashCode,
+      Subclass(42).hashCode,
+    );
+
+    expect(
+      Subclass(42).copyWith(value: 21),
+      Subclass(21),
+    );
+
+    expect(
+      Subclass(42).toString(),
+      'Subclass(value: 42)',
+    );
+  });
+
   test('WithAlias', () {
     // ignore: unused_local_variable
     Some<Complex<Type>> value = WithAliasFirst();

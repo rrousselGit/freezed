@@ -29,8 +29,8 @@ class Concrete {
   late final bool _hasUnionKeyProperty =
       (data.options.toJson || data.options.fromJson) &&
           data.constructors.length > 1 &&
-          constructor.impliedProperties
-              .every((e) => e.name != data.options.annotation.unionKey);
+          constructor.properties
+              .every((e) => e.value.name != data.options.annotation.unionKey);
 
   @override
   String toString() {
@@ -84,7 +84,9 @@ $_toStringMethod
       if (constructor.asserts.isNotEmpty)
         ...constructor.asserts.map((a) => a.toString()),
       if (data.options.asUnmodifiableCollections)
-        ...constructor.impliedProperties
+        ...constructor.properties
+            .where((e) => e.isSynthetic)
+            .map((e) => e.value)
             .where((e) => e.isDartList || e.isDartMap || e.isDartSet)
             .map((e) => '_${e.name} = ${e.name}'),
       if (_hasUnionKeyProperty)
@@ -97,7 +99,14 @@ $_toStringMethod
           (p.isDartList || p.isDartMap || p.isDartSet)) {
         return Parameter.fromParameter(p);
       }
-      return LocalParameter.fromParameter(p);
+
+      final correspondingProperty = constructor.properties
+          .where((element) => element.value.name == p.name)
+          .first;
+      if (correspondingProperty.isSynthetic)
+        return LocalParameter.fromParameter(p);
+      else
+        return SuperParameter.fromParameter(p);
     });
 
     if (_hasUnionKeyProperty) {
@@ -167,7 +176,10 @@ $_toStringMethod
   }
 
   String get _properties {
-    final classProperties = constructor.impliedProperties.expand((p) {
+    final classProperties = constructor.properties
+        .where((e) => e.isSynthetic)
+        .map((e) => e.value)
+        .expand((p) {
       final annotatedProperty = p.copyWith(
         decorators: [
           if (commonProperties.any((element) => element.name == p.name))
@@ -266,7 +278,7 @@ Map<String, dynamic> toJson($_toJsonParams) {
     if (!globalData.hasDiagnostics || !data.options.asString) return '';
 
     final diagnostics = [
-      for (final e in constructor.impliedProperties)
+      for (final e in constructor.properties.map((e) => e.value))
         "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
     ].join();
 
@@ -289,7 +301,7 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
         : '';
 
     final properties = [
-      for (final p in constructor.impliedProperties)
+      for (final p in constructor.properties.map((e) => e.value))
         '${p.name.replaceAll(r'$', r'\$')}: ${wrapClassField(p.name)}',
     ];
 
@@ -307,7 +319,7 @@ String toString($parameters) {
     final comparisons = [
       'other.runtimeType == runtimeType',
       'other is ${constructor.redirectedName}${data.genericsParameterTemplate}',
-      ...constructor.impliedProperties.map((p) {
+      ...constructor.properties.map((e) => e.value).map((p) {
         var name = p.name;
         if (p.isPossiblyDartCollection) {
           if (data.options.asUnmodifiableCollections &&
@@ -342,7 +354,7 @@ bool operator ==(Object other) {
 
     final hashedProperties = [
       'runtimeType',
-      for (final property in constructor.impliedProperties)
+      for (final property in constructor.properties.map((e) => e.value))
         if (property.isPossiblyDartCollection)
           if (data.options.asUnmodifiableCollections &&
               (property.isDartList || property.isDartMap || property.isDartSet))

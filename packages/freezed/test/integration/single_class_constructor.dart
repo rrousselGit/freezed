@@ -14,7 +14,7 @@ class Base {
 
 @freezed
 abstract class Subclass extends Base with _$Subclass {
-  Subclass._(super.value) : super.named();
+  const Subclass._(super.value) : super.named();
   const factory Subclass(int value) = _Subclass;
 }
 
