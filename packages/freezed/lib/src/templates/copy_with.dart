@@ -12,6 +12,7 @@ class CopyWith {
     required this.readableProperties,
     required this.deepCloneableProperties,
     required this.data,
+    required this.parents,
     this.parent,
   });
 
@@ -35,6 +36,7 @@ class CopyWith {
   final List<Property> readableProperties;
   final List<DeepCloneableProperty> deepCloneableProperties;
   final CopyWith? parent;
+  final List<Class> parents;
   final Class data;
 
   /// When collections are wrapped in an UnmodifiableView, this bool determines
@@ -47,9 +49,13 @@ class CopyWith {
       _deepCopyInterface(appendGenericToFactory: true);
 
   String _deepCopyInterface({required bool appendGenericToFactory}) {
-    var implements = parent != null
-        ? 'implements ${parent!._abstractClassName}${genericsParameter.append('\$Res')}'
-        : '';
+    var implements = [
+      if (parent != null)
+        '${parent!._abstractClassName}${genericsParameter.append('\$Res')}',
+      for (final parent in parents)
+        '${interfaceNameFrom(parent.name)}${genericsParameter.append('\$Res')}',
+    ].join(', ');
+    if (implements.isNotEmpty) implements = 'implements $implements';
 
     return '''
 /// @nodoc
