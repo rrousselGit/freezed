@@ -9,6 +9,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
+import 'package:freezed/src/parse_generator.dart';
 import 'package:freezed/src/string.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
@@ -182,6 +183,7 @@ class ConstructorDetails {
     required this.decorators,
     required this.deepCloneableProperties,
     required this.asserts,
+    required this.isSynthetic,
   });
 
   static void _assertValidNormalConstructorUsage(
@@ -253,6 +255,7 @@ When specifying fields in non-factory constructor then specifying factory constr
     ClassDeclaration declaration,
     ClassConfig configs, {
     required Freezed globalConfigs,
+    required List<CompilationUnit> unitsExcludingGeneratedFiles,
   }) {
     final result = <ConstructorDetails>[];
 
@@ -297,6 +300,12 @@ When specifying fields in non-factory constructor then specifying factory constr
       result.add(
         ConstructorDetails(
           asserts: AssertAnnotation.parseAll(constructor).toList(),
+          isSynthetic: unitsExcludingGeneratedFiles.any(
+            (e) => !e.declarations
+                .whereType<ClassDeclaration>()
+                .map((e) => e.name.lexeme)
+                .contains(redirectedName),
+          ),
           name: constructor.name?.lexeme ?? '',
           unionValue: constructor.declaredElement!.unionValue(
             configs.annotation.unionValueCase,
@@ -377,10 +386,11 @@ When specifying fields in non-factory constructor then specifying factory constr
   final List<String> decorators;
   final List<DeepCloneableProperty> deepCloneableProperties;
   final List<AssertAnnotation> asserts;
+  final bool isSynthetic;
 
   String get callbackName => constructorNameToCallbackName(name);
 
-  bool isSynthetic({required String param}) {
+  bool isSyntheticParam({required String param}) {
     return properties
         .where((element) => element.name == param)
         .first
@@ -506,11 +516,13 @@ class Class {
   final ConstructorInvocation? superCall;
   final CopyWithTarget? copyWithTarget;
   final PropertyList properties;
+  final List<Class> parents = [];
 
-  static Class from(
+  static Class _from(
     ClassDeclaration declaration,
     ClassConfig configs, {
     required Freezed globalConfigs,
+    required List<CompilationUnit> unitsExcludingGeneratedFiles,
   }) {
     final privateCtor = declaration.constructors.where((ctor) {
       return ctor.name?.lexeme == '_' && ctor.factoryKeyword == null;
@@ -524,6 +536,7 @@ class Class {
       declaration,
       configs,
       globalConfigs: globalConfigs,
+      unitsExcludingGeneratedFiles: unitsExcludingGeneratedFiles,
     );
 
     final properties = PropertyList()
@@ -587,6 +600,60 @@ class Class {
         declaration.declaredElement!.typeParameters,
       ),
     );
+  }
+
+  static Iterable<Class> parseAll(
+    List<CompilationUnit> units,
+    List<AnnotationMeta> annotations,
+    Library library, {
+    required Freezed globalConfigs,
+  }) {
+    final unitsExcludingGeneratedFiles = units
+        .where(
+          (element) => !element.declaredElement!.source.fullName
+              .endsWith('.freezed.dart'),
+        )
+        .toList();
+
+    final classes = annotations.map((e) {
+      final annotation = e.annotation;
+      final declaration = e.declaration;
+
+      if (declaration is! ClassDeclaration) {
+        throw InvalidGenerationSourceError(
+          '@freezed can only be applied on classes.',
+          element: declaration.declaredElement,
+        );
+      }
+
+      final configs = ClassConfig.from(
+        annotation,
+        declaration,
+        globalConfigs,
+        library: library,
+      );
+
+      return Class._from(
+        declaration,
+        configs,
+        globalConfigs: globalConfigs,
+        unitsExcludingGeneratedFiles: unitsExcludingGeneratedFiles,
+      );
+    });
+    final classMap = {for (final c in classes) c.name: c};
+
+    for (final clazz in classMap.values) {
+      for (final constructor in clazz.constructors) {
+        if (constructor.isSynthetic) continue;
+
+        final target = classMap[constructor.redirectedName];
+        if (target == null) continue;
+
+        target.parents.add(clazz);
+      }
+    }
+
+    return classMap.values;
   }
 
   static Iterable<Property> _computeCloneableProperties(
@@ -778,15 +845,15 @@ class Class {
             .map((e) => Property.fromParameter(e, isSynthetic: true)),
       );
       result.readableProperties.addAll(result.cloneableProperties
-          .where((p) => ctor.isSynthetic(param: p.name)));
+          .where((p) => ctor.isSyntheticParam(param: p.name)));
       return result;
     }
 
     parameterLoop:
     for (final parameter
         in constructorsNeedsGeneration.first.parameters.allParameters) {
-      final isSynthetic =
-          constructorsNeedsGeneration.first.isSynthetic(param: parameter.name);
+      final isSynthetic = constructorsNeedsGeneration.first
+          .isSyntheticParam(param: parameter.name);
 
       final library = parameter.parameterElement!.library!;
 

@@ -1,10 +1,8 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/constant/value.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/copy_with.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' show Freezed;
 import 'package:meta/meta.dart';
-import 'package:source_gen/source_gen.dart';
 
 import 'models.dart';
 import 'parse_generator.dart';
@@ -24,28 +22,6 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   FreezedGenerator(this._buildYamlConfigs);
 
   final Freezed _buildYamlConfigs;
-
-  Class _parseDeclaration(
-    Library globalData,
-    Declaration declaration,
-    DartObject annotation,
-  ) {
-    if (declaration is! ClassDeclaration) {
-      throw InvalidGenerationSourceError(
-        '@freezed can only be applied on classes.',
-        element: declaration.declaredElement,
-      );
-    }
-
-    final configs = ClassConfig.from(
-      annotation,
-      declaration,
-      _buildYamlConfigs,
-      library: globalData,
-    );
-
-    return Class.from(declaration, configs, globalConfigs: _buildYamlConfigs);
-  }
 
   Iterable<DeepCloneableProperty> _getCommonDeepCloneableProperties(
     List<ConstructorDetails> constructors,
@@ -83,11 +59,12 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       yield value;
     }
 
-    final userDefinedClasses = annotations
-        .map(
-          (e) => _parseDeclaration(library, e.declaration, e.annotation),
-        )
-        .toList();
+    final userDefinedClasses = Class.parseAll(
+      units,
+      annotations,
+      library,
+      globalConfigs: _buildYamlConfigs,
+    );
 
     for (final data in userDefinedClasses) {
       for (final value in _generateForData(library, data)) {
@@ -105,6 +82,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     final commonCopyWith = data.options.annotation.copyWith ??
             data.properties.cloneableProperties.isNotEmpty
         ? CopyWith(
+            parents: data.parents,
             clonedClassName: data.name,
             readableProperties: data.properties.readableProperties,
             cloneableProperties: data.properties.cloneableProperties,
@@ -134,6 +112,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
         copyWith: data.options.annotation.copyWith ??
                 constructor.parameters.allParameters.isNotEmpty
             ? CopyWith(
+                parents: [],
                 clonedClassName: constructor.redirectedName,
                 cloneableProperties: constructor.properties.toList(),
                 readableProperties:

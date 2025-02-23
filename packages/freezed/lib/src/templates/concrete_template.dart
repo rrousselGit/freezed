@@ -40,6 +40,8 @@ class Concrete {
 
   @override
   String toString() {
+    if (!constructor.isSynthetic) return '';
+
     final jsonSerializable = _jsonSerializable();
 
     return '''
