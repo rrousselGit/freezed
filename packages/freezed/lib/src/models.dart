@@ -335,7 +335,7 @@ When specifying fields in non-factory constructor then specifying factory constr
             globalConfigs,
           ).toList(),
           parameters: ParametersTemplate.fromParameterList(
-            constructor.parameters,
+            constructor.parameters.parameters,
             addImplicitFinal: configs.annotation.addImplicitFinal,
           ),
           redirectedName: redirectedName,
@@ -467,8 +467,8 @@ class AssertAnnotation {
   }
 }
 
-class SuperInvocation {
-  SuperInvocation({
+class ConstructorInvocation {
+  ConstructorInvocation({
     required this.name,
     required this.positional,
     required this.named,
@@ -476,6 +476,12 @@ class SuperInvocation {
   final String? name;
   final List<String> positional;
   final List<String> named;
+}
+
+class CopyWithTarget {
+  CopyWithTarget({required this.parameters, required this.name});
+  final ParametersTemplate parameters;
+  final String? name;
 }
 
 class Class {
@@ -488,6 +494,7 @@ class Class {
     required this.genericsParameterTemplate,
     required this.superCall,
     required this.properties,
+    required this.copyWithTarget,
   }) : assert(constructors.isNotEmpty);
 
   final String name;
@@ -496,7 +503,8 @@ class Class {
   final List<ConstructorDetails> constructors;
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
-  final SuperInvocation? superCall;
+  final ConstructorInvocation? superCall;
+  final CopyWithTarget? copyWithTarget;
   final PropertyList properties;
 
   static Class from(
@@ -518,9 +526,38 @@ class Class {
       globalConfigs: globalConfigs,
     );
 
+    final properties = PropertyList()
+      ..readableProperties.addAll(
+        _computeReadableProperties(declaration, constructors),
+      )
+      ..cloneableProperties.addAll(
+        _computeCloneableProperties(
+          declaration,
+          constructors,
+          configs,
+        ),
+      );
+
+    final copyWithTarget =
+        constructors.isNotEmpty ? null : declaration.copyWithTarget;
+    final copyWithInvocation = copyWithTarget == null
+        ? null
+        : CopyWithTarget(
+            name: copyWithTarget.name?.lexeme,
+            parameters: ParametersTemplate.fromParameterList(
+              // Only include parameters that are cloneable
+              copyWithTarget.parameters.parameters.where((e) {
+                return properties.cloneableProperties
+                    .map((e) => e.name)
+                    .contains(e.name!.lexeme);
+              }),
+              addImplicitFinal: configs.annotation.addImplicitFinal,
+            ),
+          );
+
     final superCall = privateCtor == null
         ? null
-        : SuperInvocation(
+        : ConstructorInvocation(
             name: '_',
             positional: privateCtor.parameters.parameters
                 .where((e) => e.isPositional)
@@ -534,17 +571,8 @@ class Class {
 
     return Class(
       name: declaration.name.lexeme,
-      properties: PropertyList()
-        ..readableProperties.addAll(
-          _computeReadableProperties(declaration, constructors),
-        )
-        ..cloneableProperties.addAll(
-          _computeCloneableProperties(
-            declaration,
-            constructors,
-            configs,
-          ),
-        ),
+      copyWithTarget: copyWithInvocation,
+      properties: properties,
       superCall: superCall,
       options: configs,
       constructors: constructors,
@@ -574,12 +602,7 @@ class Class {
     }
 
     // Pick `(default ?? _)` constructor
-    final targetConstructor = declaration.constructors
-        .fold<ConstructorDeclaration?>(null, (acc, ctor) {
-      if (ctor.name == null) return ctor;
-      if (ctor.name!.lexeme == '_') return acc ?? ctor;
-      return acc;
-    });
+    final targetConstructor = declaration.copyWithTarget;
     if (targetConstructor == null) return;
 
     for (final parameter in targetConstructor.parameters.parameters) {
@@ -830,7 +853,6 @@ class Class {
         decorators: parameter.decorators,
         defaultValueSource: parameter.defaultValueSource,
         doc: parameter.doc,
-        // TODO support JsonKey
         hasJsonKey: false,
         isSynthetic: true,
       );
@@ -864,7 +886,6 @@ class Class {
             decorators: parameter.decorators,
             defaultValueSource: parameter.defaultValueSource,
             doc: parameter.doc,
-            // TODO support JsonKey
             hasJsonKey: false,
           ),
         );
@@ -905,6 +926,18 @@ class Class {
         element: field,
       );
     }
+  }
+
+  String get escapedName {
+    var generics =
+        genericsParameterTemplate.typeParameters.map((e) => '\$$e').join(', ');
+    if (generics.isNotEmpty) {
+      generics = '<$generics>';
+    }
+
+    final escapedElementName = name.replaceAll(r'$', r'\$');
+
+    return '$escapedElementName$generics';
   }
 }
 
@@ -1048,6 +1081,16 @@ class ClassConfig {
 }
 
 extension ClassDeclarationX on ClassDeclaration {
+  /// Pick either Class(), Class._() or the first constructor found, in that order.
+  ConstructorDeclaration? get copyWithTarget {
+    return constructors.fold<ConstructorDeclaration?>(null, (acc, ctor) {
+          if (ctor.name == null) return ctor;
+          if (ctor.name!.lexeme == '_') return acc ?? ctor;
+          return acc;
+        }) ??
+        constructors.firstOrNull;
+  }
+
   Iterable<ConstructorDeclaration> get constructors {
     return members.whereType<ConstructorDeclaration>();
   }

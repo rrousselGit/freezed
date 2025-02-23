@@ -42,7 +42,6 @@ class Property {
           isDartMap: p.isDartMap,
           isDartSet: p.isDartSet,
           isPossiblyDartCollection: p.isPossiblyDartCollection,
-          // TODO: support hasJsonKey
           hasJsonKey: false,
         );
 

@@ -53,11 +53,14 @@ class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_concrete
 $_properties
 
 ${copyWith?.copyWithGetter(needsCast: false) ?? ''}
-$_toJson
-$_debugFillProperties
-$_operatorEqualMethod
-$_hashCodeMethod
-$_toStringMethod
+${methods(
+      data,
+      globalData,
+      properties: constructor.properties,
+      name: constructor.redirectedName,
+      escapedName: constructor.escapedName,
+      source: Source.syntheticClass,
+    )}
 }
 
 ${copyWith?.interface ?? ''}
@@ -306,135 +309,215 @@ final String \$type;
     return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json$_fromJsonParams)'
         ' => _\$${constructor.redirectedName.public}FromJson(json$_fromJsonArgs);';
   }
+}
 
-  String get _toJsonParams => toJsonParameters(
-      data.genericsParameterTemplate, data.options.genericArgumentFactories);
+enum Source {
+  mixin,
+  syntheticClass,
+}
 
-  String get _toJsonArgs => toJsonArguments(
-      data.genericsParameterTemplate, data.options.genericArgumentFactories);
+String methods(
+  Class data,
+  Library globalData, {
+  required List<Property> properties,
+  required String name,
+  required String escapedName,
+  required Source source,
+}) {
+  return '''
+${toJson(data, name: name, source: source)}
+${debugFillProperties(
+    data,
+    globalData,
+    properties,
+    escapedClassName: escapedName,
+  )}
+${operatorEqualMethod(data, properties, className: name, source: source)}
+${hashCodeMethod(data, properties, source: source)}
+${toStringMethod(
+    data,
+    globalData,
+    escapedClassName: escapedName,
+    properties: properties,
+  )}
+''';
+}
 
-  String get _toJson {
-    if (!data.options.toJson) return '';
+String toJson(
+  Class data, {
+  required String name,
+  required Source source,
+}) {
+  if (!data.options.toJson) return '';
 
-    return '''
+  switch ((source, data.constructors)) {
+    // Manual classes have no toJson generated.
+    // This is due to the inability for parts to add `@JsonSerializable`
+    // on behalf of the user.
+    case (Source.mixin, []):
+      return '';
+    case (Source.mixin, [_, ...]):
+      final _toJsonParams = toJsonParameters(
+        data.genericsParameterTemplate,
+        data.options.genericArgumentFactories,
+      );
+
+      return '''
+  /// Serializes this ${data.name} to a JSON map.
+  Map<String, dynamic> toJson($_toJsonParams);
+''';
+    case _:
+      final _toJsonParams = toJsonParameters(
+        data.genericsParameterTemplate,
+        data.options.genericArgumentFactories,
+      );
+
+      final _toJsonArgs = toJsonArguments(
+        data.genericsParameterTemplate,
+        data.options.genericArgumentFactories,
+      );
+
+      return '''
 @override
 Map<String, dynamic> toJson($_toJsonParams) {
-  return _\$${constructor.redirectedName.public}ToJson${data.genericsParameterTemplate}(this, $_toJsonArgs);
+  return _\$${name.public}ToJson${data.genericsParameterTemplate}(this, $_toJsonArgs);
 }''';
   }
+}
 
-  String get _debugFillProperties {
-    if (!globalData.hasDiagnostics || !data.options.asString) return '';
+String debugFillProperties(
+  Class data,
+  Library globalData,
+  List<Property> properties, {
+  required String escapedClassName,
+}) {
+  if (!globalData.hasDiagnostics || !data.options.asString) return '';
 
-    final diagnostics = [
-      for (final e in constructor.properties)
-        "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
-    ].join();
+  final diagnostics = [
+    for (final e in properties)
+      "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
+  ].join();
 
-    return '''
+  return '''
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   super.debugFillProperties(properties);
   properties
-    ..add(DiagnosticsProperty('type', '${constructor.escapedName}'))
+    ..add(DiagnosticsProperty('type', '$escapedClassName'))
     $diagnostics;
 }
 ''';
-  }
+}
 
-  String get _toStringMethod {
-    if (!data.options.asString) return '';
+String toStringMethod(
+  Class data,
+  Library globalData, {
+  required String escapedClassName,
+  required List<Property> properties,
+}) {
+  if (!data.options.asString) return '';
 
-    final parameters = globalData.hasDiagnostics
-        ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
-        : '';
+  final parameters = globalData.hasDiagnostics
+      ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
+      : '';
 
-    final properties = [
-      for (final p in constructor.properties)
-        '${p.name.replaceAll(r'$', r'\$')}: ${wrapClassField(p.name)}',
-    ];
+  final propertiesDisplayString = [
+    for (final p in properties)
+      '${p.name.replaceAll(r'$', r'\$')}: ${wrapClassField(p.name)}',
+  ];
 
-    return '''
+  return '''
 @override
 String toString($parameters) {
-  return '${constructor.escapedName}(${properties.join(', ')})';
+  return '$escapedClassName(${propertiesDisplayString.join(', ')})';
 }
 ''';
-  }
+}
 
-  String get _operatorEqualMethod {
-    if (!data.options.equal) return '';
+String operatorEqualMethod(
+  Class data,
+  List<Property> properties, {
+  required String className,
+  required Source source,
+}) {
+  if (!data.options.equal) return '';
 
-    final comparisons = [
-      'other.runtimeType == runtimeType',
-      'other is ${constructor.redirectedName}${data.genericsParameterTemplate}',
-      ...constructor.properties.map((p) {
-        var name = p.name;
-        if (p.isPossiblyDartCollection) {
-          if (data.options.asUnmodifiableCollections &&
-              (p.isDartList || p.isDartMap || p.isDartSet)) {
-            name = '_$name';
-          }
-        }
-        final target = p.name == 'other' ? 'this.' : '';
+  final comparisons = [
+    'other.runtimeType == runtimeType',
+    'other is $className${data.genericsParameterTemplate}',
+    ...properties.map((p) {
+      var name = p.name;
 
-        if (p.isPossiblyDartCollection) {
-          // no need to check `identical` as `DeepCollectionEquality` already does it
-          return 'const DeepCollectionEquality().equals(other.$name, $target$name)';
-        }
-        return '(identical(other.${p.name}, $target$name) || other.$name == $target$name)';
-      }),
-    ];
+      if (data.options.asUnmodifiableCollections &&
+          source == Source.syntheticClass &&
+          p.isPossiblyDartCollection &&
+          (p.isDartList || p.isDartMap || p.isDartSet)) {
+        name = '_$name';
+      }
 
-    return '''
+      final target = p.name == 'other' ? 'this.' : '';
+
+      if (p.isPossiblyDartCollection) {
+        // no need to check `identical` as `DeepCollectionEquality` already does it
+        return 'const DeepCollectionEquality().equals(other.$name, $target$name)';
+      }
+      return '(identical(other.${p.name}, $target$name) || other.$name == $target$name)';
+    }),
+  ];
+
+  return '''
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (${comparisons.join('&&')});
 }
 ''';
-  }
+}
 
-  String get _hashCodeMethod {
-    if (!data.options.equal) return '';
+String hashCodeMethod(
+  Class data,
+  List<Property> properties, {
+  required Source source,
+}) {
+  if (!data.options.equal) return '';
 
-    final jsonKey = data.options.fromJson || data.options.toJson
-        ? '@JsonKey(includeFromJson: false, includeToJson: false)'
-        : '';
+  final jsonKey = data.options.fromJson || data.options.toJson
+      ? '@JsonKey(includeFromJson: false, includeToJson: false)'
+      : '';
 
-    final hashedProperties = [
-      'runtimeType',
-      for (final property in constructor.properties)
-        if (property.isPossiblyDartCollection)
-          if (data.options.asUnmodifiableCollections &&
-              (property.isDartList || property.isDartMap || property.isDartSet))
-            'const DeepCollectionEquality().hash(_${property.name})'
-          else
-            'const DeepCollectionEquality().hash(${property.name})'
+  final hashedProperties = [
+    'runtimeType',
+    for (final property in properties)
+      if (property.isPossiblyDartCollection)
+        if (data.options.asUnmodifiableCollections &&
+            source == Source.syntheticClass &&
+            (property.isDartList || property.isDartMap || property.isDartSet))
+          'const DeepCollectionEquality().hash(_${property.name})'
         else
-          property.name,
-    ];
+          'const DeepCollectionEquality().hash(${property.name})'
+      else
+        property.name,
+  ];
 
-    if (hashedProperties.length == 1) {
-      return '''
+  if (hashedProperties.length == 1) {
+    return '''
 $jsonKey
 @override
 int get hashCode => ${hashedProperties.first}.hashCode;
 ''';
-    }
-    if (hashedProperties.length >= 20) {
-      return '''
+  }
+  if (hashedProperties.length >= 20) {
+    return '''
 $jsonKey
 @override
 int get hashCode => Object.hashAll([${hashedProperties.join(',')}]);
 ''';
-    }
+  }
 
-    return '''
+  return '''
 $jsonKey
 @override
 int get hashCode => Object.hash(${hashedProperties.join(',')});
 ''';
-  }
 }
 
 extension DefaultValue on ParameterElement {

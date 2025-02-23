@@ -5,11 +5,11 @@ targets:
         enabled: true
         generate_for:
           exclude:
-            - test
             - example
+            - test/source_gen_src.dart
           include:
-            - test/integration/*
-            - test/integration/**/*
+            - test/*
+            - test/**/*
       source_gen|combining_builder:
         options:
           ignore_for_file:

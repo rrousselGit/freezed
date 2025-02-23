@@ -122,6 +122,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       data: data,
       copyWith: commonCopyWith,
       commonProperties: data.properties.readableProperties,
+      globalData: globalData,
     );
 
     for (final constructor in data.constructors) {

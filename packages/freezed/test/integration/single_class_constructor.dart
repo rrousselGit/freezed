@@ -377,6 +377,7 @@ abstract class Late with _$Late {
   Late._();
   factory Late(int value) = _Late;
 
+  @override
   late final container = LateContainer(value);
 }
 
@@ -397,7 +398,9 @@ abstract class AllProperties with _$AllProperties {
   factory AllProperties(int value) = _AllProperties;
 
   int get a => 1;
+  @override
   late final b = 2;
+  @override
   final c = 3;
 }
 
@@ -406,6 +409,7 @@ abstract class Late2 with _$Late2 {
   Late2._();
   factory Late2(int? Function() cb) = _Late2;
 
+  @override
   late final int? first = cb();
 }
 
@@ -414,6 +418,7 @@ abstract class ComplexLate with _$ComplexLate {
   ComplexLate._();
   factory ComplexLate(List<int> values) = _ComplexLate;
 
+  @override
   late final List<int> odd = values.where((value) {
     if (value.isOdd)
       return true;
