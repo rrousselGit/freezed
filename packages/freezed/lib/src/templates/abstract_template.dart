@@ -19,6 +19,7 @@ class Abstract {
   @override
   String toString() {
     final abstractProperties = commonProperties
+        .where((e) => e.isSynthetic)
         .expand((e) => [
               e.abstractGetter,
               if (!e.isFinal) e.abstractSetter,
@@ -31,7 +32,7 @@ mixin _\$${data.name.public}${data.genericsDefinitionTemplate} {
 
 $abstractProperties
 $_toJson
-${copyWith?.abstractCopyWithGetter ?? ''}
+${copyWith?.copyWithGetter(needsCast: true) ?? ''}
 }
 
 ${copyWith?.commonInterface ?? ''}

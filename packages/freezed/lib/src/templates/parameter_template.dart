@@ -81,7 +81,7 @@ class ParametersTemplate {
         isFinal: addImplicitFinal || e.isFinal,
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
-        doc: p.documentation,
+        doc: p.documentation ?? '',
         isPossiblyDartCollection: e.type.isPossiblyDartCollection,
         showDefaultValue: true,
         parameterElement: e,

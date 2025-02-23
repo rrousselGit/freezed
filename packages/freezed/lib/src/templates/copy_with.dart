@@ -61,22 +61,10 @@ ${_abstractDeepCopyMethods().join()}
 }''';
   }
 
-  String get abstractCopyWithGetter {
+  String copyWithGetter({required bool needsCast}) {
     if (cloneableProperties.isEmpty) return '';
 
-    return _maybeOverride(
-      doc: '''
-${_copyWithDocs(data.name)}
-''',
-      '''
-@JsonKey(includeFromJson: false, includeToJson: false)
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;
-''',
-    );
-  }
-
-  String get concreteCopyWithGetter {
-    if (cloneableProperties.isEmpty) return '';
+    final cast = needsCast ? ' as $clonedClassName$genericsParameter' : '';
     return _maybeOverride(
       doc: '''
 ${_copyWithDocs(data.name)}
@@ -84,7 +72,7 @@ ${_copyWithDocs(data.name)}
       '''
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this$cast, _\$identity);
 ''',
     );
   }
