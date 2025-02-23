@@ -103,69 +103,6 @@ abstract class Mixed {
   factory Mixed.named(String b) = Mixed1;
 }
 
-@ShouldThrow(
-  'Classes decorated with @freezed can only have a single non-factory'
-  ', and must be named MyClass._()',
-)
-@freezed
-abstract class MultipleConcreteConstructors {
-  MultipleConcreteConstructors._();
-  MultipleConcreteConstructors();
-}
-
-@ShouldThrow(
-  'Classes decorated with @freezed can only have a single non-factory'
-  ', and must be named MyClass._()',
-)
-@freezed
-abstract class SingleConcreteConstructorInvalidName {
-  SingleConcreteConstructorInvalidName();
-}
-
-@ShouldThrow('''
-The constructor MyClass._() specified a positional parameter named a,
-but at least one constructor does not have a matching parameter.
-
-When specifying fields in MyClass._(), either:
-- the parameter should be named
-- or all constructors in the class should specify that parameter.
-''')
-@freezed
-abstract class ConcreteConstructorWithParameters {
-  ConcreteConstructorWithParameters._(int a);
-
-  factory ConcreteConstructorWithParameters() =
-      _ConcreteConstructorWithParameters;
-}
-
-class _ConcreteConstructorWithParameters
-    implements ConcreteConstructorWithParameters {
-  _ConcreteConstructorWithParameters();
-}
-
-@ShouldThrow(
-  'Marked NothingToDo with @freezed, but freezed has nothing to generate',
-)
-@freezed
-abstract class NothingToDo {
-  NothingToDo._();
-}
-
-@ShouldThrow(
-  'Marked ManualFactory with @freezed, but freezed has nothing to generate',
-)
-@freezed
-abstract class ManualFactory {
-  factory ManualFactory() => _Manual();
-}
-
-class _Manual implements ManualFactory {
-  @override
-  dynamic noSuchMethod(Invocation invocation) {
-    return super.noSuchMethod(invocation);
-  }
-}
-
 @ShouldThrow('Fallback union was specified but no fallback constructor exists.')
 @Freezed(fallbackUnion: 'fallback')
 class FallbackUnionMissing {
@@ -179,23 +116,6 @@ class _First implements FallbackUnionMissing {
 
 class _Second implements FallbackUnionMissing {
   _Second();
-}
-
-@ShouldThrow(
-  'Marked ManualFactory2 with @freezed, but freezed has nothing to generate',
-)
-@freezed
-abstract class ManualFactory2 {
-  factory ManualFactory2({int? a}) => _Manual2(a: a ??= 42);
-}
-
-class _Manual2 implements ManualFactory2 {
-  _Manual2({int? a});
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) {
-    return super.noSuchMethod(invocation);
-  }
 }
 
 @ShouldThrow(

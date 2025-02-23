@@ -63,7 +63,7 @@ class ParametersTemplate {
   });
 
   static ParametersTemplate fromParameterList(
-    FormalParameterList parameters, {
+    Iterable<FormalParameter> parameters, {
     bool isAssignedToThis = false,
     required bool addImplicitFinal,
   }) {
@@ -81,7 +81,7 @@ class ParametersTemplate {
         isFinal: addImplicitFinal || e.isFinal,
         type: parseTypeSource(e),
         decorators: parseDecorators(e.metadata),
-        doc: p.documentation,
+        doc: p.documentation ?? '',
         isPossiblyDartCollection: e.type.isPossiblyDartCollection,
         showDefaultValue: true,
         parameterElement: e,
@@ -92,18 +92,16 @@ class ParametersTemplate {
     }
 
     return ParametersTemplate(
-        parameters.parameters
+        parameters
             .where((p) => p.isRequiredPositional)
             .map(asParameter)
             .toList(),
-        optionalPositionalParameters: parameters.parameters
+        optionalPositionalParameters: parameters
             .where((p) => p.isOptionalPositional)
             .map(asParameter)
             .toList(),
-        namedParameters: parameters.parameters
-            .where((p) => p.isNamed)
-            .map(asParameter)
-            .toList());
+        namedParameters:
+            parameters.where((p) => p.isNamed).map(asParameter).toList());
   }
 
   final List<Parameter> requiredPositionalParameters;

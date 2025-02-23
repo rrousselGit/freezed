@@ -10,8 +10,6 @@ import 'integration/generic.dart'
 import 'integration/single_class_constructor.dart' show Dynamic;
 
 void main() {
-  // TODO: copyWith is identical to itself if don't have descendants
-
   test('has no issue', () async {
     final main = await resolveSources(
       {

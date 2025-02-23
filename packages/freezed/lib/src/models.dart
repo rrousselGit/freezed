@@ -145,6 +145,21 @@ class DeepCloneableProperty {
   }
 }
 
+extension on FormalParameter {
+  TypeAnnotation? typeAnnotation() {
+    final that = this;
+    return switch (that) {
+      DefaultFormalParameter() => that.parameter.typeAnnotation(),
+      FieldFormalParameter() => that.type,
+      FunctionTypedFormalParameter() => throw UnsupportedError(
+          'Parameters of format `T name()` are not supported. Use `T Function()` name.',
+        ),
+      SimpleFormalParameter() => that.type,
+      SuperFormalParameter() => that.type,
+    };
+  }
+}
+
 /// The information of a specific constructor of a class tagged with ``.
 ///
 /// This only includes constructors where Freezed needs to generate something.
@@ -173,10 +188,15 @@ class ConstructorDetails {
     ClassDeclaration declaration,
     ConstructorDeclaration constructor,
   ) {
-    if (constructor.factoryKeyword == null && constructor.name?.lexeme != '_') {
+    final freezedCtors = declaration.constructors.where(
+      (e) => e.factoryKeyword != null && e.redirectedConstructor != null,
+    );
+
+    if (constructor.factoryKeyword == null &&
+        constructor.name?.lexeme != '_' &&
+        freezedCtors.isNotEmpty) {
       throw InvalidGenerationSourceError(
-        'Classes decorated with @freezed can only have a single non-factory'
-        ', and must be named MyClass._()',
+        'Classes decorated with @freezed can only have a single non-factory constructor.',
         element: constructor.declaredElement,
       );
     }
@@ -184,20 +204,17 @@ class ConstructorDetails {
     if (constructor.name?.lexeme == '_') {
       for (final param in constructor.parameters.parameters) {
         if (param.isPositional) {
-          final otherFreezedCtors = declaration.constructors.where((e) =>
-              e.factoryKeyword != null && e.redirectedConstructor != null);
-
-          for (final ctor in otherFreezedCtors) {
+          for (final ctor in freezedCtors) {
             final hasMatchingParam = ctor.parameters.parameters
                 .any((e) => e.name?.lexeme == param.name?.lexeme);
             if (hasMatchingParam) continue;
 
             throw InvalidGenerationSourceError(
               '''
-The constructor MyClass._() specified a positional parameter named ${param.name},
+A non-factory constructor specified a positional parameter named ${param.name},
 but at least one constructor does not have a matching parameter.
 
-When specifying fields in MyClass._(), either:
+When specifying fields in non-factory constructor then specifying factory constructors, either:
 - the parameter should be named
 - or all constructors in the class should specify that parameter.
 ''',
@@ -270,12 +287,10 @@ When specifying fields in MyClass._(), either:
 
       final allProperties = [
         for (final parameter in constructor.parameters.parameters)
-          (
+          Property.fromFormalParameter(
+            parameter,
+            addImplicitFinal: configs.annotation.addImplicitFinal,
             isSynthetic: !excludedProperties.contains(parameter.name!.lexeme),
-            value: Property.fromFormalParameter(
-              parameter,
-              addImplicitFinal: configs.annotation.addImplicitFinal,
-            ),
           ),
       ];
 
@@ -320,18 +335,11 @@ When specifying fields in MyClass._(), either:
             globalConfigs,
           ).toList(),
           parameters: ParametersTemplate.fromParameterList(
-            constructor.parameters,
+            constructor.parameters.parameters,
             addImplicitFinal: configs.annotation.addImplicitFinal,
           ),
           redirectedName: redirectedName,
         ),
-      );
-    }
-
-    if (result.isEmpty) {
-      throw InvalidGenerationSourceError(
-        'Marked ${declaration.name} with @freezed, but freezed has nothing to generate',
-        element: declaration.declaredElement,
       );
     }
 
@@ -358,7 +366,7 @@ When specifying fields in MyClass._(), either:
   final bool isConst;
   final String redirectedName;
   final ParametersTemplate parameters;
-  final List<({Property value, bool isSynthetic})> properties;
+  final List<Property> properties;
   final bool isDefault;
   final bool isFallback;
   final bool hasJsonSerializable;
@@ -374,7 +382,7 @@ When specifying fields in MyClass._(), either:
 
   bool isSynthetic({required String param}) {
     return properties
-        .where((element) => element.value.name == param)
+        .where((element) => element.name == param)
         .first
         .isSynthetic;
   }
@@ -459,8 +467,8 @@ class AssertAnnotation {
   }
 }
 
-class SuperInvocation {
-  SuperInvocation({
+class ConstructorInvocation {
+  ConstructorInvocation({
     required this.name,
     required this.positional,
     required this.named,
@@ -468,6 +476,12 @@ class SuperInvocation {
   final String? name;
   final List<String> positional;
   final List<String> named;
+}
+
+class CopyWithTarget {
+  CopyWithTarget({required this.parameters, required this.name});
+  final ParametersTemplate parameters;
+  final String? name;
 }
 
 class Class {
@@ -479,6 +493,8 @@ class Class {
     required this.genericsDefinitionTemplate,
     required this.genericsParameterTemplate,
     required this.superCall,
+    required this.properties,
+    required this.copyWithTarget,
   }) : assert(constructors.isNotEmpty);
 
   final String name;
@@ -487,7 +503,9 @@ class Class {
   final List<ConstructorDetails> constructors;
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
-  final SuperInvocation? superCall;
+  final ConstructorInvocation? superCall;
+  final CopyWithTarget? copyWithTarget;
+  final PropertyList properties;
 
   static Class from(
     ClassDeclaration declaration,
@@ -508,9 +526,38 @@ class Class {
       globalConfigs: globalConfigs,
     );
 
+    final properties = PropertyList()
+      ..readableProperties.addAll(
+        _computeReadableProperties(declaration, constructors),
+      )
+      ..cloneableProperties.addAll(
+        _computeCloneableProperties(
+          declaration,
+          constructors,
+          configs,
+        ),
+      );
+
+    final copyWithTarget =
+        constructors.isNotEmpty ? null : declaration.copyWithTarget;
+    final copyWithInvocation = copyWithTarget == null
+        ? null
+        : CopyWithTarget(
+            name: copyWithTarget.name?.lexeme,
+            parameters: ParametersTemplate.fromParameterList(
+              // Only include parameters that are cloneable
+              copyWithTarget.parameters.parameters.where((e) {
+                return properties.cloneableProperties
+                    .map((e) => e.name)
+                    .contains(e.name!.lexeme);
+              }),
+              addImplicitFinal: configs.annotation.addImplicitFinal,
+            ),
+          );
+
     final superCall = privateCtor == null
         ? null
-        : SuperInvocation(
+        : ConstructorInvocation(
             name: '_',
             positional: privateCtor.parameters.parameters
                 .where((e) => e.isPositional)
@@ -524,6 +571,8 @@ class Class {
 
     return Class(
       name: declaration.name.lexeme,
+      copyWithTarget: copyWithInvocation,
+      properties: properties,
       superCall: superCall,
       options: configs,
       constructors: constructors,
@@ -538,6 +587,312 @@ class Class {
         declaration.declaredElement!.typeParameters,
       ),
     );
+  }
+
+  static Iterable<Property> _computeCloneableProperties(
+    ClassDeclaration declaration,
+    List<ConstructorDetails> constructorsNeedsGeneration,
+    ClassConfig configs,
+  ) sync* {
+    if (constructorsNeedsGeneration.isNotEmpty) {
+      yield* _commonParametersBetweenAllConstructors(
+        constructorsNeedsGeneration,
+      ).cloneableProperties;
+      return;
+    }
+
+    // Pick `(default ?? _)` constructor
+    final targetConstructor = declaration.copyWithTarget;
+    if (targetConstructor == null) return;
+
+    for (final parameter in targetConstructor.parameters.parameters) {
+      yield Property.fromFormalParameter(
+        parameter,
+        addImplicitFinal: configs.annotation.addImplicitFinal,
+        isSynthetic: false,
+      );
+    }
+  }
+
+  static Iterable<Property> _computeReadableProperties(
+    ClassDeclaration declaration,
+    List<ConstructorDetails> constructorsNeedsGeneration,
+  ) sync* {
+    final typesMap = <String,
+        List<
+            ({
+              TypeAnnotation? type,
+              String? doc,
+              bool isFinal,
+              bool isSynthetic,
+              List<String> decorators,
+            })?>>{};
+    void setForName({
+      required String name,
+      required TypeAnnotation? type,
+      required int index,
+      required String? doc,
+      required bool isFinal,
+      required bool isSynthetic,
+      required List<String> decorators,
+    }) {
+      final list = typesMap.putIfAbsent(
+        name,
+        () => List.filled(constructorsNeedsGeneration.length + 1, null),
+      );
+      list[index] = (
+        type: type,
+        doc: doc,
+        isFinal: isFinal,
+        isSynthetic: isSynthetic,
+        decorators: decorators,
+      );
+    }
+
+    final properties = declaration.properties;
+
+    for (final property in properties) {
+      setForName(
+        name: property.$2.name.lexeme,
+        type: property.$1.fields.type,
+        index: 0,
+        doc: property.$1.documentation,
+        isFinal: property.$1.fields.isFinal,
+        isSynthetic: false,
+        decorators: switch (property.$1.declaredElement) {
+          final e? => parseDecorators(e.metadata),
+          null => [],
+        },
+      );
+    }
+
+    for (final (index, freezedCtor) in constructorsNeedsGeneration.indexed) {
+      final ctor = declaration.constructors
+          .where((e) => (e.name?.lexeme ?? '') == freezedCtor.name)
+          .first;
+
+      for (final parameter in ctor.parameters.parameters) {
+        final freezedParameter = freezedCtor.parameters.allParameters
+            .where((e) => e.name == parameter.name?.lexeme)
+            .first;
+
+        setForName(
+          name: parameter.name!.lexeme,
+          type: parameter.typeAnnotation(),
+          index: index + 1,
+          isSynthetic: true,
+          doc: parameter.documentation,
+          isFinal: freezedParameter.isFinal,
+          decorators: freezedParameter.decorators,
+        );
+      }
+    }
+
+    late final typeSystem = declaration.declaredElement!.library.typeSystem;
+    late final typeProvider = declaration.declaredElement!.library.typeProvider;
+
+    fieldLoop:
+    for (final entry in typesMap.entries) {
+      final name = entry.key;
+
+      // late for: https://github.com/dart-lang/language/issues/4272
+      late String typeString;
+      String? doc;
+      late bool isFinal;
+      late DartType type;
+      late List<String> decorators;
+      late bool isSynthetic;
+      switch (entry.value) {
+        case []:
+          throw AssertionError('Unreachable');
+        // Only fields
+        case [final fieldType?, ...]:
+        // Only a single constructor and no field
+        case [null, final fieldType?]:
+          type = fieldType.type?.type ?? typeProvider.dynamicType;
+          typeString = fieldType.type?.toSource() ?? type.toString();
+          doc = fieldType.doc;
+          isFinal = fieldType.isFinal;
+          decorators = fieldType.decorators;
+          isSynthetic = fieldType.isSynthetic;
+        case [...]:
+          final fields = entry.value.skip(1);
+          // Field not present in all constructors, so skip it as we can't read it from the interface.
+          if (fields.contains(null)) continue fieldLoop;
+
+          doc = fields.map((e) => e!.doc).nonNulls.firstOrNull;
+          decorators = fields.expand((e) => e!.decorators).toSet().toList();
+          isSynthetic = true;
+
+          final typeSources = fields.map((e) => e?.type?.toSource()).toSet();
+          if (typeSources.length == 1) {
+            type = fields
+                .map((e) => e!.type?.type ?? typeProvider.dynamicType)
+                .first;
+            // All constructors use the exact same type. No need to check lower-bounds,
+            // and we can paste the type in the generated source directly.
+            typeString = typeSources.single ?? type.toString();
+            isFinal = fields.any((e) => e!.isFinal);
+
+            break;
+          }
+
+          type = fields
+              .map((e) => e!.type?.type ?? typeProvider.dynamicType)
+              .reduce((a, b) => typeSystem.leastUpperBound(a, b));
+          isFinal = true;
+
+          typeString = resolveFullTypeStringFrom(
+            declaration.declaredElement!.library,
+            type,
+          );
+      }
+
+      yield Property(
+        name: name,
+        type: typeString,
+        isNullable: type.isNullable,
+        isDartList: type.isDartCoreList,
+        isDartMap: type.isDartCoreMap,
+        isDartSet: type.isDartCoreSet,
+        isPossiblyDartCollection: type.isPossiblyDartCollection,
+        isFinal: isFinal,
+        isSynthetic: isSynthetic,
+        decorators: decorators,
+        defaultValueSource: null,
+        doc: doc ?? '',
+        hasJsonKey: false,
+      );
+    }
+  }
+
+  static PropertyList _commonParametersBetweenAllConstructors(
+    List<ConstructorDetails> constructorsNeedsGeneration,
+  ) {
+    final result = PropertyList();
+    if (constructorsNeedsGeneration.isEmpty) return result;
+
+    if (constructorsNeedsGeneration case [final ctor]) {
+      result.cloneableProperties.addAll(
+        constructorsNeedsGeneration.first.parameters.allParameters
+            .map((e) => Property.fromParameter(e, isSynthetic: true)),
+      );
+      result.readableProperties.addAll(result.cloneableProperties
+          .where((p) => ctor.isSynthetic(param: p.name)));
+      return result;
+    }
+
+    parameterLoop:
+    for (final parameter
+        in constructorsNeedsGeneration.first.parameters.allParameters) {
+      final isSynthetic =
+          constructorsNeedsGeneration.first.isSynthetic(param: parameter.name);
+
+      final library = parameter.parameterElement!.library!;
+
+      var commonTypeBetweenAllUnionConstructors =
+          parameter.parameterElement!.type;
+
+      for (final constructor in constructorsNeedsGeneration) {
+        final matchingParameter = constructor.parameters.allParameters
+            .firstWhereOrNull((p) => p.name == parameter.name);
+        // The property is not present in one of the union cases, so shouldn't
+        // be present in the abstract class.
+        if (matchingParameter == null) continue parameterLoop;
+
+        commonTypeBetweenAllUnionConstructors =
+            library.typeSystem.leastUpperBound(
+          commonTypeBetweenAllUnionConstructors,
+          matchingParameter.parameterElement!.type,
+        );
+      }
+
+      final matchingParameters = constructorsNeedsGeneration
+          .expand((element) => element.parameters.allParameters)
+          .where((element) => element.name == parameter.name)
+          .toList();
+
+      final isFinal = matchingParameters.any(
+        (element) =>
+            element.isFinal ||
+            element.parameterElement?.type !=
+                commonTypeBetweenAllUnionConstructors,
+      );
+
+      final nonNullableCommonType = library.typeSystem
+          .promoteToNonNull(commonTypeBetweenAllUnionConstructors);
+
+      final didDowncast = matchingParameters.any(
+        (element) =>
+            element.parameterElement?.type !=
+            commonTypeBetweenAllUnionConstructors,
+      );
+      final didNonNullDowncast = matchingParameters.any(
+        (element) =>
+            element.parameterElement?.type !=
+                commonTypeBetweenAllUnionConstructors &&
+            element.parameterElement?.type != nonNullableCommonType,
+      );
+      final didNullDowncast = !didNonNullDowncast && didDowncast;
+
+      final commonTypeString = resolveFullTypeStringFrom(
+        library,
+        commonTypeBetweenAllUnionConstructors,
+      );
+
+      final commonProperty = Property(
+        isFinal: isFinal,
+        type: commonTypeString,
+        isNullable: commonTypeBetweenAllUnionConstructors.isNullable,
+        isDartList: commonTypeBetweenAllUnionConstructors.isDartCoreList,
+        isDartMap: commonTypeBetweenAllUnionConstructors.isDartCoreMap,
+        isDartSet: commonTypeBetweenAllUnionConstructors.isDartCoreSet,
+        isPossiblyDartCollection:
+            commonTypeBetweenAllUnionConstructors.isPossiblyDartCollection,
+        name: parameter.name,
+        decorators: parameter.decorators,
+        defaultValueSource: parameter.defaultValueSource,
+        doc: parameter.doc,
+        hasJsonKey: false,
+        isSynthetic: true,
+      );
+
+      if (isSynthetic) result.readableProperties.add(commonProperty);
+
+      // For {int a, int b, int c} | {int a, int? b, double c}, allows:
+      // copyWith({int a, int b})
+      // - int? b is not allowed because `null` is not compatible with the
+      //   first union case.
+      // - num c is not allowed because num is not assignable int/double
+      if (!didNonNullDowncast) {
+        final copyWithType = didNullDowncast
+            ? nonNullableCommonType
+            : commonTypeBetweenAllUnionConstructors;
+
+        result.cloneableProperties.add(
+          Property(
+            isFinal: isFinal,
+            type: resolveFullTypeStringFrom(
+              library,
+              copyWithType,
+            ),
+            isSynthetic: true,
+            isNullable: copyWithType.isNullable,
+            isDartList: copyWithType.isDartCoreList,
+            isDartMap: copyWithType.isDartCoreMap,
+            isDartSet: copyWithType.isDartCoreSet,
+            isPossiblyDartCollection: copyWithType.isPossiblyDartCollection,
+            name: parameter.name,
+            decorators: parameter.decorators,
+            defaultValueSource: parameter.defaultValueSource,
+            doc: parameter.doc,
+            hasJsonKey: false,
+          ),
+        );
+      }
+    }
+
+    return result;
   }
 
   static void _assertValidFieldUsage(
@@ -572,6 +927,26 @@ class Class {
       );
     }
   }
+
+  String get escapedName {
+    var generics =
+        genericsParameterTemplate.typeParameters.map((e) => '\$$e').join(', ');
+    if (generics.isNotEmpty) {
+      generics = '<$generics>';
+    }
+
+    final escapedElementName = name.replaceAll(r'$', r'\$');
+
+    return '$escapedElementName$generics';
+  }
+}
+
+class PropertyList {
+  /// Properties that have a getter in the abstract class
+  final List<Property> readableProperties = [];
+
+  /// Properties that are visible on `copyWith`
+  final List<Property> cloneableProperties = [];
 }
 
 class Library {
@@ -706,8 +1081,27 @@ class ClassConfig {
 }
 
 extension ClassDeclarationX on ClassDeclaration {
+  /// Pick either Class(), Class._() or the first constructor found, in that order.
+  ConstructorDeclaration? get copyWithTarget {
+    return constructors.fold<ConstructorDeclaration?>(null, (acc, ctor) {
+          if (ctor.name == null) return ctor;
+          if (ctor.name!.lexeme == '_') return acc ?? ctor;
+          return acc;
+        }) ??
+        constructors.firstOrNull;
+  }
+
   Iterable<ConstructorDeclaration> get constructors {
     return members.whereType<ConstructorDeclaration>();
+  }
+
+  Iterable<(FieldDeclaration, VariableDeclaration)> get properties {
+    return members
+        .whereType<FieldDeclaration>()
+        .where((e) => !e.isStatic)
+        .expand(
+          (e) => e.fields.variables.map((f) => (e, f)),
+        );
   }
 
   bool needsJsonSerializable(Library library) {

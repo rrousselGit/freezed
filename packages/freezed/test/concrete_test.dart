@@ -1,5 +1,3 @@
-// TODO: debugFillProperties still works if base class is Diagnosticable
-
 import 'package:test/test.dart';
 
 import 'integration/concrete.dart';

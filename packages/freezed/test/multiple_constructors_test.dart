@@ -26,6 +26,16 @@ Future<void> main() async {
         .firstWhere((element) => element.name == elementName);
   }
 
+  test('Response', () {
+    expect(Response.data('a').time, DateTime(0, 0, 0));
+    expect(
+      Response.data('a', time: DateTime(1, 0, 0)).time,
+      DateTime(1, 0, 0),
+    );
+
+    expect(Response<String>.error('err').time, DateTime(0, 0, 0));
+  });
+
   test('recursive class does not generate dynamic', () async {
     final recursiveClass = _getClassElement('_RecursiveNext');
 

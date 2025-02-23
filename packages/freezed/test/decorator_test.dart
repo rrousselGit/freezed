@@ -4,7 +4,6 @@ import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
 void main() {
-  // TODO: Tear off deprecated
   test('has no issue', () async {
     final main = await resolveSources(
       {
@@ -91,9 +90,6 @@ void main() {
             'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
             'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
             'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-            // TODO: find out why copyWith doesn't warn even if deprecated
-            // 'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-            // 'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
           ],
           [
             'UNUSED_RESULT',
@@ -102,9 +98,6 @@ void main() {
             'DEPRECATED_MEMBER_USE',
             'DEPRECATED_MEMBER_USE',
             'DEPRECATED_MEMBER_USE',
-            // TODO: find out why copyWith doesn't warn even if deprecated
-            // 'DEPRECATED_MEMBER_USE',
-            // 'DEPRECATED_MEMBER_USE',
           ],
         ]));
   });

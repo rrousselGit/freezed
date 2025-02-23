@@ -17,6 +17,7 @@ class Property {
     required this.defaultValueSource,
     required this.hasJsonKey,
     required this.doc,
+    required this.isSynthetic,
     required this.isFinal,
     required this.isNullable,
     required this.isDartList,
@@ -25,26 +26,29 @@ class Property {
     required this.isPossiblyDartCollection,
   }) : type = type ?? 'dynamic';
 
-  Property.fromParameter(Parameter p)
-      : this(
+  Property.fromParameter(
+    Parameter p, {
+    required bool isSynthetic,
+  }) : this(
           decorators: p.decorators,
           name: p.name,
           isFinal: p.isFinal,
           doc: p.doc,
           type: p.type,
           defaultValueSource: p.defaultValueSource,
+          isSynthetic: isSynthetic,
           isNullable: p.isNullable,
           isDartList: p.isDartList,
           isDartMap: p.isDartMap,
           isDartSet: p.isDartSet,
           isPossiblyDartCollection: p.isPossiblyDartCollection,
-          // TODO: support hasJsonKey
           hasJsonKey: false,
         );
 
   static Property fromFormalParameter(
     FormalParameter parameter, {
     required bool addImplicitFinal,
+    required bool isSynthetic,
   }) {
     final element = parameter.declaredElement!;
 
@@ -64,7 +68,8 @@ class Property {
       isDartMap: element.type.isDartCoreMap,
       isDartSet: element.type.isDartCoreSet,
       isFinal: addImplicitFinal || element.isFinal,
-      doc: parameter.documentation,
+      isSynthetic: isSynthetic,
+      doc: parameter.documentation ?? '',
       type: parseTypeSource(element),
       decorators: parseDecorators(element.metadata),
       defaultValueSource: defaultValue,
@@ -80,6 +85,7 @@ class Property {
   final bool isDartMap;
   final bool isDartSet;
   final bool isFinal;
+  final bool isSynthetic;
   final List<String> decorators;
   final String? defaultValueSource;
   final bool hasJsonKey;
@@ -134,6 +140,7 @@ class Property {
     return Property(
       type: type ?? this.type,
       name: name ?? this.name,
+      isSynthetic: isSynthetic,
       isNullable: isNullable ?? this.isNullable,
       decorators: decorators ?? this.decorators,
       defaultValueSource: defaultValueSource ?? this.defaultValueSource,

@@ -2,7 +2,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
 
 extension AstX on AstNode {
-  String get documentation {
+  String? get documentation {
     final builder = StringBuffer();
 
     for (Token? token = beginToken.precedingComments;
@@ -10,6 +10,8 @@ extension AstX on AstNode {
         token = token.next) {
       builder.writeln(token);
     }
+
+    if (builder.isEmpty) return null;
 
     return builder.toString();
   }

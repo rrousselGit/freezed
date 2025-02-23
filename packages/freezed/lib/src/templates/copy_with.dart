@@ -61,22 +61,10 @@ ${_abstractDeepCopyMethods().join()}
 }''';
   }
 
-  String get abstractCopyWithGetter {
+  String copyWithGetter({required bool needsCast}) {
     if (cloneableProperties.isEmpty) return '';
 
-    return _maybeOverride(
-      doc: '''
-${_copyWithDocs(data.name)}
-''',
-      '''
-@JsonKey(includeFromJson: false, includeToJson: false)
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith;
-''',
-    );
-  }
-
-  String get concreteCopyWithGetter {
-    if (cloneableProperties.isEmpty) return '';
+    final cast = needsCast ? ' as $clonedClassName$genericsParameter' : '';
     return _maybeOverride(
       doc: '''
 ${_copyWithDocs(data.name)}
@@ -84,7 +72,7 @@ ${_copyWithDocs(data.name)}
       '''
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this, _\$identity);
+$_abstractClassName${genericsParameter.append('$clonedClassName$genericsParameter')} get copyWith => $_implClassName${genericsParameter.append('$clonedClassName$genericsParameter')}(this$cast, _\$identity);
 ''',
     );
   }
@@ -92,36 +80,47 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   String get commonConcreteImpl {
     var copyWith = '';
 
-    if (cloneableProperties.isNotEmpty) {
+    if (cloneableProperties.isNotEmpty || data.copyWithTarget != null) {
       final prototype = _concreteCopyWithPrototype(
         properties: cloneableProperties,
         methodName: 'call',
       );
 
-      final body = _copyWithMethodBody(
-        parametersTemplate: ParametersTemplate(
-          const [],
-          namedParameters: cloneableProperties.map((e) {
-            return Parameter(
-              decorators: e.decorators,
-              name: e.name,
-              isNullable: e.isNullable,
-              isFinal: false,
-              isDartList: false,
-              isDartMap: false,
-              isDartSet: false,
-              showDefaultValue: false,
-              isRequired: false,
-              defaultValueSource: '',
-              type: e.type,
-              doc: e.doc,
-              isPossiblyDartCollection: e.isPossiblyDartCollection,
-              parameterElement: null,
-            );
-          }).toList(),
-        ),
-        returnType: '_self.copyWith',
-      );
+      String body;
+      if (data.copyWithTarget case final target?) {
+        body = _copyWithMethodBody(
+          parametersTemplate: target.parameters,
+          returnType: switch (target.name) {
+            final name? => '${data.name}.$name',
+            null => data.name,
+          },
+        );
+      } else {
+        body = _copyWithMethodBody(
+          parametersTemplate: ParametersTemplate(
+            const [],
+            namedParameters: cloneableProperties.map((e) {
+              return Parameter(
+                decorators: e.decorators,
+                name: e.name,
+                isNullable: e.isNullable,
+                isFinal: false,
+                isDartList: false,
+                isDartMap: false,
+                isDartSet: false,
+                showDefaultValue: false,
+                isRequired: false,
+                defaultValueSource: '',
+                type: e.type,
+                doc: e.doc,
+                isPossiblyDartCollection: e.isPossiblyDartCollection,
+                parameterElement: null,
+              );
+            }).toList(),
+          ),
+          returnType: '_self.copyWith',
+        );
+      }
 
       copyWith = '@pragma(\'vm:prefer-inline\') @override $prototype $body';
     }

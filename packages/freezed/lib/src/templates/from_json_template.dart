@@ -12,6 +12,10 @@ class FromJson {
 
   @override
   String toString() {
+    // For manual classes, we don't handle from/toJson. This is because parts
+    // cannot add annotations on user's behalf.
+    if (clazz.constructors.isEmpty) return '';
+
     final conflictCtor = clazz.constructors
         .where((c) => c.redirectedName.public == clazz.name.public)
         .firstOrNull;
