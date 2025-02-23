@@ -233,21 +233,24 @@ Future<void> main() async {
     final doc = singleClassLibrary.topLevelElements
         .firstWhere((e) => e.name == 'Doc') as ClassElement;
 
-    expect(doc.mixins.first.accessors.where((e) => e.name != 'copyWith'), [
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'positional')
-          .having((e) => e.documentationComment, 'doc', '''
+    expect(
+        doc.mixins.first.accessors
+            .where((e) => e.name != 'copyWith' && e.name != 'hashCode'),
+        [
+          isA<PropertyAccessorElement>()
+              .having((e) => e.name, 'name', 'positional')
+              .having((e) => e.documentationComment, 'doc', '''
 /// Multi
 /// line
 /// positional'''),
-      isA<PropertyAccessorElement>() //
-          .having((e) => e.name, 'name', 'named')
-          .having(
-              (e) => e.documentationComment, 'doc', '/// Single line named'),
-      isA<PropertyAccessorElement>() //
-          .having((e) => e.name, 'name', 'simple')
-          .having((e) => e.documentationComment, 'doc', null),
-    ]);
+          isA<PropertyAccessorElement>() //
+              .having((e) => e.name, 'name', 'named')
+              .having((e) => e.documentationComment, 'doc',
+                  '/// Single line named'),
+          isA<PropertyAccessorElement>() //
+              .having((e) => e.name, 'name', 'simple')
+              .having((e) => e.documentationComment, 'doc', null),
+        ]);
   });
 
   test('Assertion', () {
