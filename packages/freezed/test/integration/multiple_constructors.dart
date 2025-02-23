@@ -3,6 +3,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'multiple_constructors.freezed.dart';
 
 @freezed
+sealed class Response<T> with _$Response<T> {
+  Response._({DateTime? time}) : time = time ?? DateTime(0, 0, 0);
+  // Constructors may enable passing parameters to ._();
+  factory Response.data(T value, {DateTime? time}) = ResponseData;
+  // If those parameters are named optionals, they are not required to be passed.
+  factory Response.error(Object error) = ResponseError;
+
+  @override
+  final DateTime time;
+}
+
+@freezed
 abstract class ManualPositionInAnyOrder with _$ManualPositionInAnyOrder {
   const ManualPositionInAnyOrder._(this.a, this.b);
   const factory ManualPositionInAnyOrder(String a, int b) =

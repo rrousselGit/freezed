@@ -1,34 +1,52 @@
 ## Unreleased 3.0.0
 
+Freezed 3.0 is about supporting a "mixed mode".  
+From now on, Freezed supports both the usual syntax:
+
+```dart
+@freezed
+sealed class Usual with _$Usual {
+  factory Usual({int a}) = _Usual;
+}
+```
+
+But also:
+
+```dart
+@freezed
+class Usual with _$Usual {
+  Usual({this.a});
+  final int a;
+}
+```
+
+This has multiple benefits:
+
+- Simple classes don't need Freezed's "weird" syntax and can stay simple
+- Unions can keep using the usual `factory` syntax
+
+It also has another benefit:  
+Complex Unions now have a way to use Inheritance and non-constant default values,
+by relying on a non-factory `MyClass._()` constructor:
+
+```dart
+@freezed
+sealed class Response<T> with _$Response<T> {
+  Response._({DateTime? time}) : time = time ?? DateTime.now();
+  // Constructors may enable passing parameters to ._();
+  factory Response.data(T value, {DateTime? time}) = ResponseData;
+  // If those parameters are named optionals, they are not required to be passed.
+  factory Response.error(Object error) = ResponseError;
+
+  @override
+  final DateTime time;
+}
+```
+
+### Breaking changes:
+
 - **Breaking**: Removed `map/when` and variants. These have been discouraged since Dart got pattern matching.
 - **Breaking**: Freezed classes should now either be `abstract`, `sealed`, or manually implements `_$MyClass`.
-- Inheritance and dynamic default values are now supported by specifying them in the `MyClass._()` constructor.  
-  Inheritance example:
-  ```dart
-  class BaseClass {
-    BaseClass.name(this.value);
-    final int value;
-  }
-  @freezed
-  abstract class Example extends BaseClass with _$Example {
-    // We can pass super values through the ._ constructor.
-    Example._(super.value): super.name();
-
-    factory Example(int value, String name) = _Example;
-  }
-  ```
-  Dynamic default values example:
-  ```dart
-  @freezed
-  abstract class Example with _$Example {
-    Example._(Duration? duration)
-      : duration ??= DateTime.now();
-
-    factory Example({Duration? duration}) = _Example;
-
-    final Duration? duration;
-  }
-  ```
 
 ## 2.5.8 - 2025-01-06
 
