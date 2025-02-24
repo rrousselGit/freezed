@@ -19,9 +19,10 @@ extension StringX on String {
 
 @immutable
 class FreezedGenerator extends ParserGenerator<Freezed> {
-  FreezedGenerator(this._buildYamlConfigs);
+  FreezedGenerator(this._buildYamlConfigs, {required this.format});
 
   final Freezed _buildYamlConfigs;
+  final bool format;
 
   Iterable<DeepCloneableProperty> _getCommonDeepCloneableProperties(
     List<ConstructorDetails> constructors,
@@ -56,6 +57,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   ) sync* {
     if (annotations.isEmpty) return;
 
+    if (!format) yield '// dart format off';
+
     final library = Library.from(units);
     for (final value in _generateForAll(library)) {
       yield value;
@@ -73,6 +76,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
         yield value;
       }
     }
+
+    if (!format) yield '// dart format on';
   }
 
   Iterable<Object> _generateForData(Library globalData, Class data) sync* {

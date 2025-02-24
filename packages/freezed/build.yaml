@@ -10,6 +10,8 @@ targets:
           include:
             - test/*
             - test/**/*
+        options:
+          format: true
       source_gen|combining_builder:
         options:
           ignore_for_file:
