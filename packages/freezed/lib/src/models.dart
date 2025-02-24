@@ -195,7 +195,7 @@ class ConstructorDetails {
     );
 
     if (constructor.factoryKeyword == null &&
-        constructor.name?.lexeme != '_' &&
+        !constructor.isManualCtor &&
         freezedCtors.isNotEmpty) {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed can only have a single non-factory constructor.',
@@ -203,7 +203,7 @@ class ConstructorDetails {
       );
     }
 
-    if (constructor.name?.lexeme == '_') {
+    if (constructor.isManualCtor) {
       for (final param in constructor.parameters.parameters) {
         if (param.isPositional) {
           for (final ctor in freezedCtors) {
@@ -259,9 +259,7 @@ When specifying fields in non-factory constructor then specifying factory constr
   }) {
     final result = <ConstructorDetails>[];
 
-    final manualConstructor = declaration.constructors
-        .where((e) => e.name?.lexeme == '_')
-        .firstOrNull;
+    final manualConstructor = declaration.manualConstructor;
 
     for (final constructor in declaration.constructors) {
       if (constructor.factoryKeyword == null ||
@@ -349,13 +347,6 @@ When specifying fields in non-factory constructor then specifying factory constr
           ),
           redirectedName: redirectedName,
         ),
-      );
-    }
-
-    if (result.length > 1 && result.any((c) => c.name.startsWith('_'))) {
-      throw InvalidGenerationSourceError(
-        'A freezed union cannot have private constructors',
-        element: declaration.declaredElement,
       );
     }
 
@@ -524,9 +515,7 @@ class Class {
     required Freezed globalConfigs,
     required List<CompilationUnit> unitsExcludingGeneratedFiles,
   }) {
-    final privateCtor = declaration.constructors.where((ctor) {
-      return ctor.name?.lexeme == '_' && ctor.factoryKeyword == null;
-    }).firstOrNull;
+    final privateCtor = declaration.manualConstructor;
 
     for (final field in declaration.declaredElement!.fields) {
       _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
@@ -1147,6 +1136,10 @@ class ClassConfig {
   final Freezed annotation;
 }
 
+extension on ConstructorDeclaration {
+  bool get isManualCtor => name?.lexeme == '_' && factoryKeyword == null;
+}
+
 extension ClassDeclarationX on ClassDeclaration {
   /// Pick either Class(), Class._() or the first constructor found, in that order.
   ConstructorDeclaration? get copyWithTarget {
@@ -1156,6 +1149,10 @@ extension ClassDeclarationX on ClassDeclaration {
           return acc;
         }) ??
         constructors.firstOrNull;
+  }
+
+  ConstructorDeclaration? get manualConstructor {
+    return constructors.where((e) => e.isManualCtor).firstOrNull;
   }
 
   Iterable<ConstructorDeclaration> get constructors {
