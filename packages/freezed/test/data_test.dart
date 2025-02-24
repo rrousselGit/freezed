@@ -16,21 +16,27 @@ void main() {
   });
 
   test('Final parameters generate immutable properties', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'data.dart';
 
 void main() {
   final value = Data(0, 1);
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'data.dart';
 
 void main() {
   final value = Data(0, 1);
   value.b = 42;
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 }

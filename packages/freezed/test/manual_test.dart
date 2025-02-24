@@ -109,10 +109,7 @@ void main() {
 
   group('ManualWithDefault', () {
     test('has copyWith use default', () {
-      expect(
-        ManualWithDefault(42).copyWith(a: 21),
-        ManualWithDefault(21),
-      );
+      expect(ManualWithDefault(42).copyWith(a: 21), ManualWithDefault(21));
     });
   });
 

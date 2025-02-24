@@ -10,8 +10,9 @@ import 'integration/json.dart';
 Future<void> main() async {
   final jsonFile = await resolveSources(
     {'freezed|test/integration/json.dart': useAssetReader},
-    (r) => r.libraries
-        .firstWhere((element) => element.source.toString().contains('json')),
+    (r) => r.libraries.firstWhere(
+      (element) => element.source.toString().contains('json'),
+    ),
   );
 
   test('can have a custom fromJson', () {
@@ -19,10 +20,7 @@ Future<void> main() async {
       Regression280.fromJson(<String, String>{'foo': 'value'}),
       Regression280('value'),
     );
-    expect(
-      Regression280n2.fromJson('hello'),
-      Regression280n2('hello'),
-    );
+    expect(Regression280n2.fromJson('hello'), Regression280n2('hello'));
 
     expect(
       jsonFile.topLevelElements.map((e) => e.name),
@@ -43,15 +41,19 @@ Future<void> main() async {
   });
 
   test('Do not generate when/map even if fromJson is present', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'json.dart';
 
 void main() {
   final a = NoWhen();
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'json.dart';
 import 'json.dart';
 
@@ -60,7 +62,9 @@ void main() {
   a.whenOrNull();
   a.mapOrNull();
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   group('Freezed.unionKey', () {
@@ -87,25 +91,25 @@ void main() {
     });
 
     test('toJson', () {
-      expect(
-        CustomKey.first(42).toJson(),
-        <String, dynamic>{'type': 'first', 'a': 42},
-      );
+      expect(CustomKey.first(42).toJson(), <String, dynamic>{
+        'type': 'first',
+        'a': 42,
+      });
 
-      expect(
-        CustomKey.second(21).toJson(),
-        <String, dynamic>{'type': 'second', 'a': 21},
-      );
+      expect(CustomKey.second(21).toJson(), <String, dynamic>{
+        'type': 'second',
+        'a': 21,
+      });
 
-      expect(
-        RawCustomKey.first(42).toJson(),
-        <String, dynamic>{'\$type': 'first', 'a': 42},
-      );
+      expect(RawCustomKey.first(42).toJson(), <String, dynamic>{
+        '\$type': 'first',
+        'a': 42,
+      });
 
-      expect(
-        FancyCustomKey.first(42).toJson(),
-        <String, dynamic>{'ty"\'pe': 'first', 'a': 42},
-      );
+      expect(FancyCustomKey.first(42).toJson(), <String, dynamic>{
+        'ty"\'pe': 'first',
+        'a': 42,
+      });
     });
   });
 
@@ -129,81 +133,93 @@ void main() {
     });
 
     test('toJson', () {
-      expect(
-        CustomUnionValue.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
-      );
+      expect(CustomUnionValue.first(42).toJson(), <String, dynamic>{
+        'runtimeType': 'first',
+        'a': 42,
+      });
 
-      expect(
-        CustomUnionValue.second(21).toJson(),
-        <String, dynamic>{'runtimeType': 'SECOND', 'a': 21},
-      );
+      expect(CustomUnionValue.second(21).toJson(), <String, dynamic>{
+        'runtimeType': 'SECOND',
+        'a': 21,
+      });
     });
   });
 
   group("Works with older 'runtimeType' union key", () {
     test('fromJson', () {
       expect(
-        RuntimeTypeKey.fromJson(
-            <String, dynamic>{'runtimeType': 'first', 'a': 42}),
+        RuntimeTypeKey.fromJson(<String, dynamic>{
+          'runtimeType': 'first',
+          'a': 42,
+        }),
         RuntimeTypeKey.first(42),
       );
 
       expect(
-        RuntimeTypeKey.fromJson(
-            <String, dynamic>{'runtimeType': 'second', 'a': 21}),
+        RuntimeTypeKey.fromJson(<String, dynamic>{
+          'runtimeType': 'second',
+          'a': 21,
+        }),
         RuntimeTypeKey.second(21),
       );
 
       expect(
-        RawRuntimeTypeKey.fromJson(
-            <String, dynamic>{'\$runtimeType': 'first', 'a': 42}),
+        RawRuntimeTypeKey.fromJson(<String, dynamic>{
+          '\$runtimeType': 'first',
+          'a': 42,
+        }),
         RawRuntimeTypeKey.first(42),
       );
 
       expect(
-        FancyRuntimeTypeKey.fromJson(
-            <String, dynamic>{'run"\'timeType': 'first', 'a': 42}),
+        FancyRuntimeTypeKey.fromJson(<String, dynamic>{
+          'run"\'timeType': 'first',
+          'a': 42,
+        }),
         FancyRuntimeTypeKey.first(42),
       );
     });
 
     test('toJson', () {
-      expect(
-        RuntimeTypeKey.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
-      );
+      expect(RuntimeTypeKey.first(42).toJson(), <String, dynamic>{
+        'runtimeType': 'first',
+        'a': 42,
+      });
 
-      expect(
-        RuntimeTypeKey.second(21).toJson(),
-        <String, dynamic>{'runtimeType': 'second', 'a': 21},
-      );
+      expect(RuntimeTypeKey.second(21).toJson(), <String, dynamic>{
+        'runtimeType': 'second',
+        'a': 21,
+      });
 
-      expect(
-        RawRuntimeTypeKey.first(42).toJson(),
-        <String, dynamic>{'\$runtimeType': 'first', 'a': 42},
-      );
+      expect(RawRuntimeTypeKey.first(42).toJson(), <String, dynamic>{
+        '\$runtimeType': 'first',
+        'a': 42,
+      });
 
-      expect(
-        FancyRuntimeTypeKey.first(42).toJson(),
-        <String, dynamic>{'run"\'timeType': 'first', 'a': 42},
-      );
+      expect(FancyRuntimeTypeKey.first(42).toJson(), <String, dynamic>{
+        'run"\'timeType': 'first',
+        'a': 42,
+      });
     });
   });
 
   group('FreezedUnionFallback', () {
     test(
-        'when fallback is non-null, if fromJson receives null as value, fallbacks to default',
-        () {
-      expect(
-        UnionFallback.fromJson(<String, dynamic>{'runtimeType': null, 'a': 42}),
-        UnionFallback.fallback(42),
-      );
-      expect(
-        UnionFallback.fromJson(<String, dynamic>{'a': 42}),
-        UnionFallback.fallback(42),
-      );
-    });
+      'when fallback is non-null, if fromJson receives null as value, fallbacks to default',
+      () {
+        expect(
+          UnionFallback.fromJson(<String, dynamic>{
+            'runtimeType': null,
+            'a': 42,
+          }),
+          UnionFallback.fallback(42),
+        );
+        expect(
+          UnionFallback.fromJson(<String, dynamic>{'a': 42}),
+          UnionFallback.fallback(42),
+        );
+      },
+    );
 
     test('fromJson', () {
       expect(
@@ -231,9 +247,7 @@ void main() {
       );
 
       expect(
-        UnionFallback.fromJson(<String, dynamic>{
-          'a': 55,
-        }),
+        UnionFallback.fromJson(<String, dynamic>{'a': 55}),
         UnionFallback.fallback(55),
       );
 
@@ -272,9 +286,7 @@ void main() {
       );
 
       expect(
-        UnionFallbackWithDefault.fromJson(<String, dynamic>{
-          'a': 55,
-        }),
+        UnionFallbackWithDefault.fromJson(<String, dynamic>{'a': 55}),
         UnionFallbackWithDefault(55),
       );
     });
@@ -286,14 +298,8 @@ void main() {
         'key': 'first',
       });
 
-      expect(
-        first,
-        UnionKeyFallbackWithDefault.first('first'),
-      );
-      expect(
-        first.key,
-        first.toJson()['key'],
-      );
+      expect(first, UnionKeyFallbackWithDefault.first('first'));
+      expect(first.key, first.toJson()['key']);
     });
 
     test('fallback', () {
@@ -301,14 +307,8 @@ void main() {
         'key': 'fallback',
       });
 
-      expect(
-        fallback,
-        UnionKeyFallbackWithDefault('fallback'),
-      );
-      expect(
-        fallback.key,
-        fallback.toJson()['key'],
-      );
+      expect(fallback, UnionKeyFallbackWithDefault('fallback'));
+      expect(fallback.key, fallback.toJson()['key']);
     });
   });
 
@@ -332,15 +332,15 @@ void main() {
     });
 
     test('FreezedUnionCase.pascal toJson', () {
-      expect(
-        UnionValueCasePascal.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'First', 'a': 42},
-      );
+      expect(UnionValueCasePascal.first(42).toJson(), <String, dynamic>{
+        'runtimeType': 'First',
+        'a': 42,
+      });
 
-      expect(
-        UnionValueCasePascal.secondValue(21).toJson(),
-        <String, dynamic>{'runtimeType': 'SecondValue', 'a': 21},
-      );
+      expect(UnionValueCasePascal.secondValue(21).toJson(), <String, dynamic>{
+        'runtimeType': 'SecondValue',
+        'a': 21,
+      });
     });
 
     test('FreezedUnionCase.kebab fromJson', () {
@@ -362,15 +362,15 @@ void main() {
     });
 
     test('FreezedUnionCase.kebab toJson', () {
-      expect(
-        UnionValueCaseKebab.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
-      );
+      expect(UnionValueCaseKebab.first(42).toJson(), <String, dynamic>{
+        'runtimeType': 'first',
+        'a': 42,
+      });
 
-      expect(
-        UnionValueCaseKebab.secondValue(21).toJson(),
-        <String, dynamic>{'runtimeType': 'second-value', 'a': 21},
-      );
+      expect(UnionValueCaseKebab.secondValue(21).toJson(), <String, dynamic>{
+        'runtimeType': 'second-value',
+        'a': 21,
+      });
     });
 
     test('FreezedUnionCase.snake fromJson', () {
@@ -392,15 +392,15 @@ void main() {
     });
 
     test('FreezedUnionCase.snake toJson', () {
-      expect(
-        UnionValueCaseSnake.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'first', 'a': 42},
-      );
+      expect(UnionValueCaseSnake.first(42).toJson(), <String, dynamic>{
+        'runtimeType': 'first',
+        'a': 42,
+      });
 
-      expect(
-        UnionValueCaseSnake.secondValue(21).toJson(),
-        <String, dynamic>{'runtimeType': 'second_value', 'a': 21},
-      );
+      expect(UnionValueCaseSnake.secondValue(21).toJson(), <String, dynamic>{
+        'runtimeType': 'second_value',
+        'a': 21,
+      });
     });
 
     test('FreezedUnionCase.screamingSnake fromJson', () {
@@ -422,10 +422,10 @@ void main() {
     });
 
     test('FreezedUnionCase.screamingSnake toJson', () {
-      expect(
-        UnionValueCaseScreamingSnake.first(42).toJson(),
-        <String, dynamic>{'runtimeType': 'FIRST', 'a': 42},
-      );
+      expect(UnionValueCaseScreamingSnake.first(42).toJson(), <String, dynamic>{
+        'runtimeType': 'FIRST',
+        'a': 42,
+      });
 
       expect(
         UnionValueCaseScreamingSnake.secondValue(21).toJson(),
@@ -494,18 +494,17 @@ void main() {
         );
 
         expect(
-          UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{
-            'a': 55,
-          }),
+          UnrecognizedKeysUnionFallback.fromJson(<String, dynamic>{'a': 55}),
           UnrecognizedKeysUnionFallback.fallback(55),
         );
 
         expect(
-            () => UnrecognizedKeysCustomUnionValue.fromJson(<String, dynamic>{
-                  'runtimeType': 'third',
-                  'a': 10,
-                }),
-            throwsA(const TypeMatcher<CheckedFromJsonException>()));
+          () => UnrecognizedKeysCustomUnionValue.fromJson(<String, dynamic>{
+            'runtimeType': 'third',
+            'a': 10,
+          }),
+          throwsA(const TypeMatcher<CheckedFromJsonException>()),
+        );
       });
     });
 
@@ -629,20 +628,16 @@ void main() {
 
       test('FreezedUnionCase.screamingScreamingSnake fromJson', () {
         expect(
-          UnrecognizedKeysUnionValueCaseScreamingSnake
-              .fromJson(<String, dynamic>{
-            'runtimeType': 'FIRST',
-            'a': 42,
-          }),
+          UnrecognizedKeysUnionValueCaseScreamingSnake.fromJson(
+            <String, dynamic>{'runtimeType': 'FIRST', 'a': 42},
+          ),
           UnrecognizedKeysUnionValueCaseScreamingSnake.first(42),
         );
 
         expect(
-          UnrecognizedKeysUnionValueCaseScreamingSnake
-              .fromJson(<String, dynamic>{
-            'runtimeType': 'SECOND_VALUE',
-            'a': 21,
-          }),
+          UnrecognizedKeysUnionValueCaseScreamingSnake.fromJson(
+            <String, dynamic>{'runtimeType': 'SECOND_VALUE', 'a': 21},
+          ),
           UnrecognizedKeysUnionValueCaseScreamingSnake.secondValue(21),
         );
       });
@@ -662,25 +657,16 @@ void main() {
   });
 
   test('class decorators are applied on the generated class', () {
-    expect(
-      ClassDecorator('Complex name').toJson(),
-      {
-        'complex_name': 'Complex name',
-      },
-    );
+    expect(ClassDecorator('Complex name').toJson(), {
+      'complex_name': 'Complex name',
+    });
   });
 
   test('@Default implies a @JsonKey', () {
     final value = DefaultValue();
-    expect(
-      value.toJson(),
-      {'value': 42},
-    );
+    expect(value.toJson(), {'value': 42});
 
-    expect(
-      DefaultValue.fromJson(<String, dynamic>{}),
-      DefaultValue(42),
-    );
+    expect(DefaultValue.fromJson(<String, dynamic>{}), DefaultValue(42));
   });
 
   test('@Default does not imply a @JsonKey if one is already specified', () {
@@ -692,19 +678,16 @@ void main() {
 
   group('generic json', () {
     test('fromJson', () {
-      expect(
-        Generic<int>.fromJson(<String, dynamic>{'a': 42}),
-        Generic(42),
-      );
+      expect(Generic<int>.fromJson(<String, dynamic>{'a': 42}), Generic(42));
     });
 
     group('JsonSerializable.genericArgumentFactories', () {
       test('single ctor + single type argument', () {
         expect(
-          GenericWithArgumentFactories<String>.fromJson(
-            <String, dynamic>{'value': 'hello', 'value2': 'world'},
-            (s) => s! as String,
-          ),
+          GenericWithArgumentFactories<String>.fromJson(<String, dynamic>{
+            'value': 'hello',
+            'value2': 'world',
+          }, (s) => s! as String),
           GenericWithArgumentFactories<String>('hello', 'world'),
         );
       });
@@ -727,7 +710,7 @@ void main() {
               'first': 1,
               'second': 0.0,
               'another': '!',
-              'runtimeType': 'default'
+              'runtimeType': 'default',
             },
             (s) => s! as int,
             (s) => s! as double,
@@ -740,7 +723,7 @@ void main() {
               'first': 1,
               'second': 0.0,
               'another': '!',
-              'runtimeType': 'both'
+              'runtimeType': 'both',
             },
             (s) => s! as int,
             (s) => s! as double,
@@ -760,7 +743,7 @@ void main() {
             <String, dynamic>{
               'first': 1,
               'another': '!',
-              'runtimeType': 'first'
+              'runtimeType': 'first',
             },
             (s) => s! as int,
             (s) => s! as double,
@@ -772,15 +755,12 @@ void main() {
             <String, dynamic>{
               'second': 0.0,
               'another': '!',
-              'runtimeType': 'second'
+              'runtimeType': 'second',
             },
             (s) => s! as int,
             (s) => s! as double,
           ),
-          GenericMultiCtorWithArgumentFactories<int, double>.second(
-            0.0,
-            '!',
-          ),
+          GenericMultiCtorWithArgumentFactories<int, double>.second(0.0, '!'),
         );
       });
     });
@@ -794,28 +774,20 @@ void main() {
   });
 
   test('has no issue', () async {
-    var errorResult = await jsonFile.session
-            .getErrors('/freezed/test/integration/json.freezed.dart')
-        as ErrorsResult;
+    var errorResult =
+        await jsonFile.session.getErrors(
+              '/freezed/test/integration/json.freezed.dart',
+            )
+            as ErrorsResult;
     expect(errorResult.errors, isEmpty);
   }, skip: true);
 
   test("single constructor fromJson doesn't require type", () {
-    expect(
-      Single.fromJson(<String, dynamic>{
-        'a': 42,
-      }),
-      Single(42),
-    );
+    expect(Single.fromJson(<String, dynamic>{'a': 42}), Single(42));
   });
 
   test("single constructor toJson doesn't add type", () {
-    expect(
-      Single(42).toJson(),
-      {
-        'a': 42,
-      },
-    );
+    expect(Single(42).toJson(), {'a': 42});
   });
 
   group('toJson', () {
@@ -824,28 +796,11 @@ void main() {
     });
 
     test('works', () {
-      expect(
-        Json().toJson(),
-        {
-          'runtimeType': 'default',
-        },
-      );
+      expect(Json().toJson(), {'runtimeType': 'default'});
 
-      expect(
-        Json.first('42').toJson(),
-        {
-          'a': '42',
-          'runtimeType': 'first',
-        },
-      );
+      expect(Json.first('42').toJson(), {'a': '42', 'runtimeType': 'first'});
 
-      expect(
-        Json.second(42).toJson(),
-        {
-          'b': 42,
-          'runtimeType': 'second',
-        },
-      );
+      expect(Json.second(42).toJson(), {'b': 42, 'runtimeType': 'second'});
     });
   });
 
@@ -874,26 +829,15 @@ void main() {
   });
 
   test('fromJson', () {
-    expect(
-      Json.fromJson(<String, dynamic>{
-        'runtimeType': 'default',
-      }),
-      Json(),
-    );
+    expect(Json.fromJson(<String, dynamic>{'runtimeType': 'default'}), Json());
 
     expect(
-      Json.fromJson(<String, dynamic>{
-        'runtimeType': 'first',
-        'a': '42',
-      }),
+      Json.fromJson(<String, dynamic>{'runtimeType': 'first', 'a': '42'}),
       Json.first('42'),
     );
 
     expect(
-      Json.fromJson(<String, dynamic>{
-        'runtimeType': 'second',
-        'b': 42,
-      }),
+      Json.fromJson(<String, dynamic>{'runtimeType': 'second', 'b': 42}),
       Json.second(42),
     );
   });
@@ -922,36 +866,48 @@ void main() {
   });
 
   test('if no fromJson exists, no constructors are made', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'json.dart';
 
 void main() {
   Json.fromJson(<String, dynamic>{});
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'json.dart';
 
 void main() {
   NoFirst.fromJson(<String, dynamic>{});
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'json.dart';
 
 void main() {
   NoDefault.fromJson(<String, dynamic>{});
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'json.dart';
 
 void main() {
   NoSecond.fromJson(<String, dynamic>{});
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 }

@@ -21,10 +21,7 @@ abstract class Subclass extends Base with _$Subclass {
 
 @freezed
 abstract class Dynamic with _$Dynamic {
-  factory Dynamic({
-    dynamic foo,
-    dynamic? bar,
-  }) = DynamicFirst;
+  factory Dynamic({dynamic foo, dynamic? bar}) = DynamicFirst;
 }
 
 class CustomMap<A, B> extends MapBase<A, B> {
@@ -177,9 +174,7 @@ const implementsAlias = Implements<Some<Complex<Type>>>();
 @freezed
 abstract class ImplementsAlias with _$ImplementsAlias {
   @implementsAlias
-  factory ImplementsAlias.first({
-    Complex<Type>? value,
-  }) = ImplementsAliasFirst;
+  factory ImplementsAlias.first({Complex<Type>? value}) = ImplementsAliasFirst;
 }
 
 abstract class DataEvent {}
@@ -245,9 +240,7 @@ abstract class Assertion with _$Assertion {
 @freezed
 abstract class Doc326 with _$Doc326 {
   /// Hello world
-  factory Doc326({
-    int? named,
-  }) = _Doc326;
+  factory Doc326({int? named}) = _Doc326;
 }
 
 // Regression test for https://github.com/rrousselGit/freezed/issues/317
@@ -266,6 +259,7 @@ abstract class Doc with _$Doc {
     /// line
     /// positional
     int positional, {
+
     /// Single line named
     int? named,
 
@@ -277,10 +271,7 @@ abstract class Doc with _$Doc {
 /// Regression test for https://github.com/rrousselGit/freezed/issues/213
 @freezed
 abstract class Product with _$Product {
-  const factory Product({
-    String? name,
-    Product? parent,
-  }) = _ProductDataClass;
+  const factory Product({String? name, Product? parent}) = _ProductDataClass;
 }
 
 @freezed
@@ -291,9 +282,7 @@ abstract class Test with _$Test {
 @freezed
 abstract class Private with _$Private {
   // This is the (private) Freezed constructor
-  const factory Private._internal(
-    Iterable<String> items,
-  ) = _Private;
+  const factory Private._internal(Iterable<String> items) = _Private;
 }
 
 @freezed
@@ -354,10 +343,7 @@ abstract class NoConst with _$NoConst {
 // Regression test for https://github.com/rrousselGit/freezed/issues/40
 @freezed
 abstract class SecondState with _$SecondState {
-  const factory SecondState({
-    String? dateTime,
-    String? uuid,
-  }) = _SecondState;
+  const factory SecondState({String? dateTime, String? uuid}) = _SecondState;
 }
 
 // Regression test for https://github.com/rrousselGit/freezed/issues/44
@@ -419,12 +405,13 @@ abstract class ComplexLate with _$ComplexLate {
   factory ComplexLate(List<int> values) = _ComplexLate;
 
   @override
-  late final List<int> odd = values.where((value) {
-    if (value.isOdd)
-      return true;
-    else
-      return false;
-  }).toList();
+  late final List<int> odd =
+      values.where((value) {
+        if (value.isOdd)
+          return true;
+        else
+          return false;
+      }).toList();
 }
 
 @freezed
@@ -446,9 +433,8 @@ abstract class SpecialStringDefault with _$SpecialStringDefault {
 /// Adds `const` to default non-literal values
 @freezed
 abstract class DefaultNonLiteralConst with _$DefaultNonLiteralConst {
-  factory DefaultNonLiteralConst({
-    @Default(Object()) Object listObject,
-  }) = _DefaultNonLiteralConst;
+  factory DefaultNonLiteralConst({@Default(Object()) Object listObject}) =
+      _DefaultNonLiteralConst;
 }
 
 /// Does not add `const` to non-literal values if already present
@@ -503,8 +489,8 @@ abstract class NullDefault with _$NullDefault {
 @freezed
 abstract class ExplicitConstDefault with _$ExplicitConstDefault {
   factory ExplicitConstDefault(
-      //ignore: unnecessary_const
-      [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
+  //ignore: unnecessary_const
+  [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
 }
 
 @freezed

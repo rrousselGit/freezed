@@ -17,15 +17,11 @@ abstract class CustomEquals with _$CustomEquals {
 @freezed
 abstract class CustomEqualsWithUnion with _$CustomEqualsWithUnion {
   CustomEqualsWithUnion._();
-  factory CustomEqualsWithUnion.first({
-    String? name,
-    int? id,
-  }) = CustomEqualsFirst;
+  factory CustomEqualsWithUnion.first({String? name, int? id}) =
+      CustomEqualsFirst;
 
-  factory CustomEqualsWithUnion.second({
-    String? name,
-    bool? active,
-  }) = CustomEqualsSecond;
+  factory CustomEqualsWithUnion.second({String? name, bool? active}) =
+      CustomEqualsSecond;
 
   @override
   bool operator ==(Object o) => o is CustomEqualsWithUnion && o.name == name;

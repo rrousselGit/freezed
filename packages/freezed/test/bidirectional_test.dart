@@ -7,16 +7,17 @@ import 'integration/bidirectional.dart';
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
-      {
-        'freezed|test/integration/bidirectional.dart': useAssetReader,
-      },
+      {'freezed|test/integration/bidirectional.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('bidirectional')),
+        (element) => element.source.toString().contains('bidirectional'),
+      ),
     );
 
-    final errorResult = await main.session
-            .getErrors('/freezed/test/integration/bidirectional.freezed.dart')
-        as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/bidirectional.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -30,9 +31,7 @@ void main() {
         creator: Person(
           name: 'Bob',
           age: 24,
-          appointment: Appointment(
-            title: 'Other Appointment',
-          ),
+          appointment: Appointment(title: 'Other Appointment'),
         ),
       ),
     );
@@ -47,9 +46,7 @@ void main() {
           creator: Person(
             name: 'Steve',
             age: 24,
-            appointment: Appointment(
-              title: 'Other Appointment',
-            ),
+            appointment: Appointment(title: 'Other Appointment'),
           ),
         ),
       ),
@@ -67,9 +64,7 @@ void main() {
           creator: Person(
             name: 'Bob',
             age: 24,
-            appointment: Appointment(
-              title: 'Some New Appointment',
-            ),
+            appointment: Appointment(title: 'Some New Appointment'),
           ),
         ),
       ),

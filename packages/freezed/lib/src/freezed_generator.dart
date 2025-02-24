@@ -19,24 +19,27 @@ extension StringX on String {
 
 @immutable
 class FreezedGenerator extends ParserGenerator<Freezed> {
-  FreezedGenerator(this._buildYamlConfigs);
+  FreezedGenerator(this._buildYamlConfigs, {required this.format});
 
   final Freezed _buildYamlConfigs;
+  final bool format;
 
   Iterable<DeepCloneableProperty> _getCommonDeepCloneableProperties(
     List<ConstructorDetails> constructors,
     PropertyList commonProperties,
   ) sync* {
     for (final commonProperty in commonProperties.cloneableProperties) {
-      final commonGetter = commonProperties.readableProperties
-          .firstWhereOrNull((e) => e.name == commonProperty.name);
+      final commonGetter = commonProperties.readableProperties.firstWhereOrNull(
+        (e) => e.name == commonProperty.name,
+      );
       final deepCopyProperty = constructors.firstOrNull?.deepCloneableProperties
           .firstWhereOrNull((e) => e.name == commonProperty.name);
 
       if (deepCopyProperty == null || commonGetter == null) continue;
 
       yield deepCopyProperty.copyWith(
-        nullable: deepCopyProperty.nullable ||
+        nullable:
+            deepCopyProperty.nullable ||
             commonProperty.isNullable ||
             commonGetter.isNullable,
       );
@@ -53,6 +56,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     List<AnnotationMeta> annotations,
   ) sync* {
     if (annotations.isEmpty) return;
+
+    if (!format) yield '// dart format off';
 
     final library = Library.from(units);
     for (final value in _generateForAll(library)) {
@@ -71,30 +76,31 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
         yield value;
       }
     }
+
+    if (!format) yield '// dart format on';
   }
 
-  Iterable<Object> _generateForData(
-    Library globalData,
-    Class data,
-  ) sync* {
+  Iterable<Object> _generateForData(Library globalData, Class data) sync* {
     if (data.options.fromJson) yield FromJson(data);
 
-    final commonCopyWith = data.options.annotation.copyWith ??
-            data.properties.cloneableProperties.isNotEmpty
-        ? CopyWith(
-            parents: data.parents,
-            clonedClassName: data.name,
-            readableProperties: data.properties.readableProperties,
-            cloneableProperties: data.properties.cloneableProperties,
-            deepCloneableProperties: _getCommonDeepCloneableProperties(
-              data.constructors,
-              data.properties,
-            ).toList(),
-            genericsDefinition: data.genericsDefinitionTemplate,
-            genericsParameter: data.genericsParameterTemplate,
-            data: data,
-          )
-        : null;
+    final commonCopyWith =
+        data.options.annotation.copyWith ??
+                data.properties.cloneableProperties.isNotEmpty
+            ? CopyWith(
+              parents: data.parents,
+              clonedClassName: data.name,
+              readableProperties: data.properties.readableProperties,
+              cloneableProperties: data.properties.cloneableProperties,
+              deepCloneableProperties:
+                  _getCommonDeepCloneableProperties(
+                    data.constructors,
+                    data.properties,
+                  ).toList(),
+              genericsDefinition: data.genericsDefinitionTemplate,
+              genericsParameter: data.genericsParameterTemplate,
+              data: data,
+            )
+            : null;
 
     yield Abstract(
       data: data,
@@ -109,21 +115,24 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
         constructor: constructor,
         commonProperties: data.properties.readableProperties,
         globalData: globalData,
-        copyWith: data.options.annotation.copyWith ??
-                constructor.parameters.allParameters.isNotEmpty
-            ? CopyWith(
-                parents: [],
-                clonedClassName: constructor.redirectedName,
-                cloneableProperties: constructor.properties.toList(),
-                readableProperties:
-                    constructor.properties.where((e) => e.isSynthetic).toList(),
-                deepCloneableProperties: constructor.deepCloneableProperties,
-                genericsDefinition: data.genericsDefinitionTemplate,
-                genericsParameter: data.genericsParameterTemplate,
-                data: data,
-                parent: commonCopyWith,
-              )
-            : null,
+        copyWith:
+            data.options.annotation.copyWith ??
+                    constructor.parameters.allParameters.isNotEmpty
+                ? CopyWith(
+                  parents: [],
+                  clonedClassName: constructor.redirectedName,
+                  cloneableProperties: constructor.properties.toList(),
+                  readableProperties:
+                      constructor.properties
+                          .where((e) => e.isSynthetic)
+                          .toList(),
+                  deepCloneableProperties: constructor.deepCloneableProperties,
+                  genericsDefinition: data.genericsDefinitionTemplate,
+                  genericsParameter: data.genericsParameterTemplate,
+                  data: data,
+                  parent: commonCopyWith,
+                )
+                : null,
       );
     }
   }

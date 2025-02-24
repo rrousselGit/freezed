@@ -7,9 +7,6 @@ Future<void> main() async {
   test('toString will properly handle dollar signs', () {
     final value = Class$With$Special$Name(a: 'a', b: 1);
 
-    expect(
-      value.toString(),
-      r'Class$With$Special$Name(a: a, b: 1)',
-    );
+    expect(value.toString(), r'Class$With$Special$Name(a: a, b: 1)');
   });
 }

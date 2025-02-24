@@ -37,19 +37,16 @@ Element? _getElementForType(DartType type) {
 }
 
 /// Renders a type based on its string + potential import alias
-String resolveFullTypeStringFrom(
-  LibraryElement originLibrary,
-  DartType type,
-) {
+String resolveFullTypeStringFrom(LibraryElement originLibrary, DartType type) {
   final owner = originLibrary.units
       .expand((e) => e.libraryImportPrefixes)
       .firstWhereOrNull((e) {
-    return e.imports.any((l) {
-      return l.importedLibrary!.anyTransitiveExport((library) {
-        return library.id == _getElementForType(type)?.library?.id;
+        return e.imports.any((l) {
+          return l.importedLibrary!.anyTransitiveExport((library) {
+            return library.id == _getElementForType(type)?.library?.id;
+          });
+        });
       });
-    });
-  });
 
   String? displayType = type.getDisplayString();
 
@@ -89,11 +86,7 @@ String resolveFullTypeStringFrom(
       type.typeArguments.any((e) => e is InvalidType)) {
     final dynamicType = type.element.library.typeProvider.dynamicType;
     var modified = type;
-    modified.typeArguments
-      ..replaceWhere(
-        (t) => t is InvalidType,
-        dynamicType,
-      );
+    modified.typeArguments..replaceWhere((t) => t is InvalidType, dynamicType);
     displayType = modified.getDisplayString();
   }
 

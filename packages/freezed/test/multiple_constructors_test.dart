@@ -15,23 +15,22 @@ Future<void> main() async {
   final sources = await resolveSources(
     {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
     (r) {
-      return r.libraries.firstWhere((element) =>
-          element.source.toString().contains('multiple_constructors'));
+      return r.libraries.firstWhere(
+        (element) =>
+            element.source.toString().contains('multiple_constructors'),
+      );
     },
   );
 
   ClassElement _getClassElement(String elementName) {
-    return sources.topLevelElements
-        .whereType<ClassElement>()
-        .firstWhere((element) => element.name == elementName);
+    return sources.topLevelElements.whereType<ClassElement>().firstWhere(
+      (element) => element.name == elementName,
+    );
   }
 
   test('Response', () {
     expect(Response.data('a').time, DateTime(0, 0, 0));
-    expect(
-      Response.data('a', time: DateTime(1, 0, 0)).time,
-      DateTime(1, 0, 0),
-    );
+    expect(Response.data('a', time: DateTime(1, 0, 0)).time, DateTime(1, 0, 0));
 
     expect(Response<String>.error('err').time, DateTime(0, 0, 0));
   });
@@ -52,10 +51,7 @@ Future<void> main() async {
   });
 
   test('Regression358', () {
-    expect(
-      Regression358.withSpecificColor(),
-      Regression358(number: 2),
-    );
+    expect(Regression358.withSpecificColor(), Regression358(number: 2));
     expect(
       Regression358.withSpecificColor(count: 42),
       Regression358(number: 42),
@@ -76,106 +72,114 @@ Future<void> main() async {
     );
 
     expect(
-        complex0.fields
-            .where((e) => e.name != 'copyWith' && e.name != 'hashCode'),
-        [
-          isA<FieldElement>()
-              .having((e) => e.name, 'name', 'a')
-              .having((e) => e.documentationComment, 'doc', '/// Hello'),
-        ]);
+      complex0.fields.where(
+        (e) => e.name != 'copyWith' && e.name != 'hashCode',
+      ),
+      [
+        isA<FieldElement>()
+            .having((e) => e.name, 'name', 'a')
+            .having((e) => e.documentationComment, 'doc', '/// Hello'),
+      ],
+    );
 
     expect(
-        complex1.fields
-            .where((e) => e.name != 'copyWith' && e.name != 'hashCode'),
-        [
-          isA<FieldElement>()
-              .having((e) => e.name, 'name', 'a')
-              .having((e) => e.documentationComment, 'doc', '/// World'),
-          isA<FieldElement>()
-              .having((e) => e.name, 'name', 'b')
-              .having((e) => e.documentationComment, 'doc', '/// B'),
-          isA<FieldElement>()
-              .having((e) => e.name, 'name', 'd')
-              .having((e) => e.documentationComment, 'doc', null),
-        ]);
+      complex1.fields.where(
+        (e) => e.name != 'copyWith' && e.name != 'hashCode',
+      ),
+      [
+        isA<FieldElement>()
+            .having((e) => e.name, 'name', 'a')
+            .having((e) => e.documentationComment, 'doc', '/// World'),
+        isA<FieldElement>()
+            .having((e) => e.name, 'name', 'b')
+            .having((e) => e.documentationComment, 'doc', '/// B'),
+        isA<FieldElement>()
+            .having((e) => e.name, 'name', 'd')
+            .having((e) => e.documentationComment, 'doc', null),
+      ],
+    );
 
     expect(
-        complex2.fields
-            .where((e) => e.name != 'copyWith' && e.name != 'hashCode'),
-        [
-          isA<FieldElement>()
-              .having((e) => e.name, 'name', 'a')
-              // The doc is inherited from `Complex`
-              .having((e) => e.documentationComment, 'doc', null),
-          isA<FieldElement>()
-              .having((e) => e.name, 'name', 'c')
-              .having((e) => e.documentationComment, 'doc', '/// C'),
-          isA<FieldElement>()
-              .having((e) => e.name, 'name', 'd')
-              .having((e) => e.documentationComment, 'doc', null),
-        ]);
+      complex2.fields.where(
+        (e) => e.name != 'copyWith' && e.name != 'hashCode',
+      ),
+      [
+        isA<FieldElement>()
+            .having((e) => e.name, 'name', 'a')
+            // The doc is inherited from `Complex`
+            .having((e) => e.documentationComment, 'doc', null),
+        isA<FieldElement>()
+            .having((e) => e.name, 'name', 'c')
+            .having((e) => e.documentationComment, 'doc', '/// C'),
+        isA<FieldElement>()
+            .having((e) => e.name, 'name', 'd')
+            .having((e) => e.documentationComment, 'doc', null),
+      ],
+    );
   });
 
   test('assert', () {
     Complex('a');
-    expect(
-      () => Complex(''),
-      throwsAssertionError,
-    );
+    expect(() => Complex(''), throwsAssertionError);
 
     Complex.first('', b: true);
-    expect(
-      () => Complex.first('a', b: true),
-      throwsAssertionError,
-    );
-    expect(
-      () => Complex.first('', b: false),
-      throwsAssertionError,
-    );
+    expect(() => Complex.first('a', b: true), throwsAssertionError);
+    expect(() => Complex.first('', b: false), throwsAssertionError);
   });
 
   group('NoSharedParam', () {
     test("doesn't have public properties/methods", () async {
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = NoCommonParam('a', b: 42);
   dynamic a = param.a;
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = NoCommonParam('a', b: 42);
   dynamic b = param.b;
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = NoCommonParam('a', b: 42);
   param.copyWith;
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
     });
 
     test('no warning', () async {
       final main = await resolveSources(
-        {
-          'freezed|test/integration/multiple_constructors.dart': useAssetReader,
-        },
-        (r) => r.libraries.firstWhere((element) =>
-            element.source.toString().contains('multiple_constructors')),
+        {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
+        (r) => r.libraries.firstWhere(
+          (element) =>
+              element.source.toString().contains('multiple_constructors'),
+        ),
       );
 
-      final errorResult = await main.session.getErrors(
-              '/freezed/test/integration/multiple_constructors.freezed.dart')
-          as ErrorsResult;
+      final errorResult =
+          await main.session.getErrors(
+                '/freezed/test/integration/multiple_constructors.freezed.dart',
+              )
+              as ErrorsResult;
 
       expect(errorResult.errors, isEmpty);
     });
@@ -197,29 +201,36 @@ void main() {
     });
 
     test(
-        'cannot mutate shared property if one of the union has an immutable variant',
-        () async {
-      DirectUnfreezedImmutableUnionNamed('a').a = '';
-      DirectUnfreezedImmutableUnion2('a').a = '';
+      'cannot mutate shared property if one of the union has an immutable variant',
+      () async {
+        DirectUnfreezedImmutableUnionNamed('a').a = '';
+        DirectUnfreezedImmutableUnion2('a').a = '';
 
-      await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   UnfreezedImmutableUnion('').a;
   UnfreezedImmutableUnion2('').a;
 }
-'''), completes);
+'''),
+          completes,
+        );
 
-      await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   UnfreezedImmutableUnion('').a = '';
   UnfreezedImmutableUnion2('').a = '';
 }
-'''), throwsCompileError);
-    });
+'''),
+          throwsCompileError,
+        );
+      },
+    );
 
     test('redirected constructors do have public properties', () {
       final ctor0 = NoCommonParam0('a', b: 42);
@@ -249,44 +260,58 @@ void main() {
       expect(ctor1.d, const Object());
     });
 
-    test("redirected's copyWith doesn't have parameters of other constructors",
-        () async {
-      await expectLater(compile(r'''
+    test(
+      "redirected's copyWith doesn't have parameters of other constructors",
+      () async {
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = NoCommonParam0('a', b: 42);
   param.copyWith(c: .42);
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-      await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = NoCommonParam0('a', b: 42);
   param.copyWith(d: Object());
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-      await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = NoCommonParam1(.42);
   param.copyWith(a: 'a');
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-      await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = NoCommonParam1(.42);
   param.copyWith(b: 42);
 }
-'''), throwsCompileError);
-    });
+'''),
+          throwsCompileError,
+        );
+      },
+    );
   });
 
   group('SharedParam', () {
@@ -299,32 +324,41 @@ void main() {
     });
 
     test("doesn't have the non-shared properties", () async {
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = SharedParam('a', 42);
   param.a;
 }
-'''), completes);
+'''),
+        completes,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = SharedParam('a', 42);
   param.b;
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = SharedParam('a', 42);
   param.c;
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
     });
 
     test('copyWith on common properties', () {
@@ -335,32 +369,41 @@ void main() {
     });
 
     test("copy doesn't have the non-shared params", () async {
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = SharedParam('a', 42);
   param.copyWith(a: '2');
 }
-'''), completes);
+'''),
+        completes,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = SharedParam('a', 42);
   param.copyWith(b: 42);
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
   final param = SharedParam('a', 42);
   param.copyWith(c: 42);
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
     });
   });
 
@@ -368,50 +411,62 @@ void main() {
     var error = Error();
     final value = NameConflict.error(error);
 
-    expect(
-      switch (value) { Something() => 42, SomeError(:final error) => error },
-      error,
-    );
+    expect(switch (value) {
+      Something() => 42,
+      SomeError(:final error) => error,
+    }, error);
   });
 
   group('NestedList', () {
     test('generates List of correct type', () async {
       final nestedListClass = _getClassElement('ShallowNestedList');
 
-      expect(nestedListClass.getField('children')!.type.getDisplayString(),
-          'List<LeafNestedListItem>');
+      expect(
+        nestedListClass.getField('children')!.type.getDisplayString(),
+        'List<LeafNestedListItem>',
+      );
     });
 
     test('generates List of correct type for deeply nested case', () async {
       final nestedListClass = _getClassElement('DeepNestedList');
 
-      expect(nestedListClass.getField('children')!.type.getDisplayString(),
-          'List<InnerNestedListItem>');
+      expect(
+        nestedListClass.getField('children')!.type.getDisplayString(),
+        'List<InnerNestedListItem>',
+      );
 
       final nestedListItemClass = _getClassElement('InnerNestedListItem');
 
-      expect(nestedListItemClass.getField('children')!.type.getDisplayString(),
-          'List<LeafNestedListItem>');
+      expect(
+        nestedListItemClass.getField('children')!.type.getDisplayString(),
+        'List<LeafNestedListItem>',
+      );
     });
   });
   group('NestedMap', () {
     test('generates Map of correct type', () async {
       final nestedMapClass = _getClassElement('ShallowNestedMap');
 
-      expect(nestedMapClass.getField('children')!.type.getDisplayString(),
-          'Map<String, LeafNestedMapItem>');
+      expect(
+        nestedMapClass.getField('children')!.type.getDisplayString(),
+        'Map<String, LeafNestedMapItem>',
+      );
     });
 
     test('generates Map of correct type for deeply nested case', () async {
       final nestedMapClass = _getClassElement('DeepNestedMap');
 
-      expect(nestedMapClass.getField('children')!.type.getDisplayString(),
-          'Map<String, InnerNestedMapItem>');
+      expect(
+        nestedMapClass.getField('children')!.type.getDisplayString(),
+        'Map<String, InnerNestedMapItem>',
+      );
 
       final nestedMapItemClass = _getClassElement('InnerNestedMapItem');
 
-      expect(nestedMapItemClass.getField('children')!.type.getDisplayString(),
-          'Map<String, LeafNestedMapItem>');
+      expect(
+        nestedMapItemClass.getField('children')!.type.getDisplayString(),
+        'Map<String, LeafNestedMapItem>',
+      );
     });
   });
 

@@ -12,16 +12,17 @@ Future<void> main() async {
 
   test('has no issue', () async {
     final main = await resolveSources(
-      {
-        'freezed|test/integration/common_types.dart': useAssetReader,
-      },
+      {'freezed|test/integration/common_types.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('common_types')),
+        (element) => element.source.toString().contains('common_types'),
+      ),
     );
 
-    final errorResult = await main.session
-            .getErrors('/freezed/test/integration/common_types.freezed.dart')
-        as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/common_types.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -69,9 +70,10 @@ Future<void> main() async {
     });
 
     test(
-        'should not have getters for properties that are not shared between all unions',
-        () async {
-      await expectLater(library.withCode('''
+      'should not have getters for properties that are not shared between all unions',
+      () async {
+        await expectLater(
+          library.withCode('''
 import 'integration/common_types.dart';
 
 void main() {
@@ -82,8 +84,11 @@ void main() {
   // expect-error: UNDEFINED_GETTER
   value.unknown;
 }
-'''), compiles);
-    });
+'''),
+          compiles,
+        );
+      },
+    );
 
     test('Can clone properties with nullability difference', () {
       const value = CommonSuperSubtype(
@@ -101,7 +106,8 @@ void main() {
     });
 
     test('Cannot clone with type mismatch', () async {
-      await expectLater(library.withCode('''
+      await expectLater(
+        library.withCode('''
 import 'integration/common_types.dart';
 
 void main() {
@@ -119,17 +125,16 @@ void main() {
     typeDifference: 42,
   );
 }
-'''), compiles);
+'''),
+        compiles,
+      );
     });
   });
 
   group('DeepCopySharedProperties', () {
     test('Can clone properties with nullability difference', () {
       const value = DeepCopySharedProperties(
-        CommonSuperSubtype0(
-          nullabilityDifference: 42,
-          typeDifference: 21,
-        ),
+        CommonSuperSubtype0(nullabilityDifference: 42, typeDifference: 21),
       );
 
       expect(
@@ -140,26 +145,21 @@ void main() {
           ),
         ),
         const DeepCopySharedProperties(
-          CommonSuperSubtype0(
-            nullabilityDifference: 84,
-            typeDifference: 21,
-          ),
+          CommonSuperSubtype0(nullabilityDifference: 84, typeDifference: 21),
         ),
       );
 
       expect(
         value.copyWith.value(nullabilityDifference: 84),
         const DeepCopySharedProperties(
-          CommonSuperSubtype0(
-            nullabilityDifference: 84,
-            typeDifference: 21,
-          ),
+          CommonSuperSubtype0(nullabilityDifference: 84, typeDifference: 21),
         ),
       );
     });
 
     test('Cannot clone with type mismatch', () async {
-      await expectLater(library.withCode('''
+      await expectLater(
+        library.withCode('''
 import 'integration/common_types.dart';
 
 void main() {
@@ -179,7 +179,9 @@ void main() {
     typeDifference: 42,
   );
 }
-'''), compiles);
+'''),
+        compiles,
+      );
     });
   });
 
@@ -194,7 +196,8 @@ void main() {
     });
 
     test('should not have setters for getters with different type', () async {
-      await expectLater(library.withCode('''
+      await expectLater(
+        library.withCode('''
 import 'integration/common_types.dart';
 
 void main() {
@@ -204,7 +207,9 @@ void main() {
   // OK since all union cases are typed the same
   param.b = 42;
 }
-'''), compiles);
+'''),
+        compiles,
+      );
     });
   });
 }

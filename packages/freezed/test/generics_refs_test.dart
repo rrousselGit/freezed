@@ -8,16 +8,17 @@ import 'integration/generics_refs.dart';
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
-      {
-        'freezed|test/integration/generics_refs.dart': useAssetReader,
-      },
+      {'freezed|test/integration/generics_refs.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('generics_refs')),
+        (element) => element.source.toString().contains('generics_refs'),
+      ),
     );
 
-    final errorResult = await main.session
-            .getErrors('/freezed/test/integration/generics_refs.freezed.dart')
-        as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/generics_refs.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -27,47 +28,56 @@ void main() {
 
     expect(PageList([page]).pages, [page]);
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'generics_refs.dart';
 
 void main() {
   const page = Page();
   PageList([page]);
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'generics_refs.dart';
 
 void main() {
   PageList([42]);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('handles maps', () async {
     final page = const Page();
 
-    expect(
-      PageMap({'foo': page}).pages,
-      {'foo': page},
-    );
+    expect(PageMap({'foo': page}).pages, {'foo': page});
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'generics_refs.dart';
 
 void main() {
   const page = Page();
   PageMap({'foo': page});
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'generics_refs.dart';
 
 void main() {
   PageMap({'foo': 42});
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 }

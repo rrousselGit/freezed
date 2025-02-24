@@ -28,10 +28,9 @@ class _Sentinel {
 
 extension on Element {
   bool get hasJsonSerializable {
-    return const TypeChecker.fromRuntime(JsonSerializable).hasAnnotationOf(
-      this,
-      throwOnUnresolved: false,
-    );
+    return const TypeChecker.fromRuntime(
+      JsonSerializable,
+    ).hasAnnotationOf(this, throwOnUnresolved: false);
   }
 }
 
@@ -42,8 +41,9 @@ extension on ConstructorElement {
   }
 
   String unionValue(FreezedUnionCase? unionCase) {
-    final annotation = const TypeChecker.fromRuntime(FreezedUnionValue)
-        .firstAnnotationOf(this, throwOnUnresolved: false);
+    final annotation = const TypeChecker.fromRuntime(
+      FreezedUnionValue,
+    ).firstAnnotationOf(this, throwOnUnresolved: false);
     if (annotation != null) {
       return annotation.getField('value')!.toStringValue()!;
     }
@@ -118,8 +118,7 @@ class DeepCloneableProperty {
         nullable: parameter.type.isNullable,
         typeName: typeElement.name,
         genericParameters: GenericsParameterTemplate(
-          (parameter.type as InterfaceType)
-              .typeArguments
+          (parameter.type as InterfaceType).typeArguments
               .map((e) => e.getDisplayString())
               .toList(),
         ),
@@ -152,7 +151,8 @@ extension on FormalParameter {
     return switch (that) {
       DefaultFormalParameter() => that.parameter.typeAnnotation(),
       FieldFormalParameter() => that.type,
-      FunctionTypedFormalParameter() => throw UnsupportedError(
+      FunctionTypedFormalParameter() =>
+        throw UnsupportedError(
           'Parameters of format `T name()` are not supported. Use `T Function()` name.',
         ),
       SimpleFormalParameter() => that.type,
@@ -207,21 +207,19 @@ class ConstructorDetails {
       for (final param in constructor.parameters.parameters) {
         if (param.isPositional) {
           for (final ctor in freezedCtors) {
-            final hasMatchingParam = ctor.parameters.parameters
-                .any((e) => e.name?.lexeme == param.name?.lexeme);
+            final hasMatchingParam = ctor.parameters.parameters.any(
+              (e) => e.name?.lexeme == param.name?.lexeme,
+            );
             if (hasMatchingParam) continue;
 
-            throw InvalidGenerationSourceError(
-              '''
+            throw InvalidGenerationSourceError('''
 A non-factory constructor specified a positional parameter named ${param.name},
 but at least one constructor does not have a matching parameter.
 
 When specifying fields in non-factory constructor then specifying factory constructors, either:
 - the parameter should be named
 - or all constructors in the class should specify that parameter.
-''',
-              element: constructor.declaredElement,
-            );
+''', element: constructor.declaredElement);
           }
         }
       }
@@ -281,7 +279,8 @@ When specifying fields in non-factory constructor then specifying factory constr
         className: declaration.name.lexeme,
       );
 
-      final excludedProperties = manualConstructor?.parameters.parameters
+      final excludedProperties =
+          manualConstructor?.parameters.parameters
               .map((e) => e.declaredElement!.name)
               .toSet() ??
           <String>{};
@@ -299,10 +298,11 @@ When specifying fields in non-factory constructor then specifying factory constr
         ConstructorDetails(
           asserts: AssertAnnotation.parseAll(constructor).toList(),
           isSynthetic: unitsExcludingGeneratedFiles.any(
-            (e) => !e.declarations
-                .whereType<ClassDeclaration>()
-                .map((e) => e.name.lexeme)
-                .contains(redirectedName),
+            (e) =>
+                !e.declarations
+                    .whereType<ClassDeclaration>()
+                    .map((e) => e.name.lexeme)
+                    .contains(redirectedName),
           ),
           name: constructor.name?.lexeme ?? '',
           unionValue: constructor.declaredElement!.unionValue(
@@ -312,35 +312,41 @@ When specifying fields in non-factory constructor then specifying factory constr
           fullName: constructor.fullName,
           escapedName: constructor.escapedName,
           properties: allProperties,
-          decorators: constructor.metadata
-              .where((element) {
-                final elementSourceUri =
-                    element.element?.declaration?.librarySource?.uri;
+          decorators:
+              constructor.metadata
+                  .where((element) {
+                    final elementSourceUri =
+                        element.element?.declaration?.librarySource?.uri;
 
-                final isFreezedAnnotation = elementSourceUri != null &&
-                    elementSourceUri.scheme == 'package' &&
-                    elementSourceUri.pathSegments.isNotEmpty &&
-                    elementSourceUri.pathSegments.first == 'freezed_annotation';
+                    final isFreezedAnnotation =
+                        elementSourceUri != null &&
+                        elementSourceUri.scheme == 'package' &&
+                        elementSourceUri.pathSegments.isNotEmpty &&
+                        elementSourceUri.pathSegments.first ==
+                            'freezed_annotation';
 
-                return !isFreezedAnnotation;
-              })
-              .map((e) => e.toSource())
-              .toList(),
-          withDecorators: WithAnnotation.parseAll(constructor.declaredElement!)
-              .toSet()
-              .toList(),
-          implementsDecorators:
-              ImplementsAnnotation.parseAll(constructor.declaredElement!)
-                  .toSet()
+                    return !isFreezedAnnotation;
+                  })
+                  .map((e) => e.toSource())
                   .toList(),
+          withDecorators:
+              WithAnnotation.parseAll(
+                constructor.declaredElement!,
+              ).toSet().toList(),
+          implementsDecorators:
+              ImplementsAnnotation.parseAll(
+                constructor.declaredElement!,
+              ).toSet().toList(),
           isDefault: isDefaultConstructor(constructor.declaredElement!),
           hasJsonSerializable: constructor.declaredElement!.hasJsonSerializable,
-          isFallback: constructor.declaredElement!
-              .isFallbackUnion(configs.annotation.fallbackUnion),
-          deepCloneableProperties: DeepCloneableProperty.parseAll(
-            constructor.declaredElement!,
-            globalConfigs,
-          ).toList(),
+          isFallback: constructor.declaredElement!.isFallbackUnion(
+            configs.annotation.fallbackUnion,
+          ),
+          deepCloneableProperties:
+              DeepCloneableProperty.parseAll(
+                constructor.declaredElement!,
+                globalConfigs,
+              ).toList(),
           parameters: ParametersTemplate.fromParameterList(
             constructor.parameters.parameters,
             addImplicitFinal: configs.annotation.addImplicitFinal,
@@ -395,8 +401,9 @@ class ImplementsAnnotation {
   static Iterable<ImplementsAnnotation> parseAll(
     ConstructorElement constructor,
   ) sync* {
-    for (final meta in const TypeChecker.fromRuntime(Implements)
-        .annotationsOf(constructor, throwOnUnresolved: false)) {
+    for (final meta in const TypeChecker.fromRuntime(
+      Implements,
+    ).annotationsOf(constructor, throwOnUnresolved: false)) {
       final stringType = meta.getField('stringType');
       if (stringType?.isNull == false) {
         yield ImplementsAnnotation(type: stringType!.toStringValue()!);
@@ -418,7 +425,8 @@ class WithAnnotation {
   WithAnnotation({required this.type});
 
   static Iterable<WithAnnotation> parseAll(
-      ConstructorElement constructor) sync* {
+    ConstructorElement constructor,
+  ) sync* {
     for (final metadata in constructor.metadata) {
       if (!metadata.isWith) continue;
       final object = metadata.computeConstantValue()!;
@@ -446,9 +454,9 @@ class AssertAnnotation {
   static Iterable<AssertAnnotation> parseAll(
     ConstructorDeclaration constructor,
   ) sync* {
-    for (final meta in const TypeChecker.fromRuntime(Assert).annotationsOf(
-      constructor.declaredElement!,
-    )) {
+    for (final meta in const TypeChecker.fromRuntime(
+      Assert,
+    ).annotationsOf(constructor.declaredElement!)) {
       yield AssertAnnotation(
         code: meta.getField('eval')!.toStringValue()!,
         message: meta.getField('message')!.toStringValue(),
@@ -528,48 +536,49 @@ class Class {
       unitsExcludingGeneratedFiles: unitsExcludingGeneratedFiles,
     );
 
-    final properties = PropertyList()
-      ..readableProperties.addAll(
-        _computeReadableProperties(declaration, constructors),
-      )
-      ..cloneableProperties.addAll(
-        _computeCloneableProperties(
-          declaration,
-          constructors,
-          configs,
-        ),
-      );
+    final properties =
+        PropertyList()
+          ..readableProperties.addAll(
+            _computeReadableProperties(declaration, constructors),
+          )
+          ..cloneableProperties.addAll(
+            _computeCloneableProperties(declaration, constructors, configs),
+          );
 
     final copyWithTarget =
         constructors.isNotEmpty ? null : declaration.copyWithTarget;
-    final copyWithInvocation = copyWithTarget == null
-        ? null
-        : CopyWithTarget(
-            name: copyWithTarget.name?.lexeme,
-            parameters: ParametersTemplate.fromParameterList(
-              // Only include parameters that are cloneable
-              copyWithTarget.parameters.parameters.where((e) {
-                return properties.cloneableProperties
-                    .map((e) => e.name)
-                    .contains(e.name!.lexeme);
-              }),
-              addImplicitFinal: configs.annotation.addImplicitFinal,
-            ),
-          );
+    final copyWithInvocation =
+        copyWithTarget == null
+            ? null
+            : CopyWithTarget(
+              name: copyWithTarget.name?.lexeme,
+              parameters: ParametersTemplate.fromParameterList(
+                // Only include parameters that are cloneable
+                copyWithTarget.parameters.parameters.where((e) {
+                  return properties.cloneableProperties
+                      .map((e) => e.name)
+                      .contains(e.name!.lexeme);
+                }),
+                addImplicitFinal: configs.annotation.addImplicitFinal,
+              ),
+            );
 
-    final superCall = privateCtor == null
-        ? null
-        : ConstructorInvocation(
-            name: '_',
-            positional: privateCtor.parameters.parameters
-                .where((e) => e.isPositional)
-                .map((e) => e.name!.lexeme)
-                .toList(),
-            named: privateCtor.parameters.parameters
-                .where((e) => e.isNamed)
-                .map((e) => e.name!.lexeme)
-                .toList(),
-          );
+    final superCall =
+        privateCtor == null
+            ? null
+            : ConstructorInvocation(
+              name: '_',
+              positional:
+                  privateCtor.parameters.parameters
+                      .where((e) => e.isPositional)
+                      .map((e) => e.name!.lexeme)
+                      .toList(),
+              named:
+                  privateCtor.parameters.parameters
+                      .where((e) => e.isNamed)
+                      .map((e) => e.name!.lexeme)
+                      .toList(),
+            );
 
     return Class(
       name: declaration.name.lexeme,
@@ -597,12 +606,15 @@ class Class {
     Library library, {
     required Freezed globalConfigs,
   }) {
-    final unitsExcludingGeneratedFiles = units
-        .where(
-          (element) => !element.declaredElement!.source.fullName
-              .endsWith('.freezed.dart'),
-        )
-        .toList();
+    final unitsExcludingGeneratedFiles =
+        units
+            .where(
+              (element) =>
+                  !element.declaredElement!.source.fullName.endsWith(
+                    '.freezed.dart',
+                  ),
+            )
+            .toList();
 
     final classes = annotations.map((e) {
       final annotation = e.annotation;
@@ -674,15 +686,19 @@ class Class {
     ClassDeclaration declaration,
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) sync* {
-    final typesMap = <String,
-        List<
+    final typesMap =
+        <
+          String,
+          List<
             ({
               TypeAnnotation? type,
               String? doc,
               bool isFinal,
               bool isSynthetic,
               List<String> decorators,
-            })?>>{};
+            })?
+          >
+        >{};
     void setForName({
       required String name,
       required TypeAnnotation? type,
@@ -723,14 +739,16 @@ class Class {
     }
 
     for (final (index, freezedCtor) in constructorsNeedsGeneration.indexed) {
-      final ctor = declaration.constructors
-          .where((e) => (e.name?.lexeme ?? '') == freezedCtor.name)
-          .first;
+      final ctor =
+          declaration.constructors
+              .where((e) => (e.name?.lexeme ?? '') == freezedCtor.name)
+              .first;
 
       for (final parameter in ctor.parameters.parameters) {
-        final freezedParameter = freezedCtor.parameters.allParameters
-            .where((e) => e.name == parameter.name?.lexeme)
-            .first;
+        final freezedParameter =
+            freezedCtor.parameters.allParameters
+                .where((e) => e.name == parameter.name?.lexeme)
+                .first;
 
         setForName(
           name: parameter.name!.lexeme,
@@ -782,9 +800,10 @@ class Class {
 
           final typeSources = fields.map((e) => e?.type?.toSource()).toSet();
           if (typeSources.length == 1) {
-            type = fields
-                .map((e) => e!.type?.type ?? typeProvider.dynamicType)
-                .first;
+            type =
+                fields
+                    .map((e) => e!.type?.type ?? typeProvider.dynamicType)
+                    .first;
             // All constructors use the exact same type. No need to check lower-bounds,
             // and we can paste the type in the generated source directly.
             typeString = typeSources.single ?? type.toString();
@@ -830,19 +849,24 @@ class Class {
 
     if (constructorsNeedsGeneration case [final ctor]) {
       result.cloneableProperties.addAll(
-        constructorsNeedsGeneration.first.parameters.allParameters
-            .map((e) => Property.fromParameter(e, isSynthetic: true)),
+        constructorsNeedsGeneration.first.parameters.allParameters.map(
+          (e) => Property.fromParameter(e, isSynthetic: true),
+        ),
       );
-      result.readableProperties.addAll(result.cloneableProperties
-          .where((p) => ctor.isSyntheticParam(param: p.name)));
+      result.readableProperties.addAll(
+        result.cloneableProperties.where(
+          (p) => ctor.isSyntheticParam(param: p.name),
+        ),
+      );
       return result;
     }
 
     parameterLoop:
     for (final parameter
         in constructorsNeedsGeneration.first.parameters.allParameters) {
-      final isSynthetic = constructorsNeedsGeneration.first
-          .isSyntheticParam(param: parameter.name);
+      final isSynthetic = constructorsNeedsGeneration.first.isSyntheticParam(
+        param: parameter.name,
+      );
 
       final library = parameter.parameterElement!.library!;
 
@@ -856,17 +880,18 @@ class Class {
         // be present in the abstract class.
         if (matchingParameter == null) continue parameterLoop;
 
-        commonTypeBetweenAllUnionConstructors =
-            library.typeSystem.leastUpperBound(
-          commonTypeBetweenAllUnionConstructors,
-          matchingParameter.parameterElement!.type,
-        );
+        commonTypeBetweenAllUnionConstructors = library.typeSystem
+            .leastUpperBound(
+              commonTypeBetweenAllUnionConstructors,
+              matchingParameter.parameterElement!.type,
+            );
       }
 
-      final matchingParameters = constructorsNeedsGeneration
-          .expand((element) => element.parameters.allParameters)
-          .where((element) => element.name == parameter.name)
-          .toList();
+      final matchingParameters =
+          constructorsNeedsGeneration
+              .expand((element) => element.parameters.allParameters)
+              .where((element) => element.name == parameter.name)
+              .toList();
 
       final isFinal = matchingParameters.any(
         (element) =>
@@ -875,8 +900,9 @@ class Class {
                 commonTypeBetweenAllUnionConstructors,
       );
 
-      final nonNullableCommonType = library.typeSystem
-          .promoteToNonNull(commonTypeBetweenAllUnionConstructors);
+      final nonNullableCommonType = library.typeSystem.promoteToNonNull(
+        commonTypeBetweenAllUnionConstructors,
+      );
 
       final didDowncast = matchingParameters.any(
         (element) =>
@@ -921,17 +947,15 @@ class Class {
       //   first union case.
       // - num c is not allowed because num is not assignable int/double
       if (!didNonNullDowncast) {
-        final copyWithType = didNullDowncast
-            ? nonNullableCommonType
-            : commonTypeBetweenAllUnionConstructors;
+        final copyWithType =
+            didNullDowncast
+                ? nonNullableCommonType
+                : commonTypeBetweenAllUnionConstructors;
 
         result.cloneableProperties.add(
           Property(
             isFinal: isFinal,
-            type: resolveFullTypeStringFrom(
-              library,
-              copyWithType,
-            ),
+            type: resolveFullTypeStringFrom(library, copyWithType),
             isSynthetic: true,
             isNullable: copyWithType.isNullable,
             isDartList: copyWithType.isDartCoreList,
@@ -985,8 +1009,9 @@ class Class {
   }
 
   String get escapedName {
-    var generics =
-        genericsParameterTemplate.typeParameters.map((e) => '\$$e').join(', ');
+    var generics = genericsParameterTemplate.typeParameters
+        .map((e) => '\$$e')
+        .join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }
@@ -1006,10 +1031,7 @@ class PropertyList {
 }
 
 class Library {
-  Library({
-    required this.hasJson,
-    required this.hasDiagnostics,
-  });
+  Library({required this.hasJson, required this.hasDiagnostics});
 
   final bool hasJson;
   final bool hasDiagnostics;
@@ -1045,8 +1067,9 @@ class ClassConfig {
   }) {
     final resolvedAnnotation = parseAnnotation(annotation, globalConfigs);
 
-    late final needsJsonSerializable =
-        declaration.needsJsonSerializable(library);
+    late final needsJsonSerializable = declaration.needsJsonSerializable(
+      library,
+    );
 
     return ClassConfig(
       equal: resolvedAnnotation.equal ?? !declaration.hasCustomEquals,
@@ -1061,10 +1084,7 @@ class ClassConfig {
     );
   }
 
-  static Freezed parseAnnotation(
-    DartObject annotation,
-    Freezed globalConfigs,
-  ) {
+  static Freezed parseAnnotation(DartObject annotation, Freezed globalConfigs) {
     return Freezed(
       copyWith: annotation.decodeField(
         'copyWith',
@@ -1163,9 +1183,7 @@ extension ClassDeclarationX on ClassDeclaration {
     return members
         .whereType<FieldDeclaration>()
         .where((e) => !e.isStatic)
-        .expand(
-          (e) => e.fields.variables.map((f) => (e, f)),
-        );
+        .expand((e) => e.fields.variables.map((f) => (e, f)));
   }
 
   bool needsJsonSerializable(Library library) {
