@@ -117,12 +117,14 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
         );
       }
 
-      final superCall = data.superCall!;
+      final superCall = data.superCall;
 
       // Attempt to use super.field when possible.
       // For now, we only do so for named parameters as positional parameters
       // are trickier.
-      if (isNamed && superCall.positional.contains(p.name)) {
+      if (superCall != null &&
+          isNamed &&
+          superCall.positional.contains(p.name)) {
         superParameters.add(p.name);
         return (
           SuperParameter.fromParameter(p),

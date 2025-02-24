@@ -161,6 +161,19 @@ This feature offers fine-grained control over every parts of your models.
 Unfortunately, it is kind of required to "extend" the parent class (so here `extends Result<T>`). This is because Dart doesn't support `sealed mixin class`, so you can't do
 `with Result<T>` instead.
 
+### New: private unions
+
+It is now possible to have a private constructor for unions:
+
+```dart
+@freezed
+sealed class Result<T> with _$Result {
+  // It wasn't possible to write _data before, but now is.
+  factory Result._data(T data) = ResultData;
+  factory Result.error(Object error) = ResultError;
+}
+```
+
 ## 2.5.8 - 2025-01-06
 
 Support analyzer 7.0.0

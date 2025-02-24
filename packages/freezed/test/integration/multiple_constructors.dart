@@ -3,6 +3,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'multiple_constructors.freezed.dart';
 
 @freezed
+sealed class PrivateUnion with _$PrivateUnion {
+  // ignore: unused_element
+  const factory PrivateUnion._(int value) = _PrivateUnion;
+  // ignore: unused_element
+  const factory PrivateUnion._b(int value) = _PrivateUnionB;
+}
+
+@freezed
 sealed class Response<T> with _$Response<T> {
   Response._({DateTime? time}) : time = time ?? DateTime(0, 0, 0);
   // Constructors may enable passing parameters to ._();

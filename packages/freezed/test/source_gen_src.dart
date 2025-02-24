@@ -96,13 +96,6 @@ class _DefaultOnRequiredPositional implements DefaultOnRequiredPositional {
   _DefaultOnRequiredPositional(int a);
 }
 
-@ShouldThrow('A freezed union cannot have private constructors')
-@freezed
-abstract class Mixed {
-  factory Mixed._internal(String a) = Mixed0;
-  factory Mixed.named(String b) = Mixed1;
-}
-
 @ShouldThrow('Fallback union was specified but no fallback constructor exists.')
 @Freezed(fallbackUnion: 'fallback')
 class FallbackUnionMissing {
@@ -135,24 +128,16 @@ class _MutableProperty implements MutableProperty {
   int? a;
 }
 
-class Mixed1 implements Mixed {
-  Mixed1(String b);
-}
-
-class Mixed0 implements Mixed {
-  Mixed0(String a);
-}
-
 @ShouldGenerate(
   '',
   contains: true,
   expectedLogItems: [],
 )
 @freezed
-abstract class AstractClass {
-  const factory AstractClass() = _AstractClass;
+abstract class AbstractClass {
+  const factory AbstractClass() = _AbstractClass;
 }
 
-class _AstractClass implements AstractClass {
-  const _AstractClass();
+class _AbstractClass implements AbstractClass {
+  const _AbstractClass();
 }
