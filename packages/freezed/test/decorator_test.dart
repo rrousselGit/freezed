@@ -6,49 +6,53 @@ import 'package:test/test.dart';
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
-      {
-        'freezed|test/integration/decorator.dart': useAssetReader,
-      },
+      {'freezed|test/integration/decorator.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('decorator')),
+        (element) => element.source.toString().contains('decorator'),
+      ),
     );
 
-    var errorResult = await main.session
-            .getErrors('/freezed/test/integration/decorator.freezed.dart')
-        as ErrorsResult;
+    var errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/decorator.freezed.dart',
+            )
+            as ErrorsResult;
     expect(errorResult.errors, isEmpty);
-    errorResult = await main.session
-        .getErrors('/freezed/test/integration/decorator.dart') as ErrorsResult;
+    errorResult =
+        await main.session.getErrors('/freezed/test/integration/decorator.dart')
+            as ErrorsResult;
   });
 
   test(
-      'internal raw collection is not decorated when using immutable collections',
-      () async {
-    final main = await resolveSources(
-      {
-        'freezed|test/integration/main.dart': r'''
+    'internal raw collection is not decorated when using immutable collections',
+    () async {
+      final main = await resolveSources(
+        {
+          'freezed|test/integration/main.dart': r'''
 import 'decorator.dart';
 ''',
-      },
-      (r) => r.libraries
-          .firstWhere((element) => element.library.name == 'decorator'),
-    );
+        },
+        (r) => r.libraries.firstWhere(
+          (element) => element.library.name == 'decorator',
+        ),
+      );
 
-    final concrete = main.topLevelElements
-        .whereType<ClassElement>()
-        .firstWhere((e) => e.name == r'ListDecorator0');
+      final concrete = main.topLevelElements
+          .whereType<ClassElement>()
+          .firstWhere((e) => e.name == r'ListDecorator0');
 
-    expect(
-      concrete.fields.firstWhere((element) => element.name == '_a').metadata,
-      isEmpty,
-    );
+      expect(
+        concrete.fields.firstWhere((element) => element.name == '_a').metadata,
+        isEmpty,
+      );
 
-    final unmodifiableGetter =
-        concrete.fields.firstWhere((element) => element.name == 'a').getter!;
+      final unmodifiableGetter =
+          concrete.fields.firstWhere((element) => element.name == 'a').getter!;
 
-    expect(unmodifiableGetter.metadata.length, 2);
-    expect(unmodifiableGetter.metadata.last.toSource(), '@Foo()');
-  });
+      expect(unmodifiableGetter.metadata.length, 2);
+      expect(unmodifiableGetter.metadata.last.toSource(), '@Foo()');
+    },
+  );
 
   test('warns if try to use deprecated property', () async {
     final main = await resolveSources(
@@ -75,30 +79,33 @@ void main() {
 ''',
       },
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('decorator')),
+        (element) => element.source.toString().contains('decorator'),
+      ),
     );
 
-    var errorResult = await main.session
-        .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+    var errorResult =
+        await main.session.getErrors('/freezed/test/integration/main.dart')
+            as ErrorsResult;
     expect(
-        errorResult.errors.map((e) => e.errorCode.name),
-        anyOf([
-          [
-            'UNUSED_RESULT',
-            'UNUSED_RESULT',
-            'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-            'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-            'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-            'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
-          ],
-          [
-            'UNUSED_RESULT',
-            'UNUSED_RESULT',
-            'DEPRECATED_MEMBER_USE',
-            'DEPRECATED_MEMBER_USE',
-            'DEPRECATED_MEMBER_USE',
-            'DEPRECATED_MEMBER_USE',
-          ],
-        ]));
+      errorResult.errors.map((e) => e.errorCode.name),
+      anyOf([
+        [
+          'UNUSED_RESULT',
+          'UNUSED_RESULT',
+          'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+          'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+          'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+          'DEPRECATED_MEMBER_USE_FROM_SAME_PACKAGE',
+        ],
+        [
+          'UNUSED_RESULT',
+          'UNUSED_RESULT',
+          'DEPRECATED_MEMBER_USE',
+          'DEPRECATED_MEMBER_USE',
+          'DEPRECATED_MEMBER_USE',
+          'DEPRECATED_MEMBER_USE',
+        ],
+      ]),
+    );
   });
 }

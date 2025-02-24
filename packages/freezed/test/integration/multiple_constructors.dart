@@ -106,9 +106,7 @@ abstract class NoCommonParam with _$NoCommonParam {
 // Regression test for https://github.com/rrousselGit/freezed/issues/358
 @freezed
 abstract class Regression358 with _$Regression358 {
-  const factory Regression358({
-    required int number,
-  }) = _Regression358;
+  const factory Regression358({required int number}) = _Regression358;
 
   factory Regression358.withSpecificColor({int count = 2}) =>
       Regression358(number: count);
@@ -133,6 +131,7 @@ abstract class Complex with _$Complex {
   const factory Complex.first(
     /// World
     String a, {
+
     /// B
     bool? b,
     double? d,
@@ -140,6 +139,7 @@ abstract class Complex with _$Complex {
 
   const factory Complex.second(
     String a, [
+
     /// C
     int? c,
     double? d,

@@ -6,8 +6,11 @@ void main() {
   test('EmptyExtends', () {
     expect(
       EmptyExtends(42),
-      isA<Empty>()
-          .having((source) => (source as EmptyExtends).value, 'value', 42),
+      isA<Empty>().having(
+        (source) => (source as EmptyExtends).value,
+        'value',
+        42,
+      ),
     );
   });
 

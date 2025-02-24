@@ -28,9 +28,7 @@ extension LibraryHasImport on LibraryElement {
     return null;
   }
 
-  bool anyTransitiveExport(
-    bool Function(LibraryElement library) visitor,
-  ) {
+  bool anyTransitiveExport(bool Function(LibraryElement library) visitor) {
     return findTransitiveExportWhere(visitor) != null;
   }
 }

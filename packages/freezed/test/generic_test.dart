@@ -8,7 +8,8 @@ import 'integration/generic.dart';
 
 Future<void> main() async {
   test('regression 399', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'regression399/a.dart';
 import 'regression399/b.dart';
 
@@ -17,9 +18,12 @@ void main() {
     b: GenericRegression399BImpl(),
   );
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'regression399/a.dart';
 import 'regression399/b.dart';
 
@@ -28,21 +32,24 @@ void main() {
     b: 42,
   );
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('has no issue', () async {
     final main = await resolveSources(
-      {
-        'freezed|test/integration/generic.dart': useAssetReader,
-      },
+      {'freezed|test/integration/generic.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('generic')),
+        (element) => element.source.toString().contains('generic'),
+      ),
     );
 
-    final errorResult = await main.session
-            .getErrors('/freezed/test/integration/generic.freezed.dart')
-        as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/generic.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -93,36 +100,36 @@ void main() {
       GenericOrNull<int>(42).copyWith(value: null),
       GenericOrNull<int>(null),
     );
-    expect(
-      GenericOrNull<int>(42).copyWith(),
-      GenericOrNull<int>(42),
-    );
+    expect(GenericOrNull<int>(42).copyWith(), GenericOrNull<int>(42));
 
     expect(
       NullableGeneric<int?>(42).copyWith(value: null),
       NullableGeneric<int?>(null),
     );
-    expect(
-      NullableGeneric<int?>(42).copyWith(),
-      NullableGeneric<int?>(42),
-    );
+    expect(NullableGeneric<int?>(42).copyWith(), NullableGeneric<int?>(42));
   });
 
   test('did pass generic constraints', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'generic.dart';
 
 void main() {
   Generic<Model<int>>(Model(42));
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'generic.dart';
 
 void main() {
   Generic<int>(42);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 }

@@ -18,20 +18,23 @@ String wrapClassField(String name) {
 extension FreezedElementAnnotation on ElementAnnotation {
   /// if the element is decorated with `@Default(value)`
   bool get isDefault {
-    return const TypeChecker.fromRuntime(Default)
-        .isExactlyType(computeConstantValue()!.type!);
+    return const TypeChecker.fromRuntime(
+      Default,
+    ).isExactlyType(computeConstantValue()!.type!);
   }
 
   /// if the element is decorated with `@With<Type>`
   bool get isWith {
-    return const TypeChecker.fromRuntime(With)
-        .isExactlyType(computeConstantValue()!.type!);
+    return const TypeChecker.fromRuntime(
+      With,
+    ).isExactlyType(computeConstantValue()!.type!);
   }
 
   /// if the element is decorated with `@Implements<Type>`
   bool get isImplements {
-    return const TypeChecker.fromRuntime(Implements)
-        .isExactlyType(computeConstantValue()!.type!);
+    return const TypeChecker.fromRuntime(
+      Implements,
+    ).isExactlyType(computeConstantValue()!.type!);
   }
 }
 

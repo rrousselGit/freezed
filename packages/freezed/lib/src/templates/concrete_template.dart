@@ -34,9 +34,10 @@ class Concrete {
 
   late final bool _hasUnionKeyProperty =
       (data.options.toJson || data.options.fromJson) &&
-          data.constructors.length > 1 &&
-          constructor.properties
-              .every((e) => e.name != data.options.annotation.unionKey);
+      data.constructors.length > 1 &&
+      constructor.properties.every(
+        (e) => e.name != data.options.annotation.unionKey,
+      );
 
   @override
   String toString() {
@@ -55,14 +56,7 @@ class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_concrete
 $_properties
 
 ${copyWith?.copyWithGetter(needsCast: false) ?? ''}
-${methods(
-      data,
-      globalData,
-      properties: constructor.properties,
-      name: constructor.redirectedName,
-      escapedName: constructor.escapedName,
-      source: Source.syntheticClass,
-    )}
+${methods(data, globalData, properties: constructor.properties, name: constructor.redirectedName, escapedName: constructor.escapedName, source: Source.syntheticClass)}
 }
 
 ${copyWith?.interface ?? ''}
@@ -106,9 +100,10 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
         );
       }
 
-      final correspondingProperty = constructor.properties
-          .where((element) => element.name == p.name)
-          .first;
+      final correspondingProperty =
+          constructor.properties
+              .where((element) => element.name == p.name)
+              .first;
       if (correspondingProperty.isSynthetic) {
         return (
           LocalParameter.fromParameter(p),
@@ -202,8 +197,9 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
       for (final p in superCall.positional)
         if (!alreadySet.contains(p)) p,
       for (final p in superCall.named)
-        if (constructor.parameters.allParameters
-                .any((element) => element.name == p) &&
+        if (constructor.parameters.allParameters.any(
+              (element) => element.name == p,
+            ) &&
             !alreadySet.contains(p))
           '$p: $p',
     ].join(', ');
@@ -234,55 +230,59 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
   }
 
   String get _properties {
-    final classProperties =
-        constructor.properties.where((e) => e.isSynthetic).expand((p) {
-      final annotatedProperty = p.copyWith(
-        decorators: [
-          if (commonProperties.any((element) => element.name == p.name))
-            '@override',
-          if (p.defaultValueSource != null && !p.hasJsonKey) '@JsonKey()',
-          ...p.decorators,
-        ],
-      );
+    final classProperties = constructor.properties
+        .where((e) => e.isSynthetic)
+        .expand((p) {
+          final annotatedProperty = p.copyWith(
+            decorators: [
+              if (commonProperties.any((element) => element.name == p.name))
+                '@override',
+              if (p.defaultValueSource != null && !p.hasJsonKey) '@JsonKey()',
+              ...p.decorators,
+            ],
+          );
 
-      if (data.options.asUnmodifiableCollections) {
-        String? viewType;
+          if (data.options.asUnmodifiableCollections) {
+            String? viewType;
 
-        if (p.isDartList) {
-          viewType = 'EqualUnmodifiableListView';
-        } else if (p.isDartMap) {
-          viewType = 'EqualUnmodifiableMapView';
-        } else if (p.isDartSet) {
-          viewType = 'EqualUnmodifiableSetView';
-        }
+            if (p.isDartList) {
+              viewType = 'EqualUnmodifiableListView';
+            } else if (p.isDartMap) {
+              viewType = 'EqualUnmodifiableMapView';
+            } else if (p.isDartSet) {
+              viewType = 'EqualUnmodifiableSetView';
+            }
 
-        if (viewType != null) {
-          // If the collection is already unmodifiable, we don't want to wrap
-          // it in an unmodifiable view again.
-          final isAlreadyUnmodifiableCheck =
-              'if (_${p.name} is $viewType) return _${p.name};';
+            if (viewType != null) {
+              // If the collection is already unmodifiable, we don't want to wrap
+              // it in an unmodifiable view again.
+              final isAlreadyUnmodifiableCheck =
+                  'if (_${p.name} is $viewType) return _${p.name};';
 
-          return [
-            p.copyWith(name: '_${p.name}', decorators: const []),
-            if (p.isNullable) annotatedProperty.asGetter(''' {
+              return [
+                p.copyWith(name: '_${p.name}', decorators: const []),
+                if (p.isNullable)
+                  annotatedProperty.asGetter(''' {
   final value = _${p.name};
   if (value == null) return null;
   $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(value);
 }
-''') else annotatedProperty.asGetter(''' {
+''')
+                else
+                  annotatedProperty.asGetter(''' {
   $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(_${p.name});
 }
 '''),
-          ];
-        }
-      }
+              ];
+            }
+          }
 
-      return [annotatedProperty];
-    });
+          return [annotatedProperty];
+        });
 
     if (_hasUnionKeyProperty) {
       return '''
@@ -301,12 +301,14 @@ final String \$type;
   }
 
   String get _fromJsonArgs => fromJsonArguments(
-        data.genericsParameterTemplate,
-        data.options.genericArgumentFactories,
-      );
+    data.genericsParameterTemplate,
+    data.options.genericArgumentFactories,
+  );
 
   String get _fromJsonParams => fromJsonParameters(
-      data.genericsParameterTemplate, data.options.genericArgumentFactories);
+    data.genericsParameterTemplate,
+    data.options.genericArgumentFactories,
+  );
 
   String get _concreteFromJsonConstructor {
     if (!data.options.fromJson) return '';
@@ -315,10 +317,7 @@ final String \$type;
   }
 }
 
-enum Source {
-  mixin,
-  syntheticClass,
-}
+enum Source { mixin, syntheticClass }
 
 String methods(
   Class data,
@@ -330,28 +329,14 @@ String methods(
 }) {
   return '''
 ${toJson(data, name: name, source: source)}
-${debugFillProperties(
-    data,
-    globalData,
-    properties,
-    escapedClassName: escapedName,
-  )}
+${debugFillProperties(data, globalData, properties, escapedClassName: escapedName)}
 ${operatorEqualMethod(data, properties, className: name, source: source)}
 ${hashCodeMethod(data, properties, source: source)}
-${toStringMethod(
-    data,
-    globalData,
-    escapedClassName: escapedName,
-    properties: properties,
-  )}
+${toStringMethod(data, globalData, escapedClassName: escapedName, properties: properties)}
 ''';
 }
 
-String toJson(
-  Class data, {
-  required String name,
-  required Source source,
-}) {
+String toJson(Class data, {required String name, required Source source}) {
   if (!data.options.toJson) return '';
 
   switch ((source, data.constructors)) {
@@ -397,10 +382,11 @@ String debugFillProperties(
 }) {
   if (!globalData.hasDiagnostics || !data.options.asString) return '';
 
-  final diagnostics = [
-    for (final e in properties)
-      "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
-  ].join();
+  final diagnostics =
+      [
+        for (final e in properties)
+          "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
+      ].join();
 
   return '''
 @override
@@ -421,9 +407,10 @@ String toStringMethod(
 }) {
   if (!data.options.asString) return '';
 
-  final parameters = globalData.hasDiagnostics
-      ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
-      : '';
+  final parameters =
+      globalData.hasDiagnostics
+          ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
+          : '';
 
   final propertiesDisplayString = [
     for (final p in properties)
@@ -484,9 +471,10 @@ String hashCodeMethod(
 }) {
   if (!data.options.equal) return '';
 
-  final jsonKey = data.options.fromJson || data.options.toJson
-      ? '@JsonKey(includeFromJson: false, includeToJson: false)'
-      : '';
+  final jsonKey =
+      data.options.fromJson || data.options.toJson
+          ? '@JsonKey(includeFromJson: false, includeToJson: false)'
+          : '';
 
   final hashedProperties = [
     'runtimeType',
@@ -536,7 +524,8 @@ extension DefaultValue on ParameterElement {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
-        var needsConstModifier = !declaration.type.isDartCoreString &&
+        var needsConstModifier =
+            !declaration.type.isDartCoreString &&
             !res.trimLeft().startsWith('const') &&
             (res.contains('(') || res.contains('[') || res.contains('{'));
 
@@ -560,8 +549,10 @@ String? parseTypeSource(VariableElement element) {
 
   if ((type.contains('dynamic') || type.contains('InvalidType')) &&
       element.nameOffset > 0) {
-    final source =
-        element.source!.contents.data.substring(0, element.nameOffset);
+    final source = element.source!.contents.data.substring(
+      0,
+      element.nameOffset,
+    );
     final eleType = element.type;
     if (eleType.isDynamic2) {
       final match = RegExp(r'([$\w]+\??)\s+$').firstMatch(source);
@@ -572,8 +563,5 @@ String? parseTypeSource(VariableElement element) {
     }
   }
 
-  return resolveFullTypeStringFrom(
-    element.library!,
-    element.type,
-  );
+  return resolveFullTypeStringFrom(element.library!, element.type);
 }

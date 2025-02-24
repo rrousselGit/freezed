@@ -8,35 +8,36 @@ import 'package:test/test.dart';
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
-      {
-        'freezed|test/integration/typedef_parameter.dart': useAssetReader,
-      },
+      {'freezed|test/integration/typedef_parameter.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('typedef_parameter')),
+        (element) => element.source.toString().contains('typedef_parameter'),
+      ),
     );
 
-    final errorResult = await main.session.getErrors(
-            '/freezed/test/integration/typedef_parameter_test.freezed.dart')
-        as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/typedef_parameter_test.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
 
   test('generates correct typedefs', () async {
     final main = await resolveSources(
-      {
-        'freezed|test/integration/typedef_parameter.dart': useAssetReader,
-      },
+      {'freezed|test/integration/typedef_parameter.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-          (element) => element.source.toString().contains('typedef_parameter')),
+        (element) => element.source.toString().contains('typedef_parameter'),
+      ),
     );
 
     var freezedClass = main.topLevelElements
         .whereType<ClassElement>()
         .firstWhere((element) => element.name == '_ClassWithTypedef');
 
-    var constructor =
-        freezedClass.constructors.firstWhere((element) => element.name == '');
+    var constructor = freezedClass.constructors.firstWhere(
+      (element) => element.name == '',
+    );
 
     var a = constructor.parameters.first.type;
     expect(a, isA<FunctionType>());

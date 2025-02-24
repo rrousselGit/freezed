@@ -99,25 +99,20 @@ abstract class Const with _$Const {
 
 @freezed
 abstract class Dollar with _$Dollar {
-  const factory Dollar({
-    required String $test,
-  }) = _DollarStartWithDollar;
+  const factory Dollar({required String $test}) = _DollarStartWithDollar;
 }
 
 /// Middle with $
 @freezed
 abstract class DollarMiddle with _$DollarMiddle {
-  const factory DollarMiddle({
-    required String te$st,
-  }) = _DollarMiddleMiddleWithDollar;
+  const factory DollarMiddle({required String te$st}) =
+      _DollarMiddleMiddleWithDollar;
 }
 
 /// End with $
 @freezed
 abstract class DollarEnd with _$DollarEnd {
-  const factory DollarEnd({
-    required String test$,
-  }) = _DollarEndEndWithDollar;
+  const factory DollarEnd({required String test$}) = _DollarEndEndWithDollar;
 }
 
 /// class with $

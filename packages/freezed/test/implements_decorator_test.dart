@@ -9,8 +9,11 @@ void main() {
 
       expect(
         const SimpleImplements.street('Sarah'),
-        isA<AdministrativeArea<House>>()
-            .having((s) => s.method(house), 'method(house)', house),
+        isA<AdministrativeArea<House>>().having(
+          (s) => s.method(house),
+          'method(house)',
+          house,
+        ),
       );
     });
 
@@ -49,17 +52,18 @@ void main() {
     });
 
     test(
-        'redirected class can be assigned to the interfaces/mixins without cast',
-        () {
-      const city = CityCustomMethod('name', 42);
+      'redirected class can be assigned to the interfaces/mixins without cast',
+      () {
+        const city = CityCustomMethod('name', 42);
 
-      // ignore: unused_local_variable
-      House house = city;
-      Named named = city;
-      expect(named.name, 'name');
-      GeographicArea area = city;
-      expect(area.name, 'name');
-    });
+        // ignore: unused_local_variable
+        House house = city;
+        Named named = city;
+        expect(named.name, 'name');
+        GeographicArea area = city;
+        expect(area.name, 'name');
+      },
+    );
   });
 
   group('Generic type', () {
@@ -87,10 +91,7 @@ void main() {
       Generic<int> generic = object;
 
       expect(object, isA<AdministrativeArea<int>>());
-      expect(
-        object,
-        isA<Generic<int>>().having((s) => s.value, 'value', 42),
-      );
+      expect(object, isA<Generic<int>>().having((s) => s.value, 'value', 42));
     });
   });
 }

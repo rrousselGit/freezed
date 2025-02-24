@@ -7,83 +7,110 @@ final throwsAssertionError = throwsA(isA<AssertionError>());
 
 void main() {
   test('RequiredPositional', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   RequiredPositional(42).copyWith(a: 42);
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   RequiredPositional(null);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   RequiredPositional(42).copyWith(a: null);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('DefaultPositional', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   DefaultPositional(42).copyWith(a: 42);
   DefaultPositional().copyWith(a: 42);
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   DefaultPositional(null);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   DefaultPositional().copyWith(a: null);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('DefaultNamed', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
     DefaultNamed(a: 42).copyWith(a: 42);
     DefaultNamed().copyWith(a: 42);
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
     DefaultNamed(a: null);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
     DefaultNamed().copyWith(a: null);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('NullableRequiredPositional', () {
@@ -108,39 +135,51 @@ void main() {
   });
 
   test('RequiredNamed', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   RequiredNamed(a: 42).copyWith(a: 42);
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   RequiredNamed(a: null);
 }
 
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   RequiredNamed();
 }
 
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'nullable.dart';
 
 void main() {
   RequiredNamed(a: 42).copyWith(a: null);
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('NullableRequiredNamed', () {

@@ -54,9 +54,7 @@ abstract class _PUnionJsonWithExtends extends Base
 // regression test for https://github.com/rrousselGit/freezed/issues/409
 @freezed
 abstract class Regression409 with _$Regression409 {
-  factory Regression409({
-    dynamic totalResults,
-  }) = _Regression409;
+  factory Regression409({dynamic totalResults}) = _Regression409;
 
   factory Regression409.fromJson(Map<String, dynamic> json) =>
       _$Regression409FromJson(json);
@@ -76,18 +74,14 @@ abstract class Regression351 with _$Regression351 {
 // regression test for https://github.com/rrousselGit/freezed/issues/323
 @freezed
 abstract class Regression323 with _$Regression323 {
-  const factory Regression323({
-    required String id,
-    required num amount,
-  }) = _Regression323;
+  const factory Regression323({required String id, required num amount}) =
+      _Regression323;
 
   factory Regression323.fromJson(Map<String, dynamic> json) =>
       _$Regression323FromJson(json);
 
-  factory Regression323.unknown(num amount) => Regression323(
-        id: '',
-        amount: amount,
-      );
+  factory Regression323.unknown(num amount) =>
+      Regression323(id: '', amount: amount);
 }
 
 // regression test for https://github.com/rrousselGit/freezed/issues/280
@@ -110,9 +104,7 @@ abstract class Regression280n2 with _$Regression280n2 {
 }
 
 CustomJson _fromJson(Map<String, dynamic> json) {
-  return _$CustomJsonFromJson(<String, dynamic>{
-    'label': json['key'],
-  });
+  return _$CustomJsonFromJson(<String, dynamic>{'label': json['key']});
 }
 
 @freezed
@@ -351,8 +343,8 @@ abstract class UnrecognizedKeysCustomUnionValue
       UnrecognizedKeys_CustomUnionValueSecond;
 
   factory UnrecognizedKeysCustomUnionValue.fromJson(
-          Map<String, dynamic> json) =>
-      _$UnrecognizedKeysCustomUnionValueFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UnrecognizedKeysCustomUnionValueFromJson(json);
 }
 
 @Freezed(fallbackUnion: 'fallback')
@@ -386,8 +378,8 @@ abstract class UnrecognizedKeysUnionFallbackWithDefault
       _UnrecognizedKeysUnionDefaultFallbackSecond;
 
   factory UnrecognizedKeysUnionFallbackWithDefault.fromJson(
-          Map<String, dynamic> json) =>
-      _$UnrecognizedKeysUnionFallbackWithDefaultFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UnrecognizedKeysUnionFallbackWithDefaultFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.pascal)
@@ -401,8 +393,8 @@ abstract class UnrecognizedKeysUnionValueCasePascal
       _UnrecognizedKeysUnionValueCasePascalSecondValue;
 
   factory UnrecognizedKeysUnionValueCasePascal.fromJson(
-          Map<String, dynamic> json) =>
-      _$UnrecognizedKeysUnionValueCasePascalFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UnrecognizedKeysUnionValueCasePascalFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.kebab)
@@ -416,8 +408,8 @@ abstract class UnrecognizedKeysUnionValueCaseKebab
       _UnrecognizedKeysUnionValueCaseKebabSecondValue;
 
   factory UnrecognizedKeysUnionValueCaseKebab.fromJson(
-          Map<String, dynamic> json) =>
-      _$UnrecognizedKeysUnionValueCaseKebabFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UnrecognizedKeysUnionValueCaseKebabFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.snake)
@@ -431,8 +423,8 @@ abstract class UnrecognizedKeysUnionValueCaseSnake
       _UnrecognizedKeysUnionValueCaseSnakeSecondValue;
 
   factory UnrecognizedKeysUnionValueCaseSnake.fromJson(
-          Map<String, dynamic> json) =>
-      _$UnrecognizedKeysUnionValueCaseSnakeFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UnrecognizedKeysUnionValueCaseSnakeFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.screamingSnake)
@@ -443,11 +435,12 @@ abstract class UnrecognizedKeysUnionValueCaseScreamingSnake
       _UnrecognizedKeysUnionValueCaseScreamingSnakeFirst;
   @JsonSerializable(disallowUnrecognizedKeys: true)
   const factory UnrecognizedKeysUnionValueCaseScreamingSnake.secondValue(
-      int a) = _UnrecognizedKeysUnionValueCaseScreamingSnakeSecondValue;
+    int a,
+  ) = _UnrecognizedKeysUnionValueCaseScreamingSnakeSecondValue;
 
   factory UnrecognizedKeysUnionValueCaseScreamingSnake.fromJson(
-          Map<String, dynamic> json) =>
-      _$UnrecognizedKeysUnionValueCaseScreamingSnakeFromJson(json);
+    Map<String, dynamic> json,
+  ) => _$UnrecognizedKeysUnionValueCaseScreamingSnakeFromJson(json);
 }
 
 @freezed
@@ -549,11 +542,7 @@ enum StandAloneEnum {
 Iterable<String> get standAloneEnumValues => _$StandAloneEnumEnumMap.values;
 
 @JsonEnum()
-enum Enum {
-  alpha,
-  beta,
-  gamma,
-}
+enum Enum { alpha, beta, gamma }
 
 @freezed
 abstract class EnumJson with _$EnumJson {
@@ -579,25 +568,20 @@ abstract class GenericWithArgumentFactories<T>
   factory GenericWithArgumentFactories.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
-  ) =>
-      _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
+  ) => _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
 }
 
 @Freezed(genericArgumentFactories: true)
 abstract class GenericTupleWithArgumentFactories<T, S>
     with _$GenericTupleWithArgumentFactories<T, S> {
-  factory GenericTupleWithArgumentFactories(
-    T value1,
-    S value2,
-    String value3,
-  ) = _GenericTupleWithArgumentFactories<T, S>;
+  factory GenericTupleWithArgumentFactories(T value1, S value2, String value3) =
+      _GenericTupleWithArgumentFactories<T, S>;
 
   factory GenericTupleWithArgumentFactories.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
     S Function(Object? json) fromJsonS,
-  ) =>
-      _$GenericTupleWithArgumentFactoriesFromJson(json, fromJsonT, fromJsonS);
+  ) => _$GenericTupleWithArgumentFactoriesFromJson(json, fromJsonT, fromJsonS);
 }
 
 @Freezed(genericArgumentFactories: true)
@@ -630,10 +614,9 @@ abstract class GenericMultiCtorWithArgumentFactories<T, S>
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
     S Function(Object? json) fromJsonS,
-  ) =>
-      _$GenericMultiCtorWithArgumentFactoriesFromJson<T, S>(
-        json,
-        fromJsonT,
-        fromJsonS,
-      );
+  ) => _$GenericMultiCtorWithArgumentFactoriesFromJson<T, S>(
+    json,
+    fromJsonT,
+    fromJsonS,
+  );
 }

@@ -7,9 +7,7 @@ import 'package:source_gen_test/annotations.dart';
 @freezed
 enum Foo { a }
 
-@ShouldThrow(
-  'Getters require a MyClass._() constructor',
-)
+@ShouldThrow('Getters require a MyClass._() constructor')
 @freezed
 abstract class Properties {
   factory Properties() = _Properties;
@@ -87,9 +85,8 @@ class _Final implements Final {
 @ShouldThrow('@Default cannot be used on non-optional parameters')
 @freezed
 abstract class DefaultOnRequiredPositional {
-  factory DefaultOnRequiredPositional(
-    @Default(42) int a,
-  ) = _DefaultOnRequiredPositional;
+  factory DefaultOnRequiredPositional(@Default(42) int a) =
+      _DefaultOnRequiredPositional;
 }
 
 class _DefaultOnRequiredPositional implements DefaultOnRequiredPositional {
@@ -111,9 +108,7 @@ class _Second implements FallbackUnionMissing {
   _Second();
 }
 
-@ShouldThrow(
-  'Classes decorated with @freezed cannot have mutable properties',
-)
+@ShouldThrow('Classes decorated with @freezed cannot have mutable properties')
 @freezed
 abstract class MutableProperty {
   MutableProperty._();
@@ -128,11 +123,7 @@ class _MutableProperty implements MutableProperty {
   int? a;
 }
 
-@ShouldGenerate(
-  '',
-  contains: true,
-  expectedLogItems: [],
-)
+@ShouldGenerate('', contains: true, expectedLogItems: [])
 @freezed
 abstract class AbstractClass {
   const factory AbstractClass() = _AbstractClass;

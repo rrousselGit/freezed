@@ -30,15 +30,16 @@ extension FindAllAvailableTopLevelElements on LibraryElement {
   }) sync* {
     yield* topLevelElements;
 
-    final librariesToCheck = checkExports
-        ? units
-            .expand((e) => e.libraryExports)
-            .map(_LibraryDirectives.fromExport)
-            .nonNulls
-        : units
-            .expand((e) => e.libraryImports)
-            .map(_LibraryDirectives.fromImport)
-            .nonNulls;
+    final librariesToCheck =
+        checkExports
+            ? units
+                .expand((e) => e.libraryExports)
+                .map(_LibraryDirectives.fromExport)
+                .nonNulls
+            : units
+                .expand((e) => e.libraryImports)
+                .map(_LibraryDirectives.fromImport)
+                .nonNulls;
 
     for (final directive in librariesToCheck) {
       if (!visitedLibraryPaths.add(directive.key)) {
@@ -47,19 +48,17 @@ extension FindAllAvailableTopLevelElements on LibraryElement {
 
       yield* directive.library
           ._findAllAvailableTopLevelElements(
-        visitedLibraryPaths,
-        checkExports: true,
-        key: directive.key,
-      )
-          .where(
-        (element) {
-          return (directive.showStatements.isEmpty &&
-                  directive.hideStatements.isEmpty) ||
-              (directive.hideStatements.isNotEmpty &&
-                  !directive.hideStatements.contains(element.name)) ||
-              directive.showStatements.contains(element.name);
-        },
-      );
+            visitedLibraryPaths,
+            checkExports: true,
+            key: directive.key,
+          )
+          .where((element) {
+            return (directive.showStatements.isEmpty &&
+                    directive.hideStatements.isEmpty) ||
+                (directive.hideStatements.isNotEmpty &&
+                    !directive.hideStatements.contains(element.name)) ||
+                directive.showStatements.contains(element.name);
+          });
     }
   }
 }
@@ -75,15 +74,17 @@ class _LibraryDirectives {
     final library = export.exportedLibrary;
     if (library == null) return null;
 
-    final hideStatements = export.combinators
-        .whereType<HideElementCombinator>()
-        .expand((e) => e.hiddenNames)
-        .toSet();
+    final hideStatements =
+        export.combinators
+            .whereType<HideElementCombinator>()
+            .expand((e) => e.hiddenNames)
+            .toSet();
 
-    final showStatements = export.combinators
-        .whereType<ShowElementCombinator>()
-        .expand((e) => e.shownNames)
-        .toSet();
+    final showStatements =
+        export.combinators
+            .whereType<ShowElementCombinator>()
+            .expand((e) => e.shownNames)
+            .toSet();
 
     return _LibraryDirectives(
       hideStatements: hideStatements,
@@ -96,15 +97,17 @@ class _LibraryDirectives {
     final library = export.importedLibrary;
     if (library == null) return null;
 
-    final hideStatements = export.combinators
-        .whereType<HideElementCombinator>()
-        .expand((e) => e.hiddenNames)
-        .toSet();
+    final hideStatements =
+        export.combinators
+            .whereType<HideElementCombinator>()
+            .expand((e) => e.hiddenNames)
+            .toSet();
 
-    final showStatements = export.combinators
-        .whereType<ShowElementCombinator>()
-        .expand((e) => e.shownNames)
-        .toSet();
+    final showStatements =
+        export.combinators
+            .whereType<ShowElementCombinator>()
+            .expand((e) => e.shownNames)
+            .toSet();
 
     return _LibraryDirectives(
       hideStatements: hideStatements,
@@ -151,18 +154,22 @@ class _LibraryKey {
   bool operator ==(Object other) {
     return other is _LibraryKey &&
         librarySource == other.librarySource &&
-        const SetEquality<String>()
-            .equals(hideStatements, other.hideStatements) &&
-        const SetEquality<String>()
-            .equals(showStatements, other.showStatements);
+        const SetEquality<String>().equals(
+          hideStatements,
+          other.hideStatements,
+        ) &&
+        const SetEquality<String>().equals(
+          showStatements,
+          other.showStatements,
+        );
   }
 
   @override
   int get hashCode => Object.hash(
-        librarySource,
-        const SetEquality<String>().hash(hideStatements),
-        const SetEquality<String>().hash(showStatements),
-      );
+    librarySource,
+    const SetEquality<String>().hash(hideStatements),
+    const SetEquality<String>().hash(showStatements),
+  );
 
   @override
   String toString() {

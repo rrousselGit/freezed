@@ -45,10 +45,7 @@ Future<void> main() async {
       reason: 'Custom lists are not wrapped in an UnmodifiableSetView',
     );
 
-    expect(
-      CustomSetEqual(CustomSet({42})),
-      CustomSetEqual(CustomSet({42})),
-    );
+    expect(CustomSetEqual(CustomSet({42})), CustomSetEqual(CustomSet({42})));
 
     expect(
       CustomSetEqual(CustomSet({42})).hashCode,
@@ -57,10 +54,7 @@ Future<void> main() async {
   });
 
   test('SetEqual', () {
-    expect(
-      SetEqual({42})..dartSet.add(21),
-      SetEqual({42, 21}),
-    );
+    expect(SetEqual({42})..dartSet.add(21), SetEqual({42, 21}));
 
     expect(SetEqual({42}), SetEqual({42}));
     expect(SetEqual({42}).hashCode, SetEqual({42}).hashCode);
@@ -72,10 +66,7 @@ Future<void> main() async {
       throwsUnsupportedError,
     );
 
-    expect(
-      UnmodifiableSetEqual({42}),
-      UnmodifiableSetEqual({42}),
-    );
+    expect(UnmodifiableSetEqual({42}), UnmodifiableSetEqual({42}));
     expect(
       UnmodifiableSetEqual({42}).hashCode,
       UnmodifiableSetEqual({42}).hashCode,
@@ -107,23 +98,19 @@ Future<void> main() async {
   });
 
   test('ListEqual', () {
-    expect(
-      ListEqual([42])..list.add(21),
-      ListEqual([42, 21]),
-    );
+    expect(ListEqual([42])..list.add(21), ListEqual([42, 21]));
 
     expect(ListEqual([42]), ListEqual([42]));
     expect(ListEqual([42]).hashCode, ListEqual([42]).hashCode);
   });
 
   test('UnmodifiableListEqual', () {
-    expect(() => UnmodifiableListEqual([42])..list.add(21),
-        throwsUnsupportedError);
-
     expect(
-      UnmodifiableListEqual([42]),
-      UnmodifiableListEqual([42]),
+      () => UnmodifiableListEqual([42])..list.add(21),
+      throwsUnsupportedError,
     );
+
+    expect(UnmodifiableListEqual([42]), UnmodifiableListEqual([42]));
     expect(
       UnmodifiableListEqual([42]).hashCode,
       UnmodifiableListEqual([42]).hashCode,
@@ -155,23 +142,19 @@ Future<void> main() async {
   });
 
   test('MapEqual', () {
-    expect(
-      MapEqual({'a': 42})..map['b'] = 21,
-      MapEqual({'a': 42, 'b': 21}),
-    );
+    expect(MapEqual({'a': 42})..map['b'] = 21, MapEqual({'a': 42, 'b': 21}));
 
     expect(MapEqual({'a': 42}), MapEqual({'a': 42}));
     expect(MapEqual({'a': 42}).hashCode, MapEqual({'a': 42}).hashCode);
   });
 
   test('UnmodifiableMapEqual', () {
-    expect(() => UnmodifiableMapEqual({'a': 42})..map['b'] = 21,
-        throwsUnsupportedError);
-
     expect(
-      UnmodifiableMapEqual({'a': 42}),
-      UnmodifiableMapEqual({'a': 42}),
+      () => UnmodifiableMapEqual({'a': 42})..map['b'] = 21,
+      throwsUnsupportedError,
     );
+
+    expect(UnmodifiableMapEqual({'a': 42}), UnmodifiableMapEqual({'a': 42}));
     expect(
       UnmodifiableMapEqual({'a': 42}).hashCode,
       UnmodifiableMapEqual({'a': 42}).hashCode,
@@ -185,25 +168,13 @@ Future<void> main() async {
   });
 
   test('Subclass', () {
-    expect(
-      Subclass(42),
-      Subclass(42),
-    );
+    expect(Subclass(42), Subclass(42));
 
-    expect(
-      Subclass(42).hashCode,
-      Subclass(42).hashCode,
-    );
+    expect(Subclass(42).hashCode, Subclass(42).hashCode);
 
-    expect(
-      Subclass(42).copyWith(value: 21),
-      Subclass(21),
-    );
+    expect(Subclass(42).copyWith(value: 21), Subclass(21));
 
-    expect(
-      Subclass(42).toString(),
-      'Subclass(value: 42)',
-    );
+    expect(Subclass(42).toString(), 'Subclass(value: 42)');
   });
 
   test('WithAlias', () {
@@ -221,49 +192,46 @@ Future<void> main() async {
   });
 
   test('Regression 131', () {
-    expect(
-      Regression131('foo').toString(),
-      'Regression131(versionName: foo)',
-    );
+    expect(Regression131('foo').toString(), 'Regression131(versionName: foo)');
   });
 
   test('documentation', () async {
     final singleClassLibrary = await analyze();
 
-    final doc = singleClassLibrary.topLevelElements
-        .firstWhere((e) => e.name == 'Doc') as ClassElement;
+    final doc =
+        singleClassLibrary.topLevelElements.firstWhere((e) => e.name == 'Doc')
+            as ClassElement;
 
     expect(
-        doc.mixins.first.accessors
-            .where((e) => e.name != 'copyWith' && e.name != 'hashCode'),
-        [
-          isA<PropertyAccessorElement>()
-              .having((e) => e.name, 'name', 'positional')
-              .having((e) => e.documentationComment, 'doc', '''
+      doc.mixins.first.accessors.where(
+        (e) => e.name != 'copyWith' && e.name != 'hashCode',
+      ),
+      [
+        isA<PropertyAccessorElement>()
+            .having((e) => e.name, 'name', 'positional')
+            .having((e) => e.documentationComment, 'doc', '''
 /// Multi
 /// line
 /// positional'''),
-          isA<PropertyAccessorElement>() //
-              .having((e) => e.name, 'name', 'named')
-              .having((e) => e.documentationComment, 'doc',
-                  '/// Single line named'),
-          isA<PropertyAccessorElement>() //
-              .having((e) => e.name, 'name', 'simple')
-              .having((e) => e.documentationComment, 'doc', null),
-        ]);
+        isA<PropertyAccessorElement>() //
+            .having((e) => e.name, 'name', 'named')
+            .having(
+              (e) => e.documentationComment,
+              'doc',
+              '/// Single line named',
+            ),
+        isA<PropertyAccessorElement>() //
+            .having((e) => e.name, 'name', 'simple')
+            .having((e) => e.documentationComment, 'doc', null),
+      ],
+    );
   });
 
   test('Assertion', () {
     Assertion(1, 2);
 
-    expect(
-      () => Assertion(-1, 1),
-      throwsAssertionError,
-    );
-    expect(
-      () => Assertion(1, -1),
-      throwsAssertionError,
-    );
+    expect(() => Assertion(-1, 1), throwsAssertionError);
+    expect(() => Assertion(1, -1), throwsAssertionError);
   });
 
   test('deep copy of recursive classes', () {
@@ -276,63 +244,39 @@ Future<void> main() async {
 
     final value2 = Product(
       name: 'foo',
-      parent: Product(
-        name: 'bar',
-        parent: Product(name: 'baz'),
-      ),
+      parent: Product(name: 'bar', parent: Product(name: 'baz')),
     );
 
     expect(
       value2.copyWith.parent!.parent!(name: 'quaz'),
       Product(
         name: 'foo',
-        parent: Product(
-          name: 'bar',
-          parent: Product(name: 'quaz'),
-        ),
+        parent: Product(name: 'bar', parent: Product(name: 'quaz')),
       ),
     );
   });
 
   group('@Default applied', () {
     test('int', () {
-      expect(
-        IntDefault(),
-        IntDefault(42),
-      );
+      expect(IntDefault(), IntDefault(42));
     });
 
     test('double', () {
-      expect(
-        DoubleDefault(),
-        DoubleDefault(42),
-      );
+      expect(DoubleDefault(), DoubleDefault(42));
     });
 
     test('String', () {
-      expect(
-        StringDefault(),
-        StringDefault('42'),
-      );
+      expect(StringDefault(), StringDefault('42'));
 
-      expect(
-        SpecialStringDefault(),
-        SpecialStringDefault('(1)[2]{3}'),
-      );
+      expect(SpecialStringDefault(), SpecialStringDefault('(1)[2]{3}'));
     });
 
     test('List', () {
-      expect(
-        ListDefault(),
-        ListDefault([42]),
-      );
+      expect(ListDefault(), ListDefault([42]));
     });
 
     test('Type', () {
-      expect(
-        TypeDefault(),
-        TypeDefault(TypeDefault),
-      );
+      expect(TypeDefault(), TypeDefault(TypeDefault));
     });
   });
 
@@ -347,10 +291,7 @@ Future<void> main() async {
   test('toString shows final properties, late properties and getters', () {
     final value = AllProperties(42);
 
-    expect(
-      value.toString(),
-      'AllProperties(value: 42)',
-    );
+    expect(value.toString(), 'AllProperties(value: 42)');
   });
 
   test('late can return null and still be called only once', () {
@@ -377,27 +318,34 @@ Future<void> main() async {
   });
 
   test('does not have when', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   MyClass().when;
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('does not have maybeWhen', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   MyClass().maybeWhen;
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('regression 399', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'regression399/a.dart';
 import 'regression399/b.dart';
 
@@ -406,9 +354,12 @@ void main() {
     b: Regression399BImpl(),
   );
 }
-'''), completes);
+'''),
+      completes,
+    );
 
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'regression399/a.dart';
 import 'regression399/b.dart';
 
@@ -417,35 +368,45 @@ void main() {
     b: 42,
   );
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('does not have map', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   MyClass().map;
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('does not have maybeMap', () async {
-    await expectLater(compile(r'''
+    await expectLater(
+      compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   MyClass().maybeMap;
 }
-'''), throwsCompileError);
+'''),
+      throwsCompileError,
+    );
   });
 
   test('has no issue', () async {
     final singleClassLibrary = await analyze();
 
-    final errorResult = await singleClassLibrary.session.getErrors(
-            '/freezed/test/integration/single_class_constructor.freezed.dart')
-        as ErrorsResult;
+    final errorResult =
+        await singleClassLibrary.session.getErrors(
+              '/freezed/test/integration/single_class_constructor.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -458,48 +419,47 @@ void main() {
     expect(identical(const MyClass(a: '42'), const MyClass(a: '42')), isTrue);
   });
 
-  test('cannot be created as const if user defined ctor is not const',
-      () async {
-    await expectLater(compile(r'''
+  test(
+    'cannot be created as const if user defined ctor is not const',
+    () async {
+      await expectLater(
+        compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   NoConstImpl();
 }
-'''), completes);
+'''),
+        completes,
+      );
 
-    await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   const NoConstImpl();
 }
-'''), throwsCompileError);
-  });
+'''),
+        throwsCompileError,
+      );
+    },
+  );
 
   test('generates a property for all constructor parameters', () {
-    var value = const MyClass(
-      a: '42',
-      b: 42,
-    );
+    var value = const MyClass(a: '42', b: 42);
 
     expect(value.a, '42');
     expect(value.b, 42);
 
-    value = const MyClass(
-      a: '24',
-      b: 24,
-    );
+    value = const MyClass(a: '24', b: 24);
 
     expect(value.a, '24');
     expect(value.b, 24);
   });
 
   test('hashCode', () {
-    expect(
-      MyClass(a: '42', b: 42).hashCode,
-      MyClass(a: '42', b: 42).hashCode,
-    );
+    expect(MyClass(a: '42', b: 42).hashCode, MyClass(a: '42', b: 42).hashCode);
     expect(
       MyClass(a: '0', b: 42).hashCode,
       isNot(MyClass(a: '42', b: 42).hashCode),
@@ -507,22 +467,10 @@ void main() {
   });
 
   test('overrides ==', () {
-    expect(
-      MyClass(a: '42', b: 42),
-      MyClass(a: '42', b: 42),
-    );
-    expect(
-      MyClass(a: '0', b: 42),
-      isNot(Object()),
-    );
-    expect(
-      MyClass(a: '0', b: 42),
-      isNot(MyClass(a: '42', b: 42)),
-    );
-    expect(
-      MyClass(a: '0', b: 42),
-      isNot(MyClass(a: '0', b: 0)),
-    );
+    expect(MyClass(a: '42', b: 42), MyClass(a: '42', b: 42));
+    expect(MyClass(a: '0', b: 42), isNot(Object()));
+    expect(MyClass(a: '0', b: 42), isNot(MyClass(a: '42', b: 42)));
+    expect(MyClass(a: '0', b: 42), isNot(MyClass(a: '0', b: 0)));
   });
 
   test('toString', () {
@@ -544,10 +492,7 @@ void main() {
         MyClass(a: '42', b: 42).copyWith(a: '24'),
         MyClass(a: '24', b: 42),
       );
-      expect(
-        MyClass(a: '42', b: 42).copyWith(b: 24),
-        MyClass(a: '42', b: 24),
-      );
+      expect(MyClass(a: '42', b: 42).copyWith(b: 24), MyClass(a: '42', b: 24));
     });
 
     test('clone can assign values to null', () {
@@ -562,29 +507,38 @@ void main() {
     });
 
     test('cannot assign futures to copyWith parameters', () async {
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   MyClass().copyWith(a: '42', b: 42);
 }
-'''), completes);
+'''),
+        completes,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   MyClass().copyWith(a: Future.value('42'));
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   MyClass().copyWith(b: Future.value(42));
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
     });
 
     test('redirected class overrides copyWith return type', () {
@@ -595,39 +549,45 @@ void main() {
     });
 
     test("redirected class's copyWith cannot receive Future", () async {
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   WhateverIWant().copyWith(a: '42', b: 42);
 }
-'''), completes);
+'''),
+        completes,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   WhateverIWant().copyWith(a: Future.value('a'));
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'single_class_constructor.dart';
 
 void main() {
   WhateverIWant().copyWith(b: Future.value(42));
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
     });
   });
 
   test('can access redirect class', () {
     expect(MyClass(), isA<WhateverIWant>());
 
-    expect(
-      WhateverIWant(a: 'a', b: 42),
-      MyClass(a: 'a', b: 42),
-    );
+    expect(WhateverIWant(a: 'a', b: 42), MyClass(a: 'a', b: 42));
   });
 
   test('mixed param', () {
@@ -660,10 +620,11 @@ void main() {
     expect(value.b, 42);
   });
 
-  test('required parameters are transmitted to redirected constructor',
-      () async {
-    final main = await resolveSources({
-      'freezed|test/integration/main.dart': '''
+  test(
+    'required parameters are transmitted to redirected constructor',
+    () async {
+      final main = await resolveSources({
+        'freezed|test/integration/main.dart': '''
 library main;
 
 import 'single_class_constructor.dart';
@@ -672,16 +633,18 @@ void main() {
   WhateverRequired();
 }
     ''',
-    }, (r) => r.findLibraryByName('main'));
+      }, (r) => r.findLibraryByName('main'));
 
-    final errorResult = await main!.session
-        .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+      final errorResult =
+          await main!.session.getErrors('/freezed/test/integration/main.dart')
+              as ErrorsResult;
 
-    expect(
-      errorResult.errors.map((e) => e.toString()),
-      anyElement(contains("The named parameter 'a' is required")),
-    );
-  });
+      expect(
+        errorResult.errors.map((e) => e.toString()),
+        anyElement(contains("The named parameter 'a' is required")),
+      );
+    },
+  );
 
   test('empty class still equals', () {
     expect(Empty(), Empty());
