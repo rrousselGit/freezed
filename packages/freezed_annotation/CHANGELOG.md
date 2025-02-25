@@ -1,4 +1,4 @@
-## Unreleased 3.0.0
+## 3.0.0 - 2025-02-25
 
 - **Breaking** removed `when`/`map` related options
 
