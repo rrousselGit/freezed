@@ -41,7 +41,7 @@ mixin _\$${data.name.public}${data.genericsDefinitionTemplate} {
 
 $abstractProperties
 ${copyWith?.copyWithGetter(needsCast: true) ?? ''}
-${methods(data, globalData, properties: commonProperties, name: data.name, escapedName: data.escapedName, source: Source.mixin)}
+${methods(data, globalData, properties: commonProperties, name: data.name, escapedName: data.escapedName, source: Source.mixin, addDebugFillProperties: false)}
 }
 
 ${copyWith?.commonInterface ?? ''}

@@ -326,10 +326,11 @@ String methods(
   required String name,
   required String escapedName,
   required Source source,
+  bool addDebugFillProperties = true,
 }) {
   return '''
 ${toJson(data, name: name, source: source)}
-${debugFillProperties(data, globalData, properties, escapedClassName: escapedName)}
+${addDebugFillProperties ? debugFillProperties(data, globalData, properties, escapedClassName: escapedName) : ''}
 ${operatorEqualMethod(data, properties, className: name, source: source)}
 ${hashCodeMethod(data, properties, source: source)}
 ${toStringMethod(data, globalData, escapedClassName: escapedName, properties: properties)}
