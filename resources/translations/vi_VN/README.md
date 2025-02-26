@@ -27,7 +27,7 @@ Freezed được thiết kế để tự động thực hiện hầu hết các 
 
 | Trước                                                                                       | Sau                                                                                         |
 | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
+| ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # Mục lục
 

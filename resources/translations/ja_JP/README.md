@@ -27,7 +27,7 @@ Freezedは、上記のほとんどを自動的に実装することにより、�
 
 | Before                                                                                       | After                                                                                       |
 | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
+| ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # 目次
 

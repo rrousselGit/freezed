@@ -23,7 +23,7 @@ Freezed 试图通过实现一些工具为你解决这个问题，允许你专注
 
 | 之前                                                                                           | 之后                                                                                           |
 | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
+| ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # 索引
 
