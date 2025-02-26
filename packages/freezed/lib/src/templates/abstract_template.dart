@@ -35,9 +35,13 @@ class Abstract {
             .expand((e) => [e.abstractGetter, if (!e.isFinal) e.abstractSetter])
             .join();
 
+    var interfaces =
+        [if (globalData.hasDiagnostics) 'DiagnosticableTreeMixin'].join();
+    if (interfaces.isNotEmpty) interfaces = ' implements $interfaces';
+
     return '''
 /// @nodoc
-mixin _\$${data.name.public}${data.genericsDefinitionTemplate} {
+mixin _\$${data.name.public}${data.genericsDefinitionTemplate}$interfaces {
 
 $abstractProperties
 ${copyWith?.copyWithGetter(needsCast: true) ?? ''}

@@ -391,7 +391,6 @@ String debugFillProperties(
   return '''
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  super.debugFillProperties(properties);
   properties
     ..add(DiagnosticsProperty('type', '$escapedClassName'))
     $diagnostics;

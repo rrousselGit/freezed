@@ -1,3 +1,7 @@
+## Unreleased path
+
+Fix a bug with diagnosticable objects.
+
 ## 3.0.0 - 2025-02-25
 
 ### New: Mixed mode

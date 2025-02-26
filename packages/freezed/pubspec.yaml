@@ -27,3 +27,5 @@ dev_dependencies:
   matcher: ^0.12.14
   source_gen_test: ^1.0.6
   expect_error: ^1.0.8
+  flutter:
+    sdk: flutter
