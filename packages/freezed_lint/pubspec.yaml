@@ -14,6 +14,9 @@ dependencies:
   custom_lint_builder: ^0.7.3
   freezed_annotation: ^3.0.0
 
+dependency_overrides: 
+  freezed_annotation: ^3.0.0
+
 dev_dependencies:
   custom_lint: ^0.7.3
   build_verify: ^3.1.0
