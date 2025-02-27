@@ -1,4 +1,4 @@
-## Unreleased patch
+## 3.0.2 - 2025-02-27
 
 - Fix various deep-copy bugs
 - Throw when using `extends`/`with` but not specifying a `MyClass._()` constructor
