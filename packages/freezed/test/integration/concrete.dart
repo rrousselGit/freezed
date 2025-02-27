@@ -4,6 +4,7 @@ part 'concrete.freezed.dart';
 
 @freezed
 abstract class EmptyExtends extends Empty with _$EmptyExtends {
+  EmptyExtends._();
   factory EmptyExtends(int value) = _EmptyExtends;
 }
 

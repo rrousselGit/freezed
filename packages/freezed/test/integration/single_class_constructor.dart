@@ -8,26 +8,21 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'single_class_constructor.freezed.dart';
 
 @freezed
-abstract mixin class MixinClass implements _$MixinClass {
-  factory MixinClass({required int doors}) = _MixinClass;
-}
-
-@freezed
-abstract mixin class ImplementedClass implements _$ImplementedClass {
+abstract class ImplementedClass with _$ImplementedClass {
   factory ImplementedClass({required String brand}) = _ImplementedClass;
 }
 
 // Regression for https://github.com/rrousselGit/freezed/discussions/1171
 @freezed
 abstract class Vehicle with _$Vehicle {
-  const factory Vehicle({required String brand}) = _Vehicle;
+  Vehicle._();
+  factory Vehicle({required String brand}) = _Vehicle;
 }
 
 @freezed
-abstract class Car extends Vehicle
-    with _$Car, MixinClass
-    implements ImplementedClass {
-  const factory Car({required String brand, required int doors}) = _Car;
+abstract class Car extends Vehicle with _$Car implements ImplementedClass {
+  Car._() : super._();
+  factory Car({required String brand, required int doors}) = _Car;
 }
 
 class Base {
@@ -241,6 +236,7 @@ abstract class Large with _$Large {
 // Regression test for https://github.com/rrousselGit/freezed/issues/131
 @freezed
 abstract class Regression131 extends DataEvent with _$Regression131 {
+  Regression131._();
   factory Regression131(String versionName) = _Regression131;
 }
 
