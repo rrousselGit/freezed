@@ -1,4 +1,4 @@
-## Unreleased path
+## 3.0.1 - 2025-02-27
 
 Fix a bug with diagnosticable objects.
 

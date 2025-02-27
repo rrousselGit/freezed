@@ -1,3 +1,7 @@
+## 0.0.9 - 2025-02-27
+
+Support latest analyzer_plugin/custom_lint
+
 ## 0.0.8 - 2025-02-25
 
 - `freezed_annotation` upgraded to `3.0.0`
