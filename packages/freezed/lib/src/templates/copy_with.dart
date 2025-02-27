@@ -57,13 +57,26 @@ class CopyWith {
     ].join(', ');
     if (implements.isNotEmpty) implements = 'implements $implements';
 
-    return '''
-/// @nodoc
-abstract mixin class $_abstractClassName${genericsDefinition.append('\$Res')} $implements {
+    var body = '';
+    var leading = '';
+    if (cloneableProperties.isNotEmpty) {
+      leading = 'abstract mixin ';
+      body = '''
   factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) _then) = $_implClassName;
 ${_copyWithPrototype('call')}
 
 ${_abstractDeepCopyMethods().join()}
+''';
+    } else {
+      // Constructor for deep-copy, for the sake of cross-library deep-copy support
+      body =
+          '$_abstractClassName($clonedClassName$genericsParameter _, \$Res Function($clonedClassName$genericsParameter) __);';
+    }
+
+    return '''
+/// @nodoc
+${leading}class $_abstractClassName${genericsDefinition.append('\$Res')} $implements {
+$body
 }''';
   }
 
@@ -84,6 +97,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
   }
 
   String get commonConcreteImpl {
+    if (cloneableProperties.isEmpty) return '';
     var copyWith = '';
 
     if (cloneableProperties.isNotEmpty || data.copyWithTarget != null) {
@@ -367,7 +381,9 @@ $returnType get ${cloneableProperty.name} {
   }
 
   String _maybeOverride(String res, {String doc = ''}) {
-    return parent != null ? '$doc@override $res' : '$doc$res';
+    return parent != null && parent!.cloneableProperties.isNotEmpty
+        ? '$doc@override $res'
+        : '$doc$res';
   }
 
   String get _abstractClassName => interfaceNameFrom(clonedClassName);

@@ -84,8 +84,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     if (data.options.fromJson) yield FromJson(data);
 
     final commonCopyWith =
-        data.options.annotation.copyWith ??
-                data.properties.cloneableProperties.isNotEmpty
+        data.options.annotation.copyWith ?? true
             ? CopyWith(
               parents: data.parents,
               clonedClassName: data.name,
