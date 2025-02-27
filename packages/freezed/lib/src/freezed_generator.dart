@@ -119,7 +119,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
             data.options.annotation.copyWith ??
                     constructor.parameters.allParameters.isNotEmpty
                 ? CopyWith(
-                  parents: [],
+                  parents: {},
                   clonedClassName: constructor.redirectedName,
                   cloneableProperties: constructor.properties.toList(),
                   readableProperties:

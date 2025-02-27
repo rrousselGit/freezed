@@ -3,6 +3,17 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
+class Base {}
+
+@ShouldThrow('Classes using "extends" must define a MyClass._() constructor.')
+@freezed
+abstract class ExtendsWithoutDefault extends Base {
+  ExtendsWithoutDefault._();
+  factory ExtendsWithoutDefault() = _ExtendsWithoutDefault;
+}
+
+class _ExtendsWithoutDefault implements ExtendsWithoutDefault {}
+
 @ShouldThrow('@freezed can only be applied on classes.')
 @freezed
 enum Foo { a }

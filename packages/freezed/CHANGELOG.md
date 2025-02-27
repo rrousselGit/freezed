@@ -1,3 +1,7 @@
+## Unreleased patch
+
+Fix deep-copy when a Freezed class has another Freezed class as extends/with/implements.
+
 ## 3.0.1 - 2025-02-27
 
 Fix a bug with diagnosticable objects.

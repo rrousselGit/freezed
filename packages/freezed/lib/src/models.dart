@@ -504,7 +504,9 @@ class Class {
     required this.superCall,
     required this.properties,
     required this.copyWithTarget,
-  }) : assert(constructors.isNotEmpty);
+    required ClassDeclaration node,
+  }) : _node = node,
+       assert(constructors.isNotEmpty);
 
   final String name;
   final ClassConfig options;
@@ -515,7 +517,8 @@ class Class {
   final ConstructorInvocation? superCall;
   final CopyWithTarget? copyWithTarget;
   final PropertyList properties;
-  final List<Class> parents = [];
+  final ClassDeclaration _node;
+  final Set<Class> parents = {};
 
   static Class _from(
     ClassDeclaration declaration,
@@ -581,6 +584,7 @@ class Class {
             );
 
     return Class(
+      node: declaration,
       name: declaration.name.lexeme,
       copyWithTarget: copyWithInvocation,
       properties: properties,
@@ -644,6 +648,7 @@ class Class {
     final classMap = {for (final c in classes) c.name: c};
 
     for (final clazz in classMap.values) {
+      // If a Freezed class redirects to another Freezed class, mark it as a parent
       for (final constructor in clazz.constructors) {
         if (constructor.isSynthetic) continue;
 
@@ -651,6 +656,20 @@ class Class {
         if (target == null) continue;
 
         target.parents.add(clazz);
+      }
+
+      // If a Freezed class extends another Freezed class, mark it as a parent
+      final superTypes = [
+        if (clazz._node.extendsClause case final extend?) extend.superclass,
+        ...?clazz._node.implementsClause?.interfaces,
+        ...?clazz._node.withClause?.mixinTypes,
+      ].map((e) => e.name2.lexeme);
+
+      for (final superType in superTypes) {
+        final superTypeClass = classMap[superType];
+        if (superTypeClass == null) continue;
+
+        clazz.parents.add(superTypeClass);
       }
     }
 
