@@ -534,16 +534,18 @@ class Class {
   }) {
     final privateCtor = declaration.manualConstructor;
 
-    for (final field in declaration.declaredElement!.fields) {
-      _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
-    }
-
     final constructors = ConstructorDetails.parseAll(
       declaration,
       configs,
       globalConfigs: globalConfigs,
       unitsExcludingGeneratedFiles: unitsExcludingGeneratedFiles,
     );
+
+    if (constructors.isNotEmpty) {
+      for (final field in declaration.declaredElement!.fields) {
+        _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
+      }
+    }
 
     final has$ClassMixin =
         declaration.withClause?.mixinTypes.any(

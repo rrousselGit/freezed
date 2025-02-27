@@ -4,6 +4,17 @@ import 'package:test/test.dart';
 part 'manual_test.freezed.dart';
 part 'manual_test.g.dart';
 
+// Regression for https://github.com/rrousselGit/freezed/issues/1168
+@freezed
+class Person with _$Person {
+  const Person({required this.firstName, required this.lastName});
+
+  final String firstName;
+  final String lastName;
+
+  String get fullName => '$firstName $lastName';
+}
+
 @freezed
 @JsonSerializable()
 class JsonManual with _$JsonManual {
