@@ -5,11 +5,17 @@ import 'package:test/test.dart';
 
 import 'common.dart';
 import 'integration/deep_copy.dart';
+import 'integration/deep_copy2.dart';
 import 'integration/generic.dart'
     show AnyGeneric, NullableGeneric, NonNullableGeneric;
 import 'integration/single_class_constructor.dart' show Dynamic;
 
 void main() {
+  test('cross-library deep copy', () {
+    final newValue = Country().copyWith.president?.assistant?.call();
+    expect(newValue, isNull);
+  });
+
   test('has no issue', () async {
     final main = await resolveSources(
       {'freezed|test/integration/deep_copy.dart': useAssetReader},

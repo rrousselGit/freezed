@@ -93,11 +93,6 @@ class DeepCloneableProperty {
       final typeElement = parameterType.element;
       if (typeElement is! ClassElement) continue;
 
-      // If the type is not defined in the same library, we skip it
-      if (typeElement.library.source.uri != constructor.library.source.uri) {
-        continue;
-      }
-
       final freezedAnnotation = freezedType.firstAnnotationOf(
         typeElement,
         throwOnUnresolved: false,
