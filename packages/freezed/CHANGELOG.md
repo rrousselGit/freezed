@@ -1,6 +1,9 @@
 ## Unreleased patch
 
-Fix deep-copy when a Freezed class has another Freezed class as extends/with/implements.
+- Fix deep-copy when a Freezed class has another Freezed class as extends/with/implements.
+- Throw when using `extends`/`with` but not specifying a `MyClass._()` constructor
+- Throw when a Freezed class forgot to include `with _$MyClass`
+- "Normal" classes shouldn't require `MyClass._()` when they define getters/methods/...
 
 ## 3.0.1 - 2025-02-27
 

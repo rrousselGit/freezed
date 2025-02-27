@@ -3,16 +3,23 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
+@ShouldThrow(r'Classes using @freezed must use `with _$NoMixin`.')
+@freezed
+class NoMixin {}
+
 class Base {}
 
-@ShouldThrow('Classes using "extends" must define a MyClass._() constructor.')
+@ShouldThrow(
+  'Classes using extends/with must define a MyClass._() constructor.',
+)
 @freezed
-abstract class ExtendsWithoutDefault extends Base {
-  ExtendsWithoutDefault._();
+abstract class ExtendsWithoutDefault extends Base with _$ExtendsWithoutDefault {
   factory ExtendsWithoutDefault() = _ExtendsWithoutDefault;
 }
 
 class _ExtendsWithoutDefault implements ExtendsWithoutDefault {}
+
+mixin _$ExtendsWithoutDefault {}
 
 @ShouldThrow('@freezed can only be applied on classes.')
 @freezed
@@ -136,10 +143,12 @@ class _MutableProperty implements MutableProperty {
 
 @ShouldGenerate('', contains: true, expectedLogItems: [])
 @freezed
-abstract class AbstractClass {
+abstract class AbstractClass with _$AbstractClass {
   const factory AbstractClass() = _AbstractClass;
 }
 
 class _AbstractClass implements AbstractClass {
   const _AbstractClass();
 }
+
+mixin _$AbstractClass {}

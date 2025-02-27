@@ -9,6 +9,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
+import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/parse_generator.dart';
 import 'package:freezed/src/string.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
@@ -493,6 +494,11 @@ class CopyWithTarget {
   final String? name;
 }
 
+extension on NamedType {
+  bool isSuperMixin(ClassDeclaration declaration) =>
+      name2.lexeme == '_\$${declaration.name.lexeme.public}';
+}
+
 class Class {
   Class({
     required this.name,
@@ -528,16 +534,42 @@ class Class {
   }) {
     final privateCtor = declaration.manualConstructor;
 
-    for (final field in declaration.declaredElement!.fields) {
-      _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
-    }
-
     final constructors = ConstructorDetails.parseAll(
       declaration,
       configs,
       globalConfigs: globalConfigs,
       unitsExcludingGeneratedFiles: unitsExcludingGeneratedFiles,
     );
+
+    if (constructors.isNotEmpty) {
+      for (final field in declaration.declaredElement!.fields) {
+        _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
+      }
+    }
+
+    final has$ClassMixin =
+        declaration.withClause?.mixinTypes.any(
+          (e) => e.isSuperMixin(declaration),
+        ) ??
+        false;
+    if (!has$ClassMixin) {
+      throw InvalidGenerationSourceError(
+        'Classes using @freezed must use `with _\$${declaration.name.lexeme.public}`.',
+        element: declaration.declaredElement,
+        node: declaration,
+      );
+    }
+
+    if (constructors.isNotEmpty &&
+        privateCtor == null &&
+        (declaration.extendsClause != null ||
+            declaration.withClause!.mixinTypes.length > 1)) {
+      throw InvalidGenerationSourceError(
+        'Classes using extends/with must define a MyClass._() constructor.',
+        element: declaration.declaredElement,
+        node: declaration.extendsClause ?? declaration.withClause,
+      );
+    }
 
     final properties =
         PropertyList()
