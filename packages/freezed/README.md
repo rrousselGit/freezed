@@ -276,7 +276,7 @@ As such, if you want to specify default values for your properties,
 you will need the `@Default` annotation:
 
 ```dart
-class Example with _$Example {
+abstract class Example with _$Example {
   const factory Example([@Default(42) int value]) = _Example;
 }
 ```
@@ -328,7 +328,7 @@ class Subclass {
 }
 
 @freezed
-class MyFreezedClass extends Subclass with _$MyFreezedClass {
+abstract class MyFreezedClass extends Subclass with _$MyFreezedClass {
   // We can receive parameters in this constructor, which we can use with `super.field`
   MyFreezedClass._(super.value): super.name();
 
@@ -1190,7 +1190,7 @@ you can do so by using a different annotation:
 
 ```dart
 @Freezed()
-class Person with _$Person {
+abstract class Person with _$Person {
   factory Person(String name, int age) = _Person;
 }
 ```
@@ -1203,7 +1203,7 @@ By doing so, you can now pass various parameters to `@Freezed` to change the out
   copyWith: false,
   equal: false,
 )
-class Person with _$Person {...}
+ abstract class Person with _$Person {...}
 ```
 
 To view all the possibilities, see the documentation of `@Freezed`: <https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html>
