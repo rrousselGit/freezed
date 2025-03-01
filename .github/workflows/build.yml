@@ -15,11 +15,6 @@ jobs:
 
     strategy:
       matrix:
-        package:
-          - packages/freezed
-          - packages/freezed/example
-          - packages/freezed_annotation
-          - packages/freezed_lint
         channel:
           - master
           - stable
@@ -50,25 +45,18 @@ jobs:
         # Check dart format only on master
         if: matrix.channel == 'master'
         run: dart format .
-        working-directory: ${{ matrix.package }}
 
       - name: Generate
-        run: dart run build_runner build --delete-conflicting-outputs
-        working-directory: ${{ matrix.package }}
+        run: melos generate
 
       - name: Analyze
         run: flutter analyze --fatal-infos
 
       - name: Run tests
         run: |
-          if grep -q "name: example" "pubspec.yaml"; then
-            flutter test
-          else
-            dart test
-          fi
-        working-directory: ${{ matrix.package }}
+          melos exec --flutter -- flutter test
+          melos exec --no-flutter -- dart test
 
       - name: Lint golden test
-        if: matrix.package == 'packages/freezed_lint'
-        run: dart run custom_lint
+        run: dart run custom_lint --fatal-infos
         working-directory: "packages/freezed_lint/example"
