@@ -10,7 +10,7 @@ abstract class MyClass with _$MyClass {
 }
 
 @freezed
-abstract class Union with _$Union {
+sealed class Union with _$Union {
   const factory Union(int value) = Data;
   const factory Union.loading() = Loading;
   const factory Union.error([String? message]) = ErrorDetails;
@@ -49,24 +49,19 @@ void main() {
 
   // destructuring pattern-matching
   const unionExample = Union(42);
-  print(
-    // `when` requires all callbacks to be not null
-    unionExample.when(
-      (value) => '$value',
-      loading: () => 'loading',
-      error: (message) => 'Error: $message',
-      complex: (a, b) => 'complex $a $b',
-    ),
-  ); // 42
+  print(switch (unionExample) {
+    Data value => '$value',
+    Loading _ => 'loading',
+    ErrorDetails(:final message) => 'Error: $message',
+    Complex(:final a, :final b) => 'complex $a $b',
+  }); // 42
 
   print(
-    // maybeWhen allows some callbacks to be missing, but requires an `orElse` callback
-    unionExample.maybeWhen(
-      null,
-      loading: () => 'loading',
-      // voluntarily didn't pass error/complex callbacks
-      orElse: () => 42,
-    ),
+    switch (unionExample) {
+      Loading _ => 'loading',
+      // voluntarily didn't handle error/complex cases
+      _ => 42,
+    },
   ); // 42
 
   // ------------------
@@ -74,23 +69,20 @@ void main() {
   // non-destructuring pattern-matching
   // works the same as `when`, but the callback is slightly different
   print(
-    // `map` requires all callbacks to be not null
-    unionExample.map(
-      (Data value) => '$value',
-      loading: (Loading value) => 'loading',
-      error: (ErrorDetails error) => 'Error: ${error.message}',
-      complex: (Complex value) => 'complex ${value.a} ${value.b}',
-    ),
+    switch (unionExample) {
+      Data value => '$value',
+      Loading _ => 'loading',
+      ErrorDetails(:final message) => 'Error: $message',
+      Complex(:final a, :final b) => 'complex $a $b',
+    },
   ); // 42
 
   print(
-    // maybeMap allows some callbacks to be missing, but requires an `orElse` callback
-    unionExample.maybeMap(
-      null,
-      error: (ErrorDetails value) => value.message,
-      // voluntarily didn't pass error/complex callbacks
-      orElse: () => 'fallthrough',
-    ),
+    switch (unionExample) {
+      ErrorDetails(:final message) => message,
+      // voluntarily didn't handle error/complex cases
+      _ => 'fallthrough',
+    },
   ); // fallthrough
 
   // ------------------

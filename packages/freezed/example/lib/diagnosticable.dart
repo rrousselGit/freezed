@@ -9,6 +9,7 @@ abstract class Example<T> with _$Example<T> {
   factory Example(int a, String b) = _Example<T>;
   factory Example.named(T c) = _Example2<T>;
 
+  @override
   late final theAnswer = 42;
 }
 
@@ -24,7 +25,7 @@ abstract class ToString with _$ToString {
   factory ToString() = _ToString;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'MyToString()';
   }
 }
