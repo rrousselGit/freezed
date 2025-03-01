@@ -44,7 +44,7 @@ jobs:
           run-bootstrap: false
 
       - name: Install dependencies
-        run: dart pub ${{ matrix.dependencies }}
+        run: flutter pub ${{ matrix.dependencies }}
 
       - name: Check format
         # Check dart format only on master
@@ -53,7 +53,8 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Generate
-        run: melos generate
+        run: dart run build_runner build --delete-conflicting-outputs
+        working-directory: ${{ matrix.package }}
 
       - name: Analyze
         run: flutter analyze --fatal-infos
