@@ -59,6 +59,7 @@ to focus on the definition of your model.
   - [Configurations](#configurations)
     - [Changing the behavior for a specific model](#changing-the-behavior-for-a-specific-model)
     - [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)
+- [Migration](#migration)
 - [Utilities](#utilities)
   - [IDE Extensions](#ide-extensions)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
@@ -1246,6 +1247,10 @@ targets:
             maybe_when: true
             when_or_null: false
 ```
+
+# Migration
+
+Use the [changelog](CHANGELOG.md) and our [migration guide](migration_guide.md).
 
 # Utilities
 
