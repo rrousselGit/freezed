@@ -44,7 +44,7 @@ to focus on the definition of your model.
       - [Extending classes](#extending-classes)
       - [Defining a mutable class instead of an immutable one](#defining-a-mutable-class-instead-of-an-immutable-one)
       - [Allowing the mutation of Lists/Maps/Sets](#allowing-the-mutation-of-listsmapssets)
-    - [Classic classes](#classic-classes)
+    - [Classic classes (new syntax)](#classic-classes)
   - [How copyWith works](#how-copywith-works)
     - [Going further: Deep copy](#going-further-deep-copy)
   - [Decorators and comments](#decorators-and-comments)
@@ -173,8 +173,7 @@ abstract class Person with _$Person {
     required int age,
   }) = _Person;
 
-  factory Person.fromJson(Map<String, Object?> json)
-      => _$PersonFromJson(json);
+  factory Person.fromJson(Map<String, Object?> json) => _$PersonFromJson(json);
 }
 ```
 
@@ -243,25 +242,22 @@ Dart does not allow adding `assert(...)` statements to a `factory` constructor.
 As such, to add asserts to your Freezed classes, you will need the `@Assert` decorator:
 
 ```dart
+@freezed
 abstract class Person with _$Person {
   @Assert('name.isNotEmpty', 'name cannot be empty')
-  factory Person({
-    required String name,
-    int? age,
-  }) = _Person;
+  const factory Person({required String name, int? age}) = _Person;
 }
 ```
 
 Alternatively, you can specify a `MyClass._()` constructor:
 
 ```dart
+@freezed
 abstract class Person with _$Person {
-  Person._(this.name): assert(name.isNotEmpty, 'name cannot be empty');
+  Person._({required this.name})
+    : assert(name.isNotEmpty, 'name cannot be empty');
 
-  factory Person({
-    required String name,
-    int? age,
-  }) = _Person;
+  factory Person({required String name, int? age}) = _Person;
 
   final String name;
 }
@@ -276,6 +272,7 @@ As such, if you want to specify default values for your properties,
 you will need the `@Default` annotation:
 
 ```dart
+@freezed
 abstract class Example with _$Example {
   const factory Example([@Default(42) int value]) = _Example;
 }
@@ -323,16 +320,17 @@ to how we used it for non-constant default values. Here's an example:
 
 ```dart
 class Subclass {
-  Subclass.name(this.value);
+  const Subclass.name(this.value);
+
   final int value;
 }
 
 @freezed
 abstract class MyFreezedClass extends Subclass with _$MyFreezedClass {
   // We can receive parameters in this constructor, which we can use with `super.field`
-  MyFreezedClass._(super.value): super.name();
+  const MyFreezedClass._(super.value) : super.name();
 
-  factory MyFreezedClass(int value, /* other fields */) = _MyFreezedClass;
+  const factory MyFreezedClass(int value /* other fields */) = _MyFreezedClass;
 }
 ```
 
@@ -359,8 +357,7 @@ abstract class Person with _$Person {
     required final int age,
   }) = _Person;
 
-  factory Person.fromJson(Map<String, Object?> json)
-      => _$PersonFromJson(json);
+  factory Person.fromJson(Map<String, Object?> json) => _$PersonFromJson(json);
 }
 ```
 
@@ -426,7 +423,7 @@ void main() {
 }
 ```
 
-### Classic classes
+### Classic classes (new syntax)
 
 Instead of primary constructors, you can write normal Dart classes.
 
@@ -443,7 +440,7 @@ part 'main.g.dart';
 
 @freezed
 @JsonSerializable()
-abstract class Person with _$Person {
+class Person with _$Person {
   const Person({
     required this.firstName,
     required this.lastName,
@@ -506,17 +503,17 @@ Consider the following classes:
 ```dart
 @freezed
 abstract class Company with _$Company {
-  factory Company({String? name, required Director director}) = _Company;
+  const factory Company({String? name, required Director director}) = _Company;
 }
 
 @freezed
 abstract class Director with _$Director {
-  factory Director({String? name, Assistant? assistant}) = _Director;
+  const factory Director({String? name, Assistant? assistant}) = _Director;
 }
 
 @freezed
 abstract class Assistant with _$Assistant {
-  factory Assistant({String? name, int? age}) = _Assistant;
+  const factory Assistant({String? name, int? age}) = _Assistant;
 }
 ```
 
