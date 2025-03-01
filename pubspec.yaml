@@ -1,0 +1,27 @@
+name: freezed_workspace
+
+environment:
+  sdk: "^3.7.0"
+
+workspace:
+  - benchmarks/
+  - packages/freezed
+  - packages/freezed/example
+  - packages/freezed_annotation
+  - packages/freezed_lint
+  - packages/freezed_lint/example
+
+dev_dependencies:
+  melos: ^7.0.0-dev.7
+
+melos:
+  scripts:
+    generate:
+      run: "dart run build_runner build --delete-conflicting-outputs"
+      exec:
+        orderDependents: true
+      packageFilters:
+        dependsOn:
+          - build_runner
+        ignore:
+          - lint_example

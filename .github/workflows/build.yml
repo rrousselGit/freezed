@@ -17,20 +17,18 @@ jobs:
       matrix:
         package:
           - packages/freezed
+          - packages/freezed/example
           - packages/freezed_annotation
           - packages/freezed_lint
         channel:
           - master
-          # BLocked by https://github.com/dart-lang/source_gen/issues/739
-          # - stable
+          - stable
         dependencies:
           - get
           - downgrade
         exclude:
           - channel: master
             dependencies: downgrade
-          - package: packages/freezed_lint
-            channel: stable
 
     steps:
       - uses: actions/checkout@v4
@@ -40,17 +38,13 @@ jobs:
           channel: ${{ matrix.channel }}
           cache: ${{ matrix.channel == 'stable' }}
 
-      # It is executed separately
-      - name: Removing example folder
-        # Retain example for lint golden test
-        if: matrix.package != 'packages/freezed_lint'
-        run: rm -rf example
-        working-directory: ${{ matrix.package }}
+      - name: Install Melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          run-bootstrap: false
 
       - name: Install dependencies
-        run: |
-          flutter pub ${{ matrix.dependencies }}
-        working-directory: ${{ matrix.package }}
+        run: dart pub ${{ matrix.dependencies }}
 
       - name: Check format
         # Check dart format only on master
@@ -59,15 +53,10 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Generate
-        run: |
-          if grep -q build_runner "pubspec.yaml"; then
-            dart pub run build_runner build --delete-conflicting-outputs
-          fi
-        working-directory: ${{ matrix.package }}
+        run: melos generate
 
       - name: Analyze
-        run: flutter analyze
-        working-directory: ${{ matrix.package }}
+        run: flutter analyze --fatal-infos
 
       - name: Run tests
         run: |
@@ -80,8 +69,5 @@ jobs:
 
       - name: Lint golden test
         if: matrix.package == 'packages/freezed_lint'
-        run: |
-          dart pub get
-          dart analyze
-          dart run custom_lint
-        working-directory: 'packages/freezed_lint/example'
+        run: dart run custom_lint
+        working-directory: "packages/freezed_lint/example"
