@@ -1,3 +1,4 @@
+.dart_tool
 .idea/
 *.iml
 build/
