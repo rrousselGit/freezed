@@ -330,7 +330,7 @@ abstract class MyFreezedClass extends Subclass with _$MyFreezedClass {
   // We can receive parameters in this constructor, which we can use with `super.field`
   const MyFreezedClass._(super.value) : super.name();
 
-  const factory MyFreezedClass(int value /* other fields */) = _MyFreezedClass;
+  const factory MyFreezedClass(int value, /* other fields */) = _MyFreezedClass;
 }
 ```
 
@@ -781,7 +781,8 @@ sealed class MyResponse with _$MyResponse {
 
   const factory MyResponse.error(String message) = MyResponseError;
 
-  // ...
+  factory MyResponse.fromJson(Map<String, dynamic> json) =>
+      _$MyResponseFromJson(json);
 }
 ```
 
@@ -1175,10 +1176,7 @@ class ResultData<T> extends Result<T> {
 
 ## Configurations
 
-Freezed offers various options to customize the generated code. For example, you
-may want to disable the generation of `when` methods.
-
-To do so, there are two possibilities:
+Freezed offers various options to customize the generated code. To do so, there are two possibilities:
 
 ### Changing the behavior for a specific model
 
@@ -1235,13 +1233,6 @@ targets:
           # Disable the generation of copyWith/== for the entire project
           copy_with: false
           equal: false
-          # `when` and `map` can be enabled/disabled entirely by setting them to `true`/`false`
-          map: false
-          # We can also enable/disable specific variants of `when`/`map` by setting them to `true`/`false`:
-          when:
-            when: true
-            maybe_when: true
-            when_or_null: false
 ```
 
 # Utilities
@@ -1315,6 +1306,4 @@ Example:
 [freezed]: https://pub.dartlang.org/packages/freezed
 [freezed_annotation]: https://pub.dartlang.org/packages/freezed_annotation
 [copywith]: #how-copywith-works
-[when]: #when
-[map]: #map
 [json_serializable]: https://pub.dev/packages/json_serializable
