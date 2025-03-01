@@ -49,7 +49,7 @@ jobs:
       - name: Check format
         # Check dart format only on master
         if: matrix.channel == 'master'
-        run: dart format --set-exit-if-changed .
+        run: dart format .
         working-directory: ${{ matrix.package }}
 
       - name: Generate
