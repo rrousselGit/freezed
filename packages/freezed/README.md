@@ -44,7 +44,7 @@ to focus on the definition of your model.
       - [Extending classes](#extending-classes)
       - [Defining a mutable class instead of an immutable one](#defining-a-mutable-class-instead-of-an-immutable-one)
       - [Allowing the mutation of Lists/Maps/Sets](#allowing-the-mutation-of-listsmapssets)
-    - [Classic classes (new syntax)](#classic-classes)
+    - [Classic classes (NEW)](#classic-classes-new)
   - [How copyWith works](#how-copywith-works)
     - [Going further: Deep copy](#going-further-deep-copy)
   - [Decorators and comments](#decorators-and-comments)
@@ -423,7 +423,7 @@ void main() {
 }
 ```
 
-### Classic classes (new syntax)
+### Classic classes (NEW)
 
 Instead of primary constructors, you can write normal Dart classes.
 
