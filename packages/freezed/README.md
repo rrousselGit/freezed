@@ -1235,9 +1235,9 @@ targets:
     builders:
       freezed:
         options:
-          # Tells Freezed not to format .freezed.dart files.
-          # This can significantly speed up code-generation.
-          format: false
+          # Tells Freezed to format .freezed.dart files.
+          # This can significantly slow down code-generation.
+          format: true
           # Disable the generation of copyWith/== for the entire project
           copy_with: false
           equal: false
@@ -1313,5 +1313,4 @@ Example:
 [build_runner]: https://pub.dev/packages/build_runner
 [freezed]: https://pub.dartlang.org/packages/freezed
 [freezed_annotation]: https://pub.dartlang.org/packages/freezed_annotation
-[copywith]: #how-copywith-works
 [json_serializable]: https://pub.dev/packages/json_serializable
