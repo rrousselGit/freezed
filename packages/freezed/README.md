@@ -44,7 +44,7 @@ to focus on the definition of your model.
       - [Extending classes](#extending-classes)
       - [Defining a mutable class instead of an immutable one](#defining-a-mutable-class-instead-of-an-immutable-one)
       - [Allowing the mutation of Lists/Maps/Sets](#allowing-the-mutation-of-listsmapssets)
-    - [Classic classes (NEW)](#classic-classes-new)
+    - [Classic classes](#classic-classes)
   - [How copyWith works](#how-copywith-works)
     - [Going further: Deep copy](#going-further-deep-copy)
   - [Decorators and comments](#decorators-and-comments)
