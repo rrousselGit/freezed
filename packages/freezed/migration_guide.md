@@ -32,7 +32,7 @@ Classes using the factory constructor now require a keyword `sealed` / `abstract
 
 ### Pattern matching
 
-Freezed no longer generates `.map `/`.when` extensions and their derivatives for freezed classes used for pattern matching. Instead, use Dart's built-in [pattern matching](https://dart.dev/language/patterns#matching) syntax.
+Freezed no longer generates `.map`/`.when` extensions and their derivatives for freezed classes used for pattern matching. Instead, use Dart's built-in [pattern matching](https://dart.dev/language/patterns#matching) syntax.
 
 ```diff
 final model = Model.first('42');
@@ -89,8 +89,3 @@ but won't do anything related to JSON encoding (hence why you need to manually a
 
 This syntax has the benefit of enabling advanced constructor logic, such as
 inheritance or non-constant default values.
-
-
-### Advanced Topics
-
-<TODO>
