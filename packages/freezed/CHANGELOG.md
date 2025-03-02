@@ -1,4 +1,4 @@
-## Unreleased patch
+## 3.0.3 - 2025-03-02
 
 Update readme (thanks to @snapsl)
 
