@@ -173,8 +173,7 @@ abstract class Person with _$Person {
     required int age,
   }) = _Person;
 
-  factory Person.fromJson(Map<String, Object?> json)
-      => _$PersonFromJson(json);
+  factory Person.fromJson(Map<String, Object?> json) => _$PersonFromJson(json);
 }
 ```
 
@@ -243,25 +242,22 @@ Dart does not allow adding `assert(...)` statements to a `factory` constructor.
 As such, to add asserts to your Freezed classes, you will need the `@Assert` decorator:
 
 ```dart
+@freezed
 abstract class Person with _$Person {
   @Assert('name.isNotEmpty', 'name cannot be empty')
-  factory Person({
-    required String name,
-    int? age,
-  }) = _Person;
+  const factory Person({required String name, int? age}) = _Person;
 }
 ```
 
 Alternatively, you can specify a `MyClass._()` constructor:
 
 ```dart
+@freezed
 abstract class Person with _$Person {
-  Person._(this.name): assert(name.isNotEmpty, 'name cannot be empty');
+  Person._({required this.name})
+    : assert(name.isNotEmpty, 'name cannot be empty');
 
-  factory Person({
-    required String name,
-    int? age,
-  }) = _Person;
+  factory Person({required String name, int? age}) = _Person;
 
   final String name;
 }
@@ -276,7 +272,8 @@ As such, if you want to specify default values for your properties,
 you will need the `@Default` annotation:
 
 ```dart
-class Example with _$Example {
+@freezed
+abstract class Example with _$Example {
   const factory Example([@Default(42) int value]) = _Example;
 }
 ```
@@ -323,16 +320,17 @@ to how we used it for non-constant default values. Here's an example:
 
 ```dart
 class Subclass {
-  Subclass.name(this.value);
+  const Subclass.name(this.value);
+
   final int value;
 }
 
 @freezed
-class MyFreezedClass extends Subclass with _$MyFreezedClass {
+abstract class MyFreezedClass extends Subclass with _$MyFreezedClass {
   // We can receive parameters in this constructor, which we can use with `super.field`
-  MyFreezedClass._(super.value): super.name();
+  const MyFreezedClass._(super.value) : super.name();
 
-  factory MyFreezedClass(int value, /* other fields */) = _MyFreezedClass;
+  const factory MyFreezedClass(int value, /* other fields */) = _MyFreezedClass;
 }
 ```
 
@@ -359,8 +357,7 @@ abstract class Person with _$Person {
     required final int age,
   }) = _Person;
 
-  factory Person.fromJson(Map<String, Object?> json)
-      => _$PersonFromJson(json);
+  factory Person.fromJson(Map<String, Object?> json) => _$PersonFromJson(json);
 }
 ```
 
@@ -443,7 +440,7 @@ part 'main.g.dart';
 
 @freezed
 @JsonSerializable()
-abstract class Person with _$Person {
+class Person with _$Person {
   const Person({
     required this.firstName,
     required this.lastName,
@@ -506,17 +503,17 @@ Consider the following classes:
 ```dart
 @freezed
 abstract class Company with _$Company {
-  factory Company({String? name, required Director director}) = _Company;
+  const factory Company({String? name, required Director director}) = _Company;
 }
 
 @freezed
 abstract class Director with _$Director {
-  factory Director({String? name, Assistant? assistant}) = _Director;
+  const factory Director({String? name, Assistant? assistant}) = _Director;
 }
 
 @freezed
 abstract class Assistant with _$Assistant {
-  factory Assistant({String? name, int? age}) = _Assistant;
+  const factory Assistant({String? name, int? age}) = _Assistant;
 }
 ```
 
@@ -784,7 +781,8 @@ sealed class MyResponse with _$MyResponse {
 
   const factory MyResponse.error(String message) = MyResponseError;
 
-  // ...
+  factory MyResponse.fromJson(Map<String, dynamic> json) =>
+      _$MyResponseFromJson(json);
 }
 ```
 
@@ -1178,10 +1176,7 @@ class ResultData<T> extends Result<T> {
 
 ## Configurations
 
-Freezed offers various options to customize the generated code. For example, you
-may want to disable the generation of `when` methods.
-
-To do so, there are two possibilities:
+Freezed offers various options to customize the generated code. To do so, there are two possibilities:
 
 ### Changing the behavior for a specific model
 
@@ -1190,7 +1185,7 @@ you can do so by using a different annotation:
 
 ```dart
 @Freezed()
-class Person with _$Person {
+abstract class Person with _$Person {
   factory Person(String name, int age) = _Person;
 }
 ```
@@ -1203,7 +1198,7 @@ By doing so, you can now pass various parameters to `@Freezed` to change the out
   copyWith: false,
   equal: false,
 )
-class Person with _$Person {...}
+ abstract class Person with _$Person {...}
 ```
 
 To view all the possibilities, see the documentation of `@Freezed`: <https://pub.dev/documentation/freezed_annotation/latest/freezed_annotation/Freezed-class.html>
@@ -1238,13 +1233,6 @@ targets:
           # Disable the generation of copyWith/== for the entire project
           copy_with: false
           equal: false
-          # `when` and `map` can be enabled/disabled entirely by setting them to `true`/`false`
-          map: false
-          # We can also enable/disable specific variants of `when`/`map` by setting them to `true`/`false`:
-          when:
-            when: true
-            maybe_when: true
-            when_or_null: false
 ```
 
 # Utilities
@@ -1318,6 +1306,4 @@ Example:
 [freezed]: https://pub.dartlang.org/packages/freezed
 [freezed_annotation]: https://pub.dartlang.org/packages/freezed_annotation
 [copywith]: #how-copywith-works
-[when]: #when
-[map]: #map
 [json_serializable]: https://pub.dev/packages/json_serializable
