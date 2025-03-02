@@ -423,7 +423,7 @@ void main() {
 }
 ```
 
-### Classic classes (NEW)
+### Classic classes
 
 Instead of primary constructors, you can write normal Dart classes.
 
