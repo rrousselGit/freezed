@@ -8,6 +8,10 @@
 
 Welcome to [Freezed], yet another code generator for data classes, tagged unions, nested classes and cloning.
 
+# Migration to 3.0.0
+
+To migrate from 2.0.0 to 3.0.0, see [changelog](CHANGELOG.md#300---2025-02-25) and our [migration guide](migration_guide.md).
+
 # Motivation
 
 Dart is awesome, but defining a "model" can be tedious. You have to:
@@ -23,12 +27,13 @@ and affect the readability of your model significantly.
 Freezed tries to fix that by implementing most of this for you, allowing you
 to focus on the definition of your model.
 
-| Before                                                                                       | After                                                                                       |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Before                                                                                                  | After                                                                                       |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # Index
 
+- [Migration to 3.0.0](#migration-to-300)
 - [Motivation](#motivation)
 - [Index](#index)
 - [How to use](#how-to-use)
