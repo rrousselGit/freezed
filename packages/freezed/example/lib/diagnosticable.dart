@@ -22,6 +22,8 @@ abstract class ConcreteExample<T> with _$ConcreteExample<T> {
 @freezed
 abstract class ToString with _$ToString {
   ToString._();
+
+  @With<DiagnosticableTreeMixin>()
   factory ToString() = _ToString;
 
   @override
