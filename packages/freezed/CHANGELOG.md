@@ -1,4 +1,4 @@
-## 3.0.4 - Unreleased
+## Unrelased patch
 
 Support Dart 3.6.0 and analyzer 6.9.0 as a minimum.
 
