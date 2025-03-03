@@ -63,8 +63,8 @@ abstract class GeographicArea {
   String get name;
 }
 
-class AdministrativeArea<T> {}
+mixin class AdministrativeArea<T> {}
 
-class House {}
+mixin class House {}
 
-class Shop {}
+mixin class Shop {}
