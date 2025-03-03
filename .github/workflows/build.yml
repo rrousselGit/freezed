@@ -15,6 +15,13 @@ jobs:
 
     strategy:
       matrix:
+        package:
+          - benchmarks/
+          - packages/freezed
+          - packages/freezed/example
+          - packages/freezed_annotation
+          - packages/freezed_lint
+          - packages/freezed_lint/example
         channel:
           - master
           - stable
@@ -25,6 +32,10 @@ jobs:
           - channel: master
             dependencies: downgrade
 
+    defaults:
+      run:
+        working-directory: ${{ matrix.package }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -32,11 +43,6 @@ jobs:
         with:
           channel: ${{ matrix.channel }}
           cache: ${{ matrix.channel == 'stable' }}
-
-      - name: Install Melos
-        uses: bluefireteam/melos-action@v3
-        with:
-          run-bootstrap: false
 
       - name: Install dependencies
         run: flutter pub ${{ matrix.dependencies }}
@@ -47,16 +53,21 @@ jobs:
         run: dart format .
 
       - name: Generate
-        run: melos generate
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Analyze
         run: flutter analyze --fatal-infos
+        working-directory: ${{ matrix.package }}
 
       - name: Run tests
         run: |
-          melos exec --flutter -- flutter test
-          melos exec --no-flutter -- dart test
+          if grep -q "flutter_test:" "pubspec.yaml"; then
+            flutter test
+          else
+            dart test
+          fi
+        working-directory: ${{ matrix.package }}
 
       - name: Lint golden test
+        if: matrix.package == 'packages/freezed_lint/example'
         run: dart run custom_lint --fatal-infos
-        working-directory: "packages/freezed_lint/example"
