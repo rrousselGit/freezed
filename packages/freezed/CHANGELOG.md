@@ -1,3 +1,7 @@
+## 3.0.4 - Unreleased
+
+Support Dart 3.6.0 and analyzer 6.9.0 as a minimum.
+
 ## 3.0.3 - 2025-03-02
 
 Update readme (thanks to @snapsl)
