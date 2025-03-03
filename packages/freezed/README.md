@@ -143,17 +143,19 @@ part 'my_file.freezed.dart';
 
 ```
 
-**CONSIDER** also importing `package:flutter/foundation.dart`.\
+**CONSIDER** also importing `package:flutter/foundation.dart`.
 The reason being, importing `foundation.dart` also imports classes to make an
-object nicely readable in Flutter's devtool.\
+object nicely readable in Flutter's devtool.
 If you import `foundation.dart`, [Freezed] will automatically do it for you.
+Do note that if you override `toString`,
+then you will need to manually add `@With<DiagnosticableTreeMixin>()` to your factories.
 
 ## Creating a Model using Freezed
 
 Freezed offers two ways of creating data-classes:
 
 - [Primary constructors](#primary-constructors) ; where you define a constructor and Freezed generates the associated fields.
-  This is simulating the [Primary Constructor](https://github.com/dart-lang/language/issues/2364 using `factory`.
+  This is simulating the [Primary Constructor](https://github.com/dart-lang/language/issues/2364) using `factory`.
 - [Classic classes](#classic-classes), where you write a normal Dart class and Freezed only handles `toString/==/copyWith`
 
 ### Primary constructors
