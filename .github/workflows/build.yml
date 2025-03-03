@@ -64,7 +64,7 @@ jobs:
         run: |
           if grep -q "flutter_test:" "pubspec.yaml"; then
             flutter test
-          else if grep -q "test:" "pubspec.yaml"; then
+          elif grep -q "test:" "pubspec.yaml"; then
             dart test
           fi
         working-directory: ${{ matrix.package }}
