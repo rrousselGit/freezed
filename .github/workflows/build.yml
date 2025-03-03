@@ -53,6 +53,7 @@ jobs:
         run: dart format .
 
       - name: Generate
+        if: matrix.package != 'packages/freezed_lint/example'
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Analyze
