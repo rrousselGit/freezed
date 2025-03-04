@@ -1,7 +1,7 @@
 ## Unreleased patch
 
-Update docs (thanks to @lishaduck)
-Support Dart 3.6.0 and analyzer 6.9.0 as a minimum.
+- Update docs (thanks to @lishaduck)
+- Support Dart 3.6.0 and analyzer 6.9.0 as a minimum.
 
 ## 3.0.3 - 2025-03-02
 
