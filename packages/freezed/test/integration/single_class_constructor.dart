@@ -278,7 +278,6 @@ abstract class Doc with _$Doc {
     /// line
     /// positional
     int positional, {
-
     /// Single line named
     int? named,
 
@@ -424,13 +423,12 @@ abstract class ComplexLate with _$ComplexLate {
   factory ComplexLate(List<int> values) = _ComplexLate;
 
   @override
-  late final List<int> odd =
-      values.where((value) {
-        if (value.isOdd)
-          return true;
-        else
-          return false;
-      }).toList();
+  late final List<int> odd = values.where((value) {
+    if (value.isOdd)
+      return true;
+    else
+      return false;
+  }).toList();
 }
 
 @freezed
@@ -508,8 +506,8 @@ abstract class NullDefault with _$NullDefault {
 @freezed
 abstract class ExplicitConstDefault with _$ExplicitConstDefault {
   factory ExplicitConstDefault(
-  //ignore: unnecessary_const
-  [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
+      //ignore: unnecessary_const
+      [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
 }
 
 @freezed

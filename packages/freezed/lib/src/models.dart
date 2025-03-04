@@ -114,7 +114,8 @@ class DeepCloneableProperty {
         nullable: parameter.type.isNullable,
         typeName: typeElement.name,
         genericParameters: GenericsParameterTemplate(
-          (parameter.type as InterfaceType).typeArguments
+          (parameter.type as InterfaceType)
+              .typeArguments
               .map((e) => e.getDisplayString())
               .toList(),
         ),
@@ -147,8 +148,7 @@ extension on FormalParameter {
     return switch (that) {
       DefaultFormalParameter() => that.parameter.typeAnnotation(),
       FieldFormalParameter() => that.type,
-      FunctionTypedFormalParameter() =>
-        throw UnsupportedError(
+      FunctionTypedFormalParameter() => throw UnsupportedError(
           'Parameters of format `T name()` are not supported. Use `T Function()` name.',
         ),
       SimpleFormalParameter() => that.type,
@@ -275,8 +275,7 @@ When specifying fields in non-factory constructor then specifying factory constr
         className: declaration.name.lexeme,
       );
 
-      final excludedProperties =
-          manualConstructor?.parameters.parameters
+      final excludedProperties = manualConstructor?.parameters.parameters
               .map((e) => e.declaredElement!.name)
               .toSet() ??
           <String>{};
@@ -294,11 +293,10 @@ When specifying fields in non-factory constructor then specifying factory constr
         ConstructorDetails(
           asserts: AssertAnnotation.parseAll(constructor).toList(),
           isSynthetic: unitsExcludingGeneratedFiles.any(
-            (e) =>
-                !e.declarations
-                    .whereType<ClassDeclaration>()
-                    .map((e) => e.name.lexeme)
-                    .contains(redirectedName),
+            (e) => !e.declarations
+                .whereType<ClassDeclaration>()
+                .map((e) => e.name.lexeme)
+                .contains(redirectedName),
           ),
           name: constructor.name?.lexeme ?? '',
           unionValue: constructor.declaredElement!.unionValue(
@@ -308,41 +306,35 @@ When specifying fields in non-factory constructor then specifying factory constr
           fullName: constructor.fullName,
           escapedName: constructor.escapedName,
           properties: allProperties,
-          decorators:
-              constructor.metadata
-                  .where((element) {
-                    final elementSourceUri =
-                        element.element?.declaration?.librarySource?.uri;
+          decorators: constructor.metadata
+              .where((element) {
+                final elementSourceUri =
+                    element.element?.declaration?.librarySource?.uri;
 
-                    final isFreezedAnnotation =
-                        elementSourceUri != null &&
-                        elementSourceUri.scheme == 'package' &&
-                        elementSourceUri.pathSegments.isNotEmpty &&
-                        elementSourceUri.pathSegments.first ==
-                            'freezed_annotation';
+                final isFreezedAnnotation = elementSourceUri != null &&
+                    elementSourceUri.scheme == 'package' &&
+                    elementSourceUri.pathSegments.isNotEmpty &&
+                    elementSourceUri.pathSegments.first == 'freezed_annotation';
 
-                    return !isFreezedAnnotation;
-                  })
-                  .map((e) => e.toSource())
-                  .toList(),
-          withDecorators:
-              WithAnnotation.parseAll(
-                constructor.declaredElement!,
-              ).toSet().toList(),
-          implementsDecorators:
-              ImplementsAnnotation.parseAll(
-                constructor.declaredElement!,
-              ).toSet().toList(),
+                return !isFreezedAnnotation;
+              })
+              .map((e) => e.toSource())
+              .toList(),
+          withDecorators: WithAnnotation.parseAll(
+            constructor.declaredElement!,
+          ).toSet().toList(),
+          implementsDecorators: ImplementsAnnotation.parseAll(
+            constructor.declaredElement!,
+          ).toSet().toList(),
           isDefault: isDefaultConstructor(constructor.declaredElement!),
           hasJsonSerializable: constructor.declaredElement!.hasJsonSerializable,
           isFallback: constructor.declaredElement!.isFallbackUnion(
             configs.annotation.fallbackUnion,
           ),
-          deepCloneableProperties:
-              DeepCloneableProperty.parseAll(
-                constructor.declaredElement!,
-                globalConfigs,
-              ).toList(),
+          deepCloneableProperties: DeepCloneableProperty.parseAll(
+            constructor.declaredElement!,
+            globalConfigs,
+          ).toList(),
           parameters: ParametersTemplate.fromParameterList(
             constructor.parameters.parameters,
             addImplicitFinal: configs.annotation.addImplicitFinal,
@@ -506,8 +498,8 @@ class Class {
     required this.properties,
     required this.copyWithTarget,
     required ClassDeclaration node,
-  }) : _node = node,
-       assert(constructors.isNotEmpty);
+  })  : _node = node,
+        assert(constructors.isNotEmpty);
 
   final String name;
   final ClassConfig options;
@@ -542,8 +534,7 @@ class Class {
       }
     }
 
-    final has$ClassMixin =
-        declaration.withClause?.mixinTypes.any(
+    final has$ClassMixin = declaration.withClause?.mixinTypes.any(
           (e) => e.isSuperMixin(declaration),
         ) ??
         false;
@@ -566,49 +557,44 @@ class Class {
       );
     }
 
-    final properties =
-        PropertyList()
-          ..readableProperties.addAll(
-            _computeReadableProperties(declaration, constructors),
-          )
-          ..cloneableProperties.addAll(
-            _computeCloneableProperties(declaration, constructors, configs),
-          );
+    final properties = PropertyList()
+      ..readableProperties.addAll(
+        _computeReadableProperties(declaration, constructors),
+      )
+      ..cloneableProperties.addAll(
+        _computeCloneableProperties(declaration, constructors, configs),
+      );
 
     final copyWithTarget =
         constructors.isNotEmpty ? null : declaration.copyWithTarget;
-    final copyWithInvocation =
-        copyWithTarget == null
-            ? null
-            : CopyWithTarget(
-              name: copyWithTarget.name?.lexeme,
-              parameters: ParametersTemplate.fromParameterList(
-                // Only include parameters that are cloneable
-                copyWithTarget.parameters.parameters.where((e) {
-                  return properties.cloneableProperties
-                      .map((e) => e.name)
-                      .contains(e.name!.lexeme);
-                }),
-                addImplicitFinal: configs.annotation.addImplicitFinal,
-              ),
-            );
+    final copyWithInvocation = copyWithTarget == null
+        ? null
+        : CopyWithTarget(
+            name: copyWithTarget.name?.lexeme,
+            parameters: ParametersTemplate.fromParameterList(
+              // Only include parameters that are cloneable
+              copyWithTarget.parameters.parameters.where((e) {
+                return properties.cloneableProperties
+                    .map((e) => e.name)
+                    .contains(e.name!.lexeme);
+              }),
+              addImplicitFinal: configs.annotation.addImplicitFinal,
+            ),
+          );
 
-    final superCall =
-        privateCtor == null
-            ? null
-            : ConstructorInvocation(
-              name: '_',
-              positional:
-                  privateCtor.parameters.parameters
-                      .where((e) => e.isPositional)
-                      .map((e) => e.name!.lexeme)
-                      .toList(),
-              named:
-                  privateCtor.parameters.parameters
-                      .where((e) => e.isNamed)
-                      .map((e) => e.name!.lexeme)
-                      .toList(),
-            );
+    final superCall = privateCtor == null
+        ? null
+        : ConstructorInvocation(
+            name: '_',
+            positional: privateCtor.parameters.parameters
+                .where((e) => e.isPositional)
+                .map((e) => e.name!.lexeme)
+                .toList(),
+            named: privateCtor.parameters.parameters
+                .where((e) => e.isNamed)
+                .map((e) => e.name!.lexeme)
+                .toList(),
+          );
 
     return Class(
       node: declaration,
@@ -637,15 +623,13 @@ class Class {
     Library library, {
     required Freezed globalConfigs,
   }) {
-    final unitsExcludingGeneratedFiles =
-        units
-            .where(
-              (element) =>
-                  !element.declaredElement!.source.fullName.endsWith(
-                    '.freezed.dart',
-                  ),
-            )
-            .toList();
+    final unitsExcludingGeneratedFiles = units
+        .where(
+          (element) => !element.declaredElement!.source.fullName.endsWith(
+            '.freezed.dart',
+          ),
+        )
+        .toList();
 
     final classes = annotations.map((e) {
       final annotation = e.annotation;
@@ -732,19 +716,15 @@ class Class {
     ClassDeclaration declaration,
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) sync* {
-    final typesMap =
-        <
-          String,
-          List<
+    final typesMap = <String,
+        List<
             ({
               TypeAnnotation? type,
               String? doc,
               bool isFinal,
               bool isSynthetic,
               List<String> decorators,
-            })?
-          >
-        >{};
+            })?>>{};
     void setForName({
       required String name,
       required TypeAnnotation? type,
@@ -785,16 +765,14 @@ class Class {
     }
 
     for (final (index, freezedCtor) in constructorsNeedsGeneration.indexed) {
-      final ctor =
-          declaration.constructors
-              .where((e) => (e.name?.lexeme ?? '') == freezedCtor.name)
-              .first;
+      final ctor = declaration.constructors
+          .where((e) => (e.name?.lexeme ?? '') == freezedCtor.name)
+          .first;
 
       for (final parameter in ctor.parameters.parameters) {
-        final freezedParameter =
-            freezedCtor.parameters.allParameters
-                .where((e) => e.name == parameter.name?.lexeme)
-                .first;
+        final freezedParameter = freezedCtor.parameters.allParameters
+            .where((e) => e.name == parameter.name?.lexeme)
+            .first;
 
         setForName(
           name: parameter.name!.lexeme,
@@ -846,10 +824,9 @@ class Class {
 
           final typeSources = fields.map((e) => e?.type?.toSource()).toSet();
           if (typeSources.length == 1) {
-            type =
-                fields
-                    .map((e) => e!.type?.type ?? typeProvider.dynamicType)
-                    .first;
+            type = fields
+                .map((e) => e!.type?.type ?? typeProvider.dynamicType)
+                .first;
             // All constructors use the exact same type. No need to check lower-bounds,
             // and we can paste the type in the generated source directly.
             typeString = typeSources.single ?? type.toString();
@@ -926,18 +903,17 @@ class Class {
         // be present in the abstract class.
         if (matchingParameter == null) continue parameterLoop;
 
-        commonTypeBetweenAllUnionConstructors = library.typeSystem
-            .leastUpperBound(
-              commonTypeBetweenAllUnionConstructors,
-              matchingParameter.parameterElement!.type,
-            );
+        commonTypeBetweenAllUnionConstructors =
+            library.typeSystem.leastUpperBound(
+          commonTypeBetweenAllUnionConstructors,
+          matchingParameter.parameterElement!.type,
+        );
       }
 
-      final matchingParameters =
-          constructorsNeedsGeneration
-              .expand((element) => element.parameters.allParameters)
-              .where((element) => element.name == parameter.name)
-              .toList();
+      final matchingParameters = constructorsNeedsGeneration
+          .expand((element) => element.parameters.allParameters)
+          .where((element) => element.name == parameter.name)
+          .toList();
 
       final isFinal = matchingParameters.any(
         (element) =>
@@ -993,10 +969,9 @@ class Class {
       //   first union case.
       // - num c is not allowed because num is not assignable int/double
       if (!didNonNullDowncast) {
-        final copyWithType =
-            didNullDowncast
-                ? nonNullableCommonType
-                : commonTypeBetweenAllUnionConstructors;
+        final copyWithType = didNullDowncast
+            ? nonNullableCommonType
+            : commonTypeBetweenAllUnionConstructors;
 
         result.cloneableProperties.add(
           Property(
@@ -1055,9 +1030,8 @@ class Class {
   }
 
   String get escapedName {
-    var generics = genericsParameterTemplate.typeParameters
-        .map((e) => '\$$e')
-        .join(', ');
+    var generics =
+        genericsParameterTemplate.typeParameters.map((e) => '\$$e').join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }

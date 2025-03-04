@@ -24,11 +24,9 @@ void main() {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/deep_copy.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/deep_copy.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -41,11 +39,9 @@ void main() {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/deep_copy2.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/deep_copy2.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -726,9 +722,8 @@ void main() {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors('/freezed/test/integration/main.dart')
-            as ErrorsResult;
+    final errorResult = await main.session
+        .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
     expect(errorResult.errors.map((e) => e.errorCode.name), [
       'UNUSED_RESULT',

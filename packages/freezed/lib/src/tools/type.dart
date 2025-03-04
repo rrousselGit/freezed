@@ -41,12 +41,12 @@ String resolveFullTypeStringFrom(LibraryElement originLibrary, DartType type) {
   final owner = originLibrary.units
       .expand((e) => e.libraryImportPrefixes)
       .firstWhereOrNull((e) {
-        return e.imports.any((l) {
-          return l.importedLibrary!.anyTransitiveExport((library) {
-            return library.id == _getElementForType(type)?.library?.id;
-          });
-        });
+    return e.imports.any((l) {
+      return l.importedLibrary!.anyTransitiveExport((library) {
+        return library.id == _getElementForType(type)?.library?.id;
       });
+    });
+  });
 
   String? displayType = type.getDisplayString();
 
