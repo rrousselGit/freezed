@@ -92,11 +92,10 @@ class ParametersTemplate {
 
     return ParametersTemplate(
       parameters.where((p) => p.isRequiredPositional).map(asParameter).toList(),
-      optionalPositionalParameters:
-          parameters
-              .where((p) => p.isOptionalPositional)
-              .map(asParameter)
-              .toList(),
+      optionalPositionalParameters: parameters
+          .where((p) => p.isOptionalPositional)
+          .map(asParameter)
+          .toList(),
       namedParameters:
           parameters.where((p) => p.isNamed).map(asParameter).toList(),
     );
@@ -144,8 +143,7 @@ class ParametersTemplate {
       required bool isNamed,
       required bool isRequired,
       required int? index,
-    })
-    cb,
+    }) cb,
   ) {
     final parameters = [
       ...requiredPositionalParameters.mapIndexed(
@@ -164,11 +162,10 @@ class ParametersTemplate {
           .where((e) => e.isNamed == false && e.isRequired == true)
           .map((e) => e.$1)
           .toList(),
-      optionalPositionalParameters:
-          parameters
-              .where((e) => e.isNamed == false && e.isRequired == false)
-              .map((e) => e.$1)
-              .toList(),
+      optionalPositionalParameters: parameters
+          .where((e) => e.isNamed == false && e.isRequired == false)
+          .map((e) => e.$1)
+          .toList(),
       namedParameters:
           parameters.where((e) => e.isNamed == true).map((e) => e.$1).toList(),
     );
@@ -226,22 +223,22 @@ class Parameter {
   });
 
   Parameter.fromParameter(Parameter p)
-    : this(
-        name: p.name,
-        type: p.type,
-        isNullable: p.isNullable,
-        defaultValueSource: p.defaultValueSource,
-        isFinal: p.isFinal,
-        isRequired: p.isRequired,
-        isDartList: p.isDartList,
-        isDartMap: p.isDartMap,
-        isDartSet: p.isDartSet,
-        decorators: p.decorators,
-        showDefaultValue: p.showDefaultValue,
-        doc: p.doc,
-        isPossiblyDartCollection: p.isPossiblyDartCollection,
-        parameterElement: p.parameterElement,
-      );
+      : this(
+          name: p.name,
+          type: p.type,
+          isNullable: p.isNullable,
+          defaultValueSource: p.defaultValueSource,
+          isFinal: p.isFinal,
+          isRequired: p.isRequired,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          decorators: p.decorators,
+          showDefaultValue: p.showDefaultValue,
+          doc: p.doc,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
+          parameterElement: p.parameterElement,
+        );
 
   final String? type;
   final String name;
@@ -273,23 +270,24 @@ class Parameter {
     bool? isDartMap,
     bool? isDartSet,
     bool? isFinal,
-  }) => Parameter(
-    type: type ?? this.type,
-    name: name ?? this.name,
-    isNullable: isNullable ?? this.isNullable,
-    defaultValueSource: defaultValueSource ?? this.defaultValueSource,
-    isRequired: isRequired ?? this.isRequired,
-    decorators: decorators ?? this.decorators,
-    showDefaultValue: showDefaultValue ?? this.showDefaultValue,
-    doc: doc ?? this.doc,
-    isDartMap: isDartMap ?? this.isDartMap,
-    isDartSet: isDartSet ?? this.isDartSet,
-    isDartList: isDartList ?? this.isDartList,
-    isFinal: isFinal ?? this.isFinal,
-    isPossiblyDartCollection:
-        isPossiblyDartCollection ?? this.isPossiblyDartCollection,
-    parameterElement: parameterElement,
-  );
+  }) =>
+      Parameter(
+        type: type ?? this.type,
+        name: name ?? this.name,
+        isNullable: isNullable ?? this.isNullable,
+        defaultValueSource: defaultValueSource ?? this.defaultValueSource,
+        isRequired: isRequired ?? this.isRequired,
+        decorators: decorators ?? this.decorators,
+        showDefaultValue: showDefaultValue ?? this.showDefaultValue,
+        doc: doc ?? this.doc,
+        isDartMap: isDartMap ?? this.isDartMap,
+        isDartSet: isDartSet ?? this.isDartSet,
+        isDartList: isDartList ?? this.isDartList,
+        isFinal: isFinal ?? this.isFinal,
+        isPossiblyDartCollection:
+            isPossiblyDartCollection ?? this.isPossiblyDartCollection,
+        parameterElement: parameterElement,
+      );
 
   @override
   String toString() {
@@ -328,21 +326,21 @@ class SuperParameter extends Parameter {
   }) : super(showDefaultValue: true);
 
   SuperParameter.fromParameter(Parameter p)
-    : this(
-        name: p.name,
-        type: p.type,
-        isNullable: p.isNullable,
-        defaultValueSource: p.defaultValueSource,
-        isFinal: p.isFinal,
-        isRequired: p.isRequired,
-        isDartList: p.isDartList,
-        isDartMap: p.isDartMap,
-        isDartSet: p.isDartSet,
-        decorators: p.decorators,
-        doc: p.doc,
-        isPossiblyDartCollection: p.isPossiblyDartCollection,
-        parameterElement: p.parameterElement,
-      );
+      : this(
+          name: p.name,
+          type: p.type,
+          isNullable: p.isNullable,
+          defaultValueSource: p.defaultValueSource,
+          isFinal: p.isFinal,
+          isRequired: p.isRequired,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          decorators: p.decorators,
+          doc: p.doc,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
+          parameterElement: p.parameterElement,
+        );
 
   @override
   String toString() {
@@ -378,21 +376,21 @@ class LocalParameter extends Parameter {
   }) : super(showDefaultValue: true);
 
   LocalParameter.fromParameter(Parameter p)
-    : this(
-        name: p.name,
-        type: p.type,
-        isNullable: p.isNullable,
-        defaultValueSource: p.defaultValueSource,
-        isFinal: p.isFinal,
-        isRequired: p.isRequired,
-        isDartList: p.isDartList,
-        isDartMap: p.isDartMap,
-        isDartSet: p.isDartSet,
-        decorators: p.decorators,
-        doc: p.doc,
-        isPossiblyDartCollection: p.isPossiblyDartCollection,
-        parameterElement: p.parameterElement,
-      );
+      : this(
+          name: p.name,
+          type: p.type,
+          isNullable: p.isNullable,
+          defaultValueSource: p.defaultValueSource,
+          isFinal: p.isFinal,
+          isRequired: p.isRequired,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          decorators: p.decorators,
+          doc: p.doc,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
+          parameterElement: p.parameterElement,
+        );
 
   @override
   String toString() {

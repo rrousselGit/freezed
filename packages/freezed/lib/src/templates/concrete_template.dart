@@ -34,10 +34,10 @@ class Concrete {
 
   late final bool _hasUnionKeyProperty =
       (data.options.toJson || data.options.fromJson) &&
-      data.constructors.length > 1 &&
-      constructor.properties.every(
-        (e) => e.name != data.options.annotation.unionKey,
-      );
+          data.constructors.length > 1 &&
+          constructor.properties.every(
+            (e) => e.name != data.options.annotation.unionKey,
+          );
 
   @override
   String toString() {
@@ -100,10 +100,9 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
         );
       }
 
-      final correspondingProperty =
-          constructor.properties
-              .where((element) => element.name == p.name)
-              .first;
+      final correspondingProperty = constructor.properties
+          .where((element) => element.name == p.name)
+          .first;
       if (correspondingProperty.isSynthetic) {
         return (
           LocalParameter.fromParameter(p),
@@ -230,59 +229,55 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
   }
 
   String get _properties {
-    final classProperties = constructor.properties
-        .where((e) => e.isSynthetic)
-        .expand((p) {
-          final annotatedProperty = p.copyWith(
-            decorators: [
-              if (commonProperties.any((element) => element.name == p.name))
-                '@override',
-              if (p.defaultValueSource != null && !p.hasJsonKey) '@JsonKey()',
-              ...p.decorators,
-            ],
-          );
+    final classProperties =
+        constructor.properties.where((e) => e.isSynthetic).expand((p) {
+      final annotatedProperty = p.copyWith(
+        decorators: [
+          if (commonProperties.any((element) => element.name == p.name))
+            '@override',
+          if (p.defaultValueSource != null && !p.hasJsonKey) '@JsonKey()',
+          ...p.decorators,
+        ],
+      );
 
-          if (data.options.asUnmodifiableCollections) {
-            String? viewType;
+      if (data.options.asUnmodifiableCollections) {
+        String? viewType;
 
-            if (p.isDartList) {
-              viewType = 'EqualUnmodifiableListView';
-            } else if (p.isDartMap) {
-              viewType = 'EqualUnmodifiableMapView';
-            } else if (p.isDartSet) {
-              viewType = 'EqualUnmodifiableSetView';
-            }
+        if (p.isDartList) {
+          viewType = 'EqualUnmodifiableListView';
+        } else if (p.isDartMap) {
+          viewType = 'EqualUnmodifiableMapView';
+        } else if (p.isDartSet) {
+          viewType = 'EqualUnmodifiableSetView';
+        }
 
-            if (viewType != null) {
-              // If the collection is already unmodifiable, we don't want to wrap
-              // it in an unmodifiable view again.
-              final isAlreadyUnmodifiableCheck =
-                  'if (_${p.name} is $viewType) return _${p.name};';
+        if (viewType != null) {
+          // If the collection is already unmodifiable, we don't want to wrap
+          // it in an unmodifiable view again.
+          final isAlreadyUnmodifiableCheck =
+              'if (_${p.name} is $viewType) return _${p.name};';
 
-              return [
-                p.copyWith(name: '_${p.name}', decorators: const []),
-                if (p.isNullable)
-                  annotatedProperty.asGetter(''' {
+          return [
+            p.copyWith(name: '_${p.name}', decorators: const []),
+            if (p.isNullable) annotatedProperty.asGetter(''' {
   final value = _${p.name};
   if (value == null) return null;
   $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(value);
 }
-''')
-                else
-                  annotatedProperty.asGetter(''' {
+''') else annotatedProperty.asGetter(''' {
   $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(_${p.name});
 }
 '''),
-              ];
-            }
-          }
+          ];
+        }
+      }
 
-          return [annotatedProperty];
-        });
+      return [annotatedProperty];
+    });
 
     if (_hasUnionKeyProperty) {
       return '''
@@ -301,14 +296,14 @@ final String \$type;
   }
 
   String get _fromJsonArgs => fromJsonArguments(
-    data.genericsParameterTemplate,
-    data.options.genericArgumentFactories,
-  );
+        data.genericsParameterTemplate,
+        data.options.genericArgumentFactories,
+      );
 
   String get _fromJsonParams => fromJsonParameters(
-    data.genericsParameterTemplate,
-    data.options.genericArgumentFactories,
-  );
+        data.genericsParameterTemplate,
+        data.options.genericArgumentFactories,
+      );
 
   String get _concreteFromJsonConstructor {
     if (!data.options.fromJson) return '';
@@ -382,11 +377,10 @@ String debugFillProperties(
 }) {
   if (!globalData.hasDiagnostics || !data.options.asString) return '';
 
-  final diagnostics =
-      [
-        for (final e in properties)
-          "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
-      ].join();
+  final diagnostics = [
+    for (final e in properties)
+      "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
+  ].join();
 
   return '''
 @override
@@ -406,10 +400,9 @@ String toStringMethod(
 }) {
   if (!data.options.asString) return '';
 
-  final parameters =
-      globalData.hasDiagnostics
-          ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
-          : '';
+  final parameters = globalData.hasDiagnostics
+      ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
+      : '';
 
   final propertiesDisplayString = [
     for (final p in properties)
@@ -470,10 +463,9 @@ String hashCodeMethod(
 }) {
   if (!data.options.equal) return '';
 
-  final jsonKey =
-      data.options.fromJson || data.options.toJson
-          ? '@JsonKey(includeFromJson: false, includeToJson: false)'
-          : '';
+  final jsonKey = data.options.fromJson || data.options.toJson
+      ? '@JsonKey(includeFromJson: false, includeToJson: false)'
+      : '';
 
   final hashedProperties = [
     'runtimeType',
@@ -523,8 +515,7 @@ extension DefaultValue on ParameterElement {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
-        var needsConstModifier =
-            !declaration.type.isDartCoreString &&
+        var needsConstModifier = !declaration.type.isDartCoreString &&
             !res.trimLeft().startsWith('const') &&
             (res.contains('(') || res.contains('[') || res.contains('{'));
 

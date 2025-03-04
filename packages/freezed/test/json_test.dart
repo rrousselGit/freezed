@@ -774,11 +774,9 @@ void main() {
   });
 
   test('has no issue', () async {
-    var errorResult =
-        await jsonFile.session.getErrors(
-              '/freezed/test/integration/json.freezed.dart',
-            )
-            as ErrorsResult;
+    var errorResult = await jsonFile.session.getErrors(
+      '/freezed/test/integration/json.freezed.dart',
+    ) as ErrorsResult;
     expect(errorResult.errors, isEmpty);
   }, skip: true);
 

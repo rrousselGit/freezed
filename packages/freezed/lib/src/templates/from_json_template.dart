@@ -16,10 +16,9 @@ class FromJson {
     // cannot add annotations on user's behalf.
     if (clazz.constructors.isEmpty) return '';
 
-    final conflictCtor =
-        clazz.constructors
-            .where((c) => c.redirectedName.public == clazz.name.public)
-            .firstOrNull;
+    final conflictCtor = clazz.constructors
+        .where((c) => c.redirectedName.public == clazz.name.public)
+        .firstOrNull;
 
     if (conflictCtor != null) {
       if (clazz.constructors.length == 1) return '';
@@ -40,18 +39,18 @@ Rename one or the other, such that they don't conflict.
     } else {
       final cases =
           clazz.constructors.where((element) => !element.isFallback).map((
-            constructor,
-          ) {
-            final caseName = constructor.unionValue;
-            final concreteName = constructor.redirectedName;
+        constructor,
+      ) {
+        final caseName = constructor.unionValue;
+        final concreteName = constructor.redirectedName;
 
-            return '''
+        return '''
         case '$caseName':
           return $concreteName${clazz.genericsParameterTemplate}.fromJson(
             json${fromJsonArguments(clazz.genericsParameterTemplate, clazz.options.genericArgumentFactories)}
           );
         ''';
-          }).join();
+      }).join();
 
       // TODO(rrousselGit): update logic once https://github.com/rrousselGit/freezed/pull/370 lands
       var defaultCase = '''

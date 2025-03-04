@@ -19,12 +19,11 @@ abstract class ParserGenerator<Annotation>
   ) async {
     if (oldLibrary.classes.isEmpty) return '';
 
-    final units =
-        await Stream.fromFutures(
-          oldLibrary.element.units.map(
-            (e) => buildStep.resolver.astNodeFor(e, resolve: true),
-          ),
-        ).cast<CompilationUnit>().toList();
+    final units = await Stream.fromFutures(
+      oldLibrary.element.units.map(
+        (e) => buildStep.resolver.astNodeFor(e, resolve: true),
+      ),
+    ).cast<CompilationUnit>().toList();
 
     final values = StringBuffer();
     final datas = <AnnotationMeta>[];

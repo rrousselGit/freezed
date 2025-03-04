@@ -27,21 +27,21 @@ class Property {
   }) : type = type ?? 'dynamic';
 
   Property.fromParameter(Parameter p, {required bool isSynthetic})
-    : this(
-        decorators: p.decorators,
-        name: p.name,
-        isFinal: p.isFinal,
-        doc: p.doc,
-        type: p.type,
-        defaultValueSource: p.defaultValueSource,
-        isSynthetic: isSynthetic,
-        isNullable: p.isNullable,
-        isDartList: p.isDartList,
-        isDartMap: p.isDartMap,
-        isDartSet: p.isDartSet,
-        isPossiblyDartCollection: p.isPossiblyDartCollection,
-        hasJsonKey: false,
-      );
+      : this(
+          decorators: p.decorators,
+          name: p.name,
+          isFinal: p.isFinal,
+          doc: p.doc,
+          type: p.type,
+          defaultValueSource: p.defaultValueSource,
+          isSynthetic: isSynthetic,
+          isNullable: p.isNullable,
+          isDartList: p.isDartList,
+          isDartMap: p.isDartMap,
+          isDartSet: p.isDartSet,
+          isPossiblyDartCollection: p.isPossiblyDartCollection,
+          hasJsonKey: false,
+        );
 
   static Property fromFormalParameter(
     FormalParameter parameter, {
@@ -97,28 +97,28 @@ class Property {
   }
 
   Getter get abstractGetter => Getter(
-    name: name,
-    type: type,
-    decorators: decorators,
-    doc: doc,
-    body: ';',
-  );
+        name: name,
+        type: type,
+        decorators: decorators,
+        doc: doc,
+        body: ';',
+      );
 
   Getter asGetter(String body) => Getter(
-    name: name,
-    type: type,
-    decorators: decorators,
-    doc: doc,
-    body: body,
-  );
+        name: name,
+        type: type,
+        decorators: decorators,
+        doc: doc,
+        body: body,
+      );
 
   Setter get abstractSetter => Setter(
-    name: name,
-    type: type,
-    decorators: decorators,
-    doc: doc,
-    body: ';',
-  );
+        name: name,
+        type: type,
+        decorators: decorators,
+        doc: doc,
+        body: ';',
+      );
 
   Property copyWith({
     String? type,

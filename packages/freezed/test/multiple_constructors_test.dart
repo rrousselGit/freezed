@@ -24,8 +24,8 @@ Future<void> main() async {
 
   ClassElement _getClassElement(String elementName) {
     return sources.topLevelElements.whereType<ClassElement>().firstWhere(
-      (element) => element.name == elementName,
-    );
+          (element) => element.name == elementName,
+        );
   }
 
   test('Response', () {
@@ -175,11 +175,9 @@ void main() {
         ),
       );
 
-      final errorResult =
-          await main.session.getErrors(
-                '/freezed/test/integration/multiple_constructors.freezed.dart',
-              )
-              as ErrorsResult;
+      final errorResult = await main.session.getErrors(
+        '/freezed/test/integration/multiple_constructors.freezed.dart',
+      ) as ErrorsResult;
 
       expect(errorResult.errors, isEmpty);
     });
@@ -411,10 +409,12 @@ void main() {
     var error = Error();
     final value = NameConflict.error(error);
 
-    expect(switch (value) {
-      Something() => 42,
-      SomeError(:final error) => error,
-    }, error);
+    expect(
+        switch (value) {
+          Something() => 42,
+          SomeError(:final error) => error,
+        },
+        error);
   });
 
   group('NestedList', () {

@@ -5,11 +5,9 @@ extension AstX on AstNode {
   String? get documentation {
     final builder = StringBuffer();
 
-    for (
-      Token? token = beginToken.precedingComments;
-      token != null;
-      token = token.next
-    ) {
+    for (Token? token = beginToken.precedingComments;
+        token != null;
+        token = token.next) {
       builder.writeln(token);
     }
 
@@ -63,9 +61,8 @@ extension ConstructorX on ConstructorDeclaration {
     // ignore: deprecated_member_use, latest analyzer with enclosingElement3 not available in stable channel
     final classElement = declaredElement!.enclosingElement3;
 
-    var generics = classElement.typeParameters
-        .map((e) => '\$${e.name}')
-        .join(', ');
+    var generics =
+        classElement.typeParameters.map((e) => '\$${e.name}').join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }
@@ -80,9 +77,8 @@ extension ConstructorX on ConstructorDeclaration {
     // ignore: deprecated_member_use, latest analyzer with enclosingElement3 not available in stable channel
     final classElement = declaredElement!.enclosingElement3;
 
-    var generics = classElement.typeParameters
-        .map((e) => '\$${e.name}')
-        .join(', ');
+    var generics =
+        classElement.typeParameters.map((e) => '\$${e.name}').join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }
