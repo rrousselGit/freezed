@@ -406,6 +406,8 @@ String toStringMethod(
 }) {
   if (!data.options.asString) return '';
 
+  final hasExtends = data.node.extendsClause != null;
+
   final parameters =
       globalData.hasDiagnostics
           ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
@@ -414,12 +416,22 @@ String toStringMethod(
   final propertiesDisplayString = [
     for (final p in properties)
       '${p.name.replaceAll(r'$', r'\$')}: ${wrapClassField(p.name)}',
-  ];
+  ].join(', ');
+
+  if (hasExtends) {
+    return '''
+@override
+String toString($parameters) {
+  final parentStr = super.toString(${globalData.hasDiagnostics ? 'minLevel' : ''});
+  return '$escapedClassName($propertiesDisplayString, super=\$parentStr)';
+}
+''';
+  }
 
   return '''
 @override
 String toString($parameters) {
-  return '$escapedClassName(${propertiesDisplayString.join(', ')})';
+  return '$escapedClassName($propertiesDisplayString)';
 }
 ''';
 }
@@ -431,6 +443,9 @@ String operatorEqualMethod(
   required Source source,
 }) {
   if (!data.options.equal) return '';
+
+  final hasExtends = data.node.extendsClause != null;
+  final superComparison = hasExtends ? '(super == other) && ' : '';
 
   final comparisons = [
     'other.runtimeType == runtimeType',
@@ -458,7 +473,7 @@ String operatorEqualMethod(
   return '''
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (${comparisons.join('&&')});
+  return identical(this, other) || ($superComparison ${comparisons.join('&&')});
 }
 ''';
 }

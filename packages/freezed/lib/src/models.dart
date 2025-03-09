@@ -505,9 +505,10 @@ class Class {
     required this.superCall,
     required this.properties,
     required this.copyWithTarget,
-    required ClassDeclaration node,
-  }) : _node = node,
-       assert(constructors.isNotEmpty);
+    required this.node,
+  }) {
+    assert(constructors.isNotEmpty);
+  }
 
   final String name;
   final ClassConfig options;
@@ -518,7 +519,7 @@ class Class {
   final ConstructorInvocation? superCall;
   final CopyWithTarget? copyWithTarget;
   final PropertyList properties;
-  final ClassDeclaration _node;
+  final ClassDeclaration node;
   final Set<Class> parents = {};
 
   static Class _from(
@@ -687,9 +688,9 @@ class Class {
 
       // If a Freezed class extends another Freezed class, mark it as a parent
       final superTypes = [
-        if (clazz._node.extendsClause case final extend?) extend.superclass,
-        ...?clazz._node.implementsClause?.interfaces,
-        ...?clazz._node.withClause?.mixinTypes,
+        if (clazz.node.extendsClause case final extend?) extend.superclass,
+        ...?clazz.node.implementsClause?.interfaces,
+        ...?clazz.node.withClause?.mixinTypes,
       ].map((e) => e.name2.lexeme);
 
       for (final superType in superTypes) {
