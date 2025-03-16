@@ -18,11 +18,9 @@ Future<void> main() async {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/common_types.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/common_types.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });

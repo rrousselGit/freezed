@@ -119,25 +119,24 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
         body = _copyWithMethodBody(
           parametersTemplate: ParametersTemplate(
             const [],
-            namedParameters:
-                cloneableProperties.map((e) {
-                  return Parameter(
-                    decorators: e.decorators,
-                    name: e.name,
-                    isNullable: e.isNullable,
-                    isFinal: false,
-                    isDartList: false,
-                    isDartMap: false,
-                    isDartSet: false,
-                    showDefaultValue: false,
-                    isRequired: false,
-                    defaultValueSource: '',
-                    type: e.type,
-                    doc: e.doc,
-                    isPossiblyDartCollection: e.isPossiblyDartCollection,
-                    parameterElement: null,
-                  );
-                }).toList(),
+            namedParameters: cloneableProperties.map((e) {
+              return Parameter(
+                decorators: e.decorators,
+                name: e.name,
+                isNullable: e.isNullable,
+                isFinal: false,
+                isDartList: false,
+                isDartMap: false,
+                isDartSet: false,
+                showDefaultValue: false,
+                isRequired: false,
+                defaultValueSource: '',
+                type: e.type,
+                doc: e.doc,
+                isPossiblyDartCollection: e.isPossiblyDartCollection,
+                parameterElement: null,
+              );
+            }).toList(),
           ),
           returnType: '_self.copyWith',
         );
@@ -209,10 +208,9 @@ ${_deepCopyMethods(isConcrete: true).join()}
     required List<Property> properties,
     required String methodName,
   }) {
-    final parameters =
-        properties.map((p) {
-          return 'Object? ${p.name} = ${_defaultValue(isNullable: p.isNullable)},';
-        }).join();
+    final parameters = properties.map((p) {
+      return 'Object? ${p.name} = ${_defaultValue(isNullable: p.isNullable)},';
+    }).join();
 
     return '\$Res $methodName({$parameters})';
   }
@@ -221,11 +219,9 @@ ${_deepCopyMethods(isConcrete: true).join()}
     required String methodName,
     required List<Property> properties,
   }) {
-    final parameters = properties
-        .map((p) {
-          return '${p.decorators.join()} ${p.type} ${p.name}';
-        })
-        .join(',');
+    final parameters = properties.map((p) {
+      return '${p.decorators.join()} ${p.type} ${p.name}';
+    }).join(',');
 
     return _maybeOverride('''
 @useResult
@@ -259,7 +255,8 @@ ${_copyWithDocs(data.name)}
   String _ignoreLints(
     String s, [
     List<String> lints = const ['cast_nullable_to_non_nullable'],
-  ]) => '''
+  ]) =>
+      '''
 // ignore: ${lints.join(', ')}
 $s''';
 
@@ -321,19 +318,18 @@ $s''';
       return '$condition ? $thisProperty : ${parameterAssignmentFor(p)},';
     }
 
-    final constructorParameters =
-        StringBuffer()
-          ..writeAll(
-            [
-              ...parametersTemplate.requiredPositionalParameters,
-              ...parametersTemplate.optionalPositionalParameters,
-            ].map<String>(parameterToValue),
-          )
-          ..writeAll(
-            parametersTemplate.namedParameters.map<String>(
-              (p) => '${p.name}: ${parameterToValue(p)}',
-            ),
-          );
+    final constructorParameters = StringBuffer()
+      ..writeAll(
+        [
+          ...parametersTemplate.requiredPositionalParameters,
+          ...parametersTemplate.optionalPositionalParameters,
+        ].map<String>(parameterToValue),
+      )
+      ..writeAll(
+        parametersTemplate.namedParameters.map<String>(
+          (p) => '${p.name}: ${parameterToValue(p)}',
+        ),
+      );
 
     return '''{
   return _then($returnType(
@@ -346,21 +342,19 @@ $constructorParameters
 
   Iterable<String> _deepCopyMethods({required bool isConcrete}) sync* {
     for (final cloneableProperty in deepCloneableProperties) {
-      final earlyReturn =
-          cloneableProperty.nullable
-              ? '''
+      final earlyReturn = cloneableProperty.nullable
+          ? '''
   if (_self.${cloneableProperty.name} == null) {
     return null;
   }
 '''
-              : '';
+          : '';
 
       final nullabilitySuffix = cloneableProperty.nullable ? '!' : '';
 
-      final returnType =
-          cloneableProperty.nullable
-              ? '${_clonerInterfaceFor(cloneableProperty)}?'
-              : '${_clonerInterfaceFor(cloneableProperty)}';
+      final returnType = cloneableProperty.nullable
+          ? '${_clonerInterfaceFor(cloneableProperty)}?'
+          : '${_clonerInterfaceFor(cloneableProperty)}';
 
       yield '''
 ${_copyWithDocs(data.name)}

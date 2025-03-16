@@ -198,9 +198,8 @@ Future<void> main() async {
   test('documentation', () async {
     final singleClassLibrary = await analyze();
 
-    final doc =
-        singleClassLibrary.topLevelElements.firstWhere((e) => e.name == 'Doc')
-            as ClassElement;
+    final doc = singleClassLibrary.topLevelElements
+        .firstWhere((e) => e.name == 'Doc') as ClassElement;
 
     expect(
       doc.mixins.first.accessors.where(
@@ -402,11 +401,9 @@ void main() {
   test('has no issue', () async {
     final singleClassLibrary = await analyze();
 
-    final errorResult =
-        await singleClassLibrary.session.getErrors(
-              '/freezed/test/integration/single_class_constructor.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await singleClassLibrary.session.getErrors(
+      '/freezed/test/integration/single_class_constructor.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -635,9 +632,8 @@ void main() {
     ''',
       }, (r) => r.findLibraryByName('main'));
 
-      final errorResult =
-          await main!.session.getErrors('/freezed/test/integration/main.dart')
-              as ErrorsResult;
+      final errorResult = await main!.session
+          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
 
       expect(
         errorResult.errors.map((e) => e.toString()),

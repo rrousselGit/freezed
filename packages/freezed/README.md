@@ -1237,6 +1237,8 @@ targets:
         options:
           # Tells Freezed to format .freezed.dart files.
           # This can significantly slow down code-generation.
+          # Disabling formatting will only work when opting into Dart 3.7 as a minimum
+          # in your project SDK constraints.
           format: true
           # Disable the generation of copyWith/== for the entire project
           copy_with: false
