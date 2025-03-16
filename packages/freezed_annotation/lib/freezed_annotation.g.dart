@@ -23,7 +23,10 @@ Freezed _$FreezedFromJson(Map json) => Freezed(
       addImplicitFinal: json['add_implicit_final'] as bool? ?? true,
       genericArgumentFactories:
           json['generic_argument_factories'] as bool? ?? false,
-      makeGeneratedClassesFinal: json['make_generated_classes_final'] as bool?,
+      classModifiers: (json['class_modifiers'] as List<dynamic>?)
+              ?.map((e) => $enumDecode(_$FreezedClassModifierEnumMap, e))
+              .toList() ??
+          const [],
     );
 
 const _$FreezedUnionCaseEnumMap = {
@@ -32,4 +35,10 @@ const _$FreezedUnionCaseEnumMap = {
   FreezedUnionCase.pascal: 'pascal',
   FreezedUnionCase.snake: 'snake',
   FreezedUnionCase.screamingSnake: 'screaming_snake',
+};
+
+const _$FreezedClassModifierEnumMap = {
+  FreezedClassModifier.Final: 'final',
+  FreezedClassModifier.Base: 'base',
+  FreezedClassModifier.Mixin: 'mixin',
 };

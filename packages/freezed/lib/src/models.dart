@@ -1041,8 +1041,15 @@ class Class {
     return '$escapedElementName$generics';
   }
 
-  bool get shouldBeFinal =>
-      options.annotation.makeGeneratedClassesFinal ?? false;
+  String get classModifiers {
+    final modifiers = options.annotation.classModifiers;
+
+    if (modifiers.isEmpty) {
+      return '';
+    }
+
+    return '${modifiers.map((modifier) => modifier.lexeme).join(' ')} ';
+  }
 }
 
 class PropertyList {
@@ -1080,6 +1087,7 @@ class ClassConfig {
     required this.asUnmodifiableCollections,
     required this.genericArgumentFactories,
     required this.annotation,
+    required this.modifiers,
   });
 
   static ClassConfig from(
@@ -1104,6 +1112,9 @@ class ClassConfig {
           resolvedAnnotation.makeCollectionsUnmodifiable!,
       genericArgumentFactories: resolvedAnnotation.genericArgumentFactories,
       annotation: resolvedAnnotation,
+      modifiers:
+          resolvedAnnotation.classModifiers.toNormalized()
+            ..throwIfInvalid(declaration.declaredElement),
     );
   }
 
@@ -1167,11 +1178,34 @@ class ClassConfig {
         },
         orElse: () => globalConfigs.unionValueCase,
       ),
-      makeGeneratedClassesFinal: annotation.decodeField(
-        'makeGeneratedClassesFinal',
-        decode: (obj) => obj.toBoolValue(),
-        orElse: () => globalConfigs.makeGeneratedClassesFinal,
-      ),
+      classModifiers:
+          annotation
+              .decodeField(
+                'classModifiers',
+                decode: (obj) {
+                  final dartValues = obj.toListValue();
+
+                  if (dartValues == null) {
+                    return const <FreezedClassModifier>[];
+                  }
+
+                  final modifiers = <FreezedClassModifier>[];
+
+                  for (final value in dartValues) {
+                    final enumIndex = value.getField('index')?.toIntValue();
+
+                    if (enumIndex == null) {
+                      continue;
+                    }
+
+                    modifiers.add(FreezedClassModifier.values[enumIndex]);
+                  }
+
+                  return modifiers;
+                },
+                orElse: () => globalConfigs.classModifiers,
+              )
+              .toNormalized(),
     );
   }
 
@@ -1182,6 +1216,7 @@ class ClassConfig {
   final bool asUnmodifiableCollections;
   final bool genericArgumentFactories;
   final Freezed annotation;
+  final List<FreezedClassModifier> modifiers;
 }
 
 extension on ConstructorDeclaration {
@@ -1253,5 +1288,45 @@ extension on DartObject {
     final field = getField(fieldName);
     if (field == null || field.isNull) return orElse();
     return decode(field);
+  }
+}
+
+extension on FreezedClassModifier {
+  String get lexeme {
+    return switch (this) {
+      FreezedClassModifier.Final => 'final',
+      FreezedClassModifier.Base => 'base',
+      FreezedClassModifier.Mixin => 'mixin',
+    };
+  }
+}
+
+extension on List<FreezedClassModifier> {
+  List<FreezedClassModifier> toNormalized() {
+    return toSet().toList(growable: false)..sortByCompare(
+      (modifier) => switch (modifier) {
+        FreezedClassModifier.Final => 0,
+        FreezedClassModifier.Base => 0,
+        FreezedClassModifier.Mixin => 1,
+      },
+      (left, right) => left.compareTo(right),
+    );
+  }
+
+  void throwIfInvalid(Element? element) {
+    switch (this) {
+      case []:
+      case [FreezedClassModifier.Base]:
+      case [FreezedClassModifier.Base, FreezedClassModifier.Mixin]:
+      case [FreezedClassModifier.Mixin]:
+      case [FreezedClassModifier.Final]:
+        return;
+
+      default:
+        throw InvalidGenerationSourceError(
+          'invalid combination of class modifiers: ${map((modifier) => modifier.lexeme).join(' ')}',
+          element: element,
+        );
+    }
   }
 }

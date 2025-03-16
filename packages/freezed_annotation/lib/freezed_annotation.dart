@@ -84,7 +84,7 @@ class Freezed {
     this.makeCollectionsUnmodifiable,
     this.addImplicitFinal = true,
     this.genericArgumentFactories = false,
-    this.makeGeneratedClassesFinal,
+    this.classModifiers = const [],
   });
 
   /// Decode the options from a build.yaml
@@ -341,22 +341,24 @@ class Freezed {
   /// ```
   final bool genericArgumentFactories;
 
-  /// Whether to add `final` modifiers to the generated classes.
+  /// Modifiers that are added the generated classes.
   ///
-  /// Defaults to false.
+  /// Defaults to an empty list.
   ///
-  /// This makes the generated classes `final` by default,
-  /// so when using them in a switch statement, the analzyer will warn you
-  /// if you try to match against a pattern that will never match the type.
+  /// Can be used to make the generated classes `final`/'base'/'mixin'/'base mixin'/....
+  /// See https://dart.dev/language/class-modifiers for more information on class modifiers.
+  ///
+  /// For example to make the compiler/analyzer warn about unnecessary clauses in switch statements,
+  /// one could add the 'final' modifier to generated classes:
   ///
   /// ```dart
-  /// @Freezed(makeGeneratedClassesFinal: true)
+  /// @Freezed(classModifiers: ['final'])
   /// sealed class Foo with _$Foo {
   ///   const Foo._();
   ///   const factory Foo() = _Foo;
   /// }
   ///
-  /// @Freezed(makeGeneratedClassesFinal: true)
+  /// @Freezed(classModifiers: ['final'])
   /// sealed class Bar with _$Bar {
   ///   const Bar._();
   ///   const factory Bar() = _Bar;
@@ -376,7 +378,7 @@ class Freezed {
   ///       break;
   ///   }
   /// ```
-  final bool? makeGeneratedClassesFinal;
+  final List<FreezedClassModifier> classModifiers;
 }
 
 /// Defines an immutable data-class.
@@ -568,4 +570,11 @@ enum FreezedUnionCase {
 
   /// Encodes a constructor named `screamingSnakeCase` with a JSON value `SCREAMING_SNAKE_CASE`.
   screamingSnake,
+}
+
+@JsonEnum(fieldRename: FieldRename.snake)
+enum FreezedClassModifier {
+  Final,
+  Base,
+  Mixin,
 }
