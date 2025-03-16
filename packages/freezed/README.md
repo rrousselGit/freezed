@@ -10,7 +10,7 @@ Welcome to [Freezed], yet another code generator for data classes, tagged unions
 
 # Migration to 3.0.0
 
-To migrate from 2.0.0 to 3.0.0, see [changelog](CHANGELOG.md#300---2025-02-25) and our [migration guide](migration_guide.md).
+To migrate from 2.0.0 to 3.0.0, see [changelog](packages/freezed/CHANGELOG.md#300---2025-02-25) and our [migration guide](packages/freezed/migration_guide.md).
 
 # Motivation
 
