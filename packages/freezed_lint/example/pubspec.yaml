@@ -1,7 +1,8 @@
 # The pubspec.yaml of an application using our lints
-name: example_app
+name: lint_example
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.7.0 <4.0.0"
+resolution: workspace
 publish_to: none
 
 dependencies:
@@ -12,7 +13,3 @@ dev_dependencies:
   custom_lint: any
   freezed: any
   freezed_lint: any
-
-dependency_overrides:
-  freezed_lint:
-    path: ../
