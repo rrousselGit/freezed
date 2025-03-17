@@ -18,7 +18,7 @@ void main() {
         expect(defaultValue.makeCollectionsUnmodifiable, isTrue);
         expect(defaultValue.addImplicitFinal, isTrue);
         expect(defaultValue.genericArgumentFactories, isFalse);
-        expect(defaultValue.classModifiers, []);
+        expect(defaultValue.makeGeneratedClassesFinal, isNull);
       });
 
       test('explicit', () {
@@ -34,7 +34,7 @@ void main() {
           'make_collections_unmodifiable': false,
           'add_implicit_final': false,
           'generic_argument_factories': true,
-          'class_modifiers': ['base', 'mixin'],
+          'make_generated_classes_final': true,
         });
 
         expect(overrides.copyWith, isFalse);
@@ -48,22 +48,19 @@ void main() {
         expect(overrides.makeCollectionsUnmodifiable, isFalse);
         expect(overrides.addImplicitFinal, isFalse);
         expect(overrides.genericArgumentFactories, isTrue);
-        expect(overrides.classModifiers, [
-          FreezedClassModifier.Base,
-          FreezedClassModifier.Mixin,
-        ]);
+        expect(overrides.makeGeneratedClassesFinal, isTrue);
       });
     });
   });
 
   test('freezed', () {
-    expect(freezed.classModifiers, []);
+    expect(freezed.makeGeneratedClassesFinal, isNull);
   });
 
   test('unfreezed', () {
     expect(unfreezed.makeCollectionsUnmodifiable, false);
     expect(unfreezed.equal, false);
     expect(unfreezed.addImplicitFinal, false);
-    expect(unfreezed.classModifiers, []);
+    expect(unfreezed.makeGeneratedClassesFinal, isNull);
   });
 }
