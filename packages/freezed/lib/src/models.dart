@@ -1040,6 +1040,9 @@ class Class {
 
     return '$escapedElementName$generics';
   }
+
+  bool get shouldBeFinal =>
+      options.annotation.makeGeneratedClassesFinal ?? false;
 }
 
 class PropertyList {
@@ -1163,6 +1166,11 @@ class ClassConfig {
           return FreezedUnionCase.values[enumIndex];
         },
         orElse: () => globalConfigs.unionValueCase,
+      ),
+      makeGeneratedClassesFinal: annotation.decodeField(
+        'makeGeneratedClassesFinal',
+        decode: (obj) => obj.toBoolValue(),
+        orElse: () => globalConfigs.makeGeneratedClassesFinal,
       ),
     );
   }
