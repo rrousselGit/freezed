@@ -286,7 +286,31 @@ $s''';
       }
 
       var cast = '';
-      if (propertyGetterForCopyWithParameter.type != to.type) cast = '!';
+      final fieldType = propertyGetterForCopyWithParameter.type;
+      final paramType = to.type;
+      final fieldIsNullable = propertyGetterForCopyWithParameter.isNullable;
+      final paramIsNullable = to.isNullable;
+
+      if (paramType == null) {
+        if (!fieldIsNullable) cast = '!';
+      } else {
+        final fieldBaseType = fieldType.endsWith('?')
+            ? fieldType.substring(0, fieldType.length - 1)
+            : fieldType;
+        final paramBaseType = paramType.endsWith('?')
+            ? paramType.substring(0, paramType.length - 1)
+            : paramType;
+
+        if (fieldIsNullable && !paramIsNullable) {
+          cast = '!';
+        } else if (!fieldIsNullable && paramIsNullable) {
+          cast = '';
+        } else if (!fieldIsNullable &&
+            !paramIsNullable &&
+            fieldBaseType != paramBaseType) {
+          cast = '!';
+        }
+      }
 
       return '$accessor.$propertyName$cast';
     }
