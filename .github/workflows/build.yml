@@ -37,7 +37,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
-          cache: ${{ matrix.channel == 'stable' }}
+          cache: ${{ matrix.channel == 'master' }}
 
       # It is executed separately
       - name: Removing example folder
