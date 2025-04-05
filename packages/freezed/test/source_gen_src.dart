@@ -3,6 +3,23 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
+@ShouldThrow('''
+The class RequiredCloneable requested a copyWith implementation, yet the parameter `notCloneable` is not cloneable.
+
+To fix, either:
+- Disable copyWith using @Freezed(copyWith: false)
+- Make `notCloneable` optional
+- Make sure `this.notCloneable` is accessible from the copyWith method
+''')
+@freezed
+class RequiredCloneable with _$RequiredCloneable {
+  RequiredCloneable({
+    required int notCloneable,
+  });
+}
+
+mixin _$RequiredCloneable {}
+
 @ShouldThrow(r'Classes using @freezed must use `with _$NoMixin`.')
 @freezed
 class NoMixin {}

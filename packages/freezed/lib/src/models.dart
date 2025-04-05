@@ -564,13 +564,40 @@ class Class {
     final properties = PropertyList()
       ..readableProperties.addAll(
         _computeReadableProperties(declaration, constructors),
-      )
-      ..cloneableProperties.addAll(
-        _computeCloneableProperties(declaration, constructors, configs),
       );
+    properties.cloneableProperties.addAll(
+      _computeCloneableProperties(declaration, constructors, configs).where(
+          (cloneable) => properties.readableProperties
+              .any((e) => e.name == cloneable.name)),
+    );
 
     final copyWithTarget =
         constructors.isNotEmpty ? null : declaration.copyWithTarget;
+
+    if (copyWithTarget != null) {
+      // Check for missing required parameters on the copyWith target
+      for (final param in copyWithTarget.parameters.parameters) {
+        if (param.isOptional) continue;
+
+        final cloneableProperty = properties.cloneableProperties
+            .firstWhereOrNull((e) => e.name == param.name?.lexeme);
+        if (cloneableProperty == null) {
+          throw InvalidGenerationSourceError(
+            '''
+The class ${declaration.name.lexeme} requested a copyWith implementation, yet the parameter `${param.name}` is not cloneable.
+
+To fix, either:
+- Disable copyWith using @Freezed(copyWith: false)
+- Make `${param.name}` optional
+- Make sure `this.${param.name}` is accessible from the copyWith method
+''',
+            element: declaration.declaredElement,
+            node: declaration,
+          );
+        }
+      }
+    }
+
     final copyWithInvocation = copyWithTarget == null
         ? null
         : CopyWithTarget(
