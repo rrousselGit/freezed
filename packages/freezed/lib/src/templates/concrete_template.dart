@@ -1,9 +1,8 @@
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
-import 'package:freezed/src/tools/type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -536,24 +535,18 @@ extension DefaultValue on ParameterElement {
   }
 }
 
-String? parseTypeSource(VariableElement element) {
-  String? type = element.type.getDisplayString();
+String? parseTypeSource(FormalParameter p) {
+  switch (p) {
+    case SimpleFormalParameter(:final type?):
+    case FieldFormalParameter(:final type?):
+    case SuperFormalParameter(:final type?):
+      return type.toSource();
+    case DefaultFormalParameter():
+      return parseTypeSource(p.parameter);
 
-  if ((type.contains('dynamic') || type.contains('InvalidType')) &&
-      element.nameOffset > 0) {
-    final source = element.source!.contents.data.substring(
-      0,
-      element.nameOffset,
-    );
-    final eleType = element.type;
-    if (eleType.isDynamic2) {
-      final match = RegExp(r'([$\w]+\??)\s+$').firstMatch(source);
-      return match?.group(1);
-    } else if (eleType is InterfaceType) {
-      final match = RegExp(r'([$\w]+<.+?>\??)\s+$').firstMatch(source);
-      return match?.group(1) ?? type;
-    }
+    case _:
+      break;
   }
 
-  return resolveFullTypeStringFrom(element.library!, element.type);
+  return p.declaredElement!.type.getDisplayString();
 }

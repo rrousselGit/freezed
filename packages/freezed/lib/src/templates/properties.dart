@@ -68,7 +68,7 @@ class Property {
       isFinal: addImplicitFinal || element.isFinal,
       isSynthetic: isSynthetic,
       doc: parameter.documentation ?? '',
-      type: parseTypeSource(element),
+      type: parseTypeSource(parameter),
       decorators: parseDecorators(element.metadata),
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
