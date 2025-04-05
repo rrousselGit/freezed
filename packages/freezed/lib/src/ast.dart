@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
+import 'package:analyzer/dart/element/element.dart';
 
 extension AstX on AstNode {
   String? get documentation {
@@ -37,23 +38,24 @@ extension ClassX on ClassDeclaration {
     return false;
   }
 
-  bool get hasCustomEquals {
-    final element = declaredElement!;
+  bool get hasSuperEqual => declaredElement!.allSupertypes
+      .where((e) => !e.isDartCoreObject)
+      .map((e) => e.element)
+      .any((e) => e.hasEqual);
 
-    for (final type in [
-      element,
-      ...element.allSupertypes
-          .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element),
-    ]) {
-      for (final method in type.methods.where((e) => e.isOperator)) {
-        if (method.name == '==') {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+  bool get hasCustomEquals => declaredElement!.hasEqual;
+
+  bool get hasSuperHashCode => declaredElement!.allSupertypes
+      .where((e) => !e.isDartCoreObject)
+      .map((e) => e.element)
+      .any((e) => e.hasHashCode);
+}
+
+extension on InterfaceElement {
+  bool get hasEqual => methods.any(((e) => e.isOperator && e.name == '=='));
+
+  bool get hasHashCode =>
+      accessors.where((e) => e.isGetter).any((e) => e.name == 'hashCode');
 }
 
 extension ConstructorX on ConstructorDeclaration {
