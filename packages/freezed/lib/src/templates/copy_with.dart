@@ -1,5 +1,6 @@
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
+import 'package:freezed/src/tools/type.dart';
 
 import '../models.dart';
 
@@ -123,17 +124,13 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
               return Parameter(
                 decorators: e.decorators,
                 name: e.name,
-                isNullable: e.isNullable,
                 isFinal: false,
-                isDartList: false,
-                isDartMap: false,
-                isDartSet: false,
                 showDefaultValue: false,
                 isRequired: false,
                 defaultValueSource: '',
                 type: e.type,
+                typeDisplayString: e.typeDisplayString,
                 doc: e.doc,
-                isPossiblyDartCollection: e.isPossiblyDartCollection,
                 parameterElement: null,
               );
             }).toList(),
@@ -209,7 +206,7 @@ ${_deepCopyMethods(isConcrete: true).join()}
     required String methodName,
   }) {
     final parameters = properties.map((p) {
-      return 'Object? ${p.name} = ${_defaultValue(isNullable: p.isNullable)},';
+      return 'Object? ${p.name} = ${_defaultValue(isNullable: p.type.isNullable)},';
     }).join();
 
     return '\$Res $methodName({$parameters})';
@@ -220,7 +217,7 @@ ${_deepCopyMethods(isConcrete: true).join()}
     required List<Property> properties,
   }) {
     final parameters = properties.map((p) {
-      return '${p.decorators.join()} ${p.type} ${p.name}';
+      return '${p.decorators.join()} ${p.typeDisplayString} ${p.name}';
     }).join(',');
 
     return _maybeOverride('''
@@ -280,9 +277,14 @@ $s''';
     }) {
       var propertyName = to.name;
       if (_canAccessRawCollection &&
-          (to.isDartList || to.isDartMap || to.isDartSet) &&
+          (to.type.isDartCoreList ||
+              to.type.isDartCoreMap ||
+              to.type.isDartCoreSet) &&
           data.options.asUnmodifiableCollections) {
         propertyName = '_$propertyName';
+      }
+      if (clonedClassName == 'ClassicUnspecifiedOuter') {
+        print('T ${propertyGetterForCopyWithParameter.type} // ${to.type} // ${propertyGetterForCopyWithParameter.type != to.type}');
       }
 
       var cast = '';
@@ -293,14 +295,18 @@ $s''';
 
     String parameterAssignmentFor(Parameter p) {
       var result = '${p.name} ';
-      if (p.type != 'Object?' && p.type != 'Object' && p.type != null) {
-        result += _ignoreLints('as ${p.type}');
+      if (!p.type.isDartCoreObject) {
+        result += _ignoreLints('as ${p.typeDisplayString}');
       }
 
       return result;
     }
 
     String parameterToValue(Parameter p) {
+      if (clonedClassName == 'ClassicUnspecifiedOuter') {
+        print('here ${p.name} // ${p.typeDisplayString}');
+      }
+
       final propertyGetterForCopyWithParameter = <Property>[]
           .followedBy(readableProperties)
           // Read this.p before cloneable properties, as they might have a different nullability
@@ -308,7 +314,7 @@ $s''';
           .firstWhere((element) => element.name == p.name);
 
       final condition =
-          '${_defaultValue(isNullable: p.isNullable)} == ${p.name}';
+          '${_defaultValue(isNullable: p.type.isNullable)} == ${p.name}';
 
       final thisProperty = thisPropertyFor(
         propertyGetterForCopyWithParameter: propertyGetterForCopyWithParameter,

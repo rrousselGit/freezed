@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
-import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/tools/type.dart';
 
@@ -71,17 +71,13 @@ class ParametersTemplate {
 
       final value = Parameter(
         name: e.name,
-        isNullable: e.type.isNullable,
-        isDartList: e.type.isDartCoreList,
-        isDartMap: e.type.isDartCoreMap,
-        isDartSet: e.type.isDartCoreSet,
         defaultValueSource: e.defaultValue,
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,
-        type: parseTypeSource(p),
+        type: e.type,
+        typeDisplayString: parseTypeSource(p),
         decorators: parseDecorators(e.metadata),
         doc: p.documentation ?? '',
-        isPossiblyDartCollection: e.type.isPossiblyDartCollection,
         showDefaultValue: true,
         parameterElement: e,
       );
@@ -207,91 +203,69 @@ class ParametersTemplate {
 class Parameter {
   Parameter({
     required this.type,
+    required this.typeDisplayString,
     required this.name,
     required this.defaultValueSource,
     required this.isRequired,
-    required this.isNullable,
-    required this.isDartList,
-    required this.isDartMap,
-    required this.isDartSet,
     required this.decorators,
     required this.doc,
     required this.isFinal,
-    required this.isPossiblyDartCollection,
     required this.showDefaultValue,
     required this.parameterElement,
   });
 
-  Parameter.fromParameter(Parameter p)
-      : this(
-          name: p.name,
-          type: p.type,
-          isNullable: p.isNullable,
-          defaultValueSource: p.defaultValueSource,
-          isFinal: p.isFinal,
-          isRequired: p.isRequired,
-          isDartList: p.isDartList,
-          isDartMap: p.isDartMap,
-          isDartSet: p.isDartSet,
-          decorators: p.decorators,
-          showDefaultValue: p.showDefaultValue,
-          doc: p.doc,
-          isPossiblyDartCollection: p.isPossiblyDartCollection,
-          parameterElement: p.parameterElement,
-        );
+  factory Parameter.fromParameter(Parameter p) {
+    return Parameter(
+      type: p.type,
+      typeDisplayString: p.typeDisplayString,
+      name: p.name,
+      defaultValueSource: p.defaultValueSource,
+      isRequired: p.isRequired,
+      decorators: p.decorators,
+      doc: p.doc,
+      isFinal: p.isFinal,
+      showDefaultValue: p.showDefaultValue,
+      parameterElement: p.parameterElement,
+    );
+  }
 
-  final String? type;
+  final DartType type;
+  final String typeDisplayString;
   final String name;
   final String? defaultValueSource;
-  final bool isNullable;
   final bool isRequired;
-  final bool isDartList;
-  final bool isDartMap;
-  final bool isDartSet;
   final List<String> decorators;
   final bool showDefaultValue;
-  final bool isPossiblyDartCollection;
   final bool isFinal;
   final String doc;
   final ParameterElement? parameterElement;
 
   Parameter copyWith({
-    String? type,
+    DartType? type,
     String? name,
     String? defaultValueSource,
-    bool? isDartList,
-    bool? isNullable,
     bool? isRequired,
-    bool? nullable,
     List<String>? decorators,
     bool? showDefaultValue,
-    bool? isPossiblyDartCollection,
     String? doc,
-    bool? isDartMap,
-    bool? isDartSet,
     bool? isFinal,
   }) =>
       Parameter(
         type: type ?? this.type,
+        typeDisplayString: typeDisplayString,
         name: name ?? this.name,
-        isNullable: isNullable ?? this.isNullable,
         defaultValueSource: defaultValueSource ?? this.defaultValueSource,
         isRequired: isRequired ?? this.isRequired,
         decorators: decorators ?? this.decorators,
         showDefaultValue: showDefaultValue ?? this.showDefaultValue,
         doc: doc ?? this.doc,
-        isDartMap: isDartMap ?? this.isDartMap,
-        isDartSet: isDartSet ?? this.isDartSet,
-        isDartList: isDartList ?? this.isDartList,
         isFinal: isFinal ?? this.isFinal,
-        isPossiblyDartCollection:
-            isPossiblyDartCollection ?? this.isPossiblyDartCollection,
         parameterElement: parameterElement,
       );
 
   @override
   String toString() {
-    var res = ' ${type ?? 'dynamic'} $name';
+    var res = ' $typeDisplayString $name';
     if (isFinal) {
       res = 'final $res';
     }
@@ -312,16 +286,12 @@ class SuperParameter extends Parameter {
   SuperParameter({
     required super.name,
     required super.type,
+    required super.typeDisplayString,
     required super.defaultValueSource,
     required super.isFinal,
-    required super.isNullable,
     required super.isRequired,
-    required super.isDartList,
-    required super.isDartMap,
-    required super.isDartSet,
     required super.decorators,
     required super.doc,
-    required super.isPossiblyDartCollection,
     required super.parameterElement,
   }) : super(showDefaultValue: true);
 
@@ -329,16 +299,12 @@ class SuperParameter extends Parameter {
       : this(
           name: p.name,
           type: p.type,
-          isNullable: p.isNullable,
+          typeDisplayString: p.typeDisplayString,
           defaultValueSource: p.defaultValueSource,
           isFinal: p.isFinal,
           isRequired: p.isRequired,
-          isDartList: p.isDartList,
-          isDartMap: p.isDartMap,
-          isDartSet: p.isDartSet,
           decorators: p.decorators,
           doc: p.doc,
-          isPossiblyDartCollection: p.isPossiblyDartCollection,
           parameterElement: p.parameterElement,
         );
 
@@ -362,16 +328,12 @@ class LocalParameter extends Parameter {
   LocalParameter({
     required super.name,
     required super.type,
+    required super.typeDisplayString,
     required super.defaultValueSource,
     required super.isFinal,
-    required super.isNullable,
     required super.isRequired,
-    required super.isDartList,
-    required super.isDartMap,
-    required super.isDartSet,
     required super.decorators,
     required super.doc,
-    required super.isPossiblyDartCollection,
     required super.parameterElement,
   }) : super(showDefaultValue: true);
 
@@ -379,16 +341,12 @@ class LocalParameter extends Parameter {
       : this(
           name: p.name,
           type: p.type,
-          isNullable: p.isNullable,
+          typeDisplayString: p.typeDisplayString,
           defaultValueSource: p.defaultValueSource,
           isFinal: p.isFinal,
           isRequired: p.isRequired,
-          isDartList: p.isDartList,
-          isDartMap: p.isDartMap,
-          isDartSet: p.isDartSet,
           decorators: p.decorators,
           doc: p.doc,
-          isPossiblyDartCollection: p.isPossiblyDartCollection,
           parameterElement: p.parameterElement,
         );
 
@@ -414,15 +372,11 @@ class CallbackParameter extends Parameter {
     required super.name,
     required super.defaultValueSource,
     required super.type,
+    required super.typeDisplayString,
     required super.isRequired,
     required super.isFinal,
-    required super.isDartList,
-    required super.isDartMap,
-    required super.isDartSet,
-    required super.isNullable,
     required super.decorators,
     required super.doc,
-    required super.isPossiblyDartCollection,
     required super.parameterElement,
   }) : super(showDefaultValue: false);
 
@@ -430,7 +384,7 @@ class CallbackParameter extends Parameter {
 
   @override
   String toString() {
-    var res = '$type Function($parameters)';
+    var res = '$typeDisplayString Function($parameters)';
 
     if (isRequired) {
       res = 'required $res';
@@ -438,7 +392,7 @@ class CallbackParameter extends Parameter {
     if (decorators.isNotEmpty) {
       res = '${decorators.join()} $res';
     }
-    if (isNullable) {
+    if (type.isNullable) {
       res = '$res?';
     }
 

@@ -11,7 +11,8 @@ import 'prototypes.dart';
 
 class Property {
   Property({
-    required String? type,
+    required this.type,
+    required this.typeDisplayString,
     required this.name,
     required this.decorators,
     required this.defaultValueSource,
@@ -19,12 +20,7 @@ class Property {
     required this.doc,
     required this.isSynthetic,
     required this.isFinal,
-    required this.isNullable,
-    required this.isDartList,
-    required this.isDartMap,
-    required this.isDartSet,
-    required this.isPossiblyDartCollection,
-  }) : type = type ?? 'dynamic';
+  });
 
   Property.fromParameter(Parameter p, {required bool isSynthetic})
       : this(
@@ -33,13 +29,9 @@ class Property {
           isFinal: p.isFinal,
           doc: p.doc,
           type: p.type,
+          typeDisplayString: p.typeDisplayString,
           defaultValueSource: p.defaultValueSource,
           isSynthetic: isSynthetic,
-          isNullable: p.isNullable,
-          isDartList: p.isDartList,
-          isDartMap: p.isDartMap,
-          isDartSet: p.isDartSet,
-          isPossiblyDartCollection: p.isPossiblyDartCollection,
           hasJsonKey: false,
         );
 
@@ -59,46 +51,42 @@ class Property {
       );
     }
 
+    if (parameter.name?.lexeme == 'innerData') {
+      print('Hey ${element.type}');
+    }
+
     return Property(
       name: element.name,
-      isNullable: element.type.isNullable,
-      isDartList: element.type.isDartCoreList,
-      isDartMap: element.type.isDartCoreMap,
-      isDartSet: element.type.isDartCoreSet,
       isFinal: addImplicitFinal || element.isFinal,
       isSynthetic: isSynthetic,
       doc: parameter.documentation ?? '',
-      type: parseTypeSource(parameter),
+      type: element.type,
+      typeDisplayString: parseTypeSource(parameter),
       decorators: parseDecorators(element.metadata),
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
-      isPossiblyDartCollection: element.type.isPossiblyDartCollection,
     );
   }
 
-  final String type;
+  final DartType type;
+  final String typeDisplayString;
   final String name;
-  final bool isNullable;
-  final bool isDartList;
-  final bool isDartMap;
-  final bool isDartSet;
   final bool isFinal;
   final bool isSynthetic;
   final List<String> decorators;
   final String? defaultValueSource;
   final bool hasJsonKey;
   final String doc;
-  final bool isPossiblyDartCollection;
 
   @override
   String toString() {
     final leading = isFinal ? 'final ' : '';
-    return '$doc${decorators.join()} $leading $type $name;';
+    return '$doc${decorators.join()} $leading $typeDisplayString $name;';
   }
 
   Getter get abstractGetter => Getter(
         name: name,
-        type: type,
+        type: typeDisplayString,
         decorators: decorators,
         doc: doc,
         body: ';',
@@ -106,7 +94,7 @@ class Property {
 
   Getter asGetter(String body) => Getter(
         name: name,
-        type: type,
+        type: typeDisplayString,
         decorators: decorators,
         doc: doc,
         body: body,
@@ -114,19 +102,16 @@ class Property {
 
   Setter get abstractSetter => Setter(
         name: name,
-        type: type,
+        type: typeDisplayString,
         decorators: decorators,
         doc: doc,
         body: ';',
       );
 
   Property copyWith({
-    String? type,
+    DartType? type,
+    String? typeDisplayString,
     String? name,
-    bool? isNullable,
-    bool? isDartList,
-    bool? isDartMap,
-    bool? isDartSet,
     bool? isFinal,
     List<String>? decorators,
     String? defaultValueSource,
@@ -137,19 +122,14 @@ class Property {
   }) {
     return Property(
       type: type ?? this.type,
+      typeDisplayString: typeDisplayString ?? this.typeDisplayString,
       name: name ?? this.name,
       isSynthetic: isSynthetic,
-      isNullable: isNullable ?? this.isNullable,
       decorators: decorators ?? this.decorators,
       defaultValueSource: defaultValueSource ?? this.defaultValueSource,
       hasJsonKey: hasJsonKey ?? this.hasJsonKey,
       doc: doc ?? this.doc,
       isFinal: isFinal ?? this.isFinal,
-      isDartList: isDartList ?? this.isDartList,
-      isDartMap: isDartMap ?? this.isDartMap,
-      isDartSet: isDartSet ?? this.isDartSet,
-      isPossiblyDartCollection:
-          isPossiblyDartCollection ?? this.isPossiblyDartCollection,
     );
   }
 }

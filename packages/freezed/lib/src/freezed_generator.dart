@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/copy_with.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' show Freezed;
 import 'package:meta/meta.dart';
 
@@ -39,8 +40,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
 
       yield deepCopyProperty.copyWith(
         nullable: deepCopyProperty.nullable ||
-            commonProperty.isNullable ||
-            commonGetter.isNullable,
+            commonProperty.type.isNullable ||
+            commonGetter.type.isNullable,
       );
     }
   }

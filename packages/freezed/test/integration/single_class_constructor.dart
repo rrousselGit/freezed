@@ -7,6 +7,17 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+@optionalTypeArgs
+abstract class Inner<I> {}
+
+@freezed
+class ClassicUnspecifiedOuter with _$ClassicUnspecifiedOuter {
+  @override
+  final Inner? innerData;
+
+  const ClassicUnspecifiedOuter({this.innerData});
+}
+
 @freezed
 abstract class R1212 with _$R1212 {
   const R1212._();

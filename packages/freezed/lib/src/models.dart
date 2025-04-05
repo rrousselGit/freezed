@@ -112,7 +112,7 @@ class DeepCloneableProperty {
 
       yield DeepCloneableProperty(
         name: parameter.name,
-        type: type!,
+        type: type,
         nullable: parameter.type.isNullable,
         typeName: typeElement.name,
         genericParameters: GenericsParameterTemplate(
@@ -517,6 +517,8 @@ class Class {
   final ClassDeclaration _node;
   final Set<Class> parents = {};
 
+  LibraryElement get library => _node.declaredElement!.library;
+
   static Class _from(
     ClassDeclaration declaration,
     ClassConfig configs, {
@@ -879,12 +881,8 @@ To fix, either:
 
       yield Property(
         name: name,
-        type: typeString,
-        isNullable: type.isNullable,
-        isDartList: type.isDartCoreList,
-        isDartMap: type.isDartCoreMap,
-        isDartSet: type.isDartCoreSet,
-        isPossiblyDartCollection: type.isPossiblyDartCollection,
+        type: type,
+        typeDisplayString: typeString,
         isFinal: isFinal,
         isSynthetic: isSynthetic,
         decorators: decorators,
@@ -977,13 +975,8 @@ To fix, either:
 
       final commonProperty = Property(
         isFinal: isFinal,
-        type: commonTypeString,
-        isNullable: commonTypeBetweenAllUnionConstructors.isNullable,
-        isDartList: commonTypeBetweenAllUnionConstructors.isDartCoreList,
-        isDartMap: commonTypeBetweenAllUnionConstructors.isDartCoreMap,
-        isDartSet: commonTypeBetweenAllUnionConstructors.isDartCoreSet,
-        isPossiblyDartCollection:
-            commonTypeBetweenAllUnionConstructors.isPossiblyDartCollection,
+        type: commonTypeBetweenAllUnionConstructors,
+        typeDisplayString: commonTypeString,
         name: parameter.name,
         decorators: parameter.decorators,
         defaultValueSource: parameter.defaultValueSource,
@@ -1007,13 +1000,9 @@ To fix, either:
         result.cloneableProperties.add(
           Property(
             isFinal: isFinal,
-            type: resolveFullTypeStringFrom(library, copyWithType),
+            type: copyWithType,
+            typeDisplayString: resolveFullTypeStringFrom(library, copyWithType),
             isSynthetic: true,
-            isNullable: copyWithType.isNullable,
-            isDartList: copyWithType.isDartCoreList,
-            isDartMap: copyWithType.isDartCoreMap,
-            isDartSet: copyWithType.isDartCoreSet,
-            isPossiblyDartCollection: copyWithType.isPossiblyDartCollection,
             name: parameter.name,
             decorators: parameter.decorators,
             defaultValueSource: parameter.defaultValueSource,

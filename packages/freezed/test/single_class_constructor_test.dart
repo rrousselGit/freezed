@@ -38,6 +38,12 @@ Future<void> main() async {
     );
   }
 
+  test('ClassicUnspecifiedOuter', () {
+    // regression https://github.com/rrousselGit/freezed/issues/1223
+
+    expect(ClassicUnspecifiedOuter().copyWith(), isNotNull);
+  });
+
   test('CustomSetEqual', () {
     expect(
       CustomSetEqual(CustomSet({42}))..dartSet.add(21),

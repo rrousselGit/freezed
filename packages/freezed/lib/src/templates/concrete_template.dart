@@ -3,6 +3,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
+import 'package:freezed/src/tools/type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -91,7 +92,9 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
       required index,
     }) {
       if (data.options.asUnmodifiableCollections &&
-          (p.isDartList || p.isDartMap || p.isDartSet)) {
+          (p.type.isDartCoreList ||
+              p.type.isDartCoreMap ||
+              p.type.isDartCoreSet)) {
         return (
           Parameter.fromParameter(p),
           isNamed: isNamed,
@@ -141,7 +144,10 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
       if (data.options.asUnmodifiableCollections)
         ...constructor.properties
             .where((e) => e.isSynthetic)
-            .where((e) => e.isDartList || e.isDartMap || e.isDartSet)
+            .where((e) =>
+                e.type.isDartCoreList ||
+                e.type.isDartCoreMap ||
+                e.type.isDartCoreSet)
             .map((e) => '_${e.name} = ${e.name}'),
       if (_hasUnionKeyProperty)
         "\$type = \$type ?? '${constructor.unionValue}'",
@@ -150,18 +156,17 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
 
     if (_hasUnionKeyProperty) {
       final typeProperty = Parameter(
-        type: 'String?',
+        type: data.library.typeSystem.leastUpperBound(
+          data.library.typeProvider.stringType,
+          data.library.typeProvider.nullType,
+        ),
+        typeDisplayString: 'String?',
         name: '\$type',
-        isNullable: true,
         isFinal: true,
-        isDartList: false,
-        isDartSet: false,
-        isDartMap: false,
         defaultValueSource: null,
         isRequired: false,
         decorators: [],
         doc: '',
-        isPossiblyDartCollection: false,
         showDefaultValue: false,
         parameterElement: null,
       );
@@ -242,11 +247,11 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
       if (data.options.asUnmodifiableCollections) {
         String? viewType;
 
-        if (p.isDartList) {
+        if (p.type.isDartCoreList) {
           viewType = 'EqualUnmodifiableListView';
-        } else if (p.isDartMap) {
+        } else if (p.type.isDartCoreMap) {
           viewType = 'EqualUnmodifiableMapView';
-        } else if (p.isDartSet) {
+        } else if (p.type.isDartCoreSet) {
           viewType = 'EqualUnmodifiableSetView';
         }
 
@@ -258,7 +263,7 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
 
           return [
             p.copyWith(name: '_${p.name}', decorators: const []),
-            if (p.isNullable) annotatedProperty.asGetter(''' {
+            if (p.type.isNullable) annotatedProperty.asGetter(''' {
   final value = _${p.name};
   if (value == null) return null;
   $isAlreadyUnmodifiableCheck
@@ -433,14 +438,16 @@ String operatorEqualMethod(
 
       if (data.options.asUnmodifiableCollections &&
           source == Source.syntheticClass &&
-          p.isPossiblyDartCollection &&
-          (p.isDartList || p.isDartMap || p.isDartSet)) {
+          p.type.isPossiblyDartCollection &&
+          (p.type.isDartCoreList ||
+              p.type.isDartCoreMap ||
+              p.type.isDartCoreSet)) {
         name = '_$name';
       }
 
       final target = p.name == 'other' ? 'this.' : '';
 
-      if (p.isPossiblyDartCollection) {
+      if (p.type.isPossiblyDartCollection) {
         // no need to check `identical` as `DeepCollectionEquality` already does it
         return 'const DeepCollectionEquality().equals(other.$name, $target$name)';
       }
@@ -471,10 +478,12 @@ String hashCodeMethod(
     'runtimeType',
     if (data.hasSuperHashCode) 'super.hashCode',
     for (final property in properties)
-      if (property.isPossiblyDartCollection)
+      if (property.type.isPossiblyDartCollection)
         if (data.options.asUnmodifiableCollections &&
             source == Source.syntheticClass &&
-            (property.isDartList || property.isDartMap || property.isDartSet))
+            (property.type.isDartCoreList ||
+                property.type.isDartCoreMap ||
+                property.type.isDartCoreSet))
           'const DeepCollectionEquality().hash(_${property.name})'
         else
           'const DeepCollectionEquality().hash(${property.name})'
@@ -535,7 +544,7 @@ extension DefaultValue on ParameterElement {
   }
 }
 
-String? parseTypeSource(FormalParameter p) {
+String parseTypeSource(FormalParameter p) {
   switch (p) {
     case SimpleFormalParameter(:final type?):
     case FieldFormalParameter(:final type?):
