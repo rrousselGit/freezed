@@ -5,6 +5,7 @@
 - Fix an issue with `Diagnosticable` and `toString`
 - Fix ejecting union cases when more than one class is defined in a file
 - Fix a copyWith bug when a constructor parameter has no matching property
+- Fix null exception in some cases when using generic classes and copyWith
 
 ## 3.0.4 - 2025-03-16
 
