@@ -25,7 +25,5 @@ abstract class ToString with _$ToString {
   factory ToString() = _ToString;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MyToString()';
-  }
+  String toString() => 'MyToString()';
 }
