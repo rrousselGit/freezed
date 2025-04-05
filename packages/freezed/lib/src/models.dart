@@ -1029,6 +1029,9 @@ class Class {
     }
   }
 
+  bool get hasSuperEqual => _node.hasSuperEqual;
+  bool get hasSuperHashCode => _node.hasSuperHashCode;
+
   String get escapedName {
     var generics =
         genericsParameterTemplate.typeParameters.map((e) => '\$$e').join(', ');

@@ -428,6 +428,7 @@ String operatorEqualMethod(
   final comparisons = [
     'other.runtimeType == runtimeType',
     'other is $className${data.genericsParameterTemplate}',
+    if (data.hasSuperEqual) 'super == other',
     ...properties.map((p) {
       var name = p.name;
 
@@ -469,6 +470,7 @@ String hashCodeMethod(
 
   final hashedProperties = [
     'runtimeType',
+    if (data.hasSuperHashCode) 'super.hashCode',
     for (final property in properties)
       if (property.isPossiblyDartCollection)
         if (data.options.asUnmodifiableCollections &&
