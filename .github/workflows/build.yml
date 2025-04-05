@@ -17,12 +17,11 @@ jobs:
       matrix:
         package:
           - packages/freezed
+          - packages/freezed/example
           - packages/freezed_annotation
           - packages/freezed_lint
         channel:
           - master
-          # BLocked by https://github.com/dart-lang/source_gen/issues/739
-          # - stable
         dependencies:
           - get
           - downgrade
