@@ -1,6 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'multiple_constructors.freezed.dart';
+part 'multiple_part.dart';
+
+@freezed
+sealed class EjectCaseToPart with _$EjectCaseToPart {
+  factory EjectCaseToPart.a() = EjectedToPart;
+  factory EjectCaseToPart.b() = EjectedToLocal;
+}
+
+class EjectedToLocal implements EjectCaseToPart {}
 
 @freezed
 sealed class PrivateUnion with _$PrivateUnion {

@@ -291,15 +291,17 @@ When specifying fields in non-factory constructor then specifying factory constr
           ),
       ];
 
+      final isEjected = unitsExcludingGeneratedFiles.any(
+        (e) => e.declarations
+            .whereType<ClassDeclaration>()
+            .map((e) => e.name.lexeme)
+            .contains(redirectedName),
+      );
+
       result.add(
         ConstructorDetails(
           asserts: AssertAnnotation.parseAll(constructor).toList(),
-          isSynthetic: unitsExcludingGeneratedFiles.any(
-            (e) => !e.declarations
-                .whereType<ClassDeclaration>()
-                .map((e) => e.name.lexeme)
-                .contains(redirectedName),
-          ),
+          isSynthetic: !isEjected,
           name: constructor.name?.lexeme ?? '',
           unionValue: constructor.declaredElement!.unionValue(
             configs.annotation.unionValueCase,
