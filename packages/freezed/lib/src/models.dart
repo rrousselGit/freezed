@@ -82,11 +82,13 @@ class DeepCloneableProperty {
   });
 
   static Iterable<DeepCloneableProperty> parseAll(
-    ConstructorElement constructor,
+    ConstructorDeclaration constructorNode,
     Freezed globalConfigs,
   ) sync* {
-    for (final parameter in constructor.parameters) {
-      final type = parseTypeSource(parameter);
+    for (final parameterNode in constructorNode.parameters.parameters) {
+      final type = parseTypeSource(parameterNode);
+
+      final parameter = parameterNode.declaredElement!;
 
       final parameterType = parameter.type;
       if (parameterType is! InterfaceType) continue;
@@ -332,7 +334,7 @@ When specifying fields in non-factory constructor then specifying factory constr
             configs.annotation.fallbackUnion,
           ),
           deepCloneableProperties: DeepCloneableProperty.parseAll(
-            constructor.declaredElement!,
+            constructor,
             globalConfigs,
           ).toList(),
           parameters: ParametersTemplate.fromParameterList(

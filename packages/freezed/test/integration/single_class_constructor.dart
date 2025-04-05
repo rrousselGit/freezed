@@ -8,6 +8,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'single_class_constructor.freezed.dart';
 
 @freezed
+abstract class R1212 with _$R1212 {
+  const R1212._();
+  factory R1212({List<String>? labels, Map<String, dynamic>? data}) = _R1212;
+}
+
+@freezed
 abstract class ImplementedClass with _$ImplementedClass {
   factory ImplementedClass({required String brand}) = _ImplementedClass;
 }
@@ -341,7 +347,7 @@ abstract class SingleNamedCtor with _$SingleNamedCtor {
 
 @freezed
 abstract class Generic<T> with _$Generic<T> {
-  const factory Generic(T value) = A<T>;
+  const factory Generic(T value) = GenericA<T>;
 }
 
 @freezed

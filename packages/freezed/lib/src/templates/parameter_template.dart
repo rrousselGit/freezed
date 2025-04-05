@@ -78,7 +78,7 @@ class ParametersTemplate {
         defaultValueSource: e.defaultValue,
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,
-        type: parseTypeSource(e),
+        type: parseTypeSource(p),
         decorators: parseDecorators(e.metadata),
         doc: p.documentation ?? '',
         isPossiblyDartCollection: e.type.isPossiblyDartCollection,
