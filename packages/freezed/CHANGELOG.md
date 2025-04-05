@@ -3,6 +3,7 @@
 - Fix ==/hashCode when using inheritance.
   The generated ==/hashCode now call `super == other` when necessary.
 - Fix an issue with `Diagnosticable` and `toString`
+- Fix ejecting union cases when more than one class is defined in a file
 
 ## 3.0.4 - 2025-03-16
 
