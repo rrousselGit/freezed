@@ -17,12 +17,11 @@ jobs:
       matrix:
         package:
           - packages/freezed
+          - packages/freezed/example
           - packages/freezed_annotation
           - packages/freezed_lint
         channel:
           - master
-          # BLocked by https://github.com/dart-lang/source_gen/issues/739
-          # - stable
         dependencies:
           - get
           - downgrade
@@ -38,7 +37,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
-          cache: ${{ matrix.channel == 'stable' }}
+          cache: ${{ matrix.channel == 'master' }}
 
       # It is executed separately
       - name: Removing example folder

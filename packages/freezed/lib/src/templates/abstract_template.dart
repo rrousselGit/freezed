@@ -33,8 +33,10 @@ class Abstract {
         .expand((e) => [e.abstractGetter, if (!e.isFinal) e.abstractSetter])
         .join();
 
-    var interfaces =
-        [if (globalData.hasDiagnostics) 'DiagnosticableTreeMixin'].join();
+    var interfaces = [
+      if (globalData.hasDiagnostics && data.options.asString)
+        'DiagnosticableTreeMixin'
+    ].join();
     if (interfaces.isNotEmpty) interfaces = ' implements $interfaces';
 
     return '''

@@ -2,6 +2,7 @@
 
 - Fix ==/hashCode when using inheritance.
   The generated ==/hashCode now call `super == other` when necessary.
+- Fix an issue with `Diagnosticable` and `toString`
 
 ## 3.0.4 - 2025-03-16
 
