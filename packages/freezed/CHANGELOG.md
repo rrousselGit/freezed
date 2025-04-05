@@ -1,3 +1,7 @@
+## Unreleased fix
+
+Remove logs
+
 ## 3.0.5 - 2025-04-05
 
 - Fix ==/hashCode when using inheritance.
