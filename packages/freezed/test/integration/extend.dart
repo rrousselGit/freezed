@@ -14,7 +14,7 @@ abstract class Subclass extends Base with _$Subclass {
 }
 
 class BaseWithEqual {
-  const BaseWithEqual(this.another);
+  const BaseWithEqual([this.another = 0]);
   final int another;
 
   @override
@@ -30,7 +30,7 @@ class BaseWithEqual {
 
 @freezed
 class Subclass2 extends BaseWithEqual with _$Subclass2 {
-  Subclass2(this.value, super.another) : super();
+  Subclass2([this.value = 0, super.another = 0]) : super();
 
   @override
   final int value;

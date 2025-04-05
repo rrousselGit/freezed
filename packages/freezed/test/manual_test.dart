@@ -4,6 +4,26 @@ import 'package:test/test.dart';
 part 'manual_test.freezed.dart';
 part 'manual_test.g.dart';
 
+// https://github.com/rrousselGit/freezed/issues/1216
+@freezed
+class Product with _$Product {
+  @override
+  final int price;
+  const Product(this.price);
+}
+
+// https://github.com/rrousselGit/freezed/issues/1216
+@freezed
+class CartLine with _$CartLine {
+  @override
+  final Product product;
+  @override
+  final int amount;
+
+  CartLine({required this.product, int? defaultAmount})
+      : amount = defaultAmount ?? product.price;
+}
+
 // Regression for https://github.com/rrousselGit/freezed/issues/1168
 @freezed
 class Person with _$Person {
@@ -86,6 +106,16 @@ class ManualWithoutDefault2 with _$ManualWithoutDefault2 {
 }
 
 void main() {
+  group('CartLine', () {
+    test('has copyWith use default', () {
+      expect(
+        CartLine(product: const Product(42))
+            .copyWith(product: const Product(21)),
+        CartLine(product: const Product(21)),
+      );
+    });
+  });
+
   group('ManualWithBothDefault', () {
     test('has copyWith use default', () {
       expect(
