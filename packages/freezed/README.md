@@ -264,6 +264,7 @@ abstract class Person with _$Person {
 
   factory Person({required String name, int? age}) = _Person;
 
+  @override
   final String name;
 }
 ```
@@ -452,8 +453,11 @@ class Person with _$Person {
     required this.age,
   });
 
+  @override
   final String firstName;
+  @override
   final String lastName;
+  @override
   final int age;
 
   factory Person.fromJson(Map<String, Object?> json)
