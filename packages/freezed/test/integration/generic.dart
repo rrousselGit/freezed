@@ -66,3 +66,17 @@ abstract class Inner<I> with _$Inner<I> {
 abstract class Outer with _$Outer {
   const factory Outer({Inner<int>? innerData}) = _Outer;
 }
+
+@freezed
+abstract class InnerExtends<I extends Object> with _$InnerExtends<I> {
+  const factory InnerExtends({I? data}) = _InnerExtends<I>;
+}
+
+@freezed
+class ClassicUnspecifiedOuter with _$ClassicUnspecifiedOuter {
+  @override
+  // ignore: strict_raw_type
+  final InnerExtends? innerData;
+
+  const ClassicUnspecifiedOuter({this.innerData});
+}

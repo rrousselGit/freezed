@@ -130,4 +130,11 @@ void main() {
       throwsCompileError,
     );
   });
+
+  test(
+      'copyWith null innerData does not throw when using classic class style, unspecified generic',
+      () {
+    final state = ClassicUnspecifiedOuter(innerData: null);
+    expect(() => state.copyWith(), returnsNormally);
+  });
 }
