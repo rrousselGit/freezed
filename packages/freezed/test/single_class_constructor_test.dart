@@ -38,6 +38,12 @@ Future<void> main() async {
     );
   }
 
+  test('Regression1204', () {
+    // https://github.com/rrousselGit/freezed/issues/1204
+
+    expect(ClassicUnspecifiedOuter().copyWith(), isNotNull);
+  });
+
   test('ClassicUnspecifiedOuter', () {
     // regression https://github.com/rrousselGit/freezed/issues/1223
 
