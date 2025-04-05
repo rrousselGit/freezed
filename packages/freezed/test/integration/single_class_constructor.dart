@@ -7,6 +7,27 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'single_class_constructor.freezed.dart';
 
+typedef StringAlias = String;
+
+// https://github.com/rrousselGit/freezed/issues/1204
+@freezed
+sealed class Regression1204 with _$Regression1204 {
+  const factory Regression1204({
+    required StringAlias id,
+  }) = _Regression1204;
+}
+
+@optionalTypeArgs
+abstract class Inner<I> {}
+
+@freezed
+class ClassicUnspecifiedOuter with _$ClassicUnspecifiedOuter {
+  @override
+  final Inner? innerData;
+
+  const ClassicUnspecifiedOuter({this.innerData});
+}
+
 @freezed
 abstract class R1212 with _$R1212 {
   const R1212._();
