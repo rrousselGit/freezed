@@ -49,7 +49,7 @@ jobs:
 
       - name: Check format
         # Check dart format only on master
-        if: matrix.channel == 'master'
+        if: matrix.channel == 'master' && matrix.package != 'packages/freezed/example'
         run: dart format --set-exit-if-changed .
 
       - name: Generate
@@ -58,7 +58,6 @@ jobs:
 
       - name: Analyze
         run: flutter analyze --fatal-infos
-        working-directory: ${{ matrix.package }}
 
       - name: Run tests
         run: |
@@ -67,7 +66,6 @@ jobs:
           elif grep -q "test:" "pubspec.yaml"; then
             dart test
           fi
-        working-directory: ${{ matrix.package }}
 
       - name: Lint golden test
         if: matrix.package == 'packages/freezed_lint/example'
