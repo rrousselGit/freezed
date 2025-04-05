@@ -210,8 +210,7 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
       if (data.superCall != null)
         'extends': ['${data.name}${data.genericsParameterTemplate}'],
       'with': [
-        if (globalData.hasDiagnostics && data.options.asString)
-          'DiagnosticableTreeMixin',
+        if (globalData.hasDiagnostics) 'DiagnosticableTreeMixin',
         ...constructor.withDecorators.map((e) => e.type),
       ],
       'implements': [
