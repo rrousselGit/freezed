@@ -1,4 +1,4 @@
-## Unreleased fix
+## 3.0.5 - 2025-04-05
 
 - Fix ==/hashCode when using inheritance.
   The generated ==/hashCode now call `super == other` when necessary.
