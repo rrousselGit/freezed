@@ -15,10 +15,10 @@ Dart는 훌륭한 언어입니다. 하지만 "모델"을 정의하는 과정은 
 모델을 정의하려면 아래와 같은 작업이 필요합니다:
 
 생성자와 속성 정의하기
-toString, operator ==, hashCode 오버라이드
-객체를 복사하기 위한 copyWith 메서드 구현
+`toString`, `operator ==`, `hashCode` 오버라이드
+객체를 복사하기 위한 `copyWith` 메서드 구현
 직렬화 및 역직렬화 처리
-게다가 Dart에는 union types나 pattern-matching 같은 기능이 없습니다.
+게다가 Dart에는 `union types`, `pattern-matching` 같은 기능이 없습니다.
 
 이 모든 것을 직접 구현하려면 코드가 수백 줄로 늘어날 수도 있습니다. 이런 작업은 오류를 만들기 쉽고, 모델의 가독성을 떨어뜨릴 수 있습니다.
 
