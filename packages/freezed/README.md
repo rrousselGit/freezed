@@ -1179,7 +1179,7 @@ sealed class Result<T> with _$Result {
 }
 
 @freezed
-class ResultData<T> extends Result<T> {
+class ResultData<T> extends Result<T> with _$ResultData<T> {
   factory ResultData(T data) = _ResultData;
 
   // TODO maybe add some methods unique to ResultData
