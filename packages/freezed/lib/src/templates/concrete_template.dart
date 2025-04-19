@@ -11,12 +11,6 @@ import 'copy_with.dart';
 import 'parameter_template.dart';
 import 'prototypes.dart';
 
-sealed class Foo {}
-
-class Bar extends Foo {}
-
-class Baz extends Foo {}
-
 class Concrete {
   Concrete({
     required this.constructor,

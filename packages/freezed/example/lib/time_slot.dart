@@ -7,8 +7,5 @@ part 'time_slot.freezed.dart';
 /// https://github.com/rrousselGit/freezed/issues/220
 @freezed
 abstract class TimeSlot with _$TimeSlot {
-  factory TimeSlot({
-    TimeOfDay? start,
-    TimeOfDay? end,
-  }) = _TimeSlot;
+  factory TimeSlot({TimeOfDay? start, TimeOfDay? end}) = _TimeSlot;
 }
