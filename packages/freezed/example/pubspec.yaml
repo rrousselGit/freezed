@@ -3,25 +3,18 @@ description: A new Flutter project.
 publish_to: none
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
+  sdk: ">=3.7.0 <4.0.0"
+resolution: workspace
 
 dependencies:
   flutter:
     sdk: flutter
-  freezed_annotation:
-    path: ../../freezed_annotation
+  freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
 
 dev_dependencies:
-  freezed:
-    path: ../
+  freezed: ^3.0.2
   json_serializable: ^6.9.4
   build_runner:
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  freezed:
-    path: ../
-  freezed_annotation:
-    path: ../../freezed_annotation
