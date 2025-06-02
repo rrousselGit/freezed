@@ -153,7 +153,7 @@ If you import `foundation.dart`, [Freezed] will automatically do it for you.
 Freezed offers two ways of creating data-classes:
 
 - [Primary constructors](#primary-constructors) ; where you define a constructor and Freezed generates the associated fields.
-  This is simulating the [Primary Constructor](https://github.com/dart-lang/language/issues/2364 using `factory`.
+  This is simulating the [Primary Constructor](https://github.com/dart-lang/language/issues/2364) using `factory`.
 - [Classic classes](#classic-classes), where you write a normal Dart class and Freezed only handles `toString/==/copyWith`
 
 ### Primary constructors
