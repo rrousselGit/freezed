@@ -22,7 +22,7 @@ void main(List<String> arguments) {
     model = model.copyWith(counter: model.counter + 1);
 
     if (oldModel == model) {
-      throw Exception("New model should not equal old model.");
+      throw Exception('New model should not equal old model.');
     }
 
     model.hashCode;
@@ -30,7 +30,7 @@ void main(List<String> arguments) {
     final elapsedThisIteration = stopwatch.elapsedMicroseconds;
 
     if (i % 10 == 0) {
-      print("Delta: ${(elapsedThisIteration - elapsed) / 1000000} seconds");
+      print('Delta: ${(elapsedThisIteration - elapsed) / 1000000} seconds');
     }
 
     elapsed = elapsedThisIteration;

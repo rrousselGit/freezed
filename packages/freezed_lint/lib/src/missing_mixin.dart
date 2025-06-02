@@ -52,22 +52,21 @@ class _AddMixinFreezedClassFix extends DartFix {
   ) {
     context.registry.addClassDeclaration((node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
-      final changeBuilder = reporter.createChangeBuilder(
+      reporter.createChangeBuilder(
         message: 'Add mixin _\$${node.name}',
         priority: 1,
-      );
-      changeBuilder.addDartFileEdit((builder) {
-        final element = node.declaredElement;
-        if (element == null) return;
+      )..addDartFileEdit((builder) {
+          final element = node.declaredElement;
+          if (element == null) return;
 
-        final name = element.displayName;
-        final offset = node.leftBracket.offset - 1;
-        if (node.withClause != null) {
-          builder.addSimpleInsertion(offset, ', _\$$name');
-        } else {
-          builder.addSimpleInsertion(offset, ' with _\$$name');
-        }
-      });
+          final name = element.displayName;
+          final offset = node.leftBracket.offset - 1;
+          if (node.withClause != null) {
+            builder.addSimpleInsertion(offset, ', _\$$name');
+          } else {
+            builder.addSimpleInsertion(offset, ' with _\$$name');
+          }
+        });
     });
   }
 }

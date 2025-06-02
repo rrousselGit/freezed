@@ -87,7 +87,8 @@ class Freezed {
   });
 
   /// Decode the options from a build.yaml
-  factory Freezed.fromJson(Map json) => _$FreezedFromJson(json);
+  factory Freezed.fromJson(Map<Object?, Object?> json) =>
+      _$FreezedFromJson(json);
 
   /// Whether to assume that all constructor parameters are marked as final.
   ///
