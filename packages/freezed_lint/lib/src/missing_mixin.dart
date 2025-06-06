@@ -8,7 +8,7 @@ class MissingMixin extends DartLintRule {
 
   static const _code = LintCode(
     name: 'freezed_missing_mixin',
-    problemMessage: 'Freezed class should mixin with {0}',
+    problemMessage: 'Freezed class should mixin {0}',
   );
 
   @override

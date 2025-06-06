@@ -21,15 +21,10 @@ sealed class Union with _$Union {
 
 @freezed
 abstract class SharedProperty with _$SharedProperty {
-  factory SharedProperty.person({
-    String? name,
-    int? age,
-  }) = SharedProperty0;
+  factory SharedProperty.person({String? name, int? age}) = SharedProperty0;
 
-  factory SharedProperty.city({
-    String? name,
-    int? population,
-  }) = SharedProperty1;
+  factory SharedProperty.city({String? name, int? population}) =
+      SharedProperty1;
 }
 
 void main() {
@@ -56,42 +51,37 @@ void main() {
     Complex(:final a, :final b) => 'complex $a $b',
   }); // 42
 
-  print(
-    switch (unionExample) {
-      Loading _ => 'loading',
-      // voluntarily didn't handle error/complex cases
-      _ => 42,
-    },
-  ); // 42
+  print(switch (unionExample) {
+    Loading _ => 'loading',
+    // voluntarily didn't handle error/complex cases
+    _ => 42,
+  }); // 42
 
   // ------------------
 
   // non-destructuring pattern-matching
   // works the same as `when`, but the callback is slightly different
-  print(
-    switch (unionExample) {
-      Data value => '$value',
-      Loading _ => 'loading',
-      ErrorDetails(:final message) => 'Error: $message',
-      Complex(:final a, :final b) => 'complex $a $b',
-    },
-  ); // 42
+  print(switch (unionExample) {
+    Data value => '$value',
+    Loading _ => 'loading',
+    ErrorDetails(:final message) => 'Error: $message',
+    Complex(:final a, :final b) => 'complex $a $b',
+  }); // 42
 
-  print(
-    switch (unionExample) {
-      ErrorDetails(:final message) => message,
-      // voluntarily didn't handle error/complex cases
-      _ => 'fallthrough',
-    },
-  ); // fallthrough
+  print(switch (unionExample) {
+    ErrorDetails(:final message) => message,
+    // voluntarily didn't handle error/complex cases
+    _ => 'fallthrough',
+  }); // fallthrough
 
   // ------------------
 
   // nice toString
   print(const Union(42)); // Union(value: 42)
   print(const Union.loading()); // Union.loading()
-  print(const Union.error(
-      'Failed to fetch')); // Union.error(message: Failed to fetch)
+  print(
+    const Union.error('Failed to fetch'),
+  ); // Union.error(message: Failed to fetch)
 
   // ------------------
 
