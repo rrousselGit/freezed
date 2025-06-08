@@ -1,3 +1,7 @@
+## NEXT
+
+- Stop writing `// dart format width=80` to the generated freezed files.
+
 ## 3.0.6 - 2025-04-05
 
 Remove logs
