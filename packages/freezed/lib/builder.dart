@@ -16,7 +16,7 @@ Builder freezed(BuilderOptions options) {
       ),
     ],
     '.freezed.dart',
-    formatOutput: _defaultFormatOutput,
+    formatOutput: defaultFormatOutput,
     header: '''
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
@@ -27,5 +27,5 @@ Builder freezed(BuilderOptions options) {
   );
 }
 
-String _defaultFormatOutput(String code, Version version) =>
+String defaultFormatOutput(String code, Version version) =>
     DartFormatter(languageVersion: version).format(code);
