@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io' show Directory, File;
 
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen_test/source_gen_test.dart';
+import 'package:test/test.dart';
 
 Future<void> main() async {
   final reader = await initializeLibraryReaderForDirectory(
@@ -16,4 +18,24 @@ Future<void> main() async {
     reader,
     FreezedGenerator(Freezed.fromJson(<Object?, Object?>{}), format: false),
   );
+
+  test('generated files do not contain default source_gen header', () {
+    // Read generated files from the integration folder.
+    final generatedFiles = Directory('test/integration')
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((e) => e.path.endsWith('.freezed.dart'))
+        .toList();
+    for (final file in generatedFiles) {
+      final content = file.readAsStringSync();
+
+      // Verify the custom header is present
+      expect(content, contains('// coverage:ignore-file'));
+      expect(content, contains('// GENERATED CODE - DO NOT MODIFY BY HAND'));
+      expect(content, contains('// ignore_for_file: type=lint'));
+
+      // Verify the default source_gen header is NOT present
+      expect(content, isNot(contains('// dart format width')));
+    }
+  });
 }
