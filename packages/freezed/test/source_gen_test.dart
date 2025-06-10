@@ -26,6 +26,14 @@ Future<void> main() async {
         .whereType<File>()
         .where((e) => e.path.endsWith('.freezed.dart'))
         .toList();
+
+    // Ensure we have files to test
+    expect(
+      generatedFiles,
+      isNotEmpty,
+      reason: 'Expected to find .freezed.dart files in test/integration',
+    );
+
     for (final file in generatedFiles) {
       final content = file.readAsStringSync();
 
@@ -35,7 +43,12 @@ Future<void> main() async {
       expect(content, contains('// ignore_for_file: type=lint'));
 
       // Verify the default source_gen header is NOT present
-      expect(content, isNot(contains('// dart format width')));
+      expect(
+        content,
+        isNot(contains('// dart format width')),
+        reason:
+            'File ${file.path} should not contain default source_gen header',
+      );
     }
   });
 }
