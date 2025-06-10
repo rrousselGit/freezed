@@ -1,4 +1,4 @@
-## NEXT
+## Unreleased patch
 
 - Stop writing `// dart format width=80` to the generated freezed files.
 
