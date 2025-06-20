@@ -9,10 +9,7 @@ void main() {
   test('overriding toString works', () {
     // regression test for https://github.com/rrousselGit/freezed/issues/221
 
-    expect(
-      diagnosticable.ToString().toString(),
-      'MyToString()',
-    );
+    expect(diagnosticable.ToString().toString(), 'MyToString()');
   });
 
   test('use Diagnosticable instead of toString if possible', () {
