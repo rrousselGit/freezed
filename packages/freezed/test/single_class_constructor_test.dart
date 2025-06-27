@@ -27,15 +27,15 @@ class MyObject {
 Future<void> main() async {
   Future<LibraryElement> analyze() {
     return resolveSources(
-      {
-        'freezed|test/integration/single_class_constructor.dart':
-            useAssetReader,
-      },
-      (r) => r.libraries.firstWhere((e) {
-        return e.source.fullName ==
-            '/freezed/test/integration/single_class_constructor.dart';
-      }),
-    );
+        {
+          'freezed|test/integration/single_class_constructor.dart':
+              useAssetReader,
+        },
+        (r) => r.libraries.firstWhere((e) {
+              return e.source.fullName ==
+                  '/freezed/test/integration/single_class_constructor.dart';
+            }),
+        readAllSourcesFromFilesystem: true);
   }
 
   test('Regression1204', () {
@@ -642,7 +642,8 @@ void main() {
   WhateverRequired();
 }
     ''',
-      }, (r) => r.findLibraryByName('main'));
+      }, (r) => r.findLibraryByName('main'),
+          readAllSourcesFromFilesystem: true);
 
       final errorResult = await main!.session
           .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;

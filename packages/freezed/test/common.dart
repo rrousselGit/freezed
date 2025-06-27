@@ -13,7 +13,7 @@ library main;
 
 $src
     ''',
-  }, (r) => r.findLibraryByName('main'));
+  }, (r) => r.findLibraryByName('main'), readAllSourcesFromFilesystem: true);
 
   final errorResult = await main!.session
       .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
