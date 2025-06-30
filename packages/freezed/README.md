@@ -83,7 +83,10 @@ First, install [build_runner] and [Freezed] by adding them to your `pubspec.yaml
 For a Flutter project:
 
 ```console
-flutter pub add dev:build_runner freezed_annotation dev:freezed
+flutter pub add \
+  dev:build_runner \
+  freezed_annotation \
+  dev:freezed
 # if using freezed to generate fromJson/toJson, also add:
 flutter pub add json_annotation dev:json_serializable
 ```
@@ -91,7 +94,10 @@ flutter pub add json_annotation dev:json_serializable
 For a Dart project:
 
 ```console
-dart pub add dev:build_runner freezed_annotation dev:freezed
+dart pub add \
+  dev:build_runner \
+  freezed_annotation \
+  dev:freezed
 # if using freezed to generate fromJson/toJson, also add:
 dart pub add json_annotation dev:json_serializable
 ```
