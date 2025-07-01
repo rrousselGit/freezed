@@ -7,5 +7,11 @@ analyzer:
     strict-raw-types: true
   errors:
     invalid_annotation_target: ignore
+
+    # Expected errors
+    uri_does_not_exist: ignore
+    redirect_to_non_class: ignore
+    mixin_of_non_class: ignore
+    unused_element: ignore
   plugins:
     - custom_lint
