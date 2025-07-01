@@ -12,7 +12,7 @@ class MissingPrivateEmptyCtor extends DartLintRule {
     problemMessage: 'Private empty constructor required',
     correctionMessage:
         'Freezed classes containing methods, fields or accessors, '
-        'require a {0}',
+        'requires a {0}',
     errorSeverity: ErrorSeverity.ERROR,
   );
 
