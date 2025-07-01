@@ -20,6 +20,7 @@ Future<void> main() async {
             element.source.toString().contains('multiple_constructors'),
       );
     },
+    readAllSourcesFromFilesystem: true,
   );
 
   ClassElement _getClassElement(String elementName) {
