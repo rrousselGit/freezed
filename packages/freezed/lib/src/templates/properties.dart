@@ -51,10 +51,6 @@ class Property {
       );
     }
 
-    if (parameter.name?.lexeme == 'innerData') {
-      print('Hey ${element.type}');
-    }
-
     return Property(
       name: element.name,
       isFinal: addImplicitFinal || element.isFinal,

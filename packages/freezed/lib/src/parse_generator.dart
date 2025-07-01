@@ -10,8 +10,8 @@ import 'package:source_gen/source_gen.dart';
 
 typedef AnnotationMeta = ({Declaration declaration, DartObject annotation});
 
-abstract class ParserGenerator<Annotation>
-    extends GeneratorForAnnotation<Annotation> {
+abstract class ParserGenerator<AnnotationT>
+    extends GeneratorForAnnotation<AnnotationT> {
   @override
   FutureOr<String> generate(
     LibraryReader oldLibrary,

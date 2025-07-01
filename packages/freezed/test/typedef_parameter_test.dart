@@ -27,6 +27,7 @@ void main() {
       (r) => r.libraries.firstWhere(
         (element) => element.source.toString().contains('typedef_parameter'),
       ),
+      readAllSourcesFromFilesystem: true,
     );
 
     var freezedClass = main.topLevelElements

@@ -83,23 +83,23 @@ First, install [build_runner] and [Freezed] by adding them to your `pubspec.yaml
 For a Flutter project:
 
 ```console
-flutter pub add freezed_annotation
-flutter pub add dev:build_runner
-flutter pub add dev:freezed
+flutter pub add \
+  dev:build_runner \
+  freezed_annotation \
+  dev:freezed
 # if using freezed to generate fromJson/toJson, also add:
-flutter pub add json_annotation
-flutter pub add dev:json_serializable
+flutter pub add json_annotation dev:json_serializable
 ```
 
 For a Dart project:
 
 ```console
-dart pub add freezed_annotation
-dart pub add dev:build_runner
-dart pub add dev:freezed
+dart pub add \
+  dev:build_runner \
+  freezed_annotation \
+  dev:freezed
 # if using freezed to generate fromJson/toJson, also add:
-dart pub add json_annotation
-dart pub add dev:json_serializable
+dart pub add json_annotation dev:json_serializable
 ```
 
 This installs three packages:
@@ -153,7 +153,7 @@ If you import `foundation.dart`, [Freezed] will automatically do it for you.
 Freezed offers two ways of creating data-classes:
 
 - [Primary constructors](#primary-constructors) ; where you define a constructor and Freezed generates the associated fields.
-  This is simulating the [Primary Constructor](https://github.com/dart-lang/language/issues/2364 using `factory`.
+  This is simulating the [Primary Constructor](https://github.com/dart-lang/language/issues/2364) using `factory`.
 - [Classic classes](#classic-classes), where you write a normal Dart class and Freezed only handles `toString/==/copyWith`
 
 ### Primary constructors
@@ -1179,7 +1179,8 @@ sealed class Result<T> with _$Result {
 }
 
 @freezed
-class ResultData<T> extends Result<T> {
+class ResultData<T> extends Result<T> with _$ResultData<T> {
+  Result._();
   factory ResultData(T data) = _ResultData;
 
   // TODO maybe add some methods unique to ResultData

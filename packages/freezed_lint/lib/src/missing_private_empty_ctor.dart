@@ -40,7 +40,7 @@ class MissingPrivateEmptyCtor extends DartLintRule {
       if (ctors.isNotEmpty) return;
 
       final constToken = element.constToken();
-      final name = '${constToken}${element.displayName}._();';
+      final name = '$constToken${element.displayName}._();';
       reporter.atElement(element, _code, arguments: [name]);
     });
   }
@@ -64,18 +64,17 @@ class _AddPrivateEmptyCtorFix extends DartFix {
       if (element == null) return;
       final name = element.displayName;
       final constToken = element.constToken();
-      final changeBuilder = reporter.createChangeBuilder(
-        message: 'Add ${constToken}${name}._();',
+      reporter.createChangeBuilder(
+        message: 'Add $constToken$name._();',
         priority: 2,
-      );
-      changeBuilder.addDartFileEdit((builder) {
-        final nextLine =
-            resolver.lineInfo.getOffsetOfLineAfter(node.leftBracket.offset);
-        builder.addSimpleInsertion(
-          nextLine,
-          '  ${constToken}${name}._();\n',
-        );
-      });
+      )..addDartFileEdit((builder) {
+          final nextLine =
+              resolver.lineInfo.getOffsetOfLineAfter(node.leftBracket.offset);
+          builder.addSimpleInsertion(
+            nextLine,
+            '  $constToken$name._();\n',
+          );
+        });
     });
   }
 }
