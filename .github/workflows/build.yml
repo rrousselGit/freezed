@@ -48,7 +48,7 @@ jobs:
         run: flutter pub ${{ matrix.dependencies }}
 
       - name: Delete example 
-        if: matrix.package != 'packages/freezed'
+        if: matrix.package == 'packages/freezed'
         run: rm -rf example
 
       - name: Check format
