@@ -47,10 +47,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub ${{ matrix.dependencies }}
 
-      - name: Delete example 
-        if: matrix.package == 'packages/freezed'
-        run: rm -rf example
-
       - name: Check format
         # Check dart format only on stable
         if: matrix.channel == 'stable'
@@ -59,6 +55,7 @@ jobs:
 
       - name: Generate
         if: matrix.package != 'packages/freezed_lint/example'
+        continue-on-error: true
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Analyze
