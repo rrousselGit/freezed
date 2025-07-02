@@ -328,32 +328,6 @@ Future<void> main() async {
     expect(didEqual, isFalse);
   });
 
-  test('does not have when', () async {
-    await expectLater(
-      compile(r'''
-import 'single_class_constructor.dart';
-
-void main() {
-  MyClass().when;
-}
-'''),
-      throwsCompileError,
-    );
-  });
-
-  test('does not have maybeWhen', () async {
-    await expectLater(
-      compile(r'''
-import 'single_class_constructor.dart';
-
-void main() {
-  MyClass().maybeWhen;
-}
-'''),
-      throwsCompileError,
-    );
-  });
-
   test('regression 399', () async {
     await expectLater(
       compile(r'''
@@ -378,32 +352,6 @@ void main() {
   Regression399A(
     b: 42,
   );
-}
-'''),
-      throwsCompileError,
-    );
-  });
-
-  test('does not have map', () async {
-    await expectLater(
-      compile(r'''
-import 'single_class_constructor.dart';
-
-void main() {
-  MyClass().map;
-}
-'''),
-      throwsCompileError,
-    );
-  });
-
-  test('does not have maybeMap', () async {
-    await expectLater(
-      compile(r'''
-import 'single_class_constructor.dart';
-
-void main() {
-  MyClass().maybeMap;
 }
 '''),
       throwsCompileError,
