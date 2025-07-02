@@ -116,7 +116,8 @@ class DeepCloneableProperty {
         nullable: parameter.type.isNullable,
         typeName: typeElement.name,
         genericParameters: GenericsParameterTemplate(
-          (parameter.type as InterfaceType).typeArguments
+          (parameter.type as InterfaceType)
+              .typeArguments
               .map((e) => e.getDisplayString())
               .toList(),
         ),
@@ -150,8 +151,8 @@ extension on FormalParameter {
       DefaultFormalParameter() => that.parameter.typeAnnotation(),
       FieldFormalParameter() => that.type,
       FunctionTypedFormalParameter() => throw UnsupportedError(
-        'Parameters of format `T name()` are not supported. Use `T Function()` name.',
-      ),
+          'Parameters of format `T name()` are not supported. Use `T Function()` name.',
+        ),
       SimpleFormalParameter() => that.type,
       SuperFormalParameter() => that.type,
     };
@@ -276,8 +277,7 @@ When specifying fields in non-factory constructor then specifying factory constr
         className: declaration.name.lexeme,
       );
 
-      final excludedProperties =
-          manualConstructor?.parameters.parameters
+      final excludedProperties = manualConstructor?.parameters.parameters
               .map((e) => e.declaredElement!.name)
               .toSet() ??
           <String>{};
@@ -315,8 +315,7 @@ When specifying fields in non-factory constructor then specifying factory constr
                 final elementSourceUri =
                     element.element?.declaration?.librarySource?.uri;
 
-                final isFreezedAnnotation =
-                    elementSourceUri != null &&
+                final isFreezedAnnotation = elementSourceUri != null &&
                     elementSourceUri.scheme == 'package' &&
                     elementSourceUri.pathSegments.isNotEmpty &&
                     elementSourceUri.pathSegments.first == 'freezed_annotation';
@@ -379,6 +378,13 @@ When specifying fields in non-factory constructor then specifying factory constr
   final bool isSynthetic;
 
   String get callbackName => constructorNameToCallbackName(name);
+
+  bool isSyntheticParam({required String param}) {
+    return properties
+        .where((element) => element.name == param)
+        .first
+        .isSynthetic;
+  }
 }
 
 @freezed
@@ -399,70 +405,107 @@ class WhenConfig with _$WhenConfig {
   }) = _WhenConfig;
 }
 
-@freezed
-class Data with _$Data {
-  @Assert('constructors.isNotEmpty')
-  factory Data({
-    required String name,
-    required String unionKey,
-    required bool generateCopyWith,
-    required bool generateEqual,
-    required bool generateToString,
-    required MapConfig map,
-    required WhenConfig when,
-    required bool generateFromJson,
-    required bool generateToJson,
-    required bool makeCollectionsImmutable,
-    required List<String> concretePropertiesName,
-    required List<ConstructorDetails> constructors,
-    required GenericsDefinitionTemplate genericsDefinitionTemplate,
-    required GenericsParameterTemplate genericsParameterTemplate,
-    required bool shouldUseExtends,
-  }) {
-    if (field.isStatic) return;
+class ImplementsAnnotation {
+  ImplementsAnnotation({required this.type});
 
-    if (field.setter != null) {
-      throw InvalidGenerationSourceError(
-        'Classes decorated with @freezed cannot have mutable properties',
-        element: field,
-      );
+  static Iterable<ImplementsAnnotation> parseAll(
+    ConstructorElement constructor,
+  ) sync* {
+    for (final meta in const TypeChecker.fromRuntime(
+      Implements,
+    ).annotationsOf(constructor, throwOnUnresolved: false)) {
+      final stringType = meta.getField('stringType');
+      if (stringType?.isNull == false) {
+        yield ImplementsAnnotation(type: stringType!.toStringValue()!);
+      } else {
+        yield ImplementsAnnotation(
+          type: resolveFullTypeStringFrom(
+            constructor.library,
+            (meta.type! as InterfaceType).typeArguments.single,
+          ),
+        );
+      }
     }
+  }
 
-    // The field is a "Type get name => "
-    if (!shouldUseExtends &&
-        field.getter != null &&
-        !field.getter!.isAbstract &&
-        !field.getter!.isSynthetic) {
-      throw InvalidGenerationSourceError(
-        'Getters require a MyClass._() constructor',
-        element: field,
-      );
+  final String type;
+}
+
+class WithAnnotation {
+  WithAnnotation({required this.type});
+
+  static Iterable<WithAnnotation> parseAll(
+    ConstructorElement constructor,
+  ) sync* {
+    for (final metadata in constructor.metadata) {
+      if (!metadata.isWith) continue;
+      final object = metadata.computeConstantValue()!;
+
+      final stringType = object.getField('stringType');
+      if (stringType?.isNull == false) {
+        yield WithAnnotation(type: stringType!.toStringValue()!);
+      } else {
+        yield WithAnnotation(
+          type: resolveFullTypeStringFrom(
+            constructor.library,
+            (object.type! as InterfaceType).typeArguments.single,
+          ),
+        );
+      }
     }
+  }
 
-    // The field is a "final name = "
-    if (!shouldUseExtends && field.isFinal && field.hasInitializer) {
-      throw InvalidGenerationSourceError(
-        'Final variables require a MyClass._() constructor',
-        element: field,
+  final String type;
+}
+
+class AssertAnnotation {
+  AssertAnnotation({required this.code, required this.message});
+
+  static Iterable<AssertAnnotation> parseAll(
+    ConstructorDeclaration constructor,
+  ) sync* {
+    for (final meta in const TypeChecker.fromRuntime(
+      Assert,
+    ).annotationsOf(constructor.declaredElement!)) {
+      yield AssertAnnotation(
+        code: meta.getField('eval')!.toStringValue()!,
+        message: meta.getField('message')!.toStringValue(),
       );
     }
   }
 
-  bool get hasSuperEqual => _node.hasSuperEqual;
-  bool get hasSuperHashCode => _node.hasSuperHashCode;
+  final String code;
+  final String? message;
 
-  String get escapedName {
-    var generics = genericsParameterTemplate.typeParameters
-        .map((e) => '\$$e')
-        .join(', ');
-    if (generics.isNotEmpty) {
-      generics = '<$generics>';
+  @override
+  String toString() {
+    if (message != null) {
+      return "assert($code, '$message')";
     }
-
-    final escapedElementName = name.replaceAll(r'$', r'\$');
-
-    return '$escapedElementName$generics';
+    return 'assert($code)';
   }
+}
+
+class ConstructorInvocation {
+  ConstructorInvocation({
+    required this.name,
+    required this.positional,
+    required this.named,
+  });
+  final String? name;
+  final List<String> positional;
+  final List<String> named;
+}
+
+class CopyWithTarget {
+  CopyWithTarget({required this.parameters, required this.name});
+  final ParametersTemplate parameters;
+  final String? name;
+}
+
+extension on NamedType {
+  bool isSuperMixin(ClassDeclaration declaration) =>
+      name2.lexeme == '_\$${declaration.name.lexeme.public}';
 }
 
 class PropertyList {

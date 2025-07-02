@@ -121,18 +121,13 @@ String _mapPrototype(
       return ParametersTemplate([
         Parameter(
           name: 'value',
-          type: '${constructor.redirectedName}$genericParameters',
+          type: null,
+          typeDisplayString: '${constructor.redirectedName}$genericParameters',
           isRequired: false,
-          isNullable: false,
           isFinal: false,
-          isDartList: false,
-          isDartSet: false,
-          isDartMap: false,
           decorators: const [],
           defaultValueSource: '',
           doc: '',
-          // TODO: do we want to support freezed classes that implements MapView/ListView?
-          isPossiblyDartCollection: false,
           showDefaultValue: false,
           parameterElement: null,
         ),
@@ -187,18 +182,14 @@ String _unionPrototype(
   for (final constructor in allConstructors) {
     var template = CallbackParameter(
       name: constructorNameToCallbackName(constructor.name),
-      type: returnType,
+      type: null,
+      typeDisplayString: returnType,
       isFinal: false,
-      isDartList: false,
-      isDartMap: false,
-      isDartSet: false,
       isRequired: !constructor.isDefault && areCallbacksRequired,
-      isNullable: !areCallbacksRequired,
       parameters: ctor2parameters(constructor),
       decorators: const [],
       defaultValueSource: '',
       doc: '',
-      isPossiblyDartCollection: false,
       parameterElement: null,
     );
 
