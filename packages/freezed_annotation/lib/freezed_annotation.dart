@@ -73,7 +73,7 @@ class FreezedMapOptions {
   const FreezedMapOptions({this.map, this.mapOrNull, this.maybeMap});
 
   /// Decode a [FreezedMapOptions] from a build.yaml
-  factory FreezedMapOptions.fromJson(Map json) =>
+  factory FreezedMapOptions.fromJson(Map<Object?, Object?> json) =>
       _$FreezedMapOptionsFromJson(json);
 
   /// Enables the generation of all `Union.map` features
@@ -118,7 +118,7 @@ class FreezedWhenOptions {
   });
 
   /// Decode a [FreezedWhenOptions] from a build.yaml
-  factory FreezedWhenOptions.fromJson(Map json) =>
+  factory FreezedWhenOptions.fromJson(Map<Object?, Object?> json) =>
       _$FreezedWhenOptionsFromJson(json);
 
   /// Enables the generation of all `Union.when` features

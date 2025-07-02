@@ -4,7 +4,7 @@ part 'optional_maybe.freezed.dart';
 part 'optional_maybe.g.dart';
 
 @Freezed(map: FreezedMapOptions.none)
-class OptionalMaybeMap with _$OptionalMaybeMap {
+abstract class OptionalMaybeMap with _$OptionalMaybeMap {
   const factory OptionalMaybeMap.first() = OptionalMaybeMap1;
   const factory OptionalMaybeMap.second() = OptionalMaybeMap2;
 }
@@ -31,12 +31,12 @@ class OptionalEqual with _$OptionalEqual {
 }
 
 @Freezed(map: FreezedMapOptions.all, when: FreezedWhenOptions.all)
-class ForceUnionMethod with _$ForceUnionMethod {
+abstract class ForceUnionMethod with _$ForceUnionMethod {
   factory ForceUnionMethod() = _ForceUnionMethod;
 }
 
 @Freezed(map: FreezedMapOptions.all, when: FreezedWhenOptions.all)
-class ForceUnionMethod2 with _$ForceUnionMethod2 {
+abstract class ForceUnionMethod2 with _$ForceUnionMethod2 {
   factory ForceUnionMethod2.two() = _ForceUnionMethod2;
 }
 
