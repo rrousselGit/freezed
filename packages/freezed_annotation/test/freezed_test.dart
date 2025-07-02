@@ -62,9 +62,9 @@ void main() {
     });
 
     test('()', () {
-      expect(FreezedMapOptions().map, isNull);
-      expect(FreezedMapOptions().maybeMap, isNull);
-      expect(FreezedMapOptions().mapOrNull, isNull);
+      expect(const FreezedMapOptions().map, isNull);
+      expect(const FreezedMapOptions().maybeMap, isNull);
+      expect(const FreezedMapOptions().mapOrNull, isNull);
     });
   });
 
@@ -130,9 +130,9 @@ void main() {
     });
 
     test('()', () {
-      expect(FreezedWhenOptions().when, isNull);
-      expect(FreezedWhenOptions().maybeWhen, isNull);
-      expect(FreezedWhenOptions().whenOrNull, isNull);
+      expect(const FreezedWhenOptions().when, isNull);
+      expect(const FreezedWhenOptions().maybeWhen, isNull);
+      expect(const FreezedWhenOptions().whenOrNull, isNull);
     });
   });
 
