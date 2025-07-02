@@ -16,7 +16,7 @@ void main() {
     );
 
     final errorResult = await main.session.getErrors(
-            '/freezed/test/integration/optional_maybe_test.freezed.dart')
+            '/freezed/test/integration/optional_maybe.freezed.dart')
         as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
