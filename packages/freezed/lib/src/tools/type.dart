@@ -11,7 +11,9 @@ extension DartTypeX on DartType {
   }
 
   bool get isNullable {
-    if (isDynamic2 || nullabilitySuffix == NullabilitySuffix.question) {
+    if (isDynamic2 ||
+        isDartCoreNull ||
+        nullabilitySuffix == NullabilitySuffix.question) {
       return true;
     }
 
