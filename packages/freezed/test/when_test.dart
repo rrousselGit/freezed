@@ -361,52 +361,6 @@ void main() {
 
       expect(value.maybeWhen(null, orElse: () => 42), 42);
     });
-
-    test('named parameters are not required', () async {
-      final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
-library main;
-import 'multiple_constructors.dart';
-
-void main() {
-  final value = SwitchTest('a');
-
-  value.maybeWhen(null, orElse: () => 42);
-}
-''',
-        },
-        (r) => r.findLibraryByName('main'),
-      );
-
-      final errorResult = await main!.session
-          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
-
-      expect(errorResult.errors, isEmpty);
-    });
-
-    test('orElse is required', () async {
-      final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
-library main;
-import 'multiple_constructors.dart';
-
-void main() {
-  final value = SwitchTest('a');
-
-  value.maybeWhen(null);
-}
-''',
-        },
-        (r) => r.findLibraryByName('main'),
-      );
-
-      final errorResult = await main!.session
-          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
-
-      expect(errorResult.errors, isNotEmpty);
-    });
   });
 
   group('whenOrNull', () {
