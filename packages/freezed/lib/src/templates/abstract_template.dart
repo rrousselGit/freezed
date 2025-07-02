@@ -44,6 +44,12 @@ class Abstract {
 mixin _\$${data.name.public}${data.genericsDefinitionTemplate}$interfaces {
 
 $abstractProperties
+$_when
+$_whenOrNull
+$_maybeWhen
+$_map
+$_mapOrNull
+$_maybeMap
 ${copyWith?.copyWithGetter(needsCast: true) ?? ''}
 ${methods(data, globalData, properties: commonProperties, name: data.name, escapedName: data.escapedName, source: Source.mixin)}
 }
@@ -51,5 +57,35 @@ ${methods(data, globalData, properties: commonProperties, name: data.name, escap
 ${copyWith?.commonInterface ?? ''}
 ${copyWith?.commonConcreteImpl ?? ''}
 ''';
+  }
+
+  String get _when {
+    if (!data.when.when) return '';
+    return '${whenPrototype(data.constructors)} => throw $privConstUsedErrorVarName;';
+  }
+
+  String get _whenOrNull {
+    if (!data.when.whenOrNull) return '';
+    return '${whenOrNullPrototype(data.constructors)} => throw $privConstUsedErrorVarName;';
+  }
+
+  String get _maybeWhen {
+    if (!data.when.maybeWhen) return '';
+    return '${maybeWhenPrototype(data.constructors)} => throw $privConstUsedErrorVarName;';
+  }
+
+  String get _map {
+    if (!data.map.map) return '';
+    return '${mapPrototype(data.constructors, data.genericsParameterTemplate)} => throw $privConstUsedErrorVarName;';
+  }
+
+  String get _mapOrNull {
+    if (!data.map.mapOrNull) return '';
+    return '${mapOrNullPrototype(data.constructors, data.genericsParameterTemplate)} => throw $privConstUsedErrorVarName;';
+  }
+
+  String get _maybeMap {
+    if (!data.map.maybeMap) return '';
+    return '${maybeMapPrototype(data.constructors, data.genericsParameterTemplate)} => throw $privConstUsedErrorVarName;';
   }
 }

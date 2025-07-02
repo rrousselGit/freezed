@@ -167,7 +167,7 @@ abstract class NoDefault with _$NoDefault {
 }
 
 @freezed
-sealed class NameConflict with _$NameConflict {
+class NameConflict with _$NameConflict {
   factory NameConflict.something(Error error) = Something;
   factory NameConflict.error(Error error) = SomeError;
 }
