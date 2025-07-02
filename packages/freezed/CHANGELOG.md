@@ -1,4 +1,4 @@
-## Unreleased patch
+## 3.1.0 - 2025-07-02
 
 - Added `when`/`map` back
 - Stop writing `// dart format width=80` to the generated freezed files.

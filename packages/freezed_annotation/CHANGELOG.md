@@ -1,4 +1,4 @@
-## Unreleased minor
+## 3.1.0 - 2025-07-02
 
 Added `when`/`map` back
 
