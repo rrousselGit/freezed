@@ -15,8 +15,8 @@ void main() {
           (element) => element.source.toString().contains('optional_maybe')),
     );
 
-    final errorResult = await main.session.getErrors(
-            '/freezed/test/integration/optional_maybe.freezed.dart')
+    final errorResult = await main.session
+            .getErrors('/freezed/test/integration/optional_maybe.freezed.dart')
         as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
