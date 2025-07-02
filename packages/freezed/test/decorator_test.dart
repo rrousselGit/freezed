@@ -24,15 +24,15 @@ void main() {
     'internal raw collection is not decorated when using immutable collections',
     () async {
       final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
+          {
+            'freezed|test/integration/main.dart': r'''
 import 'decorator.dart';
 ''',
-        },
-        (r) => r.libraries.firstWhere(
-          (element) => element.library.name == 'decorator',
-        ),
-      );
+          },
+          (r) => r.libraries.firstWhere(
+                (element) => element.library.name == 'decorator',
+              ),
+          readAllSourcesFromFilesystem: true);
 
       final concrete = main.topLevelElements
           .whereType<ClassElement>()
@@ -53,8 +53,8 @@ import 'decorator.dart';
 
   test('warns if try to use deprecated property', () async {
     final main = await resolveSources(
-      {
-        'freezed|test/integration/main.dart': r'''
+        {
+          'freezed|test/integration/main.dart': r'''
 import 'decorator.dart';
 
 void main() {
@@ -74,11 +74,11 @@ void main() {
   );
 }
 ''',
-      },
-      (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('decorator'),
-      ),
-    );
+        },
+        (r) => r.libraries.firstWhere(
+              (element) => element.source.toString().contains('decorator'),
+            ),
+        readAllSourcesFromFilesystem: true);
 
     var errorResult = await main.session
         .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;

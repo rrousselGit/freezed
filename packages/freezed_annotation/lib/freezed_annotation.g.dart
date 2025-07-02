@@ -8,6 +8,18 @@ part of 'freezed_annotation.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+FreezedMapOptions _$FreezedMapOptionsFromJson(Map json) => FreezedMapOptions(
+      map: json['map'] as bool?,
+      mapOrNull: json['map_or_null'] as bool?,
+      maybeMap: json['maybe_map'] as bool?,
+    );
+
+FreezedWhenOptions _$FreezedWhenOptionsFromJson(Map json) => FreezedWhenOptions(
+      when: json['when'] as bool?,
+      whenOrNull: json['when_or_null'] as bool?,
+      maybeWhen: json['maybe_when'] as bool?,
+    );
+
 Freezed _$FreezedFromJson(Map json) => Freezed(
       unionKey: json['union_key'] as String? ?? 'runtimeType',
       unionValueCase: $enumDecodeNullable(
@@ -18,6 +30,8 @@ Freezed _$FreezedFromJson(Map json) => Freezed(
       toStringOverride: json['to_string_override'] as bool?,
       fromJson: json['from_json'] as bool?,
       toJson: json['to_json'] as bool?,
+      map: const _FreezedMapOptionsConverter().fromJson(json['map']),
+      when: const _FreezedWhenOptionsConverter().fromJson(json['when']),
       makeCollectionsUnmodifiable:
           json['make_collections_unmodifiable'] as bool? ?? true,
       addImplicitFinal: json['add_implicit_final'] as bool? ?? true,

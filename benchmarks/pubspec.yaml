@@ -2,7 +2,7 @@ name: example
 description: A new Flutter project.
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ^3.5.0
 
 dependencies:
   flutter:
