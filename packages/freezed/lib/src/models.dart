@@ -387,22 +387,28 @@ When specifying fields in non-factory constructor then specifying factory constr
   }
 }
 
-@freezed
-class MapConfig with _$MapConfig {
-  factory MapConfig({
-    required bool map,
-    required bool mapOrNull,
-    required bool maybeMap,
-  }) = _MapConfig;
+class MapConfig {
+  MapConfig({
+    required this.map,
+    required this.mapOrNull,
+    required this.maybeMap,
+  });
+
+  final bool map;
+  final bool mapOrNull;
+  final bool maybeMap;
 }
 
-@freezed
-class WhenConfig with _$WhenConfig {
-  factory WhenConfig({
-    required bool when,
-    required bool whenOrNull,
-    required bool maybeWhen,
-  }) = _WhenConfig;
+class WhenConfig {
+  WhenConfig({
+    required this.when,
+    required this.whenOrNull,
+    required this.maybeWhen,
+  });
+
+  final bool when;
+  final bool whenOrNull;
+  final bool maybeWhen;
 }
 
 class ImplementsAnnotation {
