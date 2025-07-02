@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/copy_with.dart';
+import 'package:freezed/src/templates/pattern_template.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' show Freezed;
 import 'package:meta/meta.dart';
@@ -105,6 +106,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       commonProperties: data.properties.readableProperties,
       globalData: globalData,
     );
+
+    yield patterns(data);
 
     for (final constructor in data.constructors) {
       yield Concrete(

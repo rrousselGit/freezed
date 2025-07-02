@@ -61,6 +61,9 @@ to focus on the definition of your model.
     - [Using pattern matching to read non-shared properties](#using-pattern-matching-to-read-non-shared-properties)
     - [Mixins and Interfaces for individual classes for union types](#mixins-and-interfaces-for-individual-classes-for-union-types)
     - [Ejecting an individual union case](#ejecting-an-individual-union-case)
+      - [(Legacy) Pattern matching utilities](#legacy-pattern-matching-utilities)
+        - [When](#when)
+        - [Map](#map)
   - [Configurations](#configurations)
     - [Changing the behavior for a specific model](#changing-the-behavior-for-a-specific-model)
     - [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)
@@ -1185,6 +1188,124 @@ class ResultData<T> extends Result<T> with _$ResultData<T> {
 
   // TODO maybe add some methods unique to ResultData
 }
+```
+
+#### (Legacy) Pattern matching utilities
+
+> [!WARNING]
+> As of Dart 3, Dart now has built-in pattern-matching using sealed classes.
+> As such, you no-longer need to rely on Freezed's generated methods for pattern matching.
+> Instead of using `when`/`map`, use the official Dart syntax.
+>
+> The references to `when`/`map` are kept for users who have yet to
+> migrate to Dart 3.
+> But in the long term, you should stop relying on them and migrate to `switch` expressions.
+
+##### When
+
+The [when] method is the equivalent to pattern matching with destructing.  
+The prototype of the method depends on the constructors defined.
+
+For example, with:
+
+```dart
+@freezed
+sealed class Union with _$Union {
+  const factory Union(int value) = Data;
+  const factory Union.loading() = Loading;
+  const factory Union.error([String? message]) = ErrorDetails;
+}
+```
+
+Then [when] will be:
+
+```dart
+var union = Union(42);
+
+print(
+  union.when(
+    (int value) => 'Data $value',
+    loading: () => 'loading',
+    error: (String? message) => 'Error: $message',
+  ),
+); // Data 42
+```
+
+Whereas if we defined:
+
+```dart
+@freezed
+sealed class Model with _$Model {
+  factory Model.first(String a) = First;
+  factory Model.second(int b, bool c) = Second;
+}
+```
+
+Then [when] will be:
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.when(
+    first: (String a) => 'first $a',
+    second: (int b, bool c) => 'second $b $c'
+  ),
+); // first 42
+```
+
+Notice how each callback matches with a constructor's name and prototype.
+
+##### Map
+
+The [map] methods are equivalent to [when], but **without** destructuring.
+
+Consider this class:
+
+```dart
+@freezed
+sealed class Model with _$Model {
+  factory Model.first(String a) = First;
+  factory Model.second(int b, bool c) = Second;
+}
+```
+
+With such class, while [when] will be:
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.when(
+    first: (String a) => 'first $a',
+    second: (int b, bool c) => 'second $b $c'
+  ),
+); // first 42
+```
+
+[map] will instead be:
+
+```dart
+var model = Model.first('42');
+
+print(
+  model.map(
+    first: (First value) => 'first ${value.a}',
+    second: (Second value) => 'second ${value.b} ${value.c}'
+  ),
+); // first 42
+```
+
+This can be useful if you want to do complex operations, like [copyWith]/`toString` for example:
+
+```dart
+var model = Model.second(42, false)
+print(
+  model.map(
+    first: (value) => value,
+    second: (value) => value.copyWith(c: true),
+  )
+); // Model.second(b: 42, c: true)
 ```
 
 ## Configurations

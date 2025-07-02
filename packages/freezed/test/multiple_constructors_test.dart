@@ -231,6 +231,177 @@ void main() {
       },
     );
 
+    test('when works on unnamed constructors', () {
+      expect(RequiredParams(a: 'a').when((a) => 21, second: (_) => 42), 21);
+      expect(
+        RequiredParams.second(a: 'a').when((a) => 21, second: (_) => 42),
+        42,
+      );
+    });
+
+    test('whenOrNull works on unnamed constructors', () {
+      expect(
+        RequiredParams(a: 'a').whenOrNull((a) => 21, second: (_) => 42),
+        21,
+      );
+      expect(
+        RequiredParams.second(a: 'a').whenOrNull(
+          (a) => 21,
+          second: (_) => 42,
+        ),
+        42,
+      );
+
+      expect(
+        RequiredParams(a: 'a').whenOrNull(null, second: (_) => 42),
+        null,
+      );
+      expect(
+        RequiredParams.second(a: 'a').whenOrNull((a) => 21),
+        null,
+      );
+    });
+
+    test('map works on unnamed constructors', () {
+      expect(RequiredParams(a: 'a').map((a) => 21, second: (_) => 42), 21);
+      expect(
+        RequiredParams.second(a: 'a').map((a) => 21, second: (_) => 42),
+        42,
+      );
+    });
+
+    test('mapOrNull works on unnamed constructors', () {
+      expect(RequiredParams(a: 'a').mapOrNull((a) => 21), 21);
+      expect(
+        RequiredParams.second(a: 'a').mapOrNull((a) => 21, second: (_) => 42),
+        42,
+      );
+
+      expect(RequiredParams(a: 'a').mapOrNull(null), null);
+      expect(
+        RequiredParams.second(a: 'a').mapOrNull(null),
+        null,
+      );
+    });
+
+    test('maybeMap works on unnamed constructors', () {
+      expect(RequiredParams(a: 'a').maybeMap((a) => 21, orElse: () => 42), 21);
+      expect(
+        RequiredParams.second(a: 'a').maybeMap((a) => 21, orElse: () => 42),
+        42,
+      );
+      expect(RequiredParams(a: 'a').maybeMap(null, orElse: () => 42), 42);
+      expect(
+        RequiredParams.second(a: 'a').maybeMap(null, orElse: () => 42),
+        42,
+      );
+    });
+
+    test('maybeWhen works on unnamed constructors', () {
+      expect(RequiredParams(a: 'a').maybeWhen((a) => 21, orElse: () => 42), 21);
+      expect(
+        RequiredParams.second(a: 'a').maybeWhen((a) => 21, orElse: () => 42),
+        42,
+      );
+      expect(RequiredParams(a: 'a').maybeWhen(null, orElse: () => 42), 42);
+      expect(
+        RequiredParams.second(a: 'a').maybeWhen(null, orElse: () => 42),
+        42,
+      );
+    });
+
+    test('maybeMap can use FutureOr', () async {
+      var res = NoDefault.first('a').maybeMap<FutureOr<int>>(
+        first: (a) => 21,
+        orElse: () => Future.value(42),
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').maybeMap<FutureOr<int>>(
+        second: (b) => Future.value(42),
+        orElse: () => 21,
+      );
+
+      await expectLater(res, completion(42));
+    });
+
+    test('mapOrNull can use FutureOr', () async {
+      var res = NoDefault.first('a').mapOrNull<FutureOr<int>>(
+        first: (a) => 21,
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').mapOrNull<FutureOr<int>>(
+        second: (b) => Future.value(42),
+      );
+
+      await expectLater(res, completion(42));
+    });
+
+    test('map can use FutureOr', () async {
+      var res = NoDefault.first('a').map<FutureOr<int>>(
+        first: (a) => 21,
+        second: (b) => Future.value(42),
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').map<FutureOr<int>>(
+        first: (a) => 21,
+        second: (b) => Future.value(42),
+      );
+
+      await expectLater(res, completion(42));
+    });
+
+    test('maybeWhen  can use FutureOr', () async {
+      var res = NoDefault.first('a').maybeWhen<FutureOr<int>>(
+        first: (a) => 21,
+        orElse: () => Future.value(42),
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').maybeWhen<FutureOr<int>>(
+        second: (b) => Future.value(42),
+        orElse: () => 21,
+      );
+
+      await expectLater(res, completion(42));
+    });
+
+    test('whenOrNull can use FutureOr', () async {
+      var res = NoDefault.first('a').whenOrNull<FutureOr<int>>(
+        first: (a) => 21,
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').whenOrNull<FutureOr<int>>(
+        second: (b) => Future.value(42),
+      );
+
+      await expectLater(res, completion(42));
+    });
+
+    test('when can use FutureOr', () async {
+      var res = NoDefault.first('a').when<FutureOr<int>>(
+        first: (a) => 21,
+        second: (b) => Future.value(42),
+      );
+
+      expect(res, 21);
+
+      res = NoDefault.second('a').when<FutureOr<int>>(
+        first: (a) => 21,
+        second: (b) => Future.value(42),
+      );
+
+      await expectLater(res, completion(42));
+    });
+
     test('redirected constructors do have public properties', () {
       final ctor0 = NoCommonParam0('a', b: 42);
       String a = ctor0.a;
@@ -417,7 +588,6 @@ void main() {
         },
         error);
   });
-
   group('NestedList', () {
     test('generates List of correct type', () async {
       final nestedListClass = _getClassElement('ShallowNestedList');

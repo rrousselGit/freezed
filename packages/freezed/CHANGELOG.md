@@ -1,3 +1,7 @@
+## Unreleased minor
+
+Added `when`/`map` back
+
 ## 3.0.6 - 2025-04-05
 
 Remove logs

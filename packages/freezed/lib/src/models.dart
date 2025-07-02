@@ -387,6 +387,30 @@ When specifying fields in non-factory constructor then specifying factory constr
   }
 }
 
+class MapConfig {
+  MapConfig({
+    required this.map,
+    required this.mapOrNull,
+    required this.maybeMap,
+  });
+
+  final bool map;
+  final bool mapOrNull;
+  final bool maybeMap;
+}
+
+class WhenConfig {
+  WhenConfig({
+    required this.when,
+    required this.whenOrNull,
+    required this.maybeWhen,
+  });
+
+  final bool when;
+  final bool whenOrNull;
+  final bool maybeWhen;
+}
+
 class ImplementsAnnotation {
   ImplementsAnnotation({required this.type});
 
@@ -1051,6 +1075,7 @@ To fix, either:
 
   bool get hasSuperEqual => _node.hasSuperEqual;
   bool get hasSuperHashCode => _node.hasSuperHashCode;
+  bool get isSealed => _node.sealedKeyword != null;
 
   String get escapedName {
     var generics =
@@ -1097,6 +1122,8 @@ class ClassConfig {
     required this.asString,
     required this.fromJson,
     required this.toJson,
+    required this.map,
+    required this.when,
     required this.asUnmodifiableCollections,
     required this.genericArgumentFactories,
     required this.annotation,
@@ -1114,8 +1141,25 @@ class ClassConfig {
       library,
     );
 
+    final shouldGeneratePatterns = declaration.constructors
+        .where(
+          (e) => !e.isManualCtor && !(e.name?.lexeme ?? '').startsWith('_'),
+        )
+        .isNotEmpty;
+
     return ClassConfig(
       equal: resolvedAnnotation.equal ?? !declaration.hasCustomEquals,
+      map: MapConfig(
+        map: resolvedAnnotation.map?.map ?? shouldGeneratePatterns,
+        mapOrNull: resolvedAnnotation.map?.mapOrNull ?? shouldGeneratePatterns,
+        maybeMap: resolvedAnnotation.map?.maybeMap ?? shouldGeneratePatterns,
+      ),
+      when: WhenConfig(
+        when: resolvedAnnotation.when?.when ?? shouldGeneratePatterns,
+        whenOrNull:
+            resolvedAnnotation.when?.whenOrNull ?? shouldGeneratePatterns,
+        maybeWhen: resolvedAnnotation.when?.maybeWhen ?? shouldGeneratePatterns,
+      ),
       asString:
           resolvedAnnotation.toStringOverride ?? !declaration.hasCustomToString,
       fromJson: resolvedAnnotation.fromJson ?? needsJsonSerializable,
@@ -1187,6 +1231,52 @@ class ClassConfig {
         },
         orElse: () => globalConfigs.unionValueCase,
       ),
+      when: annotation.decodeField(
+        'when',
+        decode: (obj) {
+          return FreezedWhenOptions(
+            when: obj.decodeField(
+              'when',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => globalConfigs.when?.when,
+            ),
+            maybeWhen: obj.decodeField(
+              'maybeWhen',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => globalConfigs.when?.maybeWhen,
+            ),
+            whenOrNull: obj.decodeField(
+              'whenOrNull',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => globalConfigs.when?.whenOrNull,
+            ),
+          );
+        },
+        orElse: () => globalConfigs.when,
+      ),
+      map: annotation.decodeField(
+        'map',
+        decode: (obj) {
+          return FreezedMapOptions(
+            map: obj.decodeField(
+              'map',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => globalConfigs.map?.map,
+            ),
+            maybeMap: obj.decodeField(
+              'maybeMap',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => globalConfigs.map?.maybeMap,
+            ),
+            mapOrNull: obj.decodeField(
+              'mapOrNull',
+              decode: (obj) => obj.toBoolValue(),
+              orElse: () => globalConfigs.map?.mapOrNull,
+            ),
+          );
+        },
+        orElse: () => globalConfigs.map,
+      ),
     );
   }
 
@@ -1194,6 +1284,8 @@ class ClassConfig {
   final bool asString;
   final bool fromJson;
   final bool toJson;
+  final MapConfig map;
+  final WhenConfig when;
   final bool asUnmodifiableCollections;
   final bool genericArgumentFactories;
   final Freezed annotation;

@@ -62,6 +62,139 @@ class EqualUnmodifiableMapView<Key, Value>
   int get hashCode => Object.hash(runtimeType, _source);
 }
 
+/// Options for enabling/disabling specific `Union.map` features;
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  createToJson: false,
+  anyMap: true,
+)
+class FreezedMapOptions {
+  /// Options for enabling/disabling specific `Union.map` features;
+  const FreezedMapOptions({this.map, this.mapOrNull, this.maybeMap});
+
+  /// Decode a [FreezedMapOptions] from a build.yaml
+  factory FreezedMapOptions.fromJson(Map<Object?, Object?> json) =>
+      _$FreezedMapOptionsFromJson(json);
+
+  /// Enables the generation of all `Union.map` features
+  static const all =
+      FreezedMapOptions(map: true, mapOrNull: true, maybeMap: true);
+
+  /// Disables the generation of all `Union.map` features
+  static const none =
+      FreezedMapOptions(map: false, mapOrNull: false, maybeMap: false);
+
+  /// Whether to generate `Union.map`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? map;
+
+  /// Whether to generate `Union.mapOrNull`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? mapOrNull;
+
+  /// Whether to generate `Union.maybeMap`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? maybeMap;
+}
+
+/// Options for enabling/disabling specific `Union.when` features;
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  createToJson: false,
+  anyMap: true,
+)
+class FreezedWhenOptions {
+  /// Options for enabling/disabling specific `Union.when` features;
+  const FreezedWhenOptions({
+    this.when,
+    this.whenOrNull,
+    this.maybeWhen,
+  });
+
+  /// Decode a [FreezedWhenOptions] from a build.yaml
+  factory FreezedWhenOptions.fromJson(Map<Object?, Object?> json) =>
+      _$FreezedWhenOptionsFromJson(json);
+
+  /// Enables the generation of all `Union.when` features
+  static const all =
+      FreezedWhenOptions(when: true, whenOrNull: true, maybeWhen: true);
+
+  /// Disables the generation of all `Union.when` features
+  static const none = FreezedWhenOptions(
+    when: false,
+    whenOrNull: false,
+    maybeWhen: false,
+  );
+
+  /// Whether to generate `Union.when`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? when;
+
+  /// Whether to generate `Union.whenOrNull`
+  ///
+  /// If null, will fallback to the build.yaml configs
+  /// If that value is null too, defaults to true.
+  final bool? whenOrNull;
+
+  /// Whether to generate `Union.maybeWhen`
+  ///
+  /// If null, will fallback to the build.yaml configs.
+  /// If that value is null too, defaults to true.
+  final bool? maybeWhen;
+}
+
+class _FreezedWhenOptionsConverter
+    implements JsonConverter<FreezedWhenOptions?, Object?> {
+  const _FreezedWhenOptionsConverter();
+
+  @override
+  FreezedWhenOptions? fromJson(Object? json) {
+    if (json == true) return FreezedWhenOptions.all;
+    if (json == false) return FreezedWhenOptions.none;
+    if (json == null) return null;
+    if (json is Map) return FreezedWhenOptions.fromJson(json);
+
+    throw ArgumentError.value(
+      json,
+      'json',
+      'Expected a bool a Map, got ${json.runtimeType}',
+    );
+  }
+
+  @override
+  Object? toJson(FreezedWhenOptions? object) => null;
+}
+
+class _FreezedMapOptionsConverter
+    implements JsonConverter<FreezedMapOptions?, Object?> {
+  const _FreezedMapOptionsConverter();
+
+  @override
+  FreezedMapOptions? fromJson(Object? json) {
+    if (json == true) return FreezedMapOptions.all;
+    if (json == false) return FreezedMapOptions.none;
+    if (json == null) return null;
+    if (json is Map) return FreezedMapOptions.fromJson(json);
+
+    throw ArgumentError.value(
+      json,
+      'json',
+      'Expected a bool or a Map, got ${json.runtimeType}',
+    );
+  }
+
+  @override
+  Object? toJson(FreezedMapOptions? object) => throw UnimplementedError();
+}
+
 /// {@template freezed_annotation.freezed}
 /// Flags a class as needing to be processed by Freezed and allows passing options.
 /// {@endtemplate}
@@ -81,6 +214,8 @@ class Freezed {
     this.toStringOverride,
     this.fromJson,
     this.toJson,
+    this.map,
+    this.when,
     this.makeCollectionsUnmodifiable,
     this.addImplicitFinal = true,
     this.genericArgumentFactories = false,
@@ -340,6 +475,20 @@ class Freezed {
   /// }
   /// ```
   final bool genericArgumentFactories;
+
+  /// Options for customizing the generation of `map` functions
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`.
+  /// If that value is null too, defaults to [FreezedMapOptions.all].
+  @_FreezedMapOptionsConverter()
+  final FreezedMapOptions? map;
+
+  /// Options for customizing the generation of `when` functions
+  ///
+  /// If null, picks up the default values from the project's `build.yaml`
+  /// If that value is null too, defaults to [FreezedWhenOptions.all].
+  @_FreezedWhenOptionsConverter()
+  final FreezedWhenOptions? when;
 }
 
 /// Defines an immutable data-class.

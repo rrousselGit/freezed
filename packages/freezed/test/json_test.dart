@@ -40,33 +40,6 @@ Future<void> main() async {
     );
   });
 
-  test('Do not generate when/map even if fromJson is present', () async {
-    await expectLater(
-      compile(r'''
-import 'json.dart';
-
-void main() {
-  final a = NoWhen();
-}
-'''),
-      completes,
-    );
-
-    await expectLater(
-      compile(r'''
-import 'json.dart';
-import 'json.dart';
-
-void main() {
-  final a = NoWhen();
-  a.whenOrNull();
-  a.mapOrNull();
-}
-'''),
-      throwsCompileError,
-    );
-  });
-
   group('Freezed.unionKey', () {
     test('fromJson', () {
       expect(
