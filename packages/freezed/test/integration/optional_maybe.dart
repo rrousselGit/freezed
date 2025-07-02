@@ -10,7 +10,7 @@ abstract class OptionalMaybeMap with _$OptionalMaybeMap {
 }
 
 @Freezed(when: FreezedWhenOptions.none)
-class OptionalMaybeWhen with _$OptionalMaybeWhen {
+abstract class OptionalMaybeWhen with _$OptionalMaybeWhen {
   const factory OptionalMaybeWhen.first() = OptionalMaybeWhen1;
   const factory OptionalMaybeWhen.second() = OptionalMaybeWhen2;
 }
