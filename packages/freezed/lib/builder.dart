@@ -1,5 +1,7 @@
 import 'package:build/build.dart';
+import 'package:dart_style/dart_style.dart' show DartFormatter;
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pub_semver/pub_semver.dart' show Version;
 import 'package:source_gen/source_gen.dart';
 
 import 'src/freezed_generator.dart';
@@ -14,6 +16,7 @@ Builder freezed(BuilderOptions options) {
       ),
     ],
     '.freezed.dart',
+    formatOutput: _defaultFormatOutput,
     header: '''
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
@@ -23,3 +26,6 @@ Builder freezed(BuilderOptions options) {
     options: options,
   );
 }
+
+String _defaultFormatOutput(String code, Version version) =>
+    DartFormatter(languageVersion: version).format(code);

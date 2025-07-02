@@ -18,6 +18,8 @@ dependencies:
   source_gen: ^2.0.0
   freezed_annotation: ^3.0.0
   json_annotation: ^4.8.0
+  dart_style: ^3.0.0
+  pub_semver: ^2.2.0
 
 dev_dependencies:
   json_serializable: ^6.3.2
