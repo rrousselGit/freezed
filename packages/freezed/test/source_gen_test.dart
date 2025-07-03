@@ -40,13 +40,12 @@ Future<void> main() async {
       // Verify the custom header is present
       expect(content, contains('// coverage:ignore-file'));
       expect(
-        content.substring(
-          0,
-          '// GENERATED CODE - DO NOT MODIFY BY HAND'.length + 1,
-        ),
-        startsWith('// GENERATED CODE - DO NOT MODIFY BY HAND'),
-        reason: 'Start with GENERATED for Github Linguist'
-      );
+          content.substring(
+            0,
+            '// GENERATED CODE - DO NOT MODIFY BY HAND'.length + 1,
+          ),
+          startsWith('// GENERATED CODE - DO NOT MODIFY BY HAND'),
+          reason: 'Start with GENERATED for Github Linguist');
       expect(content, contains('// ignore_for_file: type=lint'));
 
       // Verify the default source_gen header is NOT present
