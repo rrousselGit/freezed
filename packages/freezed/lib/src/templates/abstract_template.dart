@@ -1,11 +1,13 @@
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 
+import '../parse_generator.dart';
 import 'concrete_template.dart';
 import 'copy_with.dart';
 import 'properties.dart';
 
-class Abstract {
+class Abstract implements Template {
   Abstract({
     required this.data,
     required this.copyWith,
@@ -19,7 +21,7 @@ class Abstract {
   final Library globalData;
 
   @override
-  String toString() {
+  void generate(AnalyzerBuffer buffer) {
     final needsAbstractGetters = data.options.toJson ||
         copyWith != null ||
         data.options.asString ||
@@ -39,7 +41,7 @@ class Abstract {
     ].join();
     if (interfaces.isNotEmpty) interfaces = ' implements $interfaces';
 
-    return '''
+    buffer.write('''
 /// @nodoc
 mixin _\$${data.name.public}${data.genericsDefinitionTemplate}$interfaces {
 
@@ -50,6 +52,6 @@ ${methods(data, globalData, properties: commonProperties, name: data.name, escap
 
 ${copyWith?.commonInterface ?? ''}
 ${copyWith?.commonConcreteImpl ?? ''}
-''';
+''');
   }
 }

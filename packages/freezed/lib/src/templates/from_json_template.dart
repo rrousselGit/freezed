@@ -1,27 +1,29 @@
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../models.dart';
+import '../parse_generator.dart';
 import 'prototypes.dart';
 
-class FromJson {
+class FromJson implements Template {
   FromJson(this.clazz);
 
   final Class clazz;
 
   @override
-  String toString() {
+  void generate(AnalyzerBuffer buffer) {
     // For manual classes, we don't handle from/toJson. This is because parts
     // cannot add annotations on user's behalf.
-    if (clazz.constructors.isEmpty) return '';
+    if (clazz.constructors.isEmpty) return;
 
     final conflictCtor = clazz.constructors
         .where((c) => c.redirectedName.public == clazz.name.public)
         .firstOrNull;
 
     if (conflictCtor != null) {
-      if (clazz.constructors.length == 1) return '';
+      if (clazz.constructors.length == 1) return;
 
       throw InvalidGenerationSourceError('''
 Could not generate _\$${clazz.name}FromJson because both ${clazz.name} and ${conflictCtor.redirectedName} would want to generate it.
@@ -79,12 +81,12 @@ return ${fallbackConstructor.redirectedName}${clazz.genericsParameterTemplate}.f
       ''';
     }
 
-    return '''
+    buffer.write('''
 ${clazz.name}${clazz.genericsParameterTemplate} _\$${clazz.name.public}FromJson${clazz.genericsDefinitionTemplate}(
   Map<String, dynamic> json${fromJsonParameters(clazz.genericsParameterTemplate, clazz.options.genericArgumentFactories)}
 ) {
 $content
 }
-''';
+''');
   }
 }

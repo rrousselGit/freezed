@@ -1,28 +1,39 @@
 import 'package:analyzer/dart/element/type_provider.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:freezed/src/models.dart';
+import 'package:freezed/src/parse_generator.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 
-String patterns(Class data) {
-  final typeProvider = data.library.typeProvider;
-  final buffer = StringBuffer()
-    ..write(_maybeMap(data, typeProvider: typeProvider))
-    ..write(_map(data, typeProvider: typeProvider))
-    ..write(_mapOrNull(data, typeProvider: typeProvider))
-    ..write(_maybeWhen(data, typeProvider: typeProvider))
-    ..write(_when(data, typeProvider: typeProvider))
-    ..write(_whenOrNull(data, typeProvider: typeProvider));
+class Patterns implements Template {
+  Patterns(this.data);
+  final Class data;
 
-  if (buffer.isNotEmpty) {
-    return '''
+  @override
+  void generate(AnalyzerBuffer buffer) {
+    final typeProvider = data.library.typeProvider;
+
+    final hasAnyPattern = data.options.map.maybeMap ||
+        data.options.map.map ||
+        data.options.map.mapOrNull ||
+        data.options.when.maybeWhen ||
+        data.options.when.when ||
+        data.options.when.whenOrNull;
+    if (!hasAnyPattern) return;
+
+    buffer
+      ..write('''
 /// Adds pattern-matching-related methods to [${data.name}].
 extension ${data.name}Patterns${data.genericsDefinitionTemplate} on ${data.name}${data.genericsParameterTemplate} {
-$buffer
-}
-''';
+''')
+      ..write(_maybeMap(data, typeProvider: typeProvider))
+      ..write(_map(data, typeProvider: typeProvider))
+      ..write(_mapOrNull(data, typeProvider: typeProvider))
+      ..write(_maybeWhen(data, typeProvider: typeProvider))
+      ..write(_when(data, typeProvider: typeProvider))
+      ..write(_whenOrNull(data, typeProvider: typeProvider))
+      ..write('}');
   }
-
-  return '';
 }
 
 String _maybeMap(

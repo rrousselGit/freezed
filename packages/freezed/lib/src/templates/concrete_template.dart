@@ -1,7 +1,9 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
+import 'package:freezed/src/parse_generator.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/tools/type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,7 +13,7 @@ import 'copy_with.dart';
 import 'parameter_template.dart';
 import 'prototypes.dart';
 
-class Concrete {
+class Concrete implements Template {
   Concrete({
     required this.constructor,
     required this.data,
@@ -34,12 +36,12 @@ class Concrete {
           );
 
   @override
-  String toString() {
-    if (!constructor.isSynthetic) return '';
+  void generate(AnalyzerBuffer buffer) {
+    if (!constructor.isSynthetic) return;
 
     final jsonSerializable = _jsonSerializable();
 
-    return '''
+    buffer.write('''
 /// @nodoc
 $jsonSerializable
 ${constructor.decorators.join('\n')}
@@ -55,7 +57,7 @@ ${methods(data, globalData, properties: constructor.properties, name: constructo
 
 ${copyWith?.interface ?? ''}
 ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
-''';
+''');
   }
 
   String _jsonSerializable() {

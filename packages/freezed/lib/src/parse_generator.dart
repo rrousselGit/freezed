@@ -4,11 +4,25 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
 
 typedef AnnotationMeta = ({Declaration declaration, DartObject annotation});
+
+abstract class Template {
+  factory Template(String content) = _TemplateImpl;
+  void generate(AnalyzerBuffer buffer);
+}
+
+class _TemplateImpl implements Template {
+  const _TemplateImpl(this.content);
+  final String content;
+
+  @override
+  void generate(AnalyzerBuffer buffer) => buffer.write(content);
+}
 
 abstract class ParserGenerator<AnnotationT>
     extends GeneratorForAnnotation<AnnotationT> {
@@ -25,7 +39,6 @@ abstract class ParserGenerator<AnnotationT>
       ),
     ).cast<CompilationUnit>().toList();
 
-    final values = StringBuffer();
     final datas = <AnnotationMeta>[];
 
     for (final unit in units) {
@@ -43,14 +56,15 @@ abstract class ParserGenerator<AnnotationT>
       }
     }
 
+    final buffer = AnalyzerBuffer.fromLibrary(oldLibrary.element);
     for (final value in generateAll(units, datas)) {
-      values.writeln(value);
+      value.generate(buffer);
     }
 
-    return values.toString();
+    return buffer.toString();
   }
 
-  Iterable<Object?> generateAll(
+  Iterable<Template> generateAll(
     List<CompilationUnit> units,
     List<AnnotationMeta> annotatedElements,
   ) sync* {}
@@ -86,9 +100,13 @@ abstract class ParserGenerator<AnnotationT>
       );
     }
 
+    final buffer = AnalyzerBuffer.fromLibrary(unit.libraryElement);
+
     final datas = <AnnotationMeta>[(declaration: ast, annotation: annotation)];
     for (final value in generateAll([unit.unit], datas)) {
-      yield value.toString();
+      value.generate(buffer);
     }
+
+    yield buffer.toString();
   }
 }
