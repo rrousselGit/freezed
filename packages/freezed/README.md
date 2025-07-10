@@ -1175,18 +1175,17 @@ Note that the extracted class can be a Freezed class too!
 
 ```dart
 @freezed
-sealed class Result<T> with _$Result {
-  Result._();
-  factory Result.data(T data) = ResultData;
-  factory Result.error(Object error) = ResultError;
+sealed class Result<T> with _$Result<T> {
+  const Result._();
+  const factory Result.data(T data) = ResultData;
+  const factory Result.error(Object error) = ResultError;
 }
 
+// TODO maybe add some methods unique to ResultData
 @freezed
-class ResultData<T> extends Result<T> with _$ResultData<T> {
-  Result._();
-  factory ResultData(T data) = _ResultData;
-
-  // TODO maybe add some methods unique to ResultData
+abstract class ResultData<T> extends Result<T> with _$ResultData<T> {
+  const factory ResultData(T data) = _ResultData;
+  const ResultData._() : super._();
 }
 ```
 
