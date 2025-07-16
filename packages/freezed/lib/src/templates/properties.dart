@@ -23,17 +23,17 @@ class Property {
   });
 
   Property.fromParameter(Parameter p, {required bool isSynthetic})
-      : this(
-          decorators: p.decorators,
-          name: p.name,
-          isFinal: p.isFinal,
-          doc: p.doc,
-          type: p.type,
-          typeDisplayString: p.typeDisplayString,
-          defaultValueSource: p.defaultValueSource,
-          isSynthetic: isSynthetic,
-          hasJsonKey: false,
-        );
+    : this(
+        decorators: p.decorators,
+        name: p.name,
+        isFinal: p.isFinal,
+        doc: p.doc,
+        type: p.type,
+        typeDisplayString: p.typeDisplayString,
+        defaultValueSource: p.defaultValueSource,
+        isSynthetic: isSynthetic,
+        hasJsonKey: false,
+      );
 
   static Property fromFormalParameter(
     FormalParameter parameter, {
@@ -81,28 +81,28 @@ class Property {
   }
 
   Getter get abstractGetter => Getter(
-        name: name,
-        type: typeDisplayString,
-        decorators: decorators,
-        doc: doc,
-        body: ';',
-      );
+    name: name,
+    type: typeDisplayString,
+    decorators: decorators,
+    doc: doc,
+    body: ';',
+  );
 
   Getter asGetter(String body) => Getter(
-        name: name,
-        type: typeDisplayString,
-        decorators: decorators,
-        doc: doc,
-        body: body,
-      );
+    name: name,
+    type: typeDisplayString,
+    decorators: decorators,
+    doc: doc,
+    body: body,
+  );
 
   Setter get abstractSetter => Setter(
-        name: name,
-        type: typeDisplayString,
-        decorators: decorators,
-        doc: doc,
-        body: ';',
-      );
+    name: name,
+    type: typeDisplayString,
+    decorators: decorators,
+    doc: doc,
+    body: ';',
+  );
 
   Property copyWith({
     DartType? type,

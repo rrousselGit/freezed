@@ -45,9 +45,11 @@ void main() {
       ),
     );
 
-    final errorResult = await main.session.getErrors(
-      '/freezed/test/integration/generic.freezed.dart',
-    ) as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/generic.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -62,15 +64,16 @@ void main() {
   test('map is generic too', () {
     var result = MultipleConstructors<int, double>(false)
         .map<MultipleConstructors<int, double>>(
-      (Default<int, double> value) => value,
-      first: (First<int, double> value) => value,
-      second: (Second<int, double> value) => value,
-    );
+          (Default<int, double> value) => value,
+          first: (First<int, double> value) => value,
+          second: (Second<int, double> value) => value,
+        );
 
     expect(result, MultipleConstructors<int, double>(false));
 
-    MultipleConstructors<int, double>(false)
-        .maybeMap<MultipleConstructors<int, double>>(
+    MultipleConstructors<int, double>(
+      false,
+    ).maybeMap<MultipleConstructors<int, double>>(
       (Default<int, double> value) => value,
       first: (First<int, double> value) => value,
       second: (Second<int, double> value) => value,

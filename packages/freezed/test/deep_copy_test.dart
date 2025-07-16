@@ -24,9 +24,11 @@ void main() {
       ),
     );
 
-    final errorResult = await main.session.getErrors(
-      '/freezed/test/integration/deep_copy.freezed.dart',
-    ) as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/deep_copy.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -39,9 +41,11 @@ void main() {
       ),
     );
 
-    final errorResult = await main.session.getErrors(
-      '/freezed/test/integration/deep_copy2.freezed.dart',
-    ) as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors(
+              '/freezed/test/integration/deep_copy2.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -705,8 +709,8 @@ void main() {
 
   test('warns about unused copyWith result', () async {
     final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
+      {
+        'freezed|test/integration/main.dart': r'''
 library main;
 import 'deep_copy.dart';
 
@@ -716,14 +720,16 @@ void main() {
   company.copyWith(name: 'MyCompany');
 }
 ''',
-        },
-        (r) => r.libraries.firstWhere(
-              (element) => element.source.toString().contains('deep_copy'),
-            ),
-        readAllSourcesFromFilesystem: true);
+      },
+      (r) => r.libraries.firstWhere(
+        (element) => element.source.toString().contains('deep_copy'),
+      ),
+      readAllSourcesFromFilesystem: true,
+    );
 
-    final errorResult = await main.session
-        .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+    final errorResult =
+        await main.session.getErrors('/freezed/test/integration/main.dart')
+            as ErrorsResult;
 
     expect(errorResult.errors.map((e) => e.errorCode.name), [
       'UNUSED_RESULT',

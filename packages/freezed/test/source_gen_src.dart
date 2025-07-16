@@ -13,9 +13,7 @@ To fix, either:
 ''')
 @freezed
 class RequiredCloneable with _$RequiredCloneable {
-  RequiredCloneable({
-    required int notCloneable,
-  });
+  RequiredCloneable({required int notCloneable});
 }
 
 mixin _$RequiredCloneable {}

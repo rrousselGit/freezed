@@ -21,12 +21,12 @@ jobs:
           - packages/freezed_annotation
           - packages/freezed_lint
         channel:
-          - master
+          - stable
         dependencies:
           - get
           - downgrade
         exclude:
-          - channel: master
+          - channel: stable
             dependencies: downgrade
           - package: packages/freezed_lint
             channel: stable
@@ -37,7 +37,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
-          cache: ${{ matrix.channel == 'master' }}
+          cache: ${{ matrix.channel == 'stable' }}
 
       # It is executed separately
       - name: Removing example folder
@@ -52,8 +52,8 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Check format
-        # Check dart format only on master
-        if: matrix.channel == 'master'
+        # Check dart format only on stable
+        if: matrix.channel == 'stable'
         run: dart format --set-exit-if-changed .
         working-directory: ${{ matrix.package }}
 

@@ -92,8 +92,10 @@ class ParametersTemplate {
           .where((p) => p.isOptionalPositional)
           .map(asParameter)
           .toList(),
-      namedParameters:
-          parameters.where((p) => p.isNamed).map(asParameter).toList(),
+      namedParameters: parameters
+          .where((p) => p.isNamed)
+          .map(asParameter)
+          .toList(),
     );
   }
 
@@ -127,8 +129,9 @@ class ParametersTemplate {
   ParametersTemplate mapParameters(Parameter Function(Parameter parameter) cb) {
     return ParametersTemplate(
       requiredPositionalParameters.map(cb).toList(),
-      optionalPositionalParameters:
-          optionalPositionalParameters.map(cb).toList(),
+      optionalPositionalParameters: optionalPositionalParameters
+          .map(cb)
+          .toList(),
       namedParameters: namedParameters.map(cb).toList(),
     );
   }
@@ -139,7 +142,8 @@ class ParametersTemplate {
       required bool isNamed,
       required bool isRequired,
       required int? index,
-    }) cb,
+    })
+    cb,
   ) {
     final parameters = [
       ...requiredPositionalParameters.mapIndexed(
@@ -162,8 +166,10 @@ class ParametersTemplate {
           .where((e) => e.isNamed == false && e.isRequired == false)
           .map((e) => e.$1)
           .toList(),
-      namedParameters:
-          parameters.where((e) => e.isNamed == true).map((e) => e.$1).toList(),
+      namedParameters: parameters
+          .where((e) => e.isNamed == true)
+          .map((e) => e.$1)
+          .toList(),
     );
   }
 
@@ -249,19 +255,18 @@ class Parameter {
     bool? showDefaultValue,
     String? doc,
     bool? isFinal,
-  }) =>
-      Parameter(
-        type: type ?? this.type,
-        typeDisplayString: typeDisplayString,
-        name: name ?? this.name,
-        defaultValueSource: defaultValueSource ?? this.defaultValueSource,
-        isRequired: isRequired ?? this.isRequired,
-        decorators: decorators ?? this.decorators,
-        showDefaultValue: showDefaultValue ?? this.showDefaultValue,
-        doc: doc ?? this.doc,
-        isFinal: isFinal ?? this.isFinal,
-        parameterElement: parameterElement,
-      );
+  }) => Parameter(
+    type: type ?? this.type,
+    typeDisplayString: typeDisplayString,
+    name: name ?? this.name,
+    defaultValueSource: defaultValueSource ?? this.defaultValueSource,
+    isRequired: isRequired ?? this.isRequired,
+    decorators: decorators ?? this.decorators,
+    showDefaultValue: showDefaultValue ?? this.showDefaultValue,
+    doc: doc ?? this.doc,
+    isFinal: isFinal ?? this.isFinal,
+    parameterElement: parameterElement,
+  );
 
   @override
   String toString() {
@@ -296,17 +301,17 @@ class SuperParameter extends Parameter {
   }) : super(showDefaultValue: true);
 
   SuperParameter.fromParameter(Parameter p)
-      : this(
-          name: p.name,
-          type: p.type,
-          typeDisplayString: p.typeDisplayString,
-          defaultValueSource: p.defaultValueSource,
-          isFinal: p.isFinal,
-          isRequired: p.isRequired,
-          decorators: p.decorators,
-          doc: p.doc,
-          parameterElement: p.parameterElement,
-        );
+    : this(
+        name: p.name,
+        type: p.type,
+        typeDisplayString: p.typeDisplayString,
+        defaultValueSource: p.defaultValueSource,
+        isFinal: p.isFinal,
+        isRequired: p.isRequired,
+        decorators: p.decorators,
+        doc: p.doc,
+        parameterElement: p.parameterElement,
+      );
 
   @override
   String toString() {
@@ -338,17 +343,17 @@ class LocalParameter extends Parameter {
   }) : super(showDefaultValue: true);
 
   LocalParameter.fromParameter(Parameter p)
-      : this(
-          name: p.name,
-          type: p.type,
-          typeDisplayString: p.typeDisplayString,
-          defaultValueSource: p.defaultValueSource,
-          isFinal: p.isFinal,
-          isRequired: p.isRequired,
-          decorators: p.decorators,
-          doc: p.doc,
-          parameterElement: p.parameterElement,
-        );
+    : this(
+        name: p.name,
+        type: p.type,
+        typeDisplayString: p.typeDisplayString,
+        defaultValueSource: p.defaultValueSource,
+        isFinal: p.isFinal,
+        isRequired: p.isRequired,
+        decorators: p.decorators,
+        doc: p.doc,
+        parameterElement: p.parameterElement,
+      );
 
   @override
   String toString() {

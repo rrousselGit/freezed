@@ -33,7 +33,8 @@ void main() {
 
     group('default ctor', () {
       test("assert callbacks can't be null", () async {
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -45,9 +46,12 @@ void main() {
     second: (SwitchTest2 c) {},
   );
 }
-'''), completes);
+'''),
+          completes,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -59,9 +63,12 @@ void main() {
     second: (SwitchTest2 value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -73,9 +80,12 @@ void main() {
     second: (SwitchTest2 value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -87,7 +97,9 @@ void main() {
     second: null,
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
       });
       test('calls default callback', () {
         final value = SwitchTest('a');
@@ -105,7 +117,8 @@ void main() {
 
     group('first ctor', () {
       test("assert callbacks can't be null", () async {
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -117,9 +130,12 @@ void main() {
     second: (SwitchTest2 c) {},
   );
 }
-'''), completes);
+'''),
+          completes,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -131,9 +147,12 @@ void main() {
     second: (SwitchTest2 value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -145,9 +164,12 @@ void main() {
     second: (SwitchTest2 value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -159,7 +181,9 @@ void main() {
     second: null,
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
       });
 
       test('calls first callback', () {
@@ -177,7 +201,8 @@ void main() {
     });
     group('second ctor', () {
       test("assert callbacks can't be null", () async {
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -189,9 +214,12 @@ void main() {
     second: (SwitchTest2 c) {},
   );
 }
-'''), completes);
+'''),
+          completes,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -203,9 +231,12 @@ void main() {
     second: (SwitchTest2 value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -217,9 +248,12 @@ void main() {
     second: (SwitchTest2 value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -231,7 +265,9 @@ void main() {
     second: null,
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
       });
       test('calls second callback', () {
         final value = SwitchTest.second('a', 21, .42);
@@ -248,9 +284,8 @@ void main() {
     });
 
     test('named parameters are marked as required', () async {
-      final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
+      final main = await resolveSources({
+        'freezed|test/integration/main.dart': r'''
 library main;
 import 'multiple_constructors.dart';
 
@@ -262,12 +297,11 @@ void main() {
   );
 }
 ''',
-        },
-        (r) => r.findLibraryByName('main'),
-      );
+      }, (r) => r.findLibraryByName('main'));
 
-      final errorResult = await main!.session
-          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+      final errorResult =
+          await main!.session.getErrors('/freezed/test/integration/main.dart')
+              as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -309,7 +343,8 @@ void main() {
     });
 
     test('assert orElse is passed', () async {
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -320,9 +355,12 @@ void main() {
     orElse: () {},
   );
 }
-'''), completes);
+'''),
+        completes,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -333,9 +371,12 @@ void main() {
     orElse: null,
   );
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -346,7 +387,9 @@ void main() {
     orElse: null,
   );
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
     });
 
     test('orElse is called', () {
@@ -364,9 +407,8 @@ void main() {
     });
 
     test('orElse is required', () async {
-      final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
+      final main = await resolveSources({
+        'freezed|test/integration/main.dart': r'''
 library main;
 import 'multiple_constructors.dart';
 
@@ -376,12 +418,11 @@ void main() {
   value.maybeMap(null);
 }
 ''',
-        },
-        (r) => r.findLibraryByName('main'),
-      );
+      }, (r) => r.findLibraryByName('main'));
 
-      final errorResult = await main!.session
-          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+      final errorResult =
+          await main!.session.getErrors('/freezed/test/integration/main.dart')
+              as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -394,9 +435,9 @@ void main() {
     });
 
     test('can map to nullable return type without type cast', () {
-      String? res = NoDefault.first('a').mapOrNull(
-        first: (value) => value.a.isEmpty ? null : value.a,
-      );
+      String? res = NoDefault.first(
+        'a',
+      ).mapOrNull(first: (value) => value.a.isEmpty ? null : value.a);
       expect(res, 'a');
     });
 

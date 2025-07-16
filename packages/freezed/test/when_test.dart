@@ -31,7 +31,8 @@ void main() {
     });
     group('default ctor', () {
       test("assert callbacks can't be null", () async {
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -43,9 +44,12 @@ void main() {
     second: (String a, int? c, double? d) {},
   );
 }
-'''), completes);
+'''),
+          completes,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -57,9 +61,12 @@ void main() {
     second: (String value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -71,9 +78,12 @@ void main() {
     second: (String value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -85,7 +95,9 @@ void main() {
     second: null,
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
       });
 
       test('calls default callback', () {
@@ -104,7 +116,8 @@ void main() {
 
     group('first ctor', () {
       test("assert callbacks can't be null", () async {
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -115,9 +128,12 @@ void main() {
     second: (String a, int? c, double? d) {},
   );
 }
-'''), completes);
+'''),
+          completes,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -129,9 +145,12 @@ void main() {
     second: (String value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -143,9 +162,12 @@ void main() {
     second: (String value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -157,7 +179,9 @@ void main() {
     second: null,
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
       });
 
       test('calls first callback', () {
@@ -176,7 +200,8 @@ void main() {
 
     group('second ctor', () {
       test("assert callbacks can't be null", () async {
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -187,9 +212,12 @@ void main() {
     second: (String a, int? c, double? d) {},
   );
 }
-'''), completes);
+'''),
+          completes,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -201,9 +229,12 @@ void main() {
     second: (String value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -215,9 +246,12 @@ void main() {
     second: (String value) {},
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
 
-        await expectLater(compile(r'''
+        await expectLater(
+          compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -229,7 +263,9 @@ void main() {
     second: null,
   );
 }
-'''), throwsCompileError);
+'''),
+          throwsCompileError,
+        );
       });
 
       test('calls second callback', () {
@@ -247,9 +283,8 @@ void main() {
     });
 
     test('named parameters are marked as required', () async {
-      final main = await resolveSources(
-        {
-          'freezed|test/integration/main.dart': r'''
+      final main = await resolveSources({
+        'freezed|test/integration/main.dart': r'''
 library main;
 import 'multiple_constructors.dart';
 
@@ -261,12 +296,11 @@ void main() {
   );
 }
 ''',
-        },
-        (r) => r.findLibraryByName('main'),
-      );
+      }, (r) => r.findLibraryByName('main'));
 
-      final errorResult = await main!.session
-          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+      final errorResult =
+          await main!.session.getErrors('/freezed/test/integration/main.dart')
+              as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -308,7 +342,8 @@ void main() {
     });
 
     test('assert orElse is passed', () async {
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -319,9 +354,12 @@ void main() {
     orElse: () {},
   );
 }
-'''), completes);
+'''),
+        completes,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -332,9 +370,12 @@ void main() {
     orElse: null,
   );
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
 
-      await expectLater(compile(r'''
+      await expectLater(
+        compile(r'''
 import 'multiple_constructors.dart';
 
 void main() {
@@ -345,7 +386,9 @@ void main() {
     orElse: null,
   );
 }
-'''), throwsCompileError);
+'''),
+        throwsCompileError,
+      );
     });
 
     test('orElse is called', () {
@@ -365,9 +408,9 @@ void main() {
 
   group('whenOrNull', () {
     test('can map to nullable return type without type cast', () {
-      String? res = NoDefault.first('a').whenOrNull(
-        first: (a) => a.isEmpty ? null : a,
-      );
+      String? res = NoDefault.first(
+        'a',
+      ).whenOrNull(first: (a) => a.isEmpty ? null : a);
       expect(res, 'a');
     });
 
@@ -377,15 +420,9 @@ void main() {
     });
 
     test('calls callback on matching constructor', () {
-      expect(
-        NoDefault.first('a').whenOrNull(first: (v) => v),
-        'a',
-      );
+      expect(NoDefault.first('a').whenOrNull(first: (v) => v), 'a');
 
-      expect(
-        NoDefault.second('a').whenOrNull(second: (v) => v),
-        'a',
-      );
+      expect(NoDefault.second('a').whenOrNull(second: (v) => v), 'a');
     });
   });
 }

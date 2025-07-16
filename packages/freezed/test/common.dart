@@ -7,16 +7,22 @@ import 'package:test/test.dart';
 final throwsCompileError = throwsA(isA<CompileError>());
 
 Future<void> compile(String src) async {
-  final main = await resolveSources({
-    'freezed|test/integration/main.dart': '''
+  final main = await resolveSources(
+    {
+      'freezed|test/integration/main.dart':
+          '''
 library main;
 
 $src
     ''',
-  }, (r) => r.findLibraryByName('main'), readAllSourcesFromFilesystem: true);
+    },
+    (r) => r.findLibraryByName('main'),
+    readAllSourcesFromFilesystem: true,
+  );
 
-  final errorResult = await main!.session
-      .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+  final errorResult =
+      await main!.session.getErrors('/freezed/test/integration/main.dart')
+          as ErrorsResult;
   final criticalErrors = errorResult.errors
       .where((element) => element.severity == Severity.error)
       .toList();

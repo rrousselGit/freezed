@@ -25,8 +25,8 @@ Future<void> main() async {
 
   ClassElement _getClassElement(String elementName) {
     return sources.topLevelElements.whereType<ClassElement>().firstWhere(
-          (element) => element.name == elementName,
-        );
+      (element) => element.name == elementName,
+    );
   }
 
   test('Response', () {
@@ -176,9 +176,11 @@ void main() {
         ),
       );
 
-      final errorResult = await main.session.getErrors(
-        '/freezed/test/integration/multiple_constructors.freezed.dart',
-      ) as ErrorsResult;
+      final errorResult =
+          await main.session.getErrors(
+                '/freezed/test/integration/multiple_constructors.freezed.dart',
+              )
+              as ErrorsResult;
 
       expect(errorResult.errors, isEmpty);
     });
@@ -245,21 +247,12 @@ void main() {
         21,
       );
       expect(
-        RequiredParams.second(a: 'a').whenOrNull(
-          (a) => 21,
-          second: (_) => 42,
-        ),
+        RequiredParams.second(a: 'a').whenOrNull((a) => 21, second: (_) => 42),
         42,
       );
 
-      expect(
-        RequiredParams(a: 'a').whenOrNull(null, second: (_) => 42),
-        null,
-      );
-      expect(
-        RequiredParams.second(a: 'a').whenOrNull((a) => 21),
-        null,
-      );
+      expect(RequiredParams(a: 'a').whenOrNull(null, second: (_) => 42), null);
+      expect(RequiredParams.second(a: 'a').whenOrNull((a) => 21), null);
     });
 
     test('map works on unnamed constructors', () {
@@ -278,10 +271,7 @@ void main() {
       );
 
       expect(RequiredParams(a: 'a').mapOrNull(null), null);
-      expect(
-        RequiredParams.second(a: 'a').mapOrNull(null),
-        null,
-      );
+      expect(RequiredParams.second(a: 'a').mapOrNull(null), null);
     });
 
     test('maybeMap works on unnamed constructors', () {
@@ -327,31 +317,27 @@ void main() {
     });
 
     test('mapOrNull can use FutureOr', () async {
-      var res = NoDefault.first('a').mapOrNull<FutureOr<int>>(
-        first: (a) => 21,
-      );
+      var res = NoDefault.first('a').mapOrNull<FutureOr<int>>(first: (a) => 21);
 
       expect(res, 21);
 
-      res = NoDefault.second('a').mapOrNull<FutureOr<int>>(
-        second: (b) => Future.value(42),
-      );
+      res = NoDefault.second(
+        'a',
+      ).mapOrNull<FutureOr<int>>(second: (b) => Future.value(42));
 
       await expectLater(res, completion(42));
     });
 
     test('map can use FutureOr', () async {
-      var res = NoDefault.first('a').map<FutureOr<int>>(
-        first: (a) => 21,
-        second: (b) => Future.value(42),
-      );
+      var res = NoDefault.first(
+        'a',
+      ).map<FutureOr<int>>(first: (a) => 21, second: (b) => Future.value(42));
 
       expect(res, 21);
 
-      res = NoDefault.second('a').map<FutureOr<int>>(
-        first: (a) => 21,
-        second: (b) => Future.value(42),
-      );
+      res = NoDefault.second(
+        'a',
+      ).map<FutureOr<int>>(first: (a) => 21, second: (b) => Future.value(42));
 
       await expectLater(res, completion(42));
     });
@@ -373,31 +359,29 @@ void main() {
     });
 
     test('whenOrNull can use FutureOr', () async {
-      var res = NoDefault.first('a').whenOrNull<FutureOr<int>>(
-        first: (a) => 21,
-      );
+      var res = NoDefault.first(
+        'a',
+      ).whenOrNull<FutureOr<int>>(first: (a) => 21);
 
       expect(res, 21);
 
-      res = NoDefault.second('a').whenOrNull<FutureOr<int>>(
-        second: (b) => Future.value(42),
-      );
+      res = NoDefault.second(
+        'a',
+      ).whenOrNull<FutureOr<int>>(second: (b) => Future.value(42));
 
       await expectLater(res, completion(42));
     });
 
     test('when can use FutureOr', () async {
-      var res = NoDefault.first('a').when<FutureOr<int>>(
-        first: (a) => 21,
-        second: (b) => Future.value(42),
-      );
+      var res = NoDefault.first(
+        'a',
+      ).when<FutureOr<int>>(first: (a) => 21, second: (b) => Future.value(42));
 
       expect(res, 21);
 
-      res = NoDefault.second('a').when<FutureOr<int>>(
-        first: (a) => 21,
-        second: (b) => Future.value(42),
-      );
+      res = NoDefault.second(
+        'a',
+      ).when<FutureOr<int>>(first: (a) => 21, second: (b) => Future.value(42));
 
       await expectLater(res, completion(42));
     });
@@ -581,12 +565,10 @@ void main() {
     var error = Error();
     final value = NameConflict.error(error);
 
-    expect(
-        switch (value) {
-          Something() => 42,
-          SomeError(:final error) => error,
-        },
-        error);
+    expect(switch (value) {
+      Something() => 42,
+      SomeError(:final error) => error,
+    }, error);
   });
   group('NestedList', () {
     test('generates List of correct type', () async {
