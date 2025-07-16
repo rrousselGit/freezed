@@ -32,13 +32,13 @@ extension FindAllAvailableTopLevelElements on LibraryElement {
 
     final librariesToCheck = checkExports
         ? units
-            .expand((e) => e.libraryExports)
-            .map(_LibraryDirectives.fromExport)
-            .nonNulls
+              .expand((e) => e.libraryExports)
+              .map(_LibraryDirectives.fromExport)
+              .nonNulls
         : units
-            .expand((e) => e.libraryImports)
-            .map(_LibraryDirectives.fromImport)
-            .nonNulls;
+              .expand((e) => e.libraryImports)
+              .map(_LibraryDirectives.fromImport)
+              .nonNulls;
 
     for (final directive in librariesToCheck) {
       if (!visitedLibraryPaths.add(directive.key)) {
@@ -47,17 +47,17 @@ extension FindAllAvailableTopLevelElements on LibraryElement {
 
       yield* directive.library
           ._findAllAvailableTopLevelElements(
-        visitedLibraryPaths,
-        checkExports: true,
-        key: directive.key,
-      )
+            visitedLibraryPaths,
+            checkExports: true,
+            key: directive.key,
+          )
           .where((element) {
-        return (directive.showStatements.isEmpty &&
-                directive.hideStatements.isEmpty) ||
-            (directive.hideStatements.isNotEmpty &&
-                !directive.hideStatements.contains(element.name)) ||
-            directive.showStatements.contains(element.name);
-      });
+            return (directive.showStatements.isEmpty &&
+                    directive.hideStatements.isEmpty) ||
+                (directive.hideStatements.isNotEmpty &&
+                    !directive.hideStatements.contains(element.name)) ||
+                directive.showStatements.contains(element.name);
+          });
     }
   }
 }
@@ -161,10 +161,10 @@ class _LibraryKey {
 
   @override
   int get hashCode => Object.hash(
-        librarySource,
-        const SetEquality<String>().hash(hideStatements),
-        const SetEquality<String>().hash(showStatements),
-      );
+    librarySource,
+    const SetEquality<String>().hash(hideStatements),
+    const SetEquality<String>().hash(showStatements),
+  );
 
   @override
   String toString() {

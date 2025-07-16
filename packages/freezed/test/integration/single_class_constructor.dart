@@ -12,9 +12,7 @@ typedef StringAlias = String;
 // https://github.com/rrousselGit/freezed/issues/1204
 @freezed
 sealed class Regression1204 with _$Regression1204 {
-  const factory Regression1204({
-    required StringAlias id,
-  }) = _Regression1204;
+  const factory Regression1204({required StringAlias id}) = _Regression1204;
 }
 
 @optionalTypeArgs
@@ -305,6 +303,7 @@ abstract class Doc with _$Doc {
     /// line
     /// positional
     int positional, {
+
     /// Single line named
     int? named,
 
@@ -533,8 +532,8 @@ abstract class NullDefault with _$NullDefault {
 @freezed
 abstract class ExplicitConstDefault with _$ExplicitConstDefault {
   factory ExplicitConstDefault(
-      //ignore: unnecessary_const
-      [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
+  //ignore: unnecessary_const
+  [@Default(const <Object>[]) List<Object> value]) = _ExplicitConstDefault;
 }
 
 @freezed

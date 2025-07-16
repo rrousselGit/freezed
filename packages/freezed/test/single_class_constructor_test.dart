@@ -27,15 +27,16 @@ class MyObject {
 Future<void> main() async {
   Future<LibraryElement> analyze() {
     return resolveSources(
-        {
-          'freezed|test/integration/single_class_constructor.dart':
-              useAssetReader,
-        },
-        (r) => r.libraries.firstWhere((e) {
-              return e.source.fullName ==
-                  '/freezed/test/integration/single_class_constructor.dart';
-            }),
-        readAllSourcesFromFilesystem: true);
+      {
+        'freezed|test/integration/single_class_constructor.dart':
+            useAssetReader,
+      },
+      (r) => r.libraries.firstWhere((e) {
+        return e.source.fullName ==
+            '/freezed/test/integration/single_class_constructor.dart';
+      }),
+      readAllSourcesFromFilesystem: true,
+    );
   }
 
   test('Regression1204', () {
@@ -210,8 +211,9 @@ Future<void> main() async {
   test('documentation', () async {
     final singleClassLibrary = await analyze();
 
-    final doc = singleClassLibrary.topLevelElements
-        .firstWhere((e) => e.name == 'Doc') as ClassElement;
+    final doc =
+        singleClassLibrary.topLevelElements.firstWhere((e) => e.name == 'Doc')
+            as ClassElement;
 
     expect(
       doc.mixins.first.accessors.where(
@@ -246,23 +248,35 @@ Future<void> main() async {
   });
 
   test('deep copy of recursive classes', () {
-    final value = Product(name: 'foo', parent: Product(name: 'bar'));
+    final value = Product(
+      name: 'foo',
+      parent: Product(name: 'bar'),
+    );
 
     expect(
       value.copyWith.parent!(name: 'baz'),
-      Product(name: 'foo', parent: Product(name: 'baz')),
+      Product(
+        name: 'foo',
+        parent: Product(name: 'baz'),
+      ),
     );
 
     final value2 = Product(
       name: 'foo',
-      parent: Product(name: 'bar', parent: Product(name: 'baz')),
+      parent: Product(
+        name: 'bar',
+        parent: Product(name: 'baz'),
+      ),
     );
 
     expect(
       value2.copyWith.parent!.parent!(name: 'quaz'),
       Product(
         name: 'foo',
-        parent: Product(name: 'bar', parent: Product(name: 'quaz')),
+        parent: Product(
+          name: 'bar',
+          parent: Product(name: 'quaz'),
+        ),
       ),
     );
   });
@@ -361,9 +375,11 @@ void main() {
   test('has no issue', () async {
     final singleClassLibrary = await analyze();
 
-    final errorResult = await singleClassLibrary.session.getErrors(
-      '/freezed/test/integration/single_class_constructor.freezed.dart',
-    ) as ErrorsResult;
+    final errorResult =
+        await singleClassLibrary.session.getErrors(
+              '/freezed/test/integration/single_class_constructor.freezed.dart',
+            )
+            as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -374,9 +390,9 @@ void main() {
 
   test('single-case union does have map', () async {
     expect(
-      SingleNamedCtor.named(42).map(
-        named: (WhateverSingleNamedCtor value) => '${value.a}',
-      ),
+      SingleNamedCtor.named(
+        42,
+      ).map(named: (WhateverSingleNamedCtor value) => '${value.a}'),
       '42',
     );
   });
@@ -616,8 +632,9 @@ void main() {
   test(
     'required parameters are transmitted to redirected constructor',
     () async {
-      final main = await resolveSources({
-        'freezed|test/integration/main.dart': '''
+      final main = await resolveSources(
+        {
+          'freezed|test/integration/main.dart': '''
 library main;
 
 import 'single_class_constructor.dart';
@@ -626,11 +643,14 @@ void main() {
   WhateverRequired();
 }
     ''',
-      }, (r) => r.findLibraryByName('main'),
-          readAllSourcesFromFilesystem: true);
+        },
+        (r) => r.findLibraryByName('main'),
+        readAllSourcesFromFilesystem: true,
+      );
 
-      final errorResult = await main!.session
-          .getErrors('/freezed/test/integration/main.dart') as ErrorsResult;
+      final errorResult =
+          await main!.session.getErrors('/freezed/test/integration/main.dart')
+              as ErrorsResult;
 
       expect(
         errorResult.errors.map((e) => e.toString()),

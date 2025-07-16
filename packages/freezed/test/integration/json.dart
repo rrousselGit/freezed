@@ -344,8 +344,7 @@ abstract class UnrecognizedKeysCustomUnionValue
 
   factory UnrecognizedKeysCustomUnionValue.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$UnrecognizedKeysCustomUnionValueFromJson(json);
+  ) => _$UnrecognizedKeysCustomUnionValueFromJson(json);
 }
 
 @Freezed(fallbackUnion: 'fallback')
@@ -380,8 +379,7 @@ abstract class UnrecognizedKeysUnionFallbackWithDefault
 
   factory UnrecognizedKeysUnionFallbackWithDefault.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$UnrecognizedKeysUnionFallbackWithDefaultFromJson(json);
+  ) => _$UnrecognizedKeysUnionFallbackWithDefaultFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.pascal)
@@ -396,8 +394,7 @@ abstract class UnrecognizedKeysUnionValueCasePascal
 
   factory UnrecognizedKeysUnionValueCasePascal.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$UnrecognizedKeysUnionValueCasePascalFromJson(json);
+  ) => _$UnrecognizedKeysUnionValueCasePascalFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.kebab)
@@ -412,8 +409,7 @@ abstract class UnrecognizedKeysUnionValueCaseKebab
 
   factory UnrecognizedKeysUnionValueCaseKebab.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$UnrecognizedKeysUnionValueCaseKebabFromJson(json);
+  ) => _$UnrecognizedKeysUnionValueCaseKebabFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.snake)
@@ -428,8 +424,7 @@ abstract class UnrecognizedKeysUnionValueCaseSnake
 
   factory UnrecognizedKeysUnionValueCaseSnake.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$UnrecognizedKeysUnionValueCaseSnakeFromJson(json);
+  ) => _$UnrecognizedKeysUnionValueCaseSnakeFromJson(json);
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.screamingSnake)
@@ -445,8 +440,7 @@ abstract class UnrecognizedKeysUnionValueCaseScreamingSnake
 
   factory UnrecognizedKeysUnionValueCaseScreamingSnake.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$UnrecognizedKeysUnionValueCaseScreamingSnakeFromJson(json);
+  ) => _$UnrecognizedKeysUnionValueCaseScreamingSnakeFromJson(json);
 }
 
 @freezed
@@ -574,8 +568,7 @@ abstract class GenericWithArgumentFactories<T>
   factory GenericWithArgumentFactories.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
-  ) =>
-      _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
+  ) => _$GenericWithArgumentFactoriesFromJson<T>(json, fromJsonT);
 }
 
 @Freezed(genericArgumentFactories: true)
@@ -588,8 +581,7 @@ abstract class GenericTupleWithArgumentFactories<T, S>
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
     S Function(Object? json) fromJsonS,
-  ) =>
-      _$GenericTupleWithArgumentFactoriesFromJson(json, fromJsonT, fromJsonS);
+  ) => _$GenericTupleWithArgumentFactoriesFromJson(json, fromJsonT, fromJsonS);
 }
 
 @Freezed(genericArgumentFactories: true)
@@ -622,10 +614,9 @@ abstract class GenericMultiCtorWithArgumentFactories<T, S>
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
     S Function(Object? json) fromJsonS,
-  ) =>
-      _$GenericMultiCtorWithArgumentFactoriesFromJson<T, S>(
-        json,
-        fromJsonT,
-        fromJsonS,
-      );
+  ) => _$GenericMultiCtorWithArgumentFactoriesFromJson<T, S>(
+    json,
+    fromJsonT,
+    fromJsonS,
+  );
 }

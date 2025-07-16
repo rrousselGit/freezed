@@ -140,6 +140,7 @@ abstract class Complex with _$Complex {
   const factory Complex.first(
     /// World
     String a, {
+
     /// B
     bool? b,
     double? d,
@@ -147,6 +148,7 @@ abstract class Complex with _$Complex {
 
   const factory Complex.second(
     String a, [
+
     /// C
     int? c,
     double? d,

@@ -32,28 +32,30 @@ Rename one or the other, such that they don't conflict.
     String content;
 
     if (clazz.constructors.length == 1) {
-      content = '''
+      content =
+          '''
     return ${clazz.constructors.first.redirectedName}${clazz.genericsParameterTemplate}.fromJson(
       json${fromJsonArguments(clazz.genericsParameterTemplate, clazz.options.genericArgumentFactories)}
     );''';
     } else {
-      final cases =
-          clazz.constructors.where((element) => !element.isFallback).map((
-        constructor,
-      ) {
-        final caseName = constructor.unionValue;
-        final concreteName = constructor.redirectedName;
+      final cases = clazz.constructors
+          .where((element) => !element.isFallback)
+          .map((constructor) {
+            final caseName = constructor.unionValue;
+            final concreteName = constructor.redirectedName;
 
-        return '''
+            return '''
         case '$caseName':
           return $concreteName${clazz.genericsParameterTemplate}.fromJson(
             json${fromJsonArguments(clazz.genericsParameterTemplate, clazz.options.genericArgumentFactories)}
           );
         ''';
-      }).join();
+          })
+          .join();
 
       // TODO(rrousselGit): update logic once https://github.com/rrousselGit/freezed/pull/370 lands
-      var defaultCase = '''
+      var defaultCase =
+          '''
 throw CheckedFromJsonException(
   json,
   \'${clazz.options.annotation.unionKey}\',
@@ -64,13 +66,15 @@ throw CheckedFromJsonException(
         (element) => element.isFallback,
       );
       if (fallbackConstructor != null) {
-        defaultCase = '''
+        defaultCase =
+            '''
 return ${fallbackConstructor.redirectedName}${clazz.genericsParameterTemplate}.fromJson(
   json${fromJsonArguments(clazz.genericsParameterTemplate, clazz.options.genericArgumentFactories)}
 );''';
       }
 
-      content = '''
+      content =
+          '''
         switch (json['${clazz.options.annotation.unionKey}']) {
           $cases
           default:

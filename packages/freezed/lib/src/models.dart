@@ -116,8 +116,7 @@ class DeepCloneableProperty {
         nullable: parameter.type.isNullable,
         typeName: typeElement.name,
         genericParameters: GenericsParameterTemplate(
-          (parameter.type as InterfaceType)
-              .typeArguments
+          (parameter.type as InterfaceType).typeArguments
               .map((e) => e.getDisplayString())
               .toList(),
         ),
@@ -151,8 +150,8 @@ extension on FormalParameter {
       DefaultFormalParameter() => that.parameter.typeAnnotation(),
       FieldFormalParameter() => that.type,
       FunctionTypedFormalParameter() => throw UnsupportedError(
-          'Parameters of format `T name()` are not supported. Use `T Function()` name.',
-        ),
+        'Parameters of format `T name()` are not supported. Use `T Function()` name.',
+      ),
       SimpleFormalParameter() => that.type,
       SuperFormalParameter() => that.type,
     };
@@ -277,7 +276,8 @@ When specifying fields in non-factory constructor then specifying factory constr
         className: declaration.name.lexeme,
       );
 
-      final excludedProperties = manualConstructor?.parameters.parameters
+      final excludedProperties =
+          manualConstructor?.parameters.parameters
               .map((e) => e.declaredElement!.name)
               .toSet() ??
           <String>{};
@@ -315,7 +315,8 @@ When specifying fields in non-factory constructor then specifying factory constr
                 final elementSourceUri =
                     element.element?.declaration?.librarySource?.uri;
 
-                final isFreezedAnnotation = elementSourceUri != null &&
+                final isFreezedAnnotation =
+                    elementSourceUri != null &&
                     elementSourceUri.scheme == 'package' &&
                     elementSourceUri.pathSegments.isNotEmpty &&
                     elementSourceUri.pathSegments.first == 'freezed_annotation';
@@ -526,8 +527,8 @@ class Class {
     required this.properties,
     required this.copyWithTarget,
     required ClassDeclaration node,
-  })  : _node = node,
-        assert(constructors.isNotEmpty);
+  }) : _node = node,
+       assert(constructors.isNotEmpty);
 
   final String name;
   final ClassConfig options;
@@ -564,7 +565,8 @@ class Class {
       }
     }
 
-    final has$ClassMixin = declaration.withClause?.mixinTypes.any(
+    final has$ClassMixin =
+        declaration.withClause?.mixinTypes.any(
           (e) => e.isSuperMixin(declaration),
         ) ??
         false;
@@ -593,12 +595,14 @@ class Class {
       );
     properties.cloneableProperties.addAll(
       _computeCloneableProperties(declaration, constructors, configs).where(
-          (cloneable) => properties.readableProperties
-              .any((e) => e.name == cloneable.name)),
+        (cloneable) =>
+            properties.readableProperties.any((e) => e.name == cloneable.name),
+      ),
     );
 
-    final copyWithTarget =
-        constructors.isNotEmpty ? null : declaration.copyWithTarget;
+    final copyWithTarget = constructors.isNotEmpty
+        ? null
+        : declaration.copyWithTarget;
 
     if (copyWithTarget != null) {
       // Check for missing required parameters on the copyWith target
@@ -773,15 +777,19 @@ To fix, either:
     ClassDeclaration declaration,
     List<ConstructorDetails> constructorsNeedsGeneration,
   ) sync* {
-    final typesMap = <String,
-        List<
+    final typesMap =
+        <
+          String,
+          List<
             ({
               TypeAnnotation? type,
               String? doc,
               bool isFinal,
               bool isSynthetic,
               List<String> decorators,
-            })?>>{};
+            })?
+          >
+        >{};
     void setForName({
       required String name,
       required TypeAnnotation? type,
@@ -956,11 +964,11 @@ To fix, either:
         // be present in the abstract class.
         if (matchingParameter == null) continue parameterLoop;
 
-        commonTypeBetweenAllUnionConstructors =
-            library.typeSystem.leastUpperBound(
-          commonTypeBetweenAllUnionConstructors,
-          matchingParameter.parameterElement!.type,
-        );
+        commonTypeBetweenAllUnionConstructors = library.typeSystem
+            .leastUpperBound(
+              commonTypeBetweenAllUnionConstructors,
+              matchingParameter.parameterElement!.type,
+            );
       }
 
       final matchingParameters = constructorsNeedsGeneration
@@ -1078,8 +1086,9 @@ To fix, either:
   bool get isSealed => _node.sealedKeyword != null;
 
   String get escapedName {
-    var generics =
-        genericsParameterTemplate.typeParameters.map((e) => '\$$e').join(', ');
+    var generics = genericsParameterTemplate.typeParameters
+        .map((e) => '\$$e')
+        .join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }
