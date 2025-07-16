@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -513,20 +513,20 @@ int get hashCode => Object.hash(${hashedProperties.join(',')});
 ''';
 }
 
-extension DefaultValue on ParameterElement {
+extension DefaultValue on FormalParameterElement {
   /// Returns the sources of the default value associated with a `@Default`,
   /// or `null` if no `@Default` are specified.
   String? get defaultValue {
     const matcher = TypeChecker.fromRuntime(Default);
 
-    for (final meta in metadata) {
+    for (final meta in metadata2.annotations) {
       final obj = meta.computeConstantValue()!;
       if (matcher.isExactlyType(obj.type!)) {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
         var needsConstModifier =
-            !declaration.type.isDartCoreString &&
+            !baseElement.type.isDartCoreString &&
             !res.trimLeft().startsWith('const') &&
             (res.contains('(') || res.contains('[') || res.contains('{'));
 
@@ -558,5 +558,5 @@ String parseTypeSource(FormalParameter p) {
       break;
   }
 
-  return p.declaredElement!.type.getDisplayString();
+  return p.declaredFragment!.element.type.getDisplayString();
 }

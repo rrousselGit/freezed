@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 
 extension AstX on AstNode {
   String? get documentation {
@@ -22,16 +22,16 @@ extension AstX on AstNode {
 
 extension ClassX on ClassDeclaration {
   bool get hasCustomToString {
-    final element = declaredElement!;
+    final element = declaredFragment!.element;
 
     for (final type in [
       element,
       ...element.allSupertypes
           .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element),
+          .map((e) => e.element3),
     ]) {
-      for (final method in type.methods) {
-        if (method.name == 'toString') {
+      for (final method in type.methods2) {
+        if (method.name3 == 'toString') {
           return true;
         }
       }
@@ -40,56 +40,52 @@ extension ClassX on ClassDeclaration {
     return false;
   }
 
-  bool get hasSuperEqual => declaredElement!.allSupertypes
+  bool get hasSuperEqual => declaredFragment!.element.allSupertypes
       .where((e) => !e.isDartCoreObject)
-      .map((e) => e.element)
+      .map((e) => e.element3)
       .any((e) => e.hasEqual);
 
-  bool get hasCustomEquals => declaredElement!.hasEqual;
+  bool get hasCustomEquals => declaredFragment!.element.hasEqual;
 
-  bool get hasSuperHashCode => declaredElement!.allSupertypes
+  bool get hasSuperHashCode => declaredFragment!.element.allSupertypes
       .where((e) => !e.isDartCoreObject)
-      .map((e) => e.element)
+      .map((e) => e.element3)
       .any((e) => e.hasHashCode);
 }
 
-extension on InterfaceElement {
-  bool get hasEqual => methods.any(((e) => e.isOperator && e.name == '=='));
+extension on InterfaceElement2 {
+  bool get hasEqual => methods2.any(((e) => e.isOperator && e.name3 == '=='));
 
-  bool get hasHashCode =>
-      accessors.where((e) => e.isGetter).any((e) => e.name == 'hashCode');
+  bool get hasHashCode => getters2.any((e) => e.name3 == 'hashCode');
 }
 
 extension ConstructorX on ConstructorDeclaration {
   String get fullName {
-    // ignore: deprecated_member_use, latest analyzer with enclosingElement3 not available in stable channel
-    final classElement = declaredElement!.enclosingElement3;
+    final classElement = declaredFragment!.element.enclosingElement2;
 
-    var generics = classElement.typeParameters
-        .map((e) => '\$${e.name}')
+    var generics = classElement.typeParameters2
+        .map((e) => '\$${e.name3}')
         .join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }
 
-    // ignore: deprecated_member_use, latest analyzer with enclosingElement3 not available in stable channel
-    final className = classElement.enclosingElement3.name;
+    final className = classElement.enclosingElement2.name3;
 
     return name == null ? '$className$generics' : '$className$generics.$name';
   }
 
   String get escapedName {
-    // ignore: deprecated_member_use, latest analyzer with enclosingElement3 not available in stable channel
-    final classElement = declaredElement!.enclosingElement3;
+    final classElement = declaredFragment!.element.enclosingElement2;
 
-    var generics = classElement.typeParameters
-        .map((e) => '\$${e.name}')
+    var generics = classElement.typeParameters2
+        .map((e) => '\$${e.name3}')
         .join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }
 
-    final escapedElementName = classElement.name.replaceAll(r'$', r'\$');
+    final escapedElementName = classElement.name3!.replaceAll(r'$', r'\$');
     final escapedConstructorName = name?.lexeme.replaceAll(r'$', r'\$');
 
     return escapedConstructorName == null

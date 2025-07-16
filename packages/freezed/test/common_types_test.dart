@@ -14,7 +14,8 @@ Future<void> main() async {
     final main = await resolveSources(
       {'freezed|test/integration/common_types.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('common_types'),
+        (element) =>
+            element.firstFragment.source.toString().contains('common_types'),
       ),
     );
 

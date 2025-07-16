@@ -11,7 +11,7 @@ Future<void> main() async {
   final jsonFile = await resolveSources(
     {'freezed|test/integration/json.dart': useAssetReader},
     (r) => r.libraries.firstWhere(
-      (element) => element.source.toString().contains('json'),
+      (element) => element.firstFragment.source.toString().contains('json'),
     ),
   );
 
@@ -23,7 +23,7 @@ Future<void> main() async {
     expect(Regression280n2.fromJson('hello'), Regression280n2('hello'));
 
     expect(
-      jsonFile.topLevelElements.map((e) => e.name),
+      jsonFile.publicNamespace.definedNames2.keys.toSet(),
       allOf(
         isNot(contains(r'_$Regression280FromJson')),
         isNot(contains(r'_$Regression280ToJson')),

@@ -20,7 +20,8 @@ void main() {
     final main = await resolveSources(
       {'freezed|test/integration/deep_copy.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('deep_copy'),
+        (element) =>
+            element.firstFragment.source.toString().contains('deep_copy'),
       ),
     );
 
@@ -37,7 +38,8 @@ void main() {
     final main = await resolveSources(
       {'freezed|test/integration/deep_copy2.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('deep_copy2'),
+        (element) =>
+            element.firstFragment.source.toString().contains('deep_copy2'),
       ),
     );
 
@@ -722,7 +724,8 @@ void main() {
 ''',
       },
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('deep_copy'),
+        (element) =>
+            element.firstFragment.source.toString().contains('deep_copy'),
       ),
       readAllSourcesFromFilesystem: true,
     );

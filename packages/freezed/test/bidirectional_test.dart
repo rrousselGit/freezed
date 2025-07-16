@@ -9,7 +9,8 @@ void main() {
     final main = await resolveSources(
       {'freezed|test/integration/bidirectional.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('bidirectional'),
+        (element) =>
+            element.firstFragment.source.toString().contains('bidirectional'),
       ),
     );
 
