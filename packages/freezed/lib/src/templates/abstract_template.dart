@@ -20,7 +20,8 @@ class Abstract {
 
   @override
   String toString() {
-    final needsAbstractGetters = data.options.toJson ||
+    final needsAbstractGetters =
+        data.options.toJson ||
         copyWith != null ||
         data.options.asString ||
         data.options.equal;
