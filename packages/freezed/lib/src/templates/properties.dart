@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
@@ -40,11 +40,11 @@ class Property {
     required bool addImplicitFinal,
     required bool isSynthetic,
   }) {
-    final element = parameter.declaredElement!;
+    final element = parameter.declaredFragment!.element;
 
     final defaultValue = element.defaultValue;
     if (defaultValue != null &&
-        (element.hasRequired || element.isRequiredPositional)) {
+        (element.isRequired || element.isRequiredPositional)) {
       throw InvalidGenerationSourceError(
         '@Default cannot be used on non-optional parameters',
         element: element,
@@ -52,13 +52,13 @@ class Property {
     }
 
     return Property(
-      name: element.name,
+      name: element.name3!,
       isFinal: addImplicitFinal || element.isFinal,
       isSynthetic: isSynthetic,
       doc: parameter.documentation ?? '',
       type: element.type,
       typeDisplayString: parseTypeSource(parameter),
-      decorators: parseDecorators(element.metadata),
+      decorators: parseDecorators(element.metadata2.annotations),
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
     );
@@ -114,7 +114,7 @@ class Property {
     bool? hasJsonKey,
     String? doc,
     bool? isPossiblyDartCollection,
-    ParameterElement? parameterElement,
+    TypeParameterElement2? parameterElement,
   }) {
     return Property(
       type: type ?? this.type,

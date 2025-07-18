@@ -10,7 +10,8 @@ void main() {
     final main = await resolveSources(
       {'freezed|test/integration/optional_maybe.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('optional_maybe'),
+        (element) =>
+            element.firstFragment.source.toString().contains('optional_maybe'),
       ),
     );
 

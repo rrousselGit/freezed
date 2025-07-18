@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types, deprecated_member_use_from_same_package
 import 'package:analyzer/dart/analysis/results.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -25,14 +25,14 @@ class MyObject {
 }
 
 Future<void> main() async {
-  Future<LibraryElement> analyze() {
+  Future<LibraryElement2> analyze() {
     return resolveSources(
       {
         'freezed|test/integration/single_class_constructor.dart':
             useAssetReader,
       },
       (r) => r.libraries.firstWhere((e) {
-        return e.source.fullName ==
+        return e.firstFragment.source.fullName ==
             '/freezed/test/integration/single_class_constructor.dart';
       }),
       readAllSourcesFromFilesystem: true,
@@ -211,30 +211,28 @@ Future<void> main() async {
   test('documentation', () async {
     final singleClassLibrary = await analyze();
 
-    final doc =
-        singleClassLibrary.topLevelElements.firstWhere((e) => e.name == 'Doc')
-            as ClassElement;
+    final doc = singleClassLibrary.classes.firstWhere((e) => e.name3 == 'Doc');
 
     expect(
-      doc.mixins.first.accessors.where(
-        (e) => e.name != 'copyWith' && e.name != 'hashCode',
+      doc.mixins.first.getters.where(
+        (e) => e.name3 != 'copyWith' && e.name3 != 'hashCode',
       ),
       [
-        isA<PropertyAccessorElement>()
-            .having((e) => e.name, 'name', 'positional')
+        isA<PropertyAccessorElement2>()
+            .having((e) => e.name3, 'name', 'positional')
             .having((e) => e.documentationComment, 'doc', '''
 /// Multi
 /// line
 /// positional'''),
-        isA<PropertyAccessorElement>() //
-            .having((e) => e.name, 'name', 'named')
+        isA<PropertyAccessorElement2>() //
+            .having((e) => e.name3, 'name', 'named')
             .having(
               (e) => e.documentationComment,
               'doc',
               '/// Single line named',
             ),
-        isA<PropertyAccessorElement>() //
-            .having((e) => e.name, 'name', 'simple')
+        isA<PropertyAccessorElement2>() //
+            .having((e) => e.name3, 'name', 'simple')
             .having((e) => e.documentationComment, 'doc', null),
       ],
     );

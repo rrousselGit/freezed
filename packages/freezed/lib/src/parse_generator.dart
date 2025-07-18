@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
@@ -20,7 +20,7 @@ abstract class ParserGenerator<AnnotationT>
     if (oldLibrary.classes.isEmpty) return '';
 
     final units = await Stream.fromFutures(
-      oldLibrary.element.units.map(
+      oldLibrary.element.fragments.map(
         (e) => buildStep.resolver.astNodeFor(e, resolve: true),
       ),
     ).cast<CompilationUnit>().toList();
@@ -30,11 +30,11 @@ abstract class ParserGenerator<AnnotationT>
 
     for (final unit in units) {
       for (var declaration in unit.declarations) {
-        final declaredElement = declaration.declaredElement;
-        if (declaredElement == null) continue;
+        final declaredFragment = declaration.declaredFragment;
+        if (declaredFragment == null) continue;
 
         final annotation = typeChecker.firstAnnotationOf(
-          declaredElement,
+          declaredFragment.element,
           throwOnUnresolved: false,
         );
         if (annotation == null) continue;
@@ -57,7 +57,7 @@ abstract class ParserGenerator<AnnotationT>
 
   @override
   Stream<String> generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async* {
@@ -70,11 +70,12 @@ abstract class ParserGenerator<AnnotationT>
     if (annotation == null) return;
 
     final unit = await element.session!.getResolvedUnit(
-      element.source!.fullName,
+      element.firstFragment.libraryFragment!.source.fullName,
     );
     unit as ResolvedUnitResult;
     final Object? ast = unit.unit.declarations.firstWhereOrNull(
-      (declaration) => declaration.declaredElement?.name == element.name!,
+      (declaration) =>
+          declaration.declaredFragment?.element.name3 == element.name3!,
     );
     if (ast == null) {
       throw InvalidGenerationSourceError('Ast not found', element: element);

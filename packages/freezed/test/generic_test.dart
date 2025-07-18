@@ -41,7 +41,8 @@ void main() {
     final main = await resolveSources(
       {'freezed|test/integration/generic.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('generic'),
+        (element) =>
+            element.firstFragment.source.toString().contains('generic'),
       ),
     );
 

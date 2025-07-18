@@ -4,7 +4,7 @@
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
@@ -27,7 +27,7 @@ class _Sentinel {
   const _Sentinel();
 }
 
-extension on Element {
+extension on Element2 {
   bool get hasJsonSerializable {
     return const TypeChecker.fromRuntime(
       JsonSerializable,
@@ -35,9 +35,9 @@ extension on Element {
   }
 }
 
-extension on ConstructorElement {
+extension on ConstructorElement2 {
   bool isFallbackUnion(String? fallbackConstructorName) {
-    final constructorName = isDefaultConstructor(this) ? 'default' : name;
+    final constructorName = isDefaultConstructor(this) ? 'default' : name3;
     return constructorName == fallbackConstructorName;
   }
 
@@ -49,7 +49,7 @@ extension on ConstructorElement {
       return annotation.getField('value')!.toStringValue()!;
     }
 
-    final constructorName = isDefaultConstructor(this) ? 'default' : name;
+    final constructorName = isDefaultConstructor(this) ? 'default' : name3!;
     switch (unionCase) {
       case null:
       case FreezedUnionCase.none:
@@ -88,12 +88,12 @@ class DeepCloneableProperty {
     for (final parameterNode in constructorNode.parameters.parameters) {
       final type = parseTypeSource(parameterNode);
 
-      final parameter = parameterNode.declaredElement!;
+      final parameter = parameterNode.declaredFragment!.element;
 
       final parameterType = parameter.type;
       if (parameterType is! InterfaceType) continue;
-      final typeElement = parameterType.element;
-      if (typeElement is! ClassElement) continue;
+      final typeElement = parameterType.element3;
+      if (typeElement is! ClassElement2) continue;
 
       final freezedAnnotation = freezedType.firstAnnotationOf(
         typeElement,
@@ -111,10 +111,10 @@ class DeepCloneableProperty {
       if (configs.copyWith == false) continue;
 
       yield DeepCloneableProperty(
-        name: parameter.name,
+        name: parameter.name3!,
         type: type,
         nullable: parameter.type.isNullable,
-        typeName: typeElement.name,
+        typeName: typeElement.name3!,
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType).typeArguments
               .map((e) => e.getDisplayString())
@@ -196,7 +196,7 @@ class ConstructorDetails {
         freezedCtors.isNotEmpty) {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed can only have a single non-factory constructor.',
-        element: constructor.declaredElement,
+        element: constructor.declaredFragment?.element,
       );
     }
 
@@ -216,7 +216,7 @@ but at least one constructor does not have a matching parameter.
 When specifying fields in non-factory constructor then specifying factory constructors, either:
 - the parameter should be named
 - or all constructors in the class should specify that parameter.
-''', element: constructor.declaredElement);
+''', element: constructor.declaredFragment?.element);
           }
         }
       }
@@ -228,7 +228,7 @@ When specifying fields in non-factory constructor then specifying factory constr
     required String className,
   }) {
     for (final parameter in constructor.parameters.parameters) {
-      final parameterElement = parameter.declaredElement;
+      final parameterElement = parameter.declaredFragment?.element;
       if (parameterElement == null) continue;
 
       if (parameterElement.type.nullabilitySuffix !=
@@ -240,7 +240,7 @@ When specifying fields in non-factory constructor then specifying factory constr
 
         throw InvalidGenerationSourceError(
           'The parameter `${parameter.name}` of `$className$ctorName` is non-nullable but is neither required nor marked with @Default',
-          element: parameter.declaredElement,
+          element: parameter.declaredFragment?.element,
         );
       }
     }
@@ -278,7 +278,7 @@ When specifying fields in non-factory constructor then specifying factory constr
 
       final excludedProperties =
           manualConstructor?.parameters.parameters
-              .map((e) => e.declaredElement!.name)
+              .map((e) => e.declaredFragment!.element.name3!)
               .toSet() ??
           <String>{};
 
@@ -303,7 +303,7 @@ When specifying fields in non-factory constructor then specifying factory constr
           asserts: AssertAnnotation.parseAll(constructor).toList(),
           isSynthetic: !isEjected,
           name: constructor.name?.lexeme ?? '',
-          unionValue: constructor.declaredElement!.unionValue(
+          unionValue: constructor.declaredFragment!.element.unionValue(
             configs.annotation.unionValueCase,
           ),
           isConst: constructor.constKeyword != null,
@@ -313,7 +313,7 @@ When specifying fields in non-factory constructor then specifying factory constr
           decorators: constructor.metadata
               .where((element) {
                 final elementSourceUri =
-                    element.element?.declaration?.librarySource?.uri;
+                    element.element2?.baseElement.library2?.uri;
 
                 final isFreezedAnnotation =
                     elementSourceUri != null &&
@@ -326,14 +326,17 @@ When specifying fields in non-factory constructor then specifying factory constr
               .map((e) => e.toSource())
               .toList(),
           withDecorators: WithAnnotation.parseAll(
-            constructor.declaredElement!,
+            constructor.declaredFragment!.element,
           ).toSet().toList(),
           implementsDecorators: ImplementsAnnotation.parseAll(
-            constructor.declaredElement!,
+            constructor.declaredFragment!.element,
           ).toSet().toList(),
-          isDefault: isDefaultConstructor(constructor.declaredElement!),
-          hasJsonSerializable: constructor.declaredElement!.hasJsonSerializable,
-          isFallback: constructor.declaredElement!.isFallbackUnion(
+          isDefault: isDefaultConstructor(
+            constructor.declaredFragment!.element,
+          ),
+          hasJsonSerializable:
+              constructor.declaredFragment!.element.hasJsonSerializable,
+          isFallback: constructor.declaredFragment!.element.isFallbackUnion(
             configs.annotation.fallbackUnion,
           ),
           deepCloneableProperties: DeepCloneableProperty.parseAll(
@@ -353,7 +356,7 @@ When specifying fields in non-factory constructor then specifying factory constr
         result.none((c) => c.isFallback)) {
       throw InvalidGenerationSourceError(
         'Fallback union was specified but no ${configs.annotation.fallbackUnion} constructor exists.',
-        element: declaration.declaredElement,
+        element: declaration.declaredFragment!.element,
       );
     }
 
@@ -416,7 +419,7 @@ class ImplementsAnnotation {
   ImplementsAnnotation({required this.type});
 
   static Iterable<ImplementsAnnotation> parseAll(
-    ConstructorElement constructor,
+    ConstructorElement2 constructor,
   ) sync* {
     for (final meta in const TypeChecker.fromRuntime(
       Implements,
@@ -427,7 +430,7 @@ class ImplementsAnnotation {
       } else {
         yield ImplementsAnnotation(
           type: resolveFullTypeStringFrom(
-            constructor.library,
+            constructor.library2,
             (meta.type! as InterfaceType).typeArguments.single,
           ),
         );
@@ -442,9 +445,9 @@ class WithAnnotation {
   WithAnnotation({required this.type});
 
   static Iterable<WithAnnotation> parseAll(
-    ConstructorElement constructor,
+    ConstructorElement2 constructor,
   ) sync* {
-    for (final metadata in constructor.metadata) {
+    for (final metadata in constructor.metadata2.annotations) {
       if (!metadata.isWith) continue;
       final object = metadata.computeConstantValue()!;
 
@@ -454,7 +457,7 @@ class WithAnnotation {
       } else {
         yield WithAnnotation(
           type: resolveFullTypeStringFrom(
-            constructor.library,
+            constructor.library2,
             (object.type! as InterfaceType).typeArguments.single,
           ),
         );
@@ -473,7 +476,7 @@ class AssertAnnotation {
   ) sync* {
     for (final meta in const TypeChecker.fromRuntime(
       Assert,
-    ).annotationsOf(constructor.declaredElement!)) {
+    ).annotationsOf(constructor.declaredFragment!.element)) {
       yield AssertAnnotation(
         code: meta.getField('eval')!.toStringValue()!,
         message: meta.getField('message')!.toStringValue(),
@@ -542,7 +545,7 @@ class Class {
   final ClassDeclaration _node;
   final Set<Class> parents = {};
 
-  LibraryElement get library => _node.declaredElement!.library;
+  LibraryElement2 get library => _node.declaredFragment!.element.library2;
 
   static Class _from(
     ClassDeclaration declaration,
@@ -560,7 +563,7 @@ class Class {
     );
 
     if (constructors.isNotEmpty) {
-      for (final field in declaration.declaredElement!.fields) {
+      for (final field in declaration.declaredFragment!.element.fields2) {
         _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
       }
     }
@@ -573,7 +576,7 @@ class Class {
     if (!has$ClassMixin) {
       throw InvalidGenerationSourceError(
         'Classes using @freezed must use `with _\$${declaration.name.lexeme.public}`.',
-        element: declaration.declaredElement,
+        element: declaration.declaredFragment?.element,
         node: declaration,
       );
     }
@@ -584,7 +587,7 @@ class Class {
             declaration.withClause!.mixinTypes.length > 1)) {
       throw InvalidGenerationSourceError(
         'Classes using extends/with must define a MyClass._() constructor.',
-        element: declaration.declaredElement,
+        element: declaration.declaredFragment?.element,
         node: declaration.extendsClause ?? declaration.withClause,
       );
     }
@@ -621,7 +624,7 @@ To fix, either:
 - Make `${param.name}` optional
 - Make sure `this.${param.name}` is accessible from the copyWith method
 ''',
-            element: declaration.declaredElement,
+            element: declaration.declaredFragment?.element,
             node: declaration,
           );
         }
@@ -666,14 +669,14 @@ To fix, either:
       options: configs,
       constructors: constructors,
       concretePropertiesName: [
-        for (final p in declaration.declaredElement!.fields)
-          if (!p.isStatic) p.name,
+        for (final p in declaration.declaredFragment!.element.fields2)
+          if (!p.isStatic) p.name3!,
       ],
       genericsDefinitionTemplate: GenericsDefinitionTemplate.fromGenericElement(
-        declaration.declaredElement!.typeParameters,
+        declaration.declaredFragment!.element.typeParameters2,
       ),
       genericsParameterTemplate: GenericsParameterTemplate.fromGenericElement(
-        declaration.declaredElement!.typeParameters,
+        declaration.declaredFragment!.element.typeParameters2,
       ),
     );
   }
@@ -686,7 +689,7 @@ To fix, either:
   }) {
     final unitsExcludingGeneratedFiles = units
         .where(
-          (element) => !element.declaredElement!.source.fullName.endsWith(
+          (element) => !element.declaredFragment!.source.fullName.endsWith(
             '.freezed.dart',
           ),
         )
@@ -699,7 +702,7 @@ To fix, either:
       if (declaration is! ClassDeclaration) {
         throw InvalidGenerationSourceError(
           '@freezed can only be applied on classes.',
-          element: declaration.declaredElement,
+          element: declaration.declaredFragment?.element,
         );
       }
 
@@ -822,9 +825,9 @@ To fix, either:
         doc: property.$1.documentation,
         isFinal: property.$1.fields.isFinal,
         isSynthetic: false,
-        decorators: switch (property.$1.declaredElement) {
-          final e? => parseDecorators(e.metadata),
-          null => [],
+        decorators: switch (property.$1.declaredFragment?.element) {
+          final Annotatable e => parseDecorators(e.metadata2.annotations),
+          _ => [],
         },
       );
     }
@@ -851,8 +854,10 @@ To fix, either:
       }
     }
 
-    late final typeSystem = declaration.declaredElement!.library.typeSystem;
-    late final typeProvider = declaration.declaredElement!.library.typeProvider;
+    late final typeSystem =
+        declaration.declaredFragment!.element.library2.typeSystem;
+    late final typeProvider =
+        declaration.declaredFragment!.element.library2.typeProvider;
 
     fieldLoop:
     for (final entry in typesMap.entries) {
@@ -906,7 +911,7 @@ To fix, either:
           isFinal = true;
 
           typeString = resolveFullTypeStringFrom(
-            declaration.declaredElement!.library,
+            declaration.declaredFragment!.element.library2,
             type,
           );
       }
@@ -952,7 +957,7 @@ To fix, either:
         param: parameter.name,
       );
 
-      final library = parameter.parameterElement!.library!;
+      final library = parameter.parameterElement!.library2!;
 
       var commonTypeBetweenAllUnionConstructors =
           parameter.parameterElement!.type;
@@ -1049,12 +1054,12 @@ To fix, either:
   }
 
   static void _assertValidFieldUsage(
-    FieldElement field, {
+    FieldElement2 field, {
     required bool shouldUseExtends,
   }) {
     if (field.isStatic) return;
 
-    if (field.setter != null) {
+    if (field.setter2 != null) {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed cannot have mutable properties',
         element: field,
@@ -1063,9 +1068,9 @@ To fix, either:
 
     // The field is a "Type get name => "
     if (!shouldUseExtends &&
-        field.getter != null &&
-        !field.getter!.isAbstract &&
-        !field.getter!.isSynthetic) {
+        field.getter2 != null &&
+        !field.getter2!.isAbstract &&
+        !field.getter2!.isSynthetic) {
       throw InvalidGenerationSourceError(
         'Getters require a MyClass._() constructor',
         element: field,
@@ -1116,10 +1121,11 @@ class Library {
   static Library from(List<CompilationUnit> units) {
     return Library(
       hasJson: units.any(
-        (unit) => unit.declaredElement!.library.importsJsonSerializable,
+        (unit) =>
+            unit.declaredFragment!.element.library2.importsJsonSerializable,
       ),
       hasDiagnostics: units.any(
-        (unit) => unit.declaredElement!.library.importsDiagnosticable,
+        (unit) => unit.declaredFragment!.element.library2.importsDiagnosticable,
       ),
     );
   }
@@ -1344,18 +1350,18 @@ extension ClassDeclarationX on ClassDeclaration {
   }
 }
 
-extension on LibraryElement {
+extension on LibraryElement2 {
   bool get importsJsonSerializable {
     return findAllAvailableTopLevelElements().any((element) {
-      return element.name == 'JsonSerializable' &&
-          (element.library?.isFromPackage('json_annotation') ?? false);
+      return element.name3 == 'JsonSerializable' &&
+          (element.library2?.isFromPackage('json_annotation') ?? false);
     });
   }
 
   bool get importsDiagnosticable {
     return findAllAvailableTopLevelElements().any((element) {
-      return element.name == 'DiagnosticableTreeMixin' &&
-          (element.library?.isFromPackage('flutter') ?? false);
+      return element.name3 == 'DiagnosticableTreeMixin' &&
+          (element.library2?.isFromPackage('flutter') ?? false);
     });
   }
 }
