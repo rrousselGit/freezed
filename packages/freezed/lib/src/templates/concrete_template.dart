@@ -30,10 +30,10 @@ class Concrete implements Template {
 
   late final bool _hasUnionKeyProperty =
       (data.options.toJson || data.options.fromJson) &&
-          data.constructors.length > 1 &&
-          constructor.properties.every(
-            (e) => e.name != data.options.annotation.unionKey,
-          );
+      data.constructors.length > 1 &&
+      constructor.properties.every(
+        (e) => e.name != data.options.annotation.unionKey,
+      );
 
   @override
   void generate(AnalyzerBuffer buffer) {
@@ -140,10 +140,12 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
       if (data.options.asUnmodifiableCollections)
         ...constructor.properties
             .where((e) => e.isSynthetic)
-            .where((e) =>
-                e.type.isDartCoreList ||
-                e.type.isDartCoreMap ||
-                e.type.isDartCoreSet)
+            .where(
+              (e) =>
+                  e.type.isDartCoreList ||
+                  e.type.isDartCoreMap ||
+                  e.type.isDartCoreSet,
+            )
             .map((e) => '_${e.name} = ${e.name}'),
       if (_hasUnionKeyProperty)
         "\$type = \$type ?? '${constructor.unionValue}'",
@@ -229,55 +231,59 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
   }
 
   String get _properties {
-    final classProperties =
-        constructor.properties.where((e) => e.isSynthetic).expand((p) {
-      final annotatedProperty = p.copyWith(
-        decorators: [
-          if (commonProperties.any((element) => element.name == p.name))
-            '@override',
-          if (p.defaultValueSource != null && !p.hasJsonKey) '@JsonKey()',
-          ...p.decorators,
-        ],
-      );
+    final classProperties = constructor.properties
+        .where((e) => e.isSynthetic)
+        .expand((p) {
+          final annotatedProperty = p.copyWith(
+            decorators: [
+              if (commonProperties.any((element) => element.name == p.name))
+                '@override',
+              if (p.defaultValueSource != null && !p.hasJsonKey) '@JsonKey()',
+              ...p.decorators,
+            ],
+          );
 
-      if (data.options.asUnmodifiableCollections) {
-        String? viewType;
+          if (data.options.asUnmodifiableCollections) {
+            String? viewType;
 
-        if (p.type.isDartCoreList) {
-          viewType = 'EqualUnmodifiableListView';
-        } else if (p.type.isDartCoreMap) {
-          viewType = 'EqualUnmodifiableMapView';
-        } else if (p.type.isDartCoreSet) {
-          viewType = 'EqualUnmodifiableSetView';
-        }
+            if (p.type.isDartCoreList) {
+              viewType = 'EqualUnmodifiableListView';
+            } else if (p.type.isDartCoreMap) {
+              viewType = 'EqualUnmodifiableMapView';
+            } else if (p.type.isDartCoreSet) {
+              viewType = 'EqualUnmodifiableSetView';
+            }
 
-        if (viewType != null) {
-          // If the collection is already unmodifiable, we don't want to wrap
-          // it in an unmodifiable view again.
-          final isAlreadyUnmodifiableCheck =
-              'if (_${p.name} is $viewType) return _${p.name};';
+            if (viewType != null) {
+              // If the collection is already unmodifiable, we don't want to wrap
+              // it in an unmodifiable view again.
+              final isAlreadyUnmodifiableCheck =
+                  'if (_${p.name} is $viewType) return _${p.name};';
 
-          return [
-            p.copyWith(name: '_${p.name}', decorators: const []),
-            if (p.type.isNullable) annotatedProperty.asGetter(''' {
+              return [
+                p.copyWith(name: '_${p.name}', decorators: const []),
+                if (p.type.isNullable)
+                  annotatedProperty.asGetter(''' {
   final value = _${p.name};
   if (value == null) return null;
   $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(value);
 }
-''') else annotatedProperty.asGetter(''' {
+''')
+                else
+                  annotatedProperty.asGetter(''' {
   $isAlreadyUnmodifiableCheck
   // ignore: implicit_dynamic_type
   return $viewType(_${p.name});
 }
 '''),
-          ];
-        }
-      }
+              ];
+            }
+          }
 
-      return [annotatedProperty];
-    });
+          return [annotatedProperty];
+        });
 
     if (_hasUnionKeyProperty) {
       return '''
@@ -296,14 +302,14 @@ final String \$type;
   }
 
   String get _fromJsonArgs => fromJsonArguments(
-        data.genericsParameterTemplate,
-        data.options.genericArgumentFactories,
-      );
+    data.genericsParameterTemplate,
+    data.options.genericArgumentFactories,
+  );
 
   String get _fromJsonParams => fromJsonParameters(
-        data.genericsParameterTemplate,
-        data.options.genericArgumentFactories,
-      );
+    data.genericsParameterTemplate,
+    data.options.genericArgumentFactories,
+  );
 
   String get _concreteFromJsonConstructor {
     if (!data.options.fromJson) return '';
@@ -521,7 +527,8 @@ extension DefaultValue on ParameterElement {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
-        var needsConstModifier = !declaration.type.isDartCoreString &&
+        var needsConstModifier =
+            !declaration.type.isDartCoreString &&
             !res.trimLeft().startsWith('const') &&
             (res.contains('(') || res.contains('[') || res.contains('{'));
 

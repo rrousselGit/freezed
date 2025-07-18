@@ -7,10 +7,10 @@ repository: https://github.com/rrousselGit/freezed
 issue_tracker: https://github.com/rrousselGit/freezed/issues
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
 
 dependencies:
-  analyzer: ">=6.9.0 <8.0.0"
+  analyzer: ">=7.5.9 <8.0.0"
   analyzer_buffer: ^0.0.2
   build: ^2.5.0
   build_config: ^1.1.0

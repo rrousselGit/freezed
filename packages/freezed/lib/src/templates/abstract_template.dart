@@ -37,7 +37,7 @@ class Abstract implements Template {
 
     var interfaces = [
       if (globalData.hasDiagnostics && data.options.asString)
-        'DiagnosticableTreeMixin'
+        'DiagnosticableTreeMixin',
     ].join();
     if (interfaces.isNotEmpty) interfaces = ' implements $interfaces';
 

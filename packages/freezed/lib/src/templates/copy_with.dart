@@ -62,7 +62,8 @@ class CopyWith {
     var leading = '';
     if (cloneableProperties.isNotEmpty) {
       leading = 'abstract mixin ';
-      body = '''
+      body =
+          '''
   factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) _then) = $_implClassName;
 ${_copyWithPrototype('call')}
 
@@ -86,7 +87,8 @@ $body
 
     final cast = needsCast ? ' as $clonedClassName$genericsParameter' : '';
     return _maybeOverride(
-      doc: '''
+      doc:
+          '''
 ${_copyWithDocs(data.name)}
 ''',
       '''
@@ -216,9 +218,11 @@ ${_deepCopyMethods(isConcrete: true).join()}
     required String methodName,
     required List<Property> properties,
   }) {
-    final parameters = properties.map((p) {
-      return '${p.decorators.join()} ${p.typeDisplayString} ${p.name}';
-    }).join(',');
+    final parameters = properties
+        .map((p) {
+          return '${p.decorators.join()} ${p.typeDisplayString} ${p.name}';
+        })
+        .join(',');
 
     return _maybeOverride('''
 @useResult
@@ -242,7 +246,8 @@ $parameters
     );
 
     return _maybeOverride(
-      doc: '''
+      doc:
+          '''
 ${_copyWithDocs(data.name)}
 ''',
       '@pragma(\'vm:prefer-inline\') $prototype $body',

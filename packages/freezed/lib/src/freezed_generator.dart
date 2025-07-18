@@ -40,7 +40,8 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       if (deepCopyProperty == null || commonGetter == null) continue;
 
       yield deepCopyProperty.copyWith(
-        nullable: deepCopyProperty.nullable ||
+        nullable:
+            deepCopyProperty.nullable ||
             commonProperty.type.isNullable ||
             commonGetter.type.isNullable,
       );
@@ -115,14 +116,16 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
         constructor: constructor,
         commonProperties: data.properties.readableProperties,
         globalData: globalData,
-        copyWith: data.options.annotation.copyWith ??
+        copyWith:
+            data.options.annotation.copyWith ??
                 constructor.parameters.allParameters.isNotEmpty
             ? CopyWith(
                 parents: {},
                 clonedClassName: constructor.redirectedName,
                 cloneableProperties: constructor.properties.toList(),
-                readableProperties:
-                    constructor.properties.where((e) => e.isSynthetic).toList(),
+                readableProperties: constructor.properties
+                    .where((e) => e.isSynthetic)
+                    .toList(),
                 deepCloneableProperties: constructor.deepCloneableProperties,
                 genericsDefinition: data.genericsDefinitionTemplate,
                 genericsParameter: data.genericsParameterTemplate,

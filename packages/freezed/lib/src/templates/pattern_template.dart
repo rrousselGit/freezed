@@ -36,10 +36,7 @@ extension ${data.name}Patterns${data.genericsDefinitionTemplate} on ${data.name}
   }
 }
 
-String _maybeMap(
-  Class data, {
-  required TypeProvider typeProvider,
-}) {
+String _maybeMap(Class data, {required TypeProvider typeProvider}) {
   if (!data.options.map.maybeMap) return '';
 
   return _mapImpl(
@@ -64,10 +61,7 @@ String _maybeMap(
   );
 }
 
-String _map(
-  Class data, {
-  required TypeProvider typeProvider,
-}) {
+String _map(Class data, {required TypeProvider typeProvider}) {
   if (!data.options.map.map) return '';
 
   return _mapImpl(
@@ -93,10 +87,7 @@ String _map(
   );
 }
 
-String _mapOrNull(
-  Class data, {
-  required TypeProvider typeProvider,
-}) {
+String _mapOrNull(Class data, {required TypeProvider typeProvider}) {
   if (!data.options.map.mapOrNull) return '';
 
   return _mapImpl(
@@ -121,10 +112,7 @@ String _mapOrNull(
   );
 }
 
-String _maybeWhen(
-  Class data, {
-  required TypeProvider typeProvider,
-}) {
+String _maybeWhen(Class data, {required TypeProvider typeProvider}) {
   if (!data.options.when.maybeWhen) return '';
 
   return _whenImpl(
@@ -149,10 +137,7 @@ String _maybeWhen(
   );
 }
 
-String _when(
-  Class data, {
-  required TypeProvider typeProvider,
-}) {
+String _when(Class data, {required TypeProvider typeProvider}) {
   if (!data.options.when.when) return '';
 
   return _whenImpl(
@@ -178,10 +163,7 @@ String _when(
   );
 }
 
-String _whenOrNull(
-  Class data, {
-  required TypeProvider typeProvider,
-}) {
+String _whenOrNull(Class data, {required TypeProvider typeProvider}) {
   if (!data.options.when.whenOrNull) return '';
 
   return _whenImpl(
@@ -295,18 +277,19 @@ String _whenImpl(
     typeProvider: typeProvider,
     ctor2parameters: (constructor) {
       return ParametersTemplate([
-        ...constructor.parameters.requiredPositionalParameters
-            .map((e) => e.copyWith(isFinal: false)),
-        ...constructor.parameters.optionalPositionalParameters
-            .map((e) => e.copyWith(
-                  isFinal: false,
-                  showDefaultValue: false,
-                )),
-        ...constructor.parameters.namedParameters.map((e) => e.copyWith(
-              isRequired: false,
-              isFinal: false,
-              showDefaultValue: false,
-            )),
+        ...constructor.parameters.requiredPositionalParameters.map(
+          (e) => e.copyWith(isFinal: false),
+        ),
+        ...constructor.parameters.optionalPositionalParameters.map(
+          (e) => e.copyWith(isFinal: false, showDefaultValue: false),
+        ),
+        ...constructor.parameters.namedParameters.map(
+          (e) => e.copyWith(
+            isRequired: false,
+            isFinal: false,
+            showDefaultValue: false,
+          ),
+        ),
       ]);
     },
   );
@@ -321,8 +304,9 @@ String _whenImpl(
       buffer.write(' when ${constructor.callbackName} != null');
     }
 
-    final callbackParameters =
-        constructor.properties.map((e) => '_that.${e.name}').join(',');
+    final callbackParameters = constructor.properties
+        .map((e) => '_that.${e.name}')
+        .join(',');
 
     buffer
       ..writeln(':')
