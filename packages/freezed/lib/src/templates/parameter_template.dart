@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
@@ -11,10 +11,10 @@ class GenericsDefinitionTemplate {
   GenericsDefinitionTemplate(this.typeParameters);
 
   factory GenericsDefinitionTemplate.fromGenericElement(
-    List<TypeParameterElement> generics,
+    List<TypeParameterElement2> generics,
   ) {
     return GenericsDefinitionTemplate(
-      generics.map((e) => e.getDisplayString()).toList(),
+      generics.map((e) => e.displayString2()).toList(),
     );
   }
 
@@ -36,9 +36,9 @@ class GenericsParameterTemplate {
   GenericsParameterTemplate(this.typeParameters);
 
   factory GenericsParameterTemplate.fromGenericElement(
-    List<TypeParameterElement> generics,
+    List<TypeParameterElement2> generics,
   ) {
-    return GenericsParameterTemplate(generics.map((e) => e.name).toList());
+    return GenericsParameterTemplate(generics.map((e) => e.name3!).toList());
   }
   final List<String> typeParameters;
 
@@ -67,16 +67,16 @@ class ParametersTemplate {
     required bool addImplicitFinal,
   }) {
     Parameter asParameter(FormalParameter p) {
-      final e = p.declaredElement!;
+      final e = p.declaredFragment!.element;
 
       final value = Parameter(
-        name: e.name,
+        name: e.name3!,
         defaultValueSource: e.defaultValue,
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,
         type: e.type,
         typeDisplayString: parseTypeSource(p),
-        decorators: parseDecorators(e.metadata),
+        decorators: parseDecorators(e.metadata2.annotations),
         doc: p.documentation ?? '',
         showDefaultValue: true,
         parameterElement: e,
@@ -244,7 +244,7 @@ class Parameter {
   final bool showDefaultValue;
   final bool isFinal;
   final String doc;
-  final ParameterElement? parameterElement;
+  final FormalParameterElement? parameterElement;
 
   Parameter copyWith({
     DartType? type,

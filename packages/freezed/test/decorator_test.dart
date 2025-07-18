@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/analysis/results.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -8,7 +7,8 @@ void main() {
     final main = await resolveSources(
       {'freezed|test/integration/decorator.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('decorator'),
+        (element) =>
+            element.firstFragment.source.toString().contains('decorator'),
       ),
     );
 
@@ -33,26 +33,32 @@ import 'decorator.dart';
 ''',
         },
         (r) => r.libraries.firstWhere(
-          (element) => element.library.name == 'decorator',
+          (element) => element.library2.name3 == 'decorator',
         ),
         readAllSourcesFromFilesystem: true,
       );
 
-      final concrete = main.topLevelElements
-          .whereType<ClassElement>()
-          .firstWhere((e) => e.name == r'ListDecorator0');
+      final concrete = main.classes.firstWhere(
+        (e) => e.name3 == r'ListDecorator0',
+      );
 
       expect(
-        concrete.fields.firstWhere((element) => element.name == '_a').metadata,
+        concrete.fields2
+            .firstWhere((element) => element.name3 == '_a')
+            .metadata2
+            .annotations,
         isEmpty,
       );
 
-      final unmodifiableGetter = concrete.fields
-          .firstWhere((element) => element.name == 'a')
-          .getter!;
+      final unmodifiableGetter = concrete.fields2
+          .firstWhere((element) => element.name3 == 'a')
+          .getter2!;
 
-      expect(unmodifiableGetter.metadata.length, 2);
-      expect(unmodifiableGetter.metadata.last.toSource(), '@Foo()');
+      expect(unmodifiableGetter.metadata2.annotations.length, 2);
+      expect(
+        unmodifiableGetter.metadata2.annotations.last.toSource(),
+        '@Foo()',
+      );
     },
   );
 
@@ -81,7 +87,7 @@ void main() {
 ''',
       },
       (r) => r.libraries.firstWhere(
-        (element) => element.source.toString().contains('decorator'),
+        (element) => element.firstFragment.toString().contains('decorator'),
       ),
       readAllSourcesFromFilesystem: true,
     );

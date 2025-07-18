@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/analysis/results.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
@@ -17,16 +17,14 @@ Future<void> main() async {
     (r) {
       return r.libraries.firstWhere(
         (element) =>
-            element.source.toString().contains('multiple_constructors'),
+            element.firstFragment.toString().contains('multiple_constructors'),
       );
     },
     readAllSourcesFromFilesystem: true,
   );
 
-  ClassElement _getClassElement(String elementName) {
-    return sources.topLevelElements.whereType<ClassElement>().firstWhere(
-      (element) => element.name == elementName,
-    );
+  ClassElement2 _getClassElement(String elementName) {
+    return sources.classes.singleWhere((e) => e.name3 == elementName);
   }
 
   test('Response', () {
@@ -39,14 +37,14 @@ Future<void> main() async {
   test('recursive class does not generate dynamic', () async {
     final recursiveClass = _getClassElement('_RecursiveNext');
 
-    expect(recursiveClass.getField('value')!.type, isA<InterfaceType>());
+    expect(recursiveClass.getField2('value')!.type, isA<InterfaceType>());
   });
 
   test('recursive class with dollar generates correctly', () async {
     final recursiveClass = _getClassElement('_RecursiveWith\$DollarNext');
 
     expect(
-      recursiveClass.getField('value')!.type.getDisplayString(),
+      recursiveClass.getField2('value')!.type.getDisplayString(),
       'RecursiveWith\$DollarImpl',
     );
   });
@@ -66,54 +64,54 @@ Future<void> main() async {
     final complex2 = _getClassElement('Complex2');
 
     expect(
-      complex.mixins.first.accessors.first,
-      isA<PropertyAccessorElement>()
-          .having((e) => e.name, 'name', 'a')
+      complex.mixins.first.getters.first,
+      isA<PropertyAccessorElement2>()
+          .having((e) => e.name3, 'name', 'a')
           .having((e) => e.documentationComment, 'doc', '/// Hello'),
     );
 
     expect(
-      complex0.fields.where(
-        (e) => e.name != 'copyWith' && e.name != 'hashCode',
+      complex0.fields2.where(
+        (e) => e.name3 != 'copyWith' && e.name3 != 'hashCode',
       ),
       [
-        isA<FieldElement>()
-            .having((e) => e.name, 'name', 'a')
+        isA<FieldElement2>()
+            .having((e) => e.name3, 'name', 'a')
             .having((e) => e.documentationComment, 'doc', '/// Hello'),
       ],
     );
 
     expect(
-      complex1.fields.where(
-        (e) => e.name != 'copyWith' && e.name != 'hashCode',
+      complex1.fields2.where(
+        (e) => e.name3 != 'copyWith' && e.name3 != 'hashCode',
       ),
       [
-        isA<FieldElement>()
-            .having((e) => e.name, 'name', 'a')
+        isA<FieldElement2>()
+            .having((e) => e.name3, 'name', 'a')
             .having((e) => e.documentationComment, 'doc', '/// World'),
-        isA<FieldElement>()
-            .having((e) => e.name, 'name', 'b')
+        isA<FieldElement2>()
+            .having((e) => e.name3, 'name', 'b')
             .having((e) => e.documentationComment, 'doc', '/// B'),
-        isA<FieldElement>()
-            .having((e) => e.name, 'name', 'd')
+        isA<FieldElement2>()
+            .having((e) => e.name3, 'name', 'd')
             .having((e) => e.documentationComment, 'doc', null),
       ],
     );
 
     expect(
-      complex2.fields.where(
-        (e) => e.name != 'copyWith' && e.name != 'hashCode',
+      complex2.fields2.where(
+        (e) => e.name3 != 'copyWith' && e.name3 != 'hashCode',
       ),
       [
-        isA<FieldElement>()
-            .having((e) => e.name, 'name', 'a')
+        isA<FieldElement2>()
+            .having((e) => e.name3, 'name', 'a')
             // The doc is inherited from `Complex`
             .having((e) => e.documentationComment, 'doc', null),
-        isA<FieldElement>()
-            .having((e) => e.name, 'name', 'c')
+        isA<FieldElement2>()
+            .having((e) => e.name3, 'name', 'c')
             .having((e) => e.documentationComment, 'doc', '/// C'),
-        isA<FieldElement>()
-            .having((e) => e.name, 'name', 'd')
+        isA<FieldElement2>()
+            .having((e) => e.name3, 'name', 'd')
             .having((e) => e.documentationComment, 'doc', null),
       ],
     );
@@ -171,8 +169,9 @@ void main() {
       final main = await resolveSources(
         {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
         (r) => r.libraries.firstWhere(
-          (element) =>
-              element.source.toString().contains('multiple_constructors'),
+          (element) => element.firstFragment.source.toString().contains(
+            'multiple_constructors',
+          ),
         ),
       );
 
@@ -575,7 +574,7 @@ void main() {
       final nestedListClass = _getClassElement('ShallowNestedList');
 
       expect(
-        nestedListClass.getField('children')!.type.getDisplayString(),
+        nestedListClass.getField2('children')!.type.getDisplayString(),
         'List<LeafNestedListItem>',
       );
     });
@@ -584,14 +583,14 @@ void main() {
       final nestedListClass = _getClassElement('DeepNestedList');
 
       expect(
-        nestedListClass.getField('children')!.type.getDisplayString(),
+        nestedListClass.getField2('children')!.type.getDisplayString(),
         'List<InnerNestedListItem>',
       );
 
       final nestedListItemClass = _getClassElement('InnerNestedListItem');
 
       expect(
-        nestedListItemClass.getField('children')!.type.getDisplayString(),
+        nestedListItemClass.getField2('children')!.type.getDisplayString(),
         'List<LeafNestedListItem>',
       );
     });
@@ -601,7 +600,7 @@ void main() {
       final nestedMapClass = _getClassElement('ShallowNestedMap');
 
       expect(
-        nestedMapClass.getField('children')!.type.getDisplayString(),
+        nestedMapClass.getField2('children')!.type.getDisplayString(),
         'Map<String, LeafNestedMapItem>',
       );
     });
@@ -610,14 +609,14 @@ void main() {
       final nestedMapClass = _getClassElement('DeepNestedMap');
 
       expect(
-        nestedMapClass.getField('children')!.type.getDisplayString(),
+        nestedMapClass.getField2('children')!.type.getDisplayString(),
         'Map<String, InnerNestedMapItem>',
       );
 
       final nestedMapItemClass = _getClassElement('InnerNestedMapItem');
 
       expect(
-        nestedMapItemClass.getField('children')!.type.getDisplayString(),
+        nestedMapItemClass.getField2('children')!.type.getDisplayString(),
         'Map<String, LeafNestedMapItem>',
       );
     });
@@ -628,19 +627,19 @@ void main() {
       final nestedMapClass = _getClassElement('_UsesGenerated');
 
       expect(
-        nestedMapClass.getField('value')!.type.getDisplayString(),
+        nestedMapClass.getField2('value')!.type.getDisplayString(),
         'CodeGenerated',
       );
       expect(
-        nestedMapClass.getField('list')!.type.getDisplayString(),
+        nestedMapClass.getField2('list')!.type.getDisplayString(),
         'List<CodeGenerated>',
       );
       expect(
-        nestedMapClass.getField('nestedList')!.type.getDisplayString(),
+        nestedMapClass.getField2('nestedList')!.type.getDisplayString(),
         'List<List<CodeGenerated>>',
       );
       expect(
-        nestedMapClass.getField('map')!.type.getDisplayString(),
+        nestedMapClass.getField2('map')!.type.getDisplayString(),
         'Map<int, CodeGenerated>',
       );
     });
