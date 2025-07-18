@@ -48,18 +48,18 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
     }
   }
 
-  Iterable<Template> _generateForAll(Library globalData) sync* {
-    yield Template(r'T _$identity<T>(T value) => value;');
+  Iterable<Object> _generateForAll(Library globalData) sync* {
+    yield r'T _$identity<T>(T value) => value;';
   }
 
   @override
-  Iterable<Template> generateAll(
+  Iterable<Object> generateAll(
     List<CompilationUnit> units,
     List<AnnotationMeta> annotations,
   ) sync* {
     if (annotations.isEmpty) return;
 
-    if (!format) yield Template('// dart format off');
+    if (!format) yield '// dart format off';
 
     final library = Library.from(units);
     for (final value in _generateForAll(library)) {
@@ -79,10 +79,10 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       }
     }
 
-    if (!format) yield Template('// dart format on');
+    if (!format) yield '// dart format on';
   }
 
-  Iterable<Template> _generateForData(Library globalData, Class data) sync* {
+  Iterable<Object> _generateForData(Library globalData, Class data) sync* {
     if (data.options.fromJson) yield FromJson(data);
 
     final commonCopyWith = data.options.annotation.copyWith ?? true
@@ -108,7 +108,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
       globalData: globalData,
     );
 
-    yield Patterns(data);
+    yield patterns(data);
 
     for (final constructor in data.constructors) {
       yield Concrete(
