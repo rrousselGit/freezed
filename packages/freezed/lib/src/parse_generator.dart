@@ -7,7 +7,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
-import 'package:path/path.dart' as path;
 import 'package:source_gen/source_gen.dart';
 
 typedef AnnotationMeta = ({Declaration declaration, DartObject annotation});
@@ -57,18 +56,9 @@ abstract class ParserGenerator<AnnotationT>
       }
     }
 
-    final buffer = AnalyzerBuffer.fromLibrary(
-      oldLibrary.element,
-      sourcePath: path.join(
-        path.dirname(buildStep.inputId.path),
-        '${path.basenameWithoutExtension(buildStep.inputId.path)}.freezed.dart',
-      ),
-    );
+    final buffer = AnalyzerBuffer.fromLibrary(oldLibrary.element);
     for (final value in generateAll(units, datas)) {
       value.generate(buffer);
-      if (!buffer.isEmpty) {
-        buffer.write('\n');
-      }
     }
 
     return buffer.toString();
@@ -110,13 +100,7 @@ abstract class ParserGenerator<AnnotationT>
       );
     }
 
-    final buffer = AnalyzerBuffer.fromLibrary(
-      unit.libraryElement,
-      sourcePath: path.join(
-        path.dirname(buildStep.inputId.path),
-        '${path.basenameWithoutExtension(buildStep.inputId.path)}.freezed.dart',
-      ),
-    );
+    final buffer = AnalyzerBuffer.fromLibrary(unit.libraryElement);
 
     final datas = <AnnotationMeta>[(declaration: ast, annotation: annotation)];
     for (final value in generateAll([unit.unit], datas)) {

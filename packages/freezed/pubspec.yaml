@@ -11,7 +11,7 @@ environment:
 
 dependencies:
   analyzer: ">=7.5.9 <8.0.0"
-  analyzer_buffer: ^0.0.7
+  analyzer_buffer: ^0.0.2
   build: ^2.5.0
   build_config: ^1.1.0
   collection: ^1.15.0
@@ -21,7 +21,6 @@ dependencies:
   json_annotation: ^4.8.0
   dart_style: ^3.0.0
   pub_semver: ^2.2.0
-  path: ^1.9.1
 
 dev_dependencies:
   json_serializable: ^6.3.2
