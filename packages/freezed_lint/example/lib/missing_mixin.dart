@@ -37,3 +37,16 @@ abstract class BarModel with _$BarModel, SomeMixin {
   @override
   int get id => id;
 }
+
+@freezed
+class _BazModel with _$BazModel {
+  const factory _BazModel() = __BazModel;
+}
+
+// fake generated code:
+
+mixin _$BazModel {}
+
+class __BazModel implements _BazModel {
+  const __BazModel();
+}
