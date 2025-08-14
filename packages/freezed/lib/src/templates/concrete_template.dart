@@ -517,7 +517,10 @@ extension DefaultValue on FormalParameterElement {
   /// Returns the sources of the default value associated with a `@Default`,
   /// or `null` if no `@Default` are specified.
   String? get defaultValue {
-    const matcher = TypeChecker.fromRuntime(Default);
+    const matcher = TypeChecker.typeNamed(
+      Default,
+      inPackage: 'freezed_annotation',
+    );
 
     for (final meta in metadata2.annotations) {
       final obj = meta.computeConstantValue()!;
@@ -541,7 +544,10 @@ extension DefaultValue on FormalParameterElement {
   }
 
   bool get hasJsonKey {
-    return const TypeChecker.fromRuntime(JsonKey).hasAnnotationOf(this);
+    return const TypeChecker.typeNamed(
+      JsonKey,
+      inPackage: 'json_annotation',
+    ).hasAnnotationOf(this);
   }
 }
 

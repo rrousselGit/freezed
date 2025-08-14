@@ -32,8 +32,7 @@ class MissingPrivateEmptyCtor extends DartLintRule {
       final methods = element.methods2.where((method) => !method.isStatic);
       final fields = element.fields2.where((field) => !field.isStatic);
 
-      
-      final accessors =[
+      final accessors = [
         ...element.getters2,
         ...element.setters2,
       ].where((accessor) => !accessor.isStatic);

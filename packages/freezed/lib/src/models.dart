@@ -29,8 +29,9 @@ class _Sentinel {
 
 extension on Element2 {
   bool get hasJsonSerializable {
-    return const TypeChecker.fromRuntime(
+    return const TypeChecker.typeNamed(
       JsonSerializable,
+      inPackage: 'json_annotation',
     ).hasAnnotationOf(this, throwOnUnresolved: false);
   }
 }
@@ -42,8 +43,9 @@ extension on ConstructorElement2 {
   }
 
   String unionValue(FreezedUnionCase? unionCase) {
-    final annotation = const TypeChecker.fromRuntime(
+    final annotation = const TypeChecker.typeNamed(
       FreezedUnionValue,
+      inPackage: 'freezed_annotation',
     ).firstAnnotationOf(this, throwOnUnresolved: false);
     if (annotation != null) {
       return annotation.getField('value')!.toStringValue()!;
@@ -66,7 +68,10 @@ extension on ConstructorElement2 {
   }
 }
 
-const freezedType = TypeChecker.fromRuntime(Freezed);
+const freezedType = TypeChecker.typeNamed(
+  Freezed,
+  inPackage: 'freezed_annotation',
+);
 
 /// A generated property that has for type a class generated using Freezed
 ///
@@ -421,8 +426,9 @@ class ImplementsAnnotation {
   static Iterable<ImplementsAnnotation> parseAll(
     ConstructorElement2 constructor,
   ) sync* {
-    for (final meta in const TypeChecker.fromRuntime(
+    for (final meta in const TypeChecker.typeNamed(
       Implements,
+      inPackage: 'freezed_annotation',
     ).annotationsOf(constructor, throwOnUnresolved: false)) {
       final stringType = meta.getField('stringType');
       if (stringType?.isNull == false) {
@@ -474,8 +480,9 @@ class AssertAnnotation {
   static Iterable<AssertAnnotation> parseAll(
     ConstructorDeclaration constructor,
   ) sync* {
-    for (final meta in const TypeChecker.fromRuntime(
+    for (final meta in const TypeChecker.typeNamed(
       Assert,
+      inPackage: 'freezed_annotation',
     ).annotationsOf(constructor.declaredFragment!.element)) {
       yield AssertAnnotation(
         code: meta.getField('eval')!.toStringValue()!,
