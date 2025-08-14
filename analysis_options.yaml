@@ -7,8 +7,6 @@ analyzer:
     strict-raw-types: true
   errors:
     invalid_annotation_target: ignore
-    # Waiting for analyzer 8.0 to migrate
-    deprecated_member_use: ignore
 
 linter:
   rules:
