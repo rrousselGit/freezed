@@ -1,3 +1,7 @@
+## Unreleased 0.1.0
+
+Support new Analyzer API and custom_lint
+
 ## 0.0.10 - 2025-07-02
 
 - `freezed_annotation` upgraded to `3.1.0`

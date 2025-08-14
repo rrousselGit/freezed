@@ -18,22 +18,22 @@ class MissingMixin extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addClassDeclaration((node) {
-      final element = node.declaredElement;
+      final element = node.declaredFragment?.element;
       if (element == null) return;
 
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final name = '_\$${element.name}';
+      final name = '_\$${element.name3}';
       final withClause = node.withClause;
       if (withClause == null) {
-        reporter.atElement(element, _code, arguments: [name]);
+        reporter.atElement2(element, _code, arguments: [name]);
         return;
       }
 
       final mixins = withClause.mixinTypes;
       if (mixins.any((m) => name == m.name2.lexeme)) return;
-      reporter.atElement(element, _code, arguments: [name]);
+      reporter.atElement2(element, _code, arguments: [name]);
     });
   }
 
@@ -56,7 +56,7 @@ class _AddMixinFreezedClassFix extends DartFix {
         message: 'Add mixin _\$${node.name}',
         priority: 1,
       )..addDartFileEdit((builder) {
-          final element = node.declaredElement;
+          final element = node.declaredFragment?.element;
           if (element == null) return;
 
           final name = element.displayName;

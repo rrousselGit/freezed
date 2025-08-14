@@ -23,25 +23,29 @@ class MissingPrivateEmptyCtor extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addClassDeclaration((node) {
-      final element = node.declaredElement;
+      final element = node.declaredFragment?.element;
       if (element == null) return;
 
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final methods = element.methods.where((method) => !method.isStatic);
-      final fields = element.fields.where((field) => !field.isStatic);
-      final accessors =
-          element.accessors.where((accessor) => !accessor.isStatic);
+      final methods = element.methods2.where((method) => !method.isStatic);
+      final fields = element.fields2.where((field) => !field.isStatic);
+
+      
+      final accessors =[
+        ...element.getters2,
+        ...element.setters2,
+      ].where((accessor) => !accessor.isStatic);
       if (methods.isEmpty && fields.isEmpty && accessors.isEmpty) return;
 
-      final ctors = element.constructors.where((ctor) =>
-          ctor.isPrivate && ctor.parameters.isEmpty && ctor.name == '_');
+      final ctors = element.constructors2.where((ctor) =>
+          ctor.isPrivate && ctor.formalParameters.isEmpty && ctor.name3 == '_');
       if (ctors.isNotEmpty) return;
 
       final constToken = element.constToken();
       final name = '$constToken${element.displayName}._();';
-      reporter.atElement(element, _code, arguments: [name]);
+      reporter.atElement2(element, _code, arguments: [name]);
     });
   }
 
@@ -60,7 +64,7 @@ class _AddPrivateEmptyCtorFix extends DartFix {
   ) {
     context.registry.addClassDeclaration((node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
-      final element = node.declaredElement;
+      final element = node.declaredFragment?.element;
       if (element == null) return;
       final name = element.displayName;
       final constToken = element.constToken();
