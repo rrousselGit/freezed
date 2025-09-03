@@ -1,11 +1,14 @@
 targets:
   $default:
+    sources:
+      exclude:
+        - example/*
+
     builders:
       freezed:
         enabled: true
         generate_for:
           exclude:
-            - example
             - test/source_gen_src.dart
           include:
             - test/*
