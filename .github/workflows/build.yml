@@ -16,11 +16,14 @@ jobs:
     strategy:
       matrix:
         package:
+          - benchmarks/
           - packages/freezed
           - packages/freezed/example
           - packages/freezed_annotation
           - packages/freezed_lint
+          - packages/freezed_lint/example
         channel:
+          - master
           - stable
         dependencies:
           - get
@@ -28,8 +31,10 @@ jobs:
         exclude:
           - channel: stable
             dependencies: downgrade
-          - package: packages/freezed_lint
-            channel: stable
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.package }}
 
     steps:
       - uses: actions/checkout@v5
@@ -37,50 +42,33 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
-          cache: ${{ matrix.channel == 'stable' }}
-
-      # It is executed separately
-      - name: Removing example folder
-        # Retain example for lint golden test
-        if: matrix.package != 'packages/freezed_lint'
-        run: rm -rf example
-        working-directory: ${{ matrix.package }}
+          cache: ${{ matrix.channel == 'master' }}
 
       - name: Install dependencies
-        run: |
-          flutter pub ${{ matrix.dependencies }}
-        working-directory: ${{ matrix.package }}
+        run: flutter pub ${{ matrix.dependencies }}
 
       - name: Check format
         # Check dart format only on stable
         if: matrix.channel == 'stable'
         run: dart format --set-exit-if-changed .
-        working-directory: ${{ matrix.package }}
 
       - name: Generate
-        run: |
-          if grep -q build_runner "pubspec.yaml"; then
-            dart pub run build_runner build --delete-conflicting-outputs
-          fi
-        working-directory: ${{ matrix.package }}
+        if: matrix.package != 'packages/freezed_lint/example'
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Analyze
-        run: flutter analyze
+        run: flutter analyze --fatal-infos
         working-directory: ${{ matrix.package }}
 
       - name: Run tests
         run: |
-          if grep -q "name: example" "pubspec.yaml"; then
+          if grep -q "flutter_test:" "pubspec.yaml"; then
             flutter test
-          else
+          elif grep -q "test:" "pubspec.yaml"; then
             dart test
           fi
         working-directory: ${{ matrix.package }}
 
       - name: Lint golden test
-        if: matrix.package == 'packages/freezed_lint'
-        run: |
-          dart pub get
-          dart analyze
-          dart run custom_lint
-        working-directory: 'packages/freezed_lint/example'
+        if: matrix.package == 'packages/freezed_lint/example'
+        run: dart run custom_lint --fatal-infos
