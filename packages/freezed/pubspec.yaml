@@ -16,7 +16,7 @@ dependencies:
   build_config: ^1.1.0
   collection: ^1.15.0
   meta: ^1.9.1
-  source_gen: ^3.0.0
+  source_gen: ^3.1.0
   freezed_annotation: 3.1.0
   json_annotation: ^4.9.0
   dart_style: ^3.0.0
