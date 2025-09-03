@@ -31,7 +31,7 @@ void main() {
             )
             as ErrorsResult;
 
-    expect(errorResult.errors, isEmpty);
+    expect(errorResult.diagnostics, isEmpty);
   });
 
   test('has no issue #2', () async {
@@ -49,7 +49,7 @@ void main() {
             )
             as ErrorsResult;
 
-    expect(errorResult.errors, isEmpty);
+    expect(errorResult.diagnostics, isEmpty);
   });
 
   test('handles null', () {
@@ -422,7 +422,7 @@ void main() {
 import 'deep_copy.dart';
 
 void main() {
-  final value = NoCommonProperty.assistant!(Assistant());  
+  final value = NoCommonProperty.assistant!(Assistant());
   NoCommonPropertyAssistant copy = value.copyWith(assistant: Assistant());
 }
 '''),
@@ -734,7 +734,7 @@ void main() {
         await main.session.getErrors('/freezed/test/integration/main.dart')
             as ErrorsResult;
 
-    expect(errorResult.errors.map((e) => e.errorCode.name), [
+    expect(errorResult.diagnostics.map((e) => e.diagnosticCode.name), [
       'UNUSED_RESULT',
       'UNUSED_RESULT',
     ]);

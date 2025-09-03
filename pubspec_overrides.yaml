@@ -16,3 +16,16 @@ dependency_overrides:
   quiver: ^3.2.0
   # watcher 1.0.0 extends, implements, or mixins sealed class 'FileSystemEvent'
   watcher: ^1.1.0
+
+  custom_lint:
+    path: ../dart_custom_lint/packages/custom_lint
+  custom_lint_builder:
+    path: ../dart_custom_lint/packages/custom_lint_builder
+  custom_lint_core:
+    path: ../dart_custom_lint/packages/custom_lint_core
+  custom_lint_visitor:
+    path: ../dart_custom_lint/packages/custom_lint_visitor
+
+  build: ^4.0.0
+  source_gen: ^4.0.0
+  test_api: ^0.7.6
