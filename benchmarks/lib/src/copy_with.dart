@@ -11,9 +11,7 @@ abstract class Model with _$Model {
 
 @freezed
 abstract class ModelWrapper with _$ModelWrapper {
-  factory ModelWrapper({
-    required Model model,
-  }) = _ModelWrapper;
+  factory ModelWrapper({required Model model}) = _ModelWrapper;
 }
 
 void main(List<String> arguments) {
