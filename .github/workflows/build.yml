@@ -29,7 +29,7 @@ jobs:
           - get
           - downgrade
         exclude:
-          - channel: stable
+          - channel: master
             dependencies: downgrade
 
     defaults:
@@ -51,7 +51,6 @@ jobs:
         # Check dart format only on stable
         if: matrix.channel == 'stable'
         run: dart format --set-exit-if-changed .
-
 
       - name: Generate
         if: matrix.package != 'packages/freezed_lint/example'
