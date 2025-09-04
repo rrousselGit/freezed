@@ -18,14 +18,41 @@ dependency_overrides:
   watcher: ^1.1.0
 
   custom_lint:
-    path: ../dart_custom_lint/packages/custom_lint
+    git:
+      url: https://github.com/lishaduck/dart_custom_lint.git
+      ref: analyzer-8
+      path: packages/custom_lint
+    # path: ../dart_custom_lint/packages/custom_lint
   custom_lint_builder:
-    path: ../dart_custom_lint/packages/custom_lint_builder
+    git:
+      url: https://github.com/lishaduck/dart_custom_lint.git
+      ref: analyzer-8
+      path: packages/custom_lint_builder
+    # path: ../dart_custom_lint/packages/custom_lint_builder
   custom_lint_core:
-    path: ../dart_custom_lint/packages/custom_lint_core
+    git:
+      url: https://github.com/lishaduck/dart_custom_lint.git
+      ref: analyzer-8
+      path: packages/custom_lint_core
+    # path: ../dart_custom_lint/packages/custom_lint_core
   custom_lint_visitor:
-    path: ../dart_custom_lint/packages/custom_lint_visitor
+    git:
+      url: https://github.com/lishaduck/dart_custom_lint.git
+      ref: analyzer-8
+      path: packages/custom_lint_visitor
+    # path: ../dart_custom_lint/packages/custom_lint_visitor
+
+  source_gen_test:
+    git:
+      url: https://github.com/lishaduck/source_gen_test.git
+      ref: analyzer-8
+    # path: ../source_gen_test
+
+  source_gen:
+    git:
+      url: https://github.com/davidmorgan/source_gen.git
+      ref: allow-build-4
+      path: source_gen
 
   build: ^4.0.0
-  source_gen: ^4.0.0
-  test_api: ^0.7.6
+  test_api: ^0.7.7
