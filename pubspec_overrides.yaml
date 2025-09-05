@@ -42,17 +42,4 @@ dependency_overrides:
       path: packages/custom_lint_visitor
     # path: ../dart_custom_lint/packages/custom_lint_visitor
 
-  source_gen_test:
-    git:
-      url: https://github.com/lishaduck/source_gen_test.git
-      ref: analyzer-8
-    # path: ../source_gen_test
-
-  source_gen:
-    git:
-      url: https://github.com/davidmorgan/source_gen.git
-      ref: allow-build-4
-      path: source_gen
-
-  build: ^4.0.0
   test_api: ^0.7.7
