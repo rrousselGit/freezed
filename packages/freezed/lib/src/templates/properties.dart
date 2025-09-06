@@ -20,9 +20,10 @@ class Property {
     required this.doc,
     required this.isSynthetic,
     required this.isFinal,
+    this.originClass,
   });
 
-  Property.fromParameter(Parameter p, {required bool isSynthetic})
+  Property.fromParameter(Parameter p, {required bool isSynthetic, String? originClass})
     : this(
         decorators: p.decorators,
         name: p.name,
@@ -33,12 +34,14 @@ class Property {
         defaultValueSource: p.defaultValueSource,
         isSynthetic: isSynthetic,
         hasJsonKey: false,
+        originClass: originClass,
       );
 
   static Property fromFormalParameter(
     FormalParameter parameter, {
     required bool addImplicitFinal,
     required bool isSynthetic,
+    String? originClass,
   }) {
     final element = parameter.declaredFragment!.element;
 
@@ -61,6 +64,7 @@ class Property {
       decorators: parseDecorators(element.metadata2.annotations),
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
+      originClass: originClass,
     );
   }
 
@@ -73,6 +77,7 @@ class Property {
   final String? defaultValueSource;
   final bool hasJsonKey;
   final String doc;
+  final String? originClass;
 
   @override
   String toString() {
@@ -115,6 +120,7 @@ class Property {
     String? doc,
     bool? isPossiblyDartCollection,
     TypeParameterElement2? parameterElement,
+    String? originClass,
   }) {
     return Property(
       type: type ?? this.type,
@@ -126,6 +132,7 @@ class Property {
       hasJsonKey: hasJsonKey ?? this.hasJsonKey,
       doc: doc ?? this.doc,
       isFinal: isFinal ?? this.isFinal,
+      originClass: originClass ?? this.originClass,
     );
   }
 }
