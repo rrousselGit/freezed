@@ -3,6 +3,7 @@ targets:
     sources:
       exclude:
         - example/*
+        - example/**/*
 
     builders:
       freezed:

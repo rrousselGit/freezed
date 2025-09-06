@@ -26,7 +26,7 @@ packages:
     source: hosted
     version: "0.13.7"
   args:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: args
       sha256: d0481093c50b1da8910eb0bb301626d4d8eb7284aa739614d2b394ee09e3ea04
@@ -214,7 +214,7 @@ packages:
     description:
       path: "packages/custom_lint"
       ref: analyzer-8
-      resolved-ref: "4f59358c012b5292f29799e84084fb3fd9ae2d7e"
+      resolved-ref: "3e2501bb738c7c9ddbcc3c3b37be7a28c78a4ed2"
       url: "https://github.com/lishaduck/dart_custom_lint.git"
     source: git
     version: "0.8.0"
@@ -223,7 +223,7 @@ packages:
     description:
       path: "packages/custom_lint_builder"
       ref: analyzer-8
-      resolved-ref: "4f59358c012b5292f29799e84084fb3fd9ae2d7e"
+      resolved-ref: "3e2501bb738c7c9ddbcc3c3b37be7a28c78a4ed2"
       url: "https://github.com/lishaduck/dart_custom_lint.git"
     source: git
     version: "0.8.0"
@@ -232,7 +232,7 @@ packages:
     description:
       path: "packages/custom_lint_core"
       ref: analyzer-8
-      resolved-ref: "4f59358c012b5292f29799e84084fb3fd9ae2d7e"
+      resolved-ref: "3e2501bb738c7c9ddbcc3c3b37be7a28c78a4ed2"
       url: "https://github.com/lishaduck/dart_custom_lint.git"
     source: git
     version: "0.8.0"
@@ -241,7 +241,7 @@ packages:
     description:
       path: "packages/custom_lint_visitor"
       ref: analyzer-8
-      resolved-ref: "4f59358c012b5292f29799e84084fb3fd9ae2d7e"
+      resolved-ref: "3e2501bb738c7c9ddbcc3c3b37be7a28c78a4ed2"
       url: "https://github.com/lishaduck/dart_custom_lint.git"
     source: git
     version: "1.0.0+8.1.0"

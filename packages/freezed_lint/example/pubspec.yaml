@@ -1,7 +1,7 @@
 # The pubspec.yaml of an application using our lints
 name: lint_example
 environment:
-  sdk: ">=3.7.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
 resolution: workspace
 publish_to: none
 

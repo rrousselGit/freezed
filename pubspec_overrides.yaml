@@ -16,6 +16,7 @@ dependency_overrides:
   quiver: ^3.2.0
   # watcher 1.0.0 extends, implements, or mixins sealed class 'FileSystemEvent'
   watcher: ^1.1.0
+  args: ^2.5.0
 
   custom_lint:
     git:

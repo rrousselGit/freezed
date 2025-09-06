@@ -1,6 +1,5 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -46,6 +45,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 class $ExampleCopyWith<T,$Res>  {
 $ExampleCopyWith(Example<T> _, $Res Function(Example<T>) __);
 }
+
 
 
 /// @nodoc
@@ -230,6 +230,7 @@ $ConcreteExampleCopyWith(ConcreteExample<T> _, $Res Function(ConcreteExample<T>)
 }
 
 
+
 /// @nodoc
 
 
@@ -292,6 +293,7 @@ int get hashCode => runtimeType.hashCode;
 class $ToStringCopyWith<$Res>  {
 $ToStringCopyWith(ToString _, $Res Function(ToString) __);
 }
+
 
 
 /// @nodoc
