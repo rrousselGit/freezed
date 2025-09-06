@@ -1335,7 +1335,8 @@ To fix, either:
   ) {
     for (final unit in units) {
       for (final declaration in unit.declarations) {
-        if (declaration is ClassDeclaration && declaration.name.lexeme == name) {
+        if (declaration is ClassDeclaration &&
+            declaration.name.lexeme == name) {
           return declaration;
         }
       }
