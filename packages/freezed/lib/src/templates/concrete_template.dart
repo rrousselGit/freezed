@@ -431,7 +431,9 @@ String operatorEqualMethod(
 
   // Only skip super-origin properties if super== is already emitted
   final eqProperties = data.hasSuperEqual
-      ? properties.where((p) => p.originClass == null || p.originClass == data.name)
+      ? properties.where(
+          (p) => p.originClass == null || p.originClass == data.name,
+        )
       : properties;
 
   final comparisons = [
@@ -477,7 +479,9 @@ String hashCodeMethod(
 
   // Only skip super-origin properties if super.hashCode is already emitted
   final hashProperties = data.hasSuperHashCode
-      ? properties.where((p) => p.originClass == null || p.originClass == data.name)
+      ? properties.where(
+          (p) => p.originClass == null || p.originClass == data.name,
+        )
       : properties;
 
   final jsonKey = data.options.fromJson || data.options.toJson

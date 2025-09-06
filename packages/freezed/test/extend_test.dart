@@ -67,21 +67,46 @@ void main() {
     expect(updated.toString(), contains('value: 11'));
   });
 
-  test('copyWith includes root, mid, leaf, finalValue and updates independently', () {
-    final initial = const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 4);
-    final updatedRoot = initial.copyWith(root: 10);
-    final updatedMid = updatedRoot.copyWith(mid: 20);
-    final updatedLeaf = updatedMid.copyWith(leaf: 30);
-    final updatedFinalValue = updatedLeaf.copyWith(finalValue: 40);
+  test(
+    'copyWith includes root, mid, leaf, finalValue and updates independently',
+    () {
+      final initial = const SubclassFinal(
+        root: 1,
+        mid: 2,
+        leaf: 3,
+        finalValue: 4,
+      );
+      final updatedRoot = initial.copyWith(root: 10);
+      final updatedMid = updatedRoot.copyWith(mid: 20);
+      final updatedLeaf = updatedMid.copyWith(leaf: 30);
+      final updatedFinalValue = updatedLeaf.copyWith(finalValue: 40);
 
-    expect(updatedRoot, const SubclassFinal(root: 10, mid: 2, leaf: 3, finalValue: 4));
-    expect(updatedMid, const SubclassFinal(root: 10, mid: 20, leaf: 3, finalValue: 4));
-    expect(updatedLeaf, const SubclassFinal(root: 10, mid: 20, leaf: 30, finalValue: 4));
-    expect(updatedFinalValue, const SubclassFinal(root: 10, mid: 20, leaf: 30, finalValue: 40));
-  });
+      expect(
+        updatedRoot,
+        const SubclassFinal(root: 10, mid: 2, leaf: 3, finalValue: 4),
+      );
+      expect(
+        updatedMid,
+        const SubclassFinal(root: 10, mid: 20, leaf: 3, finalValue: 4),
+      );
+      expect(
+        updatedLeaf,
+        const SubclassFinal(root: 10, mid: 20, leaf: 30, finalValue: 4),
+      );
+      expect(
+        updatedFinalValue,
+        const SubclassFinal(root: 10, mid: 20, leaf: 30, finalValue: 40),
+      );
+    },
+  );
 
   test('toString shows root, mid, leaf, finalValue', () {
-    final stringified = const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 4).toString();
+    final stringified = const SubclassFinal(
+      root: 1,
+      mid: 2,
+      leaf: 3,
+      finalValue: 4,
+    ).toString();
     expect(stringified, contains('root: 1'));
     expect(stringified, contains('mid: 2'));
     expect(stringified, contains('leaf: 3'));
@@ -89,17 +114,57 @@ void main() {
   });
 
   test('==/hashCode differentiate changes at any level', () {
-    final baseline = const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 4);
-    expect(baseline, const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 4));
-    expect(baseline, isNot(const SubclassFinal(root: 9, mid: 2, leaf: 3, finalValue: 4)));
-    expect(baseline, isNot(const SubclassFinal(root: 1, mid: 9, leaf: 3, finalValue: 4)));
-    expect(baseline, isNot(const SubclassFinal(root: 1, mid: 2, leaf: 9, finalValue: 4)));
-    expect(baseline, isNot(const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 9)));
+    final baseline = const SubclassFinal(
+      root: 1,
+      mid: 2,
+      leaf: 3,
+      finalValue: 4,
+    );
+    expect(
+      baseline,
+      const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 4),
+    );
+    expect(
+      baseline,
+      isNot(const SubclassFinal(root: 9, mid: 2, leaf: 3, finalValue: 4)),
+    );
+    expect(
+      baseline,
+      isNot(const SubclassFinal(root: 1, mid: 9, leaf: 3, finalValue: 4)),
+    );
+    expect(
+      baseline,
+      isNot(const SubclassFinal(root: 1, mid: 2, leaf: 9, finalValue: 4)),
+    );
+    expect(
+      baseline,
+      isNot(const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 9)),
+    );
 
-    expect(baseline.hashCode == const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 4).hashCode, isTrue);
-    expect(baseline.hashCode == const SubclassFinal(root: 9, mid: 2, leaf: 3, finalValue: 4).hashCode, isFalse);
-    expect(baseline.hashCode == const SubclassFinal(root: 1, mid: 9, leaf: 3, finalValue: 4).hashCode, isFalse);
-    expect(baseline.hashCode == const SubclassFinal(root: 1, mid: 2, leaf: 9, finalValue: 4).hashCode, isFalse);
-    expect(baseline.hashCode == const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 9).hashCode, isFalse);
+    expect(
+      baseline.hashCode ==
+          const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 4).hashCode,
+      isTrue,
+    );
+    expect(
+      baseline.hashCode ==
+          const SubclassFinal(root: 9, mid: 2, leaf: 3, finalValue: 4).hashCode,
+      isFalse,
+    );
+    expect(
+      baseline.hashCode ==
+          const SubclassFinal(root: 1, mid: 9, leaf: 3, finalValue: 4).hashCode,
+      isFalse,
+    );
+    expect(
+      baseline.hashCode ==
+          const SubclassFinal(root: 1, mid: 2, leaf: 9, finalValue: 4).hashCode,
+      isFalse,
+    );
+    expect(
+      baseline.hashCode ==
+          const SubclassFinal(root: 1, mid: 2, leaf: 3, finalValue: 9).hashCode,
+      isFalse,
+    );
   });
 }

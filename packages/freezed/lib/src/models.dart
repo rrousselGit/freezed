@@ -611,22 +611,24 @@ class Class {
     );
 
     // Initial (local-only) copyWith target; rebuilt after superclass merge.
-    final copyWithTarget =
-    constructors.isNotEmpty ? null : declaration.copyWithTarget;
+    final copyWithTarget = constructors.isNotEmpty
+        ? null
+        : declaration.copyWithTarget;
 
     final initialCopyWithTarget = copyWithTarget == null
         ? null
         : CopyWithTarget(
-      name: copyWithTarget.name?.lexeme,
-      parameters: ParametersTemplate.fromParameterList(
-        // Only include parameters that are cloneable
-        copyWithTarget.parameters.parameters.where(
-              (parameter) => properties.cloneableProperties
-              .any((p) => p.name == parameter.name!.lexeme),
-        ),
-        addImplicitFinal: configs.annotation.addImplicitFinal,
-      ),
-    );
+            name: copyWithTarget.name?.lexeme,
+            parameters: ParametersTemplate.fromParameterList(
+              // Only include parameters that are cloneable
+              copyWithTarget.parameters.parameters.where(
+                (parameter) => properties.cloneableProperties.any(
+                  (p) => p.name == parameter.name!.lexeme,
+                ),
+              ),
+              addImplicitFinal: configs.annotation.addImplicitFinal,
+            ),
+          );
 
     final superCall = privateCtor == null
         ? null
@@ -717,9 +719,14 @@ class Class {
 
       // If a Freezed class extends/implements/with another Freezed class, mark it as a parent
       final superTypeNames = [
-        if (currentClass._node.extendsClause case final extend?) extend.superclass.name2.lexeme,
-        ...?currentClass._node.implementsClause?.interfaces.map((t) => t.name2.lexeme),
-        ...?currentClass._node.withClause?.mixinTypes.map((t) => t.name2.lexeme),
+        if (currentClass._node.extendsClause case final extend?)
+          extend.superclass.name2.lexeme,
+        ...?currentClass._node.implementsClause?.interfaces.map(
+          (t) => t.name2.lexeme,
+        ),
+        ...?currentClass._node.withClause?.mixinTypes.map(
+          (t) => t.name2.lexeme,
+        ),
       ];
 
       for (final superTypeName in superTypeNames) {
@@ -736,19 +743,18 @@ class Class {
     return classMap.values;
   }
 
-
   static bool _isAccessible(
-      String fieldName,
-      LibraryElement2 ownerLibrary,
-      LibraryElement2 userLibrary,
-      ) {
+    String fieldName,
+    LibraryElement2 ownerLibrary,
+    LibraryElement2 userLibrary,
+  ) {
     // Library-private identifiers start with '_' and cannot cross library boundaries.
     return !(fieldName.startsWith('_') && ownerLibrary != userLibrary);
   }
 
   static void _mergeReadableAndCloneableFromSupers(
-      Map<String, Class> classMap,
-      ) {
+    Map<String, Class> classMap,
+  ) {
     for (final currentClass in classMap.values) {
       final currentDeclaration = currentClass._node;
       final userLibrary = currentClass.library;
@@ -760,8 +766,7 @@ class Class {
         for (final p in currentClass.properties.cloneableProperties) p.name,
       };
 
-      var superName =
-          currentDeclaration.extendsClause?.superclass.name2.lexeme;
+      var superName = currentDeclaration.extendsClause?.superclass.name2.lexeme;
       while (superName != null) {
         final parentClass = classMap[superName];
         if (parentClass == null) break;
@@ -769,10 +774,9 @@ class Class {
         final ownerLibrary = parentClass.library;
 
         // Merge readable so toString sees superclass fields
-        for (final superProperty
-        in parentClass.properties.readableProperties) {
-          if (!_isAccessible(
-              superProperty.name, ownerLibrary, userLibrary)) continue;
+        for (final superProperty in parentClass.properties.readableProperties) {
+          if (!_isAccessible(superProperty.name, ownerLibrary, userLibrary))
+            continue;
           if (seenReadableNames.add(superProperty.name)) {
             currentClass.properties.readableProperties.add(
               superProperty.copyWith(originClass: parentClass.name),
@@ -782,9 +786,9 @@ class Class {
 
         // Merge cloneable so copyWith can set superclass fields
         for (final superProperty
-        in parentClass.properties.cloneableProperties) {
-          if (!_isAccessible(
-              superProperty.name, ownerLibrary, userLibrary)) continue;
+            in parentClass.properties.cloneableProperties) {
+          if (!_isAccessible(superProperty.name, ownerLibrary, userLibrary))
+            continue;
           if (seenCloneableNames.add(superProperty.name)) {
             currentClass.properties.cloneableProperties.add(
               superProperty.copyWith(originClass: parentClass.name),
@@ -797,14 +801,12 @@ class Class {
     }
   }
 
-
-  static void _rebuildCopyWithTargetsAndValidate(
-      Map<String, Class> classMap,
-      ) {
+  static void _rebuildCopyWithTargetsAndValidate(Map<String, Class> classMap) {
     for (final currentClass in classMap.values) {
       // Unions don't use copyWithTarget here
-      final targetConstructor =
-      currentClass.constructors.isNotEmpty ? null : currentClass._node.copyWithTarget;
+      final targetConstructor = currentClass.constructors.isNotEmpty
+          ? null
+          : currentClass._node.copyWithTarget;
       if (targetConstructor == null) continue;
 
       final cloneableNames = <String>{
@@ -837,7 +839,7 @@ To fix, either:
         name: targetConstructor.name?.lexeme,
         parameters: ParametersTemplate.fromParameterList(
           targetConstructor.parameters.parameters.where(
-                (e) => cloneableNames.contains(e.name!.lexeme),
+            (e) => cloneableNames.contains(e.name!.lexeme),
           ),
           addImplicitFinal: currentClass.options.annotation.addImplicitFinal,
         ),

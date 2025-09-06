@@ -23,19 +23,22 @@ class Property {
     this.originClass,
   });
 
-  Property.fromParameter(Parameter p, {required bool isSynthetic, String? originClass})
-    : this(
-        decorators: p.decorators,
-        name: p.name,
-        isFinal: p.isFinal,
-        doc: p.doc,
-        type: p.type,
-        typeDisplayString: p.typeDisplayString,
-        defaultValueSource: p.defaultValueSource,
-        isSynthetic: isSynthetic,
-        hasJsonKey: false,
-        originClass: originClass,
-      );
+  Property.fromParameter(
+    Parameter p, {
+    required bool isSynthetic,
+    String? originClass,
+  }) : this(
+         decorators: p.decorators,
+         name: p.name,
+         isFinal: p.isFinal,
+         doc: p.doc,
+         type: p.type,
+         typeDisplayString: p.typeDisplayString,
+         defaultValueSource: p.defaultValueSource,
+         isSynthetic: isSynthetic,
+         hasJsonKey: false,
+         originClass: originClass,
+       );
 
   static Property fromFormalParameter(
     FormalParameter parameter, {
