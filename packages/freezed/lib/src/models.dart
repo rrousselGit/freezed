@@ -697,6 +697,47 @@ class Class {
         library: library,
       );
 
+      final probeConstructors = ConstructorDetails.parseAll(
+        declaration,
+        configs,
+        globalConfigs: globalConfigs,
+        unitsExcludingGeneratedFiles: unitsExcludingGeneratedFiles,
+      );
+
+      if (probeConstructors.isEmpty) {
+        final mergedProps = _collectMergedPropsForPrecheck(
+          declaration,
+          configs,
+          globalConfigs,
+          unitsExcludingGeneratedFiles,
+        );
+        final target = declaration.copyWithTarget;
+        if (target != null) {
+          final cloneableNames = {
+            for (final p in mergedProps.cloneableProperties) p.name,
+          };
+          for (final parameter in target.parameters.parameters) {
+            if (parameter.isOptional) continue;
+            final paramName = parameter.name?.lexeme;
+            if (paramName == null) continue;
+            if (!cloneableNames.contains(paramName)) {
+              throw InvalidGenerationSourceError(
+                '''
+The class ${declaration.name.lexeme} requested a copyWith implementation, yet the parameter `$paramName` is not cloneable.
+
+To fix, either:
+- Disable copyWith using @Freezed(copyWith: false)
+- Make `$paramName` optional
+- Make sure `this.$paramName` is accessible from the copyWith method
+''',
+                element: declaration.declaredFragment?.element,
+                node: declaration,
+              );
+            }
+          }
+        }
+      }
+
       return Class._from(
         declaration,
         configs,
@@ -1197,6 +1238,109 @@ To fix, either:
     final escapedElementName = name.replaceAll(r'$', r'\$');
 
     return '$escapedElementName$generics';
+  }
+
+  static PropertyList _collectMergedPropsForPrecheck(
+    ClassDeclaration declaration,
+    ClassConfig configs,
+    Freezed globalConfigs,
+    List<CompilationUnit> unitsExcludingGeneratedFiles,
+  ) {
+    final props = PropertyList();
+    final userLibrary = declaration.declaredFragment!.element.library2;
+
+    final localConstructors = ConstructorDetails.parseAll(
+      declaration,
+      configs,
+      globalConfigs: globalConfigs,
+      unitsExcludingGeneratedFiles: unitsExcludingGeneratedFiles,
+    );
+
+    props.readableProperties.addAll(
+      _computeReadableProperties(declaration, localConstructors),
+    );
+    props.cloneableProperties.addAll(
+      _computeCloneableProperties(
+        declaration,
+        localConstructors,
+        configs,
+      ).where(
+        (cloneable) =>
+            props.readableProperties.any((e) => e.name == cloneable.name),
+      ),
+    );
+
+    final seenReadable = {for (final p in props.readableProperties) p.name};
+    final seenCloneable = {for (final p in props.cloneableProperties) p.name};
+
+    var superName = declaration.extendsClause?.superclass.name2.lexeme;
+    while (superName != null) {
+      final parentDecl = _findClassDeclaration(
+        unitsExcludingGeneratedFiles,
+        superName,
+      );
+      if (parentDecl == null) break;
+
+      final parentConstructors = ConstructorDetails.parseAll(
+        parentDecl,
+        configs,
+        globalConfigs: globalConfigs,
+        unitsExcludingGeneratedFiles: unitsExcludingGeneratedFiles,
+      );
+
+      final parentProps = PropertyList();
+      parentProps.readableProperties.addAll(
+        _computeReadableProperties(parentDecl, parentConstructors),
+      );
+      parentProps.cloneableProperties.addAll(
+        _computeCloneableProperties(
+          parentDecl,
+          parentConstructors,
+          configs,
+        ).where(
+          (cloneable) => parentProps.readableProperties.any(
+            (e) => e.name == cloneable.name,
+          ),
+        ),
+      );
+
+      final ownerLibrary = parentDecl.declaredFragment!.element.library2;
+
+      for (final sp in parentProps.readableProperties) {
+        if (!_isAccessible(sp.name, ownerLibrary, userLibrary)) continue;
+        if (seenReadable.add(sp.name)) {
+          props.readableProperties.add(
+            sp.copyWith(originClass: parentDecl.name.lexeme),
+          );
+        }
+      }
+      for (final sp in parentProps.cloneableProperties) {
+        if (!_isAccessible(sp.name, ownerLibrary, userLibrary)) continue;
+        if (seenCloneable.add(sp.name)) {
+          props.cloneableProperties.add(
+            sp.copyWith(originClass: parentDecl.name.lexeme),
+          );
+        }
+      }
+
+      superName = parentDecl.extendsClause?.superclass.name2.lexeme;
+    }
+
+    return props;
+  }
+
+  static ClassDeclaration? _findClassDeclaration(
+    List<CompilationUnit> units,
+    String name,
+  ) {
+    for (final unit in units) {
+      for (final declaration in unit.declarations) {
+        if (declaration is ClassDeclaration && declaration.name.lexeme == name) {
+          return declaration;
+        }
+      }
+    }
+    return null;
   }
 }
 
