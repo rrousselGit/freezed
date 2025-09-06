@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -41,8 +41,8 @@ extension FreezedElementAnnotation on ElementAnnotation {
   }
 }
 
-bool isDefaultConstructor(ConstructorElement2 constructor) {
-  return constructor.name3 == 'new';
+bool isDefaultConstructor(ConstructorElement constructor) {
+  return constructor.name == 'new';
 }
 
 String constructorNameToCallbackName(String constructorName) {

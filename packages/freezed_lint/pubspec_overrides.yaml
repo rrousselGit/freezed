@@ -1,3 +1,0 @@
-dependency_overrides:
-  freezed_annotation:
-    path: ../freezed_annotation

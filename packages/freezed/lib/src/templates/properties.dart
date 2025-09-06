@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
@@ -52,13 +52,13 @@ class Property {
     }
 
     return Property(
-      name: element.name3!,
+      name: element.name!,
       isFinal: addImplicitFinal || element.isFinal,
       isSynthetic: isSynthetic,
       doc: parameter.documentation ?? '',
       type: element.type,
       typeDisplayString: parseTypeSource(parameter),
-      decorators: parseDecorators(element.metadata2.annotations),
+      decorators: parseDecorators(element.metadata.annotations),
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
     );
@@ -114,7 +114,7 @@ class Property {
     bool? hasJsonKey,
     String? doc,
     bool? isPossiblyDartCollection,
-    TypeParameterElement2? parameterElement,
+    TypeParameterElement? parameterElement,
   }) {
     return Property(
       type: type ?? this.type,

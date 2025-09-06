@@ -17,7 +17,7 @@ void main() {
               '/freezed/test/integration/decorator.freezed.dart',
             )
             as ErrorsResult;
-    expect(errorResult.errors, isEmpty);
+    expect(errorResult.diagnostics, isEmpty);
     errorResult =
         await main.session.getErrors('/freezed/test/integration/decorator.dart')
             as ErrorsResult;
@@ -33,32 +33,29 @@ import 'decorator.dart';
 ''',
         },
         (r) => r.libraries.firstWhere(
-          (element) => element.library2.name3 == 'decorator',
+          (element) => element.library.name == 'decorator',
         ),
         readAllSourcesFromFilesystem: true,
       );
 
       final concrete = main.classes.firstWhere(
-        (e) => e.name3 == r'ListDecorator0',
+        (e) => e.name == r'ListDecorator0',
       );
 
       expect(
-        concrete.fields2
-            .firstWhere((element) => element.name3 == '_a')
-            .metadata2
+        concrete.fields
+            .firstWhere((element) => element.name == '_a')
+            .metadata
             .annotations,
         isEmpty,
       );
 
-      final unmodifiableGetter = concrete.fields2
-          .firstWhere((element) => element.name3 == 'a')
-          .getter2!;
+      final unmodifiableGetter = concrete.fields
+          .firstWhere((element) => element.name == 'a')
+          .getter!;
 
-      expect(unmodifiableGetter.metadata2.annotations.length, 2);
-      expect(
-        unmodifiableGetter.metadata2.annotations.last.toSource(),
-        '@Foo()',
-      );
+      expect(unmodifiableGetter.metadata.annotations.length, 2);
+      expect(unmodifiableGetter.metadata.annotations.last.toSource(), '@Foo()');
     },
   );
 
@@ -96,7 +93,7 @@ void main() {
         await main.session.getErrors('/freezed/test/integration/main.dart')
             as ErrorsResult;
     expect(
-      errorResult.errors.map((e) => e.errorCode.name),
+      errorResult.diagnostics.map((e) => e.diagnosticCode.name),
       anyOf([
         [
           'UNUSED_RESULT',
