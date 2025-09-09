@@ -760,7 +760,8 @@ To fix, either:
 
       // If a Freezed class extends/implements/with another Freezed class, mark it as a parent
       final superTypeNames = [
-        if (currentClass._node.extendsClause case final extend?) extend.superclass,
+        if (currentClass._node.extendsClause case final extend?)
+          extend.superclass,
         ...?currentClass._node.implementsClause?.interfaces,
         ...?currentClass._node.withClause?.mixinTypes,
       ].map((e) => e.name.lexeme);
