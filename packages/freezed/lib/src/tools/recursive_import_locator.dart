@@ -1,7 +1,7 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart';
 
-extension FindAllAvailableTopLevelElements on LibraryElement2 {
+extension FindAllAvailableTopLevelElements on LibraryElement {
   bool isFromPackage(String packageName) {
     return firstFragment.source.fullName.startsWith('/$packageName/');
   }
@@ -11,7 +11,7 @@ extension FindAllAvailableTopLevelElements on LibraryElement2 {
   ///
   /// This function does not guarantees that the elements returned are unique.
   /// It is possible for the same object to be present multiple times in the list.
-  Iterable<Element2> findAllAvailableTopLevelElements() {
+  Iterable<Element> findAllAvailableTopLevelElements() {
     return _findAllAvailableTopLevelElements(
       {},
       checkExports: false,
@@ -23,20 +23,20 @@ extension FindAllAvailableTopLevelElements on LibraryElement2 {
     );
   }
 
-  Iterable<Element2> _findAllAvailableTopLevelElements(
+  Iterable<Element> _findAllAvailableTopLevelElements(
     Set<_LibraryKey> visitedLibraryPaths, {
     required bool checkExports,
     required _LibraryKey key,
   }) sync* {
-    yield* children2;
+    yield* children;
 
     final librariesToCheck = checkExports
         ? fragments
-              .expand((e) => e.libraryExports2)
+              .expand((e) => e.libraryExports)
               .map(_LibraryDirectives.fromExport)
               .nonNulls
         : fragments
-              .expand((e) => e.libraryImports2)
+              .expand((e) => e.libraryImports)
               .map(_LibraryDirectives.fromImport)
               .nonNulls;
 
@@ -55,8 +55,8 @@ extension FindAllAvailableTopLevelElements on LibraryElement2 {
             return (directive.showStatements.isEmpty &&
                     directive.hideStatements.isEmpty) ||
                 (directive.hideStatements.isNotEmpty &&
-                    !directive.hideStatements.contains(element.name3)) ||
-                directive.showStatements.contains(element.name3);
+                    !directive.hideStatements.contains(element.name)) ||
+                directive.showStatements.contains(element.name);
           });
     }
   }
@@ -70,7 +70,7 @@ class _LibraryDirectives {
   });
 
   static _LibraryDirectives? fromExport(LibraryExport export) {
-    final library = export.exportedLibrary2;
+    final library = export.exportedLibrary;
     if (library == null) return null;
 
     final hideStatements = export.combinators
@@ -91,7 +91,7 @@ class _LibraryDirectives {
   }
 
   static _LibraryDirectives? fromImport(LibraryImport export) {
-    final library = export.importedLibrary2;
+    final library = export.importedLibrary;
     if (library == null) return null;
 
     final hideStatements = export.combinators
@@ -113,7 +113,7 @@ class _LibraryDirectives {
 
   final Set<String> hideStatements;
   final Set<String> showStatements;
-  final LibraryElement2 library;
+  final LibraryElement library;
 
   _LibraryKey get key {
     return _LibraryKey(

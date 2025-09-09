@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/token.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 
 extension AstX on AstNode {
   String? get documentation {
@@ -28,10 +28,10 @@ extension ClassX on ClassDeclaration {
       element,
       ...element.allSupertypes
           .where((e) => !e.isDartCoreObject)
-          .map((e) => e.element3),
+          .map((e) => e.element),
     ]) {
-      for (final method in type.methods2) {
-        if (method.name3 == 'toString') {
+      for (final method in type.methods) {
+        if (method.name == 'toString') {
           return true;
         }
       }
@@ -42,50 +42,50 @@ extension ClassX on ClassDeclaration {
 
   bool get hasSuperEqual => declaredFragment!.element.allSupertypes
       .where((e) => !e.isDartCoreObject)
-      .map((e) => e.element3)
+      .map((e) => e.element)
       .any((e) => e.hasEqual);
 
   bool get hasCustomEquals => declaredFragment!.element.hasEqual;
 
   bool get hasSuperHashCode => declaredFragment!.element.allSupertypes
       .where((e) => !e.isDartCoreObject)
-      .map((e) => e.element3)
+      .map((e) => e.element)
       .any((e) => e.hasHashCode);
 }
 
-extension on InterfaceElement2 {
-  bool get hasEqual => methods2.any(((e) => e.isOperator && e.name3 == '=='));
+extension on InterfaceElement {
+  bool get hasEqual => methods.any(((e) => e.isOperator && e.name == '=='));
 
-  bool get hasHashCode => getters2.any((e) => e.name3 == 'hashCode');
+  bool get hasHashCode => getters.any((e) => e.name == 'hashCode');
 }
 
 extension ConstructorX on ConstructorDeclaration {
   String get fullName {
-    final classElement = declaredFragment!.element.enclosingElement2;
+    final classElement = declaredFragment!.element.enclosingElement;
 
-    var generics = classElement.typeParameters2
-        .map((e) => '\$${e.name3}')
+    var generics = classElement.typeParameters
+        .map((e) => '\$${e.name}')
         .join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }
 
-    final className = classElement.enclosingElement2.name3;
+    final className = classElement.enclosingElement.name;
 
     return name == null ? '$className$generics' : '$className$generics.$name';
   }
 
   String get escapedName {
-    final classElement = declaredFragment!.element.enclosingElement2;
+    final classElement = declaredFragment!.element.enclosingElement;
 
-    var generics = classElement.typeParameters2
-        .map((e) => '\$${e.name3}')
+    var generics = classElement.typeParameters
+        .map((e) => '\$${e.name}')
         .join(', ');
     if (generics.isNotEmpty) {
       generics = '<$generics>';
     }
 
-    final escapedElementName = classElement.name3!.replaceAll(r'$', r'\$');
+    final escapedElementName = classElement.name!.replaceAll(r'$', r'\$');
     final escapedConstructorName = name?.lexeme.replaceAll(r'$', r'\$');
 
     return escapedConstructorName == null

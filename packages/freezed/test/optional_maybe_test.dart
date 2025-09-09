@@ -21,7 +21,7 @@ void main() {
             )
             as ErrorsResult;
 
-    expect(errorResult.errors, isEmpty);
+    expect(errorResult.diagnostics, isEmpty);
   });
 
   test('does not generates maybeMap', () async {
