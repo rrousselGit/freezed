@@ -1,4 +1,4 @@
-## Unreleased 0.1.0
+## Unreleased patch
 
 Support new Analyzer API and custom_lint
 
