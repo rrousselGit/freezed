@@ -4,7 +4,7 @@
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
@@ -27,7 +27,7 @@ class _Sentinel {
   const _Sentinel();
 }
 
-extension on Element2 {
+extension on Element {
   bool get hasJsonSerializable {
     return const TypeChecker.typeNamed(
       JsonSerializable,
@@ -36,9 +36,9 @@ extension on Element2 {
   }
 }
 
-extension on ConstructorElement2 {
+extension on ConstructorElement {
   bool isFallbackUnion(String? fallbackConstructorName) {
-    final constructorName = isDefaultConstructor(this) ? 'default' : name3;
+    final constructorName = isDefaultConstructor(this) ? 'default' : name;
     return constructorName == fallbackConstructorName;
   }
 
@@ -51,7 +51,7 @@ extension on ConstructorElement2 {
       return annotation.getField('value')!.toStringValue()!;
     }
 
-    final constructorName = isDefaultConstructor(this) ? 'default' : name3!;
+    final constructorName = isDefaultConstructor(this) ? 'default' : name!;
     switch (unionCase) {
       case null:
       case FreezedUnionCase.none:
@@ -97,8 +97,8 @@ class DeepCloneableProperty {
 
       final parameterType = parameter.type;
       if (parameterType is! InterfaceType) continue;
-      final typeElement = parameterType.element3;
-      if (typeElement is! ClassElement2) continue;
+      final typeElement = parameterType.element;
+      if (typeElement is! ClassElement) continue;
 
       final freezedAnnotation = freezedType.firstAnnotationOf(
         typeElement,
@@ -116,10 +116,10 @@ class DeepCloneableProperty {
       if (configs.copyWith == false) continue;
 
       yield DeepCloneableProperty(
-        name: parameter.name3!,
+        name: parameter.name!,
         type: type,
         nullable: parameter.type.isNullable,
-        typeName: typeElement.name3!,
+        typeName: typeElement.name!,
         genericParameters: GenericsParameterTemplate(
           (parameter.type as InterfaceType).typeArguments
               .map((e) => e.getDisplayString())
@@ -269,7 +269,7 @@ When specifying fields in non-factory constructor then specifying factory constr
       }
 
       final redirectedName =
-          constructor.redirectedConstructor?.type.name2.lexeme;
+          constructor.redirectedConstructor?.type.name.lexeme;
 
       if (redirectedName == null) {
         _assertValidNormalConstructorUsage(declaration, constructor);
@@ -283,7 +283,7 @@ When specifying fields in non-factory constructor then specifying factory constr
 
       final excludedProperties =
           manualConstructor?.parameters.parameters
-              .map((e) => e.declaredFragment!.element.name3!)
+              .map((e) => e.declaredFragment!.element.name!)
               .toSet() ??
           <String>{};
 
@@ -318,7 +318,7 @@ When specifying fields in non-factory constructor then specifying factory constr
           decorators: constructor.metadata
               .where((element) {
                 final elementSourceUri =
-                    element.element2?.baseElement.library2?.uri;
+                    element.element?.baseElement.library?.uri;
 
                 final isFreezedAnnotation =
                     elementSourceUri != null &&
@@ -424,7 +424,7 @@ class ImplementsAnnotation {
   ImplementsAnnotation({required this.type});
 
   static Iterable<ImplementsAnnotation> parseAll(
-    ConstructorElement2 constructor,
+    ConstructorElement constructor,
   ) sync* {
     for (final meta in const TypeChecker.typeNamed(
       Implements,
@@ -436,7 +436,7 @@ class ImplementsAnnotation {
       } else {
         yield ImplementsAnnotation(
           type: resolveFullTypeStringFrom(
-            constructor.library2,
+            constructor.library,
             (meta.type! as InterfaceType).typeArguments.single,
           ),
         );
@@ -451,9 +451,9 @@ class WithAnnotation {
   WithAnnotation({required this.type});
 
   static Iterable<WithAnnotation> parseAll(
-    ConstructorElement2 constructor,
+    ConstructorElement constructor,
   ) sync* {
-    for (final metadata in constructor.metadata2.annotations) {
+    for (final metadata in constructor.metadata.annotations) {
       if (!metadata.isWith) continue;
       final object = metadata.computeConstantValue()!;
 
@@ -463,7 +463,7 @@ class WithAnnotation {
       } else {
         yield WithAnnotation(
           type: resolveFullTypeStringFrom(
-            constructor.library2,
+            constructor.library,
             (object.type! as InterfaceType).typeArguments.single,
           ),
         );
@@ -522,7 +522,7 @@ class CopyWithTarget {
 
 extension on NamedType {
   bool isSuperMixin(ClassDeclaration declaration) =>
-      name2.lexeme == '_\$${declaration.name.lexeme.public}';
+      name.lexeme == '_\$${declaration.name.lexeme.public}';
 }
 
 class Class {
@@ -552,7 +552,7 @@ class Class {
   final ClassDeclaration _node;
   final Set<Class> parents = {};
 
-  LibraryElement2 get library => _node.declaredFragment!.element.library2;
+  LibraryElement get library => _node.declaredFragment!.element.library;
 
   static Class _from(
     ClassDeclaration declaration,
@@ -570,7 +570,7 @@ class Class {
     );
 
     if (constructors.isNotEmpty) {
-      for (final field in declaration.declaredFragment!.element.fields2) {
+      for (final field in declaration.declaredFragment!.element.fields) {
         _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
       }
     }
@@ -676,14 +676,14 @@ To fix, either:
       options: configs,
       constructors: constructors,
       concretePropertiesName: [
-        for (final p in declaration.declaredFragment!.element.fields2)
-          if (!p.isStatic) p.name3!,
+        for (final p in declaration.declaredFragment!.element.fields)
+          if (!p.isStatic) p.name!,
       ],
       genericsDefinitionTemplate: GenericsDefinitionTemplate.fromGenericElement(
-        declaration.declaredFragment!.element.typeParameters2,
+        declaration.declaredFragment!.element.typeParameters,
       ),
       genericsParameterTemplate: GenericsParameterTemplate.fromGenericElement(
-        declaration.declaredFragment!.element.typeParameters2,
+        declaration.declaredFragment!.element.typeParameters,
       ),
     );
   }
@@ -745,7 +745,7 @@ To fix, either:
         if (clazz._node.extendsClause case final extend?) extend.superclass,
         ...?clazz._node.implementsClause?.interfaces,
         ...?clazz._node.withClause?.mixinTypes,
-      ].map((e) => e.name2.lexeme);
+      ].map((e) => e.name.lexeme);
 
       for (final superType in superTypes) {
         final superTypeClass = classMap[superType];
@@ -833,7 +833,10 @@ To fix, either:
         isFinal: property.$1.fields.isFinal,
         isSynthetic: false,
         decorators: switch (property.$1.declaredFragment?.element) {
-          final Annotatable e => parseDecorators(e.metadata2.annotations),
+          Fragment(metadata: final metadata) ||
+          Element(
+            metadata: final metadata,
+          ) => parseDecorators(metadata.annotations),
           _ => [],
         },
       );
@@ -862,9 +865,9 @@ To fix, either:
     }
 
     late final typeSystem =
-        declaration.declaredFragment!.element.library2.typeSystem;
+        declaration.declaredFragment!.element.library.typeSystem;
     late final typeProvider =
-        declaration.declaredFragment!.element.library2.typeProvider;
+        declaration.declaredFragment!.element.library.typeProvider;
 
     fieldLoop:
     for (final entry in typesMap.entries) {
@@ -918,7 +921,7 @@ To fix, either:
           isFinal = true;
 
           typeString = resolveFullTypeStringFrom(
-            declaration.declaredFragment!.element.library2,
+            declaration.declaredFragment!.element.library,
             type,
           );
       }
@@ -964,7 +967,7 @@ To fix, either:
         param: parameter.name,
       );
 
-      final library = parameter.parameterElement!.library2!;
+      final library = parameter.parameterElement!.library!;
 
       var commonTypeBetweenAllUnionConstructors =
           parameter.parameterElement!.type;
@@ -1061,12 +1064,12 @@ To fix, either:
   }
 
   static void _assertValidFieldUsage(
-    FieldElement2 field, {
+    FieldElement field, {
     required bool shouldUseExtends,
   }) {
     if (field.isStatic) return;
 
-    if (field.setter2 != null) {
+    if (field.setter != null) {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed cannot have mutable properties',
         element: field,
@@ -1075,9 +1078,9 @@ To fix, either:
 
     // The field is a "Type get name => "
     if (!shouldUseExtends &&
-        field.getter2 != null &&
-        !field.getter2!.isAbstract &&
-        !field.getter2!.isSynthetic) {
+        field.getter != null &&
+        !field.getter!.isAbstract &&
+        !field.getter!.isSynthetic) {
       throw InvalidGenerationSourceError(
         'Getters require a MyClass._() constructor',
         element: field,
@@ -1129,10 +1132,10 @@ class Library {
     return Library(
       hasJson: units.any(
         (unit) =>
-            unit.declaredFragment!.element.library2.importsJsonSerializable,
+            unit.declaredFragment!.element.library.importsJsonSerializable,
       ),
       hasDiagnostics: units.any(
-        (unit) => unit.declaredFragment!.element.library2.importsDiagnosticable,
+        (unit) => unit.declaredFragment!.element.library.importsDiagnosticable,
       ),
     );
   }
@@ -1357,18 +1360,18 @@ extension ClassDeclarationX on ClassDeclaration {
   }
 }
 
-extension on LibraryElement2 {
+extension on LibraryElement {
   bool get importsJsonSerializable {
     return findAllAvailableTopLevelElements().any((element) {
-      return element.name3 == 'JsonSerializable' &&
-          (element.library2?.isFromPackage('json_annotation') ?? false);
+      return element.name == 'JsonSerializable' &&
+          (element.library?.isFromPackage('json_annotation') ?? false);
     });
   }
 
   bool get importsDiagnosticable {
     return findAllAvailableTopLevelElements().any((element) {
-      return element.name3 == 'DiagnosticableTreeMixin' &&
-          (element.library2?.isFromPackage('flutter') ?? false);
+      return element.name == 'DiagnosticableTreeMixin' &&
+          (element.library?.isFromPackage('flutter') ?? false);
     });
   }
 }
