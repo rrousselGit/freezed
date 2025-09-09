@@ -1,3 +1,11 @@
+## 3.2.2 - 2025-09-09
+
+Bump `build`
+
+## 3.2.1 - 2025-09-09
+
+Support latest analyzer/source_gen
+
 ## 3.2.0 - 2025-07-18
 
 - Use `build` 3.0.0-dev.
