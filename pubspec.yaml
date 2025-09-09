@@ -1,0 +1,12 @@
+name: freezed_workspace
+
+environment:
+  sdk: "^3.7.0"
+
+workspace:
+  - benchmarks/
+  - packages/freezed
+  - packages/freezed/example
+  - packages/freezed_annotation
+  - packages/freezed_lint
+  - packages/freezed_lint/example
