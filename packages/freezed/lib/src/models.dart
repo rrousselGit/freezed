@@ -782,8 +782,8 @@ To fix, either:
 
   static bool _isAccessible(
     String fieldName,
-    LibraryElement2 ownerLibrary,
-    LibraryElement2 userLibrary,
+    LibraryElement ownerLibrary,
+    LibraryElement userLibrary,
   ) {
     // Library-private identifiers start with '_' and cannot cross library boundaries.
     return !(fieldName.startsWith('_') && ownerLibrary != userLibrary);
@@ -803,7 +803,7 @@ To fix, either:
         for (final p in currentClass.properties.cloneableProperties) p.name,
       };
 
-      var superName = currentDeclaration.extendsClause?.superclass.name2.lexeme;
+      var superName = currentDeclaration.extendsClause?.superclass.name.lexeme;
       while (superName != null) {
         final parentClass = classMap[superName];
         if (parentClass == null) break;
@@ -833,7 +833,7 @@ To fix, either:
           }
         }
 
-        superName = parentClass._node.extendsClause?.superclass.name2.lexeme;
+        superName = parentClass._node.extendsClause?.superclass.name.lexeme;
       }
     }
   }
@@ -1246,7 +1246,7 @@ To fix, either:
     List<CompilationUnit> unitsExcludingGeneratedFiles,
   ) {
     final props = PropertyList();
-    final userLibrary = declaration.declaredFragment!.element.library2;
+    final userLibrary = declaration.declaredFragment!.element.library;
 
     final localConstructors = ConstructorDetails.parseAll(
       declaration,
@@ -1272,7 +1272,7 @@ To fix, either:
     final seenReadable = {for (final p in props.readableProperties) p.name};
     final seenCloneable = {for (final p in props.cloneableProperties) p.name};
 
-    var superName = declaration.extendsClause?.superclass.name2.lexeme;
+    var superName = declaration.extendsClause?.superclass.name.lexeme;
     while (superName != null) {
       final parentDecl = _findClassDeclaration(
         unitsExcludingGeneratedFiles,
@@ -1303,7 +1303,7 @@ To fix, either:
         ),
       );
 
-      final ownerLibrary = parentDecl.declaredFragment!.element.library2;
+      final ownerLibrary = parentDecl.declaredFragment!.element.library;
 
       for (final sp in parentProps.readableProperties) {
         if (!_isAccessible(sp.name, ownerLibrary, userLibrary)) continue;
@@ -1322,7 +1322,7 @@ To fix, either:
         }
       }
 
-      superName = parentDecl.extendsClause?.superclass.name2.lexeme;
+      superName = parentDecl.extendsClause?.superclass.name.lexeme;
     }
 
     return props;
