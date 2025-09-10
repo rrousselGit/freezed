@@ -52,7 +52,7 @@ void main() {
             )
             as ErrorsResult;
 
-    expect(errorResult.diagnostics, isEmpty);
+    expect(errorResult.errors, isEmpty);
   });
 
   test('is generic', () {

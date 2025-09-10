@@ -303,7 +303,7 @@ void main() {
           await main!.session.getErrors('/freezed/test/integration/main.dart')
               as ErrorsResult;
 
-      expect(errorResult.diagnostics, isNotEmpty);
+      expect(errorResult.errors, isNotEmpty);
     });
   });
 
@@ -424,7 +424,7 @@ void main() {
           await main!.session.getErrors('/freezed/test/integration/main.dart')
               as ErrorsResult;
 
-      expect(errorResult.diagnostics, isNotEmpty);
+      expect(errorResult.errors, isNotEmpty);
     });
   });
 

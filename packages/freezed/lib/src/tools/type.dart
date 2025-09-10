@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
@@ -24,26 +24,26 @@ extension DartTypeX on DartType {
   }
 }
 
-/// Returns the [Element] for a given [DartType]
+/// Returns the [Element2] for a given [DartType]
 ///
 /// this is usually type.element, except if it is a typedef then it is
 /// type.alias.element
-Element? _getElementForType(DartType type) {
+Element2? _getElementForType(DartType type) {
   if (type is InterfaceType) {
-    return type.element;
+    return type.element3;
   }
   if (type is FunctionType) {
-    return type.alias?.element;
+    return type.alias?.element2;
   }
   return null;
 }
 
 /// Renders a type based on its string + potential import alias
-String resolveFullTypeStringFrom(LibraryElement originLibrary, DartType type) {
+String resolveFullTypeStringFrom(LibraryElement2 originLibrary, DartType type) {
   final owner = originLibrary.firstFragment.prefixes.firstWhereOrNull((e) {
     return e.imports.any((l) {
-      return l.importedLibrary!.anyTransitiveExport((library) {
-        return library.id == _getElementForType(type)?.library?.id;
+      return l.importedLibrary2!.anyTransitiveExport((library) {
+        return library.id == _getElementForType(type)?.library2?.id;
       });
     });
   });
@@ -62,8 +62,8 @@ String resolveFullTypeStringFrom(LibraryElement originLibrary, DartType type) {
   // 'dynamic Function(String)'
   //
   // Instead of 'SomeTypedef'
-  if (type is FunctionType && type.alias?.element != null) {
-    displayType = type.alias!.element.name!;
+  if (type is FunctionType && type.alias?.element2 != null) {
+    displayType = type.alias!.element2.name3!;
     if (type.alias!.typeArguments.isNotEmpty) {
       displayType += '<${type.alias!.typeArguments.join(', ')}>';
     }
@@ -84,14 +84,14 @@ String resolveFullTypeStringFrom(LibraryElement originLibrary, DartType type) {
   // This a regression in analyzer 5.13.0
   if (type is InterfaceType &&
       type.typeArguments.any((e) => e is InvalidType)) {
-    final dynamicType = type.element.library.typeProvider.dynamicType;
+    final dynamicType = type.element3.library2.typeProvider.dynamicType;
     var modified = type;
     modified.typeArguments..replaceWhere((t) => t is InvalidType, dynamicType);
     displayType = modified.getDisplayString();
   }
 
   if (owner != null) {
-    return '${owner.name}.$displayType';
+    return '${owner.name3}.$displayType';
   }
 
   return displayType;
