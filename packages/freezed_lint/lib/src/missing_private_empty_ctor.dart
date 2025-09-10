@@ -1,6 +1,5 @@
-import 'package:analyzer/diagnostic/diagnostic.dart';
 import 'package:analyzer/error/error.dart' hide LintCode;
-import 'package:analyzer/error/listener.dart' show DiagnosticReporter;
+import 'package:analyzer/error/listener.dart' show ErrorReporter;
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:freezed_lint/src/tools/element_extensions.dart';
 import 'package:freezed_lint/src/tools/freezed_annotation_checker.dart';
@@ -14,13 +13,13 @@ class MissingPrivateEmptyCtor extends DartLintRule {
     correctionMessage:
         'Freezed classes containing methods, fields or accessors,'
         'requires a {0}',
-    errorSeverity: DiagnosticSeverity.ERROR,
+    errorSeverity: ErrorSeverity.ERROR,
   );
 
   @override
   void run(
     CustomLintResolver resolver,
-    DiagnosticReporter reporter,
+    ErrorReporter reporter,
     CustomLintContext context,
   ) {
     context.registry.addClassDeclaration((node) {
@@ -30,17 +29,17 @@ class MissingPrivateEmptyCtor extends DartLintRule {
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final methods = element.methods.where((method) => !method.isStatic);
-      final fields = element.fields.where((field) => !field.isStatic);
+      final methods = element.methods2.where((method) => !method.isStatic);
+      final fields = element.fields2.where((field) => !field.isStatic);
 
       final accessors = [
-        ...element.getters,
-        ...element.setters,
+        ...element.getters2,
+        ...element.setters2,
       ].where((accessor) => !accessor.isStatic);
       if (methods.isEmpty && fields.isEmpty && accessors.isEmpty) return;
 
-      final ctors = element.constructors.where((ctor) =>
-          ctor.isPrivate && ctor.formalParameters.isEmpty && ctor.name == '_');
+      final ctors = element.constructors2.where((ctor) =>
+          ctor.isPrivate && ctor.formalParameters.isEmpty && ctor.name3 == '_');
       if (ctors.isNotEmpty) return;
 
       final constToken = element.constToken();
@@ -59,8 +58,8 @@ class _AddPrivateEmptyCtorFix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    Diagnostic analysisError,
-    List<Diagnostic> others,
+    AnalysisError analysisError,
+    List<AnalysisError> others,
   ) {
     context.registry.addClassDeclaration((node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;

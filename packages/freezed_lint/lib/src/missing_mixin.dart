@@ -1,5 +1,5 @@
-import 'package:analyzer/diagnostic/diagnostic.dart';
-import 'package:analyzer/error/listener.dart' show DiagnosticReporter;
+import 'package:analyzer/error/error.dart' hide LintCode;
+import 'package:analyzer/error/listener.dart' show ErrorReporter;
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:freezed_lint/src/tools/freezed_annotation_checker.dart';
 
@@ -14,7 +14,7 @@ class MissingMixin extends DartLintRule {
   @override
   void run(
     CustomLintResolver resolver,
-    DiagnosticReporter reporter,
+    ErrorReporter reporter,
     CustomLintContext context,
   ) {
     context.registry.addClassDeclaration((node) {
@@ -24,7 +24,7 @@ class MissingMixin extends DartLintRule {
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final name = '_\$${element.name}';
+      final name = '_\$${element.name3}';
       final withClause = node.withClause;
       if (withClause == null) {
         reporter.atElement2(element, _code, arguments: [name]);
@@ -32,7 +32,7 @@ class MissingMixin extends DartLintRule {
       }
 
       final mixins = withClause.mixinTypes;
-      if (mixins.any((m) => name == m.name.lexeme)) return;
+      if (mixins.any((m) => name == m.name2.lexeme)) return;
       reporter.atElement2(element, _code, arguments: [name]);
     });
   }
@@ -47,8 +47,8 @@ class _AddMixinFreezedClassFix extends DartFix {
     CustomLintResolver resolver,
     ChangeReporter reporter,
     CustomLintContext context,
-    Diagnostic analysisError,
-    List<Diagnostic> others,
+    AnalysisError analysisError,
+    List<AnalysisError> others,
   ) {
     context.registry.addClassDeclaration((node) {
       if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
