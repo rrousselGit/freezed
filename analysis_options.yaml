@@ -7,6 +7,8 @@ analyzer:
     strict-raw-types: true
   errors:
     invalid_annotation_target: ignore
+    # Remove when we require analyzer >=8
+    deprecated_member_use: ignore
 
 linter:
   rules:
