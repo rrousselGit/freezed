@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
@@ -57,7 +57,7 @@ abstract class ParserGenerator<AnnotationT>
 
   @override
   Stream<String> generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async* {
@@ -75,7 +75,7 @@ abstract class ParserGenerator<AnnotationT>
     unit as ResolvedUnitResult;
     final Object? ast = unit.unit.declarations.firstWhereOrNull(
       (declaration) =>
-          declaration.declaredFragment?.element.name == element.name!,
+          declaration.declaredFragment?.element.name3 == element.name3!,
     );
     if (ast == null) {
       throw InvalidGenerationSourceError('Ast not found', element: element);

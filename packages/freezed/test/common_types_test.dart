@@ -25,7 +25,7 @@ Future<void> main() async {
             )
             as ErrorsResult;
 
-    expect(errorResult.diagnostics, isEmpty);
+    expect(errorResult.errors, isEmpty);
   });
 
   group('CommonSuperSubtype', () {

@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -522,7 +522,7 @@ extension DefaultValue on FormalParameterElement {
       inPackage: 'freezed_annotation',
     );
 
-    for (final meta in metadata.annotations) {
+    for (final meta in metadata2.annotations) {
       final obj = meta.computeConstantValue()!;
       if (matcher.isExactlyType(obj.type!)) {
         final source = meta.toSource();

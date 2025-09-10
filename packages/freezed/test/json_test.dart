@@ -752,7 +752,7 @@ Future<void> main() async {
               '/freezed/test/integration/json.freezed.dart',
             )
             as ErrorsResult;
-    expect(errorResult.diagnostics, isEmpty);
+    expect(errorResult.errors, isEmpty);
   }, skip: true);
 
   test("single constructor fromJson doesn't require type", () {
