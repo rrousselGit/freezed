@@ -1,3 +1,7 @@
+## 3.2.3 - 2025-09-10
+
+Broader the version range for `analyzer`/`source_gen`/`build`
+
 ## 3.2.2 - 2025-09-09
 
 Bump `build`
