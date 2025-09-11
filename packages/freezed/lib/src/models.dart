@@ -764,7 +764,7 @@ To fix, either:
         ...?currentClass._node.implementsClause?.interfaces,
         ...?currentClass._node.withClause?.mixinTypes,
       ].map((e) => e.name2.lexeme);
-      
+
       for (final superTypeName in superTypeNames) {
         final superTypeClass = classMap[superTypeName];
         if (superTypeClass == null) continue;
