@@ -1,3 +1,7 @@
+## 0.0.12 - 2025-09-10
+
+Broader the version range for `analyzer`
+
 ## 0.0.11 - 2025-09-09
 
 Support new Analyzer API and custom_lint

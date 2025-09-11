@@ -31,7 +31,7 @@ void main() {
             )
             as ErrorsResult;
 
-    expect(errorResult.diagnostics, isEmpty);
+    expect(errorResult.errors, isEmpty);
   });
 
   test('has no issue #2', () async {
@@ -49,7 +49,7 @@ void main() {
             )
             as ErrorsResult;
 
-    expect(errorResult.diagnostics, isEmpty);
+    expect(errorResult.errors, isEmpty);
   });
 
   test('handles null', () {
@@ -734,7 +734,7 @@ void main() {
         await main.session.getErrors('/freezed/test/integration/main.dart')
             as ErrorsResult;
 
-    expect(errorResult.diagnostics.map((e) => e.diagnosticCode.name), [
+    expect(errorResult.errors.map((e) => e.errorCode.name), [
       'UNUSED_RESULT',
       'UNUSED_RESULT',
     ]);

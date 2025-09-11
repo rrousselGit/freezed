@@ -1,18 +1,18 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 
-extension LibraryHasImport on LibraryElement {
-  LibraryElement? findTransitiveExportWhere(
-    bool Function(LibraryElement library) visitor,
+extension LibraryHasImport on LibraryElement2 {
+  LibraryElement2? findTransitiveExportWhere(
+    bool Function(LibraryElement2 library) visitor,
   ) {
     if (visitor(this)) return this;
 
-    final visitedLibraries = <LibraryElement>{};
-    LibraryElement? visitLibrary(LibraryElement library) {
+    final visitedLibraries = <LibraryElement2>{};
+    LibraryElement2? visitLibrary(LibraryElement2 library) {
       if (!visitedLibraries.add(library)) return null;
 
       if (visitor(library)) return library;
 
-      for (final export in library.exportedLibraries) {
+      for (final export in library.exportedLibraries2) {
         final result = visitLibrary(export);
         if (result != null) return result;
       }
@@ -20,7 +20,7 @@ extension LibraryHasImport on LibraryElement {
       return null;
     }
 
-    for (final import in exportedLibraries) {
+    for (final import in exportedLibraries2) {
       final result = visitLibrary(import);
       if (result != null) return result;
     }
@@ -28,7 +28,7 @@ extension LibraryHasImport on LibraryElement {
     return null;
   }
 
-  bool anyTransitiveExport(bool Function(LibraryElement library) visitor) {
+  bool anyTransitiveExport(bool Function(LibraryElement2 library) visitor) {
     return findTransitiveExportWhere(visitor) != null;
   }
 }

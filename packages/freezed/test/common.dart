@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/diagnostic/diagnostic.dart';
+import 'package:analyzer/error/error.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -22,7 +23,7 @@ $src
   final errorResult =
       await main!.session.getErrors('/freezed/test/integration/main.dart')
           as ErrorsResult;
-  final criticalErrors = errorResult.diagnostics
+  final criticalErrors = errorResult.errors
       .where((element) => element.severity == Severity.error)
       .toList();
 
@@ -33,7 +34,7 @@ $src
 
 class CompileError extends Error {
   CompileError(this.errors);
-  final List<Diagnostic> errors;
+  final List<AnalysisError> errors;
 
   @override
   String toString() {
