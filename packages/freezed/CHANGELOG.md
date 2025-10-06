@@ -127,7 +127,7 @@ class Example with _$Example {
 However, that `Example._()` constructor was required to have no parameter.
 
 Starting Freezed 3.0, this constructor can accept any parameter.
-Freezed will them pass it values from other `factory` constructors, based on name.
+Freezed will then pass its values from other `factory` constructors, based on name.
 
 In short, this enables extending any class:
 
