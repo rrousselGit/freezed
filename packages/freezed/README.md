@@ -16,10 +16,10 @@ To migrate from 2.0.0 to 3.0.0, see [changelog](https://github.com/rrousselGit/f
 
 Dart is awesome, but defining a "model" can be tedious. You have to:
 
-- define a constructor + properties
-- override `toString`, `operator ==`, `hashCode`
-- implement a `copyWith` method to clone the object
-- handle (de)serialization
+- Define a constructor + properties
+- Override `toString`, `operator ==`, `hashCode`
+- Implement a `copyWith` method to clone the object
+- Handle (de)serialization
 
 Implementing all of this can take hundreds of lines, which are error-prone
 and affect the readability of your model significantly.
