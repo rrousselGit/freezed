@@ -67,3 +67,44 @@ class Subclass4 extends HashCodeWithoutEqual with _$Subclass4 {
   @override
   final int value;
 }
+
+@freezed
+class SubclassRoot with _$SubclassRoot {
+  const SubclassRoot({required this.root});
+
+  @override
+  final int root;
+}
+
+@freezed
+class SubclassMid extends SubclassRoot with _$SubclassMid {
+  const SubclassMid({required super.root, required this.mid}) : super();
+
+  @override
+  final int mid;
+}
+
+@freezed
+class SubclassLeaf extends SubclassMid with _$SubclassLeaf {
+  const SubclassLeaf({
+    required super.root,
+    required super.mid,
+    required this.leaf,
+  }) : super();
+
+  @override
+  final int leaf;
+}
+
+@freezed
+class SubclassFinal extends SubclassLeaf with _$SubclassFinal {
+  const SubclassFinal({
+    required super.root,
+    required super.mid,
+    required super.leaf,
+    required this.finalValue,
+  }) : super();
+
+  @override
+  final int finalValue;
+}
