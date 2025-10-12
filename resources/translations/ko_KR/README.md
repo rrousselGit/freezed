@@ -544,7 +544,7 @@ company = company.copyWith(name: 'Google', director: Director(...));
 company = company.copyWith.director(name: 'Larry', assistant: Assistant(...));
 ```
 
-**null 고려사항**
+**Null 고려사항**
 
 일부 객체는 `null`일 수 있습니다. 예를 들어, `Company` 클래스에서 `Director`의 `assistant`는 `null`일 수 있습니다.
 
