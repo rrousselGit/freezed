@@ -50,7 +50,7 @@ class ${constructor.redirectedName}${data.genericsDefinitionTemplate} $_concrete
 $_properties
 
 ${copyWith?.copyWithGetter(needsCast: false) ?? ''}
-${methods(data, globalData, properties: constructor.properties, name: constructor.redirectedName, escapedName: constructor.escapedName, source: Source.syntheticClass)}
+${methods(data, globalData, properties: constructor.properties, name: constructor.redirectedName, escapedName: constructor.escapedName, source: Source.syntheticClass, isConst: constructor.isConst)}
 }
 
 ${copyWith?.interface ?? ''}
@@ -325,12 +325,13 @@ String methods(
   required String name,
   required String escapedName,
   required Source source,
+  required bool isConst,
 }) {
   return '''
 ${toJson(data, name: name, source: source)}
 ${debugFillProperties(data, globalData, properties, escapedClassName: escapedName)}
 ${operatorEqualMethod(data, properties, className: name, source: source)}
-${hashCodeMethod(data, properties, source: source)}
+${hashCodeMethod(data, properties, source: source, isConst: isConst)}
 ${toStringMethod(data, globalData, escapedClassName: escapedName, properties: properties)}
 ''';
 }
@@ -467,6 +468,7 @@ String hashCodeMethod(
   Class data,
   List<Property> properties, {
   required Source source,
+  required bool isConst,
 }) {
   if (!data.options.equal) return '';
 
@@ -491,25 +493,26 @@ String hashCodeMethod(
         property.name,
   ];
 
-  if (hashedProperties.length == 1) {
+  final hashCodeExpression = hashedProperties.length == 1
+      ? '${hashedProperties.first}.hashCode'
+      : hashedProperties.length >= 20
+          ? 'Object.hashAll([${hashedProperties.join(',')}])'
+          : 'Object.hash(${hashedProperties.join(',')})';
+
+  if (isConst || source == Source.mixin) {
     return '''
 $jsonKey
 @override
-int get hashCode => ${hashedProperties.first}.hashCode;
-''';
-  }
-  if (hashedProperties.length >= 20) {
-    return '''
-$jsonKey
-@override
-int get hashCode => Object.hashAll([${hashedProperties.join(',')}]);
+int get hashCode => $hashCodeExpression;
 ''';
   }
 
   return '''
 $jsonKey
+int? _cachedHashCode;
+
 @override
-int get hashCode => Object.hash(${hashedProperties.join(',')});
+int get hashCode => _cachedHashCode ??= $hashCodeExpression;
 ''';
 }
 
