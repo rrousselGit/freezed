@@ -22,7 +22,8 @@ class EqualUnmodifiableListView<T> extends UnmodifiableListView<T> {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
 }
 
 /// An [UnmodifiableSetView] which overrides ==
@@ -40,7 +41,8 @@ class EqualUnmodifiableSetView<T> extends UnmodifiableSetView<T> {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
 }
 
 /// An [UnmodifiableMapView] which overrides ==
@@ -59,7 +61,8 @@ class EqualUnmodifiableMapView<Key, Value>
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
 }
 
 /// Options for enabling/disabling specific `Union.map` features;
