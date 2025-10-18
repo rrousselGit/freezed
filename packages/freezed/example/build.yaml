@@ -1,7 +1,7 @@
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: custom-key
           union_value_case: pascal
