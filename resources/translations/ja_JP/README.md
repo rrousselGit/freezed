@@ -25,8 +25,8 @@ Dartは素晴らしい言語ですが、「モデル」を定義するのは面�
 
 Freezedは、上記のほとんどを自動的に実装することにより、モデルの定義にのみ集中できることを目的としています。
 
-| Before                                                                                       | After                                                                                       |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Before                                                                                                  | After                                                                                       |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # 目次
@@ -35,7 +35,7 @@ Freezedは、上記のほとんどを自動的に実装することにより、�
 - [目次](#目次)
 - [使い方](#使い方)
   - [インストール](#インストール)
-    - [invalid\_annotation\_targetのwarning無効化および生成されたファイル内のwarning](#invalid_annotation_targetのwarning無効化および生成されたファイル内のwarning)
+    - [invalid_annotation_targetのwarning無効化および生成されたファイル内のwarning](#invalid_annotation_targetのwarning無効化および生成されたファイル内のwarning)
   - [ジェネレーターの実行](#ジェネレーターの実行)
   - [Freezedを使用したモデルの作成](#freezedを使用したモデルの作成)
     - [イミュータブルクラスの代わりにミュータブルクラスを定義する](#イミュータブルクラスの代わりにミュータブルクラスを定義する)
@@ -172,9 +172,9 @@ abstract class Person with _$Person {
 - `fromJson`メソッドを定義しているので、このクラスはデシリアライズおよびシリアライズが可能です。
   Freezedは自動的に`toJson`メソッドも自動的に追加します。
 - Freezedは以下も自動生成します。
-    - `copyWith`メソッドは、異なるプロパティを持つオブジェクトを複製します。
-    - `toString`オーバーライドは、オブジェクトの全てのプロパティを列挙します。
-    - `operator ==`と`hashCode`のオーバーライド（`Person`はイミュータブルなので）
+  - `copyWith`メソッドは、異なるプロパティを持つオブジェクトを複製します。
+  - `toString`オーバーライドは、オブジェクトの全てのプロパティを列挙します。
+  - `operator ==`と`hashCode`のオーバーライド（`Person`はイミュータブルなので）
 
 この例から、いくつかのことがわかります。
 
@@ -184,7 +184,7 @@ abstract class Person with _$Person {
 - クラス名の前に`_$`が付いたミックスインを適用する必要があります。
   このミックスインが、オブジェクトの様々なプロパティやメソッドを定義します。
 
-- Freezedクラスでコンストラクタを定義する際、`factory`キーワードを使う必要があります（constは任意です）。 
+- Freezedクラスでコンストラクタを定義する際、`factory`キーワードを使う必要があります（constは任意です）。
   コンストラクタのパラメータは、クラスに含まれるすべてのプロパティのリストになります。
   パラメータは名前付きである必要は**なく**、必要に応じて位置指定のオプションパラメータを使うこともできます。
 
@@ -721,7 +721,7 @@ sealed class MyResponse with _$MyResponse {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -805,7 +805,7 @@ sealed class ApiResponse<T> with _$ApiResponse<T> {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -1142,7 +1142,7 @@ my_project_folder/
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # .freezed.dartファイルのフォーマットを無効にします。
           # これによりコード生成の速度が大幅に向上する可能性があります。

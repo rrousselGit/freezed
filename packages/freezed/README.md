@@ -38,7 +38,7 @@ to focus on the definition of your model.
 - [Index](#index)
 - [How to use](#how-to-use)
   - [Install](#install)
-    - [Disabling invalid\_annotation\_target warning and warning in generates files](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
+    - [Disabling invalid_annotation_target warning and warning in generates files](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
   - [Run the generator](#run-the-generator)
   - [Creating a Model using Freezed](#creating-a-model-using-freezed)
     - [Primary constructors](#primary-constructors)
@@ -825,7 +825,7 @@ If you want to customize key and value for all the classes, you can specify it i
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -912,7 +912,7 @@ Alternatively, you can enable `genericArgumentFactories` for the whole project b
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -1358,7 +1358,7 @@ by writing:
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # Tells Freezed to format .freezed.dart files.
           # This can significantly slow down code-generation.

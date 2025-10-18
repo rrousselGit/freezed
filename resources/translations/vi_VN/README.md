@@ -25,8 +25,8 @@ Khi thực hiện tất cả những điều này, bạn sẽ cần hàng trăm 
 
 Freezed được thiết kế để tự động thực hiện hầu hết các công việc trên, giúp bạn chỉ cần tập trung vào việc định nghĩa model.
 
-| Trước                                                                                       | Sau                                                                                         |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Trước                                                                                                   | Sau                                                                                         |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # Mục lục
@@ -34,38 +34,38 @@ Freezed được thiết kế để tự động thực hiện hầu hết các 
 - [Động lực](#động-lực)
 - [Mục lục](#mục-lục)
 - [Cách sử dụng](#cách-sử-dụng)
-    - [Cài đặt](#cài-đặt)
-        - [Vô hiệu hóa cảnh báo `invalid_annotation_target` và cảnh báo trong file đã tạo](#vô-hiệu-hóa-cảnh-báo-invalid_annotation_target-và-cảnh-báo-trong-file-đã-tạo)
-    - [Chạy trình tạo mã](#chạy-trình-tạo-mã)
-    - [Tạo mô hình với Freezed](#tạo-mô-hình-với-freezed)
-        - [Định nghĩa lớp có thể thay đổi thay vì lớp bất biến](#định-nghĩa-lớp-có-thể-thay-đổi-thay-vì-lớp-bất-biến)
-        - [Cho phép thay đổi Lists/Maps/Sets](#cho-phép-thay-đổi-listsmapssets)
-        - [Cơ chế của `copyWith`](#cơ-chế-của-copywith)
-        - [Phát triển: Deep copy](#phát-triển-deep-copy)
-        - [Thêm getter và method vào models](#thêm-getter-và-method-vào-models)
-        - [Assert](#assert)
-        - [Giá trị mặc định](#giá-trị-mặc-định)
-        - [Decoder và comment](#decoder-và-comment)
-        - [Sử dụng Mixin và Interface để tạo kiểu tổng hợp cho từng lớp](#sử-dụng-mixin-và-interface-để-tạo-kiểu-tổng-hợp-cho-từng-lớp)
-    - [FromJson và ToJson](#fromjson-và-tojson)
-        - [fromJSON - Các lớp có nhiều constructor](#fromjson---các-lớp-có-nhiều-constructor)
-        - [Deserialize lớp generic](#deserialize-lớp-generic)
-    - [Kiểu Union](#kiểu-union)
-        - [Thuộc tính chia sẻ](#thuộc-tính-chia-sẻ)
-        - [Cách sử dụng pattern matching để đọc các thuộc tính không chia sẻ](#cách-sử-dụng-pattern-matching-để-đọc-các-thuộc-tính-không-chia-sẻ)
-            - [(Legacy) Utility pattern matching](#legacy-utility-pattern-matching)
-                - [When](#when)
-                - [Map](#map)
-    - [Cấu hình](#cấu-hình)
-        - [Thay đổi hành vi cho một mô hình cụ thể](#thay-đổi-hành-vi-cho-một-mô-hình-cụ-thể)
-        - [Thay đổi hành vi cho toàn bộ dự án](#thay-đổi-hành-vi-cho-toàn-bộ-dự-án)
+  - [Cài đặt](#cài-đặt)
+    - [Vô hiệu hóa cảnh báo `invalid_annotation_target` và cảnh báo trong file đã tạo](#vô-hiệu-hóa-cảnh-báo-invalid_annotation_target-và-cảnh-báo-trong-file-đã-tạo)
+  - [Chạy trình tạo mã](#chạy-trình-tạo-mã)
+  - [Tạo mô hình với Freezed](#tạo-mô-hình-với-freezed)
+    - [Định nghĩa lớp có thể thay đổi thay vì lớp bất biến](#định-nghĩa-lớp-có-thể-thay-đổi-thay-vì-lớp-bất-biến)
+    - [Cho phép thay đổi Lists/Maps/Sets](#cho-phép-thay-đổi-listsmapssets)
+    - [Cơ chế của `copyWith`](#cơ-chế-của-copywith)
+    - [Phát triển: Deep copy](#phát-triển-deep-copy)
+    - [Thêm getter và method vào models](#thêm-getter-và-method-vào-models)
+    - [Assert](#assert)
+    - [Giá trị mặc định](#giá-trị-mặc-định)
+    - [Decoder và comment](#decoder-và-comment)
+    - [Sử dụng Mixin và Interface để tạo kiểu tổng hợp cho từng lớp](#sử-dụng-mixin-và-interface-để-tạo-kiểu-tổng-hợp-cho-từng-lớp)
+  - [FromJson và ToJson](#fromjson-và-tojson)
+    - [fromJSON - Các lớp có nhiều constructor](#fromjson---các-lớp-có-nhiều-constructor)
+    - [Deserialize lớp generic](#deserialize-lớp-generic)
+  - [Kiểu Union](#kiểu-union)
+    - [Thuộc tính chia sẻ](#thuộc-tính-chia-sẻ)
+    - [Cách sử dụng pattern matching để đọc các thuộc tính không chia sẻ](#cách-sử-dụng-pattern-matching-để-đọc-các-thuộc-tính-không-chia-sẻ)
+      - [(Legacy) Utility pattern matching](#legacy-utility-pattern-matching)
+        - [When](#when)
+        - [Map](#map)
+  - [Cấu hình](#cấu-hình)
+    - [Thay đổi hành vi cho một mô hình cụ thể](#thay-đổi-hành-vi-cho-một-mô-hình-cụ-thể)
+    - [Thay đổi hành vi cho toàn bộ dự án](#thay-đổi-hành-vi-cho-toàn-bộ-dự-án)
 - [Tiện ích](#tiện-ích)
-    - [Extension IDE](#extension-ide)
-        - [Extension Freezed cho VSCode](#extension-freezed-cho-vscode)
-        - [Extension Freezed cho IntelliJ và Android Studio](#extension-freezed-cho-intellij-và-android-studio)
-    - [Công cụ của bên thứ ba](#công-cụ-của-bên-thứ-ba)
-        - [DartJ](#dartj)
-    - [Nhà tài trợ](#nhà-tài-trợ)
+  - [Extension IDE](#extension-ide)
+    - [Extension Freezed cho VSCode](#extension-freezed-cho-vscode)
+    - [Extension Freezed cho IntelliJ và Android Studio](#extension-freezed-cho-intellij-và-android-studio)
+  - [Công cụ của bên thứ ba](#công-cụ-của-bên-thứ-ba)
+    - [DartJ](#dartj)
+  - [Nhà tài trợ](#nhà-tài-trợ)
 
 # Cách sử dụng
 
@@ -171,9 +171,9 @@ class Person with _$Person {
 - Vì có định nghĩa phương thức `fromJson`, lớp này có thể thực hiện deserialize và serialize.
   Freezed sẽ tự động thêm phương thức `toJson`.
 - Freezed cũng tự động tạo ra các phương thức sau:
-    - Phương thức `copyWith` giúp sao chép đối tượng với các thuộc tính khác nhau.
-    - Phương thức `toString` ghi đè để liệt kê tất cả các thuộc tính của đối tượng.
-    - Phương thức `operator ==` và `hashCode` ghi đè (vì `Person` là lớp bất biến).
+  - Phương thức `copyWith` giúp sao chép đối tượng với các thuộc tính khác nhau.
+  - Phương thức `toString` ghi đè để liệt kê tất cả các thuộc tính của đối tượng.
+  - Phương thức `operator ==` và `hashCode` ghi đè (vì `Person` là lớp bất biến).
 
 Từ ví dụ này, có thể rút ra một số điều:
 
@@ -402,7 +402,7 @@ class Person with _$Person {
 
 Trong trường hợp này, bạn sẽ gặp lỗi `The non-abstract class _$_Person is missing implementations for these members:`.
 
-Để làm cho nó hoạt động, bạn cần định nghĩa một constructor riêng tư rỗng. Điều này sẽ cho phép mã được tạo ra *kế thừa hoặc tạo lớp con* thay vì *triển khai* (mặc định chỉ kế thừa kiểu mà không kế thừa thuộc tính và phương thức).
+Để làm cho nó hoạt động, bạn cần định nghĩa một constructor riêng tư rỗng. Điều này sẽ cho phép mã được tạo ra _kế thừa hoặc tạo lớp con_ thay vì _triển khai_ (mặc định chỉ kế thừa kiểu mà không kế thừa thuộc tính và phương thức).
 
 ```dart
 @freezed
@@ -709,7 +709,7 @@ Nếu bạn muốn tùy chỉnh khóa và giá trị của tất cả các lớp
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -791,7 +791,7 @@ Ngoài ra, bạn cũng có thể thay đổi tệp `build.yaml` để kích ho�
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -1120,7 +1120,7 @@ Ví dụ như sau:
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # Vô hiệu hóa định dạng tệp .freezed.dart.
           # Điều này có thể giúp tăng tốc quá trình tạo mã.
