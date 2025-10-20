@@ -21,8 +21,8 @@ Dart 非常棒，但定义一个 "模型" 可能很繁琐。我们可能需要�
 
 Freezed 试图通过实现一些工具为你解决这个问题，允许你专注于你的模型的定义。
 
-| 之前                                                                                           | 之后                                                                                           |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 之前                                                                                                    | 之后                                                                                        |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # 索引
@@ -31,7 +31,7 @@ Freezed 试图通过实现一些工具为你解决这个问题，允许你专注
 - [索引](#索引)
 - [怎么使用](#怎么使用)
   - [安装](#安装)
-    - [禁用 invalid\_annotation\_target 警告](#禁用-invalid_annotation_target-警告)
+    - [禁用 invalid_annotation_target 警告](#禁用-invalid_annotation_target-警告)
   - [运行生成器](#运行生成器)
   - [创建使用 Freezed 的模型](#创建使用-freezed-的模型)
     - [定义一个可变的类而不是一个不可变的类](#定义一个可变的类而不是一个不可变的类)
@@ -55,8 +55,8 @@ Freezed 试图通过实现一些工具为你解决这个问题，允许你专注
     - [改变特定模型的行为](#改变特定模型的行为)
     - [改变整个项目的行为](#改变整个项目的行为)
 - [工具](#工具)
-    - [VScode Freezed 拓展](#vscode-freezed-拓展)
-    - [IntelliJ/Android Studio Freezed 拓展](#intellijandroid-studio-freezed-拓展)
+  - [VScode Freezed 拓展](#vscode-freezed-拓展)
+  - [IntelliJ/Android Studio Freezed 拓展](#intellijandroid-studio-freezed-拓展)
   - [第三方工具](#第三方工具)
     - [DartJ](#dartj)
   - [赞助](#赞助)
@@ -370,7 +370,7 @@ company = company.copyWith.director(name: 'Larry', assistant: Assistant(...));
 Company company = Company(name: 'Google', director: Director(assistant: null));
 Company newCompany = company.copyWith.director.assistant(name: 'John');
 ```
- 
+
 这并不是我们想要的。我们不能在没有助理的情况下更改助理的名字。
 
 在这种情况下，`company.copyWith.director.assistant` 将会返回 `null`，导致我们的代码无法编译。
@@ -710,7 +710,7 @@ sealed class MyResponse with _$MyResponse {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -794,7 +794,7 @@ sealed class ApiResponse<T> with _$ApiResponse<T> {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -839,12 +839,10 @@ abstract class Example with _$Example {
 接下来的文档没有编辑，保留给那些还没有迁移到 Dart 3 的用户。
 但是从长远来看，你应该停止依赖 `when` `map`。
 
-____
+---
 
-从其他语言来的你，可能习惯了像 "union types" / "sealed classes" / pattern matching 这样的特性。 
+从其他语言来的你，可能习惯了像 "union types" / "sealed classes" / pattern matching 这样的特性。
 这些特性结合类型系统是非常强大的工具，但是 Dart 目前还不支持它们。
-
-
 
 但是不要担心，[Freezed] 支持它们，并生成一些工具来帮助你。
 
@@ -1122,7 +1120,7 @@ my_project_folder/
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # 禁用生成 copyWith / == （整个项目）
           copy_with: false
