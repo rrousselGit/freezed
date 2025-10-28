@@ -717,7 +717,7 @@ class MyResponse with _$MyResponse {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -802,7 +802,7 @@ class ApiResponse<T> with _$ApiResponse<T> {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -1129,7 +1129,7 @@ my_project_folder/
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # 전체 프로젝트에 대해 copyWith/== 생성 비활성화
           copy_with: false

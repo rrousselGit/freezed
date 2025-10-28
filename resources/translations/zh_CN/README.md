@@ -710,7 +710,7 @@ sealed class MyResponse with _$MyResponse {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -794,7 +794,7 @@ sealed class ApiResponse<T> with _$ApiResponse<T> {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -1122,7 +1122,7 @@ my_project_folder/
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # 禁用生成 copyWith / == （整个项目）
           copy_with: false
