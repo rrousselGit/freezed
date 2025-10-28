@@ -164,7 +164,7 @@ abstract class Person with _$Person {
   }) = _Person;
 
   factory Person.fromJson(Map<String, Object?> json)
-  => _$PersonFromJson(json);
+      => _$PersonFromJson(json);
 }
 ```
 
@@ -207,7 +207,7 @@ abstract class Person with _$Person {
   }) = _Person;
 
   factory Person.fromJson(Map<String, Object?> json)
-  => _$PersonFromJson(json);
+      => _$PersonFromJson(json);
 }
 ```
 
@@ -686,7 +686,7 @@ class MyResponse with _$MyResponse {
 
   const factory MyResponse.error(String message) = MyResponseError;
 
-// ...
+  // ...
 }
 ```
 
