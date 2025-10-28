@@ -38,7 +38,7 @@ to focus on the definition of your model.
 - [Index](#index)
 - [How to use](#how-to-use)
   - [Install](#install)
-    - [Disabling invalid_annotation_target warning and warning in generates files](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
+    - [Disabling invalid\_annotation\_target warning and warning in generates files](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
   - [Run the generator](#run-the-generator)
   - [Creating a Model using Freezed](#creating-a-model-using-freezed)
     - [Primary constructors](#primary-constructors)

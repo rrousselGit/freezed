@@ -25,8 +25,8 @@ Khi thực hiện tất cả những điều này, bạn sẽ cần hàng trăm 
 
 Freezed được thiết kế để tự động thực hiện hầu hết các công việc trên, giúp bạn chỉ cần tập trung vào việc định nghĩa model.
 
-| Trước                                                                                                   | Sau                                                                                         |
-| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Trước                                                                                       | Sau                                                                                         |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # Mục lục
@@ -402,7 +402,7 @@ class Person with _$Person {
 
 Trong trường hợp này, bạn sẽ gặp lỗi `The non-abstract class _$_Person is missing implementations for these members:`.
 
-Để làm cho nó hoạt động, bạn cần định nghĩa một constructor riêng tư rỗng. Điều này sẽ cho phép mã được tạo ra _kế thừa hoặc tạo lớp con_ thay vì _triển khai_ (mặc định chỉ kế thừa kiểu mà không kế thừa thuộc tính và phương thức).
+Để làm cho nó hoạt động, bạn cần định nghĩa một constructor riêng tư rỗng. Điều này sẽ cho phép mã được tạo ra *kế thừa hoặc tạo lớp con* thay vì *triển khai* (mặc định chỉ kế thừa kiểu mà không kế thừa thuộc tính và phương thức).
 
 ```dart
 @freezed

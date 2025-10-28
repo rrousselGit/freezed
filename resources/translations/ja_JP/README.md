@@ -25,8 +25,8 @@ Dartは素晴らしい言語ですが、「モデル」を定義するのは面�
 
 Freezedは、上記のほとんどを自動的に実装することにより、モデルの定義にのみ集中できることを目的としています。
 
-| Before                                                                                                  | After                                                                                       |
-| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Before                                                                                       | After                                                                                       |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/refs/heads/master/resources/before.png) | ![before](https://raw.githubusercontent.com/rrousselGit/freezed/master/resources/after.png) |
 
 # 目次
@@ -35,7 +35,7 @@ Freezedは、上記のほとんどを自動的に実装することにより、�
 - [目次](#目次)
 - [使い方](#使い方)
   - [インストール](#インストール)
-    - [invalid_annotation_targetのwarning無効化および生成されたファイル内のwarning](#invalid_annotation_targetのwarning無効化および生成されたファイル内のwarning)
+    - [invalid\_annotation\_targetのwarning無効化および生成されたファイル内のwarning](#invalid_annotation_targetのwarning無効化および生成されたファイル内のwarning)
   - [ジェネレーターの実行](#ジェネレーターの実行)
   - [Freezedを使用したモデルの作成](#freezedを使用したモデルの作成)
     - [イミュータブルクラスの代わりにミュータブルクラスを定義する](#イミュータブルクラスの代わりにミュータブルクラスを定義する)
