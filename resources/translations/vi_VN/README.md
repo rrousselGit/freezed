@@ -709,7 +709,7 @@ Nếu bạn muốn tùy chỉnh khóa và giá trị của tất cả các lớp
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -791,7 +791,7 @@ Ngoài ra, bạn cũng có thể thay đổi tệp `build.yaml` để kích ho�
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -1120,7 +1120,7 @@ Ví dụ như sau:
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # Vô hiệu hóa định dạng tệp .freezed.dart.
           # Điều này có thể giúp tăng tốc quá trình tạo mã.

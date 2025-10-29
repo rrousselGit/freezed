@@ -825,7 +825,7 @@ If you want to customize key and value for all the classes, you can specify it i
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -912,7 +912,7 @@ Alternatively, you can enable `genericArgumentFactories` for the whole project b
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -1358,7 +1358,7 @@ by writing:
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # Tells Freezed to format .freezed.dart files.
           # This can significantly slow down code-generation.
