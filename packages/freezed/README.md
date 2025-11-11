@@ -1202,7 +1202,7 @@ abstract class ResultData<T> extends Result<T> with _$ResultData<T> {
 
 ##### When
 
-The [when] method is the equivalent to pattern matching with destructing.  
+The [when] method is the equivalent to pattern matching with destructuring.  
 The prototype of the method depends on the constructors defined.
 
 For example, with:
