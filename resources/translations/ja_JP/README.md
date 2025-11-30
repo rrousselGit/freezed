@@ -721,7 +721,7 @@ sealed class MyResponse with _$MyResponse {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           union_key: type
           union_value_case: pascal
@@ -805,7 +805,7 @@ sealed class ApiResponse<T> with _$ApiResponse<T> {
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           generic_argument_factories: true
 ```
@@ -1142,7 +1142,7 @@ my_project_folder/
 targets:
   $default:
     builders:
-      freezed:
+      freezed:freezed:
         options:
           # .freezed.dartファイルのフォーマットを無効にします。
           # これによりコード生成の速度が大幅に向上する可能性があります。
