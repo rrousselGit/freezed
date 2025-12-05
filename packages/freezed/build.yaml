@@ -31,3 +31,4 @@ triggers:
   freezed:freezed:
     - annotation Freezed
     - annotation freezed
+    - annotation unfreezed
