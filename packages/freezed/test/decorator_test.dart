@@ -55,10 +55,7 @@ import 'decorator.dart';
           .getter!;
 
       expect(unmodifiableGetter.metadata.annotations.length, 2);
-      expect(
-        unmodifiableGetter.metadata.annotations.last.toSource(),
-        '@Foo()',
-      );
+      expect(unmodifiableGetter.metadata.annotations.last.toSource(), '@Foo()');
     },
   );
 
