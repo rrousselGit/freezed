@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types, deprecated_member_use_from_same_package
 import 'package:analyzer/dart/analysis/results.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
 
@@ -25,7 +25,7 @@ class MyObject {
 }
 
 Future<void> main() async {
-  Future<LibraryElement2> analyze() {
+  Future<LibraryElement> analyze() {
     return resolveSources(
       {
         'freezed|test/integration/single_class_constructor.dart':
@@ -211,28 +211,28 @@ Future<void> main() async {
   test('documentation', () async {
     final singleClassLibrary = await analyze();
 
-    final doc = singleClassLibrary.classes.firstWhere((e) => e.name3 == 'Doc');
+    final doc = singleClassLibrary.classes.firstWhere((e) => e.name == 'Doc');
 
     expect(
       doc.mixins.first.getters.where(
-        (e) => e.name3 != 'copyWith' && e.name3 != 'hashCode',
+        (e) => e.name != 'copyWith' && e.name != 'hashCode',
       ),
       [
-        isA<PropertyAccessorElement2>()
-            .having((e) => e.name3, 'name', 'positional')
+        isA<PropertyAccessorElement>()
+            .having((e) => e.name, 'name', 'positional')
             .having((e) => e.documentationComment, 'doc', '''
 /// Multi
 /// line
 /// positional'''),
-        isA<PropertyAccessorElement2>() //
-            .having((e) => e.name3, 'name', 'named')
+        isA<PropertyAccessorElement>() //
+            .having((e) => e.name, 'name', 'named')
             .having(
               (e) => e.documentationComment,
               'doc',
               '/// Single line named',
             ),
-        isA<PropertyAccessorElement2>() //
-            .having((e) => e.name3, 'name', 'simple')
+        isA<PropertyAccessorElement>() //
+            .having((e) => e.name, 'name', 'simple')
             .having((e) => e.documentationComment, 'doc', null),
       ],
     );
