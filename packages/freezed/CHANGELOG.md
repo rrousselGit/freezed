@@ -1,3 +1,7 @@
+## 3.2.4
+
+Support analyzer 9.0.0
+
 ## 3.2.3 - 2025-09-10
 
 Broader the version range for `analyzer`/`source_gen`/`build`
