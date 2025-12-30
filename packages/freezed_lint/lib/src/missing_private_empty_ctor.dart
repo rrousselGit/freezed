@@ -29,17 +29,17 @@ class MissingPrivateEmptyCtor extends DartLintRule {
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final methods = element.methods2.where((method) => !method.isStatic);
-      final fields = element.fields2.where((field) => !field.isStatic);
+      final methods = element.methods.where((method) => !method.isStatic);
+      final fields = element.fields.where((field) => !field.isStatic);
 
       final accessors = [
-        ...element.getters2,
+        ...element.getters,
         ...element.setters2,
       ].where((accessor) => !accessor.isStatic);
       if (methods.isEmpty && fields.isEmpty && accessors.isEmpty) return;
 
       final ctors = element.constructors2.where((ctor) =>
-          ctor.isPrivate && ctor.formalParameters.isEmpty && ctor.name3 == '_');
+          ctor.isPrivate && ctor.formalParameters.isEmpty && ctor.name == '_');
       if (ctors.isNotEmpty) return;
 
       final constToken = element.constToken();

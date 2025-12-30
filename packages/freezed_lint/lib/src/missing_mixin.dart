@@ -24,7 +24,7 @@ class MissingMixin extends DartLintRule {
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final name = '_\$${element.name3}';
+      final name = '_\$${element.name}';
       final withClause = node.withClause;
       if (withClause == null) {
         reporter.atElement2(element, _code, arguments: [name]);
@@ -32,7 +32,7 @@ class MissingMixin extends DartLintRule {
       }
 
       final mixins = withClause.mixinTypes;
-      if (mixins.any((m) => name == m.name2.lexeme)) return;
+      if (mixins.any((m) => name == m.name.lexeme)) return;
       reporter.atElement2(element, _code, arguments: [name]);
     });
   }
