@@ -283,7 +283,7 @@ void main() {
     });
 
     test('named parameters are marked as required', () async {
-      final main = await resolveSources({
+      final main = await resolveSources(readAllSourcesFromFilesystem: true, {
         'freezed|test/integration/main.dart': r'''
 library main;
 import 'multiple_constructors.dart';

@@ -8,6 +8,7 @@ import 'integration/optional_maybe.dart';
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
+      readAllSourcesFromFilesystem: true,
       {'freezed|test/integration/optional_maybe.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
         (element) =>

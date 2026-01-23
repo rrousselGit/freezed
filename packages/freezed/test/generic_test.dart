@@ -39,6 +39,7 @@ void main() {
 
   test('has no issue', () async {
     final main = await resolveSources(
+      readAllSourcesFromFilesystem: true,
       {'freezed|test/integration/generic.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
         (element) =>

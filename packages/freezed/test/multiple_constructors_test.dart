@@ -167,6 +167,7 @@ void main() {
 
     test('no warning', () async {
       final main = await resolveSources(
+        readAllSourcesFromFilesystem: true,
         {'freezed|test/integration/multiple_constructors.dart': useAssetReader},
         (r) => r.libraries.firstWhere(
           (element) => element.firstFragment.source.toString().contains(

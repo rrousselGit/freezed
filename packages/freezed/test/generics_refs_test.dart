@@ -8,6 +8,7 @@ import 'integration/generics_refs.dart';
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
+      readAllSourcesFromFilesystem: true,
       {'freezed|test/integration/generics_refs.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
         (element) =>

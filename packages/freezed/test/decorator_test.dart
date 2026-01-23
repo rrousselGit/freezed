@@ -5,6 +5,7 @@ import 'package:test/test.dart';
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
+      readAllSourcesFromFilesystem: true,
       {'freezed|test/integration/decorator.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
         (element) =>

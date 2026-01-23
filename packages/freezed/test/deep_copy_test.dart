@@ -18,6 +18,7 @@ void main() {
 
   test('has no issue', () async {
     final main = await resolveSources(
+      readAllSourcesFromFilesystem: true,
       {'freezed|test/integration/deep_copy.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
         (element) =>
@@ -36,6 +37,7 @@ void main() {
 
   test('has no issue #2', () async {
     final main = await resolveSources(
+      readAllSourcesFromFilesystem: true,
       {'freezed|test/integration/deep_copy2.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
         (element) =>
@@ -723,10 +725,7 @@ void main() {
 }
 ''',
       },
-      (r) => r.libraries.firstWhere(
-        (element) =>
-            element.firstFragment.source.toString().contains('deep_copy'),
-      ),
+      (r) => r.libraries.firstWhere((element) => element.name == 'main'),
       readAllSourcesFromFilesystem: true,
     );
 
