@@ -19,7 +19,8 @@ jobs:
           - packages/freezed
           - packages/freezed/example
           - packages/freezed_annotation
-          - packages/freezed_lint
+          # Disabled until custom_lint is removed
+          # - packages/freezed_lint
         channel:
           - stable
         dependencies:

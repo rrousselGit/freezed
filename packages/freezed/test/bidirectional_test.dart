@@ -7,6 +7,7 @@ import 'integration/bidirectional.dart';
 void main() {
   test('has no issue', () async {
     final main = await resolveSources(
+      readAllSourcesFromFilesystem: true,
       {'freezed|test/integration/bidirectional.dart': useAssetReader},
       (r) => r.libraries.firstWhere(
         (element) =>

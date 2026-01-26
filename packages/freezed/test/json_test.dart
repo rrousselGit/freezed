@@ -9,6 +9,7 @@ import 'integration/json.dart';
 
 Future<void> main() async {
   final jsonFile = await resolveSources(
+      readAllSourcesFromFilesystem: true,
     {'freezed|test/integration/json.dart': useAssetReader},
     (r) => r.libraries.firstWhere(
       (element) => element.firstFragment.source.toString().contains('json'),
