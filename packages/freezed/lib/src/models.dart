@@ -7,6 +7,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/freezed_generator.dart';
@@ -497,7 +498,7 @@ class AssertAnnotation {
   @override
   String toString() {
     if (message != null) {
-      return "assert($code, '$message')";
+      return 'assert($code, ${literalString(message!).toString()})';
     }
     return 'assert($code)';
   }
