@@ -155,6 +155,18 @@ abstract class Complex with _$Complex {
   ]) = Complex2;
 }
 
+/// Regression test for https://github.com/rrousselGit/freezed/issues/867
+/// Assert messages with single quotes should be properly escaped.
+@freezed
+abstract class AssertWithQuotes with _$AssertWithQuotes {
+  @Assert('value != null', "This assertion isn't really useful!")
+  const factory AssertWithQuotes({String? value}) = _AssertWithQuotes;
+
+  @Assert('value != null', "Message with 'single' and \"double\" quotes")
+  const factory AssertWithQuotes.mixed({String? value}) =
+      _AssertWithQuotesMixed;
+}
+
 @freezed
 abstract class SwitchTest with _$SwitchTest {
   const factory SwitchTest(String a) = SwitchTest0;

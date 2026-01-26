@@ -126,6 +126,15 @@ Future<void> main() async {
     expect(() => Complex.first('', b: false), throwsAssertionError);
   });
 
+  test('assert with single quotes in message', () {
+    // Regression test: Assert messages with single quotes should compile and work
+    AssertWithQuotes(value: 'test');
+    expect(() => AssertWithQuotes(value: null), throwsAssertionError);
+
+    AssertWithQuotes.mixed(value: 'test');
+    expect(() => AssertWithQuotes.mixed(value: null), throwsAssertionError);
+  });
+
   group('NoSharedParam', () {
     test("doesn't have public properties/methods", () async {
       await expectLater(
