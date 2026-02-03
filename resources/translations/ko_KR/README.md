@@ -539,7 +539,7 @@ abstract class Person with _$Person {
 
 ### Union Types에서 Mixin 및 Interface 사용하기
 
-Union Type 클래스는 `@implements` 또는 `@with` decarator를 사용하여 `Mixin` 또는 `Interface`를 구현할 수 있습니다. 아래 예제에서는 `City` 클래스가 `GeographicArea` 추상 클래스를 구현합니다.
+Union Type 클래스는 `@implements` 또는 `@with` decorator를 사용하여 `Mixin` 또는 `Interface`를 구현할 수 있습니다. 아래 예제에서는 `City` 클래스가 `GeographicArea` 추상 클래스를 구현합니다.
 
 ```dart
 abstract class GeographicArea {
