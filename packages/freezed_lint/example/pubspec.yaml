@@ -10,7 +10,7 @@ dependencies:
 dev_dependencies:
   build_runner: any
   custom_lint: any
-  freezed: any
+  freezed: 3.2.5
   freezed_lint: any
 
 dependency_overrides:

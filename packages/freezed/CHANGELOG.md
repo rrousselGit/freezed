@@ -1,4 +1,4 @@
-## Unreleased patch
+## 3.2.5 - 2026-02-03
 
 Support analyzer 10.0
 
@@ -1002,3 +1002,4 @@ Add generic support
 ## 0.0.0
 
 Initial release
+
