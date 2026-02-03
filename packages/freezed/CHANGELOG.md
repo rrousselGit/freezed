@@ -1,3 +1,7 @@
+## Unreleased patch
+
+Support analyzer 10.0
+
 ## 3.2.4
 
 Support analyzer 9.0.0
