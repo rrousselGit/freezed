@@ -22,7 +22,8 @@ jobs:
           # Disabled until custom_lint is removed
           # - packages/freezed_lint
         channel:
-          - stable
+          # - stable
+          - master
         dependencies:
           - get
           - downgrade
