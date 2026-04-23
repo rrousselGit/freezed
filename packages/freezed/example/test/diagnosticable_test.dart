@@ -1,9 +1,9 @@
-import 'package:example/diagnosticable.dart' as diagnosticable;
-import 'package:example/non_diagnosticable.dart' as non_diagnosticable;
-import 'package:example/time_slot.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:freezed_example/diagnosticable.dart' as diagnosticable;
+import 'package:freezed_example/non_diagnosticable.dart' as non_diagnosticable;
+import 'package:freezed_example/time_slot.dart';
 
 void main() {
   test('overriding toString works', () {
