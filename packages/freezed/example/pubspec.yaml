@@ -21,3 +21,9 @@ dev_dependencies:
     sdk: flutter
   # To support "downgrade" checks due to a transitive dependency not handling it correctly
   file: ">=7.0.0"
+
+dependency_overrides:
+  freezed:
+    path: ../
+  freezed_annotation:
+    path: ../../freezed_annotation
