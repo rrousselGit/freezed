@@ -1,4 +1,4 @@
-## Unreleased 3.2.6-dev.1
+## 3.2.6-dev.1 - 2026-04-23
 
 Support analyzer 12.0
 
