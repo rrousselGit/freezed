@@ -83,7 +83,7 @@ void main() {
     nullabilityDifference: 42,
     typeDifference: 21,
   );
-  // expect-error: UNDEFINED_GETTER
+  // expect-error: undefined_getter
   value.unknown;
 }
 '''),
@@ -120,10 +120,10 @@ void main() {
   param.copyWith(
     // Since not all unions have a nullable property, we cannot assign "null"
     // on the shared interface.
-    // expect-error: ARGUMENT_TYPE_NOT_ASSIGNABLE
+    // expect-error: argument_type_not_assignable
     nullabilityDifference: null,
     // Since not all unions use the same type, we can't clone that property at all.
-    // expect-error: UNDEFINED_NAMED_PARAMETER
+    // expect-error: undefined_named_parameter
     typeDifference: 42,
   );
 }
@@ -174,10 +174,10 @@ void main() {
   param.copyWith.value(
     // Since not all unions have a nullable property, we cannot assign "null"
     // on the shared interface.
-    // expect-error: ARGUMENT_TYPE_NOT_ASSIGNABLE
+    // expect-error: argument_type_not_assignable
     nullabilityDifference: null,
     // Since not all unions use the same type, we can't clone that property at all.
-    // expect-error: UNDEFINED_NAMED_PARAMETER
+    // expect-error: undefined_named_parameter
     typeDifference: 42,
   );
 }
@@ -204,7 +204,7 @@ import 'integration/common_types.dart';
 
 void main() {
   final param = CommonUnfreezed.one(a: 42, b: 3.14);
-  // expect-error: ASSIGNMENT_TO_FINAL_NO_SETTER
+  // expect-error: assignment_to_final_no_setter
   param.a = 42.24;
   // OK since all union cases are typed the same
   param.b = 42;

@@ -11,6 +11,7 @@ abstract class Decorator with _$Decorator {
 }
 
 class _WeirdDecorator {
+  // ignore: unused_element_parameter, false positive https://github.com/dart-lang/sdk/issues/63229
   const _WeirdDecorator(this.a, {this.b});
 
   final String a;
