@@ -31,3 +31,6 @@ dev_dependencies:
   expect_error: ^1.0.10
   flutter:
     sdk: flutter
+
+  # To support "downgrade" checks due to a transitive dependency not handling it correctly
+  file: '>=7.0.0'

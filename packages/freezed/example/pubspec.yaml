@@ -19,6 +19,8 @@ dev_dependencies:
   build_runner:
   flutter_test:
     sdk: flutter
+  # To support "downgrade" checks due to a transitive dependency not handling it correctly
+  file: '>=7.0.0'
 
 dependency_overrides:
   freezed:
