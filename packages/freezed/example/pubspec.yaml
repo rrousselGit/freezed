@@ -2,6 +2,8 @@ name: freezed_example
 description: A new Flutter project.
 publish_to: none
 
+resolution: workspace
+
 environment:
   sdk: ">=3.6.0 <4.0.0"
 
@@ -20,10 +22,4 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   # To support "downgrade" checks due to a transitive dependency not handling it correctly
-  file: '>=7.0.0'
-
-dependency_overrides:
-  freezed:
-    path: ../
-  freezed_annotation:
-    path: ../../freezed_annotation
+  file: ">=7.0.0"
