@@ -1076,7 +1076,7 @@ To fix, either:
     if (!shouldUseExtends &&
         field.getter != null &&
         !field.getter!.isAbstract &&
-        field.getter!.nonSynthetic != field.getter) {
+        field.getter!.isOriginDeclaration) {
       throw InvalidGenerationSourceError(
         'Getters require a MyClass._() constructor',
         element: field,
