@@ -12,6 +12,7 @@ targets:
             - test/**/*
         options:
           format: true
+          run_only_if_triggered: true
       source_gen|combining_builder:
         options:
           ignore_for_file:
@@ -25,3 +26,9 @@ builders:
     auto_apply: dependents
     build_to: source
     runs_before: ["json_serializable|json_serializable"]
+
+triggers:
+  freezed:freezed:
+    - annotation Freezed
+    - annotation freezed
+    - annotation unfreezed
