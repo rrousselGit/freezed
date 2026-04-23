@@ -72,7 +72,7 @@ jobs:
 
       - name: Run tests
         run: |
-          if grep -q "name: example" "pubspec.yaml"; then
+          if grep -q "name: freezed_example" "pubspec.yaml"; then
             flutter test
           else
             dart test
