@@ -1,22 +1,18 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/element/element.dart';
 
 extension AstX on AstNode {
   String? get documentation {
-    final builder = StringBuffer();
+    final node = switch (this) {
+      DefaultFormalParameter(:final parameter) => parameter,
+      _ => this,
+    };
 
-    for (
-      Token? token = beginToken.precedingComments;
-      token != null;
-      token = token.next
-    ) {
-      builder.writeln(token);
+    if (node case AnnotatedNode(:final documentationComment?)) {
+      return '${documentationComment.tokens.map((token) => token.lexeme).join('\n')}\n';
     }
 
-    if (builder.isEmpty) return null;
-
-    return builder.toString();
+    return null;
   }
 }
 
