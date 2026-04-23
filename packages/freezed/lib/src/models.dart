@@ -278,7 +278,7 @@ When specifying fields in non-factory constructor then specifying factory constr
 
       _assertValidFreezedConstructorUsage(
         constructor,
-        className: declaration.name.lexeme,
+        className: declaration.namePart.typeName.lexeme,
       );
 
       final excludedProperties =
@@ -299,7 +299,7 @@ When specifying fields in non-factory constructor then specifying factory constr
       final isEjected = unitsExcludingGeneratedFiles.any(
         (e) => e.declarations
             .whereType<ClassDeclaration>()
-            .map((e) => e.name.lexeme)
+            .map((e) => e.namePart.typeName.lexeme)
             .contains(redirectedName),
       );
 
@@ -522,7 +522,7 @@ class CopyWithTarget {
 
 extension on NamedType {
   bool isSuperMixin(ClassDeclaration declaration) =>
-      name.lexeme == '_\$${declaration.name.lexeme.public}';
+      name.lexeme == '_\$${declaration.namePart.typeName.lexeme.public}';
 }
 
 class Class {
@@ -582,7 +582,7 @@ class Class {
         false;
     if (!has$ClassMixin) {
       throw InvalidGenerationSourceError(
-        'Classes using @freezed must use `with _\$${declaration.name.lexeme.public}`.',
+        'Classes using @freezed must use `with _\$${declaration.namePart.typeName.lexeme.public}`.',
         element: declaration.declaredFragment?.element,
         node: declaration,
       );
@@ -624,7 +624,7 @@ class Class {
         if (cloneableProperty == null) {
           throw InvalidGenerationSourceError(
             '''
-The class ${declaration.name.lexeme} requested a copyWith implementation, yet the parameter `${param.name}` is not cloneable.
+The class ${declaration.namePart.typeName.lexeme} requested a copyWith implementation, yet the parameter `${param.name}` is not cloneable.
 
 To fix, either:
 - Disable copyWith using @Freezed(copyWith: false)
@@ -669,7 +669,7 @@ To fix, either:
 
     return Class(
       node: declaration,
-      name: declaration.name.lexeme,
+      name: declaration.namePart.typeName.lexeme,
       copyWithTarget: copyWithInvocation,
       properties: properties,
       superCall: superCall,
@@ -1076,7 +1076,7 @@ To fix, either:
     if (!shouldUseExtends &&
         field.getter != null &&
         !field.getter!.isAbstract &&
-        !field.getter!.isSynthetic) {
+        field.getter!.nonSynthetic != field.getter) {
       throw InvalidGenerationSourceError(
         'Getters require a MyClass._() constructor',
         element: field,
@@ -1332,14 +1332,26 @@ extension ClassDeclarationX on ClassDeclaration {
   }
 
   Iterable<ConstructorDeclaration> get constructors {
-    return members.whereType<ConstructorDeclaration>();
+    final that = body;
+    switch (that) {
+      case BlockClassBody():
+        return that.members.whereType<ConstructorDeclaration>();
+      default:
+        return const [];
+    }
   }
 
   Iterable<(FieldDeclaration, VariableDeclaration)> get properties {
-    return members
-        .whereType<FieldDeclaration>()
-        .where((e) => !e.isStatic)
-        .expand((e) => e.fields.variables.map((f) => (e, f)));
+    final that = body;
+    switch (that) {
+      case BlockClassBody():
+        return that.members
+            .whereType<FieldDeclaration>()
+            .where((e) => !e.isStatic)
+            .expand((e) => e.fields.variables.map((f) => (e, f)));
+      default:
+        return const [];
+    }
   }
 
   bool needsJsonSerializable(Library library) {
