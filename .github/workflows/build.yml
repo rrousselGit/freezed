@@ -55,7 +55,7 @@ jobs:
 
       - name: Check format
         # Check dart format only on stable
-        if: matrix.channel == 'stable'
+        if: matrix.channel == 'master'
         run: dart format --set-exit-if-changed .
         working-directory: ${{ matrix.package }}
 
