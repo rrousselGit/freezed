@@ -723,7 +723,7 @@ class Class {
             if (!cloneableNames.contains(paramName)) {
               throw InvalidGenerationSourceError(
                 '''
-The class ${declaration.name.lexeme} requested a copyWith implementation, yet the parameter `$paramName` is not cloneable.
+The class ${declaration.namePart.typeName.lexeme} requested a copyWith implementation, yet the parameter `$paramName` is not cloneable.
 
 To fix, either:
 - Disable copyWith using @Freezed(copyWith: false)
@@ -1304,7 +1304,7 @@ To fix, either:
         if (!_isAccessible(sp.name, ownerLibrary, userLibrary)) continue;
         if (seenReadable.add(sp.name)) {
           props.readableProperties.add(
-            sp.copyWith(originClass: parentDecl.name.lexeme),
+            sp.copyWith(originClass: parentDecl.namePart.typeName.lexeme),
           );
         }
       }
@@ -1312,7 +1312,7 @@ To fix, either:
         if (!_isAccessible(sp.name, ownerLibrary, userLibrary)) continue;
         if (seenCloneable.add(sp.name)) {
           props.cloneableProperties.add(
-            sp.copyWith(originClass: parentDecl.name.lexeme),
+            sp.copyWith(originClass: parentDecl.namePart.typeName.lexeme),
           );
         }
       }
@@ -1330,7 +1330,7 @@ To fix, either:
     for (final unit in units) {
       for (final declaration in unit.declarations) {
         if (declaration is ClassDeclaration &&
-            declaration.name.lexeme == name) {
+            declaration.namePart.typeName.lexeme == name) {
           return declaration;
         }
       }
