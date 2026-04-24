@@ -1,3 +1,11 @@
+## 3.2.6-dev.1 - 2026-04-23
+
+Support analyzer 12.0
+
+## 3.2.5 - 2026-02-03
+
+Support analyzer 10.0
+
 ## 3.2.4
 
 Support analyzer 9.0.0
@@ -998,3 +1006,4 @@ Add generic support
 ## 0.0.0
 
 Initial release
+

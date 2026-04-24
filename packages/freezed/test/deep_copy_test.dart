@@ -734,8 +734,8 @@ void main() {
             as ErrorsResult;
 
     expect(errorResult.errors.map((e) => e.errorCode.name), [
-      'UNUSED_RESULT',
-      'UNUSED_RESULT',
+      'unused_result',
+      'unused_result',
     ]);
   });
 }

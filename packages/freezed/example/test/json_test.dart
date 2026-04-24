@@ -1,5 +1,5 @@
-import 'package:example/main.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:freezed_example/main.dart';
 
 void main() {
   test('Union toJson', () {
