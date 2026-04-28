@@ -20,25 +20,31 @@ class Property {
     required this.doc,
     required this.isSynthetic,
     required this.isFinal,
+    this.originClass,
   });
 
-  Property.fromParameter(Parameter p, {required bool isSynthetic})
-    : this(
-        decorators: p.decorators,
-        name: p.name,
-        isFinal: p.isFinal,
-        doc: p.doc,
-        type: p.type,
-        typeDisplayString: p.typeDisplayString,
-        defaultValueSource: p.defaultValueSource,
-        isSynthetic: isSynthetic,
-        hasJsonKey: false,
-      );
+  Property.fromParameter(
+    Parameter p, {
+    required bool isSynthetic,
+    String? originClass,
+  }) : this(
+         decorators: p.decorators,
+         name: p.name,
+         isFinal: p.isFinal,
+         doc: p.doc,
+         type: p.type,
+         typeDisplayString: p.typeDisplayString,
+         defaultValueSource: p.defaultValueSource,
+         isSynthetic: isSynthetic,
+         hasJsonKey: false,
+         originClass: originClass,
+       );
 
   static Property fromFormalParameter(
     FormalParameter parameter, {
     required bool addImplicitFinal,
     required bool isSynthetic,
+    String? originClass,
   }) {
     final element = parameter.declaredFragment!.element;
 
@@ -61,6 +67,7 @@ class Property {
       decorators: parseDecorators(element.metadata.annotations),
       defaultValueSource: defaultValue,
       hasJsonKey: element.hasJsonKey,
+      originClass: originClass,
     );
   }
 
@@ -73,6 +80,7 @@ class Property {
   final String? defaultValueSource;
   final bool hasJsonKey;
   final String doc;
+  final String? originClass;
 
   @override
   String toString() {
@@ -115,6 +123,7 @@ class Property {
     String? doc,
     bool? isPossiblyDartCollection,
     TypeParameterElement? parameterElement,
+    String? originClass,
   }) {
     return Property(
       type: type ?? this.type,
@@ -126,6 +135,7 @@ class Property {
       hasJsonKey: hasJsonKey ?? this.hasJsonKey,
       doc: doc ?? this.doc,
       isFinal: isFinal ?? this.isFinal,
+      originClass: originClass ?? this.originClass,
     );
   }
 }
