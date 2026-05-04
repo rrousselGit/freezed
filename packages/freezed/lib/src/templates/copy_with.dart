@@ -256,7 +256,10 @@ ${_copyWithDocs(data.name)}
 
   String _ignoreLints(
     String s, [
-    List<String> lints = const ['cast_nullable_to_non_nullable'],
+    List<String> lints = const [
+      'cast_nullable_to_non_nullable',
+      'unnecessary_non_null_assertion',
+    ],
   ]) =>
       '''
 // ignore: ${lints.join(', ')}
