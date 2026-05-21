@@ -429,11 +429,18 @@ String operatorEqualMethod(
 }) {
   if (!data.options.equal) return '';
 
+  // Only skip super-origin properties if super== is already emitted
+  final eqProperties = data.hasSuperEqual
+      ? properties.where(
+          (p) => p.originClass == null || p.originClass == data.name,
+        )
+      : properties;
+
   final comparisons = [
     'other.runtimeType == runtimeType',
     'other is $className${data.genericsParameterTemplate}',
     if (data.hasSuperEqual) 'super == other',
-    ...properties.map((p) {
+    ...eqProperties.map((p) {
       var name = p.name;
 
       if (data.options.asUnmodifiableCollections &&
@@ -470,6 +477,13 @@ String hashCodeMethod(
 }) {
   if (!data.options.equal) return '';
 
+  // Only skip super-origin properties if super.hashCode is already emitted
+  final hashProperties = data.hasSuperHashCode
+      ? properties.where(
+          (p) => p.originClass == null || p.originClass == data.name,
+        )
+      : properties;
+
   final jsonKey = data.options.fromJson || data.options.toJson
       ? '@JsonKey(includeFromJson: false, includeToJson: false)'
       : '';
@@ -477,7 +491,7 @@ String hashCodeMethod(
   final hashedProperties = [
     'runtimeType',
     if (data.hasSuperHashCode) 'super.hashCode',
-    for (final property in properties)
+    for (final property in hashProperties)
       if (property.type.isPossiblyDartCollection)
         if (data.options.asUnmodifiableCollections &&
             source == Source.syntheticClass &&
