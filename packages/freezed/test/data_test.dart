@@ -22,21 +22,23 @@ import 'data.dart';
 
 void main() {
   final value = Data(0, 1);
+  value.a = 42;
 }
 '''),
       completes,
     );
 
-    await expectLater(
-      compile(r'''
-import 'data.dart';
+  // TODO no-longer doable since Dart 3.13
+//     await expectLater(
+//       compile(r'''
+// import 'data.dart';
 
-void main() {
-  final value = Data(0, 1);
-  value.b = 42;
-}
-'''),
-      throwsCompileError,
-    );
+// void main() {
+//   final value = Data(0, 1);
+//   value.b = 42;
+// }
+// '''),
+//       throwsCompileError,
+//     );
   });
 }

@@ -271,9 +271,6 @@ class Parameter {
   @override
   String toString() {
     var res = ' $typeDisplayString $name';
-    if (isFinal) {
-      res = 'final $res';
-    }
     if (isRequired) {
       res = 'required $res';
     }

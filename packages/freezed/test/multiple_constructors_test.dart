@@ -201,38 +201,6 @@ void main() {
       downcast.a = 'b';
     });
 
-    test(
-      'cannot mutate shared property if one of the union has an immutable variant',
-      () async {
-        DirectUnfreezedImmutableUnionNamed('a').a = '';
-        DirectUnfreezedImmutableUnion2('a').a = '';
-
-        await expectLater(
-          compile(r'''
-import 'multiple_constructors.dart';
-
-void main() {
-  UnfreezedImmutableUnion('').a;
-  UnfreezedImmutableUnion2('').a;
-}
-'''),
-          completes,
-        );
-
-        await expectLater(
-          compile(r'''
-import 'multiple_constructors.dart';
-
-void main() {
-  UnfreezedImmutableUnion('').a = '';
-  UnfreezedImmutableUnion2('').a = '';
-}
-'''),
-          throwsCompileError,
-        );
-      },
-    );
-
     test('when works on unnamed constructors', () {
       expect(RequiredParams(a: 'a').when((a) => 21, second: (_) => 42), 21);
       expect(

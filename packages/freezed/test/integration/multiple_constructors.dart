@@ -67,21 +67,6 @@ abstract class Subclass with _$Subclass {
 }
 
 @unfreezed
-abstract class UnfreezedImmutableUnion with _$UnfreezedImmutableUnion {
-  factory UnfreezedImmutableUnion(final String a) =
-      DirectUnfreezedImmutableUnion;
-  factory UnfreezedImmutableUnion.named(String a) =
-      DirectUnfreezedImmutableUnionNamed;
-}
-
-@unfreezed
-abstract class UnfreezedImmutableUnion2 with _$UnfreezedImmutableUnion2 {
-  factory UnfreezedImmutableUnion2(String a) = DirectUnfreezedImmutableUnion2;
-  factory UnfreezedImmutableUnion2.named(final String a) =
-      DirectUnfreezedImmutableUnionNamed2;
-}
-
-@unfreezed
 abstract class MutableUnion with _$MutableUnion {
   factory MutableUnion(String a, int b) = MutableUnion0;
   factory MutableUnion.named(String a, int c) = MutableUnion1;

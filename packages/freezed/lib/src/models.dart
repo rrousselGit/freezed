@@ -90,7 +90,8 @@ class DeepCloneableProperty {
     AstNode constructorNode,
     Freezed globalConfigs,
   ) sync* {
-    for (final parameterNode in constructorNode.constructorParameters.parameters) {
+    for (final parameterNode
+        in constructorNode.constructorParameters.parameters) {
       final type = parseTypeSource(parameterNode);
 
       final parameter = parameterNode.declaredFragment!.element;
@@ -177,11 +178,18 @@ class ConstructorDetails {
     ClassDeclaration declaration,
     AstNode constructor,
   ) {
-    final freezedCtors = declaration.allConstructors.where(
-      (e) => e is ConstructorDeclaration && e.factoryKeyword != null && e.redirectedConstructor != null,
-    ).cast<ConstructorDeclaration>();
+    final freezedCtors = declaration.allConstructors
+        .where(
+          (e) =>
+              e is ConstructorDeclaration &&
+              e.factoryKeyword != null &&
+              e.redirectedConstructor != null,
+        )
+        .cast<ConstructorDeclaration>();
 
-    if (((constructor is ConstructorDeclaration && constructor.factoryKeyword == null) || constructor is PrimaryConstructorDeclaration) &&
+    if (((constructor is ConstructorDeclaration &&
+                constructor.factoryKeyword == null) ||
+            constructor is PrimaryConstructorDeclaration) &&
         !constructor.isManualCtor &&
         freezedCtors.isNotEmpty) {
       throw InvalidGenerationSourceError(
@@ -255,8 +263,7 @@ When specifying fields in non-factory constructor then specifying factory constr
           continue;
         }
 
-        redirectedName =
-            constructor.redirectedConstructor?.type.name.lexeme;
+        redirectedName = constructor.redirectedConstructor?.type.name.lexeme;
 
         if (redirectedName == null) {
           _assertValidNormalConstructorUsage(declaration, constructor);
@@ -302,7 +309,9 @@ When specifying fields in non-factory constructor then specifying factory constr
 
       result.add(
         ConstructorDetails(
-          asserts: AssertAnnotation.parseAll(constructor.constructorElement).toList(),
+          asserts: AssertAnnotation.parseAll(
+            constructor.constructorElement,
+          ).toList(),
           isSynthetic: !isEjected,
           name: constructor.constructorNamePart ?? '',
           unionValue: constructor.constructorElement.unionValue(
@@ -316,20 +325,21 @@ When specifying fields in non-factory constructor then specifying factory constr
           properties: allProperties,
           decorators: constructor is ConstructorDeclaration
               ? constructor.metadata
-                  .where((Annotation element) {
-                    final elementSourceUri =
-                        element.element?.baseElement.library?.uri;
+                    .where((Annotation element) {
+                      final elementSourceUri =
+                          element.element?.baseElement.library?.uri;
 
-                    final isFreezedAnnotation =
-                        elementSourceUri != null &&
-                        elementSourceUri.scheme == 'package' &&
-                        elementSourceUri.pathSegments.isNotEmpty &&
-                        elementSourceUri.pathSegments.first == 'freezed_annotation';
+                      final isFreezedAnnotation =
+                          elementSourceUri != null &&
+                          elementSourceUri.scheme == 'package' &&
+                          elementSourceUri.pathSegments.isNotEmpty &&
+                          elementSourceUri.pathSegments.first ==
+                              'freezed_annotation';
 
-                    return !isFreezedAnnotation;
-                  })
-                  .map((Annotation e) => e.toSource())
-                  .toList()
+                      return !isFreezedAnnotation;
+                    })
+                    .map((Annotation e) => e.toSource())
+                    .toList()
               : const <String>[],
           withDecorators: WithAnnotation.parseAll(
             constructor.constructorElement,
@@ -337,9 +347,7 @@ When specifying fields in non-factory constructor then specifying factory constr
           implementsDecorators: ImplementsAnnotation.parseAll(
             constructor.constructorElement,
           ).toSet().toList(),
-          isDefault: isDefaultConstructor(
-            constructor.constructorElement,
-          ),
+          isDefault: isDefaultConstructor(constructor.constructorElement),
           hasJsonSerializable:
               constructor.constructorElement.hasJsonSerializable,
           isFallback: constructor.constructorElement.isFallbackUnion(
@@ -478,9 +486,7 @@ class WithAnnotation {
 class AssertAnnotation {
   AssertAnnotation({required this.code, required this.message});
 
-  static Iterable<AssertAnnotation> parseAll(
-    ConstructorElement element,
-  ) sync* {
+  static Iterable<AssertAnnotation> parseAll(ConstructorElement element) sync* {
     for (final meta in const TypeChecker.typeNamed(
       Assert,
       inPackage: 'freezed_annotation',
@@ -537,9 +543,8 @@ class Class {
     required this.superCall,
     required this.properties,
     required this.copyWithTarget,
-    required ClassDeclaration node,
-  }) : _node = node,
-       assert(constructors.isNotEmpty);
+    required this._node,
+  }) : assert(constructors.isNotEmpty);
 
   final String name;
   final ClassConfig options;
@@ -645,7 +650,9 @@ To fix, either:
             name: copyWithTarget.constructorNamePart,
             parameters: ParametersTemplate.fromParameterList(
               // Only include parameters that are cloneable
-              copyWithTarget.constructorParameters.parameters.where((FormalParameter e) {
+              copyWithTarget.constructorParameters.parameters.where((
+                FormalParameter e,
+              ) {
                 return properties.cloneableProperties
                     .map((p) => p.name)
                     .contains(e.name!.lexeme);
@@ -656,18 +663,25 @@ To fix, either:
 
     final superCall = privateCtor == null
         ? (declaration.primaryConstructor != null
-            ? ConstructorInvocation(
-                name: declaration.primaryConstructor!.constructorNamePart ?? '',
-                positional: declaration.primaryConstructor!.constructorParameters.parameters
-                    .where((FormalParameter e) => e.isPositional)
-                    .map((FormalParameter e) => e.name!.lexeme)
-                    .toList(),
-                named: declaration.primaryConstructor!.constructorParameters.parameters
-                    .where((FormalParameter e) => e.isNamed)
-                    .map((FormalParameter e) => e.name!.lexeme)
-                    .toList(),
-              )
-            : null)
+              ? ConstructorInvocation(
+                  name:
+                      declaration.primaryConstructor!.constructorNamePart ?? '',
+                  positional: declaration
+                      .primaryConstructor!
+                      .constructorParameters
+                      .parameters
+                      .where((FormalParameter e) => e.isPositional)
+                      .map((FormalParameter e) => e.name!.lexeme)
+                      .toList(),
+                  named: declaration
+                      .primaryConstructor!
+                      .constructorParameters
+                      .parameters
+                      .where((FormalParameter e) => e.isNamed)
+                      .map((FormalParameter e) => e.name!.lexeme)
+                      .toList(),
+                )
+              : null)
         : ConstructorInvocation(
             name: privateCtor.constructorNamePart ?? '',
             positional: privateCtor.constructorParameters.parameters
@@ -787,7 +801,8 @@ To fix, either:
     final targetConstructor = declaration.copyWithTarget;
     if (targetConstructor == null) return;
 
-    for (final parameter in targetConstructor.constructorParameters.parameters) {
+    for (final parameter
+        in targetConstructor.constructorParameters.parameters) {
       yield Property.fromFormalParameter(
         parameter,
         addImplicitFinal: configs.annotation.addImplicitFinal,
@@ -1381,7 +1396,9 @@ extension AstNodeConstructorX on AstNode {
     final className = classElement.enclosingElement.name;
     final constructorName = self.constructorNamePart;
 
-    return constructorName == null ? '$className$generics' : '$className$generics.$constructorName';
+    return constructorName == null
+        ? '$className$generics'
+        : '$className$generics.$constructorName';
   }
 
   String get constructorEscapedName {

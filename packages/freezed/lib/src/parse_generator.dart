@@ -45,7 +45,9 @@ abstract class ParserGenerator<AnnotationT>
     }
 
     for (final value in generateAll(units, datas)) {
-      values.write(value.toString());
+      values
+        ..write(value.toString())
+        ..write('\n');
     }
 
     return values.toString();
