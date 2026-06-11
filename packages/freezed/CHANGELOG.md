@@ -1,4 +1,4 @@
-## Unreleased major
+## 4.0.0-dev.1 - 2026-06-11
 
 - Support analyzer 13.0
 - Support primary constructors
