@@ -56,13 +56,13 @@ jobs:
       - name: Check format
         # Check dart format only on stable
         if: matrix.channel == 'master'
-        run: dart format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed . --enable-experiment=primary-constructors
         working-directory: ${{ matrix.package }}
 
       - name: Generate
         run: |
           if grep -q build_runner "pubspec.yaml"; then
-            dart pub run build_runner build --delete-conflicting-outputs
+            dart pub run build_runner build --delete-conflicting-outputs  --enable-experiment=primary-constructors
           fi
         working-directory: ${{ matrix.package }}
 
