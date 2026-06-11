@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
@@ -71,7 +72,9 @@ class ParametersTemplate {
 
       final value = Parameter(
         name: e.name!,
-        defaultValueSource: e.defaultValue,
+        defaultValueSource:
+            p.defaultClause?.value.computeConstantValue()?.value?.toCode() ??
+            e.defaultValue,
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,
         type: e.type,
@@ -271,9 +274,6 @@ class Parameter {
   @override
   String toString() {
     var res = ' $typeDisplayString $name';
-    if (isFinal) {
-      res = 'final $res';
-    }
     if (isRequired) {
       res = 'required $res';
     }

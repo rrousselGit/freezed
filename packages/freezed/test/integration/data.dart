@@ -4,5 +4,5 @@ part 'data.freezed.dart';
 
 @unfreezed
 abstract class Data with _$Data {
-  factory Data(int a, final int b) = _Data;
+  factory Data(int a, int b) = _Data;
 }
