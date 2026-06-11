@@ -148,21 +148,6 @@ class DeepCloneableProperty {
   }
 }
 
-extension on FormalParameter {
-  TypeAnnotation? typeAnnotation() {
-    final that = this;
-    return switch (that) {
-      DefaultFormalParameter() => that.parameter.typeAnnotation(),
-      FieldFormalParameter() => that.type,
-      FunctionTypedFormalParameter() => throw UnsupportedError(
-        'Parameters of format `T name()` are not supported. Use `T Function()` name.',
-      ),
-      SimpleFormalParameter() => that.type,
-      SuperFormalParameter() => that.type,
-    };
-  }
-}
-
 /// The information of a specific constructor of a class tagged with ``.
 ///
 /// This only includes constructors where Freezed needs to generate something.
@@ -850,7 +835,7 @@ To fix, either:
 
         setForName(
           name: parameter.name!.lexeme,
-          type: parameter.typeAnnotation(),
+          type: parameter.type,
           index: index + 1,
           isSynthetic: true,
           doc: parameter.documentation,

@@ -3,16 +3,12 @@ import 'package:analyzer/dart/element/element.dart';
 
 extension AstX on AstNode {
   String? get documentation {
-    final node = switch (this) {
-      DefaultFormalParameter(:final parameter) => parameter,
-      _ => this,
+    return switch (this) {
+      FormalParameter(:final defaultClause?) => defaultClause.documentation,
+      AnnotatedNode(:final documentationComment?) =>
+        '${documentationComment.tokens.map((token) => token.lexeme).join('\n')}\n',
+      _ => null,
     };
-
-    if (node case AnnotatedNode(:final documentationComment?)) {
-      return '${documentationComment.tokens.map((token) => token.lexeme).join('\n')}\n';
-    }
-
-    return null;
   }
 }
 
