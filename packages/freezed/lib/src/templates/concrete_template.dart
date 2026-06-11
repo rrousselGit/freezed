@@ -553,13 +553,8 @@ extension DefaultValue on FormalParameterElement {
 
 String parseTypeSource(FormalParameter p) {
   switch (p) {
-    case SimpleFormalParameter(:final type?):
-    case FieldFormalParameter(:final type?):
-    case SuperFormalParameter(:final type?):
+    case FormalParameter(:final type?):
       return type.toSource();
-    case DefaultFormalParameter():
-      return parseTypeSource(p.parameter);
-
     case _:
       break;
   }
