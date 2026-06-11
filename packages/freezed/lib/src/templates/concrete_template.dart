@@ -203,7 +203,9 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
           '$p: $p',
     ].join(', ');
 
-    return 'super._($params)';
+    final name = superCall.name;
+    final superCtorName = name == null || name.isEmpty ? '' : '.$name';
+    return 'super$superCtorName($params)';
   }
 
   String get _concreteSuper {

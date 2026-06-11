@@ -71,7 +71,7 @@ class ParametersTemplate {
 
       final value = Parameter(
         name: e.name!,
-        defaultValueSource: e.defaultValue,
+        defaultValueSource: p.defaultValueSource ?? e.defaultValue,
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,
         type: e.type,
@@ -402,5 +402,24 @@ class CallbackParameter extends Parameter {
     }
 
     return '$res  $name';
+  }
+}
+
+extension FormalParameterDefaultX on FormalParameter {
+  String? get defaultValueSource {
+    final self = this;
+    try {
+      final dynamic d = self;
+      if (d.defaultValue != null) {
+        return d.defaultValue.toSource() as String?;
+      }
+    } catch (_) {}
+    try {
+      final dynamic d = self;
+      if (d.defaultClause != null) {
+        return d.defaultClause.value?.toSource() as String?;
+      }
+    } catch (_) {}
+    return null;
   }
 }

@@ -4,6 +4,7 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
@@ -25,7 +26,7 @@ abstract class ParserGenerator<AnnotationT>
       ),
     ).cast<CompilationUnit>().toList();
 
-    final values = StringBuffer();
+    final values = AnalyzerBuffer.part(oldLibrary.element);
     final datas = <AnnotationMeta>[];
 
     for (final unit in units) {
@@ -44,7 +45,7 @@ abstract class ParserGenerator<AnnotationT>
     }
 
     for (final value in generateAll(units, datas)) {
-      values.writeln(value);
+      values.write(value.toString());
     }
 
     return values.toString();
