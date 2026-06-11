@@ -1,6 +1,9 @@
-## Unreleased 3.2.6-dev.2
+## Unreleased major
 
-Support analyzer 13.0
+- Support analyzer 13.0
+- Support primary constructors
+- *Breaking*: No-longer support `final` keyword inside constructor parameter. This is due to Dart 3.13 no-longer allowing this syntax.
+  This prevents `@unfreezed` from defining immutable fields.
 
 ## 3.2.6-dev.1 - 2026-04-23
 
