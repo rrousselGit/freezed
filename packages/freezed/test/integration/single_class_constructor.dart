@@ -9,6 +9,24 @@ part 'single_class_constructor.freezed.dart';
 
 typedef StringAlias = String;
 
+// Regression for https://github.com/rrousselGit/freezed/issues/1358
+@freezed
+abstract class DeviceInfo with _$DeviceInfo {
+  const DeviceInfo._({Map<String, dynamic>? metadata})
+    : metadata = metadata ?? const {};
+
+  const factory DeviceInfo({
+    required String platform,
+    required String version,
+    required int totalRam,
+    Map<String, dynamic>? metadata,
+  }) = _DeviceInfo;
+
+  @override
+  // Raw additional details of the device.
+  final Map<String, dynamic> metadata;
+}
+
 // https://github.com/rrousselGit/freezed/issues/1356
 @freezed
 abstract class SingleRecordTest with _$SingleRecordTest {
