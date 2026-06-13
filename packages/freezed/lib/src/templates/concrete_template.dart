@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -554,12 +555,14 @@ extension DefaultValue on FormalParameterElement {
 }
 
 String parseTypeSource(FormalParameter p) {
-  switch (p) {
-    case FormalParameter(:final type?):
-      return type.toSource();
-    case _:
-      break;
+  try {
+    return p.declaredFragment!.element.type.toCode();
+  } on InvalidTypeException {
+    switch (p) {
+      case FormalParameter(:final type?):
+        return type.toSource();
+      case _:
+        return p.declaredFragment!.element.type.getDisplayString();
+    }
   }
-
-  return p.declaredFragment!.element.type.getDisplayString();
 }

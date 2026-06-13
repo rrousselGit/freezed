@@ -9,6 +9,14 @@ part 'single_class_constructor.freezed.dart';
 
 typedef StringAlias = String;
 
+// https://github.com/rrousselGit/freezed/issues/1356
+@freezed
+abstract class SingleRecordTest with _$SingleRecordTest {
+  factory SingleRecordTest({
+    required (int,) singleRecord,
+  }) = _SingleRecordTest;
+}
+
 // https://github.com/rrousselGit/freezed/issues/1204
 @freezed
 sealed class Regression1204 with _$Regression1204 {
