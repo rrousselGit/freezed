@@ -12,9 +12,7 @@ typedef StringAlias = String;
 // https://github.com/rrousselGit/freezed/issues/1356
 @freezed
 abstract class SingleRecordTest with _$SingleRecordTest {
-  factory SingleRecordTest({
-    required (int,) singleRecord,
-  }) = _SingleRecordTest;
+  factory SingleRecordTest({required (int,) singleRecord}) = _SingleRecordTest;
 }
 
 // https://github.com/rrousselGit/freezed/issues/1204
