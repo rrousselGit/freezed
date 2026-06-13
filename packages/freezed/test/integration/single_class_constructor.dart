@@ -12,9 +12,8 @@ typedef StringAlias = String;
 // Regression for https://github.com/rrousselGit/freezed/issues/1358
 @freezed
 abstract class DeviceInfo with _$DeviceInfo {
-  const DeviceInfo._({
-    Map<String, dynamic>? metadata,
-  }) : metadata = metadata ?? const {};
+  const DeviceInfo._({Map<String, dynamic>? metadata})
+    : metadata = metadata ?? const {};
 
   const factory DeviceInfo({
     required String platform,
