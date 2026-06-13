@@ -1,4 +1,4 @@
-## Unreleased build
+## 4.0.0-dev.3 - 2026-06-13
 
 - Fix `==`/`copyWith` when immutable collections are enabled yet non-factory constructors are used.
 
@@ -1021,3 +1021,4 @@ Add generic support
 ## 0.0.0
 
 Initial release
+
