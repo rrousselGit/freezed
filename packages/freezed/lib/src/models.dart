@@ -7,6 +7,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
 import 'package:freezed/src/freezed_generator.dart';
@@ -912,7 +913,11 @@ To fix, either:
         // Only a single constructor and no field
         case [null, final fieldType?]:
           type = fieldType.type?.type ?? typeProvider.dynamicType;
-          typeString = fieldType.type?.toSource() ?? type.toString();
+          try {
+            typeString = type.toCode();
+          } on InvalidTypeException {
+            typeString = fieldType.type?.toSource() ?? type.toString();
+          }
           doc = fieldType.doc;
           isFinal = fieldType.isFinal;
           decorators = fieldType.decorators;
@@ -933,7 +938,11 @@ To fix, either:
                 .first;
             // All constructors use the exact same type. No need to check lower-bounds,
             // and we can paste the type in the generated source directly.
-            typeString = typeSources.single ?? type.toString();
+            try {
+              typeString = type.toCode();
+            } on InvalidTypeException {
+              typeString = typeSources.single ?? type.toString();
+            }
             isFinal = fields.any((e) => e!.isFinal);
 
             break;

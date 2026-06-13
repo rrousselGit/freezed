@@ -73,9 +73,9 @@ jobs:
       - name: Run tests
         run: |
           if grep -q "name: freezed_example" "pubspec.yaml"; then
-            flutter test
+            flutter test --enable-experiment=primary-constructors
           else
-            dart test
+            dart test --enable-experiment=primary-constructors
           fi
         working-directory: ${{ matrix.package }}
 
