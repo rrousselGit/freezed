@@ -441,6 +441,7 @@ String operatorEqualMethod(
 
       if (data.options.asUnmodifiableCollections &&
           source == Source.syntheticClass &&
+          p.isSynthetic &&
           p.type.isPossiblyDartCollection &&
           (p.type.isDartCoreList ||
               p.type.isDartCoreMap ||
@@ -484,6 +485,7 @@ String hashCodeMethod(
       if (property.type.isPossiblyDartCollection)
         if (data.options.asUnmodifiableCollections &&
             source == Source.syntheticClass &&
+            property.isSynthetic &&
             (property.type.isDartCoreList ||
                 property.type.isDartCoreMap ||
                 property.type.isDartCoreSet))
