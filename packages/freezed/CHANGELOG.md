@@ -1,4 +1,4 @@
-## Unreleased build
+## 4.0.0-dev.2 - 2026-06-13
 
 - Fix `(int,)` records incorrectly generated
 
@@ -1017,3 +1017,4 @@ Add generic support
 ## 0.0.0
 
 Initial release
+
