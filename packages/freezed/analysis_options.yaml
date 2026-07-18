@@ -3,3 +3,11 @@ include: ../../analysis_options.yaml
 analyzer:
   enable-experiment:
     - primary-constructors
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
