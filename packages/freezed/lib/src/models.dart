@@ -1145,6 +1145,9 @@ To fix, either:
 
     return '$escapedElementName$generics';
   }
+
+  bool get shouldBeFinal =>
+      options.annotation.makeGeneratedClassesFinal ?? false;
 }
 
 class PropertyList {
@@ -1334,6 +1337,11 @@ class ClassConfig {
           );
         },
         orElse: () => globalConfigs.map,
+      ),
+      makeGeneratedClassesFinal: annotation.decodeField(
+        'makeGeneratedClassesFinal',
+        decode: (obj) => obj.toBoolValue(),
+        orElse: () => globalConfigs.makeGeneratedClassesFinal,
       ),
     );
   }
