@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:collection/collection.dart';
 
 import 'imports.dart';
@@ -40,6 +41,12 @@ Element? _getElementForType(DartType type) {
 
 /// Renders a type based on its string + potential import alias
 String resolveFullTypeStringFrom(LibraryElement originLibrary, DartType type) {
+  try {
+    return type.toCode();
+  } on InvalidTypeException {
+    // continue
+  }
+
   final owner = originLibrary.firstFragment.prefixes.firstWhereOrNull((e) {
     return e.imports.any((l) {
       return l.importedLibrary!.anyTransitiveExport((library) {

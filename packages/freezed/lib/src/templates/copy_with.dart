@@ -282,6 +282,7 @@ $s''';
     }) {
       var propertyName = to.name;
       if (_canAccessRawCollection &&
+          propertyGetterForCopyWithParameter.isSynthetic &&
           (to.type.isDartCoreList ||
               to.type.isDartCoreMap ||
               to.type.isDartCoreSet) &&

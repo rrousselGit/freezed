@@ -201,7 +201,6 @@ abstract class Person with _$Person {
   factory Person({
     required String firstName,
     required String lastName,
-    required final int age,
   }) = _Person;
 
   factory Person.fromJson(Map<String, Object?> json)
@@ -215,20 +214,19 @@ abstract class Person with _$Person {
 
   ```dart
   void main() {
-    var person = Person(firstName: 'John', lastName: 'Smith', age: 42);
+    var person = Person(firstName: 'John', lastName: 'Smith');
 
     person.firstName = 'Mona';
     person.lastName = 'Lisa';
   }
   ```
 
-- `age`はイミュータブルのままです。なぜなら、プロパティを`final`として明記しているからです。
 - `Person`は==とhashCodeの実装がなくなりました。
 
   ```dart
   void main() {
-    var john = Person(firstName: 'John', lastName: 'Smith', age: 42);
-    var john2 = Person(firstName: 'John', lastName: 'Smith', age: 42);
+    var john = Person(firstName: 'John', lastName: 'Smith');
+    var john2 = Person(firstName: 'John', lastName: 'Smith');
 
     print(john == john2); // false
   }

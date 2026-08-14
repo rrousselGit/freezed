@@ -363,7 +363,6 @@ abstract class Person with _$Person {
   factory Person({
     required String firstName,
     required String lastName,
-    required final int age,
   }) = _Person;
 
   factory Person.fromJson(Map<String, Object?> json) => _$PersonFromJson(json);
@@ -377,20 +376,19 @@ differences:
 
   ```dart
   void main() {
-    var person = Person(firstName: 'John', lastName: 'Smith', age: 42);
+    var person = Person(firstName: 'John', lastName: 'Smith');
 
     person.firstName = 'Mona';
     person.lastName = 'Lisa';
   }
   ```
 
-- `age` is still immutable, because we explicitly marked the property as `final`.
 - `Person` no-longer has a custom ==/hashCode implementation:
 
   ```dart
   void main() {
-    var john = Person(firstName: 'John', lastName: 'Smith', age: 42);
-    var john2 = Person(firstName: 'John', lastName: 'Smith', age: 42);
+    var john = Person(firstName: 'John', lastName: 'Smith');
+    var john2 = Person(firstName: 'John', lastName: 'Smith');
 
     print(john == john2); // false
   }

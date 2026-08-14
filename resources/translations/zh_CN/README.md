@@ -197,7 +197,6 @@ abstract class Person with _$Person {
   factory Person({
     required String firstName,
     required String lastName,
-    required final int age,
   }) = _Person;
 
   factory Person.fromJson(Map<String, Object?> json)
@@ -211,20 +210,19 @@ abstract class Person with _$Person {
 
   ```dart
   void main() {
-    var person = Person(firstName: 'John', lastName: 'Smith', age: 42);
+    var person = Person(firstName: 'John', lastName: 'Smith');
 
     person.firstName = 'Mona';
     person.lastName = 'Lisa';
   }
   ```
 
-- `age` 仍然是不可变的，因为我们明确地将属性标记为 `final`。
 - `Person` 不再有自定义的 `==` `hashCode` 实现：
 
   ```dart
   void main() {
-    var john = Person(firstName: 'John', lastName: 'Smith', age: 42);
-    var john2 = Person(firstName: 'John', lastName: 'Smith', age: 42);
+    var john = Person(firstName: 'John', lastName: 'Smith');
+    var john2 = Person(firstName: 'John', lastName: 'Smith');
 
     print(john == john2); // false
   }

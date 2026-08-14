@@ -341,7 +341,6 @@ abstract class Person with _$Person {
   factory Person({
     required String firstName,
     required String lastName,
-    required final int age,
   }) = _Person;
 
   factory Person.fromJson(Map<String, Object?> json) => _$PersonFromJson(json);
@@ -354,20 +353,19 @@ abstract class Person with _$Person {
 
   ```dart
   void main() {
-    var person = Person(firstName: 'John', lastName: 'Smith', age: 42);
+    var person = Person(firstName: 'John', lastName: 'Smith');
 
     person.firstName = 'Mona';
     person.lastName = 'Lisa';
   }
   ```
 
-- `age`는 프로퍼티를 명시적으로 `final`로 표시했기 때문에 여전히 불변입니다.
 - `Person`은 더 이상 사용자 정의 ==/hashCode 구현을 가지지 않습니다:
 
   ```dart
   void main() {
-    var john = Person(firstName: 'John', lastName: 'Smith', age: 42);
-    var john2 = Person(firstName: 'John', lastName: 'Smith', age: 42);
+    var john = Person(firstName: 'John', lastName: 'Smith');
+    var john2 = Person(firstName: 'John', lastName: 'Smith');
 
     print(john == john2); // false
   }

@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -203,7 +204,9 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
           '$p: $p',
     ].join(', ');
 
-    return 'super._($params)';
+    final name = superCall.name;
+    final superCtorName = name == null || name.isEmpty ? '' : '.$name';
+    return 'super$superCtorName($params)';
   }
 
   String get _concreteSuper {
@@ -445,6 +448,7 @@ String operatorEqualMethod(
 
       if (data.options.asUnmodifiableCollections &&
           source == Source.syntheticClass &&
+          p.isSynthetic &&
           p.type.isPossiblyDartCollection &&
           (p.type.isDartCoreList ||
               p.type.isDartCoreMap ||
@@ -495,6 +499,7 @@ String hashCodeMethod(
       if (property.type.isPossiblyDartCollection)
         if (data.options.asUnmodifiableCollections &&
             source == Source.syntheticClass &&
+            property.isSynthetic &&
             (property.type.isDartCoreList ||
                 property.type.isDartCoreMap ||
                 property.type.isDartCoreSet))
@@ -566,17 +571,14 @@ extension DefaultValue on FormalParameterElement {
 }
 
 String parseTypeSource(FormalParameter p) {
-  switch (p) {
-    case SimpleFormalParameter(:final type?):
-    case FieldFormalParameter(:final type?):
-    case SuperFormalParameter(:final type?):
-      return type.toSource();
-    case DefaultFormalParameter():
-      return parseTypeSource(p.parameter);
-
-    case _:
-      break;
+  try {
+    return p.declaredFragment!.element.type.toCode();
+  } on InvalidTypeException {
+    switch (p) {
+      case FormalParameter(:final type?):
+        return type.toSource();
+      case _:
+        return p.declaredFragment!.element.type.getDisplayString();
+    }
   }
-
-  return p.declaredFragment!.element.type.getDisplayString();
 }
