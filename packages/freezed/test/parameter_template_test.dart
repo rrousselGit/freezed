@@ -6,16 +6,17 @@ import 'package:test/test.dart';
 import 'integration/single_class_constructor.dart';
 
 void main() {
-  test('generated freezed code has no final keyword in constructor parameters',
-      () {
+  test('generated freezed code has no final keyword in constructor parameters', () {
     final pubspecDir = _findPubspecDir(p.current);
 
-    final generatedFile = File(p.join(
-      pubspecDir,
-      'test',
-      'integration',
-      'single_class_constructor.freezed.dart',
-    ));
+    final generatedFile = File(
+      p.join(
+        pubspecDir,
+        'test',
+        'integration',
+        'single_class_constructor.freezed.dart',
+      ),
+    );
 
     final content = generatedFile.readAsStringSync();
 
