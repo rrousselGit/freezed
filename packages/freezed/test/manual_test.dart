@@ -109,9 +109,8 @@ void main() {
   group('CartLine', () {
     test('has copyWith use default', () {
       expect(
-        CartLine(
-          product: const Product(42),
-        ).copyWith(product: const Product(21)),
+        CartLine(product: const Product(42))
+            .copyWith(product: const Product(21)),
         CartLine(product: const Product(21)),
       );
     });

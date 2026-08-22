@@ -26,11 +26,9 @@ void main() {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/deep_copy.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/deep_copy.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -45,11 +43,9 @@ void main() {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/deep_copy2.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/deep_copy2.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -458,21 +454,18 @@ void main() {
       });
     });
 
-    test(
-      'NoCommonPropertyAssistant.copyWith.assistant returns NoCommonPropertyAssistant',
-      () {
-        NoCommonPropertyAssistant value = NoCommonPropertyAssistant(
-          Assistant(age: 42, name: 'John'),
-        );
+    test('NoCommonPropertyAssistant.copyWith.assistant returns NoCommonPropertyAssistant', () {
+      NoCommonPropertyAssistant value = NoCommonPropertyAssistant(
+        Assistant(age: 42, name: 'John'),
+      );
 
-        value = value.copyWith.assistant(age: 21);
+      value = value.copyWith.assistant(age: 21);
 
-        expect(
-          value,
-          NoCommonPropertyAssistant(Assistant(age: 21, name: 'John')),
-        );
-      },
-    );
+      expect(
+        value,
+        NoCommonPropertyAssistant(Assistant(age: 21, name: 'John')),
+      );
+    });
 
     test('NoCommonPropertyAssistant can copy assistant', () {
       NoCommonPropertyAssistant value = NoCommonPropertyAssistant(
@@ -729,9 +722,9 @@ void main() {
       readAllSourcesFromFilesystem: true,
     );
 
-    final errorResult =
-        await main.session.getErrors('/freezed/test/integration/main.dart')
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/main.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors.map((e) => e.errorCode.name), [
       'unused_result',

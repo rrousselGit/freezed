@@ -15,11 +15,9 @@ void main() {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/bidirectional.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/bidirectional.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });

@@ -298,9 +298,9 @@ void main() {
 ''',
       }, (r) => r.findLibraryByName('main'));
 
-      final errorResult =
-          await main!.session.getErrors('/freezed/test/integration/main.dart')
-              as ErrorsResult;
+      final errorResult = await main!.session.getErrors(
+        '/freezed/test/integration/main.dart',
+      ) as ErrorsResult;
 
       expect(errorResult.errors, isNotEmpty);
     });
@@ -408,9 +408,8 @@ void main() {
 
   group('whenOrNull', () {
     test('can map to nullable return type without type cast', () {
-      String? res = NoDefault.first(
-        'a',
-      ).whenOrNull(first: (a) => a.isEmpty ? null : a);
+      String? res = NoDefault.first('a')
+          .whenOrNull(first: (a) => a.isEmpty ? null : a);
       expect(res, 'a');
     });
 

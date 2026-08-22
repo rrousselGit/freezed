@@ -176,11 +176,9 @@ void main() {
         ),
       );
 
-      final errorResult =
-          await main.session.getErrors(
-                '/freezed/test/integration/multiple_constructors.freezed.dart',
-              )
-              as ErrorsResult;
+      final errorResult = await main.session.getErrors(
+        '/freezed/test/integration/multiple_constructors.freezed.dart',
+      ) as ErrorsResult;
 
       expect(errorResult.errors, isEmpty);
     });
@@ -289,9 +287,8 @@ void main() {
 
       expect(res, 21);
 
-      res = NoDefault.second(
-        'a',
-      ).mapOrNull<FutureOr<int>>(second: (b) => Future.value(42));
+      res = NoDefault.second('a')
+          .mapOrNull<FutureOr<int>>(second: (b) => Future.value(42));
 
       await expectLater(res, completion(42));
     });
@@ -327,15 +324,13 @@ void main() {
     });
 
     test('whenOrNull can use FutureOr', () async {
-      var res = NoDefault.first(
-        'a',
-      ).whenOrNull<FutureOr<int>>(first: (a) => 21);
+      var res = NoDefault.first('a')
+          .whenOrNull<FutureOr<int>>(first: (a) => 21);
 
       expect(res, 21);
 
-      res = NoDefault.second(
-        'a',
-      ).whenOrNull<FutureOr<int>>(second: (b) => Future.value(42));
+      res = NoDefault.second('a')
+          .whenOrNull<FutureOr<int>>(second: (b) => Future.value(42));
 
       await expectLater(res, completion(42));
     });

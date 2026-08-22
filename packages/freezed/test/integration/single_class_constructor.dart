@@ -224,6 +224,7 @@ abstract class NullUnmodifiableMapEqual with _$NullUnmodifiableMapEqual {
 mixin Some<T> {
   T? get value => throw UnimplementedError();
 }
+
 mixin Complex<T> {
   T? get value => throw UnimplementedError();
 }

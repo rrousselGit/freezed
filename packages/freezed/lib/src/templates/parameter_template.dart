@@ -123,9 +123,8 @@ class ParametersTemplate {
 
   ParametersTemplate asExpanded({bool showDefaultValue = false}) {
     return mapParameters((parameter) {
-      return Parameter.fromParameter(
-        parameter,
-      ).copyWith(showDefaultValue: showDefaultValue);
+      return Parameter.fromParameter(parameter)
+          .copyWith(showDefaultValue: showDefaultValue);
     });
   }
 

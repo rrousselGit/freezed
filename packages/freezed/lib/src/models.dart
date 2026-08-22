@@ -310,9 +310,8 @@ When specifying fields in non-factory constructor then specifying factory constr
 
       result.add(
         ConstructorDetails(
-          asserts: AssertAnnotation.parseAll(
-            constructor.constructorElement,
-          ).toList(),
+          asserts: AssertAnnotation.parseAll(constructor.constructorElement)
+              .toList(),
           isSynthetic: !isEjected,
           name: constructor.constructorNamePart ?? '',
           unionValue: constructor.constructorElement.unionValue(
