@@ -1,3 +1,12 @@
+## 4.0.0 - 2026-08-22
+
+- Fix `==`/`copyWith` when immutable collections are enabled yet non-factory constructors are used.
+- Fix `(int,)` records incorrectly generated
+- Support analyzer 13.0
+- Support primary constructors
+- _Breaking_: No-longer support `final` keyword inside constructor parameter. This is due to Dart 3.13 no-longer allowing this syntax.
+  This prevents `@unfreezed` from defining immutable fields.
+
 ## 4.0.0-dev.3 - 2026-06-13
 
 - Fix `==`/`copyWith` when immutable collections are enabled yet non-factory constructors are used.
