@@ -38,7 +38,7 @@ to focus on the definition of your model.
 - [Index](#index)
 - [How to use](#how-to-use)
   - [Install](#install)
-    - [Disabling invalid\_annotation\_target warning and warning in generates files](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
+    - [Disabling invalid_annotation_target warning and warning in generates files](#disabling-invalid_annotation_target-warning-and-warning-in-generates-files)
   - [Run the generator](#run-the-generator)
   - [Creating a Model using Freezed](#creating-a-model-using-freezed)
     - [Primary constructors](#primary-constructors)
@@ -160,6 +160,39 @@ Freezed offers two ways of creating data-classes:
 - [Classic classes](#classic-classes), where you write a normal Dart class and Freezed only handles `toString/==/copyWith`
 
 ### Primary constructors
+
+**Note**
+As of Dart 3.13, primary constructors are a stable feature of Dart. This means
+that you no longer need to use `freezed` to generate primary constructors.
+But you can stick to using Freezed for ==/toString/etc:
+
+```dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'main.freezed.dart';
+part 'main.g.dart';
+
+@freezed
+class Person({
+  required final String firstName,
+  required final String lastName,
+  required final int age,
+  required final DateTime birthDate,
+}) with _$Person;
+
+void main() {
+  var person = Person(
+    firstName: 'John',
+    lastName: 'Doe',
+    age: 42,
+    birthDate: DateTime(1978),
+  );
+
+  person = person.copyWith(age: 43);
+}
+```
+
+---
 
 Freezed implements Primary Constructors by relying on `factory` constructors.
 The idea is, you define a `factory` and Freezed generates everything else:
