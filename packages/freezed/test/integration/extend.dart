@@ -32,7 +32,6 @@ class BaseWithEqual {
 class Subclass2 extends BaseWithEqual with _$Subclass2 {
   Subclass2([this.value = 0, super.another = 0]) : super();
 
-  @override
   final int value;
 }
 
@@ -56,7 +55,6 @@ class HashCodeWithoutEqual {
 class Subclass3 extends EqualWithoutHashCode with _$Subclass3 {
   Subclass3(this.value) : super();
 
-  @override
   final int value;
 }
 
@@ -64,6 +62,5 @@ class Subclass3 extends EqualWithoutHashCode with _$Subclass3 {
 class Subclass4 extends HashCodeWithoutEqual with _$Subclass4 {
   Subclass4(this.value) : super();
 
-  @override
   final int value;
 }

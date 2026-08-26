@@ -32,5 +32,42 @@ void main() {
       expect(a, equals(ExampleWithPrivate(10, another: 20)));
       expect(a.toString(), 'ExampleWithPrivate(field: 10, another: 20)');
     });
+
+    test('primary constructor with var compiles, allows mutation, copyWith, and toString', () {
+      final a = ExampleWithVar(42, another: 10);
+      expect(a.field, 42);
+      expect(a.another, 10);
+
+      a.field = 100;
+      expect(a.field, 100);
+
+      final b = a.copyWith(field: 200);
+      expect(b.field, 200);
+      expect(b.another, 10);
+
+      expect(a.toString(), 'ExampleWithVar(field: 100, another: 10)');
+    });
+
+    test('primary constructor with this.field compiles and has copyWith / equality / toString', () {
+      final a = ExampleWithThis(42, another: 10);
+      expect(a.field, 42);
+      expect(a.another, 10);
+
+      final b = a.copyWith(field: 100);
+      expect(b.field, 100);
+      expect(b.another, 10);
+
+      expect(a, isNot(equals(b)));
+      expect(a, equals(ExampleWithThis(42, another: 10)));
+      expect(a.toString(), 'ExampleWithThis(field: 42, another: 10)');
+    });
+
+    test('primary constructor with non-field freezed class parameter compiles without invalid copyWith', () {
+      final child = Child(42);
+      expect(child.value, 42);
+
+      final holder = Holder(child);
+      expect(holder.toString(), 'Holder()');
+    });
   });
 }

@@ -206,6 +206,7 @@ String _mapImpl(
           doc: '',
           showDefaultValue: false,
           parameterElement: null,
+          isSynthetic: true,
         ),
       ]);
     },
@@ -356,6 +357,7 @@ String _unionPrototype(
       defaultValueSource: '',
       doc: '',
       parameterElement: null,
+      isSynthetic: true,
     );
 
     if (constructor.isDefault) {

@@ -12,7 +12,6 @@ abstract class ManualField with _$ManualField {
   const ManualField._({required this.value});
   const factory ManualField(int value) = _ManualField;
 
-  @override
   final int value;
 }
 

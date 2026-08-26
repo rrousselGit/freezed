@@ -126,7 +126,12 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
                 readableProperties: constructor.properties
                     .where((e) => e.isSynthetic)
                     .toList(),
-                deepCloneableProperties: constructor.deepCloneableProperties,
+                deepCloneableProperties: constructor.deepCloneableProperties
+                    .where(
+                      (e) =>
+                          constructor.properties.any((p) => p.name == e.name),
+                    )
+                    .toList(),
                 genericsDefinition: data.genericsDefinitionTemplate,
                 genericsParameter: data.genericsParameterTemplate,
                 data: data,

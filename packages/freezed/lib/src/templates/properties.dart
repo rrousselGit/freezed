@@ -104,6 +104,14 @@ class Property {
     body: ';',
   );
 
+  Setter asSetter(String body) => Setter(
+    name: name,
+    type: typeDisplayString,
+    decorators: decorators,
+    doc: doc,
+    body: body,
+  );
+
   Property copyWith({
     DartType? type,
     String? typeDisplayString,

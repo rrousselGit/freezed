@@ -252,7 +252,6 @@ abstract class Person with _$Person {
 
   factory Person({required String name, int? age}) = _Person;
 
-  @override
   final String name;
 }
 ```
@@ -294,7 +293,6 @@ sealed class Response<T> with _$Response<T> {
   // ._ 파라미터가 named이고 optional이라면, factory 생성자는 이를 명시할 필요가 없습니다.
   factory Response.error(Object error) = ResponseError;
 
-  @override
   final DateTime time;
 }
 ```
@@ -429,11 +427,8 @@ class Person with _$Person {
     required this.age,
   });
 
-  @override
   final String firstName;
-  @override
   final String lastName;
-  @override
   final int age;
 
   factory Person.fromJson(Map<String, Object?> json)

@@ -4,6 +4,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer_buffer/analyzer_buffer.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed/src/ast.dart';
+import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/concrete_template.dart';
 import 'package:freezed/src/templates/prototypes.dart';
 import 'package:freezed/src/tools/type.dart';
@@ -66,6 +67,7 @@ class ParametersTemplate {
     Iterable<FormalParameter> parameters, {
     bool isAssignedToThis = false,
     required bool addImplicitFinal,
+    required bool isFromPrimaryConstructor,
   }) {
     Parameter asParameter(FormalParameter p) {
       final e = p.declaredFragment!.element;
@@ -83,6 +85,8 @@ class ParametersTemplate {
         doc: p.documentation ?? '',
         showDefaultValue: true,
         parameterElement: e,
+        isSynthetic:
+            !isFromPrimaryConstructor && !hasExplicitFieldDeclaration(p),
       );
 
       if (isAssignedToThis) return LocalParameter.fromParameter(value);
@@ -220,6 +224,7 @@ class Parameter {
     required this.isFinal,
     required this.showDefaultValue,
     required this.parameterElement,
+    required this.isSynthetic,
   });
 
   factory Parameter.fromParameter(Parameter p) {
@@ -234,6 +239,7 @@ class Parameter {
       isFinal: p.isFinal,
       showDefaultValue: p.showDefaultValue,
       parameterElement: p.parameterElement,
+      isSynthetic: p.isSynthetic,
     );
   }
 
@@ -247,6 +253,7 @@ class Parameter {
   final bool isFinal;
   final String doc;
   final FormalParameterElement? parameterElement;
+  final bool isSynthetic;
 
   Parameter copyWith({
     DartType? type,
@@ -257,6 +264,7 @@ class Parameter {
     bool? showDefaultValue,
     String? doc,
     bool? isFinal,
+    bool? isSynthetic,
   }) => Parameter(
     type: type ?? this.type,
     typeDisplayString: typeDisplayString,
@@ -268,6 +276,7 @@ class Parameter {
     doc: doc ?? this.doc,
     isFinal: isFinal ?? this.isFinal,
     parameterElement: parameterElement,
+    isSynthetic: isSynthetic ?? this.isSynthetic,
   );
 
   @override
@@ -297,7 +306,7 @@ class SuperParameter extends Parameter {
     required super.decorators,
     required super.doc,
     required super.parameterElement,
-  }) : super(showDefaultValue: true);
+  }) : super(showDefaultValue: true, isSynthetic: false);
 
   SuperParameter.fromParameter(Parameter p)
     : this(
@@ -339,7 +348,7 @@ class LocalParameter extends Parameter {
     required super.decorators,
     required super.doc,
     required super.parameterElement,
-  }) : super(showDefaultValue: true);
+  }) : super(showDefaultValue: true, isSynthetic: false);
 
   LocalParameter.fromParameter(Parameter p)
     : this(
@@ -382,6 +391,7 @@ class CallbackParameter extends Parameter {
     required super.decorators,
     required super.doc,
     required super.parameterElement,
+    required super.isSynthetic,
   }) : super(showDefaultValue: false);
 
   final ParametersTemplate parameters;

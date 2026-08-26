@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer_buffer/analyzer_buffer.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed/src/freezed_generator.dart';
 import 'package:freezed/src/models.dart';
 import 'package:freezed/src/templates/properties.dart';
@@ -99,8 +100,8 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
 
       final correspondingProperty = constructor.properties
           .where((element) => element.name == p.name)
-          .first;
-      if (correspondingProperty.isSynthetic) {
+          .firstOrNull;
+      if (correspondingProperty != null && correspondingProperty.isSynthetic) {
         return (
           LocalParameter.fromParameter(p),
           isNamed: isNamed,
@@ -166,6 +167,7 @@ ${copyWith?.concreteImpl(constructor.parameters) ?? ''}
         doc: '',
         showDefaultValue: false,
         parameterElement: null,
+        isSynthetic: true,
       );
 
       parameters = ParametersTemplate(
@@ -331,10 +333,10 @@ String methods(
 }) {
   return '''
 ${toJson(data, name: name, source: source)}
-${debugFillProperties(data, globalData, properties, escapedClassName: escapedName)}
+${debugFillProperties(data, globalData, properties, escapedClassName: escapedName, source: source)}
 ${operatorEqualMethod(data, properties, className: name, source: source)}
 ${hashCodeMethod(data, properties, source: source)}
-${toStringMethod(data, globalData, escapedClassName: escapedName, properties: properties)}
+${toStringMethod(data, globalData, escapedClassName: escapedName, properties: properties, source: source)}
 ''';
 }
 
@@ -376,23 +378,33 @@ Map<String, dynamic> toJson($_toJsonParams) {
   }
 }
 
+String _thisDeclaration(Class data, List<Property> properties, Source source) {
+  if (source == Source.mixin && properties.isNotEmpty) {
+    return 'final _this = this as ${data.name}${data.genericsParameterTemplate};\n';
+  }
+  return '';
+}
+
 String debugFillProperties(
   Class data,
   Library globalData,
   List<Property> properties, {
   required String escapedClassName,
+  required Source source,
 }) {
   if (!globalData.hasDiagnostics || !data.options.asString) return '';
 
+  final thisDeclaration = _thisDeclaration(data, properties, source);
+
   final diagnostics = [
     for (final e in properties)
-      "..add(DiagnosticsProperty('${e.name}', ${e.name}))",
+      "..add(DiagnosticsProperty('${e.name}', ${source == Source.mixin ? '_this.' : ''}${e.name}))",
   ].join();
 
   return '''
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
+  $thisDeclaration  properties
     ..add(DiagnosticsProperty('type', '$escapedClassName'))
     $diagnostics;
 }
@@ -404,6 +416,7 @@ String toStringMethod(
   Library globalData, {
   required String escapedClassName,
   required List<Property> properties,
+  required Source source,
 }) {
   if (!data.options.asString) return '';
 
@@ -411,15 +424,17 @@ String toStringMethod(
       ? '{ DiagnosticLevel minLevel = DiagnosticLevel.info }'
       : '';
 
+  final thisDeclaration = _thisDeclaration(data, properties, source);
+
   final propertiesDisplayString = [
     for (final p in properties)
-      '${p.name.replaceAll(r'$', r'\$')}: ${wrapClassField(p.name)}',
+      '${p.name.replaceAll(r'$', r'\$')}: ${source == Source.mixin ? '\${_this.${p.name}}' : wrapClassField(p.name)}',
   ];
 
   return '''
 @override
 String toString($parameters) {
-  return '$escapedClassName(${propertiesDisplayString.join(', ')})';
+  $thisDeclaration  return '$escapedClassName(${propertiesDisplayString.join(', ')})';
 }
 ''';
 }
@@ -431,6 +446,8 @@ String operatorEqualMethod(
   required Source source,
 }) {
   if (!data.options.equal) return '';
+
+  final thisDeclaration = _thisDeclaration(data, properties, source);
 
   final comparisons = [
     'other.runtimeType == runtimeType',
@@ -449,20 +466,22 @@ String operatorEqualMethod(
         name = '_$name';
       }
 
-      final target = p.name == 'other' ? 'this.' : '';
+      final target = source == Source.mixin
+          ? '_this.'
+          : (p.name == 'other' ? 'this.' : '');
 
       if (p.type.isPossiblyDartCollection) {
         // no need to check `identical` as `DeepCollectionEquality` already does it
-        return 'const DeepCollectionEquality().equals(other.$name, $target$name)';
+        return 'const DeepCollectionEquality().equals(other.${p.name}, $target$name)';
       }
-      return '(identical(other.${p.name}, $target$name) || other.$name == $target$name)';
+      return '(identical(other.${p.name}, $target$name) || other.${p.name} == $target$name)';
     }),
   ];
 
   return '''
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (${comparisons.join('&&')});
+  $thisDeclaration  return identical(this, other) || (${comparisons.join('&&')});
 }
 ''';
 }
@@ -478,6 +497,8 @@ String hashCodeMethod(
       ? '@JsonKey(includeFromJson: false, includeToJson: false)'
       : '';
 
+  final thisDeclaration = _thisDeclaration(data, properties, source);
+
   final hashedProperties = [
     'runtimeType',
     if (data.hasSuperHashCode) 'super.hashCode',
@@ -490,8 +511,12 @@ String hashCodeMethod(
                 property.type.isDartCoreMap ||
                 property.type.isDartCoreSet))
           'const DeepCollectionEquality().hash(_${property.name})'
+        else if (source == Source.mixin)
+          'const DeepCollectionEquality().hash(_this.${property.name})'
         else
           'const DeepCollectionEquality().hash(${property.name})'
+      else if (source == Source.mixin)
+        '_this.${property.name}'
       else
         property.name,
   ];
@@ -507,14 +532,18 @@ int get hashCode => ${hashedProperties.first}.hashCode;
     return '''
 $jsonKey
 @override
-int get hashCode => Object.hashAll([${hashedProperties.join(',')}]);
+int get hashCode {
+  $thisDeclaration  return Object.hashAll([${hashedProperties.join(',')}]);
+}
 ''';
   }
 
   return '''
 $jsonKey
 @override
-int get hashCode => Object.hash(${hashedProperties.join(',')});
+int get hashCode {
+  $thisDeclaration  return Object.hash(${hashedProperties.join(',')});
+}
 ''';
 }
 
