@@ -655,7 +655,11 @@ class Class {
     if (copyWithTarget != null) {
       // Check for missing required parameters on the copyWith target
       for (final param in copyWithTarget.constructorParameters.parameters) {
-        if (param.isOptional || !hasExplicitFieldDeclaration(param)) continue;
+        if (param.isOptional ||
+            (copyWithTarget is PrimaryConstructorDeclaration &&
+                !hasExplicitFieldDeclaration(param))) {
+          continue;
+        }
 
         final cloneableProperty = properties.cloneableProperties
             .firstWhereOrNull((e) => e.name == param.name?.lexeme);
