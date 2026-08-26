@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Removed the need for `@overrides` in class fields and primary constructors.
+
 ## 4.0.0 - 2026-08-22
 
 - Fix `==`/`copyWith` when immutable collections are enabled yet non-factory constructors are used.
@@ -1030,4 +1034,3 @@ Add generic support
 ## 0.0.0
 
 Initial release
-

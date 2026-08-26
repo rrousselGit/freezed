@@ -286,19 +286,28 @@ When specifying fields in non-factory constructor then specifying factory constr
         continue;
       }
 
-      final excludedProperties =
-          manualConstructor?.constructorParameters.parameters
-              .map((FormalParameter e) => e.declaredFragment!.element.name!)
-              .toSet() ??
-          <String>{};
+      final classDeclaredPropertyNames = declaration.properties
+          .map((e) => e.$2.name.lexeme)
+          .toSet();
+
+      final nonFreezedProperties = {
+        ...classDeclaredPropertyNames,
+        ...?manualConstructor?.constructorParameters.parameters
+            .where(hasExplicitFieldDeclaration)
+            .map((FormalParameter e) => e.declaredFragment!.element.name!),
+      };
 
       final allProperties = [
         for (final parameter in constructor.constructorParameters.parameters)
-          Property.fromFormalParameter(
-            parameter,
-            addImplicitFinal: configs.annotation.addImplicitFinal,
-            isSynthetic: !excludedProperties.contains(parameter.name!.lexeme),
-          ),
+          if (constructor is! PrimaryConstructorDeclaration ||
+              hasExplicitFieldDeclaration(parameter))
+            Property.fromFormalParameter(
+              parameter,
+              addImplicitFinal: configs.annotation.addImplicitFinal,
+              isSynthetic: !nonFreezedProperties.contains(
+                parameter.name!.lexeme,
+              ),
+            ),
       ];
 
       final isEjected = unitsExcludingGeneratedFiles.any(
@@ -360,6 +369,8 @@ When specifying fields in non-factory constructor then specifying factory constr
           parameters: ParametersTemplate.fromParameterList(
             constructor.constructorParameters.parameters,
             addImplicitFinal: configs.annotation.addImplicitFinal,
+            isFromPrimaryConstructor:
+                constructor is PrimaryConstructorDeclaration,
           ),
           redirectedName: redirectedName,
         ),
@@ -399,10 +410,17 @@ When specifying fields in non-factory constructor then specifying factory constr
 
   bool isSyntheticParam({required String param}) {
     return properties
-        .where((element) => element.name == param)
-        .first
-        .isSynthetic;
+            .where((element) => element.name == param)
+            .firstOrNull
+            ?.isSynthetic ??
+        false;
   }
+}
+
+bool hasExplicitFieldDeclaration(FormalParameter parameter) {
+  return parameter.isFinal ||
+      parameter is FieldFormalParameter ||
+      parameter.varKeyword != null;
 }
 
 class MapConfig {
@@ -577,7 +595,14 @@ class Class {
 
     if (constructors.isNotEmpty) {
       for (final field in declaration.declaredFragment!.element.fields) {
-        _assertValidFieldUsage(field, shouldUseExtends: privateCtor != null);
+        _assertValidFieldUsage(
+          field,
+          shouldUseExtends: privateCtor != null,
+          allowMutableProperties:
+              !(configs.annotation.makeCollectionsUnmodifiable ??
+                  globalConfigs.makeCollectionsUnmodifiable ??
+                  true),
+        );
       }
     }
 
@@ -616,14 +641,16 @@ class Class {
       ),
     );
 
-    final copyWithTarget = (constructors.length <= 1)
+    final copyWithEnabled =
+        (configs.annotation.copyWith ?? globalConfigs.copyWith ?? true);
+    final copyWithTarget = (copyWithEnabled && constructors.length <= 1)
         ? declaration.copyWithTarget
         : null;
 
     if (copyWithTarget != null) {
       // Check for missing required parameters on the copyWith target
       for (final param in copyWithTarget.constructorParameters.parameters) {
-        if (param.isOptional) continue;
+        if (param.isOptional || !hasExplicitFieldDeclaration(param)) continue;
 
         final cloneableProperty = properties.cloneableProperties
             .firstWhereOrNull((e) => e.name == param.name?.lexeme);
@@ -658,6 +685,8 @@ To fix, either:
                     .contains(e.name!.lexeme);
               }),
               addImplicitFinal: configs.annotation.addImplicitFinal,
+              isFromPrimaryConstructor:
+                  copyWithTarget is PrimaryConstructorDeclaration,
             ),
           );
 
@@ -872,6 +901,11 @@ To fix, either:
           .first;
 
       for (final parameter in ctor.constructorParameters.parameters) {
+        if (ctor is PrimaryConstructorDeclaration &&
+            !hasExplicitFieldDeclaration(parameter)) {
+          continue;
+        }
+
         final freezedParameter = freezedCtor.parameters.allParameters
             .where((e) => e.name == parameter.name?.lexeme)
             .first;
@@ -880,7 +914,7 @@ To fix, either:
           name: parameter.name!.lexeme,
           type: parameter.type,
           index: index + 1,
-          isSynthetic: true,
+          isSynthetic: freezedParameter.isSynthetic,
           doc: parameter.documentation,
           isFinal: freezedParameter.isFinal,
           decorators: freezedParameter.decorators,
@@ -980,9 +1014,9 @@ To fix, either:
 
     if (constructorsNeedsGeneration case [final ctor]) {
       result.cloneableProperties.addAll(
-        constructorsNeedsGeneration.first.parameters.allParameters.map(
-          (e) => Property.fromParameter(e, isSynthetic: true),
-        ),
+        constructorsNeedsGeneration.first.parameters.allParameters
+            .where((p) => ctor.properties.any((prop) => prop.name == p.name))
+            .map((e) => Property.fromParameter(e, isSynthetic: true)),
       );
       result.readableProperties.addAll(
         result.cloneableProperties.where(
@@ -995,6 +1029,12 @@ To fix, either:
     parameterLoop:
     for (final parameter
         in constructorsNeedsGeneration.first.parameters.allParameters) {
+      if (constructorsNeedsGeneration.first.properties.none(
+        (p) => p.name == parameter.name,
+      )) {
+        continue parameterLoop;
+      }
+
       final isSynthetic = constructorsNeedsGeneration.first.isSyntheticParam(
         param: parameter.name,
       );
@@ -1098,10 +1138,11 @@ To fix, either:
   static void _assertValidFieldUsage(
     FieldElement field, {
     required bool shouldUseExtends,
+    required bool allowMutableProperties,
   }) {
     if (field.isStatic) return;
 
-    if (field.setter != null) {
+    if (!allowMutableProperties && field.setter != null) {
       throw InvalidGenerationSourceError(
         'Classes decorated with @freezed cannot have mutable properties',
         element: field,

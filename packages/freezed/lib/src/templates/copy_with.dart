@@ -134,6 +134,7 @@ $_abstractClassName${genericsParameter.append('$clonedClassName$genericsParamete
                 typeDisplayString: e.typeDisplayString,
                 doc: e.doc,
                 parameterElement: null,
+                isSynthetic: e.isSynthetic,
               );
             }).toList(),
           ),
