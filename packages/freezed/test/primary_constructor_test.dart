@@ -61,5 +61,13 @@ void main() {
       expect(a, equals(ExampleWithThis(42, another: 10)));
       expect(a.toString(), 'ExampleWithThis(field: 42, another: 10)');
     });
+
+    test('primary constructor with non-field freezed class parameter compiles without invalid copyWith', () {
+      final child = Child(42);
+      expect(child.value, 42);
+
+      final holder = Holder(child);
+      expect(holder.toString(), 'Holder()');
+    });
   });
 }

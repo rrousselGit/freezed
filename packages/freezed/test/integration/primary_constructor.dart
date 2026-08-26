@@ -30,3 +30,10 @@ class ExampleWithThis(this.field, {this.another = 0}) with _$ExampleWithThis {
   final int field;
   final int another;
 }
+
+@freezed
+class Child(final int value) with _$Child {}
+
+@freezed
+// ignore: avoid_unused_constructor_parameters
+class Holder(Child child) with _$Holder {}

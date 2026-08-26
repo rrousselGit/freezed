@@ -93,6 +93,11 @@ class DeepCloneableProperty {
   ) sync* {
     for (final parameterNode
         in constructorNode.constructorParameters.parameters) {
+      if (constructorNode is PrimaryConstructorDeclaration &&
+          !hasExplicitFieldDeclaration(parameterNode)) {
+        continue;
+      }
+
       final type = parseTypeSource(parameterNode);
 
       final parameter = parameterNode.declaredFragment!.element;
@@ -832,6 +837,11 @@ To fix, either:
 
     for (final parameter
         in targetConstructor.constructorParameters.parameters) {
+      if (targetConstructor is PrimaryConstructorDeclaration &&
+          !hasExplicitFieldDeclaration(parameter)) {
+        continue;
+      }
+
       yield Property.fromFormalParameter(
         parameter,
         addImplicitFinal: configs.annotation.addImplicitFinal,
