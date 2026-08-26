@@ -300,7 +300,6 @@ abstract class Person with _$Person {
 
   factory Person({required String name, int? age}) = _Person;
 
-  @override
   final String name;
 }
 ```
@@ -345,7 +344,6 @@ sealed class Response<T> with _$Response<T> {
   // If ._ parameters are named and optional, factory constructors are not required to specify it
   factory Response.error(Object error) = ResponseError;
 
-  @override
   final DateTime time;
 }
 ```
@@ -487,11 +485,8 @@ class Person with _$Person {
     required this.age,
   });
 
-  @override
   final String firstName;
-  @override
   final String lastName;
-  @override
   final int age;
 
   factory Person.fromJson(Map<String, Object?> json)
