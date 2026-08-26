@@ -27,7 +27,6 @@ sealed class Response<T> with _$Response<T> {
   // If those parameters are named optionals, they are not required to be passed.
   factory Response.error(Object error) = ResponseError;
 
-  @override
   final DateTime time;
 }
 
@@ -39,9 +38,7 @@ abstract class ManualPositionInAnyOrder with _$ManualPositionInAnyOrder {
   const factory ManualPositionInAnyOrder.other(int b, String a) =
       _ManualPositionInAnyOrder2;
 
-  @override
   final String a;
-  @override
   final int b;
 }
 
@@ -51,7 +48,6 @@ abstract class ManualNamedOptionalProperty with _$ManualNamedOptionalProperty {
   const factory ManualNamedOptionalProperty(int value) = _ManualNamedProperty;
   const factory ManualNamedOptionalProperty.a() = _ManualNamedPropertyA;
 
-  @override
   final int value;
 }
 
@@ -61,8 +57,6 @@ abstract class Subclass with _$Subclass {
   const factory Subclass.a(int value) = _SubclassA;
   const factory Subclass.b(int value) = _SubclassB;
 
-  // Check that no @override is nu
-  @override
   final int value;
 }
 

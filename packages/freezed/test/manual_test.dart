@@ -7,7 +7,6 @@ part 'manual_test.g.dart';
 // https://github.com/rrousselGit/freezed/issues/1216
 @freezed
 class Product with _$Product {
-  @override
   final int price;
   const Product(this.price);
 }
@@ -15,9 +14,7 @@ class Product with _$Product {
 // https://github.com/rrousselGit/freezed/issues/1216
 @freezed
 class CartLine with _$CartLine {
-  @override
   final Product product;
-  @override
   final int amount;
 
   CartLine({required this.product, int? defaultAmount})
@@ -29,9 +26,7 @@ class CartLine with _$CartLine {
 class Person with _$Person {
   const Person({required this.firstName, required this.lastName});
 
-  @override
   final String firstName;
-  @override
   final String lastName;
 
   String get fullName => '$firstName $lastName';
@@ -44,7 +39,6 @@ class JsonManual with _$JsonManual {
   factory JsonManual.fromJson(Map<String, dynamic> json) =>
       _$JsonManualFromJson(json);
 
-  @override
   final int a;
 
   Map<String, dynamic> toJson() => _$JsonManualToJson(this);
@@ -55,9 +49,7 @@ class ManualWithBothDefault with _$ManualWithBothDefault {
   ManualWithBothDefault._(String this.b) : a = null;
   ManualWithBothDefault(int this.a) : b = null;
 
-  @override
   final int? a;
-  @override
   final String? b;
 }
 
@@ -66,9 +58,7 @@ class ManualWithPrivateDefault with _$ManualWithPrivateDefault {
   ManualWithPrivateDefault.b(String this.b) : a = null;
   ManualWithPrivateDefault._(int this.a) : b = null;
 
-  @override
   final int? a;
-  @override
   final String? b;
 }
 
@@ -77,9 +67,7 @@ class ManualWithDefault with _$ManualWithDefault {
   ManualWithDefault.b(String this.b) : a = null;
   ManualWithDefault(int this.a) : b = null;
 
-  @override
   final int? a;
-  @override
   final String? b;
 }
 
@@ -88,9 +76,7 @@ class ManualWithoutDefault with _$ManualWithoutDefault {
   ManualWithoutDefault.a(int this.a) : b = null;
   ManualWithoutDefault.b(String this.b) : a = null;
 
-  @override
   final int? a;
-  @override
   final String? b;
 }
 
@@ -99,9 +85,7 @@ class ManualWithoutDefault2 with _$ManualWithoutDefault2 {
   ManualWithoutDefault2.b(String this.b) : a = null;
   ManualWithoutDefault2.a(int this.a) : b = null;
 
-  @override
   final int? a;
-  @override
   final String? b;
 }
 
