@@ -1,4 +1,4 @@
-## Unreleased patch
+## 4.0.1 - 2026-08-29
 
 - Removed the need for `@overrides` in class fields and primary constructors.
 - Support analyzer 14.0.0
@@ -1035,3 +1035,4 @@ Add generic support
 ## 0.0.0
 
 Initial release
+
