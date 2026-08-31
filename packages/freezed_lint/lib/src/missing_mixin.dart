@@ -24,7 +24,9 @@ class MissingMixin extends DartLintRule {
       final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
       if (!annotation) return;
 
-      final name = '_\$${element.name}';
+      final name = element.name.startsWith('_')
+          ? '_\$${element.name.substring(1)}'
+          : '_\$${element.name}';
       final withClause = node.withClause;
       if (withClause == null) {
         reporter.atElement2(element, _code, arguments: [name]);
