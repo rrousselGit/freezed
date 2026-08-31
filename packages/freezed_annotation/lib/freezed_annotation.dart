@@ -18,11 +18,11 @@ class EqualUnmodifiableListView<T> extends UnmodifiableListView<T> {
   bool operator ==(Object other) {
     return other is EqualUnmodifiableListView<T> &&
         other.runtimeType == runtimeType &&
-        other._source == _source;
+        const DeepCollectionEquality().equals(other._source, _source);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, _source);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
 }
 
 /// An [UnmodifiableSetView] which overrides ==
@@ -36,11 +36,11 @@ class EqualUnmodifiableSetView<T> extends UnmodifiableSetView<T> {
   bool operator ==(Object other) {
     return other is EqualUnmodifiableSetView<T> &&
         other.runtimeType == runtimeType &&
-        other._source == _source;
+        const DeepCollectionEquality().equals(other._source, _source);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, _source);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
 }
 
 /// An [UnmodifiableMapView] which overrides ==
@@ -55,11 +55,11 @@ class EqualUnmodifiableMapView<Key, Value>
   bool operator ==(Object other) {
     return other is EqualUnmodifiableMapView<Key, Value> &&
         other.runtimeType == runtimeType &&
-        other._source == _source;
+        const DeepCollectionEquality().equals(other._source, _source);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, _source);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_source));
 }
 
 /// Options for enabling/disabling specific `Union.map` features;
