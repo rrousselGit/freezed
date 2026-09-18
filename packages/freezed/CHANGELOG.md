@@ -1,5 +1,6 @@
 ## Unreleased patch
 
+- Require Analyzer 14.0.0
 - Fixed an issue where unnecessary \_MyClass were generated for primary constructors.
 - Fixed nullable `this`/`super` fields and optional positional argument gaps in primary-constructor `copyWith` methods.
 - Ignore unstored `super` arguments when generating properties and report required non-cloneable arguments before generating invalid code.
