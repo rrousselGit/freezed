@@ -127,4 +127,3 @@ class InheritedPositionalDefault([super.ignored, final int value = 1])
 class OverriddenPositionalDefault([super.ignored = 9, final int value = 1])
     extends PositionalDefaultParent
     with _$OverriddenPositionalDefault {}
-

@@ -80,7 +80,7 @@ class ParametersTemplate {
             e.defaultValue ??
             (e is SuperFormalParameterElement
                 ? e.superConstructorParameter?.defaultValueCode ??
-                    e.superConstructorParameter?.defaultValue
+                      e.superConstructorParameter?.defaultValue
                 : null),
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,
