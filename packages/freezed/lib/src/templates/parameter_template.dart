@@ -76,7 +76,12 @@ class ParametersTemplate {
         name: e.name!,
         defaultValueSource:
             p.defaultClause?.value.computeConstantValue()?.value?.toCode() ??
-            e.defaultValue,
+            e.defaultValueCode ??
+            e.defaultValue ??
+            (e is SuperFormalParameterElement
+                ? e.superConstructorParameter?.defaultValueCode ??
+                    e.superConstructorParameter?.defaultValue
+                : null),
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,
         type: e.type,
