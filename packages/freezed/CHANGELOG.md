@@ -1,4 +1,4 @@
-## Unreleased patch
+## 4.0.2 - 2026-09-18
 
 - Require Analyzer 14.0.0
 - Fixed an issue where unnecessary \_MyClass were generated for primary constructors.
@@ -1043,3 +1043,4 @@ Add generic support
 ## 0.0.0
 
 Initial release
+
