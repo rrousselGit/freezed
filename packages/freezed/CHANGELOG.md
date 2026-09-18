@@ -1,3 +1,10 @@
+## Unreleased patch
+
+- Fixed an issue where unnecessary \_MyClass were generated for primary constructors.
+- Fixed nullable `this`/`super` fields and optional positional argument gaps in primary-constructor `copyWith` methods.
+- Ignore unstored `super` arguments when generating properties and report required non-cloneable arguments before generating invalid code.
+- Support nested deep copies for primary constructors.
+
 ## 4.0.1 - 2026-08-29
 
 - Removed the need for `@overrides` in class fields and primary constructors.
@@ -1035,4 +1042,3 @@ Add generic support
 ## 0.0.0
 
 Initial release
-

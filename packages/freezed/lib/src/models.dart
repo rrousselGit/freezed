@@ -281,12 +281,8 @@ When specifying fields in non-factory constructor then specifying factory constr
           className: declaration.namePart.typeName.lexeme,
         );
       } else if (constructor is PrimaryConstructorDeclaration) {
-        if (constructor.isManualCtor) {
-          _assertValidNormalConstructorUsage(declaration, constructor);
-          continue;
-        }
-
-        redirectedName = '_${declaration.namePart.typeName.lexeme}';
+        _assertValidNormalConstructorUsage(declaration, constructor);
+        continue;
       } else {
         continue;
       }
@@ -331,30 +327,25 @@ When specifying fields in non-factory constructor then specifying factory constr
           unionValue: constructor.constructorElement.unionValue(
             configs.annotation.unionValueCase,
           ),
-          isConst: constructor is ConstructorDeclaration
-              ? constructor.constKeyword != null
-              : constructor.constructorElement.isConst,
+          isConst: constructor.constKeyword != null,
           fullName: constructor.constructorFullName,
           escapedName: constructor.constructorEscapedName,
           properties: allProperties,
-          decorators: constructor is ConstructorDeclaration
-              ? constructor.metadata
-                    .where((Annotation element) {
-                      final elementSourceUri =
-                          element.element?.baseElement.library?.uri;
+          decorators: constructor.metadata
+              .where((Annotation element) {
+                final elementSourceUri =
+                    element.element?.baseElement.library?.uri;
 
-                      final isFreezedAnnotation =
-                          elementSourceUri != null &&
-                          elementSourceUri.scheme == 'package' &&
-                          elementSourceUri.pathSegments.isNotEmpty &&
-                          elementSourceUri.pathSegments.first ==
-                              'freezed_annotation';
+                final isFreezedAnnotation =
+                    elementSourceUri != null &&
+                    elementSourceUri.scheme == 'package' &&
+                    elementSourceUri.pathSegments.isNotEmpty &&
+                    elementSourceUri.pathSegments.first == 'freezed_annotation';
 
-                      return !isFreezedAnnotation;
-                    })
-                    .map((Annotation e) => e.toSource())
-                    .toList()
-              : const <String>[],
+                return !isFreezedAnnotation;
+              })
+              .map((Annotation e) => e.toSource())
+              .toList(),
           withDecorators: WithAnnotation.parseAll(
             constructor.constructorElement,
           ).toSet().toList(),
@@ -425,6 +416,7 @@ When specifying fields in non-factory constructor then specifying factory constr
 bool hasExplicitFieldDeclaration(FormalParameter parameter) {
   return parameter.isFinal ||
       parameter is FieldFormalParameter ||
+      parameter is SuperFormalParameter ||
       parameter.varKeyword != null;
 }
 
@@ -561,18 +553,20 @@ class Class {
     required this.options,
     required this.concretePropertiesName,
     required this.constructors,
+    required this.deepCloneableProperties,
     required this.genericsDefinitionTemplate,
     required this.genericsParameterTemplate,
     required this.superCall,
     required this.properties,
     required this.copyWithTarget,
     required this._node,
-  }) : assert(constructors.isNotEmpty);
+  });
 
   final String name;
   final ClassConfig options;
   final List<String> concretePropertiesName;
   final List<ConstructorDetails> constructors;
+  final List<DeepCloneableProperty> deepCloneableProperties;
   final GenericsDefinitionTemplate genericsDefinitionTemplate;
   final GenericsParameterTemplate genericsParameterTemplate;
   final ConstructorInvocation? superCall;
@@ -652,14 +646,13 @@ class Class {
         ? declaration.copyWithTarget
         : null;
 
-    if (copyWithTarget != null) {
-      // Check for missing required parameters on the copyWith target
+    // Fieldless primary classes have no callable copyWith to validate.
+    if (copyWithTarget != null &&
+        (copyWithTarget is! PrimaryConstructorDeclaration ||
+            properties.cloneableProperties.isNotEmpty)) {
+      // Check for missing required parameters on the copyWith target.
       for (final param in copyWithTarget.constructorParameters.parameters) {
-        if (param.isOptional ||
-            (copyWithTarget is PrimaryConstructorDeclaration &&
-                !hasExplicitFieldDeclaration(param))) {
-          continue;
-        }
+        if (param.isOptional) continue;
 
         final cloneableProperty = properties.cloneableProperties
             .firstWhereOrNull((e) => e.name == param.name?.lexeme);
@@ -685,13 +678,14 @@ To fix, either:
         : CopyWithTarget(
             name: copyWithTarget.constructorNamePart,
             parameters: ParametersTemplate.fromParameterList(
-              // Only include parameters that are cloneable
+              // Keep positional slots even when they are not cloneable.
               copyWithTarget.constructorParameters.parameters.where((
                 FormalParameter e,
               ) {
-                return properties.cloneableProperties
-                    .map((p) => p.name)
-                    .contains(e.name!.lexeme);
+                return e.isOptionalPositional ||
+                    properties.cloneableProperties.any(
+                      (p) => p.name == e.name!.lexeme,
+                    );
               }),
               addImplicitFinal: configs.annotation.addImplicitFinal,
               isFromPrimaryConstructor:
@@ -740,6 +734,14 @@ To fix, either:
       superCall: superCall,
       options: configs,
       constructors: constructors,
+      deepCloneableProperties:
+          constructors.firstOrNull?.deepCloneableProperties ??
+          (copyWithTarget == null
+              ? const []
+              : DeepCloneableProperty.parseAll(
+                  copyWithTarget,
+                  globalConfigs,
+                ).toList()),
       concretePropertiesName: [
         for (final p in declaration.declaredFragment!.element.fields)
           if (!p.isStatic) p.name!,
@@ -864,6 +866,7 @@ To fix, either:
           List<
             ({
               TypeAnnotation? type,
+              DartType? resolvedType,
               String? doc,
               bool isFinal,
               bool isSynthetic,
@@ -874,6 +877,7 @@ To fix, either:
     void setForName({
       required String name,
       required TypeAnnotation? type,
+      DartType? resolvedType,
       required int index,
       required String? doc,
       required bool isFinal,
@@ -886,6 +890,7 @@ To fix, either:
       );
       list[index] = (
         type: type,
+        resolvedType: resolvedType,
         doc: doc,
         isFinal: isFinal,
         isSynthetic: isSynthetic,
@@ -907,6 +912,38 @@ To fix, either:
           property.$1.declaredFragment?.element.metadata.annotations ?? [],
         ),
       );
+    }
+
+    if (declaration.primaryConstructor case final primaryCtor?) {
+      for (final parameter in primaryCtor.constructorParameters.parameters) {
+        if (!hasExplicitFieldDeclaration(parameter)) continue;
+        final name = parameter.name!.lexeme;
+        // Field formals refer to declarations already collected above.
+        if (parameter is FieldFormalParameter && typesMap.containsKey(name)) {
+          continue;
+        }
+
+        final classElement = declaration.declaredFragment!.element;
+        final getter = parameter is SuperFormalParameter
+            ? classElement.thisType.lookUpGetter(name, classElement.library)
+            : null;
+        // Forwarding a constructor argument does not imply a readable property.
+        if (parameter is SuperFormalParameter && getter == null) continue;
+
+        setForName(
+          name: name,
+          type: parameter.type,
+          resolvedType:
+              getter?.returnType ?? parameter.declaredFragment?.element.type,
+          index: 0,
+          doc: parameter.documentation,
+          isFinal: parameter.isFinal || parameter.varKeyword == null,
+          isSynthetic: false,
+          decorators: parseDecorators(
+            parameter.declaredFragment?.element.metadata.annotations ?? [],
+          ),
+        );
+      }
     }
 
     for (final (index, freezedCtor) in constructorsNeedsGeneration.indexed) {
@@ -959,7 +996,10 @@ To fix, either:
         case [final fieldType?, ...]:
         // Only a single constructor and no field
         case [null, final fieldType?]:
-          type = fieldType.type?.type ?? typeProvider.dynamicType;
+          type =
+              fieldType.resolvedType ??
+              fieldType.type?.type ??
+              typeProvider.dynamicType;
           try {
             typeString = type.toCode();
           } on InvalidTypeException {
