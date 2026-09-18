@@ -162,7 +162,10 @@ void main() {
       expect(updated.received, 7);
       expect(InheritedPositionalDefault().copyWith().received, 7);
 
-      final overridden = OverriddenPositionalDefault(42, 10).copyWith(value: 20);
+      final overridden = OverriddenPositionalDefault(
+        42,
+        10,
+      ).copyWith(value: 20);
       expect(overridden.value, 20);
       expect(overridden.received, 9);
     });
