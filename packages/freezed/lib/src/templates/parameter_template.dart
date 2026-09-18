@@ -76,6 +76,7 @@ class ParametersTemplate {
         name: e.name!,
         defaultValueSource:
             p.defaultClause?.value.computeConstantValue()?.value?.toCode() ??
+            e.defaultValueCode ??
             e.defaultValue,
         isRequired: e.isRequiredNamed,
         isFinal: addImplicitFinal || e.isFinal,

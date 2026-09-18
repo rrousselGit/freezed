@@ -307,6 +307,12 @@ $s''';
     }
 
     String parameterToValue(Parameter p) {
+      // Omitting an unstored positional parameter would shift later arguments.
+      if (p.parameterElement?.isOptionalPositional == true &&
+          !cloneableProperties.any((property) => property.name == p.name)) {
+        return '${p.defaultValueSource ?? 'null'},';
+      }
+
       final propertyGetterForCopyWithParameter = <Property>[]
           .followedBy(readableProperties)
           // Read this.p before cloneable properties, as they might have a different nullability
