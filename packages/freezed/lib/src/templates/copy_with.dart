@@ -64,7 +64,7 @@ class CopyWith {
       leading = 'abstract mixin ';
       body =
           '''
-  factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) _then) = $_implClassName;
+  factory $_abstractClassName($clonedClassName$genericsParameter value, \$Res Function($clonedClassName$genericsParameter) _then) = $_implClassName${genericsParameter.append('\$Res')};
 ${_copyWithPrototype('call')}
 
 ${_abstractDeepCopyMethods().join()}
