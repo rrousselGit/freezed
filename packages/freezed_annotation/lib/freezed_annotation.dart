@@ -219,6 +219,7 @@ class Freezed {
     this.makeCollectionsUnmodifiable,
     this.addImplicitFinal = true,
     this.genericArgumentFactories = false,
+    this.makeGeneratedClassesFinal,
   });
 
   /// Decode the options from a build.yaml
@@ -489,6 +490,43 @@ class Freezed {
   /// If that value is null too, defaults to [FreezedWhenOptions.all].
   @_FreezedWhenOptionsConverter()
   final FreezedWhenOptions? when;
+
+  /// Whether to add `final` modifiers to the generated classes.
+  ///
+  /// Defaults to false.
+  ///
+  /// This makes the generated classes `final` by default,
+  /// so when using them in a switch statement, the analzyer will warn you
+  /// if you try to match against a pattern that will never match the type.
+  ///
+  /// ```dart
+  /// @Freezed(makeGeneratedClassesFinal: true)
+  /// sealed class Foo with _$Foo {
+  ///   const Foo._();
+  ///   const factory Foo() = _Foo;
+  /// }
+  ///
+  /// @Freezed(makeGeneratedClassesFinal: true)
+  /// sealed class Bar with _$Bar {
+  ///   const Bar._();
+  ///   const factory Bar() = _Bar;
+  /// }
+  ///
+  /// void main() {
+  ///   switch (Foo()) {
+  ///     // The analyzer will yield a warning that this case can never match,
+  ///     // because all subclasses of Foo are sealed/final, so it is guaranteed
+  ///     // that instances of type Bar can never also be of type Foo.
+  ///     case Bar():
+  ///       // ...
+  ///       break;
+  ///
+  ///     case Foo():
+  ///       // ...
+  ///       break;
+  ///   }
+  /// ```
+  final bool? makeGeneratedClassesFinal;
 }
 
 /// Defines an immutable data-class.
