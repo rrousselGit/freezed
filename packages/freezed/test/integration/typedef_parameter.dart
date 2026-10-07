@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'external_typedef.dart';
 import 'external_typedef_two.dart' as two;
 

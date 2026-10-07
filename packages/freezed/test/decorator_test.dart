@@ -13,15 +13,13 @@ void main() {
       ),
     );
 
-    var errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/decorator.freezed.dart',
-            )
-            as ErrorsResult;
+    var errorResult = await main.session.getErrors(
+      '/freezed/test/integration/decorator.freezed.dart',
+    ) as ErrorsResult;
     expect(errorResult.errors, isEmpty);
-    errorResult =
-        await main.session.getErrors('/freezed/test/integration/decorator.dart')
-            as ErrorsResult;
+    errorResult = await main.session.getErrors(
+      '/freezed/test/integration/decorator.dart',
+    ) as ErrorsResult;
   });
 
   test(
@@ -90,9 +88,9 @@ void main() {
       readAllSourcesFromFilesystem: true,
     );
 
-    var errorResult =
-        await main.session.getErrors('/freezed/test/integration/main.dart')
-            as ErrorsResult;
+    var errorResult = await main.session.getErrors(
+      '/freezed/test/integration/main.dart',
+    ) as ErrorsResult;
     expect(
       errorResult.errors.map((e) => e.errorCode.name),
       anyOf([

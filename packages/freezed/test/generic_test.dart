@@ -47,11 +47,9 @@ void main() {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/generic.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/generic.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -73,14 +71,13 @@ void main() {
 
     expect(result, MultipleConstructors<int, double>(false));
 
-    MultipleConstructors<int, double>(
-      false,
-    ).maybeMap<MultipleConstructors<int, double>>(
-      (Default<int, double> value) => value,
-      first: (First<int, double> value) => value,
-      second: (Second<int, double> value) => value,
-      orElse: () => throw Error(),
-    );
+    MultipleConstructors<int, double>(false)
+        .maybeMap<MultipleConstructors<int, double>>(
+          (Default<int, double> value) => value,
+          first: (First<int, double> value) => value,
+          second: (Second<int, double> value) => value,
+          orElse: () => throw Error(),
+        );
 
     expect(result, MultipleConstructors<int, double>(false));
   });

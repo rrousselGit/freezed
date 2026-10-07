@@ -178,22 +178,16 @@ Future<void> main() async {
   });
 
   group('FreezedUnionFallback', () {
-    test(
-      'when fallback is non-null, if fromJson receives null as value, fallbacks to default',
-      () {
-        expect(
-          UnionFallback.fromJson(<String, dynamic>{
-            'runtimeType': null,
-            'a': 42,
-          }),
-          UnionFallback.fallback(42),
-        );
-        expect(
-          UnionFallback.fromJson(<String, dynamic>{'a': 42}),
-          UnionFallback.fallback(42),
-        );
-      },
-    );
+    test('when fallback is non-null, if fromJson receives null as value, fallbacks to default', () {
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{'runtimeType': null, 'a': 42}),
+        UnionFallback.fallback(42),
+      );
+      expect(
+        UnionFallback.fromJson(<String, dynamic>{'a': 42}),
+        UnionFallback.fallback(42),
+      );
+    });
 
     test('fromJson', () {
       expect(
@@ -748,11 +742,9 @@ Future<void> main() async {
   });
 
   test('has no issue', () async {
-    var errorResult =
-        await jsonFile.session.getErrors(
-              '/freezed/test/integration/json.freezed.dart',
-            )
-            as ErrorsResult;
+    var errorResult = await jsonFile.session.getErrors(
+      '/freezed/test/integration/json.freezed.dart',
+    ) as ErrorsResult;
     expect(errorResult.errors, isEmpty);
   }, skip: true);
 

@@ -1,4 +1,5 @@
 import 'package:test/test.dart';
+
 import 'integration/custom_equals.dart';
 
 void main() {

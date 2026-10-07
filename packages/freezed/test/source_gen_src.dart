@@ -167,3 +167,52 @@ class _AbstractClass implements AbstractClass {
 }
 
 mixin _$AbstractClass {}
+
+@ShouldThrow('''
+The class PrimaryRequiredPositional requested a copyWith implementation, yet the parameter `notCloneable` is not cloneable.
+
+To fix, either:
+- Disable copyWith using @Freezed(copyWith: false)
+- Make `notCloneable` optional
+- Make sure `this.notCloneable` is accessible from the copyWith method
+''')
+@freezed
+class PrimaryRequiredPositional(int notCloneable, final int value)
+    with _$PrimaryRequiredPositional {}
+
+mixin _$PrimaryRequiredPositional {}
+
+@ShouldThrow('''
+The class PrimaryRequiredNamed requested a copyWith implementation, yet the parameter `notCloneable` is not cloneable.
+
+To fix, either:
+- Disable copyWith using @Freezed(copyWith: false)
+- Make `notCloneable` optional
+- Make sure `this.notCloneable` is accessible from the copyWith method
+''')
+@freezed
+class PrimaryRequiredNamed({
+  required int notCloneable,
+  required final int value,
+}) with _$PrimaryRequiredNamed {}
+
+mixin _$PrimaryRequiredNamed {}
+
+@ShouldThrow('''
+The class PrimaryRequiredSuper requested a copyWith implementation, yet the parameter `notCloneable` is not cloneable.
+
+To fix, either:
+- Disable copyWith using @Freezed(copyWith: false)
+- Make `notCloneable` optional
+- Make sure `this.notCloneable` is accessible from the copyWith method
+''')
+@freezed
+class PrimaryRequiredSuper(super.notCloneable, final int value)
+    extends PrimaryUnstoredParent
+    with _$PrimaryRequiredSuper {}
+
+mixin _$PrimaryRequiredSuper {}
+
+class PrimaryUnstoredParent {
+  PrimaryUnstoredParent(int notCloneable);
+}

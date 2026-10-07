@@ -373,11 +373,9 @@ void main() {
   test('has no issue', () async {
     final singleClassLibrary = await analyze();
 
-    final errorResult =
-        await singleClassLibrary.session.getErrors(
-              '/freezed/test/integration/single_class_constructor.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await singleClassLibrary.session.getErrors(
+      '/freezed/test/integration/single_class_constructor.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -388,9 +386,8 @@ void main() {
 
   test('single-case union does have map', () async {
     expect(
-      SingleNamedCtor.named(
-        42,
-      ).map(named: (WhateverSingleNamedCtor value) => '${value.a}'),
+      SingleNamedCtor.named(42)
+          .map(named: (WhateverSingleNamedCtor value) => '${value.a}'),
       '42',
     );
   });
@@ -646,9 +643,9 @@ void main() {
         readAllSourcesFromFilesystem: true,
       );
 
-      final errorResult =
-          await main!.session.getErrors('/freezed/test/integration/main.dart')
-              as ErrorsResult;
+      final errorResult = await main!.session.getErrors(
+        '/freezed/test/integration/main.dart',
+      ) as ErrorsResult;
 
       expect(
         errorResult.errors.map((e) => e.toString()),

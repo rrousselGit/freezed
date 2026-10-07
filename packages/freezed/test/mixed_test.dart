@@ -20,7 +20,6 @@ class FreezedImplements with _$FreezedImplements implements Mixed {
   final num common;
   @override
   final double value;
-  @override
   final int b;
 }
 
@@ -42,7 +41,6 @@ class FreezedExtends extends Mixed with _$FreezedExtends {
   final num common;
   @override
   final double value;
-  @override
   final int d;
 }
 

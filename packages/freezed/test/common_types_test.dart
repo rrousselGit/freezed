@@ -20,11 +20,9 @@ Future<void> main() async {
       ),
     );
 
-    final errorResult =
-        await main.session.getErrors(
-              '/freezed/test/integration/common_types.freezed.dart',
-            )
-            as ErrorsResult;
+    final errorResult = await main.session.getErrors(
+      '/freezed/test/integration/common_types.freezed.dart',
+    ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
   });
@@ -71,11 +69,9 @@ Future<void> main() async {
       expect(value2.typeDifference, 22);
     });
 
-    test(
-      'should not have getters for properties that are not shared between all unions',
-      () async {
-        await expectLater(
-          library.withCode('''
+    test('should not have getters for properties that are not shared between all unions', () async {
+      await expectLater(
+        library.withCode('''
 import 'integration/common_types.dart';
 
 void main() {
@@ -87,10 +83,9 @@ void main() {
   value.unknown;
 }
 '''),
-          compiles,
-        );
-      },
-    );
+        compiles,
+      );
+    });
 
     test('Can clone properties with nullability difference', () {
       const value = CommonSuperSubtype(

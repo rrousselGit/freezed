@@ -27,15 +27,16 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
   final bool format;
 
   Iterable<DeepCloneableProperty> _getCommonDeepCloneableProperties(
-    List<ConstructorDetails> constructors,
+    List<DeepCloneableProperty> deepCloneableProperties,
     PropertyList commonProperties,
   ) sync* {
     for (final commonProperty in commonProperties.cloneableProperties) {
       final commonGetter = commonProperties.readableProperties.firstWhereOrNull(
         (e) => e.name == commonProperty.name,
       );
-      final deepCopyProperty = constructors.firstOrNull?.deepCloneableProperties
-          .firstWhereOrNull((e) => e.name == commonProperty.name);
+      final deepCopyProperty = deepCloneableProperties.firstWhereOrNull(
+        (e) => e.name == commonProperty.name,
+      );
 
       if (deepCopyProperty == null || commonGetter == null) continue;
 
@@ -92,7 +93,7 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
             readableProperties: data.properties.readableProperties,
             cloneableProperties: data.properties.cloneableProperties,
             deepCloneableProperties: _getCommonDeepCloneableProperties(
-              data.constructors,
+              data.deepCloneableProperties,
               data.properties,
             ).toList(),
             genericsDefinition: data.genericsDefinitionTemplate,
@@ -126,7 +127,12 @@ class FreezedGenerator extends ParserGenerator<Freezed> {
                 readableProperties: constructor.properties
                     .where((e) => e.isSynthetic)
                     .toList(),
-                deepCloneableProperties: constructor.deepCloneableProperties,
+                deepCloneableProperties: constructor.deepCloneableProperties
+                    .where(
+                      (e) =>
+                          constructor.properties.any((p) => p.name == e.name),
+                    )
+                    .toList(),
                 genericsDefinition: data.genericsDefinitionTemplate,
                 genericsParameter: data.genericsParameterTemplate,
                 data: data,

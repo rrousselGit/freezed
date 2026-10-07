@@ -1,3 +1,25 @@
+## 4.0.2 - 2026-09-18
+
+- Require Analyzer 14.0.0
+- Fixed an issue where unnecessary \_MyClass were generated for primary constructors.
+- Fixed nullable `this`/`super` fields and optional positional argument gaps in primary-constructor `copyWith` methods.
+- Ignore unstored `super` arguments when generating properties and report required non-cloneable arguments before generating invalid code.
+- Support nested deep copies for primary constructors.
+
+## 4.0.1 - 2026-08-29
+
+- Removed the need for `@overrides` in class fields and primary constructors.
+- Support analyzer 14.0.0
+
+## 4.0.0 - 2026-08-22
+
+- Fix `==`/`copyWith` when immutable collections are enabled yet non-factory constructors are used.
+- Fix `(int,)` records incorrectly generated
+- Support analyzer 13.0
+- Support primary constructors
+- _Breaking_: No-longer support `final` keyword inside constructor parameter. This is due to Dart 3.13 no-longer allowing this syntax.
+  This prevents `@unfreezed` from defining immutable fields.
+
 ## 4.0.0-dev.3 - 2026-06-13
 
 - Fix `==`/`copyWith` when immutable collections are enabled yet non-factory constructors are used.
