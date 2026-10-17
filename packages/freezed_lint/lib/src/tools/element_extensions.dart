@@ -7,7 +7,12 @@ extension DartTypeExt on DartType {
 
 extension ClassElementExt on ClassElement {
   String? constToken() {
-    if (constructors2.any((c) => c.isConst)) return 'const ';
-    return null;
+    if (!constructors.any((c) => c.isConst)) return null;
+
+    // A const constructor can only call a const super constructor.
+    final superConstructor = supertype?.element.unnamedConstructor;
+    if (superConstructor != null && !superConstructor.isConst) return null;
+
+    return 'const ';
   }
 }

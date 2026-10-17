@@ -1,3 +1,15 @@
+## Unreleased 0.1.0
+
+- **Breaking**: Migrated from `custom_lint` to `analysis_server_plugin`.
+  Instead of enabling `custom_lint`, list `freezed_lint` under the top-level
+  `plugins` section of your `analysis_options.yaml`. See the README.
+  Requires Dart 3.10 or later.
+- The "Add mixin" quick-fix now produces valid code when the class has an
+  `implements` clause.
+- Fixed the "Add private constructor" quick-fix inserting `null` for non-const classes.
+- The "Add private constructor" quick-fix no longer adds `const` when the
+  superclass has no const constructor.
+
 ## 0.0.12 - 2025-09-10
 
 Broader the version range for `analyzer`
