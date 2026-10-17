@@ -15,5 +15,3 @@ dependency_overrides:
   watcher: ^1.1.0
   # https://github.com/dart-lang/build/issues/3733#issuecomment-2272082820
   frontend_server_client: ^4.0.0
-  # json_serializable does not support build 5 yet
-  build: ^5.0.0
