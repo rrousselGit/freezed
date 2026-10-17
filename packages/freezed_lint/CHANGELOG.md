@@ -1,4 +1,4 @@
-## Unreleased 0.1.0
+## 0.1.0 - 2026-10-17
 
 - **Breaking**: Migrated from `custom_lint` to `analysis_server_plugin`.
   Instead of enabling `custom_lint`, list `freezed_lint` under the top-level
@@ -66,3 +66,4 @@ Upgrade analyzer and custom_lint versions
 
 - freezed_missing_mixin
 - freezed_missing_private_empty_constructor
+
