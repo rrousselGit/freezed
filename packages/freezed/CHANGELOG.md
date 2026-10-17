@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Support build 5.0.0
+
 ## 4.0.2 - 2026-09-18
 
 - Require Analyzer 14.0.0
