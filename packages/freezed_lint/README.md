@@ -1,25 +1,29 @@
 # Lints for [freezed].
 
-Written with [custom_lint] to help with miss-typed/configured freezed classes.
+Written as an [analyzer plugin][analysis_server_plugin] to help with
+miss-typed/configured freezed classes.
 
 ## How to use
 
-Add freezed_lint and custom_lint to your projects `pubspec.yaml`.
+Analyzer plugins require Dart 3.10 (Flutter 3.38) or later.
 
-```console
-flutter pub add dev:custom_lint
-flutter pub add dev:freezed_lint
-```
-
-And add custom_lint as a plugin in the `analysis_options.yaml`
+Enable freezed_lint as a plugin in your `analysis_options.yaml`:
 
 ```yaml
-analyzer:
-  plugins:
-    - custom_lint
+plugins:
+  freezed_lint: ^0.1.0
 ```
 
-You might need to restart your IDE for it to pick up the new lints
+There is no need to add freezed_lint to your `pubspec.yaml`.
+
+You might need to restart your IDE for it to pick up the new lints.
+The lints are reported by both your IDE and `dart analyze`/`flutter analyze`.
+
+To silence a lint, prefix its name with `freezed_lint/`:
+
+```dart
+// ignore: freezed_lint/freezed_missing_mixin
+```
 
 ## List of supported lint
 
@@ -27,4 +31,4 @@ You might need to restart your IDE for it to pick up the new lints
 - `freezed_missing_private_empty_constructor` ✅
 
 [freezed]: https://pub.dev/packages/freezed
-[custom_lint]: https://pub.dev/packages/custom_lint
+[analysis_server_plugin]: https://pub.dev/packages/analysis_server_plugin

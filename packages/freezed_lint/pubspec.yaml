@@ -6,15 +6,9 @@ repository: https://github.com/rrousselGit/freezed
 issue_tracker: https://github.com/rrousselGit/freezed/issues
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ^3.10.0
 
 dependencies:
-  analyzer: '>=9.0.0 <11.0.0'
-  analyzer_plugin: ^0.13.0
-  custom_lint_builder: ^0.8.0
-  freezed_annotation: 3.1.0
-
-dev_dependencies:
-  custom_lint: ^0.8.0
-  build_verify: ^3.1.0
-  test: ^1.22.2
+  analysis_server_plugin: ^0.3.24
+  analyzer: ^14.5.0
+  analyzer_plugin: ^0.14.18

@@ -7,3 +7,11 @@ analyzer:
     strict-raw-types: true
   errors:
     invalid_annotation_target: ignore
+
+plugins:
+  freezed_lint:
+    path: ../
+
+linter:
+  rules:
+    - unnecessary_ignore

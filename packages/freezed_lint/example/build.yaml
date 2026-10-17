@@ -5,4 +5,6 @@ targets:
         enabled: true
         generate_for:
           exclude:
-            - lib/missing_private_empty_ctor.dart
+            # Those files voluntarily contain invalid freezed classes
+            - lib/*_failing.dart
+            - lib/*_failing.*.fix.dart
