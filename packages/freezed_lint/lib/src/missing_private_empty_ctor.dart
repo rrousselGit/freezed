@@ -1,83 +1,114 @@
-import 'package:analyzer/error/error.dart' hide LintCode;
-import 'package:analyzer/error/listener.dart' show ErrorReporter;
-import 'package:custom_lint_builder/custom_lint_builder.dart';
+import 'package:analysis_server_plugin/edit/dart/correction_producer.dart';
+import 'package:analysis_server_plugin/edit/dart/dart_fix_kind_priority.dart';
+import 'package:analyzer/analysis_rule/analysis_rule.dart';
+import 'package:analyzer/analysis_rule/rule_context.dart';
+import 'package:analyzer/analysis_rule/rule_visitor_registry.dart';
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/visitor.dart';
+import 'package:analyzer/error/error.dart';
+import 'package:analyzer_plugin/utilities/change_builder/change_builder_core.dart';
+import 'package:analyzer_plugin/utilities/fixes/fixes.dart';
 import 'package:freezed_lint/src/tools/element_extensions.dart';
 import 'package:freezed_lint/src/tools/freezed_annotation_checker.dart';
 
-class MissingPrivateEmptyCtor extends DartLintRule {
-  MissingPrivateEmptyCtor() : super(code: _code);
+class MissingPrivateEmptyCtor extends AnalysisRule {
+  MissingPrivateEmptyCtor()
+    : super(
+        name: 'freezed_missing_private_empty_constructor',
+        description:
+            'Freezed classes containing methods, fields or '
+            'accessors require a private empty constructor.',
+      );
 
-  static const _code = LintCode(
-    name: 'freezed_missing_private_empty_constructor',
-    problemMessage: 'Private empty constructor required',
+  static const code = LintCode(
+    'freezed_missing_private_empty_constructor',
+    'Private empty constructor required',
     correctionMessage:
-        'Freezed classes containing methods, fields or accessors,'
+        'Freezed classes containing methods, fields or accessors, '
         'requires a {0}',
-    errorSeverity: ErrorSeverity.ERROR,
+    severity: DiagnosticSeverity.ERROR,
   );
 
   @override
-  void run(
-    CustomLintResolver resolver,
-    ErrorReporter reporter,
-    CustomLintContext context,
-  ) {
-    context.registry.addClassDeclaration((node) {
-      final element = node.declaredFragment?.element;
-      if (element == null) return;
-
-      final annotation = freezedAnnotationChecker.hasAnnotationOfExact(element);
-      if (!annotation) return;
-
-      final methods = element.methods.where((method) => !method.isStatic);
-      final fields = element.fields.where((field) => !field.isStatic);
-
-      final accessors = [
-        ...element.getters,
-        ...element.setters2,
-      ].where((accessor) => !accessor.isStatic);
-      if (methods.isEmpty && fields.isEmpty && accessors.isEmpty) return;
-
-      final ctors = element.constructors2.where((ctor) =>
-          ctor.isPrivate && ctor.formalParameters.isEmpty && ctor.name == '_');
-      if (ctors.isNotEmpty) return;
-
-      final constToken = element.constToken();
-      final name = '$constToken${element.displayName}._();';
-      reporter.atElement2(element, _code, arguments: [name]);
-    });
-  }
+  LintCode get diagnosticCode => code;
 
   @override
-  List<Fix> getFixes() => [_AddPrivateEmptyCtorFix()];
+  void registerNodeProcessors(
+    RuleVisitorRegistry registry,
+    RuleContext context,
+  ) {
+    registry.addClassDeclaration(this, _Visitor(this));
+  }
 }
 
-class _AddPrivateEmptyCtorFix extends DartFix {
+class _Visitor extends SimpleAstVisitor<void> {
+  _Visitor(this.rule);
+
+  final AnalysisRule rule;
+
   @override
-  void run(
-    CustomLintResolver resolver,
-    ChangeReporter reporter,
-    CustomLintContext context,
-    AnalysisError analysisError,
-    List<AnalysisError> others,
-  ) {
-    context.registry.addClassDeclaration((node) {
-      if (!analysisError.sourceRange.intersects(node.sourceRange)) return;
-      final element = node.declaredFragment?.element;
-      if (element == null) return;
-      final name = element.displayName;
-      final constToken = element.constToken();
-      reporter.createChangeBuilder(
-        message: 'Add $constToken$name._();',
-        priority: 2,
-      )..addDartFileEdit((builder) {
-          final nextLine =
-              resolver.lineInfo.getOffsetOfLineAfter(node.leftBracket.offset);
-          builder.addSimpleInsertion(
-            nextLine,
-            '  $constToken$name._();\n',
-          );
-        });
+  void visitClassDeclaration(ClassDeclaration node) {
+    final element = node.declaredFragment?.element;
+    if (element == null) return;
+    if (!element.hasFreezedAnnotation) return;
+
+    final methods = element.methods.where((method) => !method.isStatic);
+    final fields = element.fields.where((field) => !field.isStatic);
+
+    final accessors = [
+      ...element.getters,
+      ...element.setters,
+    ].where((accessor) => !accessor.isStatic);
+    if (methods.isEmpty && fields.isEmpty && accessors.isEmpty) return;
+
+    final ctors = element.constructors.where(
+      (ctor) =>
+          ctor.isPrivate && ctor.formalParameters.isEmpty && ctor.name == '_',
+    );
+    if (ctors.isNotEmpty) return;
+
+    final constToken = element.constToken() ?? '';
+    final name = '$constToken${element.displayName}._();';
+    rule.reportAtToken(node.namePart.typeName, arguments: [name]);
+  }
+}
+
+class AddPrivateEmptyCtorFix extends ResolvedCorrectionProducer {
+  AddPrivateEmptyCtorFix({required super.context});
+
+  static const _kind = FixKind(
+    'freezed_add_private_empty_constructor',
+    DartFixKindPriority.standard + 1,
+    'Add {0}',
+  );
+
+  String _ctor = '';
+
+  @override
+  CorrectionApplicability get applicability =>
+      CorrectionApplicability.singleLocation;
+
+  @override
+  FixKind get fixKind => _kind;
+
+  @override
+  List<String> get fixArguments => [_ctor];
+
+  @override
+  Future<void> compute(ChangeBuilder builder) async {
+    final classNode = node.thisOrAncestorOfType<ClassDeclaration>();
+    final element = classNode?.declaredFragment?.element;
+    final body = classNode?.body;
+    if (element == null || body is! BlockClassBody) return;
+
+    final constToken = element.constToken() ?? '';
+    _ctor = '$constToken${element.displayName}._();';
+
+    await builder.addDartFileEdit(file, (builder) {
+      final nextLine = unitResult.lineInfo.getOffsetOfLineAfter(
+        body.leftBracket.offset,
+      );
+      builder.addSimpleInsertion(nextLine, '  $_ctor\n');
     });
   }
 }

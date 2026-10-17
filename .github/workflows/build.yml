@@ -19,8 +19,7 @@ jobs:
           - packages/freezed
           - packages/freezed/example
           - packages/freezed_annotation
-          # Disabled until custom_lint is removed
-          # - packages/freezed_lint
+          - packages/freezed_lint
         channel:
           # - stable
           - master
@@ -71,6 +70,7 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Run tests
+        if: matrix.package != 'packages/freezed_lint'
         run: |
           if grep -q "name: freezed_example" "pubspec.yaml"; then
             flutter test --enable-experiment=primary-constructors
@@ -79,10 +79,13 @@ jobs:
           fi
         working-directory: ${{ matrix.package }}
 
+      # Each expected lint is marked with an `// ignore:` comment,
+      # checked by `unnecessary_ignore`. Quick-fixes are tested against
+      # the `*.fix.dart` goldens.
       - name: Lint golden test
         if: matrix.package == 'packages/freezed_lint'
         run: |
           dart pub get
-          dart analyze
-          dart run custom_lint
+          dart analyze --fatal-infos
+          dart test
         working-directory: 'packages/freezed_lint/example'

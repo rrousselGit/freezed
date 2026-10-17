@@ -1,6 +1,6 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
+// coverage:ignore-file
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'missing_mixin.dart';
@@ -9,396 +9,463 @@ part of 'missing_mixin.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
-mixin _$MissingMixin {}
+mixin _$WithMixin {
 
-/// @nodoc
-abstract class $MissingMixinCopyWith<$Res> {
-  factory $MissingMixinCopyWith(
-          MissingMixin value, $Res Function(MissingMixin) then) =
-      _$MissingMixinCopyWithImpl<$Res, MissingMixin>;
+
+
+
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is WithMixin);
 }
 
-/// @nodoc
-class _$MissingMixinCopyWithImpl<$Res, $Val extends MissingMixin>
-    implements $MissingMixinCopyWith<$Res> {
-  _$MissingMixinCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+@override
+int get hashCode => runtimeType.hashCode;
 
-  /// Create a copy of MissingMixin
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$MissingMixinImplCopyWith<$Res> {
-  factory _$$MissingMixinImplCopyWith(
-          _$MissingMixinImpl value, $Res Function(_$MissingMixinImpl) then) =
-      __$$MissingMixinImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$MissingMixinImplCopyWithImpl<$Res>
-    extends _$MissingMixinCopyWithImpl<$Res, _$MissingMixinImpl>
-    implements _$$MissingMixinImplCopyWith<$Res> {
-  __$$MissingMixinImplCopyWithImpl(
-      _$MissingMixinImpl _value, $Res Function(_$MissingMixinImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of MissingMixin
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$MissingMixinImpl implements _MissingMixin {
-  const _$MissingMixinImpl();
-
-  @override
-  String toString() {
-    return 'MissingMixin()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$MissingMixinImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-}
-
-abstract class _MissingMixin implements MissingMixin {
-  const factory _MissingMixin() = _$MissingMixinImpl;
-}
-
-/// @nodoc
-mixin _$WithMixin {}
-
-/// @nodoc
-abstract class $WithMixinCopyWith<$Res> {
-  factory $WithMixinCopyWith(WithMixin value, $Res Function(WithMixin) then) =
-      _$WithMixinCopyWithImpl<$Res, WithMixin>;
-}
-
-/// @nodoc
-class _$WithMixinCopyWithImpl<$Res, $Val extends WithMixin>
-    implements $WithMixinCopyWith<$Res> {
-  _$WithMixinCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of WithMixin
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$WithMixinImplCopyWith<$Res> {
-  factory _$$WithMixinImplCopyWith(
-          _$WithMixinImpl value, $Res Function(_$WithMixinImpl) then) =
-      __$$WithMixinImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$WithMixinImplCopyWithImpl<$Res>
-    extends _$WithMixinCopyWithImpl<$Res, _$WithMixinImpl>
-    implements _$$WithMixinImplCopyWith<$Res> {
-  __$$WithMixinImplCopyWithImpl(
-      _$WithMixinImpl _value, $Res Function(_$WithMixinImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of WithMixin
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$WithMixinImpl implements _WithMixin {
-  const _$WithMixinImpl();
-
-  @override
-  String toString() {
+@override
+String toString() {
     return 'WithMixin()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$WithMixinImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
 }
 
-abstract class _WithMixin implements WithMixin {
-  const factory _WithMixin() = _$WithMixinImpl;
+
 }
 
 /// @nodoc
-mixin _$FooModel {
-  int get id => throw _privateConstructorUsedError;
+class $WithMixinCopyWith<$Res>  {
+$WithMixinCopyWith(WithMixin _, $Res Function(WithMixin) __);
+}
 
-  /// Create a copy of FooModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $FooModelCopyWith<FooModel> get copyWith =>
-      throw _privateConstructorUsedError;
+
+/// Adds pattern-matching-related methods to [WithMixin].
+extension WithMixinPatterns on WithMixin {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _WithMixin value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _WithMixin() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _WithMixin value)  $default,){
+final _that = this;
+switch (_that) {
+case _WithMixin():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _WithMixin value)?  $default,){
+final _that = this;
+switch (_that) {
+case _WithMixin() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function()?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _WithMixin() when $default != null:
+return $default();case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function()  $default,) {final _that = this;
+switch (_that) {
+case _WithMixin():
+return $default();case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function()?  $default,) {final _that = this;
+switch (_that) {
+case _WithMixin() when $default != null:
+return $default();case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class $FooModelCopyWith<$Res> {
-  factory $FooModelCopyWith(FooModel value, $Res Function(FooModel) then) =
-      _$FooModelCopyWithImpl<$Res, FooModel>;
-  @useResult
-  $Res call({int id});
+
+
+class _WithMixin implements WithMixin {
+  const _WithMixin();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _WithMixin);
 }
 
-/// @nodoc
-class _$FooModelCopyWithImpl<$Res, $Val extends FooModel>
-    implements $FooModelCopyWith<$Res> {
-  _$FooModelCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+@override
+int get hashCode => runtimeType.hashCode;
 
-  /// Create a copy of FooModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
+@override
+String toString() {
+    return 'WithMixin()';
 }
 
-/// @nodoc
-abstract class _$$FooModelImplCopyWith<$Res>
-    implements $FooModelCopyWith<$Res> {
-  factory _$$FooModelImplCopyWith(
-          _$FooModelImpl value, $Res Function(_$FooModelImpl) then) =
-      __$$FooModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int id});
+
 }
 
-/// @nodoc
-class __$$FooModelImplCopyWithImpl<$Res>
-    extends _$FooModelCopyWithImpl<$Res, _$FooModelImpl>
-    implements _$$FooModelImplCopyWith<$Res> {
-  __$$FooModelImplCopyWithImpl(
-      _$FooModelImpl _value, $Res Function(_$FooModelImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of FooModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-  }) {
-    return _then(_$FooModelImpl(
-      null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
 
-/// @nodoc
-
-class _$FooModelImpl extends _FooModel {
-  const _$FooModelImpl(this.id) : super._();
-
-  @override
-  final int id;
-
-  @override
-  String toString() {
-    return 'FooModel(id: $id)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FooModelImpl &&
-            (identical(other.id, id) || other.id == id));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, id);
-
-  /// Create a copy of FooModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FooModelImplCopyWith<_$FooModelImpl> get copyWith =>
-      __$$FooModelImplCopyWithImpl<_$FooModelImpl>(this, _$identity);
-}
-
-abstract class _FooModel extends FooModel {
-  const factory _FooModel(final int id) = _$FooModelImpl;
-  const _FooModel._() : super._();
-
-  @override
-  int get id;
-
-  /// Create a copy of FooModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FooModelImplCopyWith<_$FooModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
 
 /// @nodoc
 mixin _$BarModel {
-  int get id => throw _privateConstructorUsedError;
 
-  /// Create a copy of BarModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $BarModelCopyWith<BarModel> get copyWith =>
-      throw _privateConstructorUsedError;
+ int get id;
+/// Create a copy of BarModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$BarModelCopyWith<BarModel> get copyWith => _$BarModelCopyWithImpl<BarModel>(this as BarModel, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as BarModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BarModel&&(identical(other.id, _this.id) || other.id == _this.id));
+}
+
+
+@override
+int get hashCode {
+  final _this = this as BarModel;
+  return Object.hash(runtimeType,_this.id);
+}
+
+@override
+String toString() {
+  final _this = this as BarModel;
+  return 'BarModel(id: ${_this.id})';
+}
+
+
 }
 
 /// @nodoc
-abstract class $BarModelCopyWith<$Res> {
-  factory $BarModelCopyWith(BarModel value, $Res Function(BarModel) then) =
-      _$BarModelCopyWithImpl<$Res, BarModel>;
-  @useResult
-  $Res call({int id});
-}
+abstract mixin class $BarModelCopyWith<$Res>  {
+  factory $BarModelCopyWith(BarModel value, $Res Function(BarModel) _then) = _$BarModelCopyWithImpl;
+@useResult
+$Res call({
+ int id
+});
 
+
+
+
+}
 /// @nodoc
-class _$BarModelCopyWithImpl<$Res, $Val extends BarModel>
+class _$BarModelCopyWithImpl<$Res>
     implements $BarModelCopyWith<$Res> {
-  _$BarModelCopyWithImpl(this._value, this._then);
+  _$BarModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final BarModel _self;
+  final $Res Function(BarModel) _then;
 
-  /// Create a copy of BarModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
+/// Create a copy of BarModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,}) {
+  return _then(BarModel(
+null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [BarModel].
+extension BarModelPatterns on BarModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _BarModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _BarModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _BarModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _BarModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _BarModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _BarModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _BarModel() when $default != null:
+return $default(_that.id);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id)  $default,) {final _that = this;
+switch (_that) {
+case _BarModel():
+return $default(_that.id);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id)?  $default,) {final _that = this;
+switch (_that) {
+case _BarModel() when $default != null:
+return $default(_that.id);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$BarModelImplCopyWith<$Res>
-    implements $BarModelCopyWith<$Res> {
-  factory _$$BarModelImplCopyWith(
-          _$BarModelImpl value, $Res Function(_$BarModelImpl) then) =
-      __$$BarModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int id});
+
+
+class _BarModel extends BarModel {
+  const _BarModel(this.id): super._();
+  
+
+@override final  int id;
+
+/// Create a copy of BarModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$BarModelCopyWith<_BarModel> get copyWith => __$BarModelCopyWithImpl<_BarModel>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _BarModel&&(identical(other.id, id) || other.id == id));
 }
 
-/// @nodoc
-class __$$BarModelImplCopyWithImpl<$Res>
-    extends _$BarModelCopyWithImpl<$Res, _$BarModelImpl>
-    implements _$$BarModelImplCopyWith<$Res> {
-  __$$BarModelImplCopyWithImpl(
-      _$BarModelImpl _value, $Res Function(_$BarModelImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of BarModel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-  }) {
-    return _then(_$BarModelImpl(
-      null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
+@override
+int get hashCode {
+    return Object.hash(runtimeType,id);
 }
 
-/// @nodoc
-
-class _$BarModelImpl extends _BarModel {
-  const _$BarModelImpl(this.id) : super._();
-
-  @override
-  final int id;
-
-  @override
-  String toString() {
+@override
+String toString() {
     return 'BarModel(id: $id)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$BarModelImpl &&
-            (identical(other.id, id) || other.id == id));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, id);
-
-  /// Create a copy of BarModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$BarModelImplCopyWith<_$BarModelImpl> get copyWith =>
-      __$$BarModelImplCopyWithImpl<_$BarModelImpl>(this, _$identity);
 }
 
-abstract class _BarModel extends BarModel {
-  const factory _BarModel(final int id) = _$BarModelImpl;
-  const _BarModel._() : super._();
 
-  @override
-  int get id;
-
-  /// Create a copy of BarModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$BarModelImplCopyWith<_$BarModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+abstract mixin class _$BarModelCopyWith<$Res> implements $BarModelCopyWith<$Res> {
+  factory _$BarModelCopyWith(_BarModel value, $Res Function(_BarModel) _then) = __$BarModelCopyWithImpl;
+@override @useResult
+$Res call({
+ int id
+});
+
+
+
+
+}
+/// @nodoc
+class __$BarModelCopyWithImpl<$Res>
+    implements _$BarModelCopyWith<$Res> {
+  __$BarModelCopyWithImpl(this._self, this._then);
+
+  final _BarModel _self;
+  final $Res Function(_BarModel) _then;
+
+/// Create a copy of BarModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+  return _then(_BarModel(
+null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+// dart format on
