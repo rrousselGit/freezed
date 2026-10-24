@@ -1,3 +1,7 @@
+## Unreleased fix
+
+- Fixed `copyWith` calling `MyClass._()` instead of the factory when a class has a single named factory and a private `MyClass._()` constructor (thanks to @uveshm003).
+
 ## 4.0.3 - 2026-10-17
 
 - Support build 5.0.0
