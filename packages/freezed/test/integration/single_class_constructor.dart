@@ -54,6 +54,14 @@ abstract class R1212 with _$R1212 {
   factory R1212({List<String>? labels, Map<String, dynamic>? data}) = _R1212;
 }
 
+// Regression for https://github.com/rrousselGit/freezed/issues/867
+@freezed
+abstract class AssertMessageEscaping with _$AssertMessageEscaping {
+  @Assert('a > 0', "a isn't positive")
+  @Assert('b > 0', 'b isn\'t "positive" \\ \nnew line')
+  const factory AssertMessageEscaping(int a, int b) = _AssertMessageEscaping;
+}
+
 @freezed
 abstract class ImplementedClass with _$ImplementedClass {
   factory ImplementedClass({required String brand}) = _ImplementedClass;
