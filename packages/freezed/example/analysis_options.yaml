@@ -1,0 +1,11 @@
+include: ../analysis_options.yaml
+
+# freezed_lint catches common mistakes in Freezed classes, such as a missing
+# `with _$MyClass` mixin or a missing `MyClass._()` constructor.
+# In your own project, enable it with:
+#
+# plugins:
+#   freezed_lint: ^0.1.0
+plugins:
+  freezed_lint:
+    path: ../../freezed_lint
