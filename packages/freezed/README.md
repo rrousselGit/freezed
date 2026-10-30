@@ -461,6 +461,9 @@ void main() {
 }
 ```
 
+To disable it for the entire project, set `make_collections_unmodifiable: false`
+in your `build.yaml` (see [Changing the behavior for the entire project](#changing-the-behavior-for-the-entire-project)).
+
 ### Classic classes
 
 Instead of primary constructors, you can write normal Dart classes.
@@ -1394,7 +1397,12 @@ targets:
           # Disable the generation of copyWith/== for the entire project
           copy_with: false
           equal: false
+          # Keep List/Set/Map properties mutable for the entire project
+          # (the build.yaml equivalent of `makeCollectionsUnmodifiable: false`)
+          make_collections_unmodifiable: false
 ```
+
+Options use the snake_case version of their `@Freezed` name.
 
 # Utilities
 
