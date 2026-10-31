@@ -5,6 +5,7 @@ import 'package:build_test/build_test.dart';
 import 'package:expect_error/expect_error.dart';
 import 'package:test/test.dart';
 
+import 'common.dart';
 import 'integration/common_types.dart';
 
 Future<void> main() async {
@@ -79,7 +80,7 @@ void main() {
     nullabilityDifference: 42,
     typeDifference: 21,
   );
-  // expect-error: undefined_getter
+  // expect-error: $undefinedGetterCode
   value.unknown;
 }
 '''),
@@ -199,7 +200,7 @@ import 'integration/common_types.dart';
 
 void main() {
   final param = CommonUnfreezed.one(a: 42, b: 3.14);
-  // expect-error: assignment_to_final_no_setter
+  // expect-error: $noSetterCode
   param.a = 42.24;
   // OK since all union cases are typed the same
   param.b = 42;
