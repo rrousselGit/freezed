@@ -162,9 +162,14 @@ Freezed offers two ways of creating data-classes:
 ### Primary constructors
 
 **Note**
-As of Dart 3.13, primary constructors are a stable feature of Dart. This means
-that you no longer need to use `freezed` to generate primary constructors.
-But you can stick to using Freezed for ==/toString/etc:
+As of Dart 3.13, primary constructors are a stable feature of Dart. 
+You may used Freezed with primary constructors to add ==/toString/etc to your model.
+But this approach have notable limitations. It does not support
+
+- [Adding getters and methods to our models](#adding-getters-and-methods-to-our-models)
+- [FromJson/ToJson](#fromjsontojson)
+
+To enable full feature support, use the traditional `factory` construtors.
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
