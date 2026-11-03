@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, omit_local_variable_types, deprecated_member_use_from_same_package
+import 'dart:io';
+
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build_test/build_test.dart';
@@ -25,11 +27,15 @@ class MyObject {
 }
 
 Future<void> main() async {
-  Future<LibraryElement> analyze() {
+  const generatedPath =
+      'test/integration/single_class_constructor.freezed.dart';
+
+  Future<LibraryElement> analyze({String? generatedSource}) {
     return resolveSources(
       {
         'freezed|test/integration/single_class_constructor.dart':
             useAssetReader,
+        if (generatedSource != null) 'freezed|$generatedPath': generatedSource,
       },
       (r) => r.libraries.firstWhere((e) {
         return e.firstFragment.source.fullName ==
@@ -374,10 +380,35 @@ void main() {
     final singleClassLibrary = await analyze();
 
     final errorResult = await singleClassLibrary.session.getErrors(
-      '/freezed/test/integration/single_class_constructor.freezed.dart',
+      '/freezed/$generatedPath',
     ) as ErrorsResult;
 
     expect(errorResult.errors, isEmpty);
+  });
+
+  // Regression for https://github.com/rrousselGit/freezed/issues/1270
+  test('copyWith does not generate unnecessary non-null assertions', () async {
+    // Strip the `ignore_for_file` header, as it hides warnings.
+    final library = await analyze(
+      generatedSource: File(generatedPath)
+          .readAsLinesSync()
+          .where((line) => !line.startsWith('// ignore_for_file:'))
+          .join('\n'),
+    );
+
+    final errorResult = await library.session.getErrors(
+      '/freezed/$generatedPath',
+    ) as ErrorsResult;
+
+    expect(
+      errorResult.errors.map((e) => e.diagnosticCode.name),
+      isNot(
+        anyOf(
+          contains('unnecessary_non_null_assertion'),
+          contains('unnecessary_null_comparison'),
+        ),
+      ),
+    );
   });
 
   test('toString includes the constructor name', () {
