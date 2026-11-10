@@ -151,6 +151,39 @@ void main() {
       expect(defaultValue.unionValueCase, isNull);
       expect(defaultValue.when, isNull);
       expect(defaultValue.makeCollectionsUnmodifiable, isTrue);
+      expect(defaultValue.addImplicitFinal, isTrue);
+      expect(defaultValue.genericArgumentFactories, isFalse);
+      expect(defaultValue.makeGeneratedClassesFinal, isNull);
+    });
+
+    test('.fromJson (explicit values)', () {
+      final overrides = Freezed.fromJson(<Object?, Object?>{
+        'copy_with': false,
+        'equal': false,
+        'fallback_union': 'test',
+        'from_json': true,
+        'to_json': true,
+        'to_string_override': true,
+        'union_key': 'foo',
+        'union_value_case': 'screaming_snake',
+        'make_collections_unmodifiable': false,
+        'add_implicit_final': false,
+        'generic_argument_factories': true,
+        'make_generated_classes_final': true,
+      });
+
+      expect(overrides.copyWith, isFalse);
+      expect(overrides.equal, isFalse);
+      expect(overrides.fallbackUnion, 'test');
+      expect(overrides.fromJson, isTrue);
+      expect(overrides.toJson, isTrue);
+      expect(overrides.toStringOverride, isTrue);
+      expect(overrides.unionKey, 'foo');
+      expect(overrides.unionValueCase, FreezedUnionCase.screamingSnake);
+      expect(overrides.makeCollectionsUnmodifiable, isFalse);
+      expect(overrides.addImplicitFinal, isFalse);
+      expect(overrides.genericArgumentFactories, isTrue);
+      expect(overrides.makeGeneratedClassesFinal, isTrue);
     });
 
     test('.fromJson({map: x})', () {
@@ -226,9 +259,14 @@ void main() {
     });
   });
 
+  test('freezed', () {
+    expect(freezed.makeGeneratedClassesFinal, isNull);
+  });
+
   test('unfreezed', () {
     expect(unfreezed.makeCollectionsUnmodifiable, false);
     expect(unfreezed.equal, false);
     expect(unfreezed.addImplicitFinal, false);
+    expect(unfreezed.makeGeneratedClassesFinal, isNull);
   });
 }
