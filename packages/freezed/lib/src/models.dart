@@ -1543,15 +1543,21 @@ extension ClassDeclarationX on ClassDeclaration {
     ];
   }
 
-  /// Pick either Class(), Class._() or the first constructor found, in that order.
+  /// Pick either Class(), the first redirecting factory, Class._() or the
+  /// first constructor found, in that order.
+  ///
+  /// Redirecting factories are preferred over Class._(), as Class._() is
+  /// otherwise only the super constructor used to add custom members.
   AstNode? get copyWithTarget {
     final all = allConstructors;
-    return all.fold<AstNode?>(null, (acc, ctor) {
-          final ctorName = ctor.constructorNamePart;
-          if (ctorName == null) return ctor;
-          if (ctorName == '_') return acc ?? ctor;
-          return acc;
-        }) ??
+    return all.firstWhereOrNull((ctor) => ctor.constructorNamePart == null) ??
+        all.firstWhereOrNull(
+          (ctor) =>
+              ctor is ConstructorDeclaration &&
+              ctor.factoryKeyword != null &&
+              ctor.redirectedConstructor != null,
+        ) ??
+        all.firstWhereOrNull((ctor) => ctor.constructorNamePart == '_') ??
         all.firstOrNull;
   }
 

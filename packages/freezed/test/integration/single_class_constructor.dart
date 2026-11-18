@@ -54,6 +54,26 @@ abstract class R1212 with _$R1212 {
   factory R1212({List<String>? labels, Map<String, dynamic>? data}) = _R1212;
 }
 
+// Regression for https://github.com/rrousselGit/freezed/issues/1376
+@freezed
+abstract class NamedFactoryWithPrivateCtor with _$NamedFactoryWithPrivateCtor {
+  NamedFactoryWithPrivateCtor._();
+  factory NamedFactoryWithPrivateCtor.initial({@Default(0) int count}) =
+      _NamedFactoryWithPrivateCtor;
+
+  bool get isEmpty => count == 0;
+}
+
+// Regression for https://github.com/rrousselGit/freezed/issues/1376
+@freezed
+sealed class SingleSealedWithPrivateCtor with _$SingleSealedWithPrivateCtor {
+  const SingleSealedWithPrivateCtor._();
+  const factory SingleSealedWithPrivateCtor.program({
+    required int count,
+    String? note,
+  }) = SingleSealedWithPrivateCtorProgram;
+}
+
 @freezed
 abstract class ImplementedClass with _$ImplementedClass {
   factory ImplementedClass({required String brand}) = _ImplementedClass;
