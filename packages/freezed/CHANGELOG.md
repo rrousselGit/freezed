@@ -1,3 +1,7 @@
+## Unreleased fix
+
+- Fixed `@Assert` messages containing single quotes, backslashes or new lines generating invalid code (thanks to @uveshm003).
+
 ## 4.0.3 - 2026-10-17
 
 - Support build 5.0.0

@@ -518,8 +518,13 @@ class AssertAnnotation {
 
   @override
   String toString() {
-    if (message != null) {
-      return "assert($code, '$message')";
+    if (message case final message?) {
+      final escapedMessage = message
+          .replaceAll(r'\', r'\\')
+          .replaceAll("'", r"\'")
+          .replaceAll('\n', r'\n')
+          .replaceAll('\r', r'\r');
+      return "assert($code, '$escapedMessage')";
     }
     return 'assert($code)';
   }
