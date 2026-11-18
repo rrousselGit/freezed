@@ -472,7 +472,7 @@ String operatorEqualMethod(
 
       if (p.type.isPossiblyDartCollection) {
         // no need to check `identical` as `DeepCollectionEquality` already does it
-        return 'const DeepCollectionEquality().equals(other.${p.name}, $target$name)';
+        return 'const DeepCollectionEquality().equals(other.$name, $target$name)';
       }
       return '(identical(other.${p.name}, $target$name) || other.${p.name} == $target$name)';
     }),

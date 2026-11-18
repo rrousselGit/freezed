@@ -1,8 +1,27 @@
+import 'dart:collection';
+
 import 'package:test/test.dart';
 
 import 'integration/equal.dart';
 
 void main() {
+  group('instances sharing a collection compare without walking it', () {
+    test('List', () {
+      final value = _NoWalkList();
+      expect(ListEqual(value), ListEqual(value));
+    });
+
+    test('Map', () {
+      final value = _NoWalkMap();
+      expect(MapEqual(value), MapEqual(value));
+    });
+
+    test('Set', () {
+      final value = _NoWalkSet();
+      expect(SetEqual(value), SetEqual(value));
+    });
+  });
+
   test('Simple', () {
     expect(Simple(42), Simple(42));
   });
@@ -121,4 +140,63 @@ void main() {
       isNot(ObjectWithOtherProperty([1])),
     );
   });
+}
+
+Never _walked() => throw StateError('== walked a collection both sides share');
+
+class _NoWalkList extends ListBase<int> {
+  @override
+  int get length => _walked();
+
+  @override
+  set length(int newLength) => _walked();
+
+  @override
+  int operator [](int index) => _walked();
+
+  @override
+  void operator []=(int index, int value) => _walked();
+}
+
+class _NoWalkMap extends MapBase<int, int> {
+  @override
+  int? operator [](Object? key) => _walked();
+
+  @override
+  void operator []=(int key, int value) => _walked();
+
+  @override
+  void clear() => _walked();
+
+  @override
+  Iterable<int> get keys => _walked();
+
+  @override
+  int get length => _walked();
+
+  @override
+  int? remove(Object? key) => _walked();
+}
+
+class _NoWalkSet extends SetBase<int> {
+  @override
+  bool add(int value) => _walked();
+
+  @override
+  bool contains(Object? element) => _walked();
+
+  @override
+  Iterator<int> get iterator => _walked();
+
+  @override
+  int get length => _walked();
+
+  @override
+  int? lookup(Object? element) => _walked();
+
+  @override
+  bool remove(Object? value) => _walked();
+
+  @override
+  Set<int> toSet() => _walked();
 }
