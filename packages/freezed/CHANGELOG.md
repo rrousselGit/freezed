@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Fixed `debugFillProperties` not escaping `$` in field names, which generated invalid code or labelled the property with another field's value.
+
 ## 4.0.3 - 2026-10-17
 
 - Support build 5.0.0
