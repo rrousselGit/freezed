@@ -217,7 +217,7 @@ String _mapImpl(
     ..writeln('final _that = this;')
     ..writeln('switch (_that) {');
   for (final constructor in data.constructors) {
-    buffer.write('case ${constructor.redirectedName}()');
+    buffer.write('case ${constructor.redirectedName}${data.genericsParameterTemplate}()');
     if (!areCallbacksRequired) {
       buffer.write(' when ${constructor.callbackName} != null');
     }
@@ -289,7 +289,7 @@ String _whenImpl(
     ..writeln('switch (_that) {');
 
   for (final constructor in data.constructors) {
-    buffer.write('case ${constructor.redirectedName}()');
+    buffer.write('case ${constructor.redirectedName}${data.genericsParameterTemplate}()');
     if (!areCallbacksRequired) {
       buffer.write(' when ${constructor.callbackName} != null');
     }
