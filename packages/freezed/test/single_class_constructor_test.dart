@@ -45,6 +45,26 @@ Future<void> main() async {
     expect(ClassicUnspecifiedOuter().copyWith(), isNotNull);
   });
 
+  test('Regression1376', () {
+    // https://github.com/rrousselGit/freezed/issues/1376
+
+    final named = NamedFactoryWithPrivateCtor.initial(count: 1);
+    expect(named.copyWith(count: 2).count, 2);
+    expect(named.copyWith(count: 0).isEmpty, isTrue);
+    expect(named.copyWith(), named);
+
+    final SingleSealedWithPrivateCtor sealed =
+        SingleSealedWithPrivateCtor.program(count: 1, note: 'a');
+    expect(
+      sealed.copyWith(count: 2),
+      SingleSealedWithPrivateCtor.program(count: 2, note: 'a'),
+    );
+    expect(
+      sealed.copyWith(note: null),
+      SingleSealedWithPrivateCtor.program(count: 1),
+    );
+  });
+
   test('ClassicUnspecifiedOuter', () {
     // regression https://github.com/rrousselGit/freezed/issues/1223
 
