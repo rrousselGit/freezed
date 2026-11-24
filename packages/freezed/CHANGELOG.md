@@ -1,3 +1,9 @@
+## Unreleased fix
+
+- Restore the `identical` shortcut in the generated `==` for collections
+  wrapped in unmodifiable views: compare the backing fields on both sides, so
+  two instances sharing a collection no longer walk and hash its content.
+
 ## 4.0.3 - 2026-10-17
 
 - Support build 5.0.0
