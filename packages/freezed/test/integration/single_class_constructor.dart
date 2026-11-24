@@ -9,6 +9,30 @@ part 'single_class_constructor.freezed.dart';
 
 typedef StringAlias = String;
 
+// Regression for https://github.com/rrousselGit/freezed/issues/1270
+@freezed
+class NullableParamNonNullableField with _$NullableParamNonNullableField {
+  NullableParamNonNullableField({String? value, Empty? empty})
+    : value = value ?? 'default',
+      empty = empty ?? const Empty();
+
+  final String value;
+  final Empty empty;
+}
+
+@freezed
+abstract class FactoryNullableParamNonNullableField
+    with _$FactoryNullableParamNonNullableField {
+  factory FactoryNullableParamNonNullableField({String? value, Empty? empty}) =
+      _FactoryNullableParamNonNullableField;
+  FactoryNullableParamNonNullableField._({String? value, Empty? empty})
+    : value = value ?? 'default',
+      empty = empty ?? const Empty();
+
+  final String value;
+  final Empty empty;
+}
+
 // Regression for https://github.com/rrousselGit/freezed/issues/1358
 @freezed
 abstract class DeviceInfo with _$DeviceInfo {

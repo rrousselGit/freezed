@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:freezed/src/templates/parameter_template.dart';
 import 'package:freezed/src/templates/properties.dart';
 import 'package:freezed/src/tools/type.dart';
@@ -292,7 +293,10 @@ $s''';
       }
 
       var cast = '';
-      if (propertyGetterForCopyWithParameter.type != to.type) cast = '!';
+      if (propertyGetterForCopyWithParameter.type != to.type &&
+          propertyGetterForCopyWithParameter.type.isNullable) {
+        cast = '!';
+      }
 
       return '$accessor.$propertyName$cast';
     }
@@ -313,11 +317,7 @@ $s''';
         return '${p.defaultValueSource ?? 'null'},';
       }
 
-      final propertyGetterForCopyWithParameter = <Property>[]
-          .followedBy(readableProperties)
-          // Read this.p before cloneable properties, as they might have a different nullability
-          .followedBy(cloneableProperties)
-          .firstWhere((element) => element.name == p.name);
+      final propertyGetterForCopyWithParameter = _propertyGetterFor(p.name)!;
 
       final condition =
           '${_defaultValue(isNullable: p.type.isNullable)} == ${p.name}';
@@ -352,9 +352,22 @@ $constructorParameters
 
   String get _implClassName => '_${_abstractClassName}Impl';
 
+  Property? _propertyGetterFor(String name) {
+    return <Property>[]
+        .followedBy(readableProperties)
+        .followedBy(parent?.readableProperties ?? const [])
+        // Read this.p before cloneable properties, as they might have a different nullability
+        .followedBy(cloneableProperties)
+        .firstWhereOrNull((element) => element.name == name);
+  }
+
   Iterable<String> _deepCopyMethods({required bool isConcrete}) sync* {
     for (final cloneableProperty in deepCloneableProperties) {
-      final earlyReturn = cloneableProperty.nullable
+      final isGetterNullable =
+          _propertyGetterFor(cloneableProperty.name)?.type.isNullable ??
+          cloneableProperty.nullable;
+
+      final earlyReturn = isGetterNullable
           ? '''
   if (_self.${cloneableProperty.name} == null) {
     return null;
@@ -362,7 +375,7 @@ $constructorParameters
 '''
           : '';
 
-      final nullabilitySuffix = cloneableProperty.nullable ? '!' : '';
+      final nullabilitySuffix = isGetterNullable ? '!' : '';
 
       final returnType = cloneableProperty.nullable
           ? '${_clonerInterfaceFor(cloneableProperty)}?'

@@ -1,3 +1,7 @@
+## Unreleased patch
+
+- Fixed `copyWith` generating unnecessary `!` and null-checks when a constructor parameter is nullable but its field is not (#1270)
+
 ## 4.0.3 - 2026-10-17
 
 - Support build 5.0.0
