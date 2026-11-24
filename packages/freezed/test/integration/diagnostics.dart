@@ -7,3 +7,9 @@ part 'diagnostics.freezed.dart';
 abstract class DiagnosticsExample with _$DiagnosticsExample {
   const factory DiagnosticsExample({int? value}) = _DiagnosticsExample;
 }
+
+@freezed
+abstract class DiagnosticsDollar with _$DiagnosticsDollar {
+  const factory DiagnosticsDollar({required String $id, required String id}) =
+      _DiagnosticsDollar;
+}

@@ -398,7 +398,7 @@ String debugFillProperties(
 
   final diagnostics = [
     for (final e in properties)
-      "..add(DiagnosticsProperty('${e.name}', ${source == Source.mixin ? '_this.' : ''}${e.name}))",
+      "..add(DiagnosticsProperty('${e.name.replaceAll(r'$', r'\$')}', ${source == Source.mixin ? '_this.' : ''}${e.name}))",
   ].join();
 
   return '''
