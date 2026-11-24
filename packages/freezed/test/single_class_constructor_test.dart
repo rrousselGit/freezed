@@ -45,6 +45,32 @@ Future<void> main() async {
     expect(ClassicUnspecifiedOuter().copyWith(), isNotNull);
   });
 
+  test('Regression867', () {
+    // https://github.com/rrousselGit/freezed/issues/867
+
+    AssertMessageEscaping(1, 1);
+    expect(
+      () => AssertMessageEscaping(0, 1),
+      throwsA(
+        isA<AssertionError>().having(
+          (e) => e.message,
+          'message',
+          "a isn't positive",
+        ),
+      ),
+    );
+    expect(
+      () => AssertMessageEscaping(1, 0),
+      throwsA(
+        isA<AssertionError>().having(
+          (e) => e.message,
+          'message',
+          'b isn\'t "positive" \\ \nnew line',
+        ),
+      ),
+    );
+  });
+
   test('ClassicUnspecifiedOuter', () {
     // regression https://github.com/rrousselGit/freezed/issues/1223
 
