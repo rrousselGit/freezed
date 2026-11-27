@@ -17,6 +17,11 @@ extension StringX on String {
     if (startsWith('_')) return substring(1);
     return this;
   }
+
+  String get jsonSerializableName {
+    if (startsWith('_')) return substring(1).jsonSerializableName;
+    return this;
+  }
 }
 
 @immutable

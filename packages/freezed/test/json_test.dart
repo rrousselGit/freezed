@@ -876,4 +876,12 @@ void main() {
       throwsCompileError,
     );
   });
+
+  test('private class names use the json_serializable json helper', () {
+    expect(
+      generatePrivateModelFromJson({'value': 42}),
+      generatePrivateModel(value: 42),
+    );
+    expect(generatePrivateModel(value: 42).toJson(), {'value': 42});
+  });
 }

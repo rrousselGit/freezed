@@ -17,7 +17,11 @@ class FromJson {
     if (clazz.constructors.isEmpty) return '';
 
     final conflictCtor = clazz.constructors
-        .where((c) => c.redirectedName.public == clazz.name.public)
+        .where(
+          (c) =>
+              c.redirectedName.jsonSerializableName ==
+              clazz.name.jsonSerializableName,
+        )
         .firstOrNull;
 
     if (conflictCtor != null) {

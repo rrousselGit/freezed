@@ -620,3 +620,15 @@ abstract class GenericMultiCtorWithArgumentFactories<T, S>
     fromJsonS,
   );
 }
+
+@freezed
+abstract class _Private with _$Private {
+  const factory _Private({required int value}) = __Private;
+
+  factory _Private.fromJson(Map<String, dynamic> json) =>
+      _$PrivateFromJson(json);
+}
+
+_Private generatePrivateModel({required int value}) => _Private(value: value);
+_Private generatePrivateModelFromJson(Map<String, dynamic> json) =>
+    _Private.fromJson(json);
