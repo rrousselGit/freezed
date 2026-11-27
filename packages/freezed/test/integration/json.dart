@@ -630,4 +630,5 @@ abstract class _Private with _$Private {
 }
 
 _Private generatePrivateModel({required int value}) => _Private(value: value);
-_Private generatePrivateModelFromJson(Map<String, dynamic> json) => _Private.fromJson(json);
+_Private generatePrivateModelFromJson(Map<String, dynamic> json) =>
+    _Private.fromJson(json);
