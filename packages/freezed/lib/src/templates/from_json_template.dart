@@ -88,7 +88,7 @@ return ${fallbackConstructor.redirectedName}${clazz.genericsParameterTemplate}.f
     }
 
     return '''
-${clazz.name}${clazz.genericsParameterTemplate} _\$${clazz.name.jsonSerializableName}FromJson${clazz.genericsDefinitionTemplate}(
+${clazz.name}${clazz.genericsParameterTemplate} _\$${clazz.name.public}FromJson${clazz.genericsDefinitionTemplate}(
   Map<String, dynamic> json${fromJsonParameters(clazz.genericsParameterTemplate, clazz.options.genericArgumentFactories)}
 ) {
 $content
