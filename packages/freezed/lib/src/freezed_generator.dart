@@ -14,7 +14,7 @@ import 'templates/from_json_template.dart';
 
 extension StringX on String {
   String get public {
-    if (startsWith('_')) return substring(1);
+    if (startsWith('_')) return substring(1).public;
     return this;
   }
 }
