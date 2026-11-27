@@ -17,7 +17,11 @@ class FromJson {
     if (clazz.constructors.isEmpty) return '';
 
     final conflictCtor = clazz.constructors
-        .where((c) => c.redirectedName.public == clazz.name.public)
+        .where(
+          (c) =>
+              c.redirectedName.jsonSerializableName ==
+              clazz.name.jsonSerializableName,
+        )
         .firstOrNull;
 
     if (conflictCtor != null) {
@@ -84,7 +88,7 @@ return ${fallbackConstructor.redirectedName}${clazz.genericsParameterTemplate}.f
     }
 
     return '''
-${clazz.name}${clazz.genericsParameterTemplate} _\$${clazz.name.public}FromJson${clazz.genericsDefinitionTemplate}(
+${clazz.name}${clazz.genericsParameterTemplate} _\$${clazz.name.jsonSerializableName}FromJson${clazz.genericsDefinitionTemplate}(
   Map<String, dynamic> json${fromJsonParameters(clazz.genericsParameterTemplate, clazz.options.genericArgumentFactories)}
 ) {
 $content

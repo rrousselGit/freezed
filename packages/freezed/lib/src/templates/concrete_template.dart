@@ -317,7 +317,7 @@ final String \$type;
   String get _concreteFromJsonConstructor {
     if (!data.options.fromJson) return '';
     return 'factory ${constructor.redirectedName}.fromJson(Map<String, dynamic> json$_fromJsonParams)'
-        ' => _\$${constructor.redirectedName.public}FromJson(json$_fromJsonArgs);';
+        ' => _\$${constructor.redirectedName.jsonSerializableName}FromJson(json$_fromJsonArgs);';
   }
 }
 
@@ -373,7 +373,7 @@ String toJson(Class data, {required String name, required Source source}) {
       return '''
 @override
 Map<String, dynamic> toJson($_toJsonParams) {
-  return _\$${name.public}ToJson${data.genericsParameterTemplate}(this, $_toJsonArgs);
+  return _\$${name.public.jsonSerializableName}ToJson${data.genericsParameterTemplate}(this, $_toJsonArgs);
 }''';
   }
 }

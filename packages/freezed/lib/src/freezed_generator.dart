@@ -14,7 +14,12 @@ import 'templates/from_json_template.dart';
 
 extension StringX on String {
   String get public {
-    if (startsWith('_')) return substring(1).public;
+    if (startsWith('_')) return substring(1);
+    return this;
+  }
+
+  String get jsonSerializableName {
+    if (startsWith('_')) return substring(1).jsonSerializableName;
     return this;
   }
 }
